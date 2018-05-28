@@ -24,8 +24,16 @@ class Login extends Component {
 				<KeyboardAvoidingView behavior="position">
 					<Image style={styles.logo} source={require('asset/big_logo.png')} />
 					<View style={{ marginTop: 55 }}>
-						<AuthInput style={styles.input} title="账号" />
-						<AuthInput style={[styles.input, { marginTop: 27 }]} title="密码" />
+						<AuthInput
+							style={styles.input}
+							title="账号"
+							placeholder="请输入邮箱账号"
+						/>
+						<AuthInput
+							style={[styles.input, { marginTop: 27 }]}
+							title="密码"
+							placeholder="请输入密码"
+						/>
 					</View>
 					<AuthButton style={styles.button} />
 				</KeyboardAvoidingView>

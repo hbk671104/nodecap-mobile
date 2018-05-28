@@ -12,7 +12,7 @@ export default {
 		color: '#333333',
 		borderBottomWidth: StyleSheet.hairlineWidth,
 		borderBottomColor: 'rgba(0, 0, 0, 0.25)',
-		paddingTop: 8,
-		paddingBottom: 9
+		paddingTop: 14,
+		paddingBottom: 12
 	}
 }
