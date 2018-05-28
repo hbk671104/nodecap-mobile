@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { Text, View, Button } from 'react-native'
+import { Text, View, Button, Image } from 'react-native'
+
+import AuthButton from 'component/authButton'
 import styles from './style'
 
 export default class App extends Component {
@@ -10,7 +12,8 @@ export default class App extends Component {
 	render() {
 		return (
 			<View style={styles.container}>
-				<Button title="登录" onPress={this.handleOnLogin} />
+				<Image style={styles.logo} source={require('asset/big_logo.png')} />
+				<AuthButton style={styles.button} />
 			</View>
 		)
 	}

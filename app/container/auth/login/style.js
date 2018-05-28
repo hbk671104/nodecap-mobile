@@ -1,18 +1,15 @@
 export default {
 	container: {
 		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#F5FCFF'
+		backgroundColor: 'white'
 	},
-	welcome: {
-		fontSize: 20,
-		textAlign: 'center',
-		margin: 10
+	logo: {
+		width: 185,
+		height: 85,
+		alignSelf: 'center',
+		marginTop: 128
 	},
-	instructions: {
-		textAlign: 'center',
-		color: '#333333',
-		marginBottom: 5
+	button: {
+		marginHorizontal: 40
 	}
 }
