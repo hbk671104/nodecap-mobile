@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { View, TouchableOpacity, Text, ViewPropTypes } from 'react-native'
 import styles from './style'
 
-const authButton = ({ style, disabled }) => {
+const authButton = ({ style, disabled, onPress }) => {
 	const Wrapper = disabled ? View : TouchableOpacity
 	return (
 		<Wrapper
@@ -12,6 +12,7 @@ const authButton = ({ style, disabled }) => {
 				!disabled && styles.container.highlight,
 				style
 			]}
+			onPress={onPress}
 		>
 			<Text style={[styles.title.normal, !disabled && styles.title.highlight]}>
 				登录
@@ -26,7 +27,8 @@ authButton.defaultProps = {
 
 authButton.propTypes = {
 	style: ViewPropTypes.style,
-	disabled: PropTypes.bool
+	disabled: PropTypes.bool,
+	onPress: PropTypes.func
 }
 
 export default authButton

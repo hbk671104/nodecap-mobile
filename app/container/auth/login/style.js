@@ -4,7 +4,7 @@ export default {
 		backgroundColor: 'white'
 	},
 	logo: {
-		width: 185,
+		width: 187,
 		height: 85,
 		alignSelf: 'center',
 		marginTop: 128
