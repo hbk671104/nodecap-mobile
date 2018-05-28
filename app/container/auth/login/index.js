@@ -43,6 +43,7 @@ class Login extends Component {
 								style={[styles.input, { marginTop: 27 }]}
 								title="密码"
 								placeholder="请输入密码"
+								inputProps={{ secureTextEntry: true }}
 							/>
 						)}
 					</View>

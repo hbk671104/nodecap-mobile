@@ -33,6 +33,7 @@ class AuthInput extends PureComponent {
 					onChangeText={onChange}
 					placeholderTextColor="#999999"
 					underlineColorAndroid="transparent"
+					clearButtonMode="while-editing"
 				/>
 			</View>
 		)
