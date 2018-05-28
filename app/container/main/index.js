@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Button, Text, View } from 'react-native'
 import styles from './style'
 
-export default class App extends Component {
+export default class Main extends Component {
 	handleOnLogout = () => {
 		this.props.navigation.navigate('Auth')
 	}
