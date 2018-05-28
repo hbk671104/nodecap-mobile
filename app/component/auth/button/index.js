@@ -15,7 +15,7 @@ const authButton = ({ style, disabled, onPress }) => {
 			onPress={onPress}
 		>
 			<Text style={[styles.title.normal, !disabled && styles.title.highlight]}>
-				登录
+				登 录
 			</Text>
 		</Wrapper>
 	)
