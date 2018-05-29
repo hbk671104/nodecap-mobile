@@ -10,6 +10,8 @@ import { compose, withState, withProps } from 'recompose'
 import Header from './partials/header'
 import ProfitSwiper from './partials/profitSwiper'
 import ReturnRateChart from './partials/returnRateChart'
+import DashboardGroup from './partials/group'
+import InvestNumber from './partials/investNumber'
 import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 
 @connect(({ dashboard, fund }) => ({
@@ -106,6 +108,11 @@ export default class Dashboard extends Component {
 				>
 					<ProfitSwiper/>
 					<ReturnRateChart />
+					<DashboardGroup title="已投项目数量" icon="yitouxiangmu">
+						<InvestNumber />
+					</DashboardGroup>
+					<DashboardGroup title="投资金额" icon="touzijine" />
+					<DashboardGroup title="投资回报率 TOP 5" icon="TOP" />
 				</ParallaxScrollView>
 			</View>
 		)
