@@ -1,6 +1,10 @@
 import React, { PureComponent } from 'react'
-import { BackHandler } from 'react-native'
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
+import { BackHandler, View } from 'react-native'
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createBottomTabNavigator
+} from 'react-navigation'
 import {
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware,
@@ -10,29 +14,37 @@ import RehydrateLoader from './component/RehydrateLoader'
 import {connect} from './utils/dva'
 // Screen
 import Login from 'container/auth/login'
-import Main from 'container/main'
+import Dashboard from 'container/main/dashboard'
 
-const AuthStack = createStackNavigator({
-	Login: {
-		screen: Login,
-		navigationOptions: ({ navigation }) => ({
-			header: null
-		})
-	}
-})
-
-const MainStack = createStackNavigator({ Main })
-
-const MainRouter = createSwitchNavigator(
-	{
-		Auth: AuthStack,
-		Main: MainStack
-	},
-	{
-		initialRouteName: 'Auth'
-	}
+const AuthStack = createStackNavigator(
+  {
+    Login
+  },
+  {
+    headerMode: 'none'
+  }
 )
 
+const Tab = createBottomTabNavigator({ Dashboard })
+const MainStack = createStackNavigator(
+  {
+    Tab
+  },
+  {
+    headerMode: 'none'
+  }
+)
+
+const AppRouter = createSwitchNavigator(
+  {
+    Auth: AuthStack,
+    Main: MainStack,
+    Landing: RehydrateLoader
+  },
+  {
+    initialRouteName: 'Landing'
+  }
+)
 
 function getCurrentScreen(navigationState) {
   if (!navigationState) {
@@ -83,15 +95,13 @@ class Router extends PureComponent {
       addListener,
     }
     return (
-      <RehydrateLoader store={this.props.store} router={this.props.router}>
-        <MainRouter navigation={navigation} />
-      </RehydrateLoader>
+      <AppRouter navigation={navigation} />
     )
   }
 }
 
 export function routerReducer(state, action = {}) {
-  return MainRouter.router.getStateForAction(action, state)
+  return AppRouter.router.getStateForAction(action, state)
 }
 
 export default Router

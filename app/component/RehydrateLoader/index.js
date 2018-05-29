@@ -3,6 +3,7 @@ import {View, AsyncStorage} from 'react-native'
 import { persistStore } from 'redux-persist';
 import { connect } from '../../utils/dva';
 import {NavigationActions} from '../../utils'
+import store from '../../../index'
 import {
   initializeListeners,
 } from 'react-navigation-redux-helpers'
@@ -22,17 +23,19 @@ class RehydrateLoader extends Component {
       type: 'global/startup',
     });
 
-    persistStore(this.props.store, {
+    persistStore(store, {
       storage: AsyncStorage,
-      blacklist: ['loading', 'routing', 'project'],
+      blacklist: ['loading', 'router', 'project'],
     }, () => {
-      this.setState({ rehydrated: true }, () => {
-        if(this.props.isLogin){
-          this.props.dispatch(NavigationActions.navigate({
-            routerName: 'Main'
-          }));
-        }
-      });
+      if(this.props.isLogin){
+        this.props.dispatch(NavigationActions.navigate({
+          routeName: 'Main'
+        }));
+      }else{
+        this.props.dispatch(NavigationActions.navigate({
+          routeName: 'Auth'
+        }));
+      }
       initializeListeners('root', this.props.router)
     });
   }
@@ -41,7 +44,7 @@ class RehydrateLoader extends Component {
     if (!this.state.rehydrated || !this.props.constants) {
       return <View />;
     }
-    return this.props.children;
+    return <View />;
   }
 }
 

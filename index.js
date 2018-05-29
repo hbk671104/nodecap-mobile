@@ -8,11 +8,13 @@ import dashboard from './app/models/dashboard'
 import routerModel from './app/models/router'
 import loginModel from './app/models/login'
 import appModel from './app/models/app'
+import fundModel from './app/models/fund'
 import globalModal from './app/models/global'
+
 
 const app = dva({
   initialState: {},
-  models: [dashboard, routerModel, loginModel, appModel, globalModal],
+  models: [dashboard, routerModel, loginModel, appModel, globalModal, fundModel],
   onAction: [routerMiddleware],
   onError(e) {
     console.log('onError', e)

@@ -25,7 +25,7 @@ export default {
         });
         request.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
         yield put(routerRedux.navigate({
-          routeName: 'Main'
+          routeName: 'Dashboard'
         }));
       } catch (e) {
         yield put({
