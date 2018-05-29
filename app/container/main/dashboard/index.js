@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Animated, Button, Text, View, ImageBackground } from 'react-native'
+import { Animated, Button, Text, View, Image } from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import NavigationBar from 'react-native-navbar'
+import { Card } from 'react-native-elements'
 import { compose, withState, withProps } from 'recompose'
 import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 
@@ -23,7 +24,12 @@ export default class Dashboard extends Component {
 		this.props.navigation.navigate('Auth')
 	}
 
-	renderBackground = () => <View style={styles.header.background} />
+	renderBackground = () => (
+		<Image
+			style={styles.background}
+			source={require('asset/dashboard_bg.png')}
+		/>
+	)
 
 	renderFixedHeader = () => {
 		const { opacityRange, offsetY } = this.props
@@ -45,9 +51,9 @@ export default class Dashboard extends Component {
 		return (
 			<View style={styles.container}>
 				<AnimatedParallax
-					backgroundColor="#1890FF"
+					contentContainerStyle={styles.scrollView.container}
+					outputScaleValue={10}
 					showsVerticalScrollIndicator={false}
-					contentBackgroundColor={'white'}
 					parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
 					renderBackground={this.renderBackground}
 					renderFixedHeader={this.renderFixedHeader}
@@ -63,15 +69,16 @@ export default class Dashboard extends Component {
 							}
 						],
 						{
-							useNativeDriver: true,
-							listener: event => {
-								const offsetY = event.nativeEvent.contentOffset.y
-								setOffsetY(offsetY)
+							listener: ({ nativeEvent: { contentOffset } }) => {
+								setOffsetY(contentOffset.y)
 							}
 						}
 					)}
 				>
-					<Button title="登出" onPress={this.handleOnLogout} />
+					<Card containerStyle={styles.sticker}>
+						<Text>哦哦哦拉拉拉</Text>
+					</Card>
+					{/* <Button title="登出" onPress={this.handleOnLogout} /> */}
 				</AnimatedParallax>
 			</View>
 		)

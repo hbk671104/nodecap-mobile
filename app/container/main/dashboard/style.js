@@ -7,9 +7,27 @@ export default {
 	container: {
 		flex: 1
 	},
-	header: {
-		background: {
-			backgroundColor: '#1890FF'
+	background: {
+		width: window.width,
+		height: PARALLAX_HEADER_HEIGHT
+	},
+	sticker: {
+		position: 'absolute',
+		top: -48,
+		left: 28,
+		right: 28,
+		height: 96,
+		margin: 0,
+		borderRadius: 2,
+		borderWidth: 0,
+		shadowColor: 'rgba(0, 0, 0, 0.08)',
+		shadowRadius: 4,
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	scrollView: {
+		container: {
+			paddingTop: 54
 		}
 	}
 }
