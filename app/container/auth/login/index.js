@@ -8,14 +8,25 @@ import {
 	KeyboardAvoidingView
 } from 'react-native'
 import { createForm } from 'rc-form'
-
+import {connect} from 'react-redux'
 import AuthButton from 'component/auth/button'
 import AuthInput from 'component/auth/input'
 import styles from './style'
 
+@connect()
+@createForm()
 class Login extends Component {
 	handleOnSubmit = () => {
-		this.props.navigation.navigate('Main')
+    this.props.form.validateFields((err, value) => {
+      if (!err) {
+        this.props.dispatch({
+          type: 'login/login',
+          payload: {
+            ...value
+          },
+        });
+      }
+    });
 	}
 
 	render() {
@@ -58,4 +69,4 @@ class Login extends Component {
 	}
 }
 
-export default createForm()(Login)
+export default Login
