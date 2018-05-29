@@ -33,13 +33,14 @@ export default class Dashboard extends Component {
 	constructor(props){
 		super(props);
     const funds = R.pathOr([], ['funds'])(this.props);
-    const firstFundId = R.path([0, 'id'])(funds);
+    const firstFund = R.path([0])(funds);
 
     this.state = {
-			currentFund: firstFundId,
+			currentFund: firstFund,
 			currencies: ['CNY']
 		}
 	}
+
   componentWillMount() {
     const funds = R.pathOr([], ['funds'])(this.props);
     const firstFundId = R.path([0, 'id'])(funds);
@@ -49,7 +50,26 @@ export default class Dashboard extends Component {
 		})
   }
 
-	handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
+  componentWillReceiveProps(nextProps, nextContext) {
+    const firstFund = R.path(['funds', 0])(nextProps);
+    if(!this.state.currentFund && nextProps.funds){
+			this.setState({
+        currentFund: firstFund
+			})
+		}
+  }
+
+	getDashboardData = (id) => {
+    this.props.dispatch({
+      type: 'dashboard/fetch',
+      payload: id,
+    })
+		this.setState({
+			currentFund: 	R.find(R.propEq('id', id))(this.props.funds)
+    })
+	}
+
+  handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
 		const { setOffsetY } = this.props
 		setOffsetY(contentOffset.y)
 	}
@@ -61,7 +81,12 @@ export default class Dashboard extends Component {
 		/>
 	)
 
-	renderForeground = () => <Header style={styles.foreground} {...this.props}/>
+	renderForeground = () => <Header
+		style={styles.foreground}
+		{...this.props}
+		currentFund={this.state.currentFund}
+		onSelect={(id) => this.getDashboardData(id)}
+	/>
 
 	renderFixedHeader = () => {
 		const { opacityRange, offsetY } = this.props
@@ -106,8 +131,8 @@ export default class Dashboard extends Component {
 						}
 					)}
 				>
-					<ProfitSwiper/>
-					<ReturnRateChart />
+					<ProfitSwiper />
+					<ReturnRateChart {...this.props} />
 					<DashboardGroup title="已投项目数量" icon="yitouxiangmu">
 						<InvestNumber />
 					</DashboardGroup>

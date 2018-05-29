@@ -2,14 +2,28 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 import { View, Text, ViewPropTypes } from 'react-native'
+import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+import headerStyle from './headerStyle'
 
-const header = ({ style, dashboard }) => {
+const header = ({ style, dashboard, funds = [], currentFund={}, onSelect }) => {
   const ROI = R.path(['ROI', 'CNY'])(dashboard);
   const ROIUSD = R.path(['ROI', 'USD'])(dashboard);
   const ROIBTC = R.path(['ROI', 'BTC'])(dashboard);
   const ROIETH = R.path(['ROI', 'ETH'])(dashboard);
 	return (
 		<View style={[styles.container, style]}>
+			<Menu onSelect={(value) => onSelect(value)}>
+				<MenuTrigger>
+					<Text style={headerStyle.title}>{currentFund.name}</Text>
+				</MenuTrigger>
+				<MenuOptions>
+					{funds.map(i => (
+						<MenuOption key={i.id} value={i.id}>
+							<Text>{i.name}</Text>
+						</MenuOption>
+					))}
+				</MenuOptions>
+			</Menu>
 			<View>
 				<View style={styles.wrapper}>
 					<Text style={styles.label}>投资回报率</Text>
