@@ -28,6 +28,9 @@ class RehydrateLoader extends Component {
       blacklist: ['loading', 'router', 'project'],
     }, () => {
       if(this.props.isLogin){
+        this.props.dispatch({
+          type: 'global/initial',
+        });
         this.props.dispatch(NavigationActions.navigate({
           routeName: 'Main'
         }));

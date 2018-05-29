@@ -3,6 +3,7 @@ import { Animated, Button, Text, View, Image } from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import NavigationBar from 'react-native-navbar'
 import { Card } from 'react-native-elements'
+import * as R from 'ramda'
 import { connect } from 'react-redux'
 import { compose, withState, withProps } from 'recompose'
 
@@ -27,15 +28,24 @@ import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 	}))
 )
 export default class Dashboard extends Component {
+	constructor(props){
+		super(props);
+    const funds = R.pathOr([], ['funds'])(this.props);
+    const firstFundId = R.path([0, 'id'])(funds);
+
+    this.state = {
+			currentFund: firstFundId,
+			currencies: ['CNY']
+		}
+	}
   componentWillMount() {
+    const funds = R.pathOr([], ['funds'])(this.props);
+    const firstFundId = R.path([0, 'id'])(funds);
 		this.props.dispatch({
-			type: 'dashboard/fetch'
+			type: 'dashboard/fetch',
+      payload: firstFundId,
 		})
   }
-
-  handleOnLogout = () => {
-		this.props.navigation.navigate('Auth')
-	}
 
 	handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
 		const { setOffsetY } = this.props
@@ -49,7 +59,7 @@ export default class Dashboard extends Component {
 		/>
 	)
 
-	renderForeground = () => <Header style={styles.foreground} />
+	renderForeground = () => <Header style={styles.foreground} {...this.props}/>
 
 	renderFixedHeader = () => {
 		const { opacityRange, offsetY } = this.props
@@ -94,7 +104,7 @@ export default class Dashboard extends Component {
 						}
 					)}
 				>
-					<ProfitSwiper />
+					<ProfitSwiper/>
 					<ReturnRateChart />
 				</ParallaxScrollView>
 			</View>
