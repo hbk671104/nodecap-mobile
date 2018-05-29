@@ -1,8 +1,12 @@
-import { createSwitchNavigator, createStackNavigator } from 'react-navigation'
+import {
+	createSwitchNavigator,
+	createStackNavigator,
+	createBottomTabNavigator
+} from 'react-navigation'
 
 // Screen
 import Login from 'container/auth/login'
-import Main from 'container/main'
+import Dashboard from 'container/main/dashboard'
 
 const AuthStack = createStackNavigator({
 	Login: {
@@ -13,7 +17,15 @@ const AuthStack = createStackNavigator({
 	}
 })
 
-const MainStack = createStackNavigator({ Main })
+const Tab = createBottomTabNavigator({ Dashboard })
+const MainStack = createStackNavigator({
+	Tab: {
+		screen: Tab,
+		navigationOptions: ({ navigation }) => ({
+			header: null
+		})
+	}
+})
 
 export default createSwitchNavigator(
 	{
