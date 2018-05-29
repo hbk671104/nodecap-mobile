@@ -12,6 +12,7 @@ import ProfitSwiper from './partials/profitSwiper'
 import ReturnRateChart from './partials/returnRateChart'
 import DashboardGroup from './partials/group'
 import InvestNumber from './partials/investNumber'
+import ProjectItem from './partials/projectItem'
 import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 
 @connect(({ dashboard, fund }) => ({
@@ -30,24 +31,24 @@ import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 	}))
 )
 export default class Dashboard extends Component {
-	constructor(props){
-		super(props);
-    const funds = R.pathOr([], ['funds'])(this.props);
-    const firstFundId = R.path([0, 'id'])(funds);
+	constructor(props) {
+		super(props)
+		const funds = R.pathOr([], ['funds'])(this.props)
+		const firstFundId = R.path([0, 'id'])(funds)
 
-    this.state = {
+		this.state = {
 			currentFund: firstFundId,
 			currencies: ['CNY']
 		}
 	}
-  componentWillMount() {
-    const funds = R.pathOr([], ['funds'])(this.props);
-    const firstFundId = R.path([0, 'id'])(funds);
+	componentWillMount() {
+		const funds = R.pathOr([], ['funds'])(this.props)
+		const firstFundId = R.path([0, 'id'])(funds)
 		this.props.dispatch({
 			type: 'dashboard/fetch',
-      payload: firstFundId,
+			payload: firstFundId
 		})
-  }
+	}
 
 	handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
 		const { setOffsetY } = this.props
@@ -61,7 +62,7 @@ export default class Dashboard extends Component {
 		/>
 	)
 
-	renderForeground = () => <Header style={styles.foreground} {...this.props}/>
+	renderForeground = () => <Header style={styles.foreground} {...this.props} />
 
 	renderFixedHeader = () => {
 		const { opacityRange, offsetY } = this.props
@@ -79,7 +80,7 @@ export default class Dashboard extends Component {
 	}
 
 	render() {
-		const { scrollY, setOffsetY } = this.props
+		const { scrollY, setOffsetY, dashboard } = this.props
 		return (
 			<View style={styles.container}>
 				<ParallaxScrollView
@@ -106,13 +107,19 @@ export default class Dashboard extends Component {
 						}
 					)}
 				>
-					<ProfitSwiper/>
+					<ProfitSwiper />
 					<ReturnRateChart />
 					<DashboardGroup title="已投项目数量" icon="yitouxiangmu">
-						<InvestNumber />
+						<InvestNumber data={dashboard.portfolio} />
 					</DashboardGroup>
 					<DashboardGroup title="投资金额" icon="touzijine" />
-					<DashboardGroup title="投资回报率 TOP 5" icon="TOP" />
+					{R.length(R.path(['ROIRank'])(dashboard)) > 0 && (
+						<DashboardGroup title="投资回报率 TOP 5" icon="TOP">
+							{dashboard.ROIRank.map((r, i) => (
+								<ProjectItem key={i} index={i} data={r} />
+							))}
+						</DashboardGroup>
+					)}
 				</ParallaxScrollView>
 			</View>
 		)

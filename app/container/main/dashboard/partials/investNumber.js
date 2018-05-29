@@ -1,21 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, ViewPropTypes } from 'react-native'
+import { VictoryAxis, VictoryChart, VictoryLine } from 'victory-native'
+
+import NodeCapIcon from 'component/icon/nodecap'
 
 const investNumber = ({ style, data }) => (
 	<View style={[styles.container, style]}>
 		<View style={styles.left.container}>
 			<View>
-				<Text style={styles.left.title}>251</Text>
+				<Text style={styles.left.title}>{data.count}</Text>
 				<View style={{ flexDirection: 'row', marginTop: 16 }}>
 					<Text style={styles.left.subtitle}>
-						本周{'  '}12 {'     '} 本月{'  '}75
+						本周{'  '}
+						{data.week}{' '}
+						{data.week > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
+						{'     '}
+						本月{'  '}
+						{data.month}{' '}
+						{data.month > 0 && (
+							<NodeCapIcon name="shangsheng" color="#09AC32" />
+						)}
 					</Text>
 				</View>
 			</View>
 		</View>
 		<View style={styles.right.container}>
-			<Text>此处有图</Text>
+			<Text>我是trend图</Text>
 		</View>
 	</View>
 )
