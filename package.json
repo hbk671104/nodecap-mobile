@@ -22,12 +22,15 @@
 		"react-native-elements": "^0.19.1",
 		"react-native-navbar": "^2.1.0",
 		"react-native-parallax-scroll-view": "^0.21.0",
+		"react-native-svg": "^6.3.1",
+		"react-native-swiper": "^1.5.13",
 		"react-native-vector-icons": "^4.6.0",
 		"react-navigation": "^2.0.4",
 		"react-navigation-redux-helpers": "^1.1.1",
 		"react-redux": "^5.0.7",
 		"recompose": "^0.27.1",
-		"redux-persist": "4.10.2"
+		"redux-persist": "4.10.2",
+		"victory-native": "^0.17.4"
 	},
 	"devDependencies": {
 		"babel-jest": "23.0.0",
