@@ -43,7 +43,10 @@ const styles = {
 	title: {
 		fontSize: 50,
 		color: 'white',
-		fontWeight: 'bold'
+		fontWeight: 'bold',
+		textShadowColor: 'rgba(8, 112, 199, 0.27)',
+		textShadowOffset: { width: 0, height: 1 },
+		textShadowRadius: 2
 	},
 	subtitle: {
 		fontSize: 15,
