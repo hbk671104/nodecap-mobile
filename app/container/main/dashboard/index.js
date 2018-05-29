@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Animated, Button, Text, View, Image } from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import NavigationBar from 'react-native-navbar'
+import Swiper from 'react-native-swiper'
 import { Card } from 'react-native-elements'
 import { compose, withState, withProps } from 'recompose'
 import styles, { PARALLAX_HEADER_HEIGHT } from './style'
@@ -91,9 +92,19 @@ export default class Dashboard extends Component {
 						}
 					)}
 				>
-					<Card containerStyle={styles.scrollView.sticker}>
-						<Text>哦哦哦拉拉拉</Text>
-					</Card>
+					<View style={styles.sticker.container}>
+						<Swiper height={100} showsPagination={false} loop={false}>
+							<Card containerStyle={styles.sticker.card}>
+								<Text>哦哦哦拉拉拉</Text>
+							</Card>
+							<Card containerStyle={styles.sticker.card}>
+								<Text>哦哦哦拉拉拉</Text>
+							</Card>
+							<Card containerStyle={styles.sticker.card}>
+								<Text>哦哦哦拉拉拉</Text>
+							</Card>
+						</Swiper>
+					</View>
 					<VictoryChart
 						style={{
 							parent: {
