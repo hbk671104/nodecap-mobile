@@ -41,7 +41,13 @@ const data = [
 	}))
 )
 export default class Dashboard extends Component {
-	handleOnLogout = () => {
+  componentWillMount() {
+		this.props.dispatch({
+			type: 'dashboard/fetch'
+		})
+  }
+
+  handleOnLogout = () => {
 		this.props.navigation.navigate('Auth')
 	}
 
