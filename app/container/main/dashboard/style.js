@@ -1,18 +1,15 @@
+import { StyleSheet, Dimensions } from 'react-native'
+
+const window = Dimensions.get('window')
+export const PARALLAX_HEADER_HEIGHT = 250
+
 export default {
 	container: {
-		flex: 1,
-		justifyContent: 'center',
-		alignItems: 'center',
-		backgroundColor: '#F5FCFF'
+		flex: 1
 	},
-	welcome: {
-		fontSize: 20,
-		textAlign: 'center',
-		margin: 10
-	},
-	instructions: {
-		textAlign: 'center',
-		color: '#333333',
-		marginBottom: 5
+	header: {
+		background: {
+			backgroundColor: '#1890FF'
+		}
 	}
 }

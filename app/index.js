@@ -8,24 +8,24 @@ import {
 import Login from 'container/auth/login'
 import Dashboard from 'container/main/dashboard'
 
-const AuthStack = createStackNavigator({
-	Login: {
-		screen: Login,
-		navigationOptions: ({ navigation }) => ({
-			header: null
-		})
+const AuthStack = createStackNavigator(
+	{
+		Login
+	},
+	{
+		headerMode: 'none'
 	}
-})
+)
 
 const Tab = createBottomTabNavigator({ Dashboard })
-const MainStack = createStackNavigator({
-	Tab: {
-		screen: Tab,
-		navigationOptions: ({ navigation }) => ({
-			header: null
-		})
+const MainStack = createStackNavigator(
+	{
+		Tab
+	},
+	{
+		headerMode: 'none'
 	}
-})
+)
 
 export default createSwitchNavigator(
 	{
