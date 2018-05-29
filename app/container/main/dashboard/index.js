@@ -4,6 +4,7 @@ import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import NavigationBar from 'react-native-navbar'
 import Swiper from 'react-native-swiper'
 import { Card } from 'react-native-elements'
+import { connect } from 'react-redux'
 import { compose, withState, withProps } from 'recompose'
 import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 
@@ -25,6 +26,10 @@ const data = [
 	{ quarter: '5/28', earnings: 800 }
 ]
 
+@connect(({ dashboard, fund }) => ({
+  dashboard: dashboard.data,
+  funds: fund.funds,
+}))
 @compose(
 	withState('scrollY', 'setScrollY', new Animated.Value(0)),
 	withState('offsetY', 'setOffsetY', 0),
