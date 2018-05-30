@@ -1,11 +1,20 @@
 import React, { Component } from 'react'
-import { Animated, Button, Text, View, Image } from 'react-native'
+import {
+	Animated,
+	Button,
+	Text,
+	View,
+	Image,
+	TouchableOpacity,
+	StatusBar
+} from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import NavigationBar from 'react-native-navbar'
 import { Card } from 'react-native-elements'
 import * as R from 'ramda'
 import { connect } from 'react-redux'
 import { compose, withState, withProps } from 'recompose'
+import NodeCapIcon from 'component/icon/nodecap'
 
 import Header from './partials/header'
 import ProfitSwiper from './partials/profitSwiper'
@@ -16,6 +25,8 @@ import ProjectItem from './partials/projectItem'
 import Investment from './partials/investment'
 import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 
+const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon)
+
 @connect(({ dashboard, fund }) => ({
 	dashboard: dashboard.data,
 	funds: fund.funds
@@ -24,9 +35,14 @@ import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 	withState('scrollY', 'setScrollY', new Animated.Value(0)),
 	withState('offsetY', 'setOffsetY', 0),
 	withProps(({ scrollY }) => ({
-		opacityRange: scrollY.interpolate({
+		titleColorRange: scrollY.interpolate({
 			inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
-			outputRange: [0, 1],
+			outputRange: ['white', '#333333'],
+			extrapolate: 'clamp'
+		}),
+		colorRange: scrollY.interpolate({
+			inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
+			outputRange: ['rgba(255, 255, 255, 0)', 'white'],
 			extrapolate: 'clamp'
 		})
 	}))
@@ -84,24 +100,34 @@ export default class Dashboard extends Component {
 
 	renderForeground = () => (
 		<Header
-			style={styles.foreground}
 			{...this.props}
-			currentFund={this.state.currentFund}
+			style={styles.foreground}
 			onSelect={id => this.getDashboardData(id)}
 		/>
 	)
 
 	renderFixedHeader = () => {
-		const { opacityRange, offsetY } = this.props
+		const { colorRange, titleColorRange, offsetY } = this.props
+		const { currentFund } = this.state
 		return (
-			<Animated.View style={{ opacity: opacityRange }}>
-				<NavigationBar
-					title={{ title: 'Dashboard' }}
-					statusBar={{
-						style:
-							offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
-					}}
+			<Animated.View
+				style={[styles.navbar.container, { backgroundColor: colorRange }]}
+			>
+				<StatusBar
+					barStyle={
+						offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
+					}
 				/>
+				<View style={styles.navbar.wrapper}>
+					<TouchableOpacity>
+						<Animated.Text
+							style={[styles.navbar.title, { color: titleColorRange }]}
+						>
+							{currentFund.name}
+							<AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
+						</Animated.Text>
+					</TouchableOpacity>
+				</View>
 			</Animated.View>
 		)
 	}

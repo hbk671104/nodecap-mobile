@@ -26,5 +26,24 @@ export default {
 	},
 	roiChart: {
 		marginTop: 45
+	},
+	navbar: {
+		container: {
+			height: 44 + 20,
+			justifyContent: 'flex-end'
+			// borderBottomWidth: StyleSheet.hairlineWidth,
+			// borderBottomColor: '#666666'
+		},
+		wrapper: {
+			height: 44,
+			flexDirection: 'row',
+			alignItems: 'center',
+			justifyContent: 'center'
+		},
+		title: {
+			fontSize: 17,
+			color: 'white',
+			fontWeight: 'bold'
+		}
 	}
 }
