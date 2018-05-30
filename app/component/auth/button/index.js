@@ -1,24 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-	View,
-	TouchableOpacity,
-	Text,
-	ViewPropTypes,
-	ActivityIndicator
-} from 'react-native'
+import { Button } from 'antd-mobile'
+import { Text, ViewPropTypes ,
+	ActivityIndicator} from 'react-native'
 import styles from './style'
 
 const authButton = ({ style, disabled, loading, onPress }) => {
-	const Wrapper = disabled ? View : TouchableOpacity
 	return (
-		<Wrapper
+		<Button
 			style={[
 				styles.container.normal,
 				!disabled && styles.container.highlight,
 				style
 			]}
-			onPress={onPress}
+			disabled={disabled}
+			onClick={onPress}
 		>
 			{loading ? (
 				<ActivityIndicator color="white" />
@@ -29,7 +25,7 @@ const authButton = ({ style, disabled, loading, onPress }) => {
 					登 录
 				</Text>
 			)}
-		</Wrapper>
+		</Button>
 	)
 }
 

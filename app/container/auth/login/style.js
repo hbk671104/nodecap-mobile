@@ -14,6 +14,7 @@ export default {
 	},
 	button: {
 		marginTop: 50,
-		marginHorizontal: 40
+		marginHorizontal: 40,
+		borderWidth: 0,
 	}
 }
