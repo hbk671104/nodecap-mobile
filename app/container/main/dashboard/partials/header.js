@@ -12,14 +12,14 @@ import Shimmer from 'react-native-shimmer'
 import Accounting from 'accounting'
 import headerStyle from './headerStyle'
 
-const header = ({ style, dashboard }) => {
+const header = ({ style, dashboard, loading }) => {
 	const ROI = R.path(['ROI', 'CNY'])(dashboard)
 	const ROIUSD = R.path(['ROI', 'USD'])(dashboard)
 	const ROIBTC = R.path(['ROI', 'BTC'])(dashboard)
 	const ROIETH = R.path(['ROI', 'ETH'])(dashboard)
 	return (
 		<View style={[styles.container, style]}>
-			<Shimmer opacity={0.8}>
+			<Shimmer animating={loading} opacity={0.8}>
 				<View>
 					<View style={styles.wrapper}>
 						<Text style={styles.label}>投资回报率</Text>

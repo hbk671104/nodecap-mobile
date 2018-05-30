@@ -36,6 +36,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon)
 @compose(
 	withState('scrollY', 'setScrollY', new Animated.Value(0)),
 	withState('offsetY', 'setOffsetY', 0),
+	withState('loading', 'setLoading', false),
 	withProps(({ scrollY }) => ({
 		titleColorRange: scrollY.interpolate({
 			inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
@@ -71,9 +72,11 @@ export default class Dashboard extends Component {
 	}
 
 	getDashboardData = id => {
+		this.props.setLoading(true)
 		this.props.dispatch({
 			type: 'dashboard/fetch',
-			payload: id
+			payload: id,
+			callback: () => this.props.setLoading(false)
 		})
 		this.setState({
 			currentFund: R.find(R.propEq('id', id))(this.props.funds)
