@@ -24,13 +24,11 @@ class Login extends Component {
 		}
 		this.props.form.validateFields((err, value) => {
 			if (!err) {
-				this.props.setLoading(true)
 				this.props.dispatch({
 					type: 'login/login',
 					payload: {
 						...value
-					},
-					callback: () => this.props.setLoading(false)
+					}
 				})
 			}
 		})

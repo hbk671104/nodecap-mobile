@@ -73,7 +73,7 @@ function checkStatus({ response = {} }) {
   //   description: ' ',
   // };
 
-  Toast.fail(errortext)
+  Toast.fail(errortext, 1)
 
   const error = new Error(errortext);
   error.name = response.status;
