@@ -8,6 +8,7 @@ import Menu, {
 	MenuOption,
 	MenuTrigger
 } from 'react-native-menu'
+import Shimmer from 'react-native-shimmer'
 import Accounting from 'accounting'
 import headerStyle from './headerStyle'
 
@@ -18,28 +19,30 @@ const header = ({ style, dashboard }) => {
 	const ROIETH = R.path(['ROI', 'ETH'])(dashboard)
 	return (
 		<View style={[styles.container, style]}>
-			<View>
-				<View style={styles.wrapper}>
-					<Text style={styles.label}>投资回报率</Text>
-					<Text style={[styles.title, { marginTop: 12 }]}>
-						{Accounting.formatNumber(ROI, 0)}%{' '}
-						<Text style={{ fontSize: 13 }}>CNY</Text>
-					</Text>
+			<Shimmer opacity={0.8}>
+				<View>
+					<View style={styles.wrapper}>
+						<Text style={styles.label}>投资回报率</Text>
+						<Text style={[styles.title, { marginTop: 12 }]}>
+							{Accounting.formatNumber(ROI, 0)}%{' '}
+							<Text style={{ fontSize: 13 }}>CNY</Text>
+						</Text>
+					</View>
+					<View style={styles.bottom}>
+						<Text style={styles.subtitle}>
+							{Accounting.formatNumber(ROIUSD, 0)}% USD
+						</Text>
+						<Text style={styles.subtitle}> | </Text>
+						<Text style={styles.subtitle}>
+							{Accounting.formatNumber(ROIBTC, 0)}% BTC
+						</Text>
+						<Text style={styles.subtitle}> | </Text>
+						<Text style={styles.subtitle}>
+							{Accounting.formatNumber(ROIETH, 0)}% ETH
+						</Text>
+					</View>
 				</View>
-				<View style={styles.bottom}>
-					<Text style={styles.subtitle}>
-						{Accounting.formatNumber(ROIUSD, 0)}% USD
-					</Text>
-					<Text style={styles.subtitle}> | </Text>
-					<Text style={styles.subtitle}>
-						{Accounting.formatNumber(ROIBTC, 0)}% BTC
-					</Text>
-					<Text style={styles.subtitle}> | </Text>
-					<Text style={styles.subtitle}>
-						{Accounting.formatNumber(ROIETH, 0)}% ETH
-					</Text>
-				</View>
-			</View>
+			</Shimmer>
 		</View>
 	)
 }
