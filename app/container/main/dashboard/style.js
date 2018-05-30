@@ -42,7 +42,9 @@ export default {
 		},
 		wrapper: {
 			width: DEVICE_WIDTH,
-			marginTop: 10
+			marginTop: 12,
+			borderRadius: 0,
+			borderColor: '#E9E9E9'
 		},
 		item: {
 			container: {
@@ -54,6 +56,11 @@ export default {
 				color: '#666666',
 				fontSize: 14
 			}
+		},
+		separator: {
+			backgroundColor: '#E9E9E9',
+			marginHorizontal: 12,
+			height: StyleSheet.hairlineWidth
 		}
 	}
 }

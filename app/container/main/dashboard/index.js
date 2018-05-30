@@ -106,7 +106,11 @@ export default class Dashboard extends Component {
 				renderTitle={() => (
 					<ModalDropdown
 						style={styles.dropdown.container}
-						dropdownStyle={styles.dropdown.wrapper}
+						dropdownStyle={[
+							styles.dropdown.wrapper,
+							{ height: funds.length * 45 }
+						]}
+						showsVerticalScrollIndicator={false}
 						options={funds}
 						defaultIndex={0}
 						renderRow={(rowData, index, isSelected) => (
@@ -114,13 +118,14 @@ export default class Dashboard extends Component {
 								<Text
 									style={[
 										styles.dropdown.item.title,
-										isSelected && { color: '#1890FF' }
+										isSelected && { fontWeight: 'bold', color: '#1890FF' }
 									]}
 								>
 									{rowData.name}
 								</Text>
 							</TouchableOpacity>
 						)}
+						renderSeparator={() => <View style={styles.dropdown.separator} />}
 						onSelect={(i, value) => this.getDashboardData(value.id)}
 					>
 						<Animated.Text
