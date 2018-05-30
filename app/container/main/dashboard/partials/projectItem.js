@@ -22,8 +22,9 @@ const roiItem = ({ style, index, data }) => (
 )
 const styles = {
 	container: {
-		paddingHorizontal: 11,
-		paddingVertical: 14,
+		paddingLeft: 22,
+		paddingRight: 18,
+		paddingVertical: 17,
 		flexDirection: 'row',
 		alignItems: 'center'
 	},

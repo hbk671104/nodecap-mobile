@@ -8,7 +8,7 @@ import {
 	KeyboardAvoidingView
 } from 'react-native'
 import { createForm } from 'rc-form'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import AuthButton from 'component/auth/button'
 import AuthInput from 'component/auth/input'
 import styles from './style'
@@ -17,16 +17,16 @@ import styles from './style'
 @createForm()
 class Login extends Component {
 	handleOnSubmit = () => {
-    this.props.form.validateFields((err, value) => {
-      if (!err) {
-        this.props.dispatch({
-          type: 'login/login',
-          payload: {
-            ...value
-          },
-        });
-      }
-    });
+		this.props.form.validateFields((err, value) => {
+			if (!err) {
+				this.props.dispatch({
+					type: 'login/login',
+					payload: {
+						...value
+					}
+				})
+			}
+		})
 	}
 
 	render() {

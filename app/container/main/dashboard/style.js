@@ -17,7 +17,8 @@ export default {
 	},
 	scrollView: {
 		container: {
-			paddingTop: 54
+			paddingTop: 54,
+			paddingBottom: 40
 		}
 	}
 }
