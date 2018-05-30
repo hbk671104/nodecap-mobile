@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 import moment from 'moment'
-import { View, Text, ViewPropTypes } from 'react-native'
+import { View, Text, ViewPropTypes, TouchableOpacity } from 'react-native'
 import {
 	VictoryAxis,
 	VictoryChart,
@@ -40,45 +40,66 @@ class returnRateChart extends Component {
 			Y1: 'YYYY/MM/DD'
 		}
 
+		const { period } = this.state
 		return (
 			<View style={[styles.container, style]}>
 				<View style={styles.periods}>
-					<Text
+					<TouchableOpacity
+						style={styles.periodWrapper}
 						onPress={() => this.setState({ period: 'H24' })}
-						style={[
-							styles.periodItem,
-							this.state.period === 'H24' ? styles.periodActive : null
-						]}
 					>
-						24h
-					</Text>
-					<Text
+						<Text
+							style={[
+								styles.periodItem,
+								period === 'H24' ? styles.periodActive : null
+							]}
+						>
+							24h
+						</Text>
+						{period === 'H24' && <View style={styles.periodline} />}
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.periodWrapper}
 						onPress={() => this.setState({ period: 'W1' })}
-						style={[
-							styles.periodItem,
-							this.state.period === 'W1' ? styles.periodActive : null
-						]}
 					>
-						周
-					</Text>
-					<Text
+						<Text
+							style={[
+								styles.periodItem,
+								period === 'W1' ? styles.periodActive : null
+							]}
+						>
+							周
+						</Text>
+						{period === 'W1' && <View style={styles.periodline} />}
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.periodWrapper}
 						onPress={() => this.setState({ period: 'D30' })}
-						style={[
-							styles.periodItem,
-							this.state.period === 'D30' ? styles.periodActive : null
-						]}
 					>
-						月
-					</Text>
-					<Text
+						<Text
+							style={[
+								styles.periodItem,
+								period === 'D30' ? styles.periodActive : null
+							]}
+						>
+							月
+						</Text>
+						{period === 'D30' && <View style={styles.periodline} />}
+					</TouchableOpacity>
+					<TouchableOpacity
+						style={styles.periodWrapper}
 						onPress={() => this.setState({ period: 'Y1' })}
-						style={[
-							styles.periodItem,
-							this.state.period === 'Y1' ? styles.periodActive : null
-						]}
 					>
-						年
-					</Text>
+						<Text
+							style={[
+								styles.periodItem,
+								period === 'Y1' ? styles.periodActive : null
+							]}
+						>
+							年
+						</Text>
+						{period === 'Y1' && <View style={styles.periodline} />}
+					</TouchableOpacity>
 				</View>
 				<VictoryChart
 					style={styles.wrapper}
@@ -117,10 +138,12 @@ class returnRateChart extends Component {
 }
 
 const styles = {
-	container: {},
+	container: {
+		paddingHorizontal: 11
+	},
 	wrapper: {
 		parent: {
-			paddingHorizontal: 10
+			// paddingHorizontal: 10
 		}
 	},
 	axis: {
@@ -149,14 +172,23 @@ const styles = {
 	periods: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
-		marginTop: 10,
-		marginRight: 30
+		marginRight: 15
+	},
+	periodWrapper: {
+		marginLeft: 17
+	},
+	periodline: {
+		height: 2,
+		backgroundColor: '#1890FF',
+		marginTop: 6,
+		borderRadius: 1
 	},
 	periodItem: {
-		marginLeft: 20
+		color: '#666666',
+		fontSize: 13
 	},
 	periodActive: {
-		color: 'blue'
+		color: '#1890FF'
 	}
 }
 

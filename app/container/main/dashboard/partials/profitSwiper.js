@@ -15,6 +15,17 @@ const arrow = profit => {
 	return <NodeCapIcon name="xiala1" color="#F5222D" />
 }
 
+const symbol = (b, size = 22) => {
+	switch (b) {
+		case 'USD':
+			return <NodeCapIcon name="tubiaozhizuomoban" size={size} />
+		case 'CNY':
+			return <NodeCapIcon name="icomoon" size={size} />
+		default:
+			return <NodeCapIcon name={b} size={size} />
+	}
+}
+
 const profitSwiper = ({ style, total, daily, weekly }) => {
 	return (
 		<View style={[styles.container, style]}>
@@ -29,17 +40,6 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
 					const totalProfit = R.path([b])(total)
 					const dailyProfit = R.path([b, 'count'])(daily)
 					const weeklyProfit = R.path([b, 'count'])(weekly)
-
-					const symbol = (size = 22) => {
-						switch (b) {
-							case 'USD':
-								return <NodeCapIcon name="tubiaozhizuomoban" size={size} />
-							case 'CNY':
-								return <NodeCapIcon name="icomoon" size={size} />
-							default:
-								return <NodeCapIcon name={b} size={size} />
-						}
-					}
 					return (
 						<Card key={b} containerStyle={styles.card}>
 							<View style={{ alignItems: 'center' }}>
@@ -51,16 +51,16 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
 											totalProfit < 0 && styles.content.lost
 										]}
 									>
-										{symbol()} {Accounting.formatNumber(totalProfit, 0)}{' '}
+										{symbol(b)} {Accounting.formatNumber(totalProfit, 0)}{' '}
 										<Text style={styles.content.label}>{b}</Text>
 									</Text>
 								</View>
 								<View style={styles.sub.container}>
 									<Text style={styles.sub.text}>
-										{symbol(12)} {Accounting.formatNumber(dailyProfit, 0)}{' '}
+										{symbol(b, 12)} {Accounting.formatNumber(dailyProfit, 0)}{' '}
 										{'今日'} {arrow()}
 										{'   '}
-										{symbol(12)} {Accounting.formatNumber(weeklyProfit, 0)}{' '}
+										{symbol(b, 12)} {Accounting.formatNumber(weeklyProfit, 0)}{' '}
 										{'本周'} {arrow()}
 									</Text>
 								</View>

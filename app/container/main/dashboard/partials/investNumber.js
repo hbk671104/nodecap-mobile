@@ -9,7 +9,7 @@ const investNumber = ({ style, data }) => (
 	<View style={[styles.container, style]}>
 		<View style={styles.left.container}>
 			<View>
-				<Text style={styles.left.title}>{data.count}</Text>
+				<Text style={styles.left.title}>{data.count || '暂无'}</Text>
 				<View style={{ flexDirection: 'row', marginTop: 16 }}>
 					<Text style={styles.left.subtitle}>
 						本周{'  '}

@@ -22,6 +22,6 @@ export default {
 		}
 	},
 	roiChart: {
-		marginTop: 40
+		marginTop: 45
 	}
 }
