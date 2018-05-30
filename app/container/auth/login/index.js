@@ -17,7 +17,6 @@ import styles from './style'
 	loading: loading.effects['login/login']
 }))
 @createForm()
-@compose(withState('loading', 'setLoading', false))
 class Login extends Component {
 	handleOnSubmit = () => {
 		if(this.props.loading){
