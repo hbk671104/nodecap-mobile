@@ -104,9 +104,9 @@ android {
     buildToolsVersion "23.0.1"
 
     defaultConfig {
-        applicationId "com.nodecap"
-        minSdkVersion 16
-        targetSdkVersion 22
+        applicationId "com.nodecap.hotnode"
+        minSdkVersion 23
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         ndk {
