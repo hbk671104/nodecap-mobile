@@ -4,8 +4,7 @@ export default {
   namespace: 'dashboard',
 
   state: {
-    data: {},
-    loading: false,
+    data: null,
   },
 
   effects: {
