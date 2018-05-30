@@ -7,7 +7,6 @@ import NodeCapIcon from 'component/icon/nodecap'
 
 const investNumber = ({ style, data = {} }) => {
 	const trend = R.pathOr([], ['trend'])(data)
-	console.log(trend)
 	return (
 		<View style={[styles.container, style]}>
 			<View style={styles.left.container}>

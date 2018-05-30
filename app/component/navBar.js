@@ -26,8 +26,6 @@ const styles = {
 	container: {
 		height: 44 + getStatusBarHeight(true),
 		justifyContent: 'flex-end'
-		// borderBottomWidth: StyleSheet.hairlineWidth,
-		// borderBottomColor: '#666666'
 	},
 	wrapper: {
 		height: 44,

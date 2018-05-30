@@ -9,7 +9,6 @@ import {
 	StatusBar
 } from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
-import NavigationBar from 'react-native-navbar'
 import { Card } from 'react-native-elements'
 import ModalDropdown from 'react-native-modal-dropdown'
 import * as R from 'ramda'
@@ -60,6 +59,7 @@ export default class Dashboard extends Component {
 			currencies: ['CNY']
 		}
 	}
+
 	componentWillReceiveProps(nextProps, nextContext) {
 		const firstFund = R.path(['funds', 0])(nextProps)
 		if (!this.state.currentFund && nextProps.funds) {
@@ -92,38 +92,11 @@ export default class Dashboard extends Component {
 		/>
 	)
 
-	renderForeground = () => (
-		<Header
-			{...this.props}
-			style={styles.foreground}
-			onSelect={id => this.getDashboardData(id)}
-		/>
-	)
+	renderForeground = () => <Header {...this.props} style={styles.foreground} />
 
 	renderFixedHeader = () => {
-		const { colorRange, titleColorRange, offsetY } = this.props
+		const { colorRange, titleColorRange, offsetY, funds } = this.props
 		const { currentFund } = this.state
-		// return (
-		// 	<Animated.View
-		// 		style={[styles.navbar.container, { backgroundColor: colorRange }]}
-		// 	>
-		// 		<StatusBar
-		// 			barStyle={
-		// 				offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
-		// 			}
-		// 		/>
-		// 		<View style={styles.navbar.wrapper}>
-		// 			<ModalDropdown options={['option 1', 'option 2']}>
-		// 				<Animated.Text
-		// 					style={[styles.navbar.title, { color: titleColorRange }]}
-		// 				>
-		// 					{currentFund.name}
-		// 					<AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
-		// 				</Animated.Text>
-		// 			</ModalDropdown>
-		// 		</View>
-		// 	</Animated.View>
-		// )
 		return (
 			<NavBar
 				style={{ backgroundColor: colorRange }}
@@ -131,7 +104,25 @@ export default class Dashboard extends Component {
 					offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
 				}
 				renderTitle={() => (
-					<ModalDropdown options={['option 1', 'option 2']}>
+					<ModalDropdown
+						style={styles.dropdown.container}
+						dropdownStyle={styles.dropdown.wrapper}
+						options={funds}
+						defaultIndex={0}
+						renderRow={(rowData, index, isSelected) => (
+							<TouchableOpacity style={styles.dropdown.item.container}>
+								<Text
+									style={[
+										styles.dropdown.item.title,
+										isSelected && { color: '#1890FF' }
+									]}
+								>
+									{rowData.name}
+								</Text>
+							</TouchableOpacity>
+						)}
+						onSelect={(i, value) => this.getDashboardData(value.id)}
+					>
 						<Animated.Text
 							style={[styles.navbar.title, { color: titleColorRange }]}
 						>

@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 
 const window = Dimensions.get('window')
 export const PARALLAX_HEADER_HEIGHT = 300
+export const DEVICE_WIDTH = window.width
 
 export default {
 	container: {
@@ -29,9 +30,30 @@ export default {
 	},
 	navbar: {
 		title: {
+			alignSelf: 'center',
 			fontSize: 17,
 			color: 'white',
 			fontWeight: 'bold'
+		}
+	},
+	dropdown: {
+		container: {
+			flex: 1
+		},
+		wrapper: {
+			width: DEVICE_WIDTH,
+			marginTop: 10
+		},
+		item: {
+			container: {
+				height: 45,
+				justifyContent: 'center',
+				alignItems: 'center'
+			},
+			title: {
+				color: '#666666',
+				fontSize: 14
+			}
 		}
 	}
 }
