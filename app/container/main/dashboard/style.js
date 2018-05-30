@@ -13,7 +13,7 @@ export default {
 		height: PARALLAX_HEADER_HEIGHT
 	},
 	foreground: {
-		// width: window.width,
+		paddingTop: 20,
 		height: PARALLAX_HEADER_HEIGHT
 	},
 	scrollView: {

@@ -32,11 +32,11 @@ const header = ({ style, dashboard, loading }) => {
 						<Text style={styles.subtitle}>
 							{Accounting.formatNumber(ROIUSD, 0)}% USD
 						</Text>
-						<Text style={styles.subtitle}> | </Text>
+						<Text style={styles.subtitle}>{'  |  '}</Text>
 						<Text style={styles.subtitle}>
 							{Accounting.formatNumber(ROIBTC, 0)}% BTC
 						</Text>
-						<Text style={styles.subtitle}> | </Text>
+						<Text style={styles.subtitle}>{'  |  '}</Text>
 						<Text style={styles.subtitle}>
 							{Accounting.formatNumber(ROIETH, 0)}% ETH
 						</Text>
