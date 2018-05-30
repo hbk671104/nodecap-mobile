@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as R from 'ramda';
 import store from '../../index';
 import config from 'react-native-config';
+import { Toast } from 'antd-mobile'
 
 const codeMessage = {
   1001: '您的账号有误。',
@@ -71,6 +72,9 @@ function checkStatus({ response = {} }) {
   //   message: errortext,
   //   description: ' ',
   // };
+
+  Toast.fail(errortext)
+
   const error = new Error(errortext);
   error.name = response.status;
   error.response = response;

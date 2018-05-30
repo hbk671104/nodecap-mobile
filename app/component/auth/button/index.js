@@ -1,23 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, TouchableOpacity, Text, ViewPropTypes } from 'react-native'
+import { Button } from 'antd-mobile'
+import { Text, ViewPropTypes } from 'react-native'
 import styles from './style'
 
-const authButton = ({ style, disabled, onPress }) => {
-	const Wrapper = disabled ? View : TouchableOpacity
+const authButton = ({ style, disabled, onPress, loading }) => {
 	return (
-		<Wrapper
+		<Button
 			style={[
 				styles.container.normal,
 				!disabled && styles.container.highlight,
 				style
 			]}
-			onPress={onPress}
+			loading={loading}
+			disabled={disabled}
+			onClick={onPress}
 		>
 			<Text style={[styles.title.normal, !disabled && styles.title.highlight]}>
 				登 录
 			</Text>
-		</Wrapper>
+		</Button>
 	)
 }
 

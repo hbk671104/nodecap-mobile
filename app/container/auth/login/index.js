@@ -3,7 +3,6 @@ import {
 	Text,
 	View,
 	ScrollView,
-	Button,
 	Image,
 	KeyboardAvoidingView
 } from 'react-native'
@@ -13,10 +12,15 @@ import AuthButton from 'component/auth/button'
 import AuthInput from 'component/auth/input'
 import styles from './style'
 
-@connect()
+@connect(({loading}) => ({
+	loading: loading.effects['login/login']
+}))
 @createForm()
 class Login extends Component {
 	handleOnSubmit = () => {
+		if(this.props.loading){
+			return
+		}
 		this.props.form.validateFields((err, value) => {
 			if (!err) {
 				this.props.dispatch({
@@ -62,6 +66,7 @@ class Login extends Component {
 						disabled={!account || !password}
 						style={styles.button}
 						onPress={this.handleOnSubmit}
+						loading={this.props.loading}
 					/>
 				</KeyboardAvoidingView>
 			</ScrollView>
