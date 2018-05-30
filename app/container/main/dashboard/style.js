@@ -17,8 +17,11 @@ export default {
 	},
 	scrollView: {
 		container: {
-			paddingTop: 54,
+			paddingTop: 48,
 			paddingBottom: 40
 		}
+	},
+	roiChart: {
+		marginTop: 40
 	}
 }

@@ -10,7 +10,7 @@ const dashboardGroup = ({ style, icon, title, children }) => {
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title}>
-				{!!icon && <NodeCapIcon name={icon} size={18} color="#1890FF" />}
+				{!!icon && <NodeCapIcon name={icon} size={16} color="#1890FF" />}
 				{'  '}
 				{title}
 			</Text>

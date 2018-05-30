@@ -41,35 +41,35 @@ export default class Dashboard extends Component {
 			currencies: ['CNY']
 		}
 	}
-  componentWillMount() {
-    const funds = R.pathOr([], ['funds'])(this.props)
-    const firstFundId = R.path([0, 'id'])(funds)
+	componentWillMount() {
+		const funds = R.pathOr([], ['funds'])(this.props)
+		const firstFundId = R.path([0, 'id'])(funds)
 		this.props.dispatch({
 			type: 'dashboard/fetch',
 			payload: firstFundId
 		})
 	}
 
-  componentWillReceiveProps(nextProps, nextContext) {
-    const firstFund = R.path(['funds', 0])(nextProps);
-    if(!this.state.currentFund && nextProps.funds){
+	componentWillReceiveProps(nextProps, nextContext) {
+		const firstFund = R.path(['funds', 0])(nextProps)
+		if (!this.state.currentFund && nextProps.funds) {
 			this.setState({
-        currentFund: firstFund
+				currentFund: firstFund
 			})
 		}
-  }
-
-	getDashboardData = (id) => {
-    this.props.dispatch({
-      type: 'dashboard/fetch',
-      payload: id,
-    })
-		this.setState({
-			currentFund: 	R.find(R.propEq('id', id))(this.props.funds)
-    })
 	}
 
-  handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
+	getDashboardData = id => {
+		this.props.dispatch({
+			type: 'dashboard/fetch',
+			payload: id
+		})
+		this.setState({
+			currentFund: R.find(R.propEq('id', id))(this.props.funds)
+		})
+	}
+
+	handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
 		const { setOffsetY } = this.props
 		setOffsetY(contentOffset.y)
 	}
@@ -81,8 +81,14 @@ export default class Dashboard extends Component {
 		/>
 	)
 
-	renderForeground = () => <Header style={styles.foreground} {...this.props}currentFund={this.state.currentFund}
-		onSelect={(id) => this.getDashboardData(id)}/>
+	renderForeground = () => (
+		<Header
+			style={styles.foreground}
+			{...this.props}
+			currentFund={this.state.currentFund}
+			onSelect={id => this.getDashboardData(id)}
+		/>
+	)
 
 	renderFixedHeader = () => {
 		const { opacityRange, offsetY } = this.props
@@ -101,6 +107,7 @@ export default class Dashboard extends Component {
 
 	render() {
 		const { scrollY, setOffsetY, dashboard } = this.props
+		const roiRankCount = R.length(R.path(['ROIRank'])(dashboard))
 		return (
 			<View style={styles.container}>
 				<ParallaxScrollView
@@ -127,14 +134,18 @@ export default class Dashboard extends Component {
 						}
 					)}
 				>
-					<ProfitSwiper />
-					<ReturnRateChart {...this.props} />
+					<ProfitSwiper
+						total={R.path(['totalProfits', 'count'])(dashboard)}
+						daily={R.path(['dailyProfits', 'count'])(dashboard)}
+						weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
+					/>
+					<ReturnRateChart style={styles.roiChart} {...this.props} />
 					<DashboardGroup title="已投项目数量" icon="yitouxiangmu">
 						<InvestNumber data={dashboard.portfolio} />
 					</DashboardGroup>
 					<DashboardGroup title="投资金额" icon="touzijine" />
-					{R.length(R.path(['ROIRank'])(dashboard)) > 0 && (
-						<DashboardGroup title="投资回报率 TOP 5" icon="TOP">
+					{roiRankCount > 0 && (
+						<DashboardGroup title={`投资回报率 TOP ${roiRankCount}`} icon="TOP">
 							{dashboard.ROIRank.map((r, i) => (
 								<ProjectItem key={i} index={i} data={r} />
 							))}

@@ -11,42 +11,74 @@ import {
 } from 'victory-native'
 
 class returnRateChart extends Component {
-	constructor(props){
+	constructor(props) {
 		super(props)
 		this.state = {
 			period: 'H24'
 		}
 	}
-  render() {
-  		const style = this.props.style
-  		const dashboard = this.props.dashboard
+	render() {
+		const style = this.props.style
+		const dashboard = this.props.dashboard
 
-    if(!dashboard){
-      return <View></View>
-    }
+		if (!dashboard) {
+			return <View />
+		}
 
-    const data = R.pipe(
-      R.path(['ROITrend', this.state.period, 'CNY']),
-      R.map(i => ({
-        ROI: i.ROI,
-        dateTime: i.dateTime,
-      }))
-    )(dashboard);
+		const data = R.pipe(
+			R.path(['ROITrend', this.state.period, 'CNY']),
+			R.map(i => ({
+				ROI: i.ROI,
+				dateTime: i.dateTime
+			}))
+		)(dashboard)
 
-    const formatMate = {
-      H24: 'HH:mm',
-      W1: 'MM/DD',
-      D30: 'MM/DD',
-      Y1: 'YYYY/MM/DD',
-    };
+		const formatMate = {
+			H24: 'HH:mm',
+			W1: 'MM/DD',
+			D30: 'MM/DD',
+			Y1: 'YYYY/MM/DD'
+		}
 
-    return (
+		return (
 			<View style={[styles.container, style]}>
 				<View style={styles.periods}>
-					<Text onPress={() => this.setState({period: 'H24'})} style={[styles.periodItem, this.state.period==='H24' ? styles.periodActive : null]}>24h</Text>
-					<Text onPress={() => this.setState({period: 'W1'})} style={[styles.periodItem, this.state.period==='W1' ? styles.periodActive : null]}>周</Text>
-					<Text onPress={() => this.setState({period: 'D30'})} style={[styles.periodItem, this.state.period==='D30' ? styles.periodActive : null]}>月</Text>
-					<Text onPress={() => this.setState({period: 'Y1'})} style={[styles.periodItem, this.state.period==='Y1' ? styles.periodActive : null]}>年</Text>
+					<Text
+						onPress={() => this.setState({ period: 'H24' })}
+						style={[
+							styles.periodItem,
+							this.state.period === 'H24' ? styles.periodActive : null
+						]}
+					>
+						24h
+					</Text>
+					<Text
+						onPress={() => this.setState({ period: 'W1' })}
+						style={[
+							styles.periodItem,
+							this.state.period === 'W1' ? styles.periodActive : null
+						]}
+					>
+						周
+					</Text>
+					<Text
+						onPress={() => this.setState({ period: 'D30' })}
+						style={[
+							styles.periodItem,
+							this.state.period === 'D30' ? styles.periodActive : null
+						]}
+					>
+						月
+					</Text>
+					<Text
+						onPress={() => this.setState({ period: 'Y1' })}
+						style={[
+							styles.periodItem,
+							this.state.period === 'Y1' ? styles.periodActive : null
+						]}
+					>
+						年
+					</Text>
 				</View>
 				<VictoryChart
 					style={styles.wrapper}
@@ -80,8 +112,8 @@ class returnRateChart extends Component {
 					/>
 				</VictoryChart>
 			</View>
-    )
-  }
+		)
+	}
 }
 
 const styles = {
@@ -114,16 +146,16 @@ const styles = {
 	line: {
 		data: { stroke: '#14B93D', strokeWidth: 0.5 }
 	},
-  periods: {
+	periods: {
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
 		marginTop: 10,
 		marginRight: 30
 	},
-  periodItem: {
+	periodItem: {
 		marginLeft: 20
 	},
-  periodActive: {
+	periodActive: {
 		color: 'blue'
 	}
 }
