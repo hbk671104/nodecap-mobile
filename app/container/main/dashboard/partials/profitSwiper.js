@@ -59,7 +59,7 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
 									<Text style={styles.sub.text}>
 										{symbol(b, 12)} {Accounting.formatNumber(dailyProfit, 0)}{' '}
 										{'今日'} {arrow()}
-										{'   '}
+										{'     '}
 										{symbol(b, 12)} {Accounting.formatNumber(weeklyProfit, 0)}{' '}
 										{'本周'} {arrow()}
 									</Text>

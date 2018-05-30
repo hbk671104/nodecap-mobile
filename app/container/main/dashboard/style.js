@@ -21,6 +21,9 @@ export default {
 			paddingBottom: 40
 		}
 	},
+	dashboardGroup: {
+		marginTop: 31
+	},
 	roiChart: {
 		marginTop: 45
 	}

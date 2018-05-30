@@ -8,7 +8,7 @@ import styles from './style'
 
 const dashboardGroup = ({ style, icon, title, children }) => {
 	return (
-		<View style={styles.container}>
+		<View style={[styles.container, style]}>
 			<Text style={styles.title}>
 				{!!icon && <NodeCapIcon name={icon} size={16} color="#1890FF" />}
 				{'  '}

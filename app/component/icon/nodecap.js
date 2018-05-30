@@ -6,6 +6,7 @@
 import createIconSet from 'react-native-vector-icons/lib/create-icon-set';
 const glyphMap = {
   "icomoon": 58893,
+  "orderup": 58885,
   "chakan": 59011,
   "tubiaozhizuomoban": 58896,
   "ETH": 58889,
@@ -15,6 +16,8 @@ const glyphMap = {
   "guanbi": 59012,
   "BTC": 58912,
   "investment": 58884,
+  "tianjia": 58913,
+  "sousuo": 58914,
   "touzi": 58891,
   "lirun": 58892,
   "bitebi": 58898,
@@ -30,7 +33,8 @@ const glyphMap = {
   "lunbo-xuanzhong": 58908,
   "ethicon": 58909,
   "TOP": 58910,
-  "touzijine": 58911
+  "touzijine": 58911,
+  "touzi-": 58915
 };
 
 const iconSet = createIconSet(glyphMap, 'iconfont', 'NodeCapIcon.ttf');

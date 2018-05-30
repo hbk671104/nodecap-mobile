@@ -13,6 +13,7 @@ import ReturnRateChart from './partials/returnRateChart'
 import DashboardGroup from './partials/group'
 import InvestNumber from './partials/investNumber'
 import ProjectItem from './partials/projectItem'
+import Investment from './partials/investment'
 import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 
 @connect(({ dashboard, fund }) => ({
@@ -143,9 +144,19 @@ export default class Dashboard extends Component {
 					<DashboardGroup title="已投项目数量" icon="yitouxiangmu">
 						<InvestNumber data={dashboard.portfolio} />
 					</DashboardGroup>
-					<DashboardGroup title="投资金额" icon="touzijine" />
+					<DashboardGroup
+						style={styles.dashboardGroup}
+						title="投资金额"
+						icon="touzijine"
+					>
+						<Investment data={dashboard.investment} />
+					</DashboardGroup>
 					{roiRankCount > 0 && (
-						<DashboardGroup title={`投资回报率 TOP ${roiRankCount}`} icon="TOP">
+						<DashboardGroup
+							style={styles.dashboardGroup}
+							title={`投资回报率 TOP ${roiRankCount}`}
+							icon="TOP"
+						>
 							{dashboard.ROIRank.map((r, i) => (
 								<ProjectItem key={i} index={i} data={r} />
 							))}
