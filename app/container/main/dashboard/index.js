@@ -11,9 +11,12 @@ import {
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import NavigationBar from 'react-native-navbar'
 import { Card } from 'react-native-elements'
+import ModalDropdown from 'react-native-modal-dropdown'
 import * as R from 'ramda'
 import { connect } from 'react-redux'
 import { compose, withState, withProps } from 'recompose'
+
+import NavBar from 'component/navBar'
 import NodeCapIcon from 'component/icon/nodecap'
 
 import Header from './partials/header'
@@ -109,26 +112,44 @@ export default class Dashboard extends Component {
 	renderFixedHeader = () => {
 		const { colorRange, titleColorRange, offsetY } = this.props
 		const { currentFund } = this.state
+		// return (
+		// 	<Animated.View
+		// 		style={[styles.navbar.container, { backgroundColor: colorRange }]}
+		// 	>
+		// 		<StatusBar
+		// 			barStyle={
+		// 				offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
+		// 			}
+		// 		/>
+		// 		<View style={styles.navbar.wrapper}>
+		// 			<ModalDropdown options={['option 1', 'option 2']}>
+		// 				<Animated.Text
+		// 					style={[styles.navbar.title, { color: titleColorRange }]}
+		// 				>
+		// 					{currentFund.name}
+		// 					<AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
+		// 				</Animated.Text>
+		// 			</ModalDropdown>
+		// 		</View>
+		// 	</Animated.View>
+		// )
 		return (
-			<Animated.View
-				style={[styles.navbar.container, { backgroundColor: colorRange }]}
-			>
-				<StatusBar
-					barStyle={
-						offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
-					}
-				/>
-				<View style={styles.navbar.wrapper}>
-					<TouchableOpacity>
+			<NavBar
+				style={{ backgroundColor: colorRange }}
+				barStyle={
+					offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
+				}
+				renderTitle={() => (
+					<ModalDropdown options={['option 1', 'option 2']}>
 						<Animated.Text
 							style={[styles.navbar.title, { color: titleColorRange }]}
 						>
 							{currentFund.name}
 							<AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
 						</Animated.Text>
-					</TouchableOpacity>
-				</View>
-			</Animated.View>
+					</ModalDropdown>
+				)}
+			/>
 		)
 	}
 

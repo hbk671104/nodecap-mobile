@@ -2,34 +2,41 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { View, Text, ViewPropTypes } from 'react-native'
 import { VictoryAxis, VictoryChart, VictoryLine } from 'victory-native'
-
+import * as R from 'ramda'
 import NodeCapIcon from 'component/icon/nodecap'
 
-const investNumber = ({ style, data }) => (
-	<View style={[styles.container, style]}>
-		<View style={styles.left.container}>
-			<View>
-				<Text style={styles.left.title}>{data.count || '暂无'}</Text>
-				<View style={{ flexDirection: 'row', marginTop: 16 }}>
-					<Text style={styles.left.subtitle}>
-						本周{'  '}
-						{data.week}{' '}
-						{data.week > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
-						{'     '}
-						本月{'  '}
-						{data.month}{' '}
-						{data.month > 0 && (
-							<NodeCapIcon name="shangsheng" color="#09AC32" />
-						)}
-					</Text>
+const investNumber = ({ style, data }) => {
+	if (R.isNil(data)) {
+		return null
+	}
+	return (
+		<View style={[styles.container, style]}>
+			<View style={styles.left.container}>
+				<View>
+					<Text style={styles.left.title}>{data.count || '暂无'}</Text>
+					<View style={{ flexDirection: 'row', marginTop: 16 }}>
+						<Text style={styles.left.subtitle}>
+							本周{'  '}
+							{data.week}{' '}
+							{data.week > 0 && (
+								<NodeCapIcon name="shangsheng" color="#09AC32" />
+							)}
+							{'     '}
+							本月{'  '}
+							{data.month}{' '}
+							{data.month > 0 && (
+								<NodeCapIcon name="shangsheng" color="#09AC32" />
+							)}
+						</Text>
+					</View>
 				</View>
 			</View>
+			<View style={styles.right.container}>
+				<Text>我是trend图</Text>
+			</View>
 		</View>
-		<View style={styles.right.container}>
-			<Text>我是trend图</Text>
-		</View>
-	</View>
-)
+	)
+}
 
 const styles = {
 	container: {
