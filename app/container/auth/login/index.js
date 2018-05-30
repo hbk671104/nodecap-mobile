@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import { createForm } from 'rc-form'
 import { connect } from 'react-redux'
+import { compose, withState } from 'recompose'
 import AuthButton from 'component/auth/button'
 import AuthInput from 'component/auth/input'
 import styles from './style'
@@ -16,6 +17,7 @@ import styles from './style'
 	loading: loading.effects['login/login']
 }))
 @createForm()
+@compose(withState('loading', 'setLoading', false))
 class Login extends Component {
 	handleOnSubmit = () => {
 		if(this.props.loading){
@@ -23,11 +25,13 @@ class Login extends Component {
 		}
 		this.props.form.validateFields((err, value) => {
 			if (!err) {
+				this.props.setLoading(true)
 				this.props.dispatch({
 					type: 'login/login',
 					payload: {
 						...value
-					}
+					},
+					callback: () => this.props.setLoading(false)
 				})
 			}
 		})
@@ -35,6 +39,7 @@ class Login extends Component {
 
 	render() {
 		const { getFieldDecorator, getFieldValue } = this.props.form
+		const { loading } = this.props
 		const account = getFieldValue('account')
 		const password = getFieldValue('password')
 		return (
@@ -63,6 +68,7 @@ class Login extends Component {
 						)}
 					</View>
 					<AuthButton
+						loading={loading}
 						disabled={!account || !password}
 						style={styles.button}
 						onPress={this.handleOnSubmit}

@@ -9,9 +9,13 @@ import {
 	StatusBar
 } from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
+import { Card } from 'react-native-elements'
+import ModalDropdown from 'react-native-modal-dropdown'
 import * as R from 'ramda'
 import { connect } from 'react-redux'
 import { compose, withState, withProps } from 'recompose'
+
+import NavBar from 'component/navBar'
 import NodeCapIcon from 'component/icon/nodecap'
 
 import Header from './partials/header'
@@ -32,6 +36,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon)
 @compose(
 	withState('scrollY', 'setScrollY', new Animated.Value(0)),
 	withState('offsetY', 'setOffsetY', 0),
+	withState('loading', 'setLoading', false),
 	withProps(({ scrollY }) => ({
 		titleColorRange: scrollY.interpolate({
 			inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
@@ -55,20 +60,23 @@ export default class Dashboard extends Component {
 			currencies: ['CNY']
 		}
 	}
+
 	componentWillReceiveProps(nextProps, nextContext) {
 		const firstFund = R.path(['funds', 0])(nextProps)
 		if (!this.state.currentFund && nextProps.funds) {
 			this.setState({
 				currentFund: firstFund
 			})
-      this.getDashboardData(firstFund.id)
+			this.getDashboardData(firstFund.id)
 		}
 	}
 
 	getDashboardData = id => {
+		this.props.setLoading(true)
 		this.props.dispatch({
 			type: 'dashboard/fetch',
-			payload: id
+			payload: id,
+			callback: () => this.props.setLoading(false)
 		})
 		this.setState({
 			currentFund: R.find(R.propEq('id', id))(this.props.funds)
@@ -87,45 +95,59 @@ export default class Dashboard extends Component {
 		/>
 	)
 
-	renderForeground = () => (
-		<Header
-			{...this.props}
-			style={styles.foreground}
-			onSelect={id => this.getDashboardData(id)}
-		/>
-	)
+	renderForeground = () => <Header {...this.props} style={styles.foreground} />
 
 	renderFixedHeader = () => {
-		const { colorRange, titleColorRange, offsetY } = this.props
+		const { colorRange, titleColorRange, offsetY, funds } = this.props
 		const { currentFund } = this.state
 		return (
-			<Animated.View
-				style={[styles.navbar.container, { backgroundColor: colorRange }]}
-			>
-				<StatusBar
-					barStyle={
-						offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
-					}
-				/>
-				<View style={styles.navbar.wrapper}>
-					<TouchableOpacity>
+			<NavBar
+				style={{ backgroundColor: colorRange }}
+				barStyle={
+					offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
+				}
+				renderTitle={() => (
+					<ModalDropdown
+						style={styles.dropdown.container}
+						dropdownStyle={[
+							styles.dropdown.wrapper,
+							{ height: funds.length * 45 }
+						]}
+						showsVerticalScrollIndicator={false}
+						options={funds}
+						defaultIndex={0}
+						renderRow={(rowData, index, isSelected) => (
+							<TouchableOpacity style={styles.dropdown.item.container}>
+								<Text
+									style={[
+										styles.dropdown.item.title,
+										isSelected && { fontWeight: 'bold', color: '#1890FF' }
+									]}
+								>
+									{rowData.name}
+								</Text>
+							</TouchableOpacity>
+						)}
+						renderSeparator={() => <View style={styles.dropdown.separator} />}
+						onSelect={(i, value) => this.getDashboardData(value.id)}
+					>
 						<Animated.Text
 							style={[styles.navbar.title, { color: titleColorRange }]}
 						>
 							{currentFund.name}
 							<AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
 						</Animated.Text>
-					</TouchableOpacity>
-				</View>
-			</Animated.View>
+					</ModalDropdown>
+				)}
+			/>
 		)
 	}
 
 	render() {
 		const { scrollY, setOffsetY, dashboard } = this.props
 		const roiRankCount = R.length(R.path(['ROIRank'])(dashboard))
-		if(!dashboard || !this.state.currentFund){
-			return <View></View>
+		if (!dashboard || !this.state.currentFund) {
+			return <View />
 		}
 
 		return (

@@ -5,6 +5,7 @@ import Swiper from 'react-native-swiper'
 import { Card } from 'react-native-elements'
 import * as R from 'ramda'
 import Accounting from 'accounting'
+import Shimmer from 'react-native-shimmer'
 
 import NodeCapIcon from 'component/icon/nodecap'
 
@@ -42,29 +43,31 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
 					const weeklyProfit = R.path([b, 'count'])(weekly)
 					return (
 						<Card key={b} containerStyle={styles.card}>
-							<View style={{ alignItems: 'center' }}>
-								<Text style={styles.label}>浮动盈亏</Text>
-								<View style={styles.content.container}>
-									<Text
-										style={[
-											styles.content.gain,
-											totalProfit < 0 && styles.content.lost
-										]}
-									>
-										{symbol(b)} {Accounting.formatNumber(totalProfit, 0)}{' '}
-										<Text style={styles.content.label}>{b}</Text>
-									</Text>
+							<Shimmer opacity={0.8}>
+								<View style={{ alignItems: 'center' }}>
+									<Text style={styles.label}>浮动盈亏</Text>
+									<View style={styles.content.container}>
+										<Text
+											style={[
+												styles.content.gain,
+												totalProfit < 0 && styles.content.lost
+											]}
+										>
+											{symbol(b)} {Accounting.formatNumber(totalProfit, 0)}{' '}
+											<Text style={styles.content.label}>{b}</Text>
+										</Text>
+									</View>
+									<View style={styles.sub.container}>
+										<Text style={styles.sub.text}>
+											{symbol(b, 12)} {Accounting.formatNumber(dailyProfit, 0)}{' '}
+											{'今日'} {arrow()}
+											{'     '}
+											{symbol(b, 12)} {Accounting.formatNumber(weeklyProfit, 0)}{' '}
+											{'本周'} {arrow()}
+										</Text>
+									</View>
 								</View>
-								<View style={styles.sub.container}>
-									<Text style={styles.sub.text}>
-										{symbol(b, 12)} {Accounting.formatNumber(dailyProfit, 0)}{' '}
-										{'今日'} {arrow()}
-										{'     '}
-										{symbol(b, 12)} {Accounting.formatNumber(weeklyProfit, 0)}{' '}
-										{'本周'} {arrow()}
-									</Text>
-								</View>
-							</View>
+							</Shimmer>
 						</Card>
 					)
 				})}

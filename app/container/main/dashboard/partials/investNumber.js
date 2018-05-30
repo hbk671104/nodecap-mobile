@@ -3,12 +3,10 @@ import PropTypes from 'prop-types'
 import * as R from 'ramda'
 import { View, Text, ViewPropTypes } from 'react-native'
 import { VictoryAxis, VictoryChart, VictoryLine } from 'victory-native'
-
 import NodeCapIcon from 'component/icon/nodecap'
 
-const investNumber = ({ style, data={} }) => {
+const investNumber = ({ style, data = {} }) => {
 	const trend = R.pathOr([], ['trend'])(data)
-	console.log(trend)
 	return (
 		<View style={[styles.container, style]}>
 			<View style={styles.left.container}>
@@ -17,14 +15,16 @@ const investNumber = ({ style, data={} }) => {
 					<View style={{ flexDirection: 'row', marginTop: 16 }}>
 						<Text style={styles.left.subtitle}>
 							本周{'  '}
-              {data.week}{' '}
-              {data.week > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
-              {'     '}
-							本月{'  '}
-              {data.month}{' '}
-              {data.month > 0 && (
+							{data.week}{' '}
+							{data.week > 0 && (
 								<NodeCapIcon name="shangsheng" color="#09AC32" />
-              )}
+							)}
+							{'     '}
+							本月{'  '}
+							{data.month}{' '}
+							{data.month > 0 && (
+								<NodeCapIcon name="shangsheng" color="#09AC32" />
+							)}
 						</Text>
 					</View>
 				</View>
@@ -32,10 +32,10 @@ const investNumber = ({ style, data={} }) => {
 			<View style={styles.right.container}>
 				<VictoryLine
 					style={{
-            data: {
-              stroke: '#35C3FF'
-            }
-          }}
+						data: {
+							stroke: '#35C3FF'
+						}
+					}}
 					interpolation="natural"
 					data={trend}
 					x="dateTime"
@@ -47,7 +47,7 @@ const investNumber = ({ style, data={} }) => {
 				/>
 			</View>
 		</View>
-  )
+	)
 }
 
 const styles = {
