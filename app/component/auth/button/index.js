@@ -13,7 +13,6 @@ const authButton = ({ style, disabled, loading, onPress }) => {
 				!disabled && styles.container.highlight,
 				style
 			]}
-			loading={loading}
 			disabled={disabled}
 			onClick={onPress}
 		>
