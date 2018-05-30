@@ -1,14 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import * as R from 'ramda'
 import { View, Text, ViewPropTypes } from 'react-native'
 import { VictoryAxis, VictoryChart, VictoryLine } from 'victory-native'
-import * as R from 'ramda'
 import NodeCapIcon from 'component/icon/nodecap'
 
-const investNumber = ({ style, data }) => {
-	if (R.isNil(data)) {
-		return null
-	}
+const investNumber = ({ style, data = {} }) => {
+	const trend = R.pathOr([], ['trend'])(data)
+	console.log(trend)
 	return (
 		<View style={[styles.container, style]}>
 			<View style={styles.left.container}>
@@ -32,7 +31,21 @@ const investNumber = ({ style, data }) => {
 				</View>
 			</View>
 			<View style={styles.right.container}>
-				<Text>我是trend图</Text>
+				<VictoryLine
+					style={{
+						data: {
+							stroke: '#35C3FF'
+						}
+					}}
+					interpolation="natural"
+					data={trend}
+					x="dateTime"
+					y="count"
+					width={91}
+					height={100}
+					domain={{ y: [0, 5] }}
+					padding={0}
+				/>
 			</View>
 		</View>
 	)

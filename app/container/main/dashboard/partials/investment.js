@@ -18,9 +18,9 @@ const symbol = (b, size = 22) => {
 }
 
 const investment = ({ style, data }) => {
-	const investCount = R.path(['investCount'])(data)
-	const profit = R.path(['profits'])(data)
-	const currencies = R.path(['currencies'])(data)
+	const investCount = R.pathOr({}, ['investCount'])(data)
+	const profit = R.pathOr({}, ['profits'])(data)
+	const currencies = R.pathOr({}, ['currencies'])(data)
 
 	// CNY
 	const investCNY = investCount.CNY

@@ -156,6 +156,9 @@ export default class Dashboard extends Component {
 	render() {
 		const { scrollY, setOffsetY, dashboard } = this.props
 		const roiRankCount = R.length(R.path(['ROIRank'])(dashboard))
+		if(!dashboard){
+			return <View></View>
+		}
 		return (
 			<View style={styles.container}>
 				<ParallaxScrollView
