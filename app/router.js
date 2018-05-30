@@ -30,13 +30,13 @@ const AuthStack = createStackNavigator(
 
 const Tab = createBottomTabNavigator(
 	{
-		Dashboard,
-		Portfolio: {
-			screen: Portfolio,
-			navigationOptions: {
-				title: '投资库'
-			}
-		}
+		Dashboard
+		// Portfolio: {
+		// 	screen: Portfolio,
+		// 	navigationOptions: {
+		// 		title: '投资库'
+		// 	}
+		// }
 	},
 	{
 		backBehavior: 'none',

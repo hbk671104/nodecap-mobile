@@ -144,7 +144,7 @@ export default class Dashboard extends Component {
 	}
 
 	render() {
-		const { scrollY, setOffsetY, dashboard } = this.props
+		const { scrollY, setOffsetY, dashboard, loading } = this.props
 		const roiRankCount = R.length(R.path(['ROIRank'])(dashboard))
 		if (!dashboard || !this.state.currentFund) {
 			return <View />
@@ -182,10 +182,15 @@ export default class Dashboard extends Component {
 						weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
 					/>
 					<ReturnRateChart style={styles.roiChart} {...this.props} />
-					<DashboardGroup title="已投项目数量" icon="yitouxiangmu">
+					<DashboardGroup
+						loading={loading}
+						title="已投项目数量"
+						icon="yitouxiangmu"
+					>
 						<InvestNumber data={dashboard.portfolio} />
 					</DashboardGroup>
 					<DashboardGroup
+						loading={loading}
 						style={styles.dashboardGroup}
 						title="投资金额"
 						icon="touzijine"
@@ -194,6 +199,7 @@ export default class Dashboard extends Component {
 					</DashboardGroup>
 					{roiRankCount > 0 && (
 						<DashboardGroup
+							loading={loading}
 							style={styles.dashboardGroup}
 							title={`投资回报率 TOP 5`}
 							icon="TOP"

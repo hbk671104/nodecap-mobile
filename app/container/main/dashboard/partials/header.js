@@ -19,7 +19,7 @@ const header = ({ style, dashboard, loading }) => {
 	const ROIETH = R.path(['ROI', 'ETH'])(dashboard)
 	return (
 		<View style={[styles.container, style]}>
-			<Shimmer animating={loading} opacity={0.8}>
+			<Shimmer animating={loading}>
 				<View>
 					<View style={styles.wrapper}>
 						<Text style={styles.label}>投资回报率</Text>
