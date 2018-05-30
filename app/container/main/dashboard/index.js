@@ -6,7 +6,8 @@ import {
 	View,
 	Image,
 	TouchableOpacity,
-	StatusBar
+	StatusBar,
+	ActivityIndicator
 } from 'react-native'
 import ParallaxScrollView from 'react-native-parallax-scroll-view'
 import { Card } from 'react-native-elements'
@@ -29,14 +30,14 @@ import styles, { PARALLAX_HEADER_HEIGHT } from './style'
 
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon)
 
-@connect(({ dashboard, fund }) => ({
+@connect(({ dashboard, fund, loading }) => ({
 	dashboard: dashboard.data,
-	funds: fund.funds
+	funds: fund.funds,
+	loading: loading.effects['dashboard/fetch']
 }))
 @compose(
 	withState('scrollY', 'setScrollY', new Animated.Value(0)),
 	withState('offsetY', 'setOffsetY', 0),
-	withState('loading', 'setLoading', false),
 	withProps(({ scrollY }) => ({
 		titleColorRange: scrollY.interpolate({
 			inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
@@ -56,27 +57,30 @@ export default class Dashboard extends Component {
 		const funds = R.pathOr([], ['funds'])(this.props)
 		const firstFund = funds[0]
 		this.state = {
-			currentFund: firstFund,
-			currencies: ['CNY']
+			currentFund: firstFund
 		}
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
 		const firstFund = R.path(['funds', 0])(nextProps)
 		if (!this.state.currentFund && nextProps.funds) {
-			this.setState({
-				currentFund: firstFund
-			})
-			this.getDashboardData(firstFund.id)
+			this.setState(
+				{
+					currentFund: firstFund
+				},
+				() => {
+					if (this.state.currentFund) {
+						this.getDashboardData(this.state.currentFund.id)
+					}
+				}
+			)
 		}
 	}
 
 	getDashboardData = id => {
-		this.props.setLoading(true)
 		this.props.dispatch({
 			type: 'dashboard/fetch',
-			payload: id,
-			callback: () => this.props.setLoading(false)
+			payload: id
 		})
 		this.setState({
 			currentFund: R.find(R.propEq('id', id))(this.props.funds)
@@ -146,8 +150,17 @@ export default class Dashboard extends Component {
 	render() {
 		const { scrollY, setOffsetY, dashboard, loading } = this.props
 		const roiRankCount = R.length(R.path(['ROIRank'])(dashboard))
+
+		if ((!dashboard || !this.state.currentFund) && loading) {
+			return (
+				<View style={styles.container}>
+					<ActivityIndicator size="large" />
+				</View>
+			)
+		}
+
 		if (!dashboard || !this.state.currentFund) {
-			return <View />
+			return null
 		}
 
 		return (

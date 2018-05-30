@@ -6,7 +6,9 @@ export const DEVICE_WIDTH = window.width
 
 export default {
 	container: {
-		flex: 1
+		flex: 1,
+		justifyContent: 'center',
+		alignItems: 'center'
 	},
 	background: {
 		width: window.width,
