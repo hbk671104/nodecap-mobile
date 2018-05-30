@@ -7,9 +7,9 @@ import styles from './style'
 export default class Portfolio extends Component {
 	render() {
 		return (
-			<ScrollView style={styles.container}>
+			<View style={styles.container}>
 				<Text>敬请期待</Text>
-			</ScrollView>
+			</View>
 		)
 	}
 }
