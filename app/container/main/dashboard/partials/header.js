@@ -8,6 +8,7 @@ import Menu, {
 	MenuOption,
 	MenuTrigger
 } from 'react-native-menu'
+import Accounting from 'accounting'
 import headerStyle from './headerStyle'
 
 const header = ({
@@ -39,15 +40,22 @@ const header = ({
 				<View style={styles.wrapper}>
 					<Text style={styles.label}>投资回报率</Text>
 					<Text style={[styles.title, { marginTop: 12 }]}>
-						{ROI}% <Text style={{ fontSize: 13 }}>CNY</Text>
+						{Accounting.formatNumber(ROI, 0)} %{' '}
+						<Text style={{ fontSize: 13 }}>CNY</Text>
 					</Text>
 				</View>
 				<View style={styles.bottom}>
-					<Text style={styles.subtitle}>{ROIUSD}% USD</Text>
+					<Text style={styles.subtitle}>
+						{Accounting.formatNumber(ROIUSD, 0)} % USD
+					</Text>
 					<Text style={styles.subtitle}> | </Text>
-					<Text style={styles.subtitle}>{ROIBTC}% BTC</Text>
+					<Text style={styles.subtitle}>
+						{Accounting.formatNumber(ROIBTC, 0)} % BTC
+					</Text>
 					<Text style={styles.subtitle}> | </Text>
-					<Text style={styles.subtitle}>{ROIETH}% ETH</Text>
+					<Text style={styles.subtitle}>
+						{Accounting.formatNumber(ROIETH, 0)} % ETH
+					</Text>
 				</View>
 			</View>
 		</View>

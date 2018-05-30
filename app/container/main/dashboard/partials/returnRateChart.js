@@ -175,12 +175,17 @@ const styles = {
 		marginRight: 15
 	},
 	periodWrapper: {
-		marginLeft: 17
+		height: 25,
+		marginLeft: 17,
+		justifyContent: 'center'
 	},
 	periodline: {
+		position: 'absolute',
+		bottom: 0,
+		left: 0,
+		right: 0,
 		height: 2,
 		backgroundColor: '#1890FF',
-		marginTop: 6,
 		borderRadius: 1
 	},
 	periodItem: {

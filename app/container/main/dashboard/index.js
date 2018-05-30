@@ -154,7 +154,7 @@ export default class Dashboard extends Component {
 					{roiRankCount > 0 && (
 						<DashboardGroup
 							style={styles.dashboardGroup}
-							title={`投资回报率 TOP ${roiRankCount}`}
+							title={`投资回报率 TOP 5`}
 							icon="TOP"
 						>
 							{dashboard.ROIRank.map((r, i) => (

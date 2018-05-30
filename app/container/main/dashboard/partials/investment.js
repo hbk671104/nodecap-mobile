@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, ViewPropTypes } from 'react-native'
+import { View, Text, ViewPropTypes, StyleSheet } from 'react-native'
 import * as R from 'ramda'
 import Accounting from 'accounting'
 
@@ -20,6 +20,7 @@ const symbol = (b, size = 22) => {
 const investment = ({ style, data }) => {
 	const investCount = R.path(['investCount'])(data)
 	const profit = R.path(['profits'])(data)
+	const currencies = R.path(['currencies'])(data)
 
 	// CNY
 	const investCNY = investCount.CNY
@@ -78,9 +79,30 @@ const investment = ({ style, data }) => {
 					})}
 				</View>
 			</View>
-			{/* <View style={styles.bottom.container}>
-				<Text>哈哈哈</Text>
-			</View> */}
+			<View style={styles.bottom.container}>
+				<Text style={styles.bottom.title}>投资币种明细</Text>
+				{R.keys(currencies).map((c, i) => {
+					const investCount = R.path([c])(currencies)
+					return (
+						<View
+							key={i}
+							style={[
+								styles.bottom.item.container,
+								i !== R.keys(currencies).length - 1 &&
+									styles.bottom.item.divider
+							]}
+						>
+							<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+								{symbol(c)}
+								<Text style={styles.bottom.item.title}> {c}</Text>
+							</View>
+							<Text style={styles.bottom.item.subtitle}>
+								{Accounting.formatNumber(investCount, 0)}
+							</Text>
+						</View>
+					)
+				})}
+			</View>
 		</View>
 	)
 }
@@ -152,7 +174,35 @@ const styles = {
 	},
 	bottom: {
 		container: {
-			paddingLeft: 20
+			paddingLeft: 20,
+			marginTop: 40
+		},
+		title: {
+			fontSize: 12,
+			color: '#666666'
+		},
+		item: {
+			container: {
+				height: 56,
+				flexDirection: 'row',
+				alignItems: 'center',
+				justifyContent: 'space-between'
+			},
+			divider: {
+				borderBottomColor: '#E9E9E9',
+				borderBottomWidth: StyleSheet.hairlineWidth
+			},
+			title: {
+				color: '#333333',
+				fontSize: 13,
+				fontWeight: 'bold'
+			},
+			subtitle: {
+				color: '#333333',
+				fontSize: 14,
+				fontWeight: 'bold',
+				marginRight: 16
+			}
 		}
 	}
 }
