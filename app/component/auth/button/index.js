@@ -5,7 +5,7 @@ import { Text, ViewPropTypes ,
 	ActivityIndicator} from 'react-native'
 import styles from './style'
 
-const authButton = ({ style, disabled, loading, onPress, loading }) => {
+const authButton = ({ style, disabled, loading, onPress }) => {
 	return (
 		<Button
 			style={[

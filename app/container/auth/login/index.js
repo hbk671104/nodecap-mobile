@@ -72,7 +72,6 @@ class Login extends Component {
 						disabled={!account || !password}
 						style={styles.button}
 						onPress={this.handleOnSubmit}
-						loading={this.props.loading}
 					/>
 				</KeyboardAvoidingView>
 			</ScrollView>
