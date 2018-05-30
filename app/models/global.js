@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as R from 'ramda'
 import { getConstants, getAllPermissions } from '../services/api';
 
 export default {
@@ -53,6 +54,13 @@ export default {
           type: 'getPermissions',
           payload: res.data,
         });
+
+        const funds = yield select(state => state.fund.funds);
+        const firstFundId = R.path([0, 'id'])(funds)
+        yield put({
+          type: 'dashboard/fetch',
+          payload: firstFundId
+        })
       } catch (e) {
         console.log(e);
       }

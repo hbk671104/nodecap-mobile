@@ -54,28 +54,19 @@ export default class Dashboard extends Component {
 	constructor(props) {
 		super(props)
 		const funds = R.pathOr([], ['funds'])(this.props)
-		const firstFund = R.path([0])(funds)
-
+		const firstFund = funds[0]
 		this.state = {
 			currentFund: firstFund,
 			currencies: ['CNY']
 		}
 	}
-	componentWillMount() {
-		const funds = R.pathOr([], ['funds'])(this.props)
-		const firstFundId = R.path([0, 'id'])(funds)
-		this.props.dispatch({
-			type: 'dashboard/fetch',
-			payload: firstFundId
-		})
-	}
-
 	componentWillReceiveProps(nextProps, nextContext) {
 		const firstFund = R.path(['funds', 0])(nextProps)
 		if (!this.state.currentFund && nextProps.funds) {
 			this.setState({
 				currentFund: firstFund
 			})
+			this.getDashboardData(firstFund.id)
 		}
 	}
 
@@ -156,9 +147,10 @@ export default class Dashboard extends Component {
 	render() {
 		const { scrollY, setOffsetY, dashboard } = this.props
 		const roiRankCount = R.length(R.path(['ROIRank'])(dashboard))
-		if(!dashboard){
-			return <View></View>
+		if (!dashboard || !this.state.currentFund) {
+			return <View />
 		}
+
 		return (
 			<View style={styles.container}>
 				<ParallaxScrollView
