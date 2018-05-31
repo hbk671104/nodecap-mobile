@@ -1,6 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Text, ViewPropTypes, StyleSheet } from 'react-native'
+import {
+	View,
+	Text,
+	ViewPropTypes,
+	StyleSheet,
+	ImageBackground
+} from 'react-native'
 import * as R from 'ramda'
 import Accounting from 'accounting'
 
@@ -24,15 +30,29 @@ const investment = ({ style, data }) => {
 
 	// CNY
 	const investCNY = investCount.CNY
-	const profitCNY = Math.abs(profit.CNY)
+	const profitCNY = profit.CNY
+
 	return (
 		<View style={[styles.container, style]}>
 			<View style={styles.top.container}>
 				<View style={styles.top.bar.container}>
-					<View style={[styles.top.bar.left, { flex: investCNY }]}>
+					<View style={[styles.top.bar.left, { flex: investCNY }]} />
+					{profitCNY > 0 ? (
+						<View
+							style={[styles.top.bar.right, { flex: Math.abs(profitCNY) }]}
+						/>
+					) : (
+						<ImageBackground
+							source={require('asset/background_img.png')}
+							style={[
+								styles.top.bar.right,
+								{ backgroundColor: 'transparent', flex: Math.abs(profitCNY) }
+							]}
+							imageStyle={styles.top.bar.border}
+						/>
+					)}
+					<View style={styles.top.bar.cover}>
 						<NodeCapIcon name={'touzi-'} size={20} color="white" />
-					</View>
-					<View style={[styles.top.bar.right, { flex: profitCNY }]}>
 						<NodeCapIcon name={'lirun'} size={20} color="white" />
 					</View>
 				</View>
@@ -124,17 +144,23 @@ const styles = {
 			left: {
 				borderTopLeftRadius: 2,
 				borderBottomLeftRadius: 2,
-				backgroundColor: '#F88E40',
-				justifyContent: 'center',
-				paddingLeft: 10
+				backgroundColor: '#F88E40'
 			},
 			right: {
 				borderTopRightRadius: 2,
 				borderBottomRightRadius: 2,
-				backgroundColor: '#1890FF',
-				justifyContent: 'center',
-				alignItems: 'flex-end',
-				paddingRight: 10
+				backgroundColor: '#1890FF'
+			},
+			border: {
+				borderTopRightRadius: 2,
+				borderBottomRightRadius: 2
+			},
+			cover: {
+				...StyleSheet.absoluteFillObject,
+				flexDirection: 'row',
+				alignItems: 'center',
+				justifyContent: 'space-between',
+				paddingHorizontal: 10
 			}
 		},
 		content: {
