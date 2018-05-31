@@ -1,14 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-	View,
-	Text,
-	ViewPropTypes,
-	StyleSheet,
-	ImageBackground
-} from 'react-native'
+import { View, ViewPropTypes, StyleSheet, ImageBackground } from 'react-native'
 import * as R from 'ramda'
 import Accounting from 'accounting'
+import Text from 'component/text'
 
 import NodeCapIcon from 'component/icon/nodecap'
 
@@ -81,8 +76,7 @@ const investment = ({ style, data }) => {
 										c === 'CNY' && styles.top.content.investment
 									]}
 								>
-									{symbol(c, c === 'CNY' ? 13 : 12)}{' '}
-									{Accounting.formatNumber(countItem, 0)}
+									{symbol(c, c === 'CNY' ? 13 : 12)} <Text>{countItem}</Text>
 								</Text>
 								<Text
 									style={[
@@ -91,8 +85,7 @@ const investment = ({ style, data }) => {
 										c === 'CNY' && profitItem < 0 && styles.top.content.deficit
 									]}
 								>
-									{symbol(c, c === 'CNY' ? 13 : 12)}{' '}
-									{Accounting.formatNumber(profitItem, 0)}
+									{symbol(c, c === 'CNY' ? 13 : 12)} <Text>{profitItem}</Text>
 								</Text>
 							</View>
 						)
@@ -116,8 +109,8 @@ const investment = ({ style, data }) => {
 								{symbol(c)}
 								<Text style={styles.bottom.item.title}> {c}</Text>
 							</View>
-							<Text style={styles.bottom.item.subtitle}>
-								{Accounting.formatNumber(investCount, 0)}
+							<Text style={styles.bottom.item.subtitle} disablePrefix>
+								{investCount}
 							</Text>
 						</View>
 					)

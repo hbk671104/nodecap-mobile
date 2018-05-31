@@ -35,4 +35,5 @@ const styles = {
 	}
 }
 
+export const navBarHeight = styles.container.height
 export default navBar

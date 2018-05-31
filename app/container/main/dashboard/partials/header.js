@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
-import { View, Text, ViewPropTypes } from 'react-native'
+import { View, ViewPropTypes } from 'react-native'
 import Shimmer from 'react-native-shimmer'
-import Accounting from 'accounting'
 import headerStyle from './headerStyle'
+import Text from 'component/text'
 
 const header = ({ style, dashboard, loading }) => {
 	const ROI = R.path(['ROI', 'CNY'])(dashboard)
@@ -18,21 +18,24 @@ const header = ({ style, dashboard, loading }) => {
 					<View style={styles.wrapper}>
 						<Text style={styles.label}>投资回报率</Text>
 						<Text style={[styles.title, { marginTop: 12 }]}>
-							{Accounting.formatNumber(ROI, 0)}%{' '}
-							<Text style={{ fontSize: 13 }}>CNY</Text>
+							<Text>{ROI}</Text>
+							% <Text style={{ fontSize: 13 }}>CNY</Text>
 						</Text>
 					</View>
 					<View style={styles.bottom}>
 						<Text style={styles.subtitle}>
-							{Accounting.formatNumber(ROIUSD, 0)}% USD
+							<Text>{ROIUSD}</Text>
+							% USD
 						</Text>
 						<Text style={styles.subtitle}>{'  |  '}</Text>
 						<Text style={styles.subtitle}>
-							{Accounting.formatNumber(ROIBTC, 0)}% BTC
+							<Text>{ROIBTC}</Text>
+							% BTC
 						</Text>
 						<Text style={styles.subtitle}>{'  |  '}</Text>
 						<Text style={styles.subtitle}>
-							{Accounting.formatNumber(ROIETH, 0)}% ETH
+							<Text>{ROIETH}</Text>
+							% ETH
 						</Text>
 					</View>
 				</View>
