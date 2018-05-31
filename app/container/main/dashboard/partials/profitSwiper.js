@@ -33,7 +33,7 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
 			<Swiper
 				height={100}
 				autoplay
-				autoplayTimeout={5}
+				autoplayTimeout={10}
 				activeDotColor="#1890FF"
 				paginationStyle={{ bottom: -20 }}
 			>
