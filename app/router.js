@@ -10,7 +10,6 @@ import {
 	createReactNavigationReduxMiddleware
 } from 'react-navigation-redux-helpers'
 import RehydrateLoader from './component/RehydrateLoader'
-import { MenuContext } from 'react-native-menu'
 import { connect } from './utils/dva'
 
 // Screen
@@ -130,11 +129,7 @@ class Router extends PureComponent {
 			state: router,
 			addListener
 		}
-		return (
-			<MenuContext style={{ flex: 1 }}>
-				<AppRouter navigation={navigation} />
-			</MenuContext>
-		)
+		return <AppRouter navigation={navigation} />
 	}
 }
 
