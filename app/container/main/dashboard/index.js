@@ -80,10 +80,12 @@ export default class Dashboard extends Component {
 	getDashboardData = id => {
 		this.props.dispatch({
 			type: 'dashboard/fetch',
-			payload: id
-		})
-		this.setState({
-			currentFund: R.find(R.propEq('id', id))(this.props.funds)
+			payload: id,
+			callback: () => {
+				this.setState({
+					currentFund: R.find(R.propEq('id', id))(this.props.funds)
+				})
+			}
 		})
 	}
 
@@ -119,6 +121,7 @@ export default class Dashboard extends Component {
 						]}
 						showsVerticalScrollIndicator={false}
 						options={funds}
+						animated={false}
 						defaultIndex={0}
 						renderRow={(rowData, index, isSelected) => (
 							<TouchableOpacity style={styles.dropdown.item.container}>
