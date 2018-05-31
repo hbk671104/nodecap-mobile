@@ -2,12 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import * as R from 'ramda'
 import { View, Text, ViewPropTypes } from 'react-native'
-import Menu, {
-	MenuContext,
-	MenuOptions,
-	MenuOption,
-	MenuTrigger
-} from 'react-native-menu'
 import Shimmer from 'react-native-shimmer'
 import Accounting from 'accounting'
 import headerStyle from './headerStyle'

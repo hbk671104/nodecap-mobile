@@ -10,7 +10,7 @@ export default {
 	},
 
 	effects: {
-		*login({ payload, callback }, { call, put }) {
+		*login({ payload, callback }, { call, put, take }) {
 			try {
 				const { data } = yield call(login, payload)
 				yield put({
@@ -23,20 +23,31 @@ export default {
 						token: data.access_token
 					}
 				})
-				request.defaults.headers.common.Authorization = `Bearer ${
-					data.access_token
-				}`
+				// request.defaults.headers.common.Authorization = `Bearer ${
+				// 	data.access_token
+				// }`
 				yield put({
 					type: 'global/initial'
 				})
-				if (callback) {
-					callback()
-				}
+
+				yield take('global/initial/@@end')
+
 				yield put(
 					routerRedux.navigate({
 						routeName: 'Dashboard'
 					})
 				)
+
+				// console.log('after put')
+
+				// if (callback) {
+				// 	callback()
+				// }
+				// yield put(
+				// 	routerRedux.navigate({
+				// 		routeName: 'Dashboard'
+				// 	})
+				// )
 			} catch (e) {
 				yield put({
 					type: 'loginFailure',

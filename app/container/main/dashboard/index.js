@@ -52,38 +52,24 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon)
 	}))
 )
 export default class Dashboard extends Component {
-	constructor(props) {
-		super(props)
-		const funds = R.pathOr([], ['funds'])(this.props)
-		const firstFund = funds[0]
-		this.state = {
-			currentFund: firstFund
-		}
+	state = {
+		currentFund: R.pathOr([], ['funds'])(this.props)[0]
 	}
 
-	componentWillReceiveProps(nextProps, nextContext) {
-		const firstFund = R.path(['funds', 0])(nextProps)
-		if (!this.state.currentFund && nextProps.funds) {
-			this.setState(
-				{
-					currentFund: firstFund
-				},
-				() => {
-					if (this.state.currentFund) {
-						this.getDashboardData(this.state.currentFund.id)
-					}
-				}
-			)
-		}
+	componentWillMount() {
+		const { currentFund } = this.state
+		this.getDashboardData(currentFund.id)
 	}
 
 	getDashboardData = id => {
 		this.props.dispatch({
 			type: 'dashboard/fetch',
-			payload: id
-		})
-		this.setState({
-			currentFund: R.find(R.propEq('id', id))(this.props.funds)
+			payload: id,
+			callback: () => {
+				this.setState({
+					currentFund: R.find(R.propEq('id', id))(this.props.funds)
+				})
+			}
 		})
 	}
 
@@ -119,6 +105,7 @@ export default class Dashboard extends Component {
 						]}
 						showsVerticalScrollIndicator={false}
 						options={funds}
+						animated={false}
 						defaultIndex={0}
 						renderRow={(rowData, index, isSelected) => (
 							<TouchableOpacity style={styles.dropdown.item.container}>

@@ -13,13 +13,13 @@ import AuthButton from 'component/auth/button'
 import AuthInput from 'component/auth/input'
 import styles from './style'
 
-@connect(({loading}) => ({
+@connect(({ loading }) => ({
 	loading: loading.effects['login/login']
 }))
 @createForm()
 class Login extends Component {
 	handleOnSubmit = () => {
-		if(this.props.loading){
+		if (this.props.loading) {
 			return
 		}
 		this.props.form.validateFields((err, value) => {
