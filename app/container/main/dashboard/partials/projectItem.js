@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, Image, Text, ViewPropTypes } from 'react-native'
+import { View, Image, ViewPropTypes } from 'react-native'
+import Text from 'component/text'
 
 import { raised } from '../../../../utils/style'
 
@@ -15,7 +16,9 @@ const roiItem = ({ style, index, data }) => (
 		</View>
 		<View style={styles.content.container}>
 			<Text style={styles.content.title}>{data.name}</Text>
-			<Text style={styles.content.subtitle}>{data.ROI} %</Text>
+			<Text style={styles.content.subtitle}>
+				<Text>{data.ROI}</Text> %
+			</Text>
 		</View>
 		<Text style={styles.ranking}>#{index + 1}</Text>
 	</View>

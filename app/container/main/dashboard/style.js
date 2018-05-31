@@ -1,7 +1,9 @@
 import { StyleSheet, Dimensions } from 'react-native'
+import { navBarHeight } from 'component/navBar'
 
 const window = Dimensions.get('window')
-export const PARALLAX_HEADER_HEIGHT = 300
+
+export const PARALLAX_HEADER_HEIGHT = 254 + navBarHeight
 export const DEVICE_WIDTH = window.width
 
 export default {
