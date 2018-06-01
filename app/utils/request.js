@@ -28,7 +28,7 @@ const instance = axios.create({
   baseURL: config.API_URL,
   timeout: 60000,
 });
-
+console.log(config)
 instance.interceptors.response.use((res) => {
   const hasPagination = R.allPass([
     R.has('x-pagination-current-page'),
@@ -51,7 +51,6 @@ instance.interceptors.response.use((res) => {
 }, checkStatus);
 
 function checkStatus({ response = {} }) {
-  console.log('response', response)
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -73,7 +72,7 @@ function checkStatus({ response = {} }) {
   //   description: ' ',
   // };
 
-  Toast.fail(errortext)
+  Toast.fail(errortext, 1)
 
   const error = new Error(errortext);
   error.name = response.status;
