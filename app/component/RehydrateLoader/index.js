@@ -5,6 +5,7 @@ import { connect } from '../../utils/dva'
 import { NavigationActions } from '../../utils'
 import store from '../../../index'
 import { initializeListeners } from 'react-navigation-redux-helpers'
+import SplashScreen from 'react-native-splash-screen'
 
 @connect(({ global, login }) => ({
 	constants: global.constants,
@@ -47,15 +48,13 @@ class RehydrateLoader extends Component {
 				initializeListeners('root', this.props.router)
 
 				// Splash Screen came off
+				SplashScreen.hide()
 			}
 		)
 	}
 
 	render() {
-		if (!this.state.rehydrated || !this.props.constants) {
-			return <View />
-		}
-		return <View />
+		return null
 	}
 }
 

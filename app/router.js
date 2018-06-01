@@ -113,7 +113,7 @@ class Router extends PureComponent {
 		if (currentScreen === 'Login') {
 			return true
 		}
-		if (currentScreen !== 'Home') {
+		if (currentScreen !== 'Tab') {
 			this.props.dispatch(NavigationActions.back())
 			return true
 		}
