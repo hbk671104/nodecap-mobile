@@ -1,30 +1,19 @@
 import React, { Component } from 'react'
-import { Text, View, ScrollView, Image, Dimensions } from 'react-native'
+import { Text, View, Image } from 'react-native'
 import { connect } from 'react-redux'
-import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view'
+import { TabViewAnimated, TabBar } from 'react-native-tab-view'
 
 import NavBar from 'component/navBar'
+import Exchangeable from './route/exchangeable'
 import styles from './style'
-
-const initialLayout = {
-	height: 0,
-	width: Dimensions.get('window').width
-}
-
-const FirstRoute = () => (
-	<View style={[styles.container, { backgroundColor: '#ff4081' }]} />
-)
-const SecondRoute = () => (
-	<View style={[styles.container, { backgroundColor: '#673ab7' }]} />
-)
 
 @connect()
 export default class Portfolio extends Component {
 	state = {
 		index: 0,
 		routes: [
-			{ key: 'first', title: 'First' },
-			{ key: 'second', title: 'Second' }
+			{ key: 'exchangeable', title: '已上所' },
+			{ key: 'unexchangeable', title: '未上所' }
 		]
 	}
 
@@ -37,20 +26,24 @@ export default class Portfolio extends Component {
 		</View>
 	)
 
-	renderScene = SceneMap({
-		first: FirstRoute,
-		second: SecondRoute
-	})
+	renderScene = ({ route }) => {
+		switch (route.key) {
+			case 'exchangeable':
+				return <Exchangeable />
+			default:
+				return <Exchangeable />
+		}
+	}
 
 	render() {
 		return (
 			<View style={styles.container}>
 				<TabViewAnimated
+					initialLayout={styles.initialLayout}
 					navigationState={this.state}
 					renderScene={this.renderScene}
 					renderHeader={this.renderHeader}
 					onIndexChange={this.handleIndexChange}
-					initialLayout={initialLayout}
 				/>
 			</View>
 		)
