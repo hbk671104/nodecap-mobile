@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Text, View, ScrollView, Image, Dimensions } from 'react-native'
 import { connect } from 'react-redux'
 import { TabViewAnimated, TabBar, SceneMap } from 'react-native-tab-view'
+
+import NavBar from 'component/navBar'
 import styles from './style'
 
 const initialLayout = {
@@ -28,7 +30,12 @@ export default class Portfolio extends Component {
 
 	handleIndexChange = index => this.setState({ index })
 
-	renderHeader = props => <TabBar {...props} />
+	renderHeader = props => (
+		<View>
+			<NavBar />
+			<TabBar {...props} />
+		</View>
+	)
 
 	renderScene = SceneMap({
 		first: FirstRoute,
