@@ -23,6 +23,7 @@ const roiItem = ({ style, index, data }) => (
 		<Text style={styles.ranking}>#{index + 1}</Text>
 	</View>
 )
+
 const styles = {
 	container: {
 		paddingLeft: 22,

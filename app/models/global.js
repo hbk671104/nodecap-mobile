@@ -49,12 +49,6 @@ export default {
 				})
 
 				yield take('fund/fetch/@@end')
-				// const funds = yield select(state => state.fund.funds)
-				// const firstFundId = R.path([0, 'id'])(funds)
-				// yield put({
-				// 	type: 'dashboard/fetch',
-				// 	payload: firstFundId
-				// })
 			} catch (e) {
 				console.log(e)
 			}
