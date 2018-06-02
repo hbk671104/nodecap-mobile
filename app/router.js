@@ -9,6 +9,7 @@ import {
 	createReduxBoundAddListener,
 	createReactNavigationReduxMiddleware
 } from 'react-navigation-redux-helpers'
+import codePush from 'react-native-code-push'
 import RehydrateLoader from './component/RehydrateLoader'
 import { connect } from './utils/dva'
 
@@ -98,6 +99,7 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 )
 const addListener = createReduxBoundAddListener('root')
 
+@codePush()
 @connect(({ app, router }) => ({ app, router }))
 class Router extends PureComponent {
 	componentWillMount() {
