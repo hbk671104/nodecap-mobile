@@ -1,3 +1,4 @@
 <resources>
+    <string moduleConfig="true" name="reactNativeCodePush_androidDeploymentKey">0lrQGgLhRi1QI50-oYAZS0QDpT2O26c1ed21-ab88-42b0-951d-adcc7812f349</string>
     <string name="app_name">Hotnode</string>
 </resources>

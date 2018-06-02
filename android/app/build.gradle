@@ -77,6 +77,8 @@ project.ext.react = [
 ]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 
 project.ext.vectoricons = [
         iconFontNames: [ 'NodeCapIcon.ttf']
@@ -154,6 +156,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-code-push')
     compile project(':react-native-shimmer')
     compile project(':react-native-config')
     compile project(':react-native-svg')
