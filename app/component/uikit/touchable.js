@@ -10,7 +10,9 @@ const touchable = props => {
 		<Touchable
 			{...props}
 			hitSlop={props.hitSlop}
-			{...(props.foreground ? { foreground: effect } : { background: effect })}
+			{...{
+				[props.foreground ? 'foreground' : 'background']: effect
+			}}
 		>
 			{props.children}
 		</Touchable>

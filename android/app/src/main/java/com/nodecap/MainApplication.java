@@ -3,6 +3,7 @@ package com.nodecap;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.microsoft.codepush.react.CodePush;
 import com.oblador.shimmer.RNShimmerPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new LinearGradientPackage(),
             new CodePush(BuildConfig.CODEPUSH_DEPLOYMENT_KEY_ANDROID, getApplicationContext(), BuildConfig.DEBUG),
             new RNShimmerPackage(),
             new ReactNativeConfigPackage(),

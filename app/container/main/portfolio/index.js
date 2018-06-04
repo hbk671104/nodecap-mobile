@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view'
 
 import NavBar from 'component/navBar'
+import NodeCapIcon from 'component/icon/nodecap'
+import SearchBarDisplay from 'component/searchBar/display'
 import Exchangeable from './route/exchangeable'
+import Unexchangeable from './route/unexchangeable'
 import styles from './style'
 
 @connect()
@@ -21,8 +24,24 @@ export default class Portfolio extends Component {
 
 	renderHeader = props => (
 		<View>
-			<NavBar />
-			<TabBar {...props} />
+			<NavBar
+				style={styles.navBar.container}
+				renderTitle={() => (
+					<Text style={styles.navBar.title}>
+						节点
+						<NodeCapIcon name="xiala" />
+					</Text>
+				)}
+			/>
+			<View style={styles.searchBar.container}>
+				<SearchBarDisplay />
+			</View>
+			<TabBar
+				{...props}
+				style={styles.tabBar.container}
+				labelStyle={styles.tabBar.label}
+				indicatorStyle={styles.tabBar.indicator}
+			/>
 		</View>
 	)
 
@@ -30,8 +49,10 @@ export default class Portfolio extends Component {
 		switch (route.key) {
 			case 'exchangeable':
 				return <Exchangeable />
+			case 'unexchangeable':
+				return <Unexchangeable />
 			default:
-				return <Exchangeable />
+				return null
 		}
 	}
 

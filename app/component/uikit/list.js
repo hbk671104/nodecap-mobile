@@ -34,7 +34,7 @@ class List extends Component {
 		style: ViewPropTypes.style
 	}
 
-	extractKey = (item, index) => `${index}`
+	extractKey = (item, index) => item.id || `${index}`
 
 	handleOnRefresh = () => {
 		this.props.onRefresh()

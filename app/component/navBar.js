@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { View, StatusBar, Animated, Text, ViewPropTypes } from 'react-native'
+import { View, Animated, Text, ViewPropTypes } from 'react-native'
 import { getStatusBarHeight } from 'react-native-iphone-x-helper'
+
+import StatusBar from './uikit/statusBar'
 import { raised } from '../utils/style'
 
 const navBar = ({ style, barStyle, renderTitle }) => {
