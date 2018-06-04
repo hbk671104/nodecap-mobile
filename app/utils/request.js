@@ -2,7 +2,7 @@ import axios from 'axios';
 import * as R from 'ramda';
 import store from '../../index';
 import config from 'react-native-config';
-import { Toast } from 'antd-mobile'
+import { Toast } from 'antd-mobile';
 
 const codeMessage = {
   1001: '您的账号有误。',
@@ -28,7 +28,7 @@ const instance = axios.create({
   baseURL: config.API_URL,
   timeout: 60000,
 });
-console.log(config)
+console.log(config);
 instance.interceptors.response.use((res) => {
   const hasPagination = R.allPass([
     R.has('x-pagination-current-page'),
@@ -72,7 +72,7 @@ function checkStatus({ response = {} }) {
   //   description: ' ',
   // };
 
-  Toast.fail(errortext, 1)
+  Toast.fail(errortext, 1);
 
   const error = new Error(errortext);
   error.name = response.status;

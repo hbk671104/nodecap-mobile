@@ -1,5 +1,6 @@
-import { createAction, NavigationActions, Storage } from '../utils'
+import { createAction, NavigationActions as routerRedux, Storage } from '../utils';
 import { login } from '../services/api';
+import request from '../utils/request';
 
 export default {
   namespace: 'app',
@@ -10,7 +11,7 @@ export default {
   },
   reducers: {
     updateState(state, { payload }) {
-      return { ...state, ...payload }
+      return { ...state, ...payload };
     },
     changeLoginStatus(state, { payload }) {
       return {
@@ -39,12 +40,12 @@ export default {
     },
   },
   effects: {
-    *loadStorage(action, { call, put }) {
-      const login = yield call(Storage.get, 'login', false)
-      yield put(createAction('updateState')({ login, loading: false }))
+    * loadStorage(action, { call, put }) {
+      const token = yield call(Storage.get, 'login', false);
+      yield put(createAction('updateState')({ login: token, loading: false }));
     },
-    *login({ payload }, { call, put }) {
-      yield put(createAction('updateState')({ fetching: true }))
+    * login({ payload }, { call, put }) {
+      yield put(createAction('updateState')({ fetching: true }));
       try {
         const { data } = yield call(login, payload);
         yield put({
@@ -58,7 +59,7 @@ export default {
           },
         });
         request.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
-        Storage.set('login', data.access_token)
+        Storage.set('login', data.access_token);
         yield put(routerRedux.push('/projects/'));
       } catch (e) {
         yield put({
@@ -69,14 +70,14 @@ export default {
         });
       }
     },
-    *logout(action, { call, put }) {
-      yield call(Storage.set, 'login', false)
-      yield put(createAction('updateState')({ login: false }))
+    * logout(action, { call, put }) {
+      yield call(Storage.set, 'login', false);
+      yield put(createAction('updateState')({ login: false }));
     },
   },
   subscriptions: {
     setup({ dispatch }) {
-      dispatch({ type: 'loadStorage' })
+      dispatch({ type: 'loadStorage' });
     },
   },
-}
+};

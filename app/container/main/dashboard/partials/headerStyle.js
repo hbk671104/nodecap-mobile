@@ -1,6 +1,6 @@
 export default {
   title: {
     color: 'white',
-    fontSize: 18
-  }
-}
+    fontSize: 18,
+  },
+};
