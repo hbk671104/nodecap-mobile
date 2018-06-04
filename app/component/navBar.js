@@ -8,7 +8,7 @@ const navBar = ({ style, barStyle, renderTitle }) => {
   return (
     <Animated.View style={[styles.container, style]}>
       <StatusBar barStyle={barStyle} />
-      <View style={styles.wrapper}>{renderTitle()}</View>
+      <View style={styles.wrapper}>{renderTitle && renderTitle()}</View>
     </Animated.View>
   );
 };

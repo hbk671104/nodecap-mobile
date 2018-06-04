@@ -18,24 +18,24 @@ const header = ({ style, dashboard, loading }) => {
           <View style={styles.wrapper}>
             <Text style={styles.label}>投资回报率</Text>
             <Text style={[styles.title, { marginTop: 12 }]}>
-              <Text>{ROI}</Text>
-              % <Text style={{ fontSize: 13 }}>CNY</Text>
+              <Text>{ROIETH}</Text>
+              % <Text style={{ fontSize: 13 }}>ETH</Text>
             </Text>
           </View>
           <View style={styles.bottom}>
-            <Text style={styles.subtitle}>
-              <Text>{ROIUSD}</Text>
-              % USD
-            </Text>
-            <Text style={styles.subtitle}> | </Text>
             <Text style={styles.subtitle}>
               <Text>{ROIBTC}</Text>
               % BTC
             </Text>
             <Text style={styles.subtitle}> | </Text>
             <Text style={styles.subtitle}>
-              <Text>{ROIETH}</Text>
-              % ETH
+              <Text>{ROI}</Text>
+              % CNY
+            </Text>
+            <Text style={styles.subtitle}> | </Text>
+            <Text style={styles.subtitle}>
+              <Text>{ROIUSD}</Text>
+              % USD
             </Text>
           </View>
         </View>
