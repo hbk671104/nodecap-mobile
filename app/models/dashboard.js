@@ -8,7 +8,7 @@ export default {
   },
 
   effects: {
-    *fetch({ payload, callback }, { call, put }) {
+    * fetch({ payload, callback }, { call, put }) {
       try {
         const response = yield call(getDashboardData, payload);
         yield put({

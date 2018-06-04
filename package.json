@@ -7,7 +7,11 @@
 		"start-ios": "react-native run-ios",
 		"start-android": "react-native run-android",
 		"build-android": "cd android && ./gradlew assembleRelease",
-		"test": "jest"
+		"test": "jest",
+		"lint": "eslint --ext .js app",
+		"lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
+		"lint-staged": "lint-staged",
+		"lint-staged:js": "eslint --ext .js"
 	},
 	"dependencies": {
 		"accounting": "^0.4.1",
@@ -48,7 +52,16 @@
 		"babel-preset-react-native": "4.0.0",
 		"babel-preset-react-native-stage-0": "^1.0.1",
 		"jest": "23.0.0",
-		"react-test-renderer": "16.3.1"
+		"react-test-renderer": "16.3.1",
+		"eslint": "^4.14.0",
+		"eslint-config-airbnb": "^16.0.0",
+		"eslint-plugin-babel": "^4.0.0",
+		"eslint-plugin-compat": "^2.1.0",
+		"eslint-plugin-import": "^2.8.0",
+		"eslint-plugin-jsx-a11y": "^6.0.3",
+		"eslint-plugin-markdown": "^1.0.0-beta.6",
+		"eslint-plugin-react": "^7.0.1",
+		"babel-eslint": "^8.1.2"
 	},
 	"jest": {
 		"preset": "react-native"

@@ -1,4 +1,4 @@
-import request from '../utils/request'
+import request from '../utils/request';
 
 /**
  * 登录
@@ -7,10 +7,10 @@ import request from '../utils/request'
  * @returns {Promise<AxiosPromise<any>>}
  */
 export async function login({ account, password }) {
-	return request.post('/users/access-token', {
-		account,
-		password
-	})
+  return request.post('/users/access-token', {
+    account,
+    password,
+  });
 }
 
 /**
@@ -21,18 +21,19 @@ export async function login({ account, password }) {
  * @returns {AxiosPromise<any>}
  */
 export function setPassword({
-	password_reset_token,
-	confirm_password,
-	password
+  password_reset_token,
+  confirm_password,
+  password,
 }) {
-	return request.post('/users/reset-password', {
-		password_reset_token,
-		confirm_password,
-		password
-	})
+  return request.post('/users/reset-password', {
+    password_reset_token,
+    confirm_password,
+    password,
+  });
 }
 
-export function getCurrent() {}
+export function getCurrent() {
+}
 
 /**
  * 项目列表
@@ -40,14 +41,14 @@ export function getCurrent() {}
  * @returns {AxiosPromise<any>}
  */
 export function projectIndex(params = {}) {
-	const paramsTransform = p => ({
-		...params,
-		page: p.currentPage,
-		'per-page': p.pageSize
-	})
-	return request.get('/projects?expand=white_papers,post_user,invest_token', {
-		params: paramsTransform(params)
-	})
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/projects?expand=white_papers,post_user,invest_token', {
+    params: paramsTransform(params),
+  });
 }
 
 /**
@@ -56,9 +57,9 @@ export function projectIndex(params = {}) {
  * @returns {AxiosPromise<any>}
  */
 export function projectDetail({ id }) {
-	return request.get(
-		`/projects/${id}?expand=post_user,tags,white_papers,members`
-	)
+  return request.get(
+    `/projects/${id}?expand=post_user,tags,white_papers,members`
+  );
 }
 
 /**
@@ -66,8 +67,8 @@ export function projectDetail({ id }) {
  * @returns {AxiosPromise<any>}
  */
 export function getConstants() {
-	// request.get('/constants').then(console.log)
-	return request.get('/constants')
+  // request.get('/constants').then(console.log)
+  return request.get('/constants');
 }
 
 /**
@@ -76,7 +77,7 @@ export function getConstants() {
  * @returns {AxiosPromise<any>}
  */
 export function createProject(params) {
-	return request.post('/projects', params)
+  return request.post('/projects', params);
 }
 
 /**
@@ -86,7 +87,7 @@ export function createProject(params) {
  * @returns {AxiosPromise<any>}
  */
 export function editProject(id, params) {
-	return request.put(`/projects/${id}`, params)
+  return request.put(`/projects/${id}`, params);
 }
 
 /**
@@ -95,7 +96,7 @@ export function editProject(id, params) {
  * @returns {AxiosPromise<any>}
  */
 export function getUploadToken(type) {
-	return request.get(`/users/uptoken?dir=${type}`)
+  return request.get(`/users/uptoken?dir=${type}`);
 }
 
 /**
@@ -103,7 +104,7 @@ export function getUploadToken(type) {
  * @returns {AxiosPromise<any>}
  */
 export function getUser() {
-	return request.get('/user')
+  return request.get('/user');
 }
 
 /**
@@ -111,7 +112,7 @@ export function getUser() {
  * @returns {AxiosPromise<any>}
  */
 export function getUserById(id) {
-	return request.get(`/users/${id}`)
+  return request.get(`/users/${id}`);
 }
 
 /**
@@ -119,14 +120,14 @@ export function getUserById(id) {
  * @returns {AxiosPromise<any>}
  */
 export function updateUserById(data) {
-	return request.put(`/users/${data.id}`, data)
+  return request.put(`/users/${data.id}`, data);
 }
 
 /**
  * 标签库
  */
 export function getProjectTags() {
-	return request.get('/project-tags')
+  return request.get('/project-tags');
 }
 
 /**
@@ -135,15 +136,16 @@ export function getProjectTags() {
  * @returns {AxiosPromise}
  */
 export function deleteProjectTags(id) {
-	return request.delete(`/project-tags/${id}`)
+  return request.delete(`/project-tags/${id}`);
 }
+
 /**
  * 添加标签
  * @param id
  * @returns {AxiosPromise}
  */
 export function addProjectTags(payload) {
-	return request.post('/project-tags', payload)
+  return request.post('/project-tags', payload);
 }
 
 /**
@@ -152,9 +154,9 @@ export function addProjectTags(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function getProjectFinanceToken(projectId) {
-	return request.get(
-		`/projects/${projectId}/finance-tokens?expand=items,tokens`
-	)
+  return request.get(
+    `/projects/${projectId}/finance-tokens?expand=items,tokens`
+  );
 }
 
 /**
@@ -163,22 +165,23 @@ export function getProjectFinanceToken(projectId) {
  * @returns {AxiosPromise<any>}
  */
 export function getProjectFinanceEquities(projectId) {
-	return request.get(
-		`/projects/${projectId}/finance-equities?expand=tokens,items`
-	)
+  return request.get(
+    `/projects/${projectId}/finance-equities?expand=tokens,items`
+  );
 }
 
 /**
  * 项目 Token 投资记录
  */
 export function getProjectInvestTokens(projectId) {
-	return request.get(`/projects/${projectId}/invest-tokens?expand=tokens`)
+  return request.get(`/projects/${projectId}/invest-tokens?expand=tokens`);
 }
+
 /**
  * 项目股权投资记录
  */
 export function getProjectInvestEquities(projectId) {
-	return request.get(`/projects/${projectId}/invest-equities?expand=tokens`)
+  return request.get(`/projects/${projectId}/invest-equities?expand=tokens`);
 }
 
 /**
@@ -187,7 +190,7 @@ export function getProjectInvestEquities(projectId) {
  * @returns {AxiosPromise<any>}
  */
 export function getProjectReturnTokens(projectId) {
-	return request.get(`/projects/${projectId}/return-tokens`)
+  return request.get(`/projects/${projectId}/return-tokens`);
 }
 
 /**
@@ -197,7 +200,7 @@ export function getProjectReturnTokens(projectId) {
  * @returns {AxiosPromise<any>}
  */
 export function createProjectMembers({ projectId, member }) {
-	return request.post(`/projects/${projectId}/members`, member)
+  return request.post(`/projects/${projectId}/members`, member);
 }
 
 /**
@@ -207,7 +210,7 @@ export function createProjectMembers({ projectId, member }) {
  * @returns {AxiosPromise<any>}
  */
 export function updateProjectMembers({ memberId, member }) {
-	return request.put(`/project-members/${memberId}`, member)
+  return request.put(`/project-members/${memberId}`, member);
 }
 
 /**
@@ -217,10 +220,10 @@ export function updateProjectMembers({ memberId, member }) {
  * @returns {AxiosPromise<any>}
  */
 export function createProjectFinanceInfo({ projectId, financeInfo, type }) {
-	return request.post(
-		`/projects/${projectId}/finance-${type}?expand=tokens,items`,
-		financeInfo
-	)
+  return request.post(
+    `/projects/${projectId}/finance-${type}?expand=tokens,items`,
+    financeInfo
+  );
 }
 
 /**
@@ -230,7 +233,7 @@ export function createProjectFinanceInfo({ projectId, financeInfo, type }) {
  * @returns {AxiosPromise<any>}
  */
 export function updateProjectFinanceInfo({ id, financeInfo, type }) {
-	return request.put(`/finance-${type}/${id}?expand=tokens,items`, financeInfo)
+  return request.put(`/finance-${type}/${id}?expand=tokens,items`, financeInfo);
 }
 
 /**
@@ -240,7 +243,7 @@ export function updateProjectFinanceInfo({ id, financeInfo, type }) {
  * @returns {AxiosPromise<any>}
  */
 export function deleteProjectFinanceInfo({ id, type }) {
-	return request.delete(`/finance-${type}/${id}`)
+  return request.delete(`/finance-${type}/${id}`);
 }
 
 /**
@@ -250,8 +253,9 @@ export function deleteProjectFinanceInfo({ id, type }) {
  * @returns {AxiosPromise<any>}
  */
 export function createProjectInvestInfo({ projectId, financeInfo, type }) {
-	return request.post(`/projects/${projectId}/invest-${type}`, financeInfo)
+  return request.post(`/projects/${projectId}/invest-${type}`, financeInfo);
 }
+
 /**
  * 更新投资记录
  * @param projectId
@@ -259,8 +263,9 @@ export function createProjectInvestInfo({ projectId, financeInfo, type }) {
  * @returns {AxiosPromise<any>}
  */
 export function updateProjectInvestInfo({ id, financeInfo, type }) {
-	return request.put(`/invest-${type}/${id}`, financeInfo)
+  return request.put(`/invest-${type}/${id}`, financeInfo);
 }
+
 /**
  * 删除投资记录
  * @param projectId
@@ -268,7 +273,7 @@ export function updateProjectInvestInfo({ id, financeInfo, type }) {
  * @returns {AxiosPromise<any>}
  */
 export function deleteProjectInvestInfo({ id, type }) {
-	return request.delete(`/invest-${type}/${id}`)
+  return request.delete(`/invest-${type}/${id}`);
 }
 
 /**
@@ -278,7 +283,7 @@ export function deleteProjectInvestInfo({ id, type }) {
  * @returns {AxiosPromise<any>}
  */
 export function createProjectReturnToken({ projectId, returnToken }) {
-	return request.post(`/projects/${projectId}/return-tokens`, returnToken)
+  return request.post(`/projects/${projectId}/return-tokens`, returnToken);
 }
 
 /**
@@ -288,7 +293,7 @@ export function createProjectReturnToken({ projectId, returnToken }) {
  * @returns {AxiosPromise<any>}
  */
 export function updateProjectReturnToken({ id, returnToken }) {
-	return request.put(`/return-tokens/${id}`, returnToken)
+  return request.put(`/return-tokens/${id}`, returnToken);
 }
 
 /**
@@ -298,7 +303,7 @@ export function updateProjectReturnToken({ id, returnToken }) {
  * @returns {AxiosPromise<any>}
  */
 export function deleteProjectReturnToken({ id }) {
-	return request.delete(`/return-tokens/${id}`)
+  return request.delete(`/return-tokens/${id}`);
 }
 
 /**
@@ -307,15 +312,15 @@ export function deleteProjectReturnToken({ id }) {
  * @returns {AxiosPromise<any>}
  */
 export function portfolioIndex(params = {}) {
-	const paramsTransform = p => ({
-		...params,
-		page: p.currentPage,
-		'per-page': p.pageSize,
-		status: params.status || '4,5,6'
-	})
-	return request.get('/projects?expand=white_papers,post_user,invest_token', {
-		params: paramsTransform(params)
-	})
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+    status: params.status || '4,5,6',
+  });
+  return request.get('/projects?expand=white_papers,post_user,invest_token', {
+    params: paramsTransform(params),
+  });
 }
 
 /**
@@ -324,14 +329,14 @@ export function portfolioIndex(params = {}) {
  * @returns {AxiosPromise<any>}
  */
 export function resourceIndex(params = {}) {
-	const paramsTransform = p => ({
-		...params,
-		page: p.currentPage,
-		'per-page': p.pageSize
-	})
-	return request.get('/resources', {
-		params: paramsTransform(params)
-	})
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/resources', {
+    params: paramsTransform(params),
+  });
 }
 
 /**
@@ -340,7 +345,7 @@ export function resourceIndex(params = {}) {
  * @returns {AxiosPromise<any>}
  */
 export function resourceDetail({ id }) {
-	return request.get(`/resources/${id}`)
+  return request.get(`/resources/${id}`);
 }
 
 /**
@@ -349,7 +354,7 @@ export function resourceDetail({ id }) {
  * @returns {AxiosPromise<any>}
  */
 export function createResource(params) {
-	return request.post('/resources', params)
+  return request.post('/resources', params);
 }
 
 /**
@@ -359,7 +364,7 @@ export function createResource(params) {
  * @returns {AxiosPromise<any>}
  */
 export function editResource(id, params) {
-	return request.put(`/resources/${id}`, params)
+  return request.put(`/resources/${id}`, params);
 }
 
 /**
@@ -368,7 +373,7 @@ export function editResource(id, params) {
  * @returns {AxiosPromise}
  */
 export function deleteResource(id) {
-	return request.delete(`/resources/${id}`)
+  return request.delete(`/resources/${id}`);
 }
 
 /**
@@ -376,14 +381,14 @@ export function deleteResource(id) {
  * @returns {AxiosPromise<any>}
  */
 export function getUsers(req) {
-	const paramsTransform = p => ({
-		...req,
-		page: p.currentPage,
-		'per-page': p.pageSize
-	})
-	return request.get('/users', {
-		params: paramsTransform(req)
-	})
+  const paramsTransform = p => ({
+    ...req,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/users', {
+    params: paramsTransform(req),
+  });
 }
 
 /**
@@ -392,7 +397,7 @@ export function getUsers(req) {
  * @returns {AxiosPromise<any>}
  */
 export function createUser(payload) {
-	return request.post('/users', payload)
+  return request.post('/users', payload);
 }
 
 /**
@@ -401,7 +406,7 @@ export function createUser(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function updateUserProfile(payload) {
-	return request.put('/user', payload)
+  return request.put('/user', payload);
 }
 
 /**
@@ -410,7 +415,7 @@ export function updateUserProfile(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function updateUserPassword(payload) {
-	return request.post('/user/update-password', payload)
+  return request.post('/user/update-password', payload);
 }
 
 /**
@@ -419,7 +424,7 @@ export function updateUserPassword(payload) {
  * @returns {AxiosPromise}
  */
 export function deleteUserById(id) {
-	return request.delete(`/users/${id}`)
+  return request.delete(`/users/${id}`);
 }
 
 /**
@@ -427,7 +432,7 @@ export function deleteUserById(id) {
  * @returns {AxiosPromise<any>}
  */
 export function getAllRoles() {
-	return request.get('/rbac/roles')
+  return request.get('/rbac/roles');
 }
 
 /**
@@ -436,7 +441,7 @@ export function getAllRoles() {
  * @returns {AxiosPromise<any>}
  */
 export function createRole(payload) {
-	return request.post('/rbac/roles', payload)
+  return request.post('/rbac/roles', payload);
 }
 
 /**
@@ -445,7 +450,7 @@ export function createRole(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function updateRole(payload) {
-	return request.put(`/rbac/roles/${payload.id}`, payload)
+  return request.put(`/rbac/roles/${payload.id}`, payload);
 }
 
 /**
@@ -453,7 +458,7 @@ export function updateRole(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function getAllPermissions() {
-	return request.get('/rbac/permissions')
+  return request.get('/rbac/permissions');
 }
 
 /**
@@ -461,7 +466,7 @@ export function getAllPermissions() {
  * @returns {AxiosPromise<any>}
  */
 export function getFunds() {
-	return request.get('/funds')
+  return request.get('/funds');
 }
 
 /**
@@ -470,15 +475,16 @@ export function getFunds() {
  * @returns {AxiosPromise<any>}
  */
 export function createExternalProject(project) {
-	return request.post('/external-projects', project)
+  return request.post('/external-projects', project);
 }
+
 /**
  * 项目方提交项目
  * @param project
  * @returns {AxiosPromise<any>}
  */
 export function createExternalProjectMembers({ projectId, member }) {
-	return request.post(`external-projects/${projectId}/members`, member)
+  return request.post(`external-projects/${projectId}/members`, member);
 }
 
 /**
@@ -488,7 +494,7 @@ export function createExternalProjectMembers({ projectId, member }) {
  * @returns {AxiosPromise<any>}
  */
 export function createExternalFinancing({ id, financing, type }) {
-	return request.post(`external-projects/${id}/finance-${type}`, financing)
+  return request.post(`external-projects/${id}/finance-${type}`, financing);
 }
 
 /**
@@ -497,7 +503,7 @@ export function createExternalFinancing({ id, financing, type }) {
  * @returns {AxiosPromise<any>}
  */
 export function getExitToken(projectId) {
-	return request.get(`/projects/${projectId}/exit-tokens`)
+  return request.get(`/projects/${projectId}/exit-tokens`);
 }
 
 /**
@@ -506,7 +512,7 @@ export function getExitToken(projectId) {
  * @returns {AxiosPromise<any>}
  */
 export function createProjectExitToken(payload) {
-	return request.post(`/projects/${payload.projectId}/exit-tokens`, payload)
+  return request.post(`/projects/${payload.projectId}/exit-tokens`, payload);
 }
 
 /**
@@ -515,7 +521,7 @@ export function createProjectExitToken(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function updateProjectExitToken(payload) {
-	return request.put(`/exit-tokens/${payload.id}`, payload)
+  return request.put(`/exit-tokens/${payload.id}`, payload);
 }
 
 /**
@@ -524,13 +530,13 @@ export function updateProjectExitToken(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function deleteProjectExitToken(payload) {
-	return request.delete(`/exit-tokens/${payload.id}`)
+  return request.delete(`/exit-tokens/${payload.id}`);
 }
 
 export function getDashboardData(id) {
-	return request.get(`/statistic?fid=${id}`)
+  return request.get(`/statistic?fid=${id}`);
 }
 
 export function getProjectChartData(project_id) {
-	return request.get(`/projects/${project_id}/statistic`)
+  return request.get(`/projects/${project_id}/statistic`);
 }
