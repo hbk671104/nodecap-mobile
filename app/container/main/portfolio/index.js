@@ -23,26 +23,28 @@ export default class Portfolio extends Component {
 	handleIndexChange = index => this.setState({ index })
 
 	renderHeader = props => (
-		<View>
-			<NavBar
-				style={styles.navBar.container}
-				renderTitle={() => (
-					<Text style={styles.navBar.title}>
-						节点
-						<NodeCapIcon name="xiala" />
-					</Text>
-				)}
-			/>
-			<View style={styles.searchBar.container}>
-				<SearchBarDisplay />
-			</View>
-			<TabBar
-				{...props}
-				style={styles.tabBar.container}
-				labelStyle={styles.tabBar.label}
-				indicatorStyle={styles.tabBar.indicator}
-			/>
-		</View>
+		<NavBar
+			style={styles.navBar.container}
+			renderTitle={() => (
+				<Text style={styles.navBar.title}>
+					节点
+					<NodeCapIcon name="xiala" />
+				</Text>
+			)}
+			renderBottom={() => (
+				<View>
+					<View style={styles.searchBar.container}>
+						<SearchBarDisplay />
+					</View>
+					<TabBar
+						{...props}
+						style={styles.tabBar.container}
+						labelStyle={styles.tabBar.label}
+						indicatorStyle={styles.tabBar.indicator}
+					/>
+				</View>
+			)}
+		/>
 	)
 
 	renderScene = ({ route }) => {
