@@ -94,13 +94,17 @@ function getCurrentScreen(navigationState) {
   return route.routeName;
 }
 
-export const routerMiddleware = createReactNavigationReduxMiddleware(
-  'root',
-  state => state.router
-);
+export const routerMiddleware = createReactNavigationReduxMiddleware('root', state => state.router);
 const addListener = createReduxBoundAddListener('root');
 
-@codePush()
+@codePush({
+  updateDialog: {
+    title: 'Hotnode 版本更新',
+    mandatoryContinueButtonLabel: '点击安装',
+    mandatoryUpdateMessage: 'Hotnode 有新版本更新，点击下方按钮体验最新功能',
+  },
+  installMode: codePush.InstallMode.IMMEDIATE,
+})
 @connect(({ app, router }) => ({ app, router }))
 class Router extends PureComponent {
   componentWillMount() {
@@ -121,7 +125,7 @@ class Router extends PureComponent {
       return true;
     }
     return false;
-  }
+  };
 
   render() {
     const { dispatch, app, router } = this.props;
