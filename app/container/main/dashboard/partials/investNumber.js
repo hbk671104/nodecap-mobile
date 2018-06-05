@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import * as R from 'ramda';
 import { View, Text, ViewPropTypes } from 'react-native';
-import { VictoryAxis, VictoryChart, VictoryLine } from 'victory-native';
+import { VictoryLine } from 'victory-native';
 import NodeCapIcon from 'component/icon/nodecap';
 
 const investNumber = ({ style, data = {} }) => {
@@ -15,36 +15,32 @@ const investNumber = ({ style, data = {} }) => {
           <View style={{ flexDirection: 'row', marginTop: 16 }}>
             <Text style={styles.left.subtitle}>
               本周{'  '}
-              {data.week}{' '}
-              {data.week > 0 && (
-                <NodeCapIcon name="shangsheng" color="#09AC32" />
-              )}
+              {data.week} {data.week > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
               {'     '}
               本月{'  '}
-              {data.month}{' '}
-              {data.month > 0 && (
-                <NodeCapIcon name="shangsheng" color="#09AC32" />
-              )}
+              {data.month} {data.month > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
             </Text>
           </View>
         </View>
       </View>
       <View style={styles.right.container}>
-        <VictoryLine
-          style={{
-            data: {
-              stroke: '#35C3FF',
-            },
-          }}
-          interpolation="natural"
-          data={trend}
-          x="dateTime"
-          y="count"
-          width={91}
-          height={100}
-          domain={{ y: [0, 5] }}
-          padding={0}
-        />
+        {R.length(trend) > 1 && (
+          <VictoryLine
+            style={{
+              data: {
+                stroke: '#35C3FF',
+              },
+            }}
+            interpolation="natural"
+            data={trend}
+            x="dateTime"
+            y="count"
+            width={91}
+            height={100}
+            domain={{ y: [0, 5] }}
+            padding={0}
+          />
+        )}
       </View>
     </View>
   );
