@@ -54,7 +54,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 export default class Dashboard extends Component {
   state = {
     currentFund: R.pathOr([], ['funds'])(this.props)[0],
-  }
+  };
 
   componentWillMount() {
     const { currentFund } = this.state;
@@ -71,38 +71,30 @@ export default class Dashboard extends Component {
         });
       },
     });
-  }
+  };
 
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     const { setOffsetY } = this.props;
     setOffsetY(contentOffset.y);
-  }
+  };
 
   renderBackground = () => (
-    <Image
-      style={styles.background}
-      source={require('asset/dashboard_bg.png')}
-    />
-  )
+    <Image style={styles.background} source={require('asset/dashboard_bg.png')} />
+  );
 
-  renderForeground = () => <Header {...this.props} style={styles.foreground} />
+  renderForeground = () => <Header {...this.props} style={styles.foreground} />;
 
   renderFixedHeader = () => {
     const { colorRange, titleColorRange, offsetY, funds } = this.props;
     const { currentFund } = this.state;
     return (
       <NavBar
-        style={{ backgroundColor: colorRange }}
-        barStyle={
-          offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'
-        }
+        wrapperStyle={{ backgroundColor: colorRange }}
+        barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'}
         renderTitle={() => (
           <ModalDropdown
             style={styles.dropdown.container}
-            dropdownStyle={[
-              styles.dropdown.wrapper,
-              { height: funds.length * 45 },
-            ]}
+            dropdownStyle={[styles.dropdown.wrapper, { height: funds.length * 45 }]}
             showsVerticalScrollIndicator={false}
             options={funds}
             animated={false}
@@ -122,9 +114,7 @@ export default class Dashboard extends Component {
             renderSeparator={() => <View style={styles.dropdown.separator} />}
             onSelect={(i, value) => this.getDashboardData(value.id)}
           >
-            <Animated.Text
-              style={[styles.navbar.title, { color: titleColorRange }]}
-            >
+            <Animated.Text style={[styles.navbar.title, { color: titleColorRange }]}>
               {currentFund.name}
               <AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
             </Animated.Text>
@@ -132,7 +122,7 @@ export default class Dashboard extends Component {
         )}
       />
     );
-  }
+  };
 
   render() {
     const { scrollY, setOffsetY, dashboard, loading } = this.props;
@@ -182,11 +172,7 @@ export default class Dashboard extends Component {
             weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
           />
           <ReturnRateChart style={styles.roiChart} {...this.props} />
-          <DashboardGroup
-            loading={loading}
-            title="已投项目数量"
-            icon="yitouxiangmu"
-          >
+          <DashboardGroup loading={loading} title="已投项目数量" icon="yitouxiangmu">
             <InvestNumber data={dashboard.portfolio} />
           </DashboardGroup>
           <DashboardGroup
@@ -204,9 +190,7 @@ export default class Dashboard extends Component {
               title="投资回报率 TOP 5"
               icon="TOP"
             >
-              {dashboard.ROIRank.map((r, i) => (
-                <ProjectItem key={i} index={i} data={r} />
-              ))}
+              {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
             </DashboardGroup>
           )}
         </ParallaxScrollView>

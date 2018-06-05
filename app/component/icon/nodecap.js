@@ -6,7 +6,9 @@
 import createIconSet from 'react-native-vector-icons/lib/create-icon-set';
 
 const glyphMap = {
+  bingtu: 59035,
   icomoon: 58893,
+  qianbi: 58917,
   orderup: 58885,
   chakan: 59011,
   tubiaozhizuomoban: 58896,
@@ -19,6 +21,7 @@ const glyphMap = {
   investment: 58884,
   tianjia: 58913,
   sousuo: 58914,
+  qushi: 58890,
   touzi: 58891,
   lirun: 58892,
   bitebi: 58898,

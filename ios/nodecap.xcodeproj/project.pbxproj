@@ -49,7 +49,7 @@
 		403BAC9920C13AAF0057EC84 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 403BAC9720C13AAF0057EC84 /* logo@3x.png */; };
 		403BAC9C20C13ABD0057EC84 /* logo_text@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 403BAC9A20C13ABD0057EC84 /* logo_text@3x.png */; };
 		403BAC9D20C13ABD0057EC84 /* logo_text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 403BAC9B20C13ABD0057EC84 /* logo_text@2x.png */; };
-		4096CCAD20BE8918003631CE /* NodeCapIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4096CCAC20BE8918003631CE /* NodeCapIcon.ttf */; };
+		40C1B94320C66C8300B0E87B /* NodeCapIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */; };
 		5B63BBE8925B43D98F6A9B61 /* libRNShimmer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B57D6F745BD47CC9C98E92F /* libRNShimmer.a */; };
 		5D1D68B9CFB047638E79718F /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C72041AC8FEF4D5699D2A0D7 /* libCodePush.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -440,7 +440,7 @@
 		403BAC9720C13AAF0057EC84 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
 		403BAC9A20C13ABD0057EC84 /* logo_text@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_text@3x.png"; sourceTree = "<group>"; };
 		403BAC9B20C13ABD0057EC84 /* logo_text@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_text@2x.png"; sourceTree = "<group>"; };
-		4096CCAC20BE8918003631CE /* NodeCapIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NodeCapIcon.ttf; sourceTree = "<group>"; };
+		40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NodeCapIcon.ttf; sourceTree = "<group>"; };
 		48F49B7B2EA546009F727FAA /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		4E14F06AB1DF476D840A676D /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		5A381B468E364BA59B3FAB34 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -762,7 +762,7 @@
 				B5EC2BF3B4204AE29D45C32D /* Octicons.ttf */,
 				E575583D050D4CA28BDBCE1B /* SimpleLineIcons.ttf */,
 				48F49B7B2EA546009F727FAA /* Zocial.ttf */,
-				4096CCAC20BE8918003631CE /* NodeCapIcon.ttf */,
+				40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1403,6 +1403,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40C1B94320C66C8300B0E87B /* NodeCapIcon.ttf in Resources */,
 				403BAC9D20C13ABD0057EC84 /* logo_text@2x.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
@@ -1410,7 +1411,6 @@
 				969DFD67FCBB4856A862D735 /* EvilIcons.ttf in Resources */,
 				BE7AFD7679A54C05A8F2E3A9 /* Feather.ttf in Resources */,
 				2F819958CA6145118836A5D4 /* FontAwesome.ttf in Resources */,
-				4096CCAD20BE8918003631CE /* NodeCapIcon.ttf in Resources */,
 				6E4E6F3EA3B547FD9F2F5C7F /* Foundation.ttf in Resources */,
 				1CAA913120FB420F92FC8E98 /* Ionicons.ttf in Resources */,
 				92649037DCE44CB788F15222 /* MaterialCommunityIcons.ttf in Resources */,

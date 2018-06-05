@@ -1,17 +1,22 @@
-import React, { Component } from 'react'
-import { View, ScrollView, Text } from 'react-native'
-import styles from './style'
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+
+import List from 'component/uikit/list';
+import styles from './style';
 
 export default class Unexchangeable extends Component {
-	render() {
-		return (
-			<View style={styles.container}>
-				<ScrollView>
-					<Text>噢哈哈哈哈哈哈</Text>
-					<Text>噢哈哈哈哈哈哈</Text>
-					<Text>噢哈哈哈哈哈哈</Text>
-				</ScrollView>
-			</View>
-		)
-	}
+  renderItem = ({ item }) => <Text>{item}</Text>;
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <List
+          data={[1, 2, 3]}
+          renderItem={this.renderItem}
+          onScroll={this.props.onScroll}
+          scrollEventThrottle={500}
+        />
+      </View>
+    );
+  }
 }

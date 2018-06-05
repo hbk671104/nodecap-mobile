@@ -1,40 +1,40 @@
-import { Dimensions } from 'react-native'
+import { Dimensions } from 'react-native';
 
 export default {
   container: {
-    flex: 1
+    flex: 1,
   },
   initialLayout: {
     height: 0,
-    width: Dimensions.get('window').width
+    width: Dimensions.get('window').width,
   },
   navBar: {
     container: {
-      backgroundColor: '#1890FF'
+      backgroundColor: 'transparent',
     },
     title: {
       color: 'white',
       fontSize: 17,
-      fontWeight: 'bold'
-    }
+      fontWeight: 'bold',
+    },
   },
   searchBar: {
     container: {
-      backgroundColor: '#1890FF',
-      paddingHorizontal: 12
-    }
+      backgroundColor: 'transparent',
+      paddingHorizontal: 12,
+    },
   },
   tabBar: {
     container: {
-      backgroundColor: '#1890FF'
+      backgroundColor: 'transparent',
     },
     label: {
       fontSize: 14,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
     },
     indicator: {
       height: 3,
-      backgroundColor: 'white'
-    }
-  }
-}
+      backgroundColor: 'white',
+    },
+  },
+};
