@@ -9,6 +9,7 @@ const touchable = (props) => {
   return (
     <Touchable
       {...props}
+      activeOpacity={0.6}
       hitSlop={props.hitSlop}
       {...{
         [props.foreground ? 'foreground' : 'background']: effect,

@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  FlatList,
-  ActivityIndicator,
-  ViewPropTypes,
-} from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, ViewPropTypes } from 'react-native';
 import * as Color from 'component/uikit/color';
 
 class List extends Component {
@@ -26,25 +20,26 @@ class List extends Component {
 
     // styles
     style: ViewPropTypes.style,
-  }
+  };
 
   static defaultProps = {
     loading: false,
     refreshing: false,
     loadingMore: false,
-  }
-  extractKey = (item, index) => item.id || `${index}`
+  };
+
+  extractKey = (item, index) => item.id || `${index}`;
 
   handleOnRefresh = () => {
     this.props.onRefresh();
-  }
+  };
 
   handleOnEndReached = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
       this.props.onEndReached();
       this.onEndReachedCalledDuringMomentum = true;
     }
-  }
+  };
 
   renderFooter = () => {
     if (this.props.renderFooter) {
@@ -58,7 +53,7 @@ class List extends Component {
       );
     }
     return null;
-  }
+  };
 
   renderEmpty = () => {
     if (this.props.refreshing || this.props.loading) {
@@ -72,7 +67,7 @@ class List extends Component {
         <Text>我是空页面</Text>
       </View>
     );
-  }
+  };
 
   render() {
     const {
@@ -118,7 +113,7 @@ class List extends Component {
             }
           : {})}
         keyboardShouldPersistTaps="handled"
-        keyExtractor={this.props.keyExtractor}
+        keyExtractor={this.extractKey}
       />
     );
   }

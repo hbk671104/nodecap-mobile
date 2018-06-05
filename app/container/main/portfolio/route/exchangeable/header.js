@@ -74,7 +74,7 @@ const header = ({ value, onSelect }) => (
 );
 
 header.propTypes = {
-  value: PropTypes.object,
+  value: PropTypes.string,
   onSelect: PropTypes.func,
 };
 
