@@ -33,7 +33,7 @@ class List extends Component {
     refreshing: false,
     loadingMore: false,
   }
-  extractKey = (item, index) => `${index}`
+  extractKey = (item, index) => item.id || `${index}`
 
   handleOnRefresh = () => {
     this.props.onRefresh();
@@ -103,19 +103,19 @@ class List extends Component {
         ItemSeparatorComponent={renderSeparator}
         {...(onRefresh
           ? {
-            onRefresh: this.handleOnRefresh,
-            refreshing,
-          }
+              onRefresh: this.handleOnRefresh,
+              refreshing,
+            }
           : {})}
         {...(onEndReached
           ? {
-            onEndReached: this.handleOnEndReached,
-            onEndReachedThreshold: 0.5,
-            onMomentumScrollBegin: () => {
-              this.onEndReachedCalledDuringMomentum = false;
-              return null;
-            },
-          }
+              onEndReached: this.handleOnEndReached,
+              onEndReachedThreshold: 0.5,
+              onMomentumScrollBegin: () => {
+                this.onEndReachedCalledDuringMomentum = false;
+                return null;
+              },
+            }
           : {})}
         keyboardShouldPersistTaps="handled"
         keyExtractor={this.props.keyExtractor}
