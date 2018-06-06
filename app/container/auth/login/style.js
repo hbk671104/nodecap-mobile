@@ -4,8 +4,6 @@ export default {
     backgroundColor: 'white',
   },
   logo: {
-    width: 187,
-    height: 85,
     alignSelf: 'center',
     marginTop: 128,
   },

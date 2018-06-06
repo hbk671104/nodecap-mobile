@@ -8,7 +8,7 @@ export default {
       borderRadius: 4,
     },
     highlight: {
-      backgroundColor: '#FF8A00',
+      backgroundColor: '#1890FF',
     },
   },
   title: {
