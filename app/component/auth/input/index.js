@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TextInput, ViewPropTypes } from 'react-native';
+import { View, Text, ViewPropTypes } from 'react-native';
+import TextInput from 'component/uikit/textInput';
 import styles from './style';
 
 class AuthInput extends PureComponent {
@@ -11,17 +12,10 @@ class AuthInput extends PureComponent {
     onChange: PropTypes.func,
     value: PropTypes.string,
     inputProps: PropTypes.object,
-  }
+  };
 
   render() {
-    const {
-      style,
-      title,
-      placeholder,
-      onChange,
-      value,
-      inputProps,
-    } = this.props;
+    const { style, title, placeholder, onChange, value, inputProps } = this.props;
     return (
       <View style={[style]}>
         <Text style={styles.title}>{title}</Text>
@@ -31,9 +25,6 @@ class AuthInput extends PureComponent {
           placeholder={placeholder}
           value={value}
           onChangeText={onChange}
-          placeholderTextColor="#999999"
-          underlineColorAndroid="transparent"
-          clearButtonMode="while-editing"
         />
       </View>
     );
