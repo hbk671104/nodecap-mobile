@@ -12,6 +12,47 @@ export default {
     justifyContent: 'center',
     // alignItems: 'center',
   },
+  empty: {
+    group: {
+      container: {
+        alignItems: 'center',
+      },
+      title: {
+        color: '#666666',
+        fontSize: 17,
+        fontWeight: 'bold',
+        lineHeight: 24,
+        textAlign: 'center',
+      },
+      subtitle: {
+        fontSize: 12,
+        color: '#666666',
+        fontWeight: 'bold',
+        marginTop: 12,
+      },
+    },
+    bottom: {
+      container: {
+        position: 'absolute',
+        bottom: 18,
+        left: 0,
+        right: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      title: {
+        fontSize: 14,
+        color: '#666666',
+        fontWeight: 'bold',
+      },
+      subtitle: {
+        marginTop: 5,
+        fontSize: 14,
+        color: '#1890FF',
+        fontWeight: 'bold',
+      },
+    },
+  },
   background: {
     width: window.width,
     height: PARALLAX_HEADER_HEIGHT,

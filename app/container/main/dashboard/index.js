@@ -1,23 +1,15 @@
 import React, { Component } from 'react';
-import {
-  Animated,
-  Button,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-  ActivityIndicator,
-} from 'react-native';
+import { Animated, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import { Card } from 'react-native-elements';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
+import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
+import Empty from 'component/empty';
 
 import Header from './partials/header';
 import ProfitSwiper from './partials/profitSwiper';
@@ -125,19 +117,46 @@ export default class Dashboard extends Component {
   };
 
   render() {
-    const { scrollY, setOffsetY, dashboard, loading } = this.props;
+    const { scrollY, dashboard, loading } = this.props;
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
 
     if ((!dashboard || !this.state.currentFund) && loading) {
       return (
-        <View style={styles.container}>
-          <ActivityIndicator size="large" />
-        </View>
+        <Empty>
+          <ActivityIndicator size="large" />;
+        </Empty>
       );
     }
 
     if (!dashboard || !this.state.currentFund) {
-      return null;
+      return (
+        <Empty>
+          <View style={styles.empty.group.container}>
+            <Text style={styles.empty.group.title}>
+              {'完善项目和投资记录，\n即可在此查看基金收益统计'}
+            </Text>
+            <Text style={styles.empty.group.subtitle}>
+              <NodeCapIcon name="diannao" color="#4A4A4A" size={14} />
+              {'  '}使用电脑端打开
+              <Text style={{ color: '#1890FF' }} onPress={() => Communications.web('https://hotnode.io')}>
+                {' hotnode.io '}
+              </Text>，录入更快捷、高效
+            </Text>
+          </View>
+          <View style={styles.empty.bottom.container}>
+            <Text style={styles.empty.bottom.title}>
+              <NodeCapIcon name="kefu" color="black" size={14} />
+              {'  '}7x24小时服务热线
+            </Text>
+            <Text
+              style={styles.empty.bottom.subtitle}
+              onPress={() => Communications.phonecall('159-3715-9166', false)}
+            >
+              159-3715-9166
+            </Text>
+          </View>
+        </Empty>
+      );
     }
 
     return (
