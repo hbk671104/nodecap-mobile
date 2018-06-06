@@ -138,7 +138,7 @@ export default class Dashboard extends Component {
             <Text style={styles.empty.group.subtitle}>
               <NodeCapIcon name="diannao" color="#4A4A4A" size={14} />
               {'  '}使用电脑端打开
-              <Text style={{ color: '#1890FF' }} onPress={() => Communications.web('hotnode.io')}>
+              <Text style={{ color: '#1890FF' }} onPress={() => Communications.web('https://hotnode.io')}>
                 {' hotnode.io '}
               </Text>，录入更快捷、高效
             </Text>
