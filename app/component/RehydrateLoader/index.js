@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { View, AsyncStorage } from 'react-native';
 import { persistStore } from 'redux-persist';
+import { initializeListeners } from 'react-navigation-redux-helpers';
+import SplashScreen from 'react-native-splash-screen';
 import { connect } from '../../utils/dva';
 import { NavigationActions } from '../../utils';
 import store from '../../../index';
-import { initializeListeners } from 'react-navigation-redux-helpers';
-import SplashScreen from 'react-native-splash-screen';
+
 
 @connect(({ global, login }) => ({
   constants: global.constants,
@@ -18,10 +19,6 @@ class RehydrateLoader extends Component {
   }
 
   componentWillMount() {
-    this.props.dispatch({
-      type: 'global/startup',
-    });
-
     persistStore(
       store,
       {
@@ -30,9 +27,14 @@ class RehydrateLoader extends Component {
       },
       async () => {
         if (this.props.isLogin) {
+          this.props.dispatch({
+            type: 'global/startup',
+          });
+
           await this.props.dispatch({
             type: 'global/initial',
           });
+
           this.props.dispatch(
             NavigationActions.navigate({
               routeName: 'Main',

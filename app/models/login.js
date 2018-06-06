@@ -31,6 +31,7 @@ export default {
             type: 'loginSuccess',
             payload: {
               token: data.access_token,
+              companies: data.companies,
             },
           });
           yield put({
@@ -61,6 +62,7 @@ export default {
           type: 'loginSuccess',
           payload: {
             token: data.access_token,
+            companies: data.companies,
           },
         });
         yield put({
@@ -86,6 +88,7 @@ export default {
     * logout(_, { put }) {
       try {
         request.defaults.headers.common.Authorization = null;
+        request.defaults.headers.common['X-Company-ID'] = null;
         routerRedux.replace('/user/login');
       } finally {
         yield put({
@@ -108,12 +111,14 @@ export default {
       return {
         ...state,
         token: payload.token,
+        companies: payload.companies,
       };
     },
     logoutSuccess(state) {
       return {
         ...state,
         token: null,
+        companies: null,
       };
     },
     loginFailure(state, { payload }) {

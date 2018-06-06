@@ -34,8 +34,10 @@ export default {
     },
     * initial({ callback }, { select, put, call, all, take }) {
       const token = yield select(state => state.login.token);
+      const companies = yield select(state => state.login.companies);
       if (token) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+        axios.defaults.headers.common['X-Company-ID'] = R.path(['companies', 0, 'id'])(companies);
       }
       try {
         const res = yield call(getAllPermissions);

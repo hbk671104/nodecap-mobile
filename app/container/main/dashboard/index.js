@@ -131,14 +131,9 @@ export default class Dashboard extends Component {
 
     if (R.path(['fundsError', 'status'])(this.props) === 403) {
       return (
-        <View style={{
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-        >
+        <Empty>
           <Text>您尚未拥有查看 Dashboard 的权限</Text>
-        </View>
+        </Empty>
       );
     }
 
