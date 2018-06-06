@@ -13,3 +13,19 @@ export const raised = {
     },
   }),
 };
+
+export const shadow = {
+  ...Platform.select({
+    ios: {
+      shadowColor: 'rgba(44, 64, 83, 0.1)',
+      shadowRadius: 4,
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+    },
+    android: {
+      elevation: 4,
+    },
+  }),
+};
