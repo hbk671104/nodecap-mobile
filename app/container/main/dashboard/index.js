@@ -128,7 +128,11 @@ export default class Dashboard extends Component {
     }
 
     if (!dashboard || !this.state.currentFund) {
-      return null;
+      return (
+        <View style={styles.container}>
+          <BlurView style={styles.blur} blurAmount={8} blurType="light" />;
+        </View>
+      );
     }
 
     return (
@@ -185,7 +189,6 @@ export default class Dashboard extends Component {
             </DashboardGroup>
           )}
         </ParallaxScrollView>
-        <BlurView style={styles.blur} blurAmount={8} blurType="light" />
       </View>
     );
   }
