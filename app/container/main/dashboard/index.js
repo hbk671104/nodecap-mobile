@@ -83,7 +83,7 @@ export default class Dashboard extends Component {
     return (
       <NavBar
         wrapperStyle={{ backgroundColor: colorRange }}
-        barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'default' : 'light-content'}
+        barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
         renderTitle={() => (
           <ModalDropdown
             style={styles.dropdown.container}
@@ -200,11 +200,10 @@ export default class Dashboard extends Component {
             weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
           />
           <ReturnRateChart style={styles.roiChart} {...this.props} />
-          <DashboardGroup loading={loading} title="已投项目数量" icon="yitouxiangmu">
+          <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
             <InvestNumber data={dashboard.portfolio} />
           </DashboardGroup>
           <DashboardGroup
-            loading={loading}
             style={styles.dashboardGroup}
             title="投资金额"
             icon="touzijine"
@@ -213,7 +212,6 @@ export default class Dashboard extends Component {
           </DashboardGroup>
           {roiRankCount > 0 && (
             <DashboardGroup
-              loading={loading}
               style={styles.dashboardGroup}
               title="投资回报率 TOP 5"
               icon="TOP"

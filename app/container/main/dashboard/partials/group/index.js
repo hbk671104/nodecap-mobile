@@ -6,7 +6,7 @@ import Shimmer from 'react-native-shimmer';
 import NodeCapIcon from 'component/icon/nodecap';
 import styles from './style';
 
-const dashboardGroup = ({ style, icon, loading, title, children }) => {
+const dashboardGroup = ({ style, icon, title, children }) => {
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.title}>
@@ -14,9 +14,7 @@ const dashboardGroup = ({ style, icon, loading, title, children }) => {
         {'  '}
         {title}
       </Text>
-      <Shimmer animating={loading}>
-        <Card containerStyle={styles.card}>{children}</Card>
-      </Shimmer>
+      <Card containerStyle={styles.card}>{children}</Card>
     </View>
   );
 };
@@ -24,7 +22,6 @@ const dashboardGroup = ({ style, icon, loading, title, children }) => {
 dashboardGroup.propTypes = {
   style: ViewPropTypes.style,
   icon: PropTypes.string,
-  loading: PropTypes.bool,
   title: PropTypes.string.isRequired,
 };
 

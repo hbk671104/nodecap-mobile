@@ -13,33 +13,43 @@ const header = ({ style, dashboard, loading }) => {
   const ROIETH = R.path(['ROI', 'ETH'])(dashboard);
   return (
     <View style={[styles.container, style]}>
-      <Shimmer animating={loading}>
-        <View>
-          <View style={styles.wrapper}>
-            <Text style={styles.label}>投资回报率</Text>
+      <View>
+        <View style={styles.wrapper}>
+          <Text style={styles.label}>投资回报率</Text>
+          <Shimmer animating={loading}>
             <Text style={[styles.title, { marginTop: 12 }]}>
               <Text>{ROIETH}</Text>
               % <Text style={{ fontSize: 13 }}>ETH</Text>
             </Text>
-          </View>
-          <View style={styles.bottom}>
+          </Shimmer>
+        </View>
+        <View style={styles.bottom}>
+          <Shimmer animating={loading}>
             <Text style={styles.subtitle}>
               <Text>{ROIBTC}</Text>
               % BTC
             </Text>
-            <Text style={styles.subtitle}> | </Text>
+          </Shimmer>
+          <Text style={styles.subtitle}>
+            {'  '}|{'  '}
+          </Text>
+          <Shimmer animating={loading}>
             <Text style={styles.subtitle}>
               <Text>{ROI}</Text>
               % CNY
             </Text>
-            <Text style={styles.subtitle}> | </Text>
+          </Shimmer>
+          <Text style={styles.subtitle}>
+            {'  '}|{'  '}
+          </Text>
+          <Shimmer animating={loading}>
             <Text style={styles.subtitle}>
               <Text>{ROIUSD}</Text>
               % USD
             </Text>
-          </View>
+          </Shimmer>
         </View>
-      </Shimmer>
+      </View>
     </View>
   );
 };

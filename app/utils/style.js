@@ -25,7 +25,7 @@ export const shadow = {
       },
     },
     android: {
-      elevation: 4,
+      elevation: 3,
     },
   }),
 };

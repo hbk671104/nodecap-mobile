@@ -31,6 +31,7 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
   return (
     <View style={[styles.container, style]}>
       <Swiper
+        style={{ zIndex: 15 }}
         height={100}
         autoplay
         autoplayTimeout={10}
@@ -43,31 +44,24 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
           const weeklyProfit = R.path([b, 'count'])(weekly);
           return (
             <Card key={b} containerStyle={styles.card}>
-              <Shimmer opacity={0.8}>
-                <View style={{ alignItems: 'center' }}>
-                  <Text style={styles.label}>浮动盈亏</Text>
-                  <View style={styles.content.container}>
-                    <Text
-                      style={[
-                        styles.content.gain,
-                        totalProfit < 0 && styles.content.lost,
-                      ]}
-                    >
+              <View style={{ alignItems: 'center' }}>
+                <Text style={styles.label}>浮动盈亏</Text>
+                <View style={styles.content.container}>
+                  <Shimmer opacity={0.8}>
+                    <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
                       {symbol(b)} <Text>{totalProfit}</Text>{' '}
                       <Text style={styles.content.label}>{b}</Text>
                     </Text>
-                  </View>
-                  <View style={styles.sub.container}>
-                    <Text style={styles.sub.text}>
-                      {symbol(b, 12)} <Text>{dailyProfit}</Text> {'今日'}{' '}
-                      {arrow()}
-                      {'     '}
-                      {symbol(b, 12)} <Text>{weeklyProfit}</Text> {'本周'}{' '}
-                      {arrow()}
-                    </Text>
-                  </View>
+                  </Shimmer>
                 </View>
-              </Shimmer>
+                <View style={styles.sub.container}>
+                  <Text style={styles.sub.text}>
+                    {symbol(b, 12)} <Text>{dailyProfit}</Text> {'今日'} {arrow(dailyProfit)}
+                    {'     '}
+                    {symbol(b, 12)} <Text>{weeklyProfit}</Text> {'本周'} {arrow(weeklyProfit)}
+                  </Text>
+                </View>
+              </View>
             </Card>
           );
         })}
@@ -82,6 +76,7 @@ const styles = {
     top: -48,
     left: 0,
     right: 0,
+    zIndex: 10,
   },
   card: {
     margin: 0,
@@ -93,6 +88,7 @@ const styles = {
     shadowRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    elevation: 4,
   },
   label: {
     fontSize: 13,
