@@ -12,6 +12,9 @@ export default {
     justifyContent: 'center',
     // alignItems: 'center',
   },
+  blur: {
+    ...StyleSheet.absoluteFillObject,
+  },
   background: {
     width: window.width,
     height: PARALLAX_HEADER_HEIGHT,

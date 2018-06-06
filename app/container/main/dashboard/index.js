@@ -1,16 +1,7 @@
 import React, { Component } from 'react';
-import {
-  Animated,
-  Button,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  StatusBar,
-  ActivityIndicator,
-} from 'react-native';
+import { Animated, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
-import { Card } from 'react-native-elements';
+import { BlurView } from 'react-native-blur';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
@@ -194,6 +185,7 @@ export default class Dashboard extends Component {
             </DashboardGroup>
           )}
         </ParallaxScrollView>
+        <BlurView style={styles.blur} blurAmount={8} blurType="light" />
       </View>
     );
   }
