@@ -124,7 +124,7 @@ export default class Dashboard extends Component {
     if ((!dashboard || !this.state.currentFund) && loading) {
       return (
         <Empty>
-          <ActivityIndicator size="large" />;
+          <ActivityIndicator size="large" />
         </Empty>
       );
     }

@@ -1,14 +1,40 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import React, { Component } from 'react';
+import { View, Image, findNodeHandle, StyleSheet, Dimensions } from 'react-native';
 import { BlurView } from 'react-native-blur';
 
-const empty = props => (
-  <View style={styles.container}>
-    <Image style={styles.blur} source={require('asset/dashboard_placeholder.png')} />
-    <BlurView style={styles.blur} blurAmount={8} blurType="light" />
-    <View style={styles.wrapper}>{props.children}</View>
-  </View>
-);
+class Empty extends Component {
+  state = {
+    viewRef: null,
+  };
+
+  imageLoaded = () => {
+    this.setState({ viewRef: findNodeHandle(this.backgroundImage) });
+  };
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Image
+          ref={(img) => {
+            this.backgroundImage = img;
+          }}
+          style={styles.blur}
+          source={require('asset/dashboard_placeholder.png')}
+          onLoadEnd={this.imageLoaded}
+        />
+        {!!this.state.viewRef && (
+          <BlurView
+            viewRef={this.state.viewRef}
+            style={styles.blur}
+            blurAmount={8}
+            blurType="light"
+          />
+        )}
+        <View style={styles.wrapper}>{this.props.children}</View>
+      </View>
+    );
+  }
+}
 
 const styles = {
   container: {
@@ -21,7 +47,9 @@ const styles = {
   },
   blur: {
     ...StyleSheet.absoluteFillObject,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
   },
 };
 
-export default empty;
+export default Empty;

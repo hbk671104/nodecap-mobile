@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as R from 'ramda';
 import store from '../../index';
-import config from 'react-native-config';
+import Config from 'react-native-config';
 import { Toast } from 'antd-mobile';
 
 const codeMessage = {
@@ -25,10 +25,10 @@ const codeMessage = {
 };
 
 const instance = axios.create({
-  baseURL: config.API_URL,
+  baseURL: Config.API_URL,
   timeout: 60000,
 });
-console.log(config);
+console.log(Config);
 instance.interceptors.response.use((res) => {
   const hasPagination = R.allPass([
     R.has('x-pagination-current-page'),
@@ -63,7 +63,10 @@ function checkStatus({ response = {} }) {
     });
     return;
   }
-  const errortext = codeMessage[R.path(['data', 'code'])(response)] || R.path(['data', 'message'])(response) || R.path(['data', 0, 'message'])(response);
+  const errortext =
+    codeMessage[R.path(['data', 'code'])(response)] ||
+    R.path(['data', 'message'])(response) ||
+    R.path(['data', 0, 'message'])(response);
   // const errorObject = global.__DEV__ ? {
   //   message: `请求错误 ${response.status}: ${R.path(['config', 'url'])(response)}`,
   //   description: errortext,
