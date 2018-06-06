@@ -16,6 +16,7 @@ import { connect } from './utils/dva';
 
 // Screen
 import Login from 'container/auth/login';
+import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
 import NodeCapIcon from 'component/icon/nodecap';
@@ -23,6 +24,7 @@ import NodeCapIcon from 'component/icon/nodecap';
 const AuthStack = createStackNavigator(
   {
     Login,
+    SetPassword,
   },
   {
     headerMode: 'none',

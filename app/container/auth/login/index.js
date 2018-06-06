@@ -43,7 +43,7 @@ class Login extends Component {
               rules: [{ required: true, message: '请输入邮箱账号' }],
             })(<AuthInput style={styles.input} title="账号" placeholder="请输入邮箱账号" />)}
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: '请输入密码' }],
+              rules: [{ required: true, message: '请输入密码' }],
             })(
               <AuthInput
                 style={[styles.input, { marginTop: 27 }]}
