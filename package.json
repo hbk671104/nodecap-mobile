@@ -7,7 +7,7 @@
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start-ios": "react-native run-ios",
     "start-android": "react-native run-android",
-    "build-android": "cd android && ./gradlew assembleRelease",
+    "build-android": "cd android && ./gradlew assembleRelease && cp ./app/build/outputs/apk/app-release.apk $HOME/Desktop",
     "test": "jest",
     "lint": "eslint --ext .js app",
     "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",

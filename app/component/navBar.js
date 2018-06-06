@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, Text, ViewPropTypes } from 'react-native';
+import { View, Animated } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 import StatusBar from './uikit/statusBar';
