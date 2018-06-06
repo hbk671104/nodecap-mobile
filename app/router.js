@@ -16,6 +16,7 @@ import { connect } from './utils/dva';
 
 // Screen
 import Login from 'container/auth/login';
+import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
 import NodeCapIcon from 'component/icon/nodecap';
@@ -23,6 +24,7 @@ import NodeCapIcon from 'component/icon/nodecap';
 const AuthStack = createStackNavigator(
   {
     Login,
+    SetPassword,
   },
   {
     headerMode: 'none',
@@ -32,12 +34,12 @@ const AuthStack = createStackNavigator(
 const Tab = createBottomTabNavigator(
   {
     Dashboard,
-    Portfolio: {
-      screen: Portfolio,
-      navigationOptions: {
-        title: '投资库',
-      },
-    },
+    // Portfolio: {
+    //   screen: Portfolio,
+    //   navigationOptions: {
+    //     title: '投资库',
+    //   },
+    // },
   },
   {
     backBehavior: 'none',

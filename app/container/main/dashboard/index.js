@@ -33,6 +33,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 @connect(({ dashboard, fund, loading }) => ({
   dashboard: dashboard.data,
   funds: fund.funds,
+  fundsError: fund.error,
   loading: loading.effects['dashboard/fetch'],
 }))
 @compose(
@@ -53,7 +54,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 )
 export default class Dashboard extends Component {
   state = {
-    currentFund: R.pathOr([], ['funds'])(this.props)[0],
+    currentFund: R.pathOr({}, ['funds', 0])(this.props),
   };
 
   componentWillMount() {
@@ -132,6 +133,19 @@ export default class Dashboard extends Component {
       return (
         <View style={styles.container}>
           <ActivityIndicator size="large" />
+        </View>
+      );
+    }
+
+    if (R.path(['fundsError', 'status'])(this.props) === 403) {
+      return (
+        <View style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+        >
+          <Text>您尚未拥有查看 Dashboard 的权限</Text>
         </View>
       );
     }
