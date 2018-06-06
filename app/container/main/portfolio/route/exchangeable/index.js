@@ -3,12 +3,13 @@ import { View, Text } from 'react-native';
 import { compose, withState } from 'recompose';
 
 import List from 'component/uikit/list';
+import ProjectItem from 'component/project/item';
 import Header from './header';
 import styles from './style';
 
 @compose(withState('type', 'setType', 'balance'))
 export default class Exchangeable extends Component {
-  renderItem = ({ item }) => <Text>{item}</Text>;
+  renderItem = ({ item }) => <ProjectItem item={item} />;
 
   renderHeader = () => (
     <Header value={this.props.type} onSelect={type => this.props.setType(type)} />

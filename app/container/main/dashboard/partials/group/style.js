@@ -1,3 +1,5 @@
+import { shadow } from '../../../../../utils/style';
+
 export default {
   container: {
     paddingHorizontal: 12,
@@ -12,15 +14,8 @@ export default {
   card: {
     margin: 0,
     padding: 0,
-    // height: 96,
-    // marginHorizontal: 27.5,
     borderRadius: 7,
     borderWidth: 0,
-    shadowColor: 'rgba(44, 64, 83, 0.1)',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    ...shadow,
   },
 };
