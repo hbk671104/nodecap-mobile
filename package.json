@@ -33,7 +33,7 @@
     "react-native-iphone-x-helper": "^1.0.3",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-modal-dropdown": "^0.6.2",
-    "react-native-parallax-scroll-view": "^0.21.0",
+    "react-native-parallax-scroll-view": "^0.21.1",
     "react-native-platform-touchable": "^1.1.1",
     "react-native-shadow": "^1.2.2",
     "react-native-shimmer": "^0.3.2",
@@ -42,12 +42,12 @@
     "react-native-swiper": "^1.5.13",
     "react-native-tab-view": "0.0.78",
     "react-native-vector-icons": "^4.6.0",
-    "react-navigation": "^2.2.0",
+    "react-navigation": "^2.2.3",
     "react-navigation-redux-helpers": "^1.1.2",
     "react-redux": "^5.0.7",
     "recompose": "^0.27.1",
     "redux-persist": "4.10.2",
-    "victory-native": "^0.17.4"
+    "victory-native": "^0.18.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
