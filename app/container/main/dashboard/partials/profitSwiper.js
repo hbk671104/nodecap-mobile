@@ -31,7 +31,6 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
   return (
     <View style={[styles.container, style]}>
       <Swiper
-        style={{ zIndex: 15 }}
         height={100}
         autoplay
         autoplayTimeout={10}
@@ -72,11 +71,7 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
 
 const styles = {
   container: {
-    position: 'absolute',
-    top: -48,
-    left: 0,
-    right: 0,
-    zIndex: 10,
+    height: 100,
   },
   card: {
     margin: 0,

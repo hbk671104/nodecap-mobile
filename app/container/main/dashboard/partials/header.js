@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as R from 'ramda';
-import { View, ViewPropTypes } from 'react-native';
+import { View, ViewPropTypes, Animated } from 'react-native';
 import Shimmer from 'react-native-shimmer';
 import headerStyle from './headerStyle';
 import Text from 'component/text';
@@ -12,7 +12,7 @@ const header = ({ style, dashboard, loading }) => {
   const ROIBTC = R.path(['ROI', 'BTC'])(dashboard);
   const ROIETH = R.path(['ROI', 'ETH'])(dashboard);
   return (
-    <View style={[styles.container, style]}>
+    <Animated.View style={[styles.container, style]}>
       <View>
         <View style={styles.wrapper}>
           <Text style={styles.label}>投资回报率</Text>
@@ -50,7 +50,7 @@ const header = ({ style, dashboard, loading }) => {
           </Shimmer>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 };
 
@@ -88,7 +88,7 @@ const styles = {
 };
 
 header.propTypes = {
-  style: ViewPropTypes.style,
+  // style: ViewPropTypes.style,
   data: PropTypes.object,
 };
 

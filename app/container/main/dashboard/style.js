@@ -1,4 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { navBarHeight } from 'component/navBar';
 
 const window = Dimensions.get('window');
@@ -9,8 +9,20 @@ export const DEVICE_WIDTH = window.width;
 export default {
   container: {
     flex: 1,
-    justifyContent: 'center',
+    backgroundColor: 'white',
+    // justifyContent: 'center',
     // alignItems: 'center',
+  },
+  swiper: {
+    ...Platform.select({
+      ios: {
+        position: 'absolute',
+        top: -50,
+        left: 0,
+        right: 0,
+      },
+      android: {},
+    }),
   },
   empty: {
     group: {
@@ -54,17 +66,48 @@ export default {
     },
   },
   background: {
-    width: window.width,
-    height: PARALLAX_HEADER_HEIGHT,
+    ...Platform.select({
+      ios: {
+        width: window.width,
+        height: PARALLAX_HEADER_HEIGHT,
+      },
+      android: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        width: window.width,
+        height: PARALLAX_HEADER_HEIGHT,
+      },
+    }),
   },
   foreground: {
-    paddingTop: 20,
-    height: PARALLAX_HEADER_HEIGHT,
+    ...Platform.select({
+      ios: {
+        paddingTop: 20,
+        height: PARALLAX_HEADER_HEIGHT,
+      },
+      android: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 20,
+        height: PARALLAX_HEADER_HEIGHT,
+      },
+    }),
   },
   scrollView: {
     container: {
-      paddingTop: 48,
-      paddingBottom: 40,
+      ...Platform.select({
+        ios: {
+          paddingTop: 50,
+          paddingBottom: 40,
+        },
+        android: {
+          paddingTop: PARALLAX_HEADER_HEIGHT - 50,
+          paddingBottom: 40,
+        },
+      }),
     },
   },
   dashboardGroup: {
@@ -74,6 +117,12 @@ export default {
     marginTop: 45,
   },
   navbar: {
+    container: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+    },
     title: {
       alignSelf: 'center',
       fontSize: 17,
