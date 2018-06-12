@@ -5,8 +5,8 @@ import Touchable from 'component/uikit/touchable';
 import styles from './style';
 
 const projectItem = ({ item }) => (
-  <Touchable>
-    <View style={styles.container}>
+  <Touchable style={styles.container}>
+    <View>
       <View style={styles.top.container}>
         <View style={styles.top.group}>
           <View style={styles.top.logo.container}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, UIManager } from 'react-native';
 import { autoRehydrate } from 'redux-persist';
 import dva from './app/utils/dva';
 import Router, { routerMiddleware } from './app/router';
@@ -22,6 +22,10 @@ const app = dva({
 });
 
 const App = app.start(<Router store={app._store} />);
+
+if (UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 AppRegistry.registerComponent('nodecap', () => App);
 
