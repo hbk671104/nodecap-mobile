@@ -10,15 +10,23 @@ const projectItem = ({ item }) => (
         <View style={styles.top.logo.container}>
           <Image style={styles.top.logo.image} />
         </View>
-        <Text style={styles.top.title}>Aelf</Text>
+        <Text style={styles.top.title}>Aelf (ELF)</Text>
       </View>
       <Text>哈哈</Text>
     </View>
     <View style={styles.middle.container}>
-      <Text>哈哈</Text>
+      <Text>市价/涨跌幅</Text>
+      <Text>市价/涨跌幅</Text>
     </View>
     <View style={styles.bottom.container}>
-      <Text>哈哈</Text>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text>浮动盈亏</Text>
+        <Text>3.4亿元</Text>
+      </View>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Text>投资金额</Text>
+        <Text>720万元</Text>
+      </View>
     </View>
   </View>
 );
