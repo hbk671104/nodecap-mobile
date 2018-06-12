@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import * as R from 'ramda';
 import { View, ViewPropTypes, Animated } from 'react-native';
 import Shimmer from 'react-native-shimmer';
-import headerStyle from './headerStyle';
 import Text from 'component/text';
 
 const header = ({ style, dashboard, loading }) => {
@@ -13,42 +12,40 @@ const header = ({ style, dashboard, loading }) => {
   const ROIETH = R.path(['ROI', 'ETH'])(dashboard);
   return (
     <Animated.View style={[styles.container, style]}>
-      <View>
-        <View style={styles.wrapper}>
-          <Text style={styles.label}>投资回报率</Text>
-          <Shimmer animating={loading}>
-            <Text style={[styles.title, { marginTop: 12 }]}>
-              <Text>{ROIETH}</Text>
-              % <Text style={{ fontSize: 13 }}>ETH</Text>
-            </Text>
-          </Shimmer>
-        </View>
-        <View style={styles.bottom}>
-          <Shimmer animating={loading}>
-            <Text style={styles.subtitle}>
-              <Text>{ROIBTC}</Text>
-              % BTC
-            </Text>
-          </Shimmer>
-          <Text style={styles.subtitle}>
-            {'  '}|{'  '}
+      <View style={styles.wrapper}>
+        <Text style={styles.label}>投资回报率</Text>
+        <Shimmer style={{ marginTop: 12 }} animating={loading}>
+          <Text style={[styles.title]}>
+            <Text>{ROIETH}</Text>
+            % <Text style={{ fontSize: 13 }}>ETH</Text>
           </Text>
-          <Shimmer animating={loading}>
-            <Text style={styles.subtitle}>
-              <Text>{ROI}</Text>
-              % CNY
-            </Text>
-          </Shimmer>
+        </Shimmer>
+      </View>
+      <View style={styles.bottom}>
+        <Shimmer animating={loading}>
           <Text style={styles.subtitle}>
-            {'  '}|{'  '}
+            <Text>{ROIBTC}</Text>
+            % BTC
           </Text>
-          <Shimmer animating={loading}>
-            <Text style={styles.subtitle}>
-              <Text>{ROIUSD}</Text>
-              % USD
-            </Text>
-          </Shimmer>
-        </View>
+        </Shimmer>
+        <Text style={styles.subtitle}>
+          {'  '}|{'  '}
+        </Text>
+        <Shimmer animating={loading}>
+          <Text style={styles.subtitle}>
+            <Text>{ROI}</Text>
+            % CNY
+          </Text>
+        </Shimmer>
+        <Text style={styles.subtitle}>
+          {'  '}|{'  '}
+        </Text>
+        <Shimmer animating={loading}>
+          <Text style={styles.subtitle}>
+            <Text>{ROIUSD}</Text>
+            % USD
+          </Text>
+        </Shimmer>
       </View>
     </Animated.View>
   );
@@ -56,7 +53,7 @@ const header = ({ style, dashboard, loading }) => {
 
 const styles = {
   container: {
-    justifyContent: 'center',
+    marginTop: 60,
     alignItems: 'center',
   },
   wrapper: {

@@ -65,6 +65,10 @@ export default {
       },
     },
   },
+  parallax: {
+    width: window.width,
+    height: PARALLAX_HEADER_HEIGHT,
+  },
   background: {
     ...Platform.select({
       ios: {
@@ -104,7 +108,6 @@ export default {
           paddingBottom: 40,
         },
         android: {
-          paddingTop: PARALLAX_HEADER_HEIGHT - 50,
           paddingBottom: 40,
         },
       }),
@@ -136,7 +139,14 @@ export default {
     },
     wrapper: {
       width: DEVICE_WIDTH,
-      marginTop: 12,
+      ...Platform.select({
+        ios: {
+          marginTop: 12,
+        },
+        android: {
+          marginTop: -12,
+        },
+      }),
       borderRadius: 0,
       borderColor: '#E9E9E9',
     },

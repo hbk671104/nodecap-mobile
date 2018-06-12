@@ -3,12 +3,10 @@ import {
   Animated,
   Text,
   View,
-  Image,
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
@@ -47,12 +45,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
     }),
     colorRange: scrollY.interpolate({
       inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
-      outputRange: ['rgba(255, 255, 255, 0)', 'white'],
-      extrapolate: 'clamp',
-    }),
-    opacityRange: scrollY.interpolate({
-      inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
-      outputRange: [1, 0],
+      outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
       extrapolate: 'clamp',
     }),
   }))
@@ -85,15 +78,10 @@ export default class Dashboard extends Component {
   };
 
   renderBackground = () => (
-    <Animated.Image
-      style={[styles.background, { opacity: this.props.opacityRange }]}
-      source={require('asset/dashboard_bg.png')}
-    />
+    <Animated.Image style={styles.background} source={require('asset/dashboard_bg.png')} />
   );
 
-  renderForeground = () => (
-    <Header {...this.props} style={[styles.foreground, { opacity: this.props.opacityRange }]} />
-  );
+  renderForeground = () => <Header {...this.props} style={styles.foreground} />;
 
   renderFixedHeader = () => {
     const { colorRange, titleColorRange, offsetY, funds } = this.props;
@@ -192,8 +180,6 @@ export default class Dashboard extends Component {
 
     return (
       <View style={styles.container}>
-        {this.renderBackground()}
-        {this.renderForeground()}
         <ScrollView
           contentContainerStyle={styles.scrollView.container}
           showsVerticalScrollIndicator={false}
@@ -213,24 +199,35 @@ export default class Dashboard extends Component {
             }
           )}
         >
-          <ProfitSwiper
-            style={styles.swiper}
-            total={R.path(['totalProfits', 'count'])(dashboard)}
-            daily={R.path(['dailyProfits', 'count'])(dashboard)}
-            weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
-          />
-          <ReturnRateChart style={styles.roiChart} {...this.props} />
-          <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
-            <InvestNumber data={dashboard.portfolio} />
-          </DashboardGroup>
-          <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
-            <Investment data={dashboard.investment} />
-          </DashboardGroup>
-          {roiRankCount > 0 && (
-            <DashboardGroup style={styles.dashboardGroup} title="投资回报率 TOP 5" icon="TOP">
-              {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+          <View style={styles.parallax}>
+            {this.renderBackground()}
+            {this.renderForeground()}
+          </View>
+          <View
+            style={{
+              flex: 1,
+              paddingTop: 50,
+            }}
+          >
+            <ProfitSwiper
+              style={styles.swiper}
+              total={R.path(['totalProfits', 'count'])(dashboard)}
+              daily={R.path(['dailyProfits', 'count'])(dashboard)}
+              weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
+            />
+            <ReturnRateChart style={styles.roiChart} {...this.props} />
+            <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
+              <InvestNumber data={dashboard.portfolio} />
             </DashboardGroup>
-          )}
+            <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
+              <Investment data={dashboard.investment} />
+            </DashboardGroup>
+            {roiRankCount > 0 && (
+              <DashboardGroup style={styles.dashboardGroup} title="投资回报率 TOP 5" icon="TOP">
+                {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+              </DashboardGroup>
+            )}
+          </View>
         </ScrollView>
         {this.renderFixedHeader()}
       </View>
