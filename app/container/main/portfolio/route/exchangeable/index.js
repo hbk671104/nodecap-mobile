@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { compose, withState } from 'recompose';
 
 import List from 'component/uikit/list';
@@ -20,7 +20,7 @@ export default class Exchangeable extends Component {
       <View style={styles.container}>
         <List
           style={styles.list}
-          data={[1, 2, 3]}
+          data={[1, 2, 3, 4, 5, 6, 7]}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           onScroll={this.props.onScroll}
