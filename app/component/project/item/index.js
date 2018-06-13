@@ -32,12 +32,12 @@ const projectItem = ({ item }) => (
       </View>
       <View style={styles.bottom.container}>
         <View style={styles.bottom.group}>
-          <Text style={styles.bottom.title}>浮动盈亏</Text>
+          <Text style={styles.bottom.title}>投资金额</Text>
           <Text style={styles.bottom.content}>3.4亿元</Text>
         </View>
         <View style={styles.bottom.group}>
-          <Text style={styles.bottom.title}>投资金额</Text>
-          <Text style={styles.bottom.content}>720万元</Text>
+          <Text style={styles.bottom.title}>成本价/市价</Text>
+          <Text style={styles.bottom.content}>0.92 / 4.23</Text>
           <View style={[styles.bottom.label.container, styles.bottom.label.up]}>
             <Text style={styles.bottom.label.title}>4.61倍</Text>
           </View>
