@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, Image, LayoutAnimation } from 'react-native';
+import { View, Image, LayoutAnimation, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
-import NodeCapIcon from 'component/icon/nodecap';
 import SearchBarDisplay from 'component/searchBar/display';
 import Exchangeable from './route/exchangeable';
 import Unexchangeable from './route/unexchangeable';
@@ -30,30 +29,26 @@ export default class Portfolio extends Component {
     const { offsetY } = this.props;
     return (
       <NavBar
+        hidden={offsetY > 0}
         gradient
         renderTitle={() => (
-          <Text style={styles.navBar.title}>
-            节点
-            <NodeCapIcon name="xiala" />
-          </Text>
+          <View style={styles.searchBar.container}>
+            <SearchBarDisplay />
+          </View>
         )}
-        renderBottom={() => {
-          return (
-            <View>
-              {offsetY <= 0 && (
-                <View style={styles.searchBar.container}>
-                  <SearchBarDisplay />
-                </View>
-              )}
-              <TabBar
-                {...props}
-                style={styles.tabBar.container}
-                labelStyle={styles.tabBar.label}
-                indicatorStyle={styles.tabBar.indicator}
-              />
-            </View>
-          );
-        }}
+        renderRight={() => (
+          <TouchableOpacity style={styles.share}>
+            <Image source={require('asset/share.png')} />
+          </TouchableOpacity>
+        )}
+        renderBottom={() => (
+          <TabBar
+            {...props}
+            style={styles.tabBar.container}
+            labelStyle={styles.tabBar.label}
+            indicatorStyle={styles.tabBar.indicator}
+          />
+        )}
       />
     );
   };
