@@ -62,7 +62,6 @@ const styles = {
     height: 44,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
   },
   title: {
     container: {

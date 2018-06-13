@@ -16,7 +16,7 @@ const avatar = props => (
       style={{
         height: (props.size * 2) / 3,
         width: (props.size * 2) / 3,
-        borderRadius: (props.size * 2) / 3 / 2,
+        borderRadius: props.size / 3,
       }}
     />
   </View>

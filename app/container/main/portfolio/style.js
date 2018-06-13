@@ -22,10 +22,11 @@ export default {
     container: {
       flex: 1,
       backgroundColor: 'transparent',
+      paddingLeft: 12,
     },
   },
   share: {
-    paddingLeft: 12,
+    paddingHorizontal: 12,
   },
   tabBar: {
     container: {
