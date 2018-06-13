@@ -20,19 +20,6 @@ export default {
       flexDirection: 'row',
       alignItems: 'center',
     },
-    logo: {
-      container: {
-        height: 42,
-        width: 42,
-        borderRadius: 21,
-        backgroundColor: 'white',
-        ...raised,
-      },
-      image: {
-        height: 21,
-        width: 21,
-      },
-    },
     title: {
       container: {
         marginLeft: 10,

@@ -10,11 +10,13 @@ export default {
     },
     unexchangeable: {
       index: null,
-      params: {},
+      params: {
+        status: '4,5,6',
+      },
     },
   },
   effects: {
-    * index({ payload = {} }, { call, put }) {
+    *index({ payload = {} }, { call, put }) {
       try {
         const req = {
           ...payload,
@@ -32,7 +34,7 @@ export default {
   },
   reducers: {
     list(state, action) {
-      const key = 'blah';
+      const key = 'unexchangeable';
       return {
         ...state,
         [key]: {
