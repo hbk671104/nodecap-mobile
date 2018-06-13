@@ -2467,9 +2467,9 @@ dva-core@^1.3.0:
     redux-saga "^0.16.0"
     warning "^3.0.0"
 
-dva-loading@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/dva-loading/-/dva-loading-2.0.2.tgz#d3b81dc5037a02de359d16af89254ca1c42508a9"
+dva-loading@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/dva-loading/-/dva-loading-2.0.3.tgz#4719c7b54bca1f89a212628ee279affefea953e6"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.34"
 
@@ -5892,9 +5892,9 @@ react-native-shimmer@^0.3.2:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-splash-screen@3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.0.6.tgz#c0bbf2c8ae40a313c4c7044f55e569414ff68332"
+react-native-splash-screen@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.0.9.tgz#5cdd026ae414d60cd86bcaa897bffacd16395bed"
 
 react-native-svg@^6.3.1:
   version "6.3.1"
@@ -5918,19 +5918,13 @@ react-native-swiper@^1.5.13:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-tab-view@0.0.78:
-  version "0.0.78"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.78.tgz#9b90730d89cbd34a03f0e0ab10e74ca7af945560"
-  dependencies:
-    prop-types "^15.6.0"
-
 react-native-tab-view@^0.0.77:
   version "0.0.77"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.77.tgz#11ceb8e7c23100d07e628dc151b57797524d00d4"
   dependencies:
     prop-types "^15.6.0"
 
-react-native-tab-view@^1.0.0:
+react-native-tab-view@^1.0.0, react-native-tab-view@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.0.2.tgz#66e0bc6d38a227ed2b212e3a256b7902f6ce02ed"
   dependencies:
@@ -6036,9 +6030,9 @@ react-navigation-tabs@0.5.1:
     react-native-safe-area-view "^0.7.0"
     react-native-tab-view "^1.0.0"
 
-react-navigation@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-2.2.4.tgz#a8ad556d61f7ef5f0501f9de8ff00223e78239fb"
+react-navigation@2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-2.2.5.tgz#5c23091d2a87b63fe8d6be350d155664677b903c"
   dependencies:
     clamp "^1.0.1"
     create-react-context "^0.2.1"

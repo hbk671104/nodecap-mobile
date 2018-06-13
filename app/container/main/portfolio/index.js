@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Text, View, Image, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
-import { TabViewAnimated, TabBar } from 'react-native-tab-view';
+import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
@@ -72,11 +72,12 @@ export default class Portfolio extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TabViewAnimated
+        <TabView
           initialLayout={styles.initialLayout}
           navigationState={{ index: this.state.index, routes: this.state.routes }}
           renderScene={this.renderScene}
-          renderHeader={this.renderHeader}
+          tabBarPosition="top"
+          renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
       </View>
