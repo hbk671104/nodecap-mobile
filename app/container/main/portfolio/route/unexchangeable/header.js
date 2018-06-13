@@ -50,13 +50,13 @@ header.propTypes = {
 
 const styles = {
   container: {
-    paddingHorizontal: 22,
+    paddingLeft: 5,
     paddingVertical: 20,
     flexDirection: 'row',
   },
   group: {
     container: {
-      marginRight: 34,
+      marginHorizontal: 17,
       paddingBottom: 10,
     },
     title: {
