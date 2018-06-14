@@ -7437,9 +7437,9 @@ victory-core@^23.0.2, victory-core@^23.0.5:
     lodash "^4.17.5"
     react-fast-compare "^2.0.0"
 
-victory-native@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-0.18.0.tgz#52677f7ad868e1eb63162600d26ab2c1c6fab4d3"
+victory-native@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-0.18.1.tgz#107836db1e98282705db1d76bb2301c26fa1a7a3"
   dependencies:
     lodash "^4.17.5"
     prop-types "^15.5.10"

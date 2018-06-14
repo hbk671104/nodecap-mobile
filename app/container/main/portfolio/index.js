@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, LayoutAnimation, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
@@ -22,7 +22,6 @@ export default class Portfolio extends Component {
 
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     this.props.setOffsetY(contentOffset.y);
-    LayoutAnimation.easeInEaseOut();
   };
 
   renderHeader = (props) => {

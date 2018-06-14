@@ -19,15 +19,15 @@ export default class Unexchangeable extends Component {
     status: R.path(['params', 'status'])(this.props),
   };
 
-  componentWillMount() {
-    this.requestData();
-  }
-
-  requestData = () => {
+  requestData = (page, size) => {
     const { status } = this.state;
     this.props.dispatch({
       type: 'portfolio/index',
-      payload: { status },
+      payload: {
+        status,
+        currentPage: page,
+        pageSize: size,
+      },
     });
   };
 
@@ -40,13 +40,15 @@ export default class Unexchangeable extends Component {
   renderHeader = () => <Header value={this.state.status} onSelect={this.handleSelect} />;
 
   render() {
-    const { data, loading } = this.props;
+    const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
         <List
           style={styles.list}
+          action={this.requestData}
           data={data}
-          // loading={loading}
+          pagination={pagination}
+          refreshing={loading}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           onScroll={this.props.onScroll}

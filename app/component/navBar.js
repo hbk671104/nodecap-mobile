@@ -1,57 +1,62 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated } from 'react-native';
+import { View, Animated, LayoutAnimation } from 'react-native';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 import StatusBar from './uikit/statusBar';
 import Gradient from './uikit/gradient';
 
-const navBar = ({
-  style,
-  wrapperStyle,
-  barStyle,
-  renderTitle,
-  renderLeft,
-  renderRight,
-  renderBottom,
-  hidden,
-  gradient,
-}) => {
-  const WrapperComp = gradient ? Gradient : View;
-  return (
-    <WrapperComp style={style}>
-      <StatusBar barStyle={barStyle} />
-      <Animated.View style={[styles.container, wrapperStyle, hidden && styles.hidden.container]}>
-        <View style={[styles.wrapper, hidden && styles.hidden.wrapper]}>
-          <View>{renderLeft && renderLeft()}</View>
-          <View style={[styles.title.container, hidden && { height: 0 }]}>
-            {renderTitle && renderTitle()}
+class NavBar extends Component {
+  static propTypes = {
+    barStyle: PropTypes.string,
+    renderLeft: PropTypes.func,
+    renderRight: PropTypes.func,
+    renderTitle: PropTypes.func,
+    renderBottom: PropTypes.func,
+    hidden: PropTypes.bool,
+    gradient: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    barStyle: 'light-content',
+    hidden: false,
+    gradient: false,
+  };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.hidden !== this.props.hidden) {
+      LayoutAnimation.easeInEaseOut();
+    }
+  }
+
+  render() {
+    const {
+      style,
+      wrapperStyle,
+      barStyle,
+      renderTitle,
+      renderLeft,
+      renderRight,
+      renderBottom,
+      hidden,
+      gradient,
+    } = this.props;
+    const WrapperComp = gradient ? Gradient : View;
+    return (
+      <WrapperComp style={style}>
+        <StatusBar barStyle={barStyle} />
+        <Animated.View style={[styles.container, wrapperStyle, hidden && styles.hidden.container]}>
+          <View style={[styles.wrapper, hidden && styles.hidden.wrapper]}>
+            <View>{renderLeft && renderLeft()}</View>
+            <View style={styles.title.container}>{renderTitle && renderTitle()}</View>
+            <View>{renderRight && renderRight()}</View>
           </View>
-          <View>{renderRight && renderRight()}</View>
-        </View>
-      </Animated.View>
-      {renderBottom && renderBottom()}
-    </WrapperComp>
-  );
-};
-
-navBar.defaultProps = {
-  barStyle: 'light-content',
-  hidden: false,
-  gradient: false,
-};
-
-navBar.propTypes = {
-  // style: ViewPropTypes.style,
-  // wrapperStyle: ViewPropTypes.style,
-  barStyle: PropTypes.string,
-  renderLeft: PropTypes.func,
-  renderRight: PropTypes.func,
-  renderTitle: PropTypes.func,
-  renderBottom: PropTypes.func,
-  hidden: PropTypes.bool,
-  gradient: PropTypes.bool,
-};
+        </Animated.View>
+        {renderBottom && renderBottom()}
+      </WrapperComp>
+    );
+  }
+}
 
 const styles = {
   container: {
@@ -83,4 +88,5 @@ const styles = {
 };
 
 export const navBarHeight = styles.container.height;
-export default navBar;
+
+export default NavBar;

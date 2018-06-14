@@ -7,36 +7,52 @@ class List extends Component {
   static propTypes = {
     listRef: PropTypes.func,
     data: PropTypes.array.isRequired,
+    pagination: PropTypes.object,
+    action: PropTypes.func,
     renderItem: PropTypes.func.isRequired,
     renderHeader: PropTypes.func,
     renderFooter: PropTypes.func,
     renderEmpty: PropTypes.func,
     renderSeparator: PropTypes.func,
-    loading: PropTypes.bool,
     refreshing: PropTypes.bool,
     loadingMore: PropTypes.bool,
     onRefresh: PropTypes.func,
-    onEndReached: PropTypes.func,
 
     // styles
     style: ViewPropTypes.style,
   };
 
   static defaultProps = {
-    loading: false,
     refreshing: false,
     loadingMore: false,
   };
 
+  componentWillMount() {
+    if (this.props.action) {
+      this.props.action();
+    }
+  }
+
   extractKey = (item, index) => item.id || `${index}`;
 
   handleOnRefresh = () => {
-    this.props.onRefresh();
+    if (this.props.action) {
+      this.props.action();
+    }
+  };
+
+  handlePagination = () => {
+    if (this.props.action && this.props.pagination) {
+      const { current, pageCount, pageSize } = this.props.pagination;
+      if (current < pageCount) {
+        this.props.action(current + 1, pageSize);
+      }
+    }
   };
 
   handleOnEndReached = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
-      this.props.onEndReached();
+      this.handlePagination();
       this.onEndReachedCalledDuringMomentum = true;
     }
   };
@@ -56,7 +72,7 @@ class List extends Component {
   };
 
   renderEmpty = () => {
-    if (this.props.refreshing || this.props.loading) {
+    if (this.props.refreshing) {
       return null;
     }
     if (this.props.renderEmpty) {
@@ -76,15 +92,9 @@ class List extends Component {
       renderItem,
       renderHeader,
       renderSeparator,
-      loading,
       refreshing,
-      onRefresh,
-      onEndReached,
       style,
     } = this.props;
-    if ((refreshing && data.length === 0) || loading) {
-      return <ActivityIndicator />;
-    }
     return (
       <FlatList
         {...this.props}
@@ -96,22 +106,14 @@ class List extends Component {
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         ItemSeparatorComponent={renderSeparator}
-        {...(onRefresh
-          ? {
-              onRefresh: this.handleOnRefresh,
-              refreshing,
-            }
-          : {})}
-        {...(onEndReached
-          ? {
-              onEndReached: this.handleOnEndReached,
-              onEndReachedThreshold: 0.5,
-              onMomentumScrollBegin: () => {
-                this.onEndReachedCalledDuringMomentum = false;
-                return null;
-              },
-            }
-          : {})}
+        onRefresh={this.handleOnRefresh}
+        refreshing={refreshing}
+        onEndReached={this.handleOnEndReached}
+        onEndReachedThreshold={0.5}
+        onMomentumScrollBegin={() => {
+          this.onEndReachedCalledDuringMomentum = false;
+          return null;
+        }}
         keyboardShouldPersistTaps="handled"
         keyExtractor={this.extractKey}
       />

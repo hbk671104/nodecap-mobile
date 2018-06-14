@@ -47,7 +47,7 @@
     "react-redux": "^5.0.7",
     "recompose": "^0.27.1",
     "redux-persist": "4.10.2",
-    "victory-native": "^0.18.0"
+    "victory-native": "^0.18.1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.3",
