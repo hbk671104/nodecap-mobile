@@ -3,7 +3,8 @@ import { portfolioIndex } from '../services/api';
 
 const pagination = (state, action, key) => {
   const data = R.pathOr([], [key, 'index', 'data'])(state);
-  if (R.isEmpty(data)) {
+  const oldStatus = R.path([key, 'params', 'status'])(state);
+  if (R.isEmpty(data) || !R.equals(oldStatus, action.params.status)) {
     return action.payload;
   }
   return {
