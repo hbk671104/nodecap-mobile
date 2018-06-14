@@ -1,6 +1,17 @@
 import * as R from 'ramda';
 import { portfolioIndex } from '../services/api';
 
+const pagination = (state, action, key) => {
+  const data = R.pathOr([], [key, 'index', 'data'])(state);
+  if (R.isEmpty(data)) {
+    return action.payload;
+  }
+  return {
+    ...action.payload,
+    data: R.concat(data, R.path(['payload', 'data'])(action)),
+  };
+};
+
 export default {
   namespace: 'portfolio',
   state: {
@@ -38,7 +49,7 @@ export default {
       return {
         ...state,
         [key]: {
-          index: action.payload,
+          index: pagination(state, action, key),
           params: action.params,
         },
       };

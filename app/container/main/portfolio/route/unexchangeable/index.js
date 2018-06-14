@@ -48,7 +48,8 @@ export default class Unexchangeable extends Component {
           action={this.requestData}
           data={data}
           pagination={pagination}
-          refreshing={loading}
+          // refreshing={loading}
+          loading={loading}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           onScroll={this.props.onScroll}

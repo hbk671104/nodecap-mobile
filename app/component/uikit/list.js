@@ -15,7 +15,7 @@ class List extends Component {
     renderEmpty: PropTypes.func,
     renderSeparator: PropTypes.func,
     refreshing: PropTypes.bool,
-    loadingMore: PropTypes.bool,
+    loading: PropTypes.bool,
     onRefresh: PropTypes.func,
 
     // styles
@@ -24,7 +24,7 @@ class List extends Component {
 
   static defaultProps = {
     refreshing: false,
-    loadingMore: false,
+    loading: false,
   };
 
   componentWillMount() {
@@ -61,12 +61,22 @@ class List extends Component {
     if (this.props.renderFooter) {
       return this.props.renderFooter();
     }
-    if (this.props.loadingMore) {
-      return (
-        <View style={styles.footerRefresher.container}>
-          <ActivityIndicator />
-        </View>
-      );
+    if (this.props.pagination) {
+      const { current, pageCount } = this.props.pagination;
+      if (this.props.loading && current > 1) {
+        return (
+          <View style={styles.footerRefresher.container}>
+            <ActivityIndicator />
+          </View>
+        );
+      }
+      if (current === pageCount) {
+        return (
+          <View style={styles.footerRefresher.container}>
+            <Text>我是有底线的</Text>
+          </View>
+        );
+      }
     }
     return null;
   };
@@ -106,8 +116,12 @@ class List extends Component {
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         ItemSeparatorComponent={renderSeparator}
-        onRefresh={this.handleOnRefresh}
-        refreshing={refreshing}
+        {...(refreshing
+          ? {
+              onRefresh: this.handleOnEndReached,
+              refreshing,
+            }
+          : {})}
         onEndReached={this.handleOnEndReached}
         onEndReachedThreshold={0.5}
         onMomentumScrollBegin={() => {
@@ -138,6 +152,8 @@ const styles = {
   footerRefresher: {
     container: {
       paddingVertical: 10,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   },
 };

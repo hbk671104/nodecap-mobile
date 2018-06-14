@@ -22,7 +22,7 @@ class RehydrateLoader extends Component {
       store,
       {
         storage: AsyncStorage,
-        blacklist: ['loading', 'router', 'project', 'fund'],
+        blacklist: ['loading', 'router', 'project', 'fund', 'portfolio'],
       },
       async () => {
         if (this.props.isLogin) {
