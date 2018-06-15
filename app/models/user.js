@@ -1,7 +1,6 @@
 import * as R from 'ramda';
 import { getUser, getUsers, getUserById, updateUserById, createUser, updateUserProfile, updateUserPassword, deleteUserById, adminResetPassword } from '../services/api';
 import { transformSorter } from '../utils/utils';
-import { uploadFiles } from '../services/upload';
 
 export default {
   namespace: 'user',
@@ -82,20 +81,8 @@ export default {
      */
     *updateUserProfile({ payload, callback }, { call, put }) {
       try {
-        let uploadRes;
-        /**
-         * 上传头像
-         */
-        if (payload.avatar_url && payload.avatar_url.length) {
-          uploadRes = yield call(uploadFiles, {
-            fileList: payload.avatar_url || [],
-            call,
-            type: 'avatar',
-          });
-        }
         yield call(updateUserProfile, {
           ...payload,
-          avatar_url: R.prop('url')(R.head()(uploadRes || [])),
         });
         yield put({
           type: 'fetchCurrent',
@@ -116,17 +103,6 @@ export default {
      */
     *updateUserById({ payload, callback }, { call, put }) {
       try {
-        let uploadRes;
-        /**
-         * 上传头像
-         */
-        if (payload.avatar_url && payload.avatar_url.length) {
-          uploadRes = yield call(uploadFiles, {
-            fileList: payload.avatar_url || [],
-            call,
-            type: 'avatar',
-          });
-        }
         let permissions = null;
         if (payload.permissions) {
           permissions = payload.permissions.map(i => ({
@@ -138,7 +114,6 @@ export default {
           ...payload,
           permissions,
           role: R.pathOr(null, ['role', 'name'])(payload),
-          avatar_url: R.prop('url')(R.head()(uploadRes || [])),
         });
         yield put({
           type: 'show',
