@@ -1,0 +1,219 @@
+import * as R from 'ramda';
+import { getUser, getUsers, getUserById, updateUserById, createUser, updateUserProfile, updateUserPassword, deleteUserById, adminResetPassword } from '../services/api';
+import { transformSorter } from '../utils/utils';
+import { uploadFiles } from '../services/upload';
+
+export default {
+  namespace: 'user',
+
+  state: {
+    index: null,
+    show: null,
+    currentUser: {},
+  },
+
+  effects: {
+    *index({ payload = {} }, { call, put }) {
+      try {
+        let req = {
+          ...payload,
+        };
+        if (payload.sorter) {
+          req = R.omit(['sorter'])(req);
+          req.sort = transformSorter(payload.sorter);
+        }
+        const res = yield call(getUsers, req);
+        yield put({
+          type: 'list',
+          payload: res.data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *create({ payload, callback }, { call, put }) {
+      try {
+        const res = {
+          ...payload,
+          role: R.pathOr(null, ['role', 'name'])(payload),
+          permissions: payload.permissions.map(i => ({
+            name: i,
+          })),
+        };
+        yield call(createUser, res);
+        yield put({
+          type: 'index',
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchUserById({ payload }, { call, put }) {
+      try {
+        const user = yield call(getUserById, payload);
+        yield put({
+          type: 'show',
+          payload: user.data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchCurrent(_, { call, put }) {
+      try {
+        const response = yield call(getUser);
+        yield put({
+          type: 'saveCurrentUser',
+          payload: response.data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    /**
+     * 更改自己的用户信息
+     * @param payload
+     * @param callback
+     * @param call
+     * @param put
+     */
+    *updateUserProfile({ payload, callback }, { call, put }) {
+      try {
+        let uploadRes;
+        /**
+         * 上传头像
+         */
+        if (payload.avatar_url && payload.avatar_url.length) {
+          uploadRes = yield call(uploadFiles, {
+            fileList: payload.avatar_url || [],
+            call,
+            type: 'avatar',
+          });
+        }
+        yield call(updateUserProfile, {
+          ...payload,
+          avatar_url: R.prop('url')(R.head()(uploadRes || [])),
+        });
+        yield put({
+          type: 'fetchCurrent',
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    /**
+     * 修改用户库中的用户信息
+     * @param payload
+     * @param callback
+     * @param call
+     * @param put
+     */
+    *updateUserById({ payload, callback }, { call, put }) {
+      try {
+        let uploadRes;
+        /**
+         * 上传头像
+         */
+        if (payload.avatar_url && payload.avatar_url.length) {
+          uploadRes = yield call(uploadFiles, {
+            fileList: payload.avatar_url || [],
+            call,
+            type: 'avatar',
+          });
+        }
+        let permissions = null;
+        if (payload.permissions) {
+          permissions = payload.permissions.map(i => ({
+            name: i,
+          }));
+        }
+
+        const user = yield call(updateUserById, {
+          ...payload,
+          permissions,
+          role: R.pathOr(null, ['role', 'name'])(payload),
+          avatar_url: R.prop('url')(R.head()(uploadRes || [])),
+        });
+        yield put({
+          type: 'show',
+          payload: user.data,
+        });
+        if (callback) {
+          callback();
+          console.log('user', user);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *changeUserPassword({ payload, callback }, { call, put }) {
+      try {
+        yield call(updateUserPassword, payload);
+        if (callback) {
+          callback();
+        }
+        yield put({
+          type: 'login/logout',
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *deleteUser({ payload, callback }, { call }) {
+      try {
+        yield call(deleteUserById, payload);
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *adminResetPassword({ payload, callback }, { call }) {
+      try {
+        yield call(adminResetPassword, payload);
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+
+  reducers: {
+    list(state, action) {
+      return {
+        ...state,
+        index: action.payload,
+      };
+    },
+    show(state, action) {
+      return {
+        ...state,
+        show: action.payload,
+      };
+    },
+    saveCurrentUser(state, action) {
+      return {
+        ...state,
+        currentUser: action.payload,
+      };
+    },
+    changeNotifyCount(state, action) {
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          notifyCount: action.payload,
+        },
+      };
+    },
+  },
+};

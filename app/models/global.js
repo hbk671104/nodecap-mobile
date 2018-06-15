@@ -45,7 +45,9 @@ export default {
           type: 'getPermissions',
           payload: res.data,
         });
-
+        yield put({
+          type: 'user/fetchCurrent',
+        });
         yield put({
           type: 'fund/fetch',
         });

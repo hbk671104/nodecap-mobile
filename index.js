@@ -10,10 +10,20 @@ import appModel from './app/models/app';
 import fundModel from './app/models/fund';
 import globalModal from './app/models/global';
 import portfolioModal from './app/models/portfolio';
+import userModal from './app/models/user';
 
 const app = dva({
   initialState: {},
-  models: [dashboard, routerModel, loginModel, appModel, globalModal, fundModel, portfolioModal],
+  models: [
+    dashboard,
+    routerModel,
+    loginModel,
+    appModel,
+    globalModal,
+    fundModel,
+    portfolioModal,
+    userModal,
+  ],
   onAction: [routerMiddleware],
   onError(e) {
     console.log('onError', e);
