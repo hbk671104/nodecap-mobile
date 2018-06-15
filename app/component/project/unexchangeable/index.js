@@ -6,8 +6,8 @@ import Avatar from 'component/uikit/avatar';
 import moment from 'moment';
 import styles from './style';
 
-const unexchangeableItem = ({ item, status }) => (
-  <Touchable style={styles.container}>
+const unexchangeableItem = ({ item, onPress }) => (
+  <Touchable style={styles.container} onPress={onPress}>
     <View>
       <View style={styles.top.container}>
         <View style={styles.top.group}>
@@ -56,6 +56,11 @@ const unexchangeableItem = ({ item, status }) => (
 
 unexchangeableItem.propTypes = {
   item: PropTypes.object,
+  onPress: PropTypes.func,
+};
+
+unexchangeableItem.defaultProps = {
+  onPress: () => null,
 };
 
 export default unexchangeableItem;

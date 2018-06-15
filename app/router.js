@@ -19,6 +19,8 @@ import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
+import PortfolioDetail from 'container/main/portfolio/detail';
+
 import NodeCapIcon from 'component/icon/nodecap';
 
 const AuthStack = createStackNavigator(
@@ -68,6 +70,7 @@ const Tab = createBottomTabNavigator(
 const MainStack = createStackNavigator(
   {
     Tab,
+    PortfolioDetail,
   },
   {
     headerMode: 'none',

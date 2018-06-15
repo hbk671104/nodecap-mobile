@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 import { Toast } from 'antd-mobile';
+import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
 import UnexchangeableItem from 'component/project/unexchangeable';
@@ -40,7 +41,20 @@ export default class Unexchangeable extends Component {
     });
   };
 
-  renderItem = ({ item }) => <UnexchangeableItem item={item} />;
+  handleItemPress = () => (item) => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item,
+        },
+      })
+    );
+  };
+
+  renderItem = ({ item }) => (
+    <UnexchangeableItem item={item} onPress={this.handleItemPress(item)} />
+  );
 
   renderHeader = () => <Header value={this.state.status} onSelect={this.handleSelect} />;
 
