@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, FlatList, ActivityIndicator, ViewPropTypes, StyleSheet } from 'react-native';
 import * as Color from 'component/uikit/color';
 
-class List extends Component {
+class List extends PureComponent {
   static propTypes = {
     listRef: PropTypes.func,
     data: PropTypes.array.isRequired,

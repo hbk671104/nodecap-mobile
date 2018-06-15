@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
+import { Toast } from 'antd-mobile';
 
 import List from 'component/uikit/list';
 import UnexchangeableItem from 'component/project/unexchangeable';
@@ -19,7 +20,7 @@ export default class Unexchangeable extends Component {
     status: R.path(['params', 'status'])(this.props),
   };
 
-  requestData = (page, size) => {
+  requestData = (page, size, callback) => {
     const { status } = this.state;
     this.props.dispatch({
       type: 'portfolio/index',
@@ -28,11 +29,15 @@ export default class Unexchangeable extends Component {
         currentPage: page,
         pageSize: size,
       },
+      callback,
     });
   };
 
   handleSelect = (status) => {
-    this.setState({ status }, this.requestData);
+    Toast.loading('loading...', 0);
+    this.setState({ status }, () => {
+      this.requestData(undefined, undefined, () => Toast.hide());
+    });
   };
 
   renderItem = ({ item }) => <UnexchangeableItem item={item} />;

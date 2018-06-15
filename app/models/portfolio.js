@@ -28,7 +28,7 @@ export default {
     },
   },
   effects: {
-    *index({ payload = {} }, { call, put }) {
+    *index({ payload = {}, callback }, { call, put }) {
       try {
         const req = {
           ...payload,
@@ -39,6 +39,9 @@ export default {
           payload: res.data,
           params: payload,
         });
+        if (callback) {
+          callback();
+        }
       } catch (e) {
         console.log(e);
       }
