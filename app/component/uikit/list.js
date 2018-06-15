@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, FlatList, ActivityIndicator, ViewPropTypes } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, ViewPropTypes, StyleSheet } from 'react-native';
 import * as Color from 'component/uikit/color';
 
 class List extends Component {
@@ -73,7 +73,9 @@ class List extends Component {
       if (current === pageCount) {
         return (
           <View style={styles.footerRefresher.container}>
-            <Text>我是有底线的</Text>
+            <View style={styles.footerRefresher.line} />
+            <Text style={styles.footerRefresher.text}>我是有底线的</Text>
+            <View style={styles.footerRefresher.line} />
           </View>
         );
       }
@@ -153,7 +155,19 @@ const styles = {
     container: {
       paddingVertical: 10,
       justifyContent: 'center',
+      flexDirection: 'row',
       alignItems: 'center',
+    },
+    line: {
+      flex: 1,
+      backgroundColor: '#E9E9E9',
+      height: StyleSheet.hairlineWidth,
+      marginHorizontal: 10,
+    },
+    text: {
+      fontSize: 12,
+      color: '#999999',
+      fontWeight: '200',
     },
   },
 };
