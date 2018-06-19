@@ -1,5 +1,5 @@
 import * as R from 'ramda';
-import { portfolioIndex, projectDetail, getProjectInvestTokens, getProjectInvestEquities } from '../services/api';
+import { portfolioIndex, projectDetail, getProjectInvestTokens, getProjectInvestEquities, getProjectChartData } from '../services/api';
 
 const pagination = (state, action, key) => {
   const data = R.pathOr([], [key, 'index', 'data'])(state);
@@ -42,6 +42,16 @@ export default {
         });
         if (callback) {
           callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *projectStat({ id, callback }, { call }) {
+      try {
+        const { data } = yield call(getProjectChartData, id);
+        if (callback) {
+          callback(data);
         }
       } catch (e) {
         console.log(e);

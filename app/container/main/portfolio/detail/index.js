@@ -45,6 +45,7 @@ export default class PortfolioDetail extends Component {
       <NavBar
         hidden={offsetY > 0}
         gradient
+        back
         renderTitle={() => (
           <View style={styles.searchBar.container}>
             <Text style={styles.searchBar.title}>{item.name}</Text>
@@ -63,13 +64,14 @@ export default class PortfolioDetail extends Component {
   };
 
   renderScene = ({ route }) => {
+    const item = this.props.navigation.getParam('item');
     switch (route.key) {
       case 'market':
-        return <Market onScroll={this.handleOnScroll} />;
+        return <Market item={item} onScroll={this.handleOnScroll} />;
       case 'investment':
-        return <Investment onScroll={this.handleOnScroll} />;
+        return <Investment item={item} onScroll={this.handleOnScroll} />;
       case 'holdings':
-        return <Holdings onScroll={this.handleOnScroll} />;
+        return <Holdings item={item} onScroll={this.handleOnScroll} />;
       default:
         return null;
     }
