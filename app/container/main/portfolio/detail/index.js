@@ -14,13 +14,23 @@ import styles from './style';
 @connect()
 export default class PortfolioDetail extends Component {
   state = {
-    index: 0,
+    index: 1,
     routes: [
       { key: 'market', title: '项目行情' },
       { key: 'investment', title: '投资信息' },
       { key: 'holdings', title: '持仓记录' },
     ],
   };
+
+  componentWillMount() {
+    const item = this.props.navigation.getParam('item');
+    if (item && item.id) {
+      this.props.dispatch({
+        type: 'portfolio/get',
+        payload: item.id,
+      });
+    }
+  }
 
   handleIndexChange = index => this.setState({ index });
 
