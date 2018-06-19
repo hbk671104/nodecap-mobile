@@ -28,7 +28,7 @@ const instance = axios.create({
   baseURL: Config.API_URL,
   timeout: 60000,
 });
-console.log(Config);
+
 instance.interceptors.response.use((res) => {
   const hasPagination = R.allPass([
     R.has('x-pagination-current-page'),

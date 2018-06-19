@@ -7,7 +7,6 @@ import { connect } from '../../utils/dva';
 import { NavigationActions } from '../../utils';
 import store from '../../../index';
 
-
 @connect(({ global, login }) => ({
   constants: global.constants,
   isLogin: !!login.token,
@@ -23,7 +22,7 @@ class RehydrateLoader extends Component {
       store,
       {
         storage: AsyncStorage,
-        blacklist: ['loading', 'router', 'project'],
+        blacklist: ['loading', 'router', 'project', 'fund', 'portfolio'],
       },
       async () => {
         if (this.props.isLogin) {

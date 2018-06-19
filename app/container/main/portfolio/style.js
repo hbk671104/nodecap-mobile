@@ -20,9 +20,13 @@ export default {
   },
   searchBar: {
     container: {
+      flex: 1,
       backgroundColor: 'transparent',
-      paddingHorizontal: 12,
+      paddingLeft: 12,
     },
+  },
+  share: {
+    paddingHorizontal: 12,
   },
   tabBar: {
     container: {

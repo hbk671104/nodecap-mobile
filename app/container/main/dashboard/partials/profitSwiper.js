@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, ViewPropTypes } from 'react-native';
+import { View, ViewPropTypes, Platform } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { Card } from 'react-native-elements';
 import * as R from 'ramda';
@@ -31,12 +31,11 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
   return (
     <View style={[styles.container, style]}>
       <Swiper
-        style={{ zIndex: 15 }}
-        height={100}
+        height={120}
         autoplay
         autoplayTimeout={10}
         activeDotColor="#1890FF"
-        paginationStyle={{ bottom: -20 }}
+        paginationStyle={{ bottom: 0 }}
       >
         {R.keys(total).map((b) => {
           const totalProfit = R.path([b])(total);
@@ -47,12 +46,19 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
               <View style={{ alignItems: 'center' }}>
                 <Text style={styles.label}>浮动盈亏</Text>
                 <View style={styles.content.container}>
-                  <Shimmer opacity={0.8}>
+                  {Platform.OS === 'ios' ? (
+                    <Shimmer opacity={0.8}>
+                      <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
+                        {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                        <Text style={styles.content.label}>{b}</Text>
+                      </Text>
+                    </Shimmer>
+                  ) : (
                     <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
                       {symbol(b)} <Text>{totalProfit}</Text>{' '}
                       <Text style={styles.content.label}>{b}</Text>
                     </Text>
-                  </Shimmer>
+                  )}
                 </View>
                 <View style={styles.sub.container}>
                   <Text style={styles.sub.text}>
@@ -73,10 +79,10 @@ const profitSwiper = ({ style, total, daily, weekly }) => {
 const styles = {
   container: {
     position: 'absolute',
-    top: -48,
+    top: -50,
     left: 0,
     right: 0,
-    zIndex: 10,
+    height: 120,
   },
   card: {
     margin: 0,
@@ -88,7 +94,7 @@ const styles = {
     shadowRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    elevation: 4,
+    elevation: 3,
   },
   label: {
     fontSize: 13,

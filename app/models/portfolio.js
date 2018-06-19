@@ -1,6 +1,18 @@
 import * as R from 'ramda';
 import { portfolioIndex } from '../services/api';
 
+const pagination = (state, action, key) => {
+  const data = R.pathOr([], [key, 'index', 'data'])(state);
+  const oldStatus = R.path([key, 'params', 'status'])(state);
+  if (R.isEmpty(data) || !R.equals(oldStatus, action.params.status)) {
+    return action.payload;
+  }
+  return {
+    ...action.payload,
+    data: R.concat(data, R.path(['payload', 'data'])(action)),
+  };
+};
+
 export default {
   namespace: 'portfolio',
   state: {
@@ -10,11 +22,13 @@ export default {
     },
     unexchangeable: {
       index: null,
-      params: {},
+      params: {
+        status: '4,5,6',
+      },
     },
   },
   effects: {
-    * index({ payload = {} }, { call, put }) {
+    *index({ payload = {}, callback }, { call, put }) {
       try {
         const req = {
           ...payload,
@@ -25,6 +39,9 @@ export default {
           payload: res.data,
           params: payload,
         });
+        if (callback) {
+          callback();
+        }
       } catch (e) {
         console.log(e);
       }
@@ -32,11 +49,11 @@ export default {
   },
   reducers: {
     list(state, action) {
-      const key = 'blah';
+      const key = 'unexchangeable';
       return {
         ...state,
         [key]: {
-          index: action.payload,
+          index: pagination(state, action, key),
           params: action.params,
         },
       };

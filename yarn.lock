@@ -2467,9 +2467,9 @@ dva-core@^1.3.0:
     redux-saga "^0.16.0"
     warning "^3.0.0"
 
-dva-loading@^2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/dva-loading/-/dva-loading-2.0.2.tgz#d3b81dc5037a02de359d16af89254ca1c42508a9"
+dva-loading@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/dva-loading/-/dva-loading-2.0.3.tgz#4719c7b54bca1f89a212628ee279affefea953e6"
   dependencies:
     "@babel/runtime" "^7.0.0-beta.34"
 
@@ -5764,9 +5764,9 @@ react-devtools-core@3.1.0:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-fast-compare@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-1.0.0.tgz#813a039155e49b43ceffe99528fe5e9d97a6c938"
+react-fast-compare@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.0.tgz#ce40774719a900a127334c4af59973f619e8e216"
 
 react-is@^16.3.1:
   version "16.4.0"
@@ -5785,6 +5785,10 @@ react-native-blur@^3.2.2:
 react-native-camera-roll-picker@^1.2.1:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/react-native-camera-roll-picker/-/react-native-camera-roll-picker-1.2.3.tgz#b117fd3a2b9012dcccee1261a9bc427226b8d6d2"
+
+react-native-code-push-saga@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-code-push-saga/-/react-native-code-push-saga-1.0.1.tgz#66af9a7ede4cfd5e2dbf6752ebbcac2933f05886"
 
 react-native-code-push@^5.3.4:
   version "5.3.4"
@@ -5860,15 +5864,21 @@ react-native-modal-dropdown@^0.6.2:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-parallax-scroll-view@^0.21.0:
-  version "0.21.0"
-  resolved "https://registry.yarnpkg.com/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.21.0.tgz#742fcbb9b81c47e475d6ecfb5995eb6fd6779162"
+react-native-parallax-scroll-view@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.yarnpkg.com/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.21.1.tgz#473b9a9810e4a982236000f4e545e49e725b5c9b"
   dependencies:
     prop-types "^15.6.0"
 
 react-native-platform-touchable@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-native-platform-touchable/-/react-native-platform-touchable-1.1.1.tgz#fde4acc65eea585d28b164d0c3716a42129a68e4"
+
+react-native-progress@^3.5.0:
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-3.5.0.tgz#d1ccc7f96dc17c609aedb43b2e6695d67deae0ec"
+  dependencies:
+    prop-types "^15.5.8"
 
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
@@ -5892,9 +5902,9 @@ react-native-shimmer@^0.3.2:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-splash-screen@3.0.6:
-  version "3.0.6"
-  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.0.6.tgz#c0bbf2c8ae40a313c4c7044f55e569414ff68332"
+react-native-splash-screen@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.0.9.tgz#5cdd026ae414d60cd86bcaa897bffacd16395bed"
 
 react-native-svg@^6.3.1:
   version "6.3.1"
@@ -5918,19 +5928,13 @@ react-native-swiper@^1.5.13:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-tab-view@0.0.78:
-  version "0.0.78"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.78.tgz#9b90730d89cbd34a03f0e0ab10e74ca7af945560"
-  dependencies:
-    prop-types "^15.6.0"
-
 react-native-tab-view@^0.0.77:
   version "0.0.77"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.77.tgz#11ceb8e7c23100d07e628dc151b57797524d00d4"
   dependencies:
     prop-types "^15.6.0"
 
-react-native-tab-view@^1.0.0:
+react-native-tab-view@^1.0.0, react-native-tab-view@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.0.2.tgz#66e0bc6d38a227ed2b212e3a256b7902f6ce02ed"
   dependencies:
@@ -6014,15 +6018,21 @@ react-navigation-deprecated-tab-navigator@1.3.0:
   dependencies:
     react-native-tab-view "^0.0.77"
 
+react-navigation-drawer@0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/react-navigation-drawer/-/react-navigation-drawer-0.2.1.tgz#fed9b09a41ddfdc1ff198fad04a7b6051def8adf"
+  dependencies:
+    react-native-drawer-layout-polyfill "^1.3.2"
+
 react-navigation-redux-helpers@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/react-navigation-redux-helpers/-/react-navigation-redux-helpers-1.1.2.tgz#13013230ac74aa125a5505eefc005db3801f9e07"
   dependencies:
     invariant "^2.2.2"
 
-react-navigation-tabs@0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/react-navigation-tabs/-/react-navigation-tabs-0.5.0.tgz#74d5511270742a0b67c46fe65a1b19e553763819"
+react-navigation-tabs@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/react-navigation-tabs/-/react-navigation-tabs-0.5.1.tgz#ed33bce3a3e21b92646700de25bd94b8fc570371"
   dependencies:
     hoist-non-react-statics "^2.5.0"
     prop-types "^15.6.1"
@@ -6030,9 +6040,9 @@ react-navigation-tabs@0.5.0:
     react-native-safe-area-view "^0.7.0"
     react-native-tab-view "^1.0.0"
 
-react-navigation@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-2.2.0.tgz#d220ba1d1168252809c72d6d849ef4ac901773a3"
+react-navigation@2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/react-navigation/-/react-navigation-2.2.5.tgz#5c23091d2a87b63fe8d6be350d155664677b903c"
   dependencies:
     clamp "^1.0.1"
     create-react-context "^0.2.1"
@@ -6040,10 +6050,10 @@ react-navigation@^2.2.0:
     path-to-regexp "^1.7.0"
     prop-types "^15.5.10"
     react-lifecycles-compat "^3"
-    react-native-drawer-layout-polyfill "^1.3.2"
     react-native-safe-area-view "^0.8.0"
     react-navigation-deprecated-tab-navigator "1.3.0"
-    react-navigation-tabs "0.5.0"
+    react-navigation-drawer "0.2.1"
+    react-navigation-tabs "0.5.1"
 
 react-proxy@^1.1.7:
   version "1.1.8"
@@ -7416,18 +7426,18 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
-victory-chart@^25.2.0:
-  version "25.2.5"
-  resolved "https://registry.yarnpkg.com/victory-chart/-/victory-chart-25.2.5.tgz#70625c4fbe596ca2919e1ee4a1676d5bc9b5cd3e"
+victory-chart@^27.0.0:
+  version "27.0.0"
+  resolved "https://registry.yarnpkg.com/victory-chart/-/victory-chart-27.0.0.tgz#1ed57453a367172d51132e0c84ba83d0e14669d8"
   dependencies:
     d3-voronoi "^1.1.2"
     lodash "^4.17.5"
-    react-fast-compare "^1.0.0"
-    victory-core "^21.1.12"
+    react-fast-compare "^2.0.0"
+    victory-core "^23.0.2"
 
-victory-core@^21.1.0, victory-core@^21.1.1, victory-core@^21.1.12:
-  version "21.1.13"
-  resolved "https://registry.yarnpkg.com/victory-core/-/victory-core-21.1.13.tgz#5076e57e450af8e136fd11376ff80213904963d1"
+victory-core@^23.0.2, victory-core@^23.0.5:
+  version "23.0.5"
+  resolved "https://registry.yarnpkg.com/victory-core/-/victory-core-23.0.5.tgz#a5ae67957ca3d08dcf6bc1119ac5477369ddebe1"
   dependencies:
     d3-ease "^1.0.0"
     d3-interpolate "^1.1.1"
@@ -7435,25 +7445,26 @@ victory-core@^21.1.0, victory-core@^21.1.1, victory-core@^21.1.12:
     d3-shape "^1.2.0"
     d3-timer "^1.0.0"
     lodash "^4.17.5"
-    react-fast-compare "^1.0.0"
+    react-fast-compare "^2.0.0"
 
-victory-native@^0.17.4:
-  version "0.17.4"
-  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-0.17.4.tgz#3d4b22fa9ad11bae2961be8e3f52883d6b41e201"
+victory-native@^0.18.1:
+  version "0.18.1"
+  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-0.18.1.tgz#107836db1e98282705db1d76bb2301c26fa1a7a3"
   dependencies:
     lodash "^4.17.5"
     prop-types "^15.5.10"
-    victory-chart "^25.2.0"
-    victory-core "^21.1.1"
-    victory-pie "^14.0.2"
+    react-fast-compare "^2.0.0"
+    victory-chart "^27.0.0"
+    victory-core "^23.0.5"
+    victory-pie "^16.0.0"
 
-victory-pie@^14.0.2:
-  version "14.0.2"
-  resolved "https://registry.yarnpkg.com/victory-pie/-/victory-pie-14.0.2.tgz#fc284febf9c505b5de852e34891492d607145c39"
+victory-pie@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/victory-pie/-/victory-pie-16.0.0.tgz#e3cbd36cd2059f094d6b1689b61c920cf70f50db"
   dependencies:
     d3-shape "^1.0.0"
     lodash "^4.17.5"
-    victory-core "^21.1.0"
+    victory-core "^23.0.2"
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"

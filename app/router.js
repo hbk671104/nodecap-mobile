@@ -19,6 +19,8 @@ import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
 import Codepush from 'container/codepush';
+import PortfolioDetail from 'container/main/portfolio/detail';
+
 import NodeCapIcon from 'component/icon/nodecap';
 
 const CodePushStack = createStackNavigator(
@@ -77,6 +79,7 @@ const Tab = createBottomTabNavigator(
 const MainStack = createStackNavigator(
   {
     Tab,
+    PortfolioDetail,
   },
   {
     headerMode: 'none',

@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
-import { Animated, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
-import ParallaxScrollView from 'react-native-parallax-scroll-view';
+import {
+  Animated,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
@@ -39,7 +45,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
     }),
     colorRange: scrollY.interpolate({
       inputRange: [0, PARALLAX_HEADER_HEIGHT / 2],
-      outputRange: ['rgba(255, 255, 255, 0)', 'white'],
+      outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
       extrapolate: 'clamp',
     }),
   }))
@@ -72,7 +78,7 @@ export default class Dashboard extends Component {
   };
 
   renderBackground = () => (
-    <Image style={styles.background} source={require('asset/dashboard_bg.png')} />
+    <Animated.Image style={styles.background} source={require('asset/dashboard_bg.png')} />
   );
 
   renderForeground = () => <Header {...this.props} style={styles.foreground} />;
@@ -82,6 +88,7 @@ export default class Dashboard extends Component {
     const { currentFund } = this.state;
     return (
       <NavBar
+        style={styles.navbar.container}
         wrapperStyle={{ backgroundColor: colorRange }}
         barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
         renderTitle={() => (
@@ -147,7 +154,10 @@ export default class Dashboard extends Component {
             <Text style={styles.empty.group.subtitle}>
               <NodeCapIcon name="diannao" color="#4A4A4A" size={14} />
               {'  '}使用电脑端打开
-              <Text style={{ color: '#1890FF' }} onPress={() => Communications.web('https://hotnode.io')}>
+              <Text
+                style={{ color: '#1890FF' }}
+                onPress={() => Communications.web('https://hotnode.io')}
+              >
                 {' hotnode.io '}
               </Text>，录入更快捷、高效
             </Text>
@@ -170,14 +180,9 @@ export default class Dashboard extends Component {
 
     return (
       <View style={styles.container}>
-        <ParallaxScrollView
+        <ScrollView
           contentContainerStyle={styles.scrollView.container}
-          outputScaleValue={10}
           showsVerticalScrollIndicator={false}
-          parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
-          renderForeground={this.renderForeground}
-          renderBackground={this.renderBackground}
-          renderFixedHeader={this.renderFixedHeader}
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [
@@ -194,32 +199,37 @@ export default class Dashboard extends Component {
             }
           )}
         >
-          <ProfitSwiper
-            total={R.path(['totalProfits', 'count'])(dashboard)}
-            daily={R.path(['dailyProfits', 'count'])(dashboard)}
-            weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
-          />
-          <ReturnRateChart style={styles.roiChart} {...this.props} />
-          <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
-            <InvestNumber data={dashboard.portfolio} />
-          </DashboardGroup>
-          <DashboardGroup
-            style={styles.dashboardGroup}
-            title="投资金额"
-            icon="touzijine"
+          <View style={styles.parallax}>
+            {this.renderBackground()}
+            {this.renderForeground()}
+          </View>
+          <View
+            style={{
+              flex: 1,
+              paddingTop: 50,
+            }}
           >
-            <Investment data={dashboard.investment} />
-          </DashboardGroup>
-          {roiRankCount > 0 && (
-            <DashboardGroup
-              style={styles.dashboardGroup}
-              title="投资回报率 TOP 5"
-              icon="TOP"
-            >
-              {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+            <ProfitSwiper
+              style={styles.swiper}
+              total={R.path(['totalProfits', 'count'])(dashboard)}
+              daily={R.path(['dailyProfits', 'count'])(dashboard)}
+              weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
+            />
+            <ReturnRateChart style={styles.roiChart} {...this.props} />
+            <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
+              <InvestNumber data={dashboard.portfolio} />
             </DashboardGroup>
-          )}
-        </ParallaxScrollView>
+            <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
+              <Investment data={dashboard.investment} />
+            </DashboardGroup>
+            {roiRankCount > 0 && (
+              <DashboardGroup style={styles.dashboardGroup} title="投资回报率 TOP 5" icon="TOP">
+                {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+              </DashboardGroup>
+            )}
+          </View>
+        </ScrollView>
+        {this.renderFixedHeader()}
       </View>
     );
   }

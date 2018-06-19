@@ -1,42 +1,58 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, FlatList, ActivityIndicator, ViewPropTypes } from 'react-native';
+import { View, Text, FlatList, ActivityIndicator, ViewPropTypes, StyleSheet } from 'react-native';
 import * as Color from 'component/uikit/color';
 
-class List extends Component {
+class List extends PureComponent {
   static propTypes = {
     listRef: PropTypes.func,
     data: PropTypes.array.isRequired,
+    pagination: PropTypes.object,
+    action: PropTypes.func,
     renderItem: PropTypes.func.isRequired,
     renderHeader: PropTypes.func,
     renderFooter: PropTypes.func,
     renderEmpty: PropTypes.func,
     renderSeparator: PropTypes.func,
-    loading: PropTypes.bool,
     refreshing: PropTypes.bool,
-    loadingMore: PropTypes.bool,
+    loading: PropTypes.bool,
     onRefresh: PropTypes.func,
-    onEndReached: PropTypes.func,
 
     // styles
     style: ViewPropTypes.style,
   };
 
   static defaultProps = {
-    loading: false,
     refreshing: false,
-    loadingMore: false,
+    loading: false,
   };
+
+  componentWillMount() {
+    if (this.props.action) {
+      this.props.action();
+    }
+  }
 
   extractKey = (item, index) => item.id || `${index}`;
 
   handleOnRefresh = () => {
-    this.props.onRefresh();
+    if (this.props.action) {
+      this.props.action();
+    }
+  };
+
+  handlePagination = () => {
+    if (this.props.action && this.props.pagination) {
+      const { current, pageCount, pageSize } = this.props.pagination;
+      if (current < pageCount) {
+        this.props.action(current + 1, pageSize);
+      }
+    }
   };
 
   handleOnEndReached = () => {
     if (!this.onEndReachedCalledDuringMomentum) {
-      this.props.onEndReached();
+      this.handlePagination();
       this.onEndReachedCalledDuringMomentum = true;
     }
   };
@@ -45,18 +61,30 @@ class List extends Component {
     if (this.props.renderFooter) {
       return this.props.renderFooter();
     }
-    if (this.props.loadingMore) {
-      return (
-        <View style={styles.footerRefresher.container}>
-          <ActivityIndicator />
-        </View>
-      );
+    if (this.props.pagination) {
+      const { current, pageCount } = this.props.pagination;
+      if (this.props.loading && current > 1) {
+        return (
+          <View style={styles.footerRefresher.container}>
+            <ActivityIndicator />
+          </View>
+        );
+      }
+      if (current === pageCount) {
+        return (
+          <View style={styles.footerRefresher.container}>
+            <View style={styles.footerRefresher.line} />
+            <Text style={styles.footerRefresher.text}>我是有底线的</Text>
+            <View style={styles.footerRefresher.line} />
+          </View>
+        );
+      }
     }
     return null;
   };
 
   renderEmpty = () => {
-    if (this.props.refreshing || this.props.loading) {
+    if (this.props.refreshing) {
       return null;
     }
     if (this.props.renderEmpty) {
@@ -76,15 +104,9 @@ class List extends Component {
       renderItem,
       renderHeader,
       renderSeparator,
-      loading,
       refreshing,
-      onRefresh,
-      onEndReached,
       style,
     } = this.props;
-    if ((refreshing && data.length === 0) || loading) {
-      return <ActivityIndicator />;
-    }
     return (
       <FlatList
         {...this.props}
@@ -96,22 +118,18 @@ class List extends Component {
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         ItemSeparatorComponent={renderSeparator}
-        {...(onRefresh
+        {...(refreshing
           ? {
-              onRefresh: this.handleOnRefresh,
+              onRefresh: this.handleOnEndReached,
               refreshing,
             }
           : {})}
-        {...(onEndReached
-          ? {
-              onEndReached: this.handleOnEndReached,
-              onEndReachedThreshold: 0.5,
-              onMomentumScrollBegin: () => {
-                this.onEndReachedCalledDuringMomentum = false;
-                return null;
-              },
-            }
-          : {})}
+        onEndReached={this.handleOnEndReached}
+        onEndReachedThreshold={0.5}
+        onMomentumScrollBegin={() => {
+          this.onEndReachedCalledDuringMomentum = false;
+          return null;
+        }}
         keyboardShouldPersistTaps="handled"
         keyExtractor={this.extractKey}
       />
@@ -136,6 +154,20 @@ const styles = {
   footerRefresher: {
     container: {
       paddingVertical: 10,
+      justifyContent: 'center',
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+    line: {
+      flex: 1,
+      backgroundColor: '#E9E9E9',
+      height: StyleSheet.hairlineWidth,
+      marginHorizontal: 10,
+    },
+    text: {
+      fontSize: 12,
+      color: '#999999',
+      fontWeight: '200',
     },
   },
 };

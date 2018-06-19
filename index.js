@@ -1,6 +1,8 @@
 import React from 'react';
-import { AppRegistry } from 'react-native';
+import { AppRegistry, UIManager } from 'react-native';
 import { autoRehydrate } from 'redux-persist';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 import dva from './app/utils/dva';
 import Router, { routerMiddleware } from './app/router';
 import dashboard from './app/models/dashboard';
@@ -34,6 +36,12 @@ const app = dva({
 });
 
 const App = app.start(<Router store={app._store} />);
+
+if (UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+
+moment.locale('zh-cn');
 
 AppRegistry.registerComponent('nodecap', () => App);
 
