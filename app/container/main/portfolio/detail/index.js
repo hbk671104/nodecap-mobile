@@ -35,6 +35,7 @@ export default class PortfolioDetail extends Component {
       <NavBar
         hidden={offsetY > 0}
         gradient
+        back
         renderTitle={() => (
           <View style={styles.searchBar.container}>
             <Text style={styles.searchBar.title}>{item.name}</Text>

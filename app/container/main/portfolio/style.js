@@ -23,10 +23,8 @@ export default {
       flex: 1,
       backgroundColor: 'transparent',
       paddingLeft: 12,
+      paddingRight: 19 + 24,
     },
-  },
-  share: {
-    paddingHorizontal: 12,
   },
   tabBar: {
     container: {

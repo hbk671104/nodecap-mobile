@@ -36,7 +36,7 @@ export default class Portfolio extends Component {
           </View>
         )}
         renderRight={() => (
-          <TouchableOpacity style={styles.share}>
+          <TouchableOpacity>
             <Image source={require('asset/share.png')} />
           </TouchableOpacity>
         )}
