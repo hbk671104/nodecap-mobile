@@ -13,7 +13,13 @@ export default function (options) {
 
   app.use(
     createLoading({
-      only: ['login/login', 'dashboard/fetch', 'login/setPassword', 'portfolio/index'],
+      only: [
+        'login/login',
+        'dashboard/fetch',
+        'login/setPassword',
+        'portfolio/index',
+        'portfolio/projectStat',
+      ],
     })
   );
   app.start();
