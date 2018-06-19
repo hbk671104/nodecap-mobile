@@ -1,6 +1,9 @@
 import { createAction, NavigationActions as routerRedux, Storage } from '../utils';
+import codepush from 'react-native-code-push';
+import codePushSaga from 'react-native-code-push-saga';
 import { login } from '../services/api';
 import request from '../utils/request';
+import store from '../../index';
 
 export default {
   namespace: 'app',
@@ -40,7 +43,42 @@ export default {
     },
   },
   effects: {
-    * loadStorage(action, { call, put }) {
+    * checkCodePush(_, { spawn, put }) {
+      if (!global.__DEV__) {
+        codepush.allowRestart();
+        yield spawn(codePushSaga, {
+          codePushStatusDidChange: (e) => {
+            if (e === codepush.SyncStatus.DOWNLOADING_PACKAGE) {
+              store.dispatch(routerRedux.navigate({
+                routeName: 'CodePush',
+              }));
+            }
+            store.dispatch({
+              type: 'codePush/changeState',
+              payload: e,
+            });
+          },
+          codePushDownloadDidProgress: (progress) => {
+            const percent = (progress.receivedBytes / progress.totalBytes).toFixed(2);
+            store.dispatch({
+              type: 'codePush/changePercent',
+              payload: percent,
+            });
+          },
+          syncOptions: {
+            updateDialog: null,
+            installMode: codepush.InstallMode.IMMEDIATE,
+            syncOnResume: true,
+            syncOnInterval: 60,
+          },
+        });
+      }
+    },
+    * loadStorage(action, { call, put, take }) {
+      yield put({
+        type: 'checkCodePush',
+      });
+      yield take('checkCodePush/@@end');
       const token = yield call(Storage.get, 'login', false);
       yield put(createAction('updateState')({ login: token, loading: false }));
     },

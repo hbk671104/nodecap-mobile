@@ -1,6 +1,6 @@
 import * as R from 'ramda';
 import { getUser, getUsers, getUserById, updateUserById, createUser, updateUserProfile, updateUserPassword, deleteUserById, adminResetPassword } from '../services/api';
-import { transformSorter } from '../utils/utils';
+import { transformSorter } from '../utils/';
 
 export default {
   namespace: 'user',

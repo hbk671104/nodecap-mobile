@@ -8,9 +8,10 @@ import routerModel from './app/models/router';
 import loginModel from './app/models/login';
 import appModel from './app/models/app';
 import fundModel from './app/models/fund';
-import globalModal from './app/models/global';
-import portfolioModal from './app/models/portfolio';
-import userModal from './app/models/user';
+import globalModel from './app/models/global';
+import portfolioModel from './app/models/portfolio';
+import userModel from './app/models/user';
+import codepushModel from './app/models/codepush';
 
 const app = dva({
   initialState: {},
@@ -19,10 +20,11 @@ const app = dva({
     routerModel,
     loginModel,
     appModel,
-    globalModal,
+    globalModel,
     fundModel,
-    portfolioModal,
-    userModal,
+    portfolioModel,
+    userModel,
+    codepushModel,
   ],
   onAction: [routerMiddleware],
   onError(e) {
