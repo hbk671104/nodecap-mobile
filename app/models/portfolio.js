@@ -48,9 +48,9 @@ export default {
     },
     *projectStat({ id, callback }, { call }) {
       try {
-        const res = yield call(getProjectChartData, id);
+        const { data } = yield call(getProjectChartData, id);
         if (callback) {
-          callback(res);
+          callback(data);
         }
       } catch (e) {
         console.log(e);
