@@ -1,12 +1,13 @@
 import { Dimensions } from 'react-native';
 
+const deviceWidth = Dimensions.get('window').width;
 export default {
   container: {
     flex: 1,
   },
   initialLayout: {
     height: 0,
-    width: Dimensions.get('window').width,
+    width: deviceWidth,
   },
   navBar: {
     container: {
@@ -20,9 +21,12 @@ export default {
   },
   searchBar: {
     container: {
-      flex: 1,
       backgroundColor: 'transparent',
-      paddingLeft: 12,
+    },
+    title: {
+      fontSize: 17,
+      color: 'white',
+      fontWeight: 'bold',
     },
   },
   share: {
@@ -39,6 +43,8 @@ export default {
     indicator: {
       height: 3,
       backgroundColor: 'white',
+      width: 80,
+      left: (deviceWidth / 3 - 80) / 2,
     },
   },
 };

@@ -41,7 +41,7 @@ export default class Unexchangeable extends Component {
     });
   };
 
-  handleItemPress = () => (item) => {
+  handleItemPress = item => () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',

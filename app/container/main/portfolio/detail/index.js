@@ -29,14 +29,15 @@ export default class PortfolioDetail extends Component {
   };
 
   renderHeader = (props) => {
-    const { offsetY } = this.props;
+    const { offsetY, navigation } = this.props;
+    const item = navigation.getParam('item');
     return (
       <NavBar
         hidden={offsetY > 0}
         gradient
         renderTitle={() => (
           <View style={styles.searchBar.container}>
-            <Text>SOC</Text>
+            <Text style={styles.searchBar.title}>{item.name}</Text>
           </View>
         )}
         renderBottom={() => (
