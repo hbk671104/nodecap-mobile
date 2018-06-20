@@ -11,7 +11,9 @@ import Holdings from './route/holdings';
 import styles from './style';
 
 @compose(withState('offsetY', 'setOffsetY', 0))
-@connect()
+@connect(({ portfolio }) => ({
+  portfolio: portfolio.current,
+}))
 export default class PortfolioDetail extends Component {
   state = {
     index: 1,
@@ -64,7 +66,7 @@ export default class PortfolioDetail extends Component {
   };
 
   renderScene = ({ route }) => {
-    const item = this.props.navigation.getParam('item');
+    const item = this.props.portfolio;
     switch (route.key) {
       case 'market':
         return <Market item={item} onScroll={this.handleOnScroll} />;
