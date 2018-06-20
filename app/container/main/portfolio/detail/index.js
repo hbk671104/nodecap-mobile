@@ -67,9 +67,10 @@ export default class PortfolioDetail extends Component {
 
   renderScene = ({ route }) => {
     const item = this.props.portfolio;
+    const { id } = this.props.navigation.getParam('item');
     switch (route.key) {
       case 'market':
-        return <Market item={item} onScroll={this.handleOnScroll} />;
+        return <Market id={id} item={item} onScroll={this.handleOnScroll} />;
       case 'investment':
         return <Investment item={item} onScroll={this.handleOnScroll} />;
       case 'holdings':

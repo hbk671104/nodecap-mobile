@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+
+import Header from './partials/header';
 import styles from './style';
 
 @connect(({ loading }) => ({
@@ -12,10 +14,10 @@ class Market extends PureComponent {
   }
 
   loadStat = () => {
-    const { item } = this.props;
+    const { id } = this.props;
     this.props.dispatch({
       type: 'portfolio/projectStat',
-      id: item.id,
+      id,
       callback: (res) => {
         console.log(res);
       },
@@ -23,7 +25,13 @@ class Market extends PureComponent {
   };
 
   render() {
-    return null;
+    return (
+      <View style={styles.container}>
+        <ScrollView style={styles.scrollView}>
+          <Header />
+        </ScrollView>
+      </View>
+    );
   }
 }
 
