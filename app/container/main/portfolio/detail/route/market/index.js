@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import Header from './partials/header';
 import Group from './partials/group';
+import ROI from './partials/roi';
 import styles from './style';
 
 @connect(({ loading }) => ({
@@ -31,7 +32,9 @@ class Market extends PureComponent {
         <ScrollView style={styles.scrollView}>
           <Header />
           <View style={styles.divider} />
-          <Group title="投资回报率" subtitle="以不同本位币做基准" />
+          <Group title="投资回报率" subtitle="以不同本位币做基准">
+            <ROI />
+          </Group>
           <Group title="项目浮动盈亏" subtitle="以不同本位币做基准" />
           <Group title="总市值" subtitle="以不同本位币做基准" />
         </ScrollView>
