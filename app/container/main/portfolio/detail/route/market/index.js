@@ -1,12 +1,14 @@
 import React, { PureComponent } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { compose, withState } from 'recompose';
 
 import Header from './partials/header';
 import Group from './partials/group';
 import ROI from './partials/roi';
 import styles from './style';
 
+@compose(withState('stat', 'setStat', {}))
 @connect(({ loading }) => ({
   loading: loading.effects['portfolio/projectStat'],
 }))
@@ -16,12 +18,12 @@ class Market extends PureComponent {
   }
 
   loadStat = () => {
-    const { id } = this.props;
+    const { id, setStat } = this.props;
     this.props.dispatch({
       type: 'portfolio/projectStat',
       id,
       callback: (res) => {
-        console.log(res);
+        setStat(res);
       },
     });
   };

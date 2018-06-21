@@ -45,10 +45,8 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		2F819958CA6145118836A5D4 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 16DACA28F7C24116994DAECC /* FontAwesome.ttf */; };
 		33391D4F057942C6B25523FB /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 73878C7F81EF4510A6434ABC /* libReactNativeConfig.a */; };
-		403BAC9820C13AAF0057EC84 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 403BAC9620C13AAF0057EC84 /* logo@2x.png */; };
-		403BAC9920C13AAF0057EC84 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 403BAC9720C13AAF0057EC84 /* logo@3x.png */; };
-		403BAC9C20C13ABD0057EC84 /* logo_text@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 403BAC9A20C13ABD0057EC84 /* logo_text@3x.png */; };
-		403BAC9D20C13ABD0057EC84 /* logo_text@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 403BAC9B20C13ABD0057EC84 /* logo_text@2x.png */; };
+		402B017320DA0F26004AE4F8 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017120DA0F26004AE4F8 /* logo@2x.png */; };
+		402B017420DA0F26004AE4F8 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017220DA0F26004AE4F8 /* logo@3x.png */; };
 		40C1B94320C66C8300B0E87B /* NodeCapIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */; };
 		5B63BBE8925B43D98F6A9B61 /* libRNShimmer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8B57D6F745BD47CC9C98E92F /* libRNShimmer.a */; };
 		5D1D68B9CFB047638E79718F /* libCodePush.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C72041AC8FEF4D5699D2A0D7 /* libCodePush.a */; };
@@ -451,10 +449,8 @@
 		2D02E47B1E0B4A5D006451C7 /* nodecap-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "nodecap-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* nodecap-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "nodecap-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		403BAC9620C13AAF0057EC84 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
-		403BAC9720C13AAF0057EC84 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
-		403BAC9A20C13ABD0057EC84 /* logo_text@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_text@3x.png"; sourceTree = "<group>"; };
-		403BAC9B20C13ABD0057EC84 /* logo_text@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_text@2x.png"; sourceTree = "<group>"; };
+		402B017120DA0F26004AE4F8 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
+		402B017220DA0F26004AE4F8 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
 		40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NodeCapIcon.ttf; sourceTree = "<group>"; };
 		48F49B7B2EA546009F727FAA /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		4E14F06AB1DF476D840A676D /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
@@ -692,10 +688,8 @@
 		403BAC6A20C13A9C0057EC84 /* asset */ = {
 			isa = PBXGroup;
 			children = (
-				403BAC9B20C13ABD0057EC84 /* logo_text@2x.png */,
-				403BAC9A20C13ABD0057EC84 /* logo_text@3x.png */,
-				403BAC9620C13AAF0057EC84 /* logo@2x.png */,
-				403BAC9720C13AAF0057EC84 /* logo@3x.png */,
+				402B017120DA0F26004AE4F8 /* logo@2x.png */,
+				402B017220DA0F26004AE4F8 /* logo@3x.png */,
 			);
 			name = asset;
 			sourceTree = "<group>";
@@ -974,7 +968,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = TCXFX6H5P2;
+						DevelopmentTeam = DSZH2XE3X8;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1451,7 +1445,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				40C1B94320C66C8300B0E87B /* NodeCapIcon.ttf in Resources */,
-				403BAC9D20C13ABD0057EC84 /* logo_text@2x.png in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				95DC4BC7CA764BD5B19ECB1B /* Entypo.ttf in Resources */,
@@ -1461,9 +1454,8 @@
 				6E4E6F3EA3B547FD9F2F5C7F /* Foundation.ttf in Resources */,
 				1CAA913120FB420F92FC8E98 /* Ionicons.ttf in Resources */,
 				92649037DCE44CB788F15222 /* MaterialCommunityIcons.ttf in Resources */,
-				403BAC9C20C13ABD0057EC84 /* logo_text@3x.png in Resources */,
-				403BAC9920C13AAF0057EC84 /* logo@3x.png in Resources */,
-				403BAC9820C13AAF0057EC84 /* logo@2x.png in Resources */,
+				402B017420DA0F26004AE4F8 /* logo@3x.png in Resources */,
+				402B017320DA0F26004AE4F8 /* logo@2x.png in Resources */,
 				0548D1E50D744680B865FFC6 /* MaterialIcons.ttf in Resources */,
 				2D8833B2A8114B52954D0060 /* Octicons.ttf in Resources */,
 				9CFA0A2EBB554782B851A9B2 /* SimpleLineIcons.ttf in Resources */,
@@ -1673,7 +1665,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = TCXFX6H5P2;
+				DEVELOPMENT_TEAM = DSZH2XE3X8;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
@@ -1707,7 +1699,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = TCXFX6H5P2;
+				DEVELOPMENT_TEAM = DSZH2XE3X8;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",

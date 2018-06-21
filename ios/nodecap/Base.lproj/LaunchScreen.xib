@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_9" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -15,27 +15,14 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="一 干就完了 一" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
-                    <rect key="frame" x="196.66666666666666" y="436" width="86.999999999999972" height="16"/>
-                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
-                    <color key="textColor" red="0.65490196078431373" green="0.65490196078431373" blue="0.65490196078431373" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="R5M-YF-SnN">
-                    <rect key="frame" x="210.66666666666666" y="151" width="58.999999999999972" height="59"/>
-                </imageView>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="logo_text.png" translatesAutoresizingMaskIntoConstraints="NO" id="tya-i2-QsY">
-                    <rect key="frame" x="158.66666666666666" y="232" width="162.99999999999997" height="35"/>
+                    <rect key="frame" x="155" y="140" width="171" height="84"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="tya-i2-QsY" firstAttribute="top" secondItem="R5M-YF-SnN" secondAttribute="bottom" constant="22" id="CEq-I7-ZfZ"/>
-                <constraint firstItem="tya-i2-QsY" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="D4Q-tB-HXH"/>
                 <constraint firstItem="R5M-YF-SnN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="KcJ-yr-jel"/>
-                <constraint firstAttribute="bottom" secondItem="8ie-xW-0ye" secondAttribute="bottom" constant="28" id="Kzo-t9-V3l"/>
-                <constraint firstAttribute="centerX" secondItem="8ie-xW-0ye" secondAttribute="centerX" id="ZEH-qu-HZ9"/>
-                <constraint firstItem="R5M-YF-SnN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="151" id="fgj-gH-Q6N"/>
+                <constraint firstItem="R5M-YF-SnN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="140" id="fgj-gH-Q6N"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
@@ -43,7 +30,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo.png" width="59" height="59"/>
-        <image name="logo_text.png" width="163" height="35"/>
+        <image name="logo.png" width="171" height="84"/>
     </resources>
 </document>
