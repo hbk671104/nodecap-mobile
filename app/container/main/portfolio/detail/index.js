@@ -16,7 +16,7 @@ import styles from './style';
 }))
 export default class PortfolioDetail extends Component {
   state = {
-    index: 1,
+    index: 0,
     routes: [
       { key: 'market', title: '项目行情' },
       { key: 'investment', title: '投资信息' },

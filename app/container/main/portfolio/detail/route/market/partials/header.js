@@ -49,8 +49,9 @@ const header = props => (
         </Text>
       </View>
     </View>
-    <View style={styles}>
-      <Text>已上交易所</Text>
+    <View style={styles.bottom.container}>
+      <Text style={styles.bottom.title}>已上交易所</Text>
+      <Text style={styles.bottom.content}>Bitfinex | Okex | Huobi | Bithumb</Text>
     </View>
   </View>
 );
@@ -164,6 +165,7 @@ const styles = {
     content: {
       color: '#1890FF',
       fontSize: 14,
+      marginTop: 5,
     },
   },
 };
