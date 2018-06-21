@@ -1,5 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { navBarHeight } from 'component/navBar';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 const window = Dimensions.get('window');
 
@@ -88,7 +89,11 @@ export default {
   foreground: {
     ...Platform.select({
       ios: {
-        paddingTop: 20,
+        ...ifIphoneX({
+          paddingTop: 40,
+        }, {
+          paddingTop: 20,
+        }),
         height: PARALLAX_HEADER_HEIGHT,
       },
       android: {

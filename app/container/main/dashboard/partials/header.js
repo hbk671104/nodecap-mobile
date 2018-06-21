@@ -68,6 +68,7 @@ const styles = {
     fontSize: 14,
     color: 'white',
     fontWeight: 'bold',
+    marginRight: 5,
   },
   title: {
     fontSize: 50,
