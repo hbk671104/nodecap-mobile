@@ -18,6 +18,8 @@ import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
+import Management from 'container/main/management';
+import Self from 'container/main/self';
 import Codepush from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 
@@ -49,6 +51,18 @@ const Tab = createBottomTabNavigator(
       screen: Portfolio,
       navigationOptions: {
         title: '投资库',
+      },
+    },
+    Management: {
+      screen: Management,
+      navigationOptions: {
+        title: '资产管理',
+      },
+    },
+    Self: {
+      screen: Self,
+      navigationOptions: {
+        title: '我的机构',
       },
     },
   },
