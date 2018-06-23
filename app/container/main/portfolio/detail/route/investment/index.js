@@ -5,7 +5,6 @@ import Header from './header';
 
 class Investment extends PureComponent {
   render() {
-    console.log(this.props.item);
     return null;
   }
 }

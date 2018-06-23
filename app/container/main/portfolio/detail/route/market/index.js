@@ -29,13 +29,14 @@ class Market extends PureComponent {
   };
 
   render() {
+    const { ROI: roi } = this.props.stat;
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <Header />
           <View style={styles.divider} />
           <Group title="投资回报率" subtitle="以不同本位币做基准">
-            <ROI />
+            <ROI data={roi} />
           </Group>
           <Group title="项目浮动盈亏" subtitle="以不同本位币做基准" />
           <Group title="总市值" subtitle="以不同本位币做基准" />
