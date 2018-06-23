@@ -35,9 +35,11 @@ class Market extends PureComponent {
         <ScrollView style={styles.scrollView}>
           <Header />
           <View style={styles.divider} />
-          <Group title="投资回报率" subtitle="以不同本位币做基准">
-            <ROI data={roi} />
-          </Group>
+          {!!roi && (
+            <Group title="投资回报率" subtitle="以不同本位币做基准">
+              <ROI data={roi} />
+            </Group>
+          )}
           <Group title="项目浮动盈亏" subtitle="以不同本位币做基准" />
           <Group title="总市值" subtitle="以不同本位币做基准" />
         </ScrollView>
