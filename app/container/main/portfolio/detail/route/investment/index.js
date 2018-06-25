@@ -1,11 +1,15 @@
 import React, { PureComponent } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import styles from './style';
 import Header from './header';
 
 class Investment extends PureComponent {
   render() {
-    return null;
+    return (
+      <ScrollView style={styles.container}>
+        <Header {...this.props} />
+      </ScrollView>
+    );
   }
 }
 

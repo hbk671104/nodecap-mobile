@@ -48,7 +48,7 @@ const projectItem = ({ item }) => (
 );
 
 projectItem.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.any,
 };
 
 export default projectItem;

@@ -18,6 +18,8 @@ class RehydrateLoader extends Component {
   }
 
   componentWillMount() {
+    SplashScreen.hide();
+
     persistStore(
       store,
       {
