@@ -1,8 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ViewPropTypes } from 'react-native';
+import { View, Text, Image, ViewPropTypes } from 'react-native';
 import * as R from 'ramda';
 import { shadow } from '../../../../../../../utils/style';
+
+const icon = (k) => {
+  switch (k) {
+    case 'BTC':
+      return require('asset/crypto/transparent/BTC.png');
+    case 'ETH':
+      return require('asset/crypto/transparent/ETH.png');
+    case 'USD':
+      return require('asset/crypto/transparent/USD.png');
+    case 'CNY':
+      return require('asset/crypto/transparent/CNY.png');
+    default:
+      return null;
+  }
+};
 
 const roi = ({ style, data }) => (
   <View style={[styles.container, style]}>
@@ -11,8 +26,14 @@ const roi = ({ style, data }) => (
       return (
         <View key={k} style={styles.group.container}>
           <View style={styles.group.inner}>
+            <View style={styles.image.container}>
+              <Image source={icon(k)} />
+            </View>
             <Text style={styles.title}>{k}</Text>
-            <Text style={styles.subtitle}>{item.count.to}%</Text>
+            <Text style={styles.subtitle}>
+              {item.count.toFixed(0)}
+              <Text style={{ fontSize: 12 }}>%</Text>
+            </Text>
           </View>
         </View>
       );
@@ -51,8 +72,16 @@ const styles = {
   },
   subtitle: {
     color: '#1890FF',
-    fontSize: 14,
+    fontSize: 17,
+    fontWeight: 'bold',
     marginTop: 6,
+  },
+  image: {
+    container: {
+      position: 'absolute',
+      bottom: 0,
+      right: 6,
+    },
   },
 };
 
