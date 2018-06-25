@@ -3,6 +3,7 @@ import { View, ScrollView, Text } from 'react-native';
 
 import Group from './partials/group';
 import Asset from './partials/asset';
+import TransactionItem from './partials/transaction';
 import styles from './style';
 
 class Holdings extends PureComponent {
@@ -22,7 +23,10 @@ class Holdings extends PureComponent {
             icon={require('asset/project/detail/transaction.png')}
             title="交易记录"
           >
-            <Text>hahhaha1</Text>
+            <TransactionItem />
+            <TransactionItem />
+            <TransactionItem />
+            <TransactionItem />
           </Group>
         </ScrollView>
       </View>
