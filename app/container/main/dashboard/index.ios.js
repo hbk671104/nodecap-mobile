@@ -84,6 +84,13 @@ export default class Dashboard extends Component {
       <NavBar
         wrapperStyle={{ backgroundColor: colorRange }}
         barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
+        renderRight={() => {
+          return (
+            <TouchableOpacity>
+              <Image source={require('asset/share.png')} style={styles.shareButton} />
+            </TouchableOpacity>
+          );
+        }}
         renderTitle={() => (
           <ModalDropdown
             style={styles.dropdown.container}
