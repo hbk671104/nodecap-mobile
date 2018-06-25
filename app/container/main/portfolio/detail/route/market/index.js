@@ -5,6 +5,7 @@ import { compose, withState } from 'recompose';
 
 import Header from './partials/header';
 import Group from './partials/group';
+import Holdings from './partials/holdings';
 import ROI from './partials/roi';
 import styles from './style';
 
@@ -23,13 +24,14 @@ class Market extends PureComponent {
       type: 'portfolio/projectStat',
       id,
       callback: (res) => {
+        console.log(res);
         setStat(res);
       },
     });
   };
 
   render() {
-    const { ROI: roi } = this.props.stat;
+    const { ROI: roi, investment } = this.props.stat;
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
@@ -41,7 +43,12 @@ class Market extends PureComponent {
             </Group>
           )}
           <Group title="项目浮动盈亏" subtitle="以不同本位币做基准" />
-          <Group title="总市值" subtitle="以不同本位币做基准" />
+          {!!investment &&
+            !!investment.assets && (
+              <Group title="总市值" subtitle="以不同本位币做基准">
+                <Holdings data={investment.assets} />
+              </Group>
+            )}
         </ScrollView>
       </View>
     );
