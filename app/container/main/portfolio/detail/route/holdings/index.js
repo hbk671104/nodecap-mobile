@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 
-import Group from './partials/group';
+import Group from 'component/project/group';
 import Asset from './partials/asset';
 import TransactionItem from './partials/transaction';
 import styles from './style';

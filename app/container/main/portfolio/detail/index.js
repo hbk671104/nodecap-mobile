@@ -11,8 +11,9 @@ import Holdings from './route/holdings';
 import styles from './style';
 
 @compose(withState('offsetY', 'setOffsetY', 0))
-@connect(({ portfolio }) => ({
+@connect(({ portfolio, global }) => ({
   portfolio: portfolio.current,
+  constants: global.constants,
 }))
 export default class PortfolioDetail extends Component {
   state = {
@@ -72,7 +73,7 @@ export default class PortfolioDetail extends Component {
       case 'market':
         return <Market id={id} item={item} onScroll={this.handleOnScroll} />;
       case 'investment':
-        return <Investment item={item} onScroll={this.handleOnScroll} />;
+        return <Investment {...this.props} item={item} onScroll={this.handleOnScroll} />;
       case 'holdings':
         return <Holdings item={item} onScroll={this.handleOnScroll} />;
       default:

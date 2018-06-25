@@ -26,6 +26,7 @@ const styles = {
   },
   group: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   image: {
     marginRight: 12,

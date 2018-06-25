@@ -61,4 +61,24 @@ export default {
       marginTop: 4,
     },
   },
+  base: {
+    container: {
+      marginTop: 18,
+    },
+    verticalField: {
+      height: 'auto',
+      paddingVertical: 11,
+    },
+    field: {
+      height: 45,
+      marginLeft: 22,
+      borderBottomWidth: 0.5,
+      borderBottomColor: borderColor,
+      justifyContent: 'center',
+      paddingRight: 15,
+    },
+    fieldName: {
+      color: '#999999',
+    },
+  },
 };
