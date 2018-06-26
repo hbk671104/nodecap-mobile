@@ -8,15 +8,19 @@ import Avatar from 'component/uikit/avatar';
 import styles from './style';
 
 class header extends Component {
-  linkTo = url => Linking.openURL(url)
+  linkTo = url => Linking.openURL(url);
   renderViewMore(onPress) {
     return (
-      <Text onPress={onPress} style={styles.header.moreText}>[更多]</Text>
+      <Text onPress={onPress} style={styles.header.moreText}>
+        [更多]
+      </Text>
     );
   }
   renderViewLess(onPress) {
     return (
-      <Text onPress={onPress} style={styles.header.moreText}>[收起]</Text>
+      <Text onPress={onPress} style={styles.header.moreText}>
+        [收起]
+      </Text>
     );
   }
 
@@ -25,16 +29,19 @@ class header extends Component {
     return (
       <View style={styles.header.links}>
         <Flex justify="space-between" align="center">
-          {!!site_url &&
-          <Text style={styles.header.link} onPress={() => this.linkTo(site_url)}>官网</Text>
-          }
+          {!!site_url && (
+            <Text style={styles.header.link} onPress={() => this.linkTo(site_url)}>
+              官网
+            </Text>
+          )}
           {!!showLine && <View style={styles.header.division} />}
-          {!!white_papers &&
-          <Text style={styles.header.link} onPress={() => this.linkTo(white_papers)}>白皮书</Text>
-          }
+          {!!white_papers && (
+            <Text style={styles.header.link} onPress={() => this.linkTo(white_papers)}>
+              白皮书
+            </Text>
+          )}
         </Flex>
       </View>
-
     );
   }
 
@@ -46,8 +53,9 @@ class header extends Component {
           <View>
             <Text style={styles.name}>{projectProps(['name'])}</Text>
             <StatusBadge status={4} />
-            {!!projectProps(['token_name']) &&
-            <Text style={styles.header.tokenName}>Token: {projectProps(['token_name'])}</Text>}
+            {!!projectProps(['token_name']) && (
+              <Text style={styles.header.tokenName}>Token: {projectProps(['token_name'])}</Text>
+            )}
           </View>
           <View>
             <Avatar size={65} source={{ uri: projectProps(['logo_url']) }} />
@@ -60,9 +68,7 @@ class header extends Component {
             numberOfLines={2}
             textStyle={styles.header.desc}
           >
-            <Text>
-              {projectProps(['description'])}
-            </Text>
+            <Text>{projectProps(['description'])}</Text>
           </ViewMoreText>
         </View>
         {this.renderLinks({

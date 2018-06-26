@@ -1,60 +1,64 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import * as R from 'ramda';
+
 import NodeCapIcon from 'component/icon/nodecap';
 
-const header = props => (
-  <View style={styles.container}>
-    <View style={styles.top.container}>
-      <Text style={styles.top.title}>SOC</Text>
-      <TouchableOpacity style={styles.top.switch.container}>
-        <Text style={styles.top.switch.title}>
-          火币 <NodeCapIcon name="xiala" />
-        </Text>
-        <Text style={styles.top.switch.subtitle}>支持切换 Top10 交易所及交易对</Text>
-      </TouchableOpacity>
-    </View>
-    <View style={styles.price.container}>
-      <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-        <Text style={styles.price.text}>
-          ￥15.93
-          <Text style={styles.price.label}> CNY</Text>
-        </Text>
-        <View style={styles.price.roi.container}>
-          <Text style={styles.price.roi.text}>4.2倍</Text>
+const header = (props) => {
+  const projectProps = path => R.path(['item', ...path])(props);
+  return (
+    <View style={styles.container}>
+      <View style={styles.top.container}>
+        <Text style={styles.top.title}>{projectProps(['name'])}</Text>
+        <TouchableOpacity style={styles.top.switch.container}>
+          <Text style={styles.top.switch.title}>
+            火币 <NodeCapIcon name="xiala" />
+          </Text>
+          <Text style={styles.top.switch.subtitle}>支持切换 Top10 交易所及交易对</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.price.container}>
+        <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
+          <Text style={styles.price.text}>
+            ￥15.93
+            <Text style={styles.price.label}> CNY</Text>
+          </Text>
+          <View style={styles.price.roi.container}>
+            <Text style={styles.price.roi.text}>4.2倍</Text>
+          </View>
+        </View>
+        <Text style={styles.price.cost}>成本价：￥0.14</Text>
+      </View>
+      <View style={styles.middle.container}>
+        <View style={styles.middle.top.container}>
+          <View style={{ flex: 2 }}>
+            <Text style={styles.middle.top.text}>+4.42%</Text>
+            <Text style={styles.middle.top.label}>今日涨跌</Text>
+          </View>
+          <View style={styles.middle.top.divider} />
+          <View style={{ flex: 3, alignItems: 'center' }}>
+            <Text style={styles.middle.top.text}>261%</Text>
+            <Text style={styles.middle.top.label}>投资回报率</Text>
+          </View>
+          <View style={styles.middle.top.divider} />
+          <View style={{ flex: 3, alignItems: 'center' }}>
+            <Text style={[styles.middle.top.text, { color: '#666666' }]}>#3</Text>
+            <Text style={styles.middle.top.label}>投资回报率排名</Text>
+          </View>
+        </View>
+        <View style={styles.middle.bottom.container}>
+          <Text style={styles.middle.bottom.text}>
+            量(24H) 1.3亿SOC | 额(24H) 30.23亿CNY | 最高(24H) ¥14.7CNY
+          </Text>
         </View>
       </View>
-      <Text style={styles.price.cost}>成本价：￥0.14</Text>
-    </View>
-    <View style={styles.middle.container}>
-      <View style={styles.middle.top.container}>
-        <View style={{ flex: 2 }}>
-          <Text style={styles.middle.top.text}>+4.42%</Text>
-          <Text style={styles.middle.top.label}>今日涨跌</Text>
-        </View>
-        <View style={styles.middle.top.divider} />
-        <View style={{ flex: 3, alignItems: 'center' }}>
-          <Text style={styles.middle.top.text}>261%</Text>
-          <Text style={styles.middle.top.label}>投资回报率</Text>
-        </View>
-        <View style={styles.middle.top.divider} />
-        <View style={{ flex: 3, alignItems: 'center' }}>
-          <Text style={[styles.middle.top.text, { color: '#666666' }]}>#3</Text>
-          <Text style={styles.middle.top.label}>投资回报率排名</Text>
-        </View>
-      </View>
-      <View style={styles.middle.bottom.container}>
-        <Text style={styles.middle.bottom.text}>
-          量(24H) 1.3亿SOC | 额(24H) 30.23亿CNY | 最高(24H) ¥14.7CNY
-        </Text>
+      <View style={styles.bottom.container}>
+        <Text style={styles.bottom.title}>已上交易所</Text>
+        <Text style={styles.bottom.content}>Bitfinex | Okex | Huobi | Bithumb</Text>
       </View>
     </View>
-    <View style={styles.bottom.container}>
-      <Text style={styles.bottom.title}>已上交易所</Text>
-      <Text style={styles.bottom.content}>Bitfinex | Okex | Huobi | Bithumb</Text>
-    </View>
-  </View>
-);
+  );
+};
 
 const styles = {
   container: {

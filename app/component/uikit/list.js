@@ -1,6 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, FlatList, ActivityIndicator, ViewPropTypes, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  FlatList,
+  ActivityIndicator,
+  ViewPropTypes,
+  StyleSheet,
+} from 'react-native';
 import * as Color from 'component/uikit/color';
 
 class List extends PureComponent {
@@ -91,8 +99,8 @@ class List extends PureComponent {
       return this.props.renderEmpty();
     }
     return (
-      <View>
-        <Text>我是空页面</Text>
+      <View style={styles.empty.container}>
+        <Image source={require('asset/none.png')} />
       </View>
     );
   };
@@ -143,7 +151,7 @@ const styles = {
   },
   empty: {
     container: {
-      alignSelf: 'center',
+      alignItems: 'center',
       marginTop: 100,
     },
     text: {

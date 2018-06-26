@@ -24,7 +24,6 @@ class Market extends PureComponent {
       type: 'portfolio/projectStat',
       id,
       callback: (res) => {
-        console.log(res);
         setStat(res);
       },
     });
@@ -35,7 +34,7 @@ class Market extends PureComponent {
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
-          <Header />
+          <Header {...this.props} />
           <View style={styles.divider} />
           {!!roi && (
             <Group title="投资回报率" subtitle="以不同本位币做基准">
