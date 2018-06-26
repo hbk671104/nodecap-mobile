@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
@@ -11,8 +11,9 @@ import Holdings from './route/holdings';
 import styles from './style';
 
 @compose(withState('portfolio', 'setPortfolio', {}))
-@connect(({ global }) => ({
+@connect(({ global, loading }) => ({
   constants: global.constants,
+  loading: loading.effects['portfolio/get'],
 }))
 export default class PortfolioDetail extends Component {
   state = {
@@ -26,21 +27,25 @@ export default class PortfolioDetail extends Component {
 
   componentWillMount() {
     const item = this.props.navigation.getParam('item');
-    const { setPortfolio } = this.props;
     if (item && item.id) {
       this.props.dispatch({
         type: 'portfolio/get',
         payload: item.id,
-        callback: (res) => {
-          setPortfolio(res);
-        },
+        callback: this.handleResponse,
       });
     }
   }
 
+  handleResponse = (res) => {
+    const { setPortfolio } = this.props;
+    InteractionManager.runAfterInteractions(() => {
+      setPortfolio(res);
+    });
+  };
+
   handleIndexChange = index => this.setState({ index });
 
-  renderHeader = (props) => {
+  renderNavBar = (bottom) => {
     const item = this.props.navigation.getParam('item');
     return (
       <NavBar
@@ -51,34 +56,25 @@ export default class PortfolioDetail extends Component {
             <Text style={styles.searchBar.title}>{item.name}</Text>
           </View>
         )}
-        renderBottom={() => (
-          <TabBar
-            {...props}
-            style={styles.tabBar.container}
-            labelStyle={styles.tabBar.label}
-            indicatorStyle={styles.tabBar.indicator}
-          />
-        )}
+        renderBottom={() => bottom}
       />
     );
   };
 
-  renderInvestment = () => {
-    const item = this.props.navigation.getParam('item');
-    return (
-      <View style={styles.container}>
-        <NavBar
-          gradient
-          back
-          renderTitle={() => (
-            <View style={styles.searchBar.container}>
-              <Text style={styles.searchBar.title}>{item.name}</Text>
-            </View>
-          )}
+  renderHeader = (displayTab = true) => (props) => {
+    let component;
+    if (displayTab) {
+      component = (
+        <TabBar
+          {...props}
+          style={styles.tabBar.container}
+          labelStyle={styles.tabBar.label}
+          indicatorStyle={styles.tabBar.indicator}
         />
-        <Investment {...this.props} item={this.props.portfolio} />;
-      </View>
-    );
+      );
+    }
+
+    return this.renderNavBar(component);
   };
 
   renderScene = ({ route }) => {
@@ -97,20 +93,28 @@ export default class PortfolioDetail extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     const item = this.props.navigation.getParam('item');
+    const displayTab = item && item.can_calculate;
     return (
       <View style={styles.container}>
-        {item && item.can_calculate ? (
+        {loading ? (
+          <View style={styles.container}>
+            {this.renderNavBar(null)}
+            <ActivityIndicator style={{ marginTop: 10 }} />
+          </View>
+        ) : (
           <TabView
             initialLayout={styles.initialLayout}
-            navigationState={{ index: this.state.index, routes: this.state.routes }}
+            navigationState={{
+              index: this.state.index,
+              routes: displayTab ? this.state.routes : [{ key: 'investment', title: '投资信息' }],
+            }}
             renderScene={this.renderScene}
             tabBarPosition="top"
-            renderTabBar={this.renderHeader}
+            renderTabBar={this.renderHeader(displayTab)}
             onIndexChange={this.handleIndexChange}
           />
-        ) : (
-          this.renderInvestment()
         )}
       </View>
     );
