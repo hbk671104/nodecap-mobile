@@ -1,4 +1,5 @@
 import { mainColor, borderColor } from 'component/uikit/color';
+import { shadow } from '../../../../../../utils/style';
 
 export default {
   container: {
@@ -17,13 +18,7 @@ export default {
       paddingTop: 22,
       paddingHorizontal: 22,
       backgroundColor: 'white',
-      shadowColor: 'rgb(0, 0, 0)',
-      shadowOffset: {
-        height: 1,
-        width: 1,
-      },
-      shadowOpacity: 0.1,
-      shadowRadius: 2,
+      ...shadow,
     },
     tokenName: {
       fontFamily: 'PingFangSC-Medium',
@@ -33,14 +28,17 @@ export default {
       marginTop: 5,
     },
     descContainer: {
-      flex: 1,
+      // flex: 1,
       marginTop: 9,
     },
     desc: {
       color: '#666666',
+      fontSize: 13,
+      lineHeight: 18,
     },
     moreText: {
       color: mainColor,
+      fontSize: 13,
     },
     link: {
       color: mainColor,
@@ -79,6 +77,9 @@ export default {
     },
     fieldName: {
       color: '#999999',
+    },
+    fieldValue: {
+      color: '#333333',
     },
   },
 };

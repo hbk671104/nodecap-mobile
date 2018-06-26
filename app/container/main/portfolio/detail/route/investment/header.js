@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableWithoutFeedback, Linking } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
-import ViewMoreText from 'react-native-view-more-text';
+import ReadMore from 'react-native-read-more-text';
 import StatusBadge from 'component/project/statusBadge';
 import Avatar from 'component/uikit/avatar';
 import styles from './style';
@@ -47,6 +47,9 @@ class header extends Component {
 
   render() {
     const projectProps = path => R.path(['item', ...path])(this.props);
+    if (R.isNil(this.props.item)) {
+      return null;
+    }
     return (
       <View style={styles.header.container}>
         <Flex justify="space-between">
@@ -62,14 +65,13 @@ class header extends Component {
           </View>
         </Flex>
         <View style={styles.header.descContainer}>
-          <ViewMoreText
-            renderViewMore={this.renderViewMore}
-            renderViewLess={this.renderViewLess}
+          <ReadMore
+            renderTruncatedFooter={this.renderViewMore}
+            renderRevealedFooter={this.renderViewLess}
             numberOfLines={2}
-            textStyle={styles.header.desc}
           >
-            <Text>{projectProps(['description'])}</Text>
-          </ViewMoreText>
+            <Text style={styles.header.desc}>{projectProps(['description'])}</Text>
+          </ReadMore>
         </View>
         {this.renderLinks({
           white_papers: projectProps(['white_papers', 0, 'attachment']),

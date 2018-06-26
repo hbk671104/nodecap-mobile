@@ -4,24 +4,13 @@ import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
 import moment from 'moment';
 import Group from 'component/project/group';
+
+import { renderField } from './field';
 import styles from './investmentStyle';
 
 const dateFormat = date => (date ? moment(date).format('YYYY年MM月DD日 HH:mm') : null);
 
 class Investment extends Component {
-  renderField({ name, value, style, valueStyle }) {
-    if (!value) {
-      return null;
-    }
-    return (
-      <View style={[styles.field, style]}>
-        <Flex justify="space-between" align="center">
-          <Text style={styles.fieldName}>{name}</Text>
-          <Text style={[styles.fieldValue, valueStyle]}>{value}</Text>
-        </Flex>
-      </View>
-    );
-  }
   renderItemFields(field) {
     const projectProps = path => R.path([...path])(field);
     const tokens = R.path(['constants', 'tokens'])(this.props);
@@ -33,100 +22,100 @@ class Investment extends Component {
       <View>
         <View>
           <Flex>
-            {this.renderField({
+            {renderField({
               name: '投资类型',
               value: projectProps(['financeType']) === 'token' ? 'Token' : '股权',
               style: {
                 flex: 1,
-                alignItems: projectProps(['stage_id']) ? 'flex-start' : 'space-between',
+                // alignItems: projectProps(['stage_id']) ? 'flex-start' : 'space-between',
               },
-              valueStyle: {
-                marginLeft: 14,
-              },
+              // valueStyle: {
+              //   marginLeft: 14,
+              // },
             })}
-            {this.renderField({
+            {renderField({
               name: '所投阶段',
               value: getStageName(field),
               style: {
                 flex: 1,
-                marginLeft: projectProps(['financeType']) ? 0 : 22,
-                paddingLeft: projectProps(['financeType']) ? 10 : 0,
+                // marginLeft: projectProps(['financeType']) ? 0 : 22,
+                // paddingLeft: projectProps(['financeType']) ? 10 : 0,
               },
             })}
           </Flex>
           <Flex>
-            {this.renderField({
+            {renderField({
               name: '投资币种',
               value: getTokenName(field),
               style: {
                 flex: 1,
-                alignItems: projectProps(['invest_count']) ? 'flex-start' : 'space-between',
+                // alignItems: projectProps(['invest_count']) ? 'flex-start' : 'space-between',
               },
-              valueStyle: {
-                marginLeft: 14,
-              },
+              // valueStyle: {
+              //   marginLeft: 14,
+              // },
             })}
-            {this.renderField({
+            {renderField({
               name: '投资数量',
               value: projectProps(['invest_count']),
               style: {
                 flex: 1,
-                marginLeft: projectProps(['invest_token']) ? 0 : 22,
-                paddingLeft: projectProps(['invest_token']) ? 10 : 0,
+                // marginLeft: projectProps(['invest_token']) ? 0 : 22,
+                // paddingLeft: projectProps(['invest_token']) ? 10 : 0,
               },
             })}
           </Flex>
-          {this.renderField({
+          {renderField({
             name: '兑换比例',
             value: projectProps(['transfer_price'])
               ? `1 ${getTokenName(field) || ''} = ${field.transfer_price || ''} ${tokenName || ''}`
               : null,
           })}
-          {this.renderField({
+          {renderField({
             name: '应回币数量',
             value: projectProps(['return_count'])
               ? `${projectProps(['return_count']) || ''} ${tokenName || ''}`
               : null,
           })}
           <Flex>
-            {this.renderField({
+            {renderField({
               name: '投资主体',
               value: projectProps(['fund', 'name']),
               style: {
                 flex: 1,
-                alignItems: projectProps(['stage_id']) ? 'flex-start' : 'space-between',
+                // alignItems: projectProps(['stage_id']) ? 'flex-start' : 'space-between',
               },
-              valueStyle: {
-                marginLeft: 14,
-              },
+              // valueStyle: {
+              //   marginLeft: 14,
+              // },
             })}
-            {this.renderField({
+            {renderField({
               name: '打币状态',
               value: projectProps(['is_paid']) ? '已打币' : '未打币',
               style: {
                 flex: 1,
-                marginLeft: projectProps(['financeType']) ? 0 : 22,
-                paddingLeft: projectProps(['financeType']) ? 10 : 0,
+                // marginLeft: projectProps(['financeType']) ? 0 : 22,
+                // paddingLeft: projectProps(['financeType']) ? 10 : 0,
               },
             })}
           </Flex>
-          {this.renderField({
+          {renderField({
             name: '折扣/Bonus',
             value: projectProps(['bonus_comment']),
           })}
-          {this.renderField({
+          {renderField({
             name: '锁仓机制',
             value: projectProps(['lock_comment']),
           })}
-          {this.renderField({
+          {renderField({
             name: '打币人',
             value: projectProps(['paid_user']),
           })}
-          {this.renderField({
+          {renderField({
             name: '打币时间',
             value: dateFormat(projectProps(['paid_at'])),
           })}
-          {this.renderField({
+          {renderField({
             name: '打币地址',
             value: projectProps(['paid_address']),
           })}
