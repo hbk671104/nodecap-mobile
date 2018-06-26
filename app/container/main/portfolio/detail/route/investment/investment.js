@@ -165,6 +165,10 @@ class Investment extends Component {
         }))
       );
     const afterSort = R.sort((a, b) => b.created_at - a.created_at)(financeData);
+    if (R.isNil(afterSort) || R.isEmpty(afterSort)) {
+      return null;
+    }
+
     return (
       <View>
         <Group

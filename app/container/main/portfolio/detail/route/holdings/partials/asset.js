@@ -30,7 +30,7 @@ const asset = props => (
           </Col>
           <Col>
             <View style={styles.bottom.group.container}>
-              <Text style={styles.bottom.group.title}>浮动盈亏</Text>
+              <Text style={styles.bottom.group.title}>今日盈亏</Text>
               <Text style={styles.bottom.group.content}>¥8983.21</Text>
             </View>
           </Col>
@@ -44,7 +44,7 @@ const asset = props => (
           </Col>
           <Col>
             <View style={styles.bottom.group.container}>
-              <Text style={styles.bottom.group.title}>浮动盈亏</Text>
+              <Text style={styles.bottom.group.title}>累计盈亏</Text>
               <Text style={[styles.bottom.group.content, { color: '#F5222D' }]}>¥-8983.21</Text>
             </View>
           </Col>
