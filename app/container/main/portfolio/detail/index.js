@@ -61,7 +61,7 @@ export default class PortfolioDetail extends Component {
     );
   };
 
-  renderHeader = (displayTab = true) => (props) => {
+  renderHeader = (displayTab = false) => (props) => {
     let component;
     if (displayTab) {
       component = (
@@ -100,7 +100,7 @@ export default class PortfolioDetail extends Component {
       <View style={styles.container}>
         {loading ? (
           <View style={styles.container}>
-            {this.renderNavBar(null)}
+            {this.renderNavBar()}
             <ActivityIndicator style={{ marginTop: 10 }} />
           </View>
         ) : (
