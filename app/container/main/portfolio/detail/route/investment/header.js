@@ -28,19 +28,17 @@ class header extends Component {
     const showLine = white_papers && site_url;
     return (
       <View style={styles.header.links}>
-        <Flex justify="space-between" align="center">
-          {!!site_url && (
-            <Text style={styles.header.link} onPress={() => this.linkTo(site_url)}>
-              官网
-            </Text>
-          )}
-          {!!showLine && <View style={styles.header.division} />}
-          {!!white_papers && (
-            <Text style={styles.header.link} onPress={() => this.linkTo(white_papers)}>
-              白皮书
-            </Text>
-          )}
-        </Flex>
+        {!!site_url && (
+          <Text style={styles.header.link} onPress={() => this.linkTo(site_url)}>
+            官网
+          </Text>
+        )}
+        {!!showLine && <View style={styles.header.division} />}
+        {!!white_papers && (
+          <Text style={styles.header.link} onPress={() => this.linkTo(white_papers)}>
+            白皮书
+          </Text>
+        )}
       </View>
     );
   }
@@ -51,27 +49,29 @@ class header extends Component {
       return null;
     }
     return (
-      <View style={styles.header.container}>
-        <Flex justify="space-between">
-          <View>
-            <Text style={styles.name}>{projectProps(['name'])}</Text>
-            <StatusBadge status={4} />
-            {!!projectProps(['token_name']) && (
-              <Text style={styles.header.tokenName}>Token: {projectProps(['token_name'])}</Text>
-            )}
+      <View style={styles.header.root}>
+        <View style={styles.header.container}>
+          <Flex justify="space-between">
+            <View>
+              <Text style={styles.name}>{projectProps(['name'])}</Text>
+              <StatusBadge status={4} />
+              {!!projectProps(['token_name']) && (
+                <Text style={styles.header.tokenName}>Token: {projectProps(['token_name'])}</Text>
+              )}
+            </View>
+            <View>
+              <Avatar size={65} source={{ uri: projectProps(['logo_url']) }} />
+            </View>
+          </Flex>
+          <View style={styles.header.descContainer}>
+            <ReadMore
+              renderTruncatedFooter={this.renderViewMore}
+              renderRevealedFooter={this.renderViewLess}
+              numberOfLines={2}
+            >
+              <Text style={styles.header.desc}>{projectProps(['description'])}</Text>
+            </ReadMore>
           </View>
-          <View>
-            <Avatar size={65} source={{ uri: projectProps(['logo_url']) }} />
-          </View>
-        </Flex>
-        <View style={styles.header.descContainer}>
-          <ReadMore
-            renderTruncatedFooter={this.renderViewMore}
-            renderRevealedFooter={this.renderViewLess}
-            numberOfLines={2}
-          >
-            <Text style={styles.header.desc}>{projectProps(['description'])}</Text>
-          </ReadMore>
         </View>
         {this.renderLinks({
           white_papers: projectProps(['white_papers', 0, 'attachment']),

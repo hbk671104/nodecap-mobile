@@ -14,11 +14,13 @@ export default {
     marginBottom: 10,
   },
   header: {
+    root: {
+      ...shadow,
+      backgroundColor: 'white',
+    },
     container: {
       paddingTop: 22,
       paddingHorizontal: 22,
-      backgroundColor: 'white',
-      ...shadow,
     },
     tokenName: {
       fontFamily: 'PingFangSC-Medium',
@@ -44,12 +46,12 @@ export default {
       color: mainColor,
       flex: 1,
       textAlign: 'center',
-      height: 42,
-      lineHeight: 42,
     },
     links: {
-      flex: 1,
+      height: 42,
       marginTop: 10,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     division: {
       width: 1,
