@@ -78,11 +78,15 @@ class Investment extends Component {
           </Flex>
           {this.renderField({
             name: '兑换比例',
-            value: projectProps(['transfer_price']) ? `1 ${getTokenName(field) || ''} = ${field.transfer_price || ''} ${tokenName || ''}` : null,
+            value: projectProps(['transfer_price'])
+              ? `1 ${getTokenName(field) || ''} = ${field.transfer_price || ''} ${tokenName || ''}`
+              : null,
           })}
           {this.renderField({
             name: '应回币数量',
-            value: projectProps(['return_count']) ? `${projectProps(['return_count']) || ''} ${tokenName || ''}` : null,
+            value: projectProps(['return_count'])
+              ? `${projectProps(['return_count']) || ''} ${tokenName || ''}`
+              : null,
           })}
           <Flex>
             {this.renderField({
@@ -132,11 +136,13 @@ class Investment extends Component {
   }
   renderItem(item, idx) {
     return (
-      <View style={styles.item}>
+      <View key={idx} style={styles.item}>
         <View style={styles.itemHeader}>
           <Flex justify="space-between">
             <Text style={styles.itemHeaderText}>#{idx + 1}</Text>
-            <Text style={styles.itemHeaderText}>{moment(item.created_at).format('YYYY-MM-DD')}</Text>
+            <Text style={styles.itemHeaderText}>
+              {moment(item.created_at).format('YYYY-MM-DD')}
+            </Text>
           </Flex>
         </View>
         {this.renderItemFields(item)}
@@ -147,15 +153,17 @@ class Investment extends Component {
     const finance_token = R.pathOr([], ['item', 'invest_tokens', 'data'])(this.props);
     const finance_equities = R.pathOr([], ['item', 'invest_equities', 'data'])(this.props);
 
-    const financeData = finance_token.map(i => ({
-      ...i,
-      financeType: 'token',
-    })).concat(
-      finance_equities.map(i => ({
+    const financeData = finance_token
+      .map(i => ({
         ...i,
-        financeType: 'equities',
+        financeType: 'token',
       }))
-    );
+      .concat(
+        finance_equities.map(i => ({
+          ...i,
+          financeType: 'equities',
+        }))
+      );
     const afterSort = R.sort((a, b) => b.created_at - a.created_at)(financeData);
     return (
       <View>

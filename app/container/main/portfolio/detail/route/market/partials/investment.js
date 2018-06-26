@@ -18,12 +18,11 @@ const symbol = (b, size = 22) => {
 };
 
 const investment = ({ style, data }) => {
-  const investCount = R.pathOr({}, ['investCount'])(data);
+  const cost = R.pathOr({}, ['cost'])(data);
   const profit = R.pathOr({}, ['profits'])(data);
-  const currencies = R.pathOr({}, ['currencies'])(data);
 
   // CNY
-  const investCNY = investCount.CNY;
+  const investCNY = cost.CNY;
   const profitCNY = profit.CNY;
 
   return (
@@ -53,8 +52,8 @@ const investment = ({ style, data }) => {
             <Text style={styles.top.content.title}>投资金额</Text>
             <Text style={styles.top.content.title}>利润</Text>
           </View>
-          {R.keys(investCount).map((c, i) => {
-            const countItem = R.path([c])(investCount);
+          {R.keys(cost).map((c, i) => {
+            const countItem = R.path([c])(cost);
             const profitItem = R.path([c])(profit);
             if (R.isNil(countItem) || R.isEmpty(countItem)) {
               return null;
@@ -83,40 +82,17 @@ const investment = ({ style, data }) => {
           })}
         </View>
       </View>
-      <View style={styles.bottom.container}>
-        <Text style={styles.bottom.title}>投资币种明细</Text>
-        {R.keys(currencies).map((c, i) => {
-          const invest = R.path([c])(currencies);
-          return (
-            <View
-              key={i}
-              style={[
-                styles.bottom.item.container,
-                i !== R.keys(currencies).length - 1 && styles.bottom.item.divider,
-              ]}
-            >
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {symbol(c)}
-                <Text style={styles.bottom.item.title}> {c}</Text>
-              </View>
-              <Text style={styles.bottom.item.subtitle} disablePrefix>
-                {invest}
-              </Text>
-            </View>
-          );
-        })}
-      </View>
     </View>
   );
 };
 
 const styles = {
   container: {
-    paddingTop: 38,
+    paddingTop: 17,
   },
   top: {
     container: {
-      paddingHorizontal: 20,
+      // paddingHorizontal: 20,
     },
     bar: {
       container: {

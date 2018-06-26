@@ -28,7 +28,7 @@ export default {
     marginHorizontal: 12,
     marginBottom: 20,
     backgroundColor: 'white',
-    shadowBlur: 4,
+    shadowRadius: 4,
     shadowOffset: {
       width: 0,
       height: 2,

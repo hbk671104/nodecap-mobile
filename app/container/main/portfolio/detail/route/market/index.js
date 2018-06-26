@@ -6,6 +6,7 @@ import { compose, withState } from 'recompose';
 import Header from './partials/header';
 import Group from './partials/group';
 import Holdings from './partials/holdings';
+import Investment from './partials/investment';
 import ROI from './partials/roi';
 import styles from './style';
 
@@ -41,7 +42,11 @@ class Market extends PureComponent {
               <ROI data={roi} />
             </Group>
           )}
-          <Group title="项目浮动盈亏" subtitle="以不同本位币做基准" />
+          {!!investment && (
+            <Group title="项目浮动盈亏" subtitle="以不同本位币做基准">
+              <Investment data={investment} />
+            </Group>
+          )}
           {!!investment &&
             !!investment.assets && (
               <Group title="总市值" subtitle="以不同本位币做基准">
