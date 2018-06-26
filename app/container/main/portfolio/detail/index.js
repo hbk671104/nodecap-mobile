@@ -2,14 +2,16 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
+import { compose, withState } from 'recompose';
+
 import NavBar from 'component/navBar';
 import Market from './route/market';
 import Investment from './route/investment';
 import Holdings from './route/holdings';
 import styles from './style';
 
-@connect(({ portfolio, global }) => ({
-  portfolio: portfolio.current,
+@compose(withState('portfolio', 'setPortfolio', {}))
+@connect(({ global }) => ({
   constants: global.constants,
 }))
 export default class PortfolioDetail extends Component {
@@ -24,10 +26,14 @@ export default class PortfolioDetail extends Component {
 
   componentWillMount() {
     const item = this.props.navigation.getParam('item');
+    const { setPortfolio } = this.props;
     if (item && item.id) {
       this.props.dispatch({
         type: 'portfolio/get',
         payload: item.id,
+        callback: (res) => {
+          setPortfolio(res);
+        },
       });
     }
   }
@@ -76,15 +82,15 @@ export default class PortfolioDetail extends Component {
   };
 
   renderScene = ({ route }) => {
-    const item = this.props.portfolio;
+    const { portfolio } = this.props;
     const { id } = this.props.navigation.getParam('item');
     switch (route.key) {
       case 'market':
-        return <Market {...this.props} id={id} item={item} />;
+        return <Market {...this.props} id={id} item={portfolio} />;
       case 'investment':
-        return <Investment {...this.props} item={item} />;
+        return <Investment {...this.props} item={portfolio} />;
       case 'holdings':
-        return <Holdings {...this.props} item={item} />;
+        return <Holdings {...this.props} item={portfolio} />;
       default:
         return null;
     }

@@ -1,5 +1,11 @@
 import * as R from 'ramda';
-import { portfolioIndex, projectDetail, getProjectInvestTokens, getProjectInvestEquities, getProjectChartData } from '../services/api';
+import {
+  portfolioIndex,
+  projectDetail,
+  getProjectInvestTokens,
+  getProjectInvestEquities,
+  getProjectChartData,
+} from '../services/api';
 
 const pagination = (state, action, key) => {
   const data = R.pathOr([], [key, 'index', 'data'])(state);
@@ -16,7 +22,6 @@ const pagination = (state, action, key) => {
 export default {
   namespace: 'portfolio',
   state: {
-    current: null,
     exchangeable: {
       index: null,
       params: {},
@@ -65,46 +70,25 @@ export default {
      * @param put
      * @param all
      */
-    *get({ payload, callback }, { call, put }) {
+    *get({ payload, callback }, { all, call }) {
       try {
-        const res = yield call(projectDetail, {
-          id: payload,
+        const { res, investTokens, investEquities } = yield all({
+          res: call(projectDetail, {
+            id: payload,
+          }),
+          investTokens: call(getProjectInvestTokens, payload),
+          investEquities: call(getProjectInvestEquities, payload),
         });
 
-        yield put({
-          type: 'detail',
-          payload: res.data,
-        });
-        yield put({
-          type: 'getProjectRelatedData',
-          payload,
-        });
+        const data = {
+          ...res.data,
+          invest_tokens: investTokens.data,
+          invest_equities: investEquities.data,
+        };
+
         if (callback) {
-          yield call(callback, res.data);
+          callback(data);
         }
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    *getProjectRelatedData({ payload }, { call, put }) {
-      try {
-        const investTokens = yield call(getProjectInvestTokens, payload);
-        yield put({
-          type: 'relatedDetail',
-          payload: investTokens.data,
-          relatedType: 'invest_tokens',
-        });
-      } catch (e) {
-        console.log(e);
-      }
-
-      try {
-        const investEquities = yield call(getProjectInvestEquities, payload);
-        yield put({
-          type: 'relatedDetail',
-          payload: investEquities.data,
-          relatedType: 'invest_equities',
-        });
       } catch (e) {
         console.log(e);
       }
@@ -118,24 +102,6 @@ export default {
         [key]: {
           index: pagination(state, action, key),
           params: action.params,
-        },
-      };
-    },
-    detail(state, action) {
-      return {
-        ...state,
-        current: {
-          ...(state.current || {}),
-          ...action.payload,
-        },
-      };
-    },
-    relatedDetail(state, action) {
-      return {
-        ...state,
-        current: {
-          ...(state.current || {}),
-          [action.relatedType]: action.payload,
         },
       };
     },
