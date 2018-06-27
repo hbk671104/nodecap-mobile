@@ -25,6 +25,9 @@ class header extends PureComponent {
   }
 
   renderLinks({ white_papers, site_url }) {
+    if (R.or(R.isNil(white_papers), R.isNil(site_url))) {
+      return <View style={{ marginTop: 9 }} />;
+    }
     const showLine = white_papers && site_url;
     return (
       <View style={styles.header.links}>

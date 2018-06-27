@@ -32,7 +32,6 @@ export default {
       marginTop: 5,
     },
     descContainer: {
-      // flex: 1,
       marginTop: 9,
     },
     desc: {
