@@ -1,6 +1,7 @@
 import { Dimensions } from 'react-native';
 
-const deviceWidth = Dimensions.get('window').width;
+export const deviceWidth = Dimensions.get('window').width;
+export const indicatorWidth = 80;
 export default {
   container: {
     flex: 1,
@@ -43,8 +44,7 @@ export default {
     indicator: {
       height: 3,
       backgroundColor: 'white',
-      width: 80,
-      left: (deviceWidth / 3 - 80) / 2,
+      width: indicatorWidth,
     },
   },
 };

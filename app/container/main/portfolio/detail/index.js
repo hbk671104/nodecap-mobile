@@ -8,7 +8,7 @@ import NavBar from 'component/navBar';
 import Market from './route/market';
 import Investment from './route/investment';
 import Holdings from './route/holdings';
-import styles from './style';
+import styles, { deviceWidth, indicatorWidth } from './style';
 
 @compose(withState('portfolio', 'setPortfolio', {}))
 @connect(({ global, loading }) => ({
@@ -21,7 +21,7 @@ export default class PortfolioDetail extends Component {
     routes: [
       { key: 'market', title: '项目行情' },
       { key: 'investment', title: '投资信息' },
-      { key: 'holdings', title: '持仓记录' },
+      // { key: 'holdings', title: '持仓记录' },
     ],
   };
 
@@ -69,7 +69,10 @@ export default class PortfolioDetail extends Component {
           {...props}
           style={styles.tabBar.container}
           labelStyle={styles.tabBar.label}
-          indicatorStyle={styles.tabBar.indicator}
+          indicatorStyle={[
+            styles.tabBar.indicator,
+            { left: (deviceWidth / this.state.routes.length - indicatorWidth) / 2 },
+          ]}
         />
       );
     }
