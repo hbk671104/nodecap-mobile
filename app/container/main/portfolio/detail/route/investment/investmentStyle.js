@@ -1,5 +1,5 @@
 import { mainColor, borderColor } from 'component/uikit/color';
-import { PARALLAX_HEADER_HEIGHT } from '../../../../dashboard/style';
+import { shadow } from '../../../../../../utils/style';
 
 export default {
   container: {
@@ -28,13 +28,8 @@ export default {
     marginHorizontal: 12,
     marginBottom: 20,
     backgroundColor: 'white',
-    shadowRadius: 4,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowColor: 'rgb(44, 64, 83)',
-    shadowOpacity: 0.1,
+    borderRadius: 2,
+    ...shadow,
   },
   itemHeader: {
     justifyContent: 'center',
