@@ -23,7 +23,7 @@ const asset = (props) => {
       <View style={styles.bottom.container}>
         <Grid>
           <Col>
-            <View style={styles.bottom.group.container}>
+            <View style={[styles.bottom.group.container, { marginRight: 5 }]}>
               <Text style={styles.bottom.group.title}>浮动盈亏</Text>
               <Text style={styles.bottom.group.content}>
                 ¥ {Accounting.formatNumber(profits, 2)}
@@ -31,7 +31,7 @@ const asset = (props) => {
             </View>
           </Col>
           <Col>
-            <View style={styles.bottom.group.container}>
+            <View style={[styles.bottom.group.container, { marginLeft: 5 }]}>
               <Text style={styles.bottom.group.title}>今日盈亏</Text>
               <Text style={styles.bottom.group.content}>¥ 8983.21</Text>
             </View>
@@ -84,7 +84,7 @@ const styles = {
         paddingTop: 12,
         paddingBottom: 16,
         paddingHorizontal: 8,
-        margin: 5,
+        // margin: 5,
         borderRadius: 2,
         ...shadow,
       },

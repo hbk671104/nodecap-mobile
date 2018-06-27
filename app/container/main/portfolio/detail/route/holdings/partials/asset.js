@@ -23,27 +23,27 @@ const asset = props => (
       <Grid>
         <Row>
           <Col>
-            <View style={styles.bottom.group.container}>
+            <View style={[styles.bottom.group.container, { marginRight: 5 }]}>
               <Text style={styles.bottom.group.title}>浮动盈亏</Text>
               <Text style={styles.bottom.group.content}>¥827,337,983.21</Text>
             </View>
           </Col>
           <Col>
-            <View style={styles.bottom.group.container}>
+            <View style={[styles.bottom.group.container, { marginLeft: 5 }]}>
               <Text style={styles.bottom.group.title}>今日盈亏</Text>
               <Text style={styles.bottom.group.content}>¥8983.21</Text>
             </View>
           </Col>
         </Row>
-        <Row>
+        <Row style={{ marginTop: 10 }}>
           <Col>
-            <View style={styles.bottom.group.container}>
+            <View style={[styles.bottom.group.container, { marginRight: 5 }]}>
               <Text style={styles.bottom.group.title}>持仓盈亏</Text>
               <Text style={styles.bottom.group.content}>¥827,337,983.21</Text>
             </View>
           </Col>
           <Col>
-            <View style={styles.bottom.group.container}>
+            <View style={[styles.bottom.group.container, { marginLeft: 5 }]}>
               <Text style={styles.bottom.group.title}>累计盈亏</Text>
               <Text style={[styles.bottom.group.content, { color: '#F5222D' }]}>¥-8983.21</Text>
             </View>
@@ -96,7 +96,6 @@ const styles = {
         paddingTop: 12,
         paddingBottom: 16,
         paddingHorizontal: 8,
-        margin: 5,
         borderRadius: 2,
         ...shadow,
       },

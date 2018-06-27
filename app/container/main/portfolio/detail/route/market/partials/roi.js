@@ -21,10 +21,10 @@ const icon = (k) => {
 
 const roi = ({ style, data }) => (
   <View style={[styles.container, style]}>
-    {R.keys(data).map((k) => {
+    {R.keys(data).map((k, i) => {
       const item = data[k];
       return (
-        <View key={k} style={styles.group.container}>
+        <View key={k} style={[styles.group.container, i === 0 && { marginLeft: 0 }]}>
           <View style={styles.group.inner}>
             <View style={styles.image.container}>
               <Image source={icon(k)} />
@@ -54,7 +54,8 @@ const styles = {
   group: {
     container: {
       flex: 1,
-      padding: 5,
+      // padding: 5,
+      marginLeft: 10,
     },
     inner: {
       ...shadow,
