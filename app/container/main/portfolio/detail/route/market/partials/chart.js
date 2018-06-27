@@ -80,10 +80,9 @@ class Chart extends PureComponent {
           </View>
         </View>
         <View pointerEvents="none">
-          <VictoryChart style={styles.wrapper} height={215} allowZoom={false}>
+          <VictoryChart height={215} padding={styles.chart} allowZoom={false}>
             <VictoryAxis
               crossAxis
-              // tickCount={4}
               style={styles.axis.cross}
               tickFormat={x => moment(x).format(formatMate[this.state.period])}
             />
@@ -106,6 +105,12 @@ class Chart extends PureComponent {
 const styles = {
   container: {
     marginTop: 24,
+  },
+  chart: {
+    left: 48,
+    right: 24,
+    bottom: 36,
+    top: 24,
   },
   axis: {
     cross: {

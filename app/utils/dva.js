@@ -19,7 +19,7 @@ export default function (options) {
         'login/setPassword',
         'portfolio/index',
         'portfolio/projectStat',
-        'portfolio/get',
+        // 'portfolio/get',
       ],
     })
   );

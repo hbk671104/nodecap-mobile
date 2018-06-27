@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, ActivityIndicator, InteractionManager } from 'react-native';
+import { View, Text, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
+import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Market from './route/market';
@@ -11,9 +12,8 @@ import Holdings from './route/holdings';
 import styles, { deviceWidth, indicatorWidth } from './style';
 
 @compose(withState('portfolio', 'setPortfolio', {}))
-@connect(({ global, loading }) => ({
+@connect(({ global }) => ({
   constants: global.constants,
-  loading: loading.effects['portfolio/get'],
 }))
 export default class PortfolioDetail extends Component {
   state = {
@@ -26,21 +26,25 @@ export default class PortfolioDetail extends Component {
   };
 
   componentWillMount() {
+    this.loadDetail();
+  }
+
+  loadDetail = () => {
     const item = this.props.navigation.getParam('item');
     if (item && item.id) {
+      Toast.loading('loading...', 0);
       this.props.dispatch({
         type: 'portfolio/get',
         payload: item.id,
-        callback: this.handleResponse,
+        callback: (res) => {
+          const { setPortfolio } = this.props;
+          InteractionManager.runAfterInteractions(() => {
+            setPortfolio(res);
+            Toast.hide();
+          });
+        },
       });
     }
-  }
-
-  handleResponse = (res) => {
-    const { setPortfolio } = this.props;
-    InteractionManager.runAfterInteractions(() => {
-      setPortfolio(res);
-    });
   };
 
   handleIndexChange = index => this.setState({ index });
@@ -61,23 +65,33 @@ export default class PortfolioDetail extends Component {
     );
   };
 
-  renderHeader = (displayTab = false) => (props) => {
-    let component;
-    if (displayTab) {
-      component = (
-        <TabBar
-          {...props}
-          style={styles.tabBar.container}
-          labelStyle={styles.tabBar.label}
-          indicatorStyle={[
-            styles.tabBar.indicator,
-            { left: (deviceWidth / this.state.routes.length - indicatorWidth) / 2 },
-          ]}
-        />
-      );
-    }
-
-    return this.renderNavBar(component);
+  renderHeader = displayTab => (props) => {
+    const item = this.props.navigation.getParam('item');
+    return (
+      <NavBar
+        gradient
+        back
+        renderTitle={() => (
+          <View style={styles.searchBar.container}>
+            <Text style={styles.searchBar.title}>{item.name}</Text>
+          </View>
+        )}
+        renderBottom={() => {
+          if (!displayTab) return null;
+          return (
+            <TabBar
+              {...props}
+              style={styles.tabBar.container}
+              labelStyle={styles.tabBar.label}
+              indicatorStyle={[
+                styles.tabBar.indicator,
+                { left: (deviceWidth / this.state.routes.length - indicatorWidth) / 2 },
+              ]}
+            />
+          );
+        }}
+      />
+    );
   };
 
   renderScene = ({ route }) => {
@@ -96,29 +110,21 @@ export default class PortfolioDetail extends Component {
   };
 
   render() {
-    const { loading } = this.props;
     const item = this.props.navigation.getParam('item');
     const displayTab = item && item.can_calculate;
     return (
       <View style={styles.container}>
-        {loading ? (
-          <View style={styles.container}>
-            {this.renderNavBar()}
-            <ActivityIndicator style={{ marginTop: 10 }} />
-          </View>
-        ) : (
-          <TabView
-            initialLayout={styles.initialLayout}
-            navigationState={{
-              index: this.state.index,
-              routes: displayTab ? this.state.routes : [{ key: 'investment', title: '投资信息' }],
-            }}
-            renderScene={this.renderScene}
-            tabBarPosition="top"
-            renderTabBar={this.renderHeader(displayTab)}
-            onIndexChange={this.handleIndexChange}
-          />
-        )}
+        <TabView
+          initialLayout={styles.initialLayout}
+          navigationState={{
+            index: this.state.index,
+            routes: displayTab ? this.state.routes : [{ key: 'investment', title: '投资信息' }],
+          }}
+          renderScene={this.renderScene}
+          tabBarPosition="top"
+          renderTabBar={this.renderHeader(displayTab)}
+          onIndexChange={this.handleIndexChange}
+        />
       </View>
     );
   }

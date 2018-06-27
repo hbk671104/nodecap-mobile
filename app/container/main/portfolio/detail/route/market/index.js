@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
+import R from 'ramda';
 
 import Header from './partials/header';
 import Group from './partials/group';
@@ -28,13 +29,16 @@ class Market extends PureComponent {
       id,
       callback: (res) => {
         setStat(res);
-        console.log(res);
       },
     });
   };
 
   render() {
     const { ROI: roi, investment } = this.props.stat;
+    const { loading } = this.props;
+    if (loading || R.isNil(this.props.stat)) {
+      return <ActivityIndicator style={{ marginTop: 10 }} />;
+    }
     return (
       <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
