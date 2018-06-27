@@ -1,43 +1,56 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import * as R from 'ramda';
+import Accounting from 'accounting';
 
 import NodeCapIcon from 'component/icon/nodecap';
 
 const header = (props) => {
   const projectProps = path => R.path(['item', ...path])(props);
+  const statProps = path => R.path(['stat', ...path])(props);
+
+  const price = statProps(['price', 'CNY']);
+  const cost = statProps(['cost', 'CNY']);
+  const ratio = (price / cost).toFixed(1);
+  const change24h = statProps(['degree']);
+  const roi = statProps(['ROI', 'CNY', 'count']);
+  const vol24h = statProps(['vol', 'CNY']);
+  const peak24h = statProps(['high', 'CNY']);
+
   return (
     <View style={styles.container}>
       <View style={styles.top.container}>
         <Text style={styles.top.title}>{projectProps(['name'])}</Text>
-        <TouchableOpacity style={styles.top.switch.container}>
+        {/* <TouchableOpacity style={styles.top.switch.container}>
           <Text style={styles.top.switch.title}>
             火币 <NodeCapIcon name="xiala" />
           </Text>
           <Text style={styles.top.switch.subtitle}>支持切换 Top10 交易所及交易对</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View style={styles.price.container}>
         <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
           <Text style={styles.price.text}>
-            ￥15.93
+            ￥{Accounting.formatNumber(price, 2)}
             <Text style={styles.price.label}> CNY</Text>
           </Text>
           <View style={styles.price.roi.container}>
-            <Text style={styles.price.roi.text}>4.2倍</Text>
+            <Text style={styles.price.roi.text}>{ratio} 倍</Text>
           </View>
         </View>
-        <Text style={styles.price.cost}>成本价：￥0.14</Text>
+        <Text style={styles.price.cost}>成本价：￥{Accounting.formatNumber(cost, 2)}</Text>
       </View>
       <View style={styles.middle.container}>
         <View style={styles.middle.top.container}>
           <View style={{ flex: 2 }}>
-            <Text style={styles.middle.top.text}>+4.42%</Text>
+            <Text style={[styles.middle.top.text, change24h < 0 && { color: '#F5222D' }]}>
+              {Accounting.formatNumber(change24h, 2)}%
+            </Text>
             <Text style={styles.middle.top.label}>今日涨跌</Text>
           </View>
           <View style={styles.middle.top.divider} />
           <View style={{ flex: 3, alignItems: 'center' }}>
-            <Text style={styles.middle.top.text}>261%</Text>
+            <Text style={styles.middle.top.text}>{Accounting.formatNumber(roi)}%</Text>
             <Text style={styles.middle.top.label}>投资回报率</Text>
           </View>
           <View style={styles.middle.top.divider} />
@@ -47,15 +60,22 @@ const header = (props) => {
           </View>
         </View>
         <View style={styles.middle.bottom.container}>
+          {/* <Text style={styles.middle.bottom.text}>
+            量(24H) {vol24h} SOC | 额(24H) 30.23亿CNY | 最高(24H) ¥{peak24h}CNY
+          </Text> */}
           <Text style={styles.middle.bottom.text}>
-            量(24H) 1.3亿SOC | 额(24H) 30.23亿CNY | 最高(24H) ¥14.7CNY
+            量(24H) {Accounting.formatNumber(vol24h)} SOC | 最高(24H) ¥{Accounting.formatNumber(
+              peak24h,
+              2
+            )}{' '}
+            CNY
           </Text>
         </View>
       </View>
-      <View style={styles.bottom.container}>
+      {/* <View style={styles.bottom.container}>
         <Text style={styles.bottom.title}>已上交易所</Text>
         <Text style={styles.bottom.content}>Bitfinex | Okex | Huobi | Bithumb</Text>
-      </View>
+      </View> */}
     </View>
   );
 };

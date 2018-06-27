@@ -9,6 +9,7 @@ import Holdings from './partials/holdings';
 import Investment from './partials/investment';
 import ROI from './partials/roi';
 import Asset from './partials/asset';
+import Chart from './partials/chart';
 import styles from './style';
 
 @compose(withState('stat', 'setStat', {}))
@@ -27,6 +28,7 @@ class Market extends PureComponent {
       id,
       callback: (res) => {
         setStat(res);
+        console.log(res);
       },
     });
   };
@@ -38,8 +40,9 @@ class Market extends PureComponent {
         <ScrollView style={styles.scrollView}>
           <Header {...this.props} />
           <View style={styles.divider} />
+          <Chart {...this.props} />
           <Group title="资产分析" subtitle="以不同本位币做基准">
-            <Asset />
+            <Asset {...this.props} />
           </Group>
           {!!roi && (
             <Group title="投资回报率" subtitle="以不同本位币做基准">
