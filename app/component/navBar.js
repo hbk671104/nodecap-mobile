@@ -81,13 +81,15 @@ class NavBar extends Component {
   }
 }
 
+export const navBarHeight = Platform.OS === 'ios' ? 44 : 56;
+
 const styles = {
   container: {
-    height: 44 + getStatusBarHeight(true),
+    height: navBarHeight + getStatusBarHeight(true),
     justifyContent: 'flex-end',
   },
   wrapper: {
-    height: 44,
+    height: navBarHeight,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -127,7 +129,5 @@ const styles = {
     },
   },
 };
-
-export const navBarHeight = styles.container.height;
 
 export default NavBar;
