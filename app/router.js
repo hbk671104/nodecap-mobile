@@ -99,7 +99,7 @@ const AppRouter = createSwitchNavigator(
   }
 );
 
-function getCurrentScreen(navigationState) {
+export function getCurrentScreen(navigationState) {
   if (!navigationState) {
     return null;
   }

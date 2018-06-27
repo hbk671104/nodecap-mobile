@@ -9,8 +9,10 @@ import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
+import { setStatusBar } from 'component/uikit/statusBar';
 import Empty from 'component/empty';
 
+import { getCurrentScreen } from '../../../router';
 import Header from './partials/header';
 import ProfitSwiper from './partials/profitSwiper';
 import ReturnRateChart from './partials/returnRateChart';
@@ -22,12 +24,6 @@ import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 
-@connect(({ dashboard, fund, loading }) => ({
-  dashboard: dashboard.data,
-  funds: fund.funds,
-  fundsError: fund.error,
-  loading: loading.effects['dashboard/fetch'],
-}))
 @compose(
   withState('scrollY', 'setScrollY', new Animated.Value(0)),
   withState('offsetY', 'setOffsetY', 0),
@@ -44,6 +40,13 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
     }),
   }))
 )
+@connect(({ dashboard, fund, loading, router }) => ({
+  dashboard: dashboard.data,
+  funds: fund.funds,
+  fundsError: fund.error,
+  loading: loading.effects['dashboard/fetch'],
+  isCurrent: getCurrentScreen(router) === 'Dashboard',
+}))
 export default class Dashboard extends Component {
   state = {
     currentFund: R.pathOr({}, ['funds', 0])(this.props),
@@ -52,6 +55,14 @@ export default class Dashboard extends Component {
   componentWillMount() {
     const { currentFund } = this.state;
     this.getDashboardData(currentFund.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isCurrent) {
+      setStatusBar(
+        nextProps.offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'
+      );
+    }
   }
 
   getDashboardData = (id) => {
@@ -147,7 +158,10 @@ export default class Dashboard extends Component {
             <Text style={styles.empty.group.subtitle}>
               <NodeCapIcon name="diannao" color="#4A4A4A" size={14} />
               {'  '}使用电脑端打开
-              <Text style={{ color: '#1890FF' }} onPress={() => Communications.web('https://hotnode.io')}>
+              <Text
+                style={{ color: '#1890FF' }}
+                onPress={() => Communications.web('https://hotnode.io')}
+              >
                 {' hotnode.io '}
               </Text>，录入更快捷、高效
             </Text>
@@ -204,19 +218,11 @@ export default class Dashboard extends Component {
           <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
             <InvestNumber data={dashboard.portfolio} />
           </DashboardGroup>
-          <DashboardGroup
-            style={styles.dashboardGroup}
-            title="投资金额"
-            icon="touzijine"
-          >
+          <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
             <Investment data={dashboard.investment} />
           </DashboardGroup>
           {roiRankCount > 0 && (
-            <DashboardGroup
-              style={styles.dashboardGroup}
-              title="投资回报率 TOP 5"
-              icon="TOP"
-            >
+            <DashboardGroup style={styles.dashboardGroup} title="投资回报率 TOP 5" icon="TOP">
               {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
             </DashboardGroup>
           )}

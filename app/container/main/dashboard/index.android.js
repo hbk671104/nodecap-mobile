@@ -15,8 +15,10 @@ import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
+import { setStatusBar } from 'component/uikit/statusBar';
 import Empty from 'component/empty';
 
+import { getCurrentScreen } from '../../../router';
 import Header from './partials/header';
 import ProfitSwiper from './partials/profitSwiper';
 import ReturnRateChart from './partials/returnRateChart';
@@ -28,12 +30,6 @@ import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 
-@connect(({ dashboard, fund, loading }) => ({
-  dashboard: dashboard.data,
-  funds: fund.funds,
-  fundsError: fund.error,
-  loading: loading.effects['dashboard/fetch'],
-}))
 @compose(
   withState('scrollY', 'setScrollY', new Animated.Value(0)),
   withState('offsetY', 'setOffsetY', 0),
@@ -50,6 +46,13 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
     }),
   }))
 )
+@connect(({ dashboard, fund, loading, router }) => ({
+  dashboard: dashboard.data,
+  funds: fund.funds,
+  fundsError: fund.error,
+  loading: loading.effects['dashboard/fetch'],
+  isCurrent: getCurrentScreen(router) === 'Dashboard',
+}))
 export default class Dashboard extends Component {
   state = {
     currentFund: R.pathOr({}, ['funds', 0])(this.props),
@@ -58,6 +61,14 @@ export default class Dashboard extends Component {
   componentWillMount() {
     const { currentFund } = this.state;
     this.getDashboardData(currentFund.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isCurrent) {
+      setStatusBar(
+        nextProps.offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'
+      );
+    }
   }
 
   getDashboardData = (id) => {

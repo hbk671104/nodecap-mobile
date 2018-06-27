@@ -5,18 +5,29 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
+import { setStatusBar } from 'component/uikit/statusBar';
 import SearchBarDisplay from 'component/searchBar/display';
 import Exchangeable from './route/exchangeable';
 import Unexchangeable from './route/unexchangeable';
+import { getCurrentScreen } from '../../../router';
 import styles from './style';
 
 @compose(withState('offsetY', 'setOffsetY', 0))
-@connect()
+@connect(({ global, router }) => ({
+  constants: global.constants,
+  isCurrent: getCurrentScreen(router) === 'Portfolio',
+}))
 export default class Portfolio extends Component {
   state = {
     index: 0,
     routes: [{ key: 'exchangeable', title: '已上所' }, { key: 'unexchangeable', title: '未上所' }],
   };
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isCurrent) {
+      setStatusBar('light-content');
+    }
+  }
 
   handleIndexChange = index => this.setState({ index });
 
