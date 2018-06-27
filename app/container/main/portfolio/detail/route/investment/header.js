@@ -5,10 +5,11 @@ import * as R from 'ramda';
 import ReadMore from 'react-native-read-more-text';
 import StatusBadge from 'component/project/statusBadge';
 import Avatar from 'component/uikit/avatar';
+import Touchable from 'component/uikit/touchable';
 import styles from './style';
 
 class header extends PureComponent {
-  linkTo = url => Linking.openURL(url);
+  linkTo = url => () => Linking.openURL(url);
   renderViewMore(onPress) {
     return (
       <Text onPress={onPress} style={styles.header.moreText}>
@@ -32,15 +33,19 @@ class header extends PureComponent {
     return (
       <View style={styles.header.links}>
         {!!site_url && (
-          <Text style={styles.header.link} onPress={() => this.linkTo(site_url)}>
-            官网
-          </Text>
+          <View style={styles.header.link.container}>
+            <Touchable borderless onPress={this.linkTo(site_url)}>
+              <Text style={styles.header.link.text}>官网</Text>
+            </Touchable>
+          </View>
         )}
         {!!showLine && <View style={styles.header.division} />}
         {!!white_papers && (
-          <Text style={styles.header.link} onPress={() => this.linkTo(white_papers)}>
-            白皮书
-          </Text>
+          <View style={styles.header.link.container}>
+            <Touchable borderless onPress={this.linkTo(white_papers)}>
+              <Text style={styles.header.link.text}>白皮书</Text>
+            </Touchable>
+          </View>
         )}
       </View>
     );

@@ -44,9 +44,14 @@ export default {
       fontSize: 13,
     },
     link: {
-      color: mainColor,
-      flex: 1,
-      textAlign: 'center',
+      container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      text: {
+        color: mainColor,
+      },
     },
     links: {
       height: 42,
