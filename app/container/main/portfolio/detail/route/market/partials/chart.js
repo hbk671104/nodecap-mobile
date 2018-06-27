@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import R from 'ramda';
 import moment from 'moment';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { VictoryAxis, VictoryChart, VictoryLine, VictoryArea } from 'victory-native';
+import Touchable from 'component/uikit/touchable';
 
 class Chart extends PureComponent {
   constructor(props) {
@@ -41,42 +42,38 @@ class Chart extends PureComponent {
         <View style={styles.top.container}>
           <Text style={styles.top.title}>价格走势</Text>
           <View style={styles.periods}>
-            <TouchableOpacity
-              style={styles.periodWrapper}
-              onPress={() => this.setState({ period: 'H24' })}
-            >
-              <Text style={[styles.periodItem, period === 'H24' ? styles.periodActive : null]}>
-                24h
-              </Text>
+            <View style={styles.periodWrapper}>
+              <Touchable borderless onPress={() => this.setState({ period: 'H24' })}>
+                <Text style={[styles.periodItem, period === 'H24' ? styles.periodActive : null]}>
+                  24h
+                </Text>
+              </Touchable>
               {period === 'H24' && <View style={styles.periodline} />}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.periodWrapper}
-              onPress={() => this.setState({ period: 'W1' })}
-            >
-              <Text style={[styles.periodItem, period === 'W1' ? styles.periodActive : null]}>
-                周
-              </Text>
+            </View>
+            <View style={styles.periodWrapper}>
+              <Touchable borderless onPress={() => this.setState({ period: 'W1' })}>
+                <Text style={[styles.periodItem, period === 'W1' ? styles.periodActive : null]}>
+                  周
+                </Text>
+              </Touchable>
               {period === 'W1' && <View style={styles.periodline} />}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.periodWrapper}
-              onPress={() => this.setState({ period: 'D30' })}
-            >
-              <Text style={[styles.periodItem, period === 'D30' ? styles.periodActive : null]}>
-                月
-              </Text>
+            </View>
+            <View style={styles.periodWrapper}>
+              <Touchable borderless onPress={() => this.setState({ period: 'D30' })}>
+                <Text style={[styles.periodItem, period === 'D30' ? styles.periodActive : null]}>
+                  月
+                </Text>
+              </Touchable>
               {period === 'D30' && <View style={styles.periodline} />}
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.periodWrapper}
-              onPress={() => this.setState({ period: 'Y1' })}
-            >
-              <Text style={[styles.periodItem, period === 'Y1' ? styles.periodActive : null]}>
-                年
-              </Text>
+            </View>
+            <View style={styles.periodWrapper}>
+              <Touchable borderless onPress={() => this.setState({ period: 'Y1' })}>
+                <Text style={[styles.periodItem, period === 'Y1' ? styles.periodActive : null]}>
+                  年
+                </Text>
+              </Touchable>
               {period === 'Y1' && <View style={styles.periodline} />}
-            </TouchableOpacity>
+            </View>
           </View>
         </View>
         <View pointerEvents="none">
