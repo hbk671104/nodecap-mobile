@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
@@ -7,7 +7,7 @@ import StatusBadge from 'component/project/statusBadge';
 import Avatar from 'component/uikit/avatar';
 import styles from './style';
 
-class header extends Component {
+class header extends PureComponent {
   linkTo = url => Linking.openURL(url);
   renderViewMore(onPress) {
     return (

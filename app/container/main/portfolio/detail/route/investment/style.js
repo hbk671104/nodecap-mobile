@@ -4,6 +4,8 @@ import { shadow } from '../../../../../../utils/style';
 export default {
   container: {
     flex: 1,
+  },
+  scrollView: {
     backgroundColor: 'white',
   },
   name: {

@@ -3,7 +3,6 @@ import { View, Text, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
-import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Market from './route/market';
@@ -32,7 +31,6 @@ export default class PortfolioDetail extends Component {
   loadDetail = () => {
     const item = this.props.navigation.getParam('item');
     if (item && item.id) {
-      Toast.loading('loading...', 0);
       this.props.dispatch({
         type: 'portfolio/get',
         payload: item.id,
@@ -40,7 +38,6 @@ export default class PortfolioDetail extends Component {
           const { setPortfolio } = this.props;
           InteractionManager.runAfterInteractions(() => {
             setPortfolio(res);
-            Toast.hide();
           });
         },
       });
