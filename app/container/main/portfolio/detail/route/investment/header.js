@@ -44,8 +44,9 @@ class header extends PureComponent {
   }
 
   render() {
+    const { item } = this.props;
     const projectProps = path => R.path(['item', ...path])(this.props);
-    if (R.isNil(this.props.item)) {
+    if (R.isNil(item) || R.isEmpty(item)) {
       return null;
     }
     return (

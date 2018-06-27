@@ -13,8 +13,8 @@ import InvestmentInfo from './investment';
 }))
 class Investment extends PureComponent {
   render() {
-    const { loading, portfolio } = this.props;
-    if (loading || R.isNil(portfolio)) {
+    const { loading, item } = this.props;
+    if (loading || R.or(R.isNil(item), R.isEmpty(item))) {
       return <ActivityIndicator style={{ marginTop: 10 }} />;
     }
     return (
