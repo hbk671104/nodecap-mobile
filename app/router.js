@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import { BackHandler, View } from 'react-native';
+import { BackHandler, Alert } from 'react-native';
+import RNExitApp from 'react-native-exit-app';
 import { NavigationActions } from './utils';
 import {
   createSwitchNavigator,
@@ -123,15 +124,17 @@ class Router extends PureComponent {
   }
 
   backHandle = () => {
-    const currentScreen = getCurrentScreen(this.props.router);
-    if (currentScreen === 'Login') {
-      return true;
+    const { dispatch, router } = this.props;
+    const subRouter = router.routes[router.index];
+    if (subRouter.index === 0) {
+      Alert.alert('提示', '确认退出 Hotnode ？', [
+        { text: '确认', onPress: () => RNExitApp.exitApp() },
+        { text: '取消', style: 'cancel' },
+      ]);
     }
-    if (currentScreen !== 'Tab') {
-      this.props.dispatch(NavigationActions.back());
-      return true;
-    }
-    return false;
+
+    dispatch(NavigationActions.back());
+    return true;
   };
 
   render() {
