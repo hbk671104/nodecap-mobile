@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
+
 import AuthButton from 'component/auth/button';
 import AuthInput from 'component/auth/input';
 import StatusBar from 'component/uikit/statusBar';
@@ -37,7 +39,11 @@ class Login extends Component {
       <ScrollView style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <KeyboardAvoidingView behavior="position">
-          <Image style={styles.logo} source={require('asset/big_logo.png')} />
+          <Animatable.Image
+            animation="fadeInDown"
+            style={styles.logo}
+            source={require('asset/big_logo.png')}
+          />
           <View style={{ marginTop: 55 }}>
             {getFieldDecorator('account', {
               rules: [{ required: true, message: '请输入邮箱账号' }],

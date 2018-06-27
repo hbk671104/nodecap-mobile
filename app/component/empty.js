@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Image, findNodeHandle, StyleSheet, Dimensions } from 'react-native';
 import { BlurView } from 'react-native-blur';
+import StatusBar from './uikit/statusBar';
 
 class Empty extends Component {
   state = {
@@ -14,6 +15,7 @@ class Empty extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar />
         <Image
           ref={(img) => {
             this.backgroundImage = img;
