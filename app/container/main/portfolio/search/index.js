@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile';
+import _ from 'lodash';
 
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
@@ -13,34 +13,45 @@ import Touchable from 'component/uikit/touchable';
 import UnexchangeableItem from 'component/project/unexchangeable';
 import styles from './style';
 
-@compose(withState('searchText', 'setSearchText', ''))
 @connect(({ portfolio, loading }) => ({
   data: R.pathOr([], ['searchList', 'index', 'data'])(portfolio),
   pagination: R.pathOr({}, ['searchList', 'index', 'pagination'])(portfolio),
   loading: loading.effects['portfolio/search'],
 }))
 class Search extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchText: '',
+    };
+    this.searchDelayed = _.debounce(this.searchData, 500);
+  }
+
   componentWillUnmount() {
     this.props.dispatch({ type: 'portfolio/clearSearch' });
   }
 
-  onSearchTextChange = text => this.props.setSearchText(text);
-
-  onSubmitEditing = () => {
-    this.requestData();
+  onSearchTextChange = (text) => {
+    this.setState({ searchText: text }, this.searchDelayed);
   };
 
   requestData = (page, size) => {
+    const { searchText } = this.state;
+    if (R.isEmpty(searchText)) return;
     Toast.loading('loading...', 0);
     this.props.dispatch({
       type: 'portfolio/search',
       payload: {
-        q: this.props.searchText,
+        q: searchText,
         currentPage: page,
         pageSize: size,
       },
       callback: () => Toast.hide(),
     });
+  };
+
+  searchData = () => {
+    this.requestData();
   };
 
   handleItemPress = item => () => {
@@ -59,7 +70,7 @@ class Search extends Component {
   };
 
   renderNavBar = () => {
-    const { searchText } = this.props;
+    const { searchText } = this.state;
     return (
       <NavBar
         gradient
@@ -70,7 +81,6 @@ class Search extends Component {
               autoFocus
               onChangeText={this.onSearchTextChange}
               value={searchText}
-              onSubmitEditing={this.onSubmitEditing}
             />
           </View>
         )}

@@ -11,7 +11,7 @@ const searchBar = props => (
       style={styles.input}
       placeholder="输入项目关键字搜索"
       placeholderTextColor="white"
-      returnKeyType="search"
+      returnKeyType="done"
     />
     <View style={styles.icon.container}>
       <Image source={require('asset/search.png')} />
