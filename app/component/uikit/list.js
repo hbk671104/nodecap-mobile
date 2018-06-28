@@ -107,16 +107,15 @@ class List extends PureComponent {
     );
   };
 
+  renderSeparator = () => {
+    if (this.props.renderSeparator) {
+      return this.props.renderSeparator();
+    }
+    return <View style={styles.separator} />;
+  };
+
   render() {
-    const {
-      listRef,
-      data,
-      renderItem,
-      renderHeader,
-      renderSeparator,
-      refreshing,
-      style,
-    } = this.props;
+    const { listRef, data, renderItem, renderHeader, refreshing, style } = this.props;
     return (
       <FlatList
         {...this.props}
@@ -127,7 +126,7 @@ class List extends PureComponent {
         ListHeaderComponent={renderHeader}
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
-        ItemSeparatorComponent={renderSeparator}
+        ItemSeparatorComponent={this.renderSeparator}
         {...(refreshing
           ? {
               onRefresh: this.handleOnEndReached,
@@ -160,6 +159,9 @@ const styles = {
       fontSize: 16,
       color: Color.titleColor,
     },
+  },
+  separator: {
+    height: 10,
   },
   footerRefresher: {
     container: {
