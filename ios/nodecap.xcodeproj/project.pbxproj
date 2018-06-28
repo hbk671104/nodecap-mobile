@@ -68,6 +68,7 @@
 		DD41DFF320E4B929007696F1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD41DFF220E4B928007696F1 /* CoreTelephony.framework */; };
 		DD41DFF520E4B92E007696F1 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD41DFF420E4B92E007696F1 /* libsqlite3.0.tbd */; };
 		DD41DFF720E4B938007696F1 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD41DFF620E4B938007696F1 /* libc++.tbd */; };
+		DD41DFFF20E5118A007696F1 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD41DFFE20E5116C007696F1 /* libRCTCameraRoll.a */; };
 		EAFCBCB55EDD40998D873A43 /* RCTWeChatTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C8BFCFF87B4957AAAD230F /* RCTWeChatTests.xctest */; };
 /* End PBXBuildFile section */
 
@@ -443,6 +444,13 @@
 			remoteGlobalIDString = 10D6D7A41F160C250066F0F3;
 			remoteInfo = RCTWeChatTests;
 		};
+		DD41DFFD20E5116C007696F1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD41DFF920E5116C007696F1 /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
+		};
 		DDBADDE620BD38A900509EB9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D029AFE602C144FA8147756F /* ReactNativeConfig.xcodeproj */;
@@ -515,6 +523,8 @@
 		DD41DFF220E4B928007696F1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		DD41DFF420E4B92E007696F1 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		DD41DFF620E4B938007696F1 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		DD41DFF820E50F0D007696F1 /* nodecap.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = nodecap.entitlements; path = nodecap/nodecap.entitlements; sourceTree = "<group>"; };
+		DD41DFF920E5116C007696F1 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		E17C8AD0A2EF4101AEF57CE5 /* CodePush.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = CodePush.xcodeproj; path = "../node_modules/react-native-code-push/ios/CodePush.xcodeproj"; sourceTree = "<group>"; };
 		E575583D050D4CA28BDBCE1B /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		F58D746950904497AE2E83CD /* RNBlur.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBlur.xcodeproj; path = "../node_modules/react-native-blur/ios/RNBlur.xcodeproj"; sourceTree = "<group>"; };
@@ -535,6 +545,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD41DFFF20E5118A007696F1 /* libRCTCameraRoll.a in Frameworks */,
 				71DD65C556E6432AA1DC8346 /* libz.tbd in Frameworks */,
 				DD41DFF720E4B938007696F1 /* libc++.tbd in Frameworks */,
 				DD41DFF520E4B92E007696F1 /* libsqlite3.0.tbd in Frameworks */,
@@ -676,6 +687,7 @@
 		13B07FAE1A68108700A75B9A /* nodecap */ = {
 			isa = PBXGroup;
 			children = (
+				DD41DFF820E50F0D007696F1 /* nodecap.entitlements */,
 				403BAC6A20C13A9C0057EC84 /* asset */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -852,6 +864,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				DD41DFF920E5116C007696F1 /* RCTCameraRoll.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -936,6 +949,14 @@
 			children = (
 				DD41DFED20E4B8F5007696F1 /* libRCTWeChat.a */,
 				DD41DFEF20E4B8F5007696F1 /* RCTWeChatTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DD41DFFA20E5116C007696F1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD41DFFE20E5116C007696F1 /* libRCTCameraRoll.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1039,6 +1060,23 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = DSZH2XE3X8;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.DataProtection = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1084,6 +1122,10 @@
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = DD41DFFA20E5116C007696F1 /* Products */;
+					ProjectRef = DD41DFF920E5116C007696F1 /* RCTCameraRoll.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1522,6 +1564,13 @@
 			remoteRef = DD41DFEE20E4B8F5007696F1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		DD41DFFE20E5116C007696F1 /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = DD41DFFD20E5116C007696F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		DDBADDE720BD38A900509EB9 /* libReactNativeConfig.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1772,6 +1821,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = nodecap/nodecap.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = DSZH2XE3X8;
@@ -1809,6 +1859,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = nodecap/nodecap.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = DSZH2XE3X8;
 				HEADER_SEARCH_PATHS = (

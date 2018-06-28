@@ -4,6 +4,7 @@ import { View, ViewPropTypes, StyleSheet, ImageBackground } from 'react-native';
 import * as R from 'ramda';
 import Accounting from 'accounting';
 import Text from 'component/text';
+import BlurView from './blur';
 
 import NodeCapIcon from 'component/icon/nodecap';
 
@@ -56,40 +57,44 @@ const investment = ({ style, data }) => {
             <Text style={styles.top.content.title}>投资金额</Text>
             <Text style={styles.top.content.title}>利润</Text>
           </View>
-          {R.keys(investCount).map((c, i) => {
-            const countItem = R.path([c])(investCount);
-            const profitItem = R.path([c])(profit);
-            if (R.isNil(countItem) || R.isEmpty(countItem)) {
-              return null;
-            }
-            return (
-              <View
-                key={i}
-                style={[
-                  styles.top.content.item,
-                  (c === 'CNY' || c === 'USD') && { marginTop: 8 },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.top.content.text,
-                    c === 'CNY' && styles.top.content.investment,
-                  ]}
-                >
-                  {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{countItem}</Text>
-                </Text>
-                <Text
-                  style={[
-                    styles.top.content.text,
-                    c === 'CNY' && profitItem > 0 && styles.top.content.profit,
-                    c === 'CNY' && profitItem < 0 && styles.top.content.deficit,
-                  ]}
-                >
-                  {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{profitItem}</Text>
-                </Text>
-              </View>
-            );
-          })}
+          <BlurView>
+            <View>
+              {R.keys(investCount).map((c, i) => {
+                const countItem = R.path([c])(investCount);
+                const profitItem = R.path([c])(profit);
+                if (R.isNil(countItem) || R.isEmpty(countItem)) {
+                  return null;
+                }
+                return (
+                  <View
+                    key={i}
+                    style={[
+                      styles.top.content.item,
+                      (c === 'CNY' || c === 'USD') && { marginTop: 8 },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        styles.top.content.text,
+                        c === 'CNY' && styles.top.content.investment,
+                      ]}
+                    >
+                      {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{countItem}</Text>
+                    </Text>
+                    <Text
+                      style={[
+                        styles.top.content.text,
+                        c === 'CNY' && profitItem > 0 && styles.top.content.profit,
+                        c === 'CNY' && profitItem < 0 && styles.top.content.deficit,
+                      ]}
+                    >
+                      {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{profitItem}</Text>
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+          </BlurView>
         </View>
       </View>
       <View style={styles.bottom.container}>
@@ -109,9 +114,11 @@ const investment = ({ style, data }) => {
                 {symbol(c)}
                 <Text style={styles.bottom.item.title}> {c}</Text>
               </View>
-              <Text style={styles.bottom.item.subtitle} disablePrefix>
-                {invest}
-              </Text>
+              <BlurView>
+                <Text style={styles.bottom.item.subtitle} disablePrefix>
+                  {invest}
+                </Text>
+              </BlurView>
             </View>
           );
         })}

@@ -5,6 +5,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
+  CameraRoll,
 } from 'react-native';
 import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
@@ -77,6 +78,28 @@ export default class ShareModal extends Component {
     }
   }
 
+  saveToCameraRoll = async () => {
+    this.setState({
+      loading: {
+        ...this.state.loading,
+        camera: true,
+      },
+    });
+    try {
+      const uri = await this.viewShot.capture();
+      await CameraRoll.saveToCameraRoll(uri, 'photo');
+      this.props.onClose();
+      this.setState({
+        loading: {
+          ...this.state.loading,
+          camera: false,
+        },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   renderBackground = () => (
     <Image style={styles.background} source={require('asset/dashboard_bg.png')} />
   );
@@ -113,13 +136,13 @@ export default class ShareModal extends Component {
             <View style={{
               ...styles.shareBackground,
               width: 375,
-              height: this.state.backgroundHeight + 80,
+              height: this.state.backgroundHeight + 120,
               overflow: 'hidden',
             }}
             >
               <Image
                 style={[styles.shareBackground, {
-                  height: 1665.5,
+                  height: 1722,
                 }]}
                 source={require('asset/share_background.jpg')}
               />
@@ -178,11 +201,8 @@ export default class ShareModal extends Component {
             <Icon name="ios-arrow-back" style={styles.backButton} color="#a1a1a1" />
           </TouchableOpacity>
           <Flex>
-            <TouchableOpacity onPress={this.shareTo('wechat')}>
-              <Image style={styles.shareButtonItem} source={require('../../../asset/wechat_icon.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this.shareTo('timeline')}>
-              <Image style={styles.shareButtonItem} source={require('../../../asset/wechat_moment_icon.png')} />
+            <TouchableOpacity disabled={this.props.loading.camera} onPress={this.saveToCameraRoll}>
+              <Text style={[styles.saveToCameraRoll, this.state.loading.camera && styles.saveToCameraRollDisabled]}>{this.state.loading.camera ? '保存中...' : '保存图片至相册'}</Text>
             </TouchableOpacity>
           </Flex>
         </Flex>

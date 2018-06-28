@@ -6,6 +6,7 @@ import { Flex } from 'antd-mobile';
 import { mainColor } from 'component/uikit/color';
 import { VictoryLine } from 'victory-native';
 import NodeCapIcon from 'component/icon/nodecap';
+import BlurView from './blur';
 
 const investNumber = ({ style, data = {} }) => {
   const trend = R.pathOr([], ['trend'])(data);
@@ -14,20 +15,32 @@ const investNumber = ({ style, data = {} }) => {
       <View style={styles.left.container}>
         <Flex justify="space-between">
           <View>
-            <Text style={styles.left.title}>{data.count || '暂无'}</Text>
+            <BlurView>
+              <Text style={styles.left.title}>{data.count || '暂无'}</Text>
+            </BlurView>
             <Text style={styles.left.subtitle}>当前投资项目</Text>
           </View>
           <View style={{ flexDirection: 'row', marginTop: 16 }}>
             <View style={styles.ml}>
-              <Text>
-                {data.week} {data.week > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
-              </Text>
+              <Flex>
+                <BlurView>
+                  <Text>
+                    {data.week}
+                  </Text>
+                </BlurView>
+                <Text> {data.week > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}</Text>
+              </Flex>
               <Text style={styles.left.subtitle}>本周</Text>
             </View>
             <View style={styles.ml}>
-              <Text>
-                {data.month} {data.month > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
-              </Text>
+              <Flex>
+                <BlurView>
+                  <Text>
+                    {data.month}
+                  </Text>
+                </BlurView>
+                <Text> {data.month > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}</Text>
+              </Flex>
               <Text style={styles.left.subtitle}>本月</Text>
             </View>
           </View>

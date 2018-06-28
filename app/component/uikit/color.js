@@ -1,4 +1,4 @@
-export const mainColor = '#0986DB';
+export const mainColor = '#1890FF';
 export const backgroundColor = '#F8F8F8';
 export const navBarColor = '#00ABE1';
 export const titleColor = '#333333';

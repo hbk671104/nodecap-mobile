@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { navBarHeight } from 'component/navBar';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { borderColor } from 'component/uikit/color';
+import { mainColor } from '../../../component/uikit/color';
 
 const window = Dimensions.get('window');
 
@@ -82,7 +83,6 @@ export default {
     right: 0,
     top: 30,
     height: PARALLAX_HEADER_HEIGHT,
-    textAlign: 'center',
   },
   fundNameText: {
     color: 'white',
@@ -105,9 +105,6 @@ export default {
     height: PARALLAX_HEADER_HEIGHT,
   },
   scrollView: {
-    container: {
-      paddingBottom: 40,
-    },
   },
   dashboardGroup: {
     marginTop: 31,
@@ -181,5 +178,11 @@ export default {
     height: 30,
     resizeMode: 'contain',
     marginLeft: 30,
+  },
+  saveToCameraRoll: {
+    color: mainColor,
+  },
+  saveToCameraRollDisabled: {
+    color: '#666666',
   },
 };

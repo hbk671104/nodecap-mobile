@@ -1,13 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ViewPropTypes, Platform } from 'react-native';
+import { Flex } from 'antd-mobile';
 import Swiper from 'react-native-swiper';
 import { Card } from 'react-native-elements';
 import * as R from 'ramda';
 import Shimmer from 'react-native-shimmer';
 import Text from 'component/text';
-
 import NodeCapIcon from 'component/icon/nodecap';
+import BlurView from './blur';
 
 const arrow = (profit) => {
   if (profit > 0) {
@@ -48,10 +49,16 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                 <View style={styles.content.container}>
                   {Platform.OS === 'ios' ? (
                     <Shimmer opacity={0.8}>
-                      <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
-                        {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                      <Flex>
+                        <BlurView>
+                          <Text style={[styles.content.gain,
+                            totalProfit < 0 && styles.content.lost]}
+                          >
+                            {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                          </Text>
+                        </BlurView>
                         <Text style={styles.content.label}>{b}</Text>
-                      </Text>
+                      </Flex>
                     </Shimmer>
                   ) : (
                     <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
@@ -61,10 +68,28 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                   )}
                 </View>
                 <View style={styles.sub.container}>
-                  <Text style={styles.sub.text}>
-                    {symbol(b, 12)} <Text>{dailyProfit}</Text> {'今日'} {arrow(dailyProfit)}
-                    {'     '}
-                    {symbol(b, 12)} <Text>{weeklyProfit}</Text> {'本周'} {arrow(weeklyProfit)}
+                  <BlurView>
+                    <View>
+                      <Text>{symbol(b, 12)} <Text>{dailyProfit}</Text> </Text>
+                    </View>
+                  </BlurView>
+                  <Text style={[styles.sub.text, {
+                    marginLeft: 5,
+                    marginRight: 10,
+                  }]}
+                  >
+                    {'今日'} {arrow(dailyProfit)}
+                  </Text>
+                  <BlurView>
+                    <View>
+                      <Text>{symbol(b, 12)} <Text>{weeklyProfit}</Text></Text>
+                    </View>
+                  </BlurView>
+                  <Text style={[styles.sub.text, {
+                    marginLeft: 5,
+                  }]}
+                  >
+                    {'本周'} {arrow(weeklyProfit)}
                   </Text>
                 </View>
               </View>
