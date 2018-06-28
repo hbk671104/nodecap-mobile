@@ -63,7 +63,6 @@ export default class Unexchangeable extends Component {
     return (
       <View style={styles.container}>
         <List
-          style={styles.list}
           action={this.requestData}
           data={data}
           pagination={pagination}

@@ -25,6 +25,7 @@ class List extends PureComponent {
     refreshing: PropTypes.bool,
     loading: PropTypes.bool,
     onRefresh: PropTypes.func,
+    loadOnStart: PropTypes.bool,
 
     // styles
     style: ViewPropTypes.style,
@@ -33,10 +34,11 @@ class List extends PureComponent {
   static defaultProps = {
     refreshing: false,
     loading: false,
+    loadOnStart: true,
   };
 
   componentWillMount() {
-    if (this.props.action) {
+    if (this.props.action && this.props.loadOnStart) {
       this.props.action();
     }
   }
@@ -69,7 +71,7 @@ class List extends PureComponent {
     if (this.props.renderFooter) {
       return this.props.renderFooter();
     }
-    if (this.props.pagination) {
+    if (this.props.pagination && this.props.data.length > 0) {
       const { current, pageCount } = this.props.pagination;
       if (this.props.loading && current > 1) {
         return (
@@ -147,7 +149,7 @@ class List extends PureComponent {
 
 const styles = {
   container: {
-    backgroundColor: Color.backgroundColor,
+    backgroundColor: 'white',
   },
   empty: {
     container: {

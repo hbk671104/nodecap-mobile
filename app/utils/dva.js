@@ -20,6 +20,7 @@ export default function (options) {
         'portfolio/index',
         'portfolio/projectStat',
         'portfolio/get',
+        'portfolio/search',
       ],
     })
   );

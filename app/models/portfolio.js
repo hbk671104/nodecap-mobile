@@ -7,12 +7,21 @@ import {
   getProjectChartData,
 } from '../services/api';
 
-const pagination = (state, action, key) => {
+const paginate = (state, action, key) => {
   const data = R.pathOr([], [key, 'index', 'data'])(state);
-  const oldStatus = R.path([key, 'params', 'status'])(state);
-  if (R.isEmpty(data) || !R.equals(oldStatus, action.params.status)) {
+  const pagination = R.pathOr([], [key, 'index', 'pagination'])(state);
+
+  if (action.params) {
+    const oldStatus = R.pathOr('', [key, 'params', 'status'])(state);
+    if (!R.equals(oldStatus, action.params.status)) {
+      return action.payload;
+    }
+  }
+
+  if (R.path(['current'])(pagination) === 1) {
     return action.payload;
   }
+
   return {
     ...action.payload,
     data: R.concat(data, R.path(['payload', 'data'])(action)),
@@ -32,6 +41,9 @@ export default {
         status: '4,5,6',
       },
     },
+    searchList: {
+      index: null,
+    },
   },
   effects: {
     *index({ payload = {}, callback }, { call, put }) {
@@ -44,6 +56,23 @@ export default {
           type: 'list',
           payload: res.data,
           params: payload,
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *search({ payload = {}, callback }, { call, put }) {
+      try {
+        const req = {
+          ...payload,
+        };
+        const res = yield call(portfolioIndex, req);
+        yield put({
+          type: 'searchList',
+          payload: res.data,
         });
         if (callback) {
           callback();
@@ -100,8 +129,24 @@ export default {
       return {
         ...state,
         [key]: {
-          index: pagination(state, action, key),
+          index: paginate(state, action, key),
           params: action.params,
+        },
+      };
+    },
+    searchList(state, action) {
+      return {
+        ...state,
+        searchList: {
+          index: paginate(state, action, 'searchList'),
+        },
+      };
+    },
+    clearSearch(state) {
+      return {
+        ...state,
+        searchList: {
+          index: null,
         },
       };
     },

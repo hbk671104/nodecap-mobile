@@ -33,7 +33,6 @@ export default class Exchangeable extends Component {
     return (
       <View style={styles.container}>
         <List
-          style={styles.list}
           data={[1, 2, 3, 4, 5, 6, 7]}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}

@@ -7,7 +7,7 @@ export default {
     paddingVertical: 14,
     backgroundColor: 'white',
     marginHorizontal: 12,
-    marginBottom: 10,
+    marginVertical: 5,
     borderRadius: 4,
     ...shadow,
   },
