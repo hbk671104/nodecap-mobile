@@ -21,6 +21,7 @@ import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
 import Codepush from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
+import Search from 'container/main/portfolio/search';
 
 import NodeCapIcon from 'component/icon/nodecap';
 
@@ -81,6 +82,7 @@ const MainStack = createStackNavigator(
   {
     Tab,
     PortfolioDetail,
+    Search,
   },
   {
     headerMode: 'none',

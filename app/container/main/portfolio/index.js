@@ -3,6 +3,7 @@ import { View, Image, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import { setStatusBar } from 'component/uikit/statusBar';
@@ -35,6 +36,14 @@ export default class Portfolio extends Component {
     this.props.setOffsetY(contentOffset.y);
   };
 
+  handleSearchBarPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Search',
+      })
+    );
+  };
+
   renderHeader = (props) => {
     const { offsetY } = this.props;
     return (
@@ -43,7 +52,7 @@ export default class Portfolio extends Component {
         gradient
         renderTitle={() => (
           <View style={styles.searchBar.container}>
-            <SearchBarDisplay />
+            <SearchBarDisplay onPress={this.handleSearchBarPress} />
           </View>
         )}
         renderRight={() => (
