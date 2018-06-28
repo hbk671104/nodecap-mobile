@@ -1,6 +1,8 @@
 import React from 'react';
 import { AppRegistry, UIManager } from 'react-native';
 import { autoRehydrate } from 'redux-persist';
+import * as WeChat from 'react-native-wechat';
+
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import dva from './app/utils/dva';
@@ -42,7 +44,7 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 moment.locale('zh-cn');
-
+WeChat.registerApp('wxf1aab19d2adf1107');
 AppRegistry.registerComponent('nodecap', () => App);
 
 export default app._store;

@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
 import {
-  Animated,
   Text,
   View,
   ScrollView,
+  Image,
+  TouchableOpacity,
 } from 'react-native';
+import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
-import Communications from 'react-native-communications';
 import ViewShot from 'react-native-view-shot';
-
-import NavBar from 'component/navBar';
-import NodeCapIcon from 'component/icon/nodecap';
-import Empty from 'component/empty';
-
-import Header from './partials/header';
-import ProfitSwiper from './partials/profitSwiper';
-import DashboardGroup from './partials/group';
-import InvestNumber from './partials/investNumber';
-import ProjectItem from './partials/projectItem';
-import Investment from './partials/investment';
-import styles from './style';
+import * as WeChat from 'react-native-wechat';
+import Icon from 'react-native-vector-icons/Ionicons';
+import ProfitSwiper from './sharePartials/profitSwiper';
+import DashboardGroup from './sharePartials/group';
+import InvestNumber from './sharePartials/investNumber';
+import ProjectItem from './sharePartials/projectItem';
+import Investment from './sharePartials/investment';
+import styles from './share.style';
 
 @connect(({ dashboard, fund, loading }) => ({
   dashboard: dashboard.data,
@@ -28,9 +25,14 @@ import styles from './style';
   fundsError: fund.error,
   loading: loading.effects['dashboard/fetch'],
 }))
-export default class Dashboard extends Component {
+export default class ShareModal extends Component {
   state = {
-    currentFund: R.pathOr({}, ['funds', 0])(this.props),
+    currentFund: this.props.fund,
+    backgroundHeight: 0,
+    loading: {
+      wechat: false,
+      timeline: false,
+    },
   };
 
   componentWillMount() {
@@ -50,102 +52,140 @@ export default class Dashboard extends Component {
     });
   };
 
+  shareTo = type => async () => {
+    this.setState({
+      loading: {
+        ...this.state.loading,
+        [type]: true,
+      },
+    });
+    try {
+      const uri = await this.viewShot.capture();
+      const request = {
+        type: 'file',
+        filePath: uri,
+        fileExtension: '.jpg',
+      };
+
+      if (type === 'wechat') {
+        WeChat.shareToSession(request);
+      } else {
+        WeChat.shareToTimeline(request);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   renderBackground = () => (
-    <Animated.Image style={styles.background} source={require('asset/dashboard_bg.png')} />
+    <Image style={styles.background} source={require('asset/dashboard_bg.png')} />
   );
 
-  renderForeground = () => <Header {...this.props} style={styles.foreground} />;
-
-  renderFixedHeader = () => {
-    const { currentFund } = this.state;
-    return (
-      <NavBar
-        style={styles.navbar.container}
-        wrapperStyle={{ backgroundColor: 'white' }}
-        barStyle="light-content"
-        renderTitle={() => currentFund.name}
-      />
-    );
-  };
+  renderForeground = () => (
+    <View style={styles.foreground}>
+      <View style={styles.wrapper}>
+        <Text style={styles.label}>投资回报率</Text>
+        <Text style={[styles.title]}>
+          <Text>{R.path(['ROI', 'ETH'])(this.props.dashboard)}</Text>
+          % <Text style={{ fontSize: 13 }}>ETH</Text>
+        </Text>
+      </View>
+    </View>
+  );
 
   render() {
     const { dashboard } = this.props;
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
-    if (!dashboard || !this.state.currentFund) {
-      return (
-        <Empty>
-          <View style={styles.empty.group.container}>
-            <Text style={styles.empty.group.title}>
-              {'完善项目和投资记录，\n即可在此查看基金收益统计'}
-            </Text>
-            <Text style={styles.empty.group.subtitle}>
-              <NodeCapIcon name="diannao" color="#4A4A4A" size={14} />
-              {'  '}使用电脑端打开
-              <Text
-                style={{ color: '#1890FF' }}
-                onPress={() => Communications.web('https://hotnode.io')}
-              >
-                {' hotnode.io '}
-              </Text>，录入更快捷、高效
-            </Text>
-          </View>
-          <View style={styles.empty.bottom.container}>
-            <Text style={styles.empty.bottom.title}>
-              <NodeCapIcon name="kefu" color="black" size={14} />
-              {'  '}7x24小时服务热线
-            </Text>
-            <Text
-              style={styles.empty.bottom.subtitle}
-              onPress={() => Communications.phonecall('159-3715-9166', false)}
-            >
-              159-3715-9166
-            </Text>
-          </View>
-        </Empty>
-      );
-    }
-
     return (
-      <View style={styles.container}>
+      <View
+        style={[styles.container]}
+      >
         <ScrollView
-          contentContainerStyle={styles.scrollView.container}
+          contentContainerStyle={[styles.scrollView.container]}
           showsVerticalScrollIndicator={false}
         >
-          <ViewShot ref={(ref) => {
+          <ViewShot
+            options={{ format: 'jpg', quality: 0.9 }}
+            ref={(ref) => {
             this.viewShot = ref;
           }}
           >
-            <View style={styles.parallax}>
-              {this.renderBackground()}
-              {this.renderForeground()}
-            </View>
-            <View
-              style={{
-              flex: 1,
-              paddingTop: 50,
+            <View style={{
+              ...styles.shareBackground,
+              width: 375,
+              height: this.state.backgroundHeight + 80,
+              overflow: 'hidden',
             }}
             >
-              <ProfitSwiper
-                style={styles.swiper}
-                total={R.pick(['ETH'])(R.path(['totalProfits', 'count'])(dashboard))}
-                daily={R.pick(['ETH'])(R.path(['dailyProfits', 'count'])(dashboard))}
-                weekly={R.pick(['ETH'])(R.path(['weeklyProfits', 'count'])(dashboard))}
+              <Image
+                style={[styles.shareBackground, {
+                  height: 1665.5,
+                }]}
+                source={require('asset/share_background.jpg')}
               />
-              {roiRankCount > 0 && (
-                <DashboardGroup style={styles.dashboardGroup} title="投资回报率 TOP 5" icon="TOP">
-                  {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+            </View>
+
+            <View
+              onLayout={e => this.setState({ backgroundHeight: e.nativeEvent.layout.height })}
+              style={{
+                marginTop: 120,
+                transform: [{
+                  scaleY: 0.89,
+                }, {
+                  scaleX: 0.89,
+                }],
+              }}
+            >
+              <View style={styles.parallax}>
+                {this.renderBackground()}
+                {this.renderForeground()}
+                <View style={styles.fundName}>
+                  <Text style={styles.fundNameText}>{R.path(['currentFund', 'name'])(this.state)}</Text>
+                </View>
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  paddingTop: 50,
+                  backgroundColor: 'white',
+                  paddingBottom: 20,
+                }}
+              >
+                <ProfitSwiper
+                  autoplay={false}
+                  style={styles.swiper}
+                  total={R.pick(['ETH'])(R.path(['totalProfits', 'count'])(dashboard))}
+                  daily={R.pick(['ETH'])(R.path(['dailyProfits', 'count'])(dashboard))}
+                  weekly={R.pick(['ETH'])(R.path(['weeklyProfits', 'count'])(dashboard))}
+                />
+                {roiRankCount > 0 && (
+                  <DashboardGroup style={styles.dashboardGroup} title="投资回报率榜" icon="TOP">
+                    {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+                  </DashboardGroup>
+                )}
+                <DashboardGroup style={styles.dashboardGroup} title="投资概况" icon="yitouxiangmu">
+                  <InvestNumber data={dashboard.portfolio} />
                 </DashboardGroup>
-              )}
-              <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
-                <InvestNumber data={dashboard.portfolio} />
-              </DashboardGroup>
-              <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
-                <Investment data={dashboard.investment} />
-              </DashboardGroup>
+                <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
+                  <Investment data={dashboard.investment} />
+                </DashboardGroup>
+              </View>
             </View>
           </ViewShot>
         </ScrollView>
-        {this.renderFixedHeader()}
+        <Flex justify="space-between" style={styles.actionsBar}>
+          <TouchableOpacity onPress={this.props.onClose}>
+            <Icon name="ios-arrow-back" style={styles.backButton} color="#a1a1a1" />
+          </TouchableOpacity>
+          <Flex>
+            <TouchableOpacity onPress={this.shareTo('wechat')}>
+              <Image style={styles.shareButtonItem} source={require('../../../asset/wechat_icon.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.shareTo('timeline')}>
+              <Image style={styles.shareButtonItem} source={require('../../../asset/wechat_moment_icon.png')} />
+            </TouchableOpacity>
+          </Flex>
+        </Flex>
       </View>
     );
   }
