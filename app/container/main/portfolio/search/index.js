@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
+import { Toast } from 'antd-mobile';
 
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
@@ -30,6 +31,7 @@ class Search extends Component {
   };
 
   requestData = (page, size) => {
+    Toast.loading('loading...', 0);
     this.props.dispatch({
       type: 'portfolio/search',
       payload: {
@@ -37,6 +39,7 @@ class Search extends Component {
         currentPage: page,
         pageSize: size,
       },
+      callback: () => Toast.hide(),
     });
   };
 
