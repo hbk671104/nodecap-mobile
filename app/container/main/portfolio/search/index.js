@@ -14,8 +14,8 @@ import UnexchangeableItem from 'component/project/unexchangeable';
 import styles from './style';
 
 @connect(({ portfolio, loading }) => ({
-  data: R.pathOr([], ['searchList', 'index', 'data'])(portfolio),
-  pagination: R.pathOr({}, ['searchList', 'index', 'pagination'])(portfolio),
+  data: R.pathOr(null, ['searchList', 'index', 'data'])(portfolio),
+  pagination: R.pathOr(null, ['searchList', 'index', 'pagination'])(portfolio),
   loading: loading.effects['portfolio/search'],
 }))
 class Search extends Component {
@@ -24,7 +24,7 @@ class Search extends Component {
     this.state = {
       searchText: '',
     };
-    this.searchDelayed = _.debounce(this.searchData, 500);
+    this.searchDelayed = _.debounce(this.searchData, 250);
   }
 
   componentWillUnmount() {
@@ -38,6 +38,7 @@ class Search extends Component {
   requestData = (page, size) => {
     const { searchText } = this.state;
     if (R.isEmpty(searchText)) return;
+
     Toast.loading('loading...', 0);
     this.props.dispatch({
       type: 'portfolio/search',

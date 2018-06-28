@@ -11,9 +11,9 @@ import Header from './header';
 import styles from './style';
 
 @connect(({ portfolio, loading }) => ({
-  data: R.pathOr([], ['unexchangeable', 'index', 'data'])(portfolio),
-  pagination: R.pathOr({}, ['unexchangeable', 'index', 'pagination'])(portfolio),
-  params: R.pathOr({}, ['unexchangeable', 'params'])(portfolio),
+  data: R.pathOr(null, ['unexchangeable', 'index', 'data'])(portfolio),
+  pagination: R.pathOr(null, ['unexchangeable', 'index', 'pagination'])(portfolio),
+  params: R.pathOr(null, ['unexchangeable', 'params'])(portfolio),
   loading: loading.effects['portfolio/index'],
 }))
 export default class Unexchangeable extends Component {

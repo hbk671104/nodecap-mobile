@@ -9,12 +9,13 @@ import {
   ViewPropTypes,
   StyleSheet,
 } from 'react-native';
+import R from 'ramda';
 import * as Color from 'component/uikit/color';
 
 class List extends PureComponent {
   static propTypes = {
     listRef: PropTypes.func,
-    data: PropTypes.array.isRequired,
+    data: PropTypes.array,
     pagination: PropTypes.object,
     action: PropTypes.func,
     renderItem: PropTypes.func.isRequired,
@@ -95,7 +96,7 @@ class List extends PureComponent {
   };
 
   renderEmpty = () => {
-    if (this.props.refreshing) {
+    if (this.props.refreshing || this.props.loading || R.isNil(this.props.data)) {
       return null;
     }
     if (this.props.renderEmpty) {
@@ -120,6 +121,7 @@ class List extends PureComponent {
     const {
       listRef,
       data,
+      action,
       renderItem,
       renderHeader,
       refreshing,
@@ -140,7 +142,7 @@ class List extends PureComponent {
         ItemSeparatorComponent={this.renderSeparator}
         {...(refreshing
           ? {
-              onRefresh: this.handleOnEndReached,
+              onRefresh: () => action(),
               refreshing,
             }
           : {})}
