@@ -39,7 +39,9 @@ class Search extends Component {
     const { searchText } = this.state;
     if (R.isEmpty(searchText)) return;
 
-    Toast.loading('loading...', 0);
+    if (R.isNil(page)) {
+      Toast.loading('loading...', 0);
+    }
     this.props.dispatch({
       type: 'portfolio/search',
       payload: {
@@ -47,7 +49,11 @@ class Search extends Component {
         currentPage: page,
         pageSize: size,
       },
-      callback: () => Toast.hide(),
+      callback: () => {
+        if (R.isNil(page)) {
+          Toast.hide();
+        }
+      },
     });
   };
 

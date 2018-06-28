@@ -8,12 +8,14 @@ import {
 } from '../services/api';
 
 const paginate = (state, action, key) => {
-  const data = R.pathOr([], [key, 'index', 'data'])(state);
-  const pagination = R.pathOr([], [key, 'index', 'pagination'])(state);
+  const oldData = R.pathOr([], [key, 'index', 'data'])(state);
+  const newData = R.pathOr([], ['payload', 'data'])(action);
+  const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
 
   if (action.params) {
     const oldStatus = R.pathOr('', [key, 'params', 'status'])(state);
-    if (!R.equals(oldStatus, action.params.status)) {
+    const newStatus = R.pathOr('', ['params', 'status'])(action);
+    if (!R.equals(oldStatus, newStatus)) {
       return action.payload;
     }
   }
@@ -24,7 +26,7 @@ const paginate = (state, action, key) => {
 
   return {
     ...action.payload,
-    data: R.concat(data, R.path(['payload', 'data'])(action)),
+    data: R.concat(oldData, newData),
   };
 };
 
@@ -51,7 +53,9 @@ export default {
         const req = {
           ...payload,
         };
+        console.log(req);
         const res = yield call(portfolioIndex, req);
+        console.log(res.data);
         yield put({
           type: 'list',
           payload: res.data,

@@ -153,6 +153,7 @@ class List extends PureComponent {
           return null;
         }}
         keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
         keyExtractor={this.extractKey}
       />
     );
