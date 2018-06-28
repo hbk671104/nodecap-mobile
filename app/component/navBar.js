@@ -81,7 +81,7 @@ class NavBar extends Component {
   }
 }
 
-export const navBarHeight = Platform.OS === 'ios' ? 44 : 56;
+export const navBarHeight = 44;
 
 const styles = {
   container: {

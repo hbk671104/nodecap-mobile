@@ -1,6 +1,6 @@
 export default {
   container: {
-    height: 35,
+    height: 30,
     justifyContent: 'center',
     borderRadius: 4,
     backgroundColor: '#0A9FF7',

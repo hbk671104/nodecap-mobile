@@ -3,10 +3,12 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState } from 'recompose';
+import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
+import Touchable from 'component/uikit/touchable';
 import UnexchangeableItem from 'component/project/unexchangeable';
 import styles from './style';
 
@@ -38,6 +40,21 @@ class Search extends Component {
     });
   };
 
+  handleItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item,
+        },
+      })
+    );
+  };
+
+  handleBackPress = () => {
+    this.props.dispatch(NavigationActions.back());
+  };
+
   renderNavBar = () => {
     const { searchText } = this.props;
     return (
@@ -54,11 +71,22 @@ class Search extends Component {
             />
           </View>
         )}
+        renderRight={() => (
+          <Touchable
+            borderless
+            style={styles.searchBar.cancel.container}
+            onPress={this.handleBackPress}
+          >
+            <Text style={styles.searchBar.cancel.text}>取消</Text>
+          </Touchable>
+        )}
       />
     );
   };
 
-  renderItem = ({ item }) => <UnexchangeableItem item={item} />;
+  renderItem = ({ item }) => (
+    <UnexchangeableItem item={item} onPress={this.handleItemPress(item)} />
+  );
 
   render() {
     const { data, pagination, loading } = this.props;

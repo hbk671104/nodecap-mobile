@@ -29,6 +29,7 @@ class List extends PureComponent {
 
     // styles
     style: ViewPropTypes.style,
+    contentContainerStyle: ViewPropTypes.style,
   };
 
   static defaultProps = {
@@ -111,15 +112,25 @@ class List extends PureComponent {
     if (this.props.renderSeparator) {
       return this.props.renderSeparator();
     }
-    return <View style={styles.separator} />;
+    // return <View style={styles.separator} />;
+    return null;
   };
 
   render() {
-    const { listRef, data, renderItem, renderHeader, refreshing, style } = this.props;
+    const {
+      listRef,
+      data,
+      renderItem,
+      renderHeader,
+      refreshing,
+      style,
+      contentContainerStyle,
+    } = this.props;
     return (
       <FlatList
         {...this.props}
         style={[styles.container, style]}
+        contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         ref={listRef}
         data={data}
         renderItem={renderItem}
@@ -149,6 +160,9 @@ class List extends PureComponent {
 const styles = {
   container: {
     backgroundColor: 'white',
+  },
+  contentContainer: {
+    paddingVertical: 5,
   },
   empty: {
     container: {
