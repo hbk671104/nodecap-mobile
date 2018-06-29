@@ -3,6 +3,7 @@ package com.nodecap;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.sentry.RNSentryPackage;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.theweflex.react.WeChatPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
@@ -40,6 +41,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSentryPackage(),
             new RNExitAppPackage(),
             new WeChatPackage(),
             new RNViewShotPackage(),
