@@ -55,11 +55,6 @@ export default class Portfolio extends Component {
             <SearchBarDisplay onPress={this.handleSearchBarPress} />
           </View>
         )}
-        renderRight={() => (
-          <TouchableOpacity>
-            <Image source={require('asset/share.png')} />
-          </TouchableOpacity>
-        )}
         renderBottom={() => (
           <TabBar
             {...props}

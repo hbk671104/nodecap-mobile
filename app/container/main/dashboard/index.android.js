@@ -6,7 +6,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   ScrollView,
+  Image,
+  Dimensions,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
@@ -26,11 +29,14 @@ import DashboardGroup from './partials/group';
 import InvestNumber from './partials/investNumber';
 import ProjectItem from './partials/projectItem';
 import Investment from './partials/investment';
+import ShareModal from './share';
 import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
+const window = Dimensions.get('window');
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 
 @compose(
+  withState('showShareModal', 'setShareModal', false),
   withState('scrollY', 'setScrollY', new Animated.Value(0)),
   withState('offsetY', 'setOffsetY', 0),
   withProps(({ scrollY }) => ({
@@ -131,6 +137,13 @@ export default class Dashboard extends Component {
             </Animated.Text>
           </ModalDropdown>
         )}
+        renderRight={() => {
+          return (
+            <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
+              <Image source={require('asset/share.png')} style={styles.shareButton} />
+            </TouchableOpacity>
+          );
+        }}
       />
     );
   };
@@ -241,6 +254,18 @@ export default class Dashboard extends Component {
           </View>
         </ScrollView>
         {this.renderFixedHeader()}
+        <Modal
+          isVisible={this.props.showShareModal}
+          style={{
+            margin: 0,
+            // width: window.width,
+          }}
+        >
+          <ShareModal
+            fund={this.state.currentFund}
+            onClose={() => this.props.setShareModal(false)}
+          />
+        </Modal>
       </View>
     );
   }

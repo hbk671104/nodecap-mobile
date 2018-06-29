@@ -172,4 +172,8 @@ export default {
       height: StyleSheet.hairlineWidth,
     },
   },
+  shareButton: {
+    width: 18,
+    height: 18,
+  },
 };

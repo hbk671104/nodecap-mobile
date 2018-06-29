@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Animated, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  Animated,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+  Dimensions,
+} from 'react-native';
+import Modal from 'react-native-modal';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as R from 'ramda';
@@ -20,11 +29,14 @@ import DashboardGroup from './partials/group';
 import InvestNumber from './partials/investNumber';
 import ProjectItem from './partials/projectItem';
 import Investment from './partials/investment';
+import ShareModal from './share';
 import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
+const window = Dimensions.get('window');
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 
 @compose(
+  withState('showShareModal', 'setShareModal', false),
   withState('scrollY', 'setScrollY', new Animated.Value(0)),
   withState('offsetY', 'setOffsetY', 0),
   withProps(({ scrollY }) => ({
@@ -95,6 +107,13 @@ export default class Dashboard extends Component {
       <NavBar
         wrapperStyle={{ backgroundColor: colorRange }}
         barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
+        renderRight={() => {
+          return (
+            <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
+              <Image source={require('asset/share.png')} style={styles.shareButton} />
+            </TouchableOpacity>
+          );
+        }}
         renderTitle={() => (
           <ModalDropdown
             style={styles.dropdown.container}
@@ -222,11 +241,22 @@ export default class Dashboard extends Component {
             <Investment data={dashboard.investment} />
           </DashboardGroup>
           {roiRankCount > 0 && (
-            <DashboardGroup style={styles.dashboardGroup} title="投资回报率 TOP 5" icon="TOP">
+            <DashboardGroup style={styles.dashboardGroup} title="投资回报率榜" icon="TOP">
               {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
             </DashboardGroup>
           )}
         </ParallaxScrollView>
+        <Modal
+          isVisible={this.props.showShareModal}
+          style={{
+            margin: 0,
+          }}
+        >
+          <ShareModal
+            fund={this.state.currentFund}
+            onClose={() => this.props.setShareModal(false)}
+          />
+        </Modal>
       </View>
     );
   }

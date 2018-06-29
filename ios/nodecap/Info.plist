@@ -22,8 +22,17 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>3</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>App需要您的同意,才能访问相册</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>App需要您的同意,才能访问相册</string>
 	<key>CodePushDeploymentKey</key>
 	<string>__RN_CONFIG_CODEPUSH_DEPLOYMENT_KEY_IOS</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>wechat</string>
+		<string>weixin</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -57,6 +66,11 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 		<string>NodeCapIcon.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

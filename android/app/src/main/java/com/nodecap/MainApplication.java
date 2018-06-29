@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
+import com.theweflex.react.WeChatPackage;
+import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import com.cmcewen.blurview.BlurViewPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
@@ -39,6 +41,8 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNExitAppPackage(),
+            new WeChatPackage(),
+            new RNViewShotPackage(),
             new BlurViewPackage(),
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),
