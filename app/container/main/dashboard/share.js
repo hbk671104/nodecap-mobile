@@ -89,15 +89,17 @@ export default class ShareModal extends Component {
     });
     try {
       const uri = await this.viewShot.capture();
-      const isGranted = await this.requestExternalStoragePermission();
-      if (Platform.OS === 'android' && !isGranted) {
-        this.setState({
-          loading: {
-            ...this.state.loading,
-            camera: false,
-          },
-        });
-        return;
+      if (Platform.OS === 'android') {
+        const isGranted = await this.requestExternalStoragePermission();
+        if (!isGranted) {
+          this.setState({
+            loading: {
+              ...this.state.loading,
+              camera: false,
+            },
+          });
+          return;
+        }
       }
       await CameraRoll.saveToCameraRoll(uri, 'photo');
       this.props.onClose();
