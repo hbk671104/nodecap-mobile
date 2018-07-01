@@ -51,8 +51,8 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                     <Shimmer opacity={0.8}>
                       <Flex>
                         <BlurView>
-                          <Text style={[styles.content.gain,
-                            totalProfit < 0 && styles.content.lost]}
+                          <Text
+                            style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}
                           >
                             {symbol(b)} <Text>{totalProfit}</Text>{' '}
                           </Text>
@@ -61,33 +61,49 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                       </Flex>
                     </Shimmer>
                   ) : (
-                    <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
-                      {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                    <Flex>
+                      <BlurView>
+                        <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
+                          {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                        </Text>
+                      </BlurView>
                       <Text style={styles.content.label}>{b}</Text>
-                    </Text>
+                    </Flex>
                   )}
                 </View>
                 <View style={styles.sub.container}>
                   <BlurView>
                     <View>
-                      <Text>{symbol(b, 12)} <Text>{dailyProfit}</Text> </Text>
+                      <Text>
+                        {symbol(b, 12)} <Text>{dailyProfit}</Text>{' '}
+                      </Text>
                     </View>
                   </BlurView>
-                  <Text style={[styles.sub.text, {
-                    marginLeft: 5,
-                    marginRight: 10,
-                  }]}
+                  <Text
+                    style={[
+                      styles.sub.text,
+                      {
+                        marginLeft: 5,
+                        marginRight: 10,
+                      },
+                    ]}
                   >
                     {'今日'} {arrow(dailyProfit)}
                   </Text>
                   <BlurView>
                     <View>
-                      <Text>{symbol(b, 12)} <Text>{weeklyProfit}</Text></Text>
+                      <Text>
+                        {symbol(b, 12)} <Text>{weeklyProfit}</Text>
+                      </Text>
                     </View>
                   </BlurView>
-                  <Text style={[styles.sub.text, {
-                    marginLeft: 5,
-                  }]}
+                  <Text
+                    style={[
+                      styles.sub.text,
+                      {
+                        marginLeft: 5,
+                      },
+                    ]}
                   >
                     {'本周'} {arrow(weeklyProfit)}
                   </Text>

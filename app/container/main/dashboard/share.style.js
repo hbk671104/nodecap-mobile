@@ -28,7 +28,12 @@ export default {
         left: 0,
         right: 0,
       },
-      android: {},
+      android: {
+        position: 'absolute',
+        top: PARALLAX_HEADER_HEIGHT - 50,
+        left: 0,
+        right: 0,
+      },
     }),
   },
   empty: {
@@ -75,6 +80,7 @@ export default {
   parallax: {
     width: '100%',
     height: PARALLAX_HEADER_HEIGHT,
+    zIndex: -1,
   },
   fundName: {
     width: '100%',
@@ -94,6 +100,7 @@ export default {
     left: 0,
     right: 0,
     top: 0,
+    zIndex: -1,
     width: '100%',
     height: PARALLAX_HEADER_HEIGHT,
   },

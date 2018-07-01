@@ -212,13 +212,6 @@ export default class ShareModal extends Component {
                   paddingBottom: 20,
                 }}
               >
-                <ProfitSwiper
-                  autoplay={false}
-                  style={styles.swiper}
-                  total={R.pick(['ETH'])(R.path(['totalProfits', 'count'])(dashboard))}
-                  daily={R.pick(['ETH'])(R.path(['dailyProfits', 'count'])(dashboard))}
-                  weekly={R.pick(['ETH'])(R.path(['weeklyProfits', 'count'])(dashboard))}
-                />
                 {roiRankCount > 0 && (
                   <DashboardGroup style={styles.dashboardGroup} title="投资回报率榜" icon="TOP">
                     {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
@@ -231,6 +224,13 @@ export default class ShareModal extends Component {
                   <Investment data={dashboard.investment} />
                 </DashboardGroup>
               </View>
+              <ProfitSwiper
+                autoplay={false}
+                style={styles.swiper}
+                total={R.pick(['ETH'])(R.path(['totalProfits', 'count'])(dashboard))}
+                daily={R.pick(['ETH'])(R.path(['dailyProfits', 'count'])(dashboard))}
+                weekly={R.pick(['ETH'])(R.path(['weeklyProfits', 'count'])(dashboard))}
+              />
             </View>
           </ViewShot>
         </ScrollView>
