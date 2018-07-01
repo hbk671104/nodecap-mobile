@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { BackHandler, View } from 'react-native';
+import { BackHandler, Image } from 'react-native';
 import { NavigationActions } from './utils';
 import {
   createSwitchNavigator,
@@ -22,8 +22,6 @@ import Management from 'container/main/management';
 import Self from 'container/main/self';
 import Codepush from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
-
-import NodeCapIcon from 'component/icon/nodecap';
 
 const CodePushStack = createStackNavigator(
   {
@@ -76,13 +74,49 @@ const Tab = createBottomTabNavigator(
       inactiveTintColor: '#999999',
     },
     navigationOptions: ({ navigation: { state } }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
+      tabBarIcon: ({ focused }) => {
         const { routeName } = state;
         switch (routeName) {
           case 'Dashboard':
-            return <NodeCapIcon name="dashboard" size={25} color={tintColor} />;
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/dashboard_highlight.png')
+                    : require('asset/tabIcon/dashboard.png')
+                }
+              />
+            );
           case 'Portfolio':
-            return <NodeCapIcon name="investment" size={20} color={tintColor} />;
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/portfolio_highlight.png')
+                    : require('asset/tabIcon/portfolio.png')
+                }
+              />
+            );
+          case 'Management':
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/asset_highlight.png')
+                    : require('asset/tabIcon/asset.png')
+                }
+              />
+            );
+          case 'Self':
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/me_highlight.png')
+                    : require('asset/tabIcon/me.png')
+                }
+              />
+            );
           default:
             return null;
         }
