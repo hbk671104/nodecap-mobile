@@ -35,13 +35,6 @@ class blur extends Component {
   }
 }
 
-const styles = {
-  blur: {
-    ...StyleSheet.absoluteFillObject,
-    zIndex: 10,
-  },
-};
-
 blur.propTypes = {};
 blur.defaultProps = {};
 
