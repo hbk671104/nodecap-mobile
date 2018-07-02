@@ -40,7 +40,8 @@ class Login extends Component {
         <StatusBar barStyle="dark-content" />
         <KeyboardAvoidingView behavior="position">
           <Animatable.Image
-            animation="fadeInDown"
+            animation="fadeInDownBig"
+            delay={250}
             style={styles.logo}
             source={require('asset/big_logo.png')}
           />
