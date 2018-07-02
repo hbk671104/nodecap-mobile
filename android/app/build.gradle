@@ -118,6 +118,11 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "3d43f5402c9364c5b35f0ab0",
+                APP_CHANNEL : "default"
+        ]
+
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -167,6 +172,8 @@ android {
 }
 
 dependencies {
+    compile project(':jcore-react-native')
+    compile project(':jpush-react-native')
     compile project(':react-native-sentry')
     compile project(':react-native-exit-app')
     compile project(':RCTWeChat')
