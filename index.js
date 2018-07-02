@@ -1,8 +1,9 @@
 import React from 'react';
-import { AppRegistry, UIManager } from 'react-native';
+import { AppRegistry, UIManager, Platform } from 'react-native';
 import { autoRehydrate } from 'redux-persist';
 import * as WeChat from 'react-native-wechat';
 import { Sentry } from 'react-native-sentry';
+import JPush from 'jpush-react-native';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -47,6 +48,12 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 moment.locale('zh-cn');
 WeChat.registerApp('wxf1aab19d2adf1107');
 Sentry.config('https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872').install();
+if (Platform.OS === 'ios') {
+  JPush.setupPush();
+} else {
+  JPush.initPush();
+  JPush.notifyJSDidLoad(() => null);
+}
 
 AppRegistry.registerComponent('nodecap', () => App);
 
