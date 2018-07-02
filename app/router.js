@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { BackHandler, Alert } from 'react-native';
+import { BackHandler, Linking, Alert } from 'react-native';
 import RNExitApp from 'react-native-exit-app';
 import { NavigationActions } from './utils';
 import {
@@ -119,11 +119,17 @@ const addListener = createReduxBoundAddListener('root');
 class Router extends PureComponent {
   componentWillMount() {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
+    Linking.addEventListener('url', this.handleOpenURL);
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
+    Linking.removeEventListener('url', this.handleOpenURL);
   }
+
+  handleOpenURL = ({ url }) => {
+    console.log(url);
+  };
 
   backHandle = () => {
     const { dispatch, router } = this.props;
