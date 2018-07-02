@@ -20,12 +20,21 @@
 	<string>1.2</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>hotnode</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>hotnode</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>App需要您的同意,才能访问相册</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>App需要您的同意,才能访问相册</string>
+	<string>4</string>
 	<key>CodePushDeploymentKey</key>
 	<string>__RN_CONFIG_CODEPUSH_DEPLOYMENT_KEY_IOS</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -51,7 +60,11 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Hotnode 需要您的同意, 才能写入相册</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Hotnode 需要您的同意, 才能访问相册</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>
