@@ -5,50 +5,62 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 import Price from 'component/price';
+import Arrow from 'component/arrow';
 
 const selector = ({ symbols, currentSymbol, onSelect }) => {
   if (R.isEmpty(symbols)) {
     return null;
   }
   return (
-    <View style={styles.container}>
-      {symbols.map((s, i) => {
-        const selected = currentSymbol === s.symbol;
-        return (
-          <Touchable key={i} onPress={() => onSelect(s)}>
-            <View style={styles.item.container}>
-              <View>
-                <Text style={styles.item.title}>{s.symbol}</Text>
-                <Text style={styles.item.subtitle}>{s.market}</Text>
+    <View style={styles.wrapper}>
+      <Arrow style={styles.arrow} />
+      <View style={styles.container}>
+        {symbols.map((s, i) => {
+          const selected = currentSymbol === s.symbol;
+          return (
+            <Touchable key={i} onPress={() => onSelect(s)}>
+              <View style={styles.item.container}>
+                <View>
+                  <Text style={styles.item.title}>{s.symbol}</Text>
+                  <Text style={styles.item.subtitle}>{s.market}</Text>
+                </View>
+                <View>
+                  {R.keys(s.current_price).map((k, j) => {
+                    const item = s.current_price[k];
+                    return (
+                      <Text
+                        key={j}
+                        style={[
+                          styles.item.content.normal,
+                          selected && styles.item.content.highlight,
+                        ]}
+                      >
+                        {k === 'CNY' && '≈'} <Price symbol={k}>{item}</Price> {k}
+                      </Text>
+                    );
+                  })}
+                </View>
               </View>
-              <View>
-                {R.keys(s.current_price).map((k, j) => {
-                  const item = s.current_price[k];
-                  return (
-                    <Text
-                      key={j}
-                      style={[
-                        styles.item.content.normal,
-                        selected && styles.item.content.highlight,
-                      ]}
-                    >
-                      {k === 'CNY' && '≈'} <Price symbol={k}>{item}</Price> {k}
-                    </Text>
-                  );
-                })}
-              </View>
-            </View>
-          </Touchable>
-        );
-      })}
+            </Touchable>
+          );
+        })}
+      </View>
     </View>
   );
 };
 
 const styles = {
+  wrapper: {
+    backgroundColor: 'transparent',
+    paddingTop: 8,
+  },
   container: {
     backgroundColor: 'white',
     borderRadius: 2,
+  },
+  arrow: {
+    alignSelf: 'flex-end',
+    marginRight: 20,
   },
   item: {
     container: {
