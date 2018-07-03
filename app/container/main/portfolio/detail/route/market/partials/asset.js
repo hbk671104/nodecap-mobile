@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import * as R from 'ramda';
+import R from 'ramda';
 import Accounting from 'accounting';
 import { Col, Grid } from 'react-native-easy-grid';
 
@@ -18,9 +18,10 @@ const asset = (props) => {
 
   const holdings = statProps(['investment', 'cap', currentSym]);
   const profits = statProps(['investment', 'profits', currentSym]);
+  const profitChange = statProps(['investment', 'profits_change_24h', currentSym]);
   const cost = statProps(['investment', 'total_cost', currentSym]);
   const unitCost = statProps(['investment', 'unit_cost', currentSym]);
-  const count = cost / unitCost;
+  const count = statProps(['possession'], currentSym);
   return (
     <View>
       <View style={styles.top.container}>
@@ -35,7 +36,7 @@ const asset = (props) => {
           净成本 {symbol(currentSym, styles.middle.title)} {Accounting.formatNumber(cost, 2)}
         </Text>
         <Text style={styles.middle.subtitle}>
-          持仓数量 {count}
+          持仓数量 {Accounting.formatNumber(count)}
           {'          '}平均持仓成本 {symbol(currentSym, styles.middle.subtitle)}{' '}
           <Price symbol={currentSym}>{unitCost}</Price>
         </Text>
@@ -55,7 +56,8 @@ const asset = (props) => {
             <View style={[styles.bottom.group.container, { marginLeft: 5 }]}>
               <Text style={styles.bottom.group.title}>今日盈亏</Text>
               <Text style={styles.bottom.group.content}>
-                {symbol(currentSym, styles.bottom.group.content)} 8983.21
+                {symbol(currentSym, styles.bottom.group.content)}{' '}
+                {Accounting.formatNumber(profitChange, 2)}
               </Text>
             </View>
           </Col>

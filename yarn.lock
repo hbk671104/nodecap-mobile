@@ -6043,10 +6043,6 @@ react-native-sentry@^0.38.1:
     "@sentry/wizard" "^0.9.5"
     raven-js "^3.24.2"
 
-react-native-shadow@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/react-native-shadow/-/react-native-shadow-1.2.2.tgz#08991cd14b71e32f2fc6363911c139d231949a66"
-
 react-native-shimmer@^0.3.2:
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/react-native-shimmer/-/react-native-shimmer-0.3.2.tgz#14e86aa26cfe7bec86ae933e21d35e1b4e8cbe48"
