@@ -15,6 +15,6 @@ export default {
   modal: {
     margin: 0,
     marginHorizontal: 12,
-    // justifyContent: 'flex-start',
+    justifyContent: 'flex-start',
   },
 };

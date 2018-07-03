@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, ScrollView, ActivityIndicator } from 'react-native';
+import { View, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
 import Modal from 'react-native-modal';
@@ -23,6 +23,10 @@ import styles from './style';
   loading: loading.effects['portfolio/projectStat'],
 }))
 class Market extends PureComponent {
+  state = {
+    modalOffset: 0,
+  };
+
   componentWillMount() {
     this.loadStat();
   }
@@ -33,6 +37,12 @@ class Market extends PureComponent {
     setCurrentSymbol(symbol, () => {
       this.loadStat();
     });
+  };
+
+  onLayout = ({ nativeEvent: { layout } }) => {
+    const { height } = layout;
+    const deviceHeight = Dimensions.get('window').height;
+    this.setState({ modalOffset: deviceHeight - height + 50 });
   };
 
   loadStat = () => {
@@ -59,11 +69,12 @@ class Market extends PureComponent {
   render() {
     const { investment } = this.props.stat;
     const { loading, selectorVisible } = this.props;
+    const { modalOffset } = this.state;
     if (loading || R.isNil(this.props.stat)) {
       return <ActivityIndicator style={{ marginTop: 10 }} />;
     }
     return (
-      <View style={styles.container}>
+      <View style={styles.container} onLayout={this.onLayout}>
         <ScrollView style={styles.scrollView}>
           <Header {...this.props} toggle={this.toggleVisible} />
           <View style={styles.divider} />
@@ -90,7 +101,7 @@ class Market extends PureComponent {
             )}
         </ScrollView>
         <Modal
-          style={styles.modal}
+          style={[styles.modal, { marginTop: modalOffset }]}
           isVisible={selectorVisible}
           backdropOpacity={0.4}
           animationIn="fadeIn"
