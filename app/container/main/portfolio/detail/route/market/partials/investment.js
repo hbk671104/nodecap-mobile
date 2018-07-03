@@ -2,23 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ViewPropTypes, StyleSheet, ImageBackground } from 'react-native';
 import * as R from 'ramda';
+
 import Text from 'component/text';
-
 import NodeCapIcon from 'component/icon/nodecap';
-
-const symbol = (b, size = 22) => {
-  switch (b) {
-    case 'USD':
-      return <NodeCapIcon name="tubiaozhizuomoban" size={size} />;
-    case 'CNY':
-      return <NodeCapIcon name="icomoon" size={size} />;
-    default:
-      return <NodeCapIcon name={b} size={size} />;
-  }
-};
+import { symbol } from '../../../../../../../utils/icon';
 
 const investment = ({ style, data }) => {
-  const cost = R.pathOr({}, ['cost'])(data);
+  const cost = R.pathOr({}, ['total_cost'])(data);
   const profit = R.pathOr({}, ['profits'])(data);
 
   // CNY
@@ -66,7 +56,7 @@ const investment = ({ style, data }) => {
                 <Text
                   style={[styles.top.content.text, c === 'CNY' && styles.top.content.investment]}
                 >
-                  {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{countItem}</Text>
+                  {symbol(c)} <Text disablePrefix>{countItem}</Text>
                 </Text>
                 <Text
                   style={[
@@ -75,7 +65,7 @@ const investment = ({ style, data }) => {
                     c === 'CNY' && profitItem < 0 && styles.top.content.deficit,
                   ]}
                 >
-                  {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{profitItem}</Text>
+                  {symbol(c)} <Text disablePrefix>{profitItem}</Text>
                 </Text>
               </View>
             );

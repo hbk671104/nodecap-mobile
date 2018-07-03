@@ -5,6 +5,7 @@ import {
   getProjectInvestTokens,
   getProjectInvestEquities,
   getProjectChartData,
+  getProjectSymbol,
 } from '../services/api';
 
 const paginate = (state, action, key) => {
@@ -53,9 +54,7 @@ export default {
         const req = {
           ...payload,
         };
-        console.log(req);
         const res = yield call(portfolioIndex, req);
-        console.log(res.data);
         yield put({
           type: 'list',
           payload: res.data,
@@ -85,11 +84,30 @@ export default {
         console.log(e);
       }
     },
-    *projectStat({ id, callback }, { call }) {
+    *projectStat({ id, payload = {}, callback }, { call }) {
       try {
-        const { data } = yield call(getProjectChartData, id);
+        let queryParams = payload;
+        let symbols;
+        if (R.isEmpty(queryParams)) {
+          const { data } = yield call(getProjectSymbol, id);
+          const first = data[0];
+          queryParams = {
+            market: first.market,
+            symbol: first.symbol,
+          };
+          symbols = data;
+        }
+
+        // query params
+        const { data } = yield call(getProjectChartData, {
+          id,
+          payload: queryParams,
+        });
         if (callback) {
-          callback(data);
+          callback({
+            ...(R.isNil(symbols) ? {} : { symbols }),
+            data,
+          });
         }
       } catch (e) {
         console.log(e);

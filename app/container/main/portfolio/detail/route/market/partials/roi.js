@@ -31,7 +31,7 @@ const roi = ({ style, data }) => (
             </View>
             <Text style={styles.title}>{k}</Text>
             <Text style={styles.subtitle}>
-              {item.count.toFixed(0)}
+              {item.value.toFixed(0)}
               <Text style={{ fontSize: 12 }}>%</Text>
             </Text>
           </View>

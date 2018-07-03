@@ -1,44 +1,64 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import * as R from 'ramda';
 import Accounting from 'accounting';
 
+import Price from 'component/price';
 import NodeCapIcon from 'component/icon/nodecap';
+import { symbol } from '../../../../../../../utils/icon';
 
-const header = (props) => {
+const headers = (props) => {
   const projectProps = path => R.path(['item', ...path])(props);
   const statProps = path => R.path(['stat', ...path])(props);
 
-  const price = statProps(['price', 'CNY']);
-  const cost = statProps(['cost', 'CNY']);
+  const baseSym = R.pipe(
+    R.pathOr('', ['currentSymbol']),
+    R.split('/')
+  )(props)[0];
+  const currentSym = R.pipe(
+    R.pathOr('', ['currentSymbol']),
+    R.split('/'),
+    R.last
+  )(props);
+  const market = R.pipe(
+    R.pathOr([], ['symbols']),
+    R.map(s => s.market),
+    R.uniq
+  )(props);
+
+  const price = statProps(['current_price', currentSym]);
+  const cost = statProps(['investment', 'unit_cost', currentSym]);
   const ratio = (price / cost).toFixed(1);
-  const change24h = statProps(['degree']);
-  const roi = statProps(['ROI', 'CNY', 'count']);
-  const vol24h = statProps(['vol', 'CNY']);
-  const peak24h = statProps(['high', 'CNY']);
+  const change24h = statProps(['price_change_percentage_24h']);
+  const roi = statProps(['investment', 'roi', currentSym, 'value']);
+  const vol24h = statProps(['total_volume', currentSym]);
+  const amount24h = statProps(['total_volume', baseSym]);
+  const peak24h = statProps(['high_24h', currentSym]);
 
   return (
     <View style={styles.container}>
       <View style={styles.top.container}>
         <Text style={styles.top.title}>{projectProps(['name'])}</Text>
-        {/* <TouchableOpacity style={styles.top.switch.container}>
+        <TouchableOpacity style={styles.top.switch.container} onPress={props.toggle}>
           <Text style={styles.top.switch.title}>
             火币 <NodeCapIcon name="xiala" />
           </Text>
           <Text style={styles.top.switch.subtitle}>支持切换 Top10 交易所及交易对</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </View>
       <View style={styles.price.container}>
         <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
           <Text style={styles.price.text}>
-            ￥{Accounting.formatNumber(price, 2)}
-            <Text style={styles.price.label}> CNY</Text>
+            {symbol(currentSym, styles.price.text)} <Price symbol={currentSym}>{price}</Price>
+            <Text style={styles.price.label}> {currentSym}</Text>
           </Text>
           <View style={styles.price.roi.container}>
             <Text style={styles.price.roi.text}>{ratio} 倍</Text>
           </View>
         </View>
-        <Text style={styles.price.cost}>成本价：￥{Accounting.formatNumber(cost, 2)}</Text>
+        <Text style={styles.price.cost}>
+          成本价：{symbol(currentSym, styles.price.cost)} <Price symbol={currentSym}>{cost}</Price>
+        </Text>
       </View>
       <View style={styles.middle.container}>
         <View style={styles.middle.top.container}>
@@ -60,22 +80,17 @@ const header = (props) => {
           </View>
         </View>
         <View style={styles.middle.bottom.container}>
-          {/* <Text style={styles.middle.bottom.text}>
-            量(24H) {vol24h} SOC | 额(24H) 30.23亿CNY | 最高(24H) ¥{peak24h}CNY
-          </Text> */}
           <Text style={styles.middle.bottom.text}>
-            量(24H) {Accounting.formatNumber(vol24h)} SOC | 最高(24H) ¥{Accounting.formatNumber(
-              peak24h,
-              2
-            )}{' '}
-            CNY
+            量(24H) {Accounting.formatNumber(amount24h)} {baseSym} | 额(24H){' '}
+            {Accounting.formatNumber(vol24h)} {currentSym} | 最高(24H){' '}
+            <Price symbol={currentSym}>{peak24h}</Price> {currentSym}
           </Text>
         </View>
       </View>
-      {/* <View style={styles.bottom.container}>
+      <View style={styles.bottom.container}>
         <Text style={styles.bottom.title}>已上交易所</Text>
-        <Text style={styles.bottom.content}>Bitfinex | Okex | Huobi | Bithumb</Text>
-      </View> */}
+        <Text style={styles.bottom.content}>{market.join('|')}</Text>
+      </View>
     </View>
   );
 };
@@ -194,4 +209,4 @@ const styles = {
   },
 };
 
-export default header;
+export default headers;

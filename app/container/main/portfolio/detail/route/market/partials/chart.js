@@ -9,7 +9,7 @@ class Chart extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      period: 'H24',
+      period: '24_hours',
     };
   }
 
@@ -22,18 +22,18 @@ class Chart extends PureComponent {
     }
 
     const data = R.pipe(
-      R.path([this.state.period, 'currencies', 'CNY']),
+      R.path([this.state.period]),
       R.map(i => ({
-        price: i.close,
-        dateTime: i.dateTime,
+        price: i.price,
+        dateTime: i.datetime,
       }))
     )(trend);
 
     const formatMate = {
-      H24: 'HH:mm',
-      W1: 'MM/DD',
-      D30: 'MM/DD',
-      Y1: 'YYYY/MM',
+      '24_hours': 'HH:mm',
+      '7_days': 'MM/DD',
+      '30_days': 'MM/DD',
+      '365_days': 'YYYY/MM',
     };
 
     const { period } = this.state;
@@ -43,36 +43,40 @@ class Chart extends PureComponent {
           <Text style={styles.top.title}>价格走势</Text>
           <View style={styles.periods}>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: 'H24' })}>
-                <Text style={[styles.periodItem, period === 'H24' ? styles.periodActive : null]}>
+              <Touchable borderless onPress={() => this.setState({ period: '24_hours' })}>
+                <Text style={[styles.periodItem, period === '24_hours' && styles.periodActive]}>
                   24h
                 </Text>
               </Touchable>
-              {period === 'H24' && <View style={styles.periodline} />}
+              {period === '24_hours' && <View style={styles.periodline} />}
             </View>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: 'W1' })}>
-                <Text style={[styles.periodItem, period === 'W1' ? styles.periodActive : null]}>
+              <Touchable borderless onPress={() => this.setState({ period: '7_days' })}>
+                <Text style={[styles.periodItem, period === '7_days' && styles.periodActive]}>
                   周
                 </Text>
               </Touchable>
-              {period === 'W1' && <View style={styles.periodline} />}
+              {period === '7_days' && <View style={styles.periodline} />}
             </View>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: 'D30' })}>
-                <Text style={[styles.periodItem, period === 'D30' ? styles.periodActive : null]}>
+              <Touchable borderless onPress={() => this.setState({ period: '30_days' })}>
+                <Text
+                  style={[styles.periodItem, period === '30_days' ? styles.periodActive : null]}
+                >
                   月
                 </Text>
               </Touchable>
-              {period === 'D30' && <View style={styles.periodline} />}
+              {period === '30_days' && <View style={styles.periodline} />}
             </View>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: 'Y1' })}>
-                <Text style={[styles.periodItem, period === 'Y1' ? styles.periodActive : null]}>
+              <Touchable borderless onPress={() => this.setState({ period: '365_days' })}>
+                <Text
+                  style={[styles.periodItem, period === '365_days' ? styles.periodActive : null]}
+                >
                   年
                 </Text>
               </Touchable>
-              {period === 'Y1' && <View style={styles.periodline} />}
+              {period === '365_days' && <View style={styles.periodline} />}
             </View>
           </View>
         </View>
@@ -84,12 +88,12 @@ class Chart extends PureComponent {
               tickFormat={x => moment(x).format(formatMate[this.state.period])}
             />
             <VictoryAxis dependentAxis style={styles.axis.dependent} />
-            <VictoryArea style={styles.bar} data={data} cornerRadius={8} x="dateTime" y="price" />
+            <VictoryArea style={styles.bar} data={data} cornerRadius={8} x="datetime" y="price" />
             <VictoryLine
               style={styles.line}
               interpolation="natural"
               data={data}
-              x="dateTime"
+              x="datetime"
               y="price"
             />
           </VictoryChart>
@@ -104,7 +108,7 @@ const styles = {
     marginTop: 24,
   },
   chart: {
-    left: 48,
+    left: 72,
     right: 24,
     bottom: 36,
     top: 24,

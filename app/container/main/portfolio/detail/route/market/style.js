@@ -12,4 +12,7 @@ export default {
     height: StyleSheet.hairlineWidth,
     marginHorizontal: 12,
   },
+  modal: {
+    margin: 0,
+  },
 };
