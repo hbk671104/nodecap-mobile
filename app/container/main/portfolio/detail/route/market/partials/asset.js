@@ -46,8 +46,11 @@ const asset = (props) => {
           <Col>
             <View style={[styles.bottom.group.container, { marginRight: 5 }]}>
               <Text style={styles.bottom.group.title}>浮动盈亏</Text>
-              <Text style={styles.bottom.group.content}>
-                {symbol(currentSym, styles.bottom.group.content)}{' '}
+              <Text style={[styles.bottom.group.content, profits < 0 && { color: '#F5222D' }]}>
+                {symbol(currentSym, [
+                  styles.bottom.group.content,
+                  profits < 0 && { color: '##F5222D' },
+                ])}{' '}
                 {Accounting.formatNumber(profits, 2)}
               </Text>
             </View>
@@ -55,8 +58,11 @@ const asset = (props) => {
           <Col>
             <View style={[styles.bottom.group.container, { marginLeft: 5 }]}>
               <Text style={styles.bottom.group.title}>今日盈亏</Text>
-              <Text style={styles.bottom.group.content}>
-                {symbol(currentSym, styles.bottom.group.content)}{' '}
+              <Text style={[styles.bottom.group.content, profitChange < 0 && { color: '#F5222D' }]}>
+                {symbol(currentSym, [
+                  styles.bottom.group.content,
+                  profitChange < 0 && { color: '#F5222D' },
+                ])}{' '}
                 {Accounting.formatNumber(profitChange, 2)}
               </Text>
             </View>

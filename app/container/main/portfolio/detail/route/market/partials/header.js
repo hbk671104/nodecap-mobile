@@ -29,7 +29,7 @@ const headers = (props) => {
 
   const price = statProps(['current_price', currentSym]);
   const cost = statProps(['investment', 'unit_cost', currentSym]);
-  const ratio = (price / cost).toFixed(1);
+  const ratio = price / cost > 1 ? price / cost : -cost / price;
   const change24h = statProps(['price_change_percentage_24h']);
   const roi = statProps(['investment', 'roi', currentSym, 'value']);
   const vol24h = statProps(['total_volume', currentSym]);
@@ -49,12 +49,13 @@ const headers = (props) => {
       </View>
       <View style={styles.price.container}>
         <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-          <Text style={styles.price.text}>
-            {symbol(currentSym, styles.price.text)} <Price symbol={currentSym}>{price}</Price>
+          <Text style={[styles.price.text, ratio < 0 && { color: '#F5222D' }]}>
+            {symbol(currentSym, [styles.price.text, ratio < 0 && { color: '#F5222D' }])}{' '}
+            <Price symbol={currentSym}>{price}</Price>
             <Text style={styles.price.label}> {currentSym}</Text>
           </Text>
-          <View style={styles.price.roi.container}>
-            <Text style={styles.price.roi.text}>{ratio} 倍</Text>
+          <View style={[styles.price.roi.container, ratio < 0 && { backgroundColor: '#F5222D' }]}>
+            <Text style={styles.price.roi.text}>{Accounting.formatNumber(ratio, 1)} 倍</Text>
           </View>
         </View>
         <Text style={styles.price.cost}>
@@ -71,7 +72,9 @@ const headers = (props) => {
           </View>
           <View style={styles.middle.top.divider} />
           <View style={{ flex: 3, alignItems: 'center' }}>
-            <Text style={styles.middle.top.text}>{Accounting.formatNumber(roi)}%</Text>
+            <Text style={[styles.middle.top.text, roi < 0 && { color: '#F5222D' }]}>
+              {Accounting.formatNumber(roi)}%
+            </Text>
             <Text style={styles.middle.top.label}>投资回报率</Text>
           </View>
           <View style={styles.middle.top.divider} />
