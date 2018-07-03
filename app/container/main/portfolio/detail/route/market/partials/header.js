@@ -32,6 +32,7 @@ const headers = (props) => {
   const ratio = price / cost > 1 ? price / cost : -cost / price;
   const change24h = statProps(['price_change_percentage_24h']);
   const roi = statProps(['investment', 'roi', currentSym, 'value']);
+  const roiRank = statProps(['investment', 'roi_rank']);
   const vol24h = statProps(['total_volume', currentSym]);
   const amount24h = statProps(['total_volume', baseSym]);
   const peak24h = statProps(['high_24h', currentSym]);
@@ -79,7 +80,7 @@ const headers = (props) => {
           </View>
           <View style={styles.middle.top.divider} />
           <View style={{ flex: 3, alignItems: 'center' }}>
-            <Text style={[styles.middle.top.text, { color: '#666666' }]}>#3</Text>
+            <Text style={[styles.middle.top.text, { color: '#666666' }]}>#{roiRank}</Text>
             <Text style={styles.middle.top.label}>投资回报率排名</Text>
           </View>
         </View>

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, ScrollView, ActivityIndicator, Dimensions } from 'react-native';
+import { View, ScrollView, ActivityIndicator, Dimensions, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
 import Modal from 'react-native-modal';
@@ -42,7 +42,7 @@ class Market extends PureComponent {
   onLayout = ({ nativeEvent: { layout } }) => {
     const { height } = layout;
     const deviceHeight = Dimensions.get('window').height;
-    this.setState({ modalOffset: deviceHeight - height + 50 });
+    this.setState({ modalOffset: deviceHeight - height - StatusBar.currentHeight + 50 });
   };
 
   loadStat = () => {

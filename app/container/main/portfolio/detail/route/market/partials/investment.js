@@ -11,6 +11,10 @@ const investment = ({ style, data }) => {
   const cost = R.pathOr({}, ['total_cost'])(data);
   const profit = R.pathOr({}, ['profits'])(data);
 
+  if (R.isEmpty(cost) || R.isEmpty(profit)) {
+    return null;
+  }
+
   // CNY
   const investCNY = cost.CNY;
   const profitCNY = profit.CNY;
