@@ -6,7 +6,7 @@ import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
 import Price from 'component/price';
 
-const selector = ({ symbols, currentSymbol }) => {
+const selector = ({ symbols, currentSymbol, onSelect }) => {
   if (R.isEmpty(symbols)) {
     return null;
   }
@@ -15,7 +15,7 @@ const selector = ({ symbols, currentSymbol }) => {
       {symbols.map((s, i) => {
         const selected = currentSymbol === s.symbol;
         return (
-          <Touchable key={i} borderless onPress={() => null}>
+          <Touchable key={i} borderless onPress={() => onSelect(s)}>
             <View style={styles.item.container}>
               <View>
                 <Text style={styles.item.title}>{s.symbol}</Text>

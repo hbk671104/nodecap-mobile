@@ -16,7 +16,7 @@ import Selector from './selector';
 import styles from './style';
 
 @compose(withState('selectorVisible', 'setSelectorVisible', false))
-@compose(withState('currentSymbol', 'setCurrentSymbol', ''))
+@compose(withState('currentSymbol', 'setCurrentSymbol', {}))
 @compose(withState('symbols', 'setSymbols', []))
 @compose(withState('stat', 'setStat', {}))
 @connect(({ loading }) => ({
@@ -27,15 +27,24 @@ class Market extends PureComponent {
     this.loadStat();
   }
 
+  onPairSelected = (symbol) => {
+    this.toggleVisible();
+    const { setCurrentSymbol } = this.props;
+    setCurrentSymbol(symbol, () => {
+      this.loadStat();
+    });
+  };
+
   loadStat = () => {
-    const { id, setStat, setSymbols, setCurrentSymbol } = this.props;
+    const { id, setStat, setSymbols, setCurrentSymbol, currentSymbol } = this.props;
     this.props.dispatch({
       type: 'portfolio/projectStat',
       id,
+      payload: currentSymbol,
       callback: ({ symbols, data }) => {
         if (symbols) {
           setSymbols(symbols);
-          setCurrentSymbol(symbols[0].symbol);
+          setCurrentSymbol(symbols[0]);
         }
         setStat(data);
       },
@@ -81,13 +90,14 @@ class Market extends PureComponent {
             )}
         </ScrollView>
         <Modal
+          style={styles.modal}
           isVisible={selectorVisible}
           backdropOpacity={0.4}
           animationIn="fadeIn"
           animationOut="fadeOut"
           onBackdropPress={this.toggleVisible}
         >
-          <Selector {...this.props} />
+          <Selector {...this.props} onSelect={this.onPairSelected} />
         </Modal>
       </View>
     );

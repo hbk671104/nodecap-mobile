@@ -12,14 +12,15 @@ const headers = (props) => {
   const statProps = path => R.path(['stat', ...path])(props);
 
   const baseSym = R.pipe(
-    R.pathOr('', ['currentSymbol']),
+    R.pathOr('', ['currentSymbol', 'symbol']),
     R.split('/')
   )(props)[0];
   const currentSym = R.pipe(
-    R.pathOr('', ['currentSymbol']),
+    R.pathOr('', ['currentSymbol', 'symbol']),
     R.split('/'),
     R.last
   )(props);
+  const currentMarket = R.path(['currentSymbol', 'market'])(props);
   const market = R.pipe(
     R.pathOr([], ['symbols']),
     R.map(s => s.market),
@@ -41,9 +42,9 @@ const headers = (props) => {
         <Text style={styles.top.title}>{projectProps(['name'])}</Text>
         <TouchableOpacity style={styles.top.switch.container} onPress={props.toggle}>
           <Text style={styles.top.switch.title}>
-            火币 <NodeCapIcon name="xiala" />
+            {currentMarket} <NodeCapIcon name="xiala" />
           </Text>
-          <Text style={styles.top.switch.subtitle}>支持切换 Top10 交易所及交易对</Text>
+          <Text style={styles.top.switch.subtitle}>支持 Top10 交易所及第三方数据源</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.price.container}>

@@ -11,7 +11,7 @@ import { shadow } from '../../../../../../../utils/style';
 const asset = (props) => {
   const statProps = path => R.path(['stat', ...path])(props);
   const currentSym = R.pipe(
-    R.pathOr('', ['currentSymbol']),
+    R.pathOr('', ['currentSymbol', 'symbol']),
     R.split('/'),
     R.last
   )(props);
