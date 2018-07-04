@@ -1,10 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, ScrollView, ActivityIndicator, Platform, Dimensions, StatusBar } from 'react-native';
+import { View, ScrollView, Platform, Dimensions, StatusBar } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
 import Modal from 'react-native-modal';
 import R from 'ramda';
 
+import Loading from 'component/uikit/loading';
 import Header from './partials/header';
 import Group from './partials/group';
 import Holdings from './partials/holdings';
@@ -72,7 +73,7 @@ class Market extends PureComponent {
     const { loading, selectorVisible } = this.props;
     const { modalOffset } = this.state;
     if (loading || R.isNil(this.props.stat)) {
-      return <ActivityIndicator style={{ marginTop: 10 }} />;
+      return <Loading />;
     }
     return (
       <View style={styles.container} onLayout={this.onLayout}>

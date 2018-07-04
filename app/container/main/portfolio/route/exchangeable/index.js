@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { Toast } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
@@ -37,10 +36,7 @@ export default class Exchangeable extends Component {
   };
 
   handleSelect = (rank) => {
-    Toast.loading('loading...', 0);
-    this.setState({ rank }, () => {
-      this.requestData(undefined, undefined, () => Toast.hide());
-    });
+    this.setState({ rank }, this.requestData());
   };
 
   handleItemPress = item => () => {

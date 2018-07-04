@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import R from 'ramda';
 import * as Color from 'component/uikit/color';
+import Loading from 'component/uikit/loading';
 
 class List extends PureComponent {
   static propTypes = {
@@ -120,6 +121,8 @@ class List extends PureComponent {
     const {
       listRef,
       data,
+      pagination,
+      loading,
       action,
       renderItem,
       renderHeader,
@@ -127,6 +130,9 @@ class List extends PureComponent {
       style,
       contentContainerStyle,
     } = this.props;
+    if ((loading && !pagination) || (loading && pagination && pagination.current === 1)) {
+      return <Loading />;
+    }
     return (
       <FlatList
         {...this.props}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import { Toast } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
@@ -35,10 +34,7 @@ export default class Unexchangeable extends Component {
   };
 
   handleSelect = (status) => {
-    Toast.loading('loading...', 0);
-    this.setState({ status }, () => {
-      this.requestData(undefined, undefined, () => Toast.hide());
-    });
+    this.setState({ status }, this.requestData);
   };
 
   handleItemPress = item => () => {
