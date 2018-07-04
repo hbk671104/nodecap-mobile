@@ -6,6 +6,7 @@ import { NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile';
 import _ from 'lodash';
 
+import SafeAreaView from 'component/uikit/safeArea';
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
@@ -111,7 +112,7 @@ class Search extends Component {
   render() {
     const { data, pagination, loading } = this.props;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         {this.renderNavBar()}
         <List
           loadOnStart={false}
@@ -121,7 +122,7 @@ class Search extends Component {
           loading={loading}
           renderItem={this.renderItem}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

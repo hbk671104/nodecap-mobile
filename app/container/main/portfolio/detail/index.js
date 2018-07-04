@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
 
+import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Market from './route/market';
 import Investment from './route/investment';
@@ -110,7 +111,7 @@ export default class PortfolioDetail extends Component {
     const item = this.props.navigation.getParam('item');
     const displayTab = item && item.can_calculate;
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <TabView
           initialLayout={styles.initialLayout}
           navigationState={{
@@ -122,7 +123,7 @@ export default class PortfolioDetail extends Component {
           renderTabBar={this.renderHeader(displayTab)}
           onIndexChange={this.handleIndexChange}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

@@ -5,6 +5,7 @@ export const indicatorWidth = 80;
 export default {
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   initialLayout: {
     height: 0,
