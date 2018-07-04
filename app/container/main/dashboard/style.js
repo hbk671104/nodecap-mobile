@@ -1,6 +1,6 @@
 import { StyleSheet, Dimensions, Platform } from 'react-native';
 import { navBarHeight } from 'component/navBar';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { ifIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 const window = Dimensions.get('window');
 
@@ -89,11 +89,14 @@ export default {
   foreground: {
     ...Platform.select({
       ios: {
-        ...ifIphoneX({
-          paddingTop: 40,
-        }, {
-          paddingTop: 20,
-        }),
+        ...ifIphoneX(
+          {
+            paddingTop: 40,
+          },
+          {
+            paddingTop: 20,
+          }
+        ),
         height: PARALLAX_HEADER_HEIGHT,
       },
       android: {
@@ -136,6 +139,12 @@ export default {
       fontSize: 17,
       color: 'white',
       fontWeight: 'bold',
+    },
+    mock: {
+      position: 'absolute',
+      top: getStatusBarHeight(true) + 12,
+      left: 0,
+      right: 0,
     },
   },
   dropdown: {

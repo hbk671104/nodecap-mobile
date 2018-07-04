@@ -97,6 +97,7 @@ export default {
       try {
         const req = {
           ...payload,
+          status: '4,5,6',
         };
         const res = yield call(portfolioIndex, req);
         yield put({

@@ -25,7 +25,7 @@ class Chart extends PureComponent {
       R.path([this.state.period]),
       R.map(i => ({
         price: i.price,
-        dateTime: i.datetime,
+        datetime: i.datetime,
       }))
     )(trend);
 

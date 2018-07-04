@@ -100,9 +100,43 @@ export default class Dashboard extends Component {
 
   renderForeground = () => <Header {...this.props} style={styles.foreground} />;
 
-  renderFixedHeader = () => {
-    const { colorRange, titleColorRange, offsetY, funds } = this.props;
+  renderNavBarTitle = (style = {}) => {
+    const { titleColorRange, funds } = this.props;
     const { currentFund } = this.state;
+    const defaultIndex = funds.indexOf(currentFund);
+    return (
+      <ModalDropdown
+        style={[styles.dropdown.container, style]}
+        dropdownStyle={[styles.dropdown.wrapper, { height: funds.length * 45 }]}
+        showsVerticalScrollIndicator={false}
+        options={funds}
+        animated={false}
+        defaultIndex={defaultIndex}
+        renderRow={(rowData, index, isSelected) => (
+          <TouchableOpacity style={styles.dropdown.item.container}>
+            <Text
+              style={[
+                styles.dropdown.item.title,
+                isSelected && { fontWeight: 'bold', color: '#1890FF' },
+              ]}
+            >
+              {rowData.name}
+            </Text>
+          </TouchableOpacity>
+        )}
+        renderSeparator={() => <View style={styles.dropdown.separator} />}
+        onSelect={(i, value) => this.getDashboardData(value.id)}
+      >
+        <Animated.Text style={[styles.navbar.title, { color: titleColorRange }]}>
+          {currentFund.name}
+          <AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
+        </Animated.Text>
+      </ModalDropdown>
+    );
+  };
+
+  renderFixedHeader = () => {
+    const { colorRange, offsetY } = this.props;
     return (
       <NavBar
         wrapperStyle={{ backgroundColor: colorRange }}
@@ -114,35 +148,7 @@ export default class Dashboard extends Component {
             </TouchableOpacity>
           );
         }}
-        renderTitle={() => (
-          <ModalDropdown
-            style={styles.dropdown.container}
-            dropdownStyle={[styles.dropdown.wrapper, { height: funds.length * 45 }]}
-            showsVerticalScrollIndicator={false}
-            options={funds}
-            animated={false}
-            defaultIndex={0}
-            renderRow={(rowData, index, isSelected) => (
-              <TouchableOpacity style={styles.dropdown.item.container}>
-                <Text
-                  style={[
-                    styles.dropdown.item.title,
-                    isSelected && { fontWeight: 'bold', color: '#1890FF' },
-                  ]}
-                >
-                  {rowData.name}
-                </Text>
-              </TouchableOpacity>
-            )}
-            renderSeparator={() => <View style={styles.dropdown.separator} />}
-            onSelect={(i, value) => this.getDashboardData(value.id)}
-          >
-            <Animated.Text style={[styles.navbar.title, { color: titleColorRange }]}>
-              {currentFund.name}
-              <AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
-            </Animated.Text>
-          </ModalDropdown>
-        )}
+        renderTitle={this.renderNavBarTitle}
       />
     );
   };
@@ -170,6 +176,7 @@ export default class Dashboard extends Component {
     if (!dashboard || !this.state.currentFund) {
       return (
         <Empty>
+          {this.renderNavBarTitle(styles.navbar.mock)}
           <View style={styles.empty.group.container}>
             <Text style={styles.empty.group.title}>
               {'完善项目和投资记录，\n即可在此查看基金收益统计'}
