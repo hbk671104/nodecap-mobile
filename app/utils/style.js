@@ -1,4 +1,5 @@
-import { Platform } from 'react-native';
+import React from 'react';
+import { Image, Text, Platform } from 'react-native';
 
 export const raised = {
   ...Platform.select({
@@ -29,4 +30,17 @@ export const shadow = {
       elevation: 2,
     },
   }),
+};
+
+export const medalMap = (index) => {
+  switch (index) {
+    case 0:
+      return <Image source={require('asset/medal/gold.png')} />;
+    case 1:
+      return <Image source={require('asset/medal/silver.png')} />;
+    case 2:
+      return <Image source={require('asset/medal/brown.png')} />;
+    default:
+      return <Text style={{ fontSize: 12, color: '#999999' }}>#{index + 1}</Text>;
+  }
 };

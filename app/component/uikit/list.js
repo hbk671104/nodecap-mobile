@@ -113,7 +113,6 @@ class List extends PureComponent {
     if (this.props.renderSeparator) {
       return this.props.renderSeparator();
     }
-    // return <View style={styles.separator} />;
     return null;
   };
 

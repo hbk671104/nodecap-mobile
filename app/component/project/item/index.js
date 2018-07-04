@@ -7,9 +7,11 @@ import Touchable from 'component/uikit/touchable';
 import Text from 'component/text';
 import Amount from 'component/amount';
 import Price from 'component/price';
+
+import { medalMap } from '../../../utils/style';
 import styles from './style';
 
-const projectItem = ({ item, index }) => {
+const projectItem = ({ item, index, onPress }) => {
   const stat = R.path(['statistics'])(item);
   const investment = R.path(['investment'])(stat);
   const profit = R.path(['profits', 'CNY'])(investment);
@@ -20,7 +22,7 @@ const projectItem = ({ item, index }) => {
   const ratio = price / unitCost > 1 ? price / unitCost : -unitCost / price;
 
   return (
-    <Touchable style={styles.container}>
+    <Touchable style={styles.container} onPress={onPress}>
       <View>
         <View style={styles.top.container}>
           <View style={styles.top.group}>
@@ -34,7 +36,7 @@ const projectItem = ({ item, index }) => {
               {!!item.token_name && <Text style={styles.top.subtitle}>({item.token_name})</Text>}
             </Text>
           </View>
-          <Text style={styles.top.ranking}>#{index + 1}</Text>
+          {medalMap(index)}
         </View>
         <View style={styles.middle.container}>
           <View style={{ flex: 7 }}>

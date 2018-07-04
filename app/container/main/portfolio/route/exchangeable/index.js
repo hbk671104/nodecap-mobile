@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
+import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
 import ProjectItem from 'component/project/item';
@@ -42,15 +43,26 @@ export default class Exchangeable extends Component {
     });
   };
 
+  handleItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item,
+        },
+      })
+    );
+  };
+
   renderItem = ({ item, index }) => {
     switch (this.state.rank) {
       case 'profits':
       case 'roi':
-        return <ProjectItem item={item} index={index} />;
+        return <ProjectItem item={item} index={index} onPress={this.handleItemPress(item)} />;
       case 'increase':
-        return <PriceChangeItem item={item} index={index} />;
+        return <PriceChangeItem item={item} index={index} onPress={this.handleItemPress(item)} />;
       case 'cost':
-        return <InvestmentItem item={item} index={index} />;
+        return <InvestmentItem item={item} index={index} onPress={this.handleItemPress(item)} />;
       default:
         return null;
     }

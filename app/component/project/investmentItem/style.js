@@ -31,11 +31,14 @@ export default {
         width: 35,
         borderRadius: 17.5,
         backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
         ...raised,
       },
       image: {
         height: 17.5,
         width: 17.5,
+        borderRadius: 8.75,
       },
     },
     title: {

@@ -17,7 +17,7 @@ export default {
   },
   left: {
     container: {
-      flex: 1,
+      width: 130,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -31,15 +31,19 @@ export default {
         width: 35,
         borderRadius: 17.5,
         backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
         ...raised,
       },
       image: {
         height: 17.5,
         width: 17.5,
+        borderRadius: 8.75,
       },
     },
     title: {
       container: {
+        flex: 1,
         marginLeft: 10,
       },
       text: {
@@ -81,7 +85,6 @@ export default {
   },
   right: {
     container: {
-      // flex: 1,
       marginRight: 24,
     },
     wrapper: {
