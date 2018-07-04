@@ -24,7 +24,7 @@ import styles from './share.style';
 
 @connect(({ dashboard, fund, loading }) => ({
   dashboard: dashboard.data,
-  funds: fund.funds,
+  funds: fund.funds.data,
   fundsError: fund.error,
   loading: loading.effects['dashboard/fetch'],
 }))

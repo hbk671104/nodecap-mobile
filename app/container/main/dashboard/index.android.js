@@ -54,7 +54,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 )
 @connect(({ dashboard, fund, loading, router }) => ({
   dashboard: dashboard.data,
-  funds: fund.funds,
+  funds: R.pathOr([], ['funds', 'data'])(fund),
   fundsError: fund.error,
   loading: loading.effects['dashboard/fetch'],
   isCurrent: getCurrentScreen(router) === 'Dashboard',
