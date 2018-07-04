@@ -1,5 +1,4 @@
-import { StyleSheet, Dimensions, Platform } from 'react-native';
-import { navBarHeight } from 'component/navBar';
+import { Dimensions } from 'react-native';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { borderColor } from 'component/uikit/color';
 import { mainColor } from '../../../component/uikit/color';
@@ -21,20 +20,10 @@ export default {
     top: 0,
   },
   swiper: {
-    ...Platform.select({
-      ios: {
-        position: 'absolute',
-        top: -50,
-        left: 0,
-        right: 0,
-      },
-      android: {
-        position: 'absolute',
-        top: PARALLAX_HEADER_HEIGHT - 50,
-        left: 0,
-        right: 0,
-      },
-    }),
+    position: 'absolute',
+    top: PARALLAX_HEADER_HEIGHT - 50,
+    left: 0,
+    right: 0,
   },
   empty: {
     group: {
