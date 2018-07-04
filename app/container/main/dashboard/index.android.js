@@ -7,7 +7,6 @@ import {
   ActivityIndicator,
   ScrollView,
   Image,
-  Dimensions,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -32,7 +31,6 @@ import Investment from './partials/investment';
 import ShareModal from './share';
 import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
-const window = Dimensions.get('window');
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 
 @compose(
@@ -100,51 +98,59 @@ export default class Dashboard extends Component {
 
   renderForeground = () => <Header {...this.props} style={styles.foreground} />;
 
-  renderFixedHeader = () => {
-    const { colorRange, titleColorRange, offsetY, funds } = this.props;
+  renderNavBarTitle = (style = {}) => {
+    const { titleColorRange, funds } = this.props;
     const { currentFund } = this.state;
     return (
-      <NavBar
-        style={styles.navbar.container}
-        wrapperStyle={{ backgroundColor: colorRange }}
-        barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
-        renderTitle={() => (
-          <ModalDropdown
-            style={styles.dropdown.container}
-            dropdownStyle={[styles.dropdown.wrapper, { height: funds.length * 45 }]}
-            showsVerticalScrollIndicator={false}
-            options={funds}
-            animated={false}
-            defaultIndex={0}
-            renderRow={(rowData, index, isSelected) => (
-              <TouchableOpacity style={styles.dropdown.item.container}>
-                <Text
-                  style={[
-                    styles.dropdown.item.title,
-                    isSelected && { fontWeight: 'bold', color: '#1890FF' },
-                  ]}
-                >
-                  {rowData.name}
-                </Text>
-              </TouchableOpacity>
-            )}
-            renderSeparator={() => <View style={styles.dropdown.separator} />}
-            onSelect={(i, value) => this.getDashboardData(value.id)}
-          >
-            <Animated.Text style={[styles.navbar.title, { color: titleColorRange }]}>
-              {currentFund.name}
-              <AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
-            </Animated.Text>
-          </ModalDropdown>
+      <ModalDropdown
+        style={[styles.dropdown.container, style]}
+        dropdownStyle={[styles.dropdown.wrapper, { height: funds.length * 45 }]}
+        showsVerticalScrollIndicator={false}
+        options={funds}
+        animated={false}
+        defaultIndex={0}
+        renderRow={(rowData, index, isSelected) => (
+          <TouchableOpacity style={styles.dropdown.item.container}>
+            <Text
+              style={[
+                styles.dropdown.item.title,
+                isSelected && { fontWeight: 'bold', color: '#1890FF' },
+              ]}
+            >
+              {rowData.name}
+            </Text>
+          </TouchableOpacity>
         )}
-        renderRight={() => {
-          return (
-            <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
-              <Image source={require('asset/share.png')} style={styles.shareButton} />
-            </TouchableOpacity>
-          );
-        }}
-      />
+        renderSeparator={() => <View style={styles.dropdown.separator} />}
+        onSelect={(i, value) => this.getDashboardData(value.id)}
+      >
+        <Animated.Text style={[styles.navbar.title, { color: titleColorRange }]}>
+          {currentFund.name}
+          <AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
+        </Animated.Text>
+      </ModalDropdown>
+    );
+  };
+
+  renderFixedHeader = () => {
+    const { colorRange, dashboard, offsetY } = this.props;
+    return (
+      <View style={{ position: 'absolute', left: 0, right: 0, top: 0, zIndex: 10 }}>
+        <NavBar
+          wrapperStyle={{ backgroundColor: colorRange }}
+          barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
+          renderTitle={this.renderNavBarTitle}
+          renderRight={() => {
+            const invalid = !dashboard || !this.state.currentFund;
+            if (invalid) return null;
+            return (
+              <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
+                <Image source={require('asset/share.png')} style={styles.shareButton} />
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
     );
   };
 
@@ -152,8 +158,10 @@ export default class Dashboard extends Component {
     const { scrollY, dashboard, loading } = this.props;
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
 
-    if ((!dashboard || !this.state.currentFund) && loading) {
-      return (
+    let empty = null;
+    const invalid = !dashboard || !this.state.currentFund;
+    if (invalid && loading) {
+      empty = (
         <Empty>
           <ActivityIndicator size="large" />
         </Empty>
@@ -161,16 +169,16 @@ export default class Dashboard extends Component {
     }
 
     if (R.path(['fundsError', 'status'])(this.props) === 403) {
-      return (
+      empty = (
         <Empty>
           <Text>您尚未拥有查看 Dashboard 的权限</Text>
         </Empty>
       );
     }
 
-    if (!dashboard || !this.state.currentFund) {
-      return (
-        <Empty>
+    if (invalid) {
+      empty = (
+        <Empty style={{ zIndex: 5 }}>
           <View style={styles.empty.group.container}>
             <Text style={styles.empty.group.title}>
               {'完善项目和投资记录，\n即可在此查看基金收益统计'}
@@ -204,6 +212,7 @@ export default class Dashboard extends Component {
 
     return (
       <View style={styles.container}>
+        {this.renderFixedHeader()}
         <ScrollView
           contentContainerStyle={styles.scrollView.container}
           showsVerticalScrollIndicator={false}
@@ -253,13 +262,13 @@ export default class Dashboard extends Component {
             )}
           </View>
         </ScrollView>
-        {this.renderFixedHeader()}
+        {empty}
         <Modal
           isVisible={this.props.showShareModal}
           style={{
             margin: 0,
-            // width: window.width,
           }}
+          onBackButtonPress={() => this.props.setShareModal(false)}
         >
           <ShareModal
             fund={this.state.currentFund}

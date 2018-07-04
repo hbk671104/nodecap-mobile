@@ -14,7 +14,7 @@ class Empty extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, this.props.style]}>
         <StatusBar />
         <Image
           ref={(img) => {
@@ -40,7 +40,7 @@ class Empty extends Component {
 
 const styles = {
   container: {
-    flex: 1,
+    ...StyleSheet.absoluteFillObject,
   },
   wrapper: {
     flex: 1,

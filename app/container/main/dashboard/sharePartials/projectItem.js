@@ -8,11 +8,7 @@ import { raised } from '../../../../utils/style';
 const roiItem = ({ style, index, data }) => (
   <View style={[styles.container, style]}>
     <View style={styles.icon.wrapper}>
-      <Image
-        resizeMode="contain"
-        style={styles.icon.image}
-        source={{ uri: data.logo_url }}
-      />
+      <Image resizeMode="contain" style={styles.icon.image} source={{ uri: data.logo_url }} />
     </View>
     <View style={styles.content.container}>
       <Text style={styles.content.title}>{data.name}</Text>
@@ -44,6 +40,7 @@ const styles = {
     image: {
       height: 35,
       width: 35,
+      borderRadius: 17.5,
     },
   },
   content: {

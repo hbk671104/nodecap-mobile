@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Animated,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
-  ActivityIndicator,
-  Dimensions,
-} from 'react-native';
+import { Animated, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Modal from 'react-native-modal';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -32,7 +24,6 @@ import Investment from './partials/investment';
 import ShareModal from './share';
 import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
-const window = Dimensions.get('window');
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 
 @compose(
@@ -103,7 +94,6 @@ export default class Dashboard extends Component {
   renderNavBarTitle = (style = {}) => {
     const { titleColorRange, funds } = this.props;
     const { currentFund } = this.state;
-    const defaultIndex = funds.indexOf(currentFund);
     return (
       <ModalDropdown
         style={[styles.dropdown.container, style]}
@@ -111,7 +101,7 @@ export default class Dashboard extends Component {
         showsVerticalScrollIndicator={false}
         options={funds}
         animated={false}
-        defaultIndex={defaultIndex}
+        defaultIndex={0}
         renderRow={(rowData, index, isSelected) => (
           <TouchableOpacity style={styles.dropdown.item.container}>
             <Text
@@ -136,20 +126,24 @@ export default class Dashboard extends Component {
   };
 
   renderFixedHeader = () => {
-    const { colorRange, offsetY } = this.props;
+    const { colorRange, dashboard, offsetY } = this.props;
     return (
-      <NavBar
-        wrapperStyle={{ backgroundColor: colorRange }}
-        barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
-        renderRight={() => {
-          return (
-            <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
-              <Image source={require('asset/share.png')} style={styles.shareButton} />
-            </TouchableOpacity>
-          );
-        }}
-        renderTitle={this.renderNavBarTitle}
-      />
+      <View style={{ position: 'absolute', left: 0, right: 0, top: 0, zIndex: 10 }}>
+        <NavBar
+          wrapperStyle={{ backgroundColor: colorRange }}
+          barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
+          renderTitle={this.renderNavBarTitle}
+          renderRight={() => {
+            const invalid = !dashboard || !this.state.currentFund;
+            if (invalid) return null;
+            return (
+              <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
+                <Image source={require('asset/share.png')} style={styles.shareButton} />
+              </TouchableOpacity>
+            );
+          }}
+        />
+      </View>
     );
   };
 
@@ -157,8 +151,10 @@ export default class Dashboard extends Component {
     const { scrollY, dashboard, loading } = this.props;
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
 
-    if ((!dashboard || !this.state.currentFund) && loading) {
-      return (
+    let empty = null;
+    const invalid = !dashboard || !this.state.currentFund;
+    if (invalid && loading) {
+      empty = (
         <Empty>
           <ActivityIndicator size="large" />
         </Empty>
@@ -166,17 +162,16 @@ export default class Dashboard extends Component {
     }
 
     if (R.path(['fundsError', 'status'])(this.props) === 403) {
-      return (
+      empty = (
         <Empty>
           <Text>您尚未拥有查看 Dashboard 的权限</Text>
         </Empty>
       );
     }
 
-    if (!dashboard || !this.state.currentFund) {
-      return (
-        <Empty>
-          {this.renderNavBarTitle(styles.navbar.mock)}
+    if (invalid) {
+      empty = (
+        <Empty style={{ zIndex: 5 }}>
           <View style={styles.empty.group.container}>
             <Text style={styles.empty.group.title}>
               {'完善项目和投资记录，\n即可在此查看基金收益统计'}
@@ -210,6 +205,7 @@ export default class Dashboard extends Component {
 
     return (
       <View style={styles.container}>
+        {this.renderFixedHeader()}
         <ParallaxScrollView
           contentContainerStyle={styles.scrollView.container}
           outputScaleValue={10}
@@ -217,7 +213,6 @@ export default class Dashboard extends Component {
           parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
           renderForeground={this.renderForeground}
           renderBackground={this.renderBackground}
-          renderFixedHeader={this.renderFixedHeader}
           scrollEventThrottle={16}
           onScroll={Animated.event(
             [
@@ -253,6 +248,7 @@ export default class Dashboard extends Component {
             </DashboardGroup>
           )}
         </ParallaxScrollView>
+        {empty}
         <Modal
           isVisible={this.props.showShareModal}
           style={{

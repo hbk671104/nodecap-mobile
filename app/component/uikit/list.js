@@ -83,7 +83,7 @@ class List extends PureComponent {
           </View>
         );
       }
-      if (current === pageCount) {
+      if (current === pageCount && pageCount > 1) {
         return (
           <View style={styles.footerRefresher.container}>
             <View style={styles.footerRefresher.line} />
