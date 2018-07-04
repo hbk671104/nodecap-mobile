@@ -13,8 +13,8 @@ const dateFormat = date => (date ? moment(date).format('YYYY年MM月DD日 HH:mm'
 class Investment extends Component {
   renderItemFields(field) {
     const projectProps = path => R.path([...path])(field);
-    const tokens = R.path(['constants', 'tokens'])(this.props);
-    const stages = R.path(['constants', 'finance_stages'])(this.props);
+    const tokens = R.pathOr([], ['constants', 'tokens'])(this.props);
+    const stages = R.pathOr([], ['constants', 'finance_stages'])(this.props);
     const getStageName = item => R.prop('name')(R.find(R.propEq('id', item.stage_id))(stages));
     const getTokenName = item => R.prop('name')(R.find(R.propEq('id', item.invest_token))(tokens));
     const tokenName = R.path(['portfolio', 'token_name'])(this.props);
@@ -49,19 +49,13 @@ class Investment extends Component {
               value: getTokenName(field),
               style: {
                 flex: 1,
-                // alignItems: projectProps(['invest_count']) ? 'flex-start' : 'space-between',
               },
-              // valueStyle: {
-              //   marginLeft: 14,
-              // },
             })}
             {renderField({
               name: '投资数量',
               value: projectProps(['invest_count']),
               style: {
                 flex: 1,
-                // marginLeft: projectProps(['invest_token']) ? 0 : 22,
-                // paddingLeft: projectProps(['invest_token']) ? 10 : 0,
               },
             })}
           </Flex>
@@ -83,19 +77,13 @@ class Investment extends Component {
               value: projectProps(['fund', 'name']),
               style: {
                 flex: 1,
-                // alignItems: projectProps(['stage_id']) ? 'flex-start' : 'space-between',
               },
-              // valueStyle: {
-              //   marginLeft: 14,
-              // },
             })}
             {renderField({
               name: '打币状态',
               value: projectProps(['is_paid']) ? '已打币' : '未打币',
               style: {
                 flex: 1,
-                // marginLeft: projectProps(['financeType']) ? 0 : 22,
-                // paddingLeft: projectProps(['financeType']) ? 10 : 0,
               },
             })}
           </Flex>

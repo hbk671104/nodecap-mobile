@@ -62,9 +62,11 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                 </View>
                 <View style={styles.sub.container}>
                   <Text style={styles.sub.text}>
-                    {symbol(b, 12)} <Text>{dailyProfit}</Text> {'今日'} {arrow(dailyProfit)}
-                    {'     '}
-                    {symbol(b, 12)} <Text>{weeklyProfit}</Text> {'本周'} {arrow(weeklyProfit)}
+                    {symbol(b, 12)} <Text>{dailyProfit}</Text> {'今日'}
+                    {arrow(dailyProfit)}
+                    {'  '}
+                    {symbol(b, 12)} <Text>{weeklyProfit}</Text> {'本周'}
+                    {arrow(weeklyProfit)}
                   </Text>
                 </View>
               </View>

@@ -49,7 +49,7 @@ const asset = (props) => {
               <Text style={[styles.bottom.group.content, profits < 0 && { color: '#F5222D' }]}>
                 {symbol(currentSym, [
                   styles.bottom.group.content,
-                  profits < 0 && { color: '##F5222D' },
+                  profits < 0 && { color: '#F5222D' },
                 ])}{' '}
                 {Accounting.formatNumber(profits, 2)}
               </Text>

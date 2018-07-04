@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
+import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
@@ -21,7 +22,10 @@ import styles from './style';
 export default class Portfolio extends Component {
   state = {
     index: 0,
-    routes: [{ key: 'exchangeable', title: '已上所' }, { key: 'unexchangeable', title: '未上所' }],
+    routes: [
+      { key: 'exchangeable', title: '已投项目' },
+      { key: 'unexchangeable', title: '未投项目' },
+    ],
   };
 
   componentWillReceiveProps(nextProps) {
