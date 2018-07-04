@@ -302,9 +302,26 @@ export function portfolioIndex(params = {}) {
     ...params,
     page: p.currentPage,
     'per-page': p.pageSize,
-    status: params.status || '4,5,6',
   });
   return request.get('/projects?expand=white_papers,post_user,invest_token', {
+    params: paramsTransform(params),
+  });
+}
+
+/**
+ * 投资库可计算收益列表
+ * @param params
+ * @returns {AxiosPromise<any>}
+ */
+export function investmentIndex(params = {}) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+    can_calculate: 1,
+    symbol: 'CNY',
+  });
+  return request.get('/projects/invested', {
     params: paramsTransform(params),
   });
 }

@@ -1,18 +1,27 @@
 import React from 'react';
+import { PropTypes } from 'prop-types';
 import { Text } from 'react-native';
 import Accounting from 'accounting';
 
-const amount = ({ children }) => {
+const amount = ({ children, disableFormatting }) => {
   let comp = Accounting.formatNumber(children);
-  if (children > 100000000) {
+  if (children > 100000000 && !disableFormatting) {
     const num = children / 100000000;
     comp = `${Accounting.formatNumber(num)}亿`;
   }
-  if (children > 10000) {
+  if (children > 10000 && !disableFormatting) {
     const num = children / 10000;
     comp = `${Accounting.formatNumber(num, 1)}万`;
   }
   return <Text>{comp}</Text>;
+};
+
+amount.defaultProps = {
+  disableFormatting: false,
+};
+
+amount.propTypes = {
+  disableFormatting: PropTypes.bool,
 };
 
 export default amount;

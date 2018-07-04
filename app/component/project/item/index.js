@@ -1,51 +1,88 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image } from 'react-native';
+import { View, Image } from 'react-native';
+import R from 'ramda';
+import Accounting from 'accounting';
 import Touchable from 'component/uikit/touchable';
+import Text from 'component/text';
+import Amount from 'component/amount';
+import Price from 'component/price';
 import styles from './style';
 
-const projectItem = ({ item }) => (
-  <Touchable style={styles.container}>
-    <View>
-      <View style={styles.top.container}>
-        <View style={styles.top.group}>
-          <View style={styles.top.logo.container}>
-            <Image style={styles.top.logo.image} />
+const projectItem = ({ item, index }) => {
+  const stat = R.path(['statistics'])(item);
+  const investment = R.path(['investment'])(stat);
+  const profit = R.path(['profits', 'CNY'])(investment);
+  const cost = R.path(['total_cost', 'CNY'])(investment);
+  const roi = R.path(['roi', 'CNY', 'value'])(investment);
+  const unitCost = R.path(['unit_cost', 'CNY'])(investment);
+  const price = R.path(['current_price', 'CNY'])(stat);
+  const ratio = price / unitCost > 1 ? price / unitCost : -unitCost / price;
+
+  return (
+    <Touchable style={styles.container}>
+      <View>
+        <View style={styles.top.container}>
+          <View style={styles.top.group}>
+            {!!item.logo_url && (
+              <View style={styles.top.logo.container}>
+                <Image style={styles.top.logo.image} source={{ uri: item.logo_url }} />
+              </View>
+            )}
+            <Text style={styles.top.title}>
+              {item.name}{' '}
+              {!!item.token_name && <Text style={styles.top.subtitle}>({item.token_name})</Text>}
+            </Text>
           </View>
-          <Text style={styles.top.title}>
-            Aelf <Text style={styles.top.subtitle}>(ELF)</Text>
-          </Text>
+          <Text style={styles.top.ranking}>#{index + 1}</Text>
         </View>
-        <Text style={styles.top.ranking}>#1</Text>
-      </View>
-      <View style={styles.middle.container}>
-        <View style={{ flex: 1 }}>
-          <Text style={styles.middle.title}>浮动盈余</Text>
-          <Text style={[styles.middle.content, { fontSize: 24 }, styles.middle.up]}>
-            +好多好多钱
-          </Text>
+        <View style={styles.middle.container}>
+          <View style={{ flex: 7 }}>
+            <Text style={styles.middle.title}>浮动盈余</Text>
+            <Text style={[styles.middle.content, { fontSize: 24 }]}>
+              <Text colorAware>{profit}</Text>{' '}
+              <Text
+                style={[styles.middle.subtitle, profit < 0 ? styles.middle.down : styles.middle.up]}
+              >
+                CNY
+              </Text>
+            </Text>
+          </View>
+          <View style={{ flex: 3 }}>
+            <Text style={styles.middle.title}>回报率</Text>
+            <Text style={[styles.middle.content, { fontSize: 18 }]}>
+              <Text colorAware>{roi}</Text>
+              <Text style={profit < 0 ? styles.middle.down : styles.middle.up}>%</Text>
+            </Text>
+          </View>
         </View>
-        <View style={{ paddingRight: 34 }}>
-          <Text style={styles.middle.title}>回报率</Text>
-          <Text style={[styles.middle.content, { fontSize: 18 }, styles.middle.up]}>+500%</Text>
-        </View>
-      </View>
-      <View style={styles.bottom.container}>
-        <View style={styles.bottom.group}>
-          <Text style={styles.bottom.title}>投资金额</Text>
-          <Text style={styles.bottom.content}>3.4亿元</Text>
-        </View>
-        <View style={styles.bottom.group}>
-          <Text style={styles.bottom.title}>成本价/市价</Text>
-          <Text style={styles.bottom.content}>0.92 / 4.23</Text>
-          <View style={[styles.bottom.label.container, styles.bottom.label.up]}>
-            <Text style={styles.bottom.label.title}>4.61倍</Text>
+        <View style={styles.bottom.container}>
+          <View style={styles.bottom.group}>
+            <Text style={styles.bottom.title}>投资金额</Text>
+            <Text style={styles.bottom.content}>
+              ￥<Amount disableFormatting>{cost}</Amount>
+            </Text>
+          </View>
+          <View style={styles.bottom.group}>
+            <Text style={styles.bottom.title}>成本价/市价</Text>
+            <Text style={styles.bottom.content}>
+              <Price symbol="CNY">{unitCost}</Price> / <Price symbol="CNY">{price}</Price>
+            </Text>
+            <View
+              style={[
+                styles.bottom.label.container,
+                styles.bottom.label.up,
+                ratio < 0 && styles.bottom.label.down,
+              ]}
+            >
+              <Text style={styles.bottom.label.title}>{Accounting.formatNumber(ratio, 1)}倍</Text>
+            </View>
           </View>
         </View>
       </View>
-    </View>
-  </Touchable>
-);
+    </Touchable>
+  );
+};
 
 projectItem.propTypes = {
   item: PropTypes.any,

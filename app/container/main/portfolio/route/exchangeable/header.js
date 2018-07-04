@@ -8,9 +8,9 @@ import Gradient from 'component/uikit/gradient';
 
 const header = ({ value, onSelect }) => (
   <View style={styles.container}>
-    <Touchable borderless onPress={() => onSelect('balance')}>
+    <Touchable borderless onPress={() => onSelect('profits')}>
       <View style={styles.group.container}>
-        {value === 'balance' ? (
+        {value === 'profits' ? (
           <Gradient style={[styles.group.top, { borderWidth: 0, overflow: 'hidden' }]}>
             <NodeCapIcon name="qianbi" size={16} color="white" />
           </Gradient>
@@ -19,7 +19,7 @@ const header = ({ value, onSelect }) => (
             <NodeCapIcon name="qianbi" size={16} color="#1890FF" />
           </View>
         )}
-        <Text style={[styles.group.title, value !== 'balance' && { color: '#999999' }]}>
+        <Text style={[styles.group.title, value !== 'profits' && { color: '#999999' }]}>
           盈余榜
         </Text>
       </View>
@@ -38,9 +38,9 @@ const header = ({ value, onSelect }) => (
         <Text style={[styles.group.title, value !== 'roi' && { color: '#999999' }]}>回报率榜</Text>
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('price_change')}>
+    <Touchable borderless onPress={() => onSelect('increase')}>
       <View style={styles.group.container}>
-        {value === 'price_change' ? (
+        {value === 'increase' ? (
           <Gradient style={[styles.group.top, { borderWidth: 0, overflow: 'hidden' }]}>
             <NodeCapIcon name="qushi" size={14} color="white" />
           </Gradient>
@@ -49,14 +49,14 @@ const header = ({ value, onSelect }) => (
             <NodeCapIcon name="qushi" size={14} color="#1890FF" />
           </View>
         )}
-        <Text style={[styles.group.title, value !== 'price_change' && { color: '#999999' }]}>
+        <Text style={[styles.group.title, value !== 'increase' && { color: '#999999' }]}>
           涨跌榜
         </Text>
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('investment')}>
+    <Touchable borderless onPress={() => onSelect('cost')}>
       <View style={styles.group.container}>
-        {value === 'investment' ? (
+        {value === 'cost' ? (
           <Gradient style={[styles.group.top, { borderWidth: 0, overflow: 'hidden' }]}>
             <NodeCapIcon name="investment" size={14} color="white" />
           </Gradient>
@@ -65,9 +65,7 @@ const header = ({ value, onSelect }) => (
             <NodeCapIcon name="investment" size={14} color="#1890FF" />
           </View>
         )}
-        <Text style={[styles.group.title, value !== 'investment' && { color: '#999999' }]}>
-          投资榜
-        </Text>
+        <Text style={[styles.group.title, value !== 'cost' && { color: '#999999' }]}>投资榜</Text>
       </View>
     </Touchable>
   </View>

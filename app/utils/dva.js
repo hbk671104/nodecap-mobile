@@ -18,6 +18,7 @@ export default function (options) {
         'dashboard/fetch',
         'login/setPassword',
         'portfolio/index',
+        'portfolio/investment',
         'portfolio/projectStat',
         'portfolio/get',
         'portfolio/search',

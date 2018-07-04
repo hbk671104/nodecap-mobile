@@ -14,24 +14,44 @@ const numConvert = (number, disablePrefix) => {
 };
 
 const text = (props) => {
-  const { children, disablePrefix } = props;
+  const { children, disablePrefix, colorAware } = props;
   if (typeof children === 'string') {
     if (!isNaN(children)) {
-      return <Text {...props}>{numConvert(children, disablePrefix)}</Text>;
+      return (
+        <Text
+          {...props}
+          {...(colorAware
+            ? { style: [props.style, { color: children >= 0 ? '#09AC32' : '#F5222D' }] }
+            : {})}
+        >
+          {numConvert(children, disablePrefix)}
+        </Text>
+      );
     }
   }
   if (typeof children === 'number') {
-    return <Text {...props}>{numConvert(children, disablePrefix)}</Text>;
+    return (
+      <Text
+        {...props}
+        {...(colorAware
+          ? { style: [props.style, { color: children >= 0 ? '#09AC32' : '#F5222D' }] }
+          : {})}
+      >
+        {numConvert(children, disablePrefix)}
+      </Text>
+    );
   }
   return <Text {...props}>{children}</Text>;
 };
 
 text.defaultProps = {
   disablePrefix: false,
+  colorAware: false,
 };
 
 text.propTypes = {
   disablePrefix: PropTypes.bool,
+  colorAware: PropTypes.bool,
 };
 
 export default text;

@@ -27,11 +27,14 @@ export default {
         width: 35,
         borderRadius: 17.5,
         backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center',
         ...raised,
       },
       image: {
         height: 17.5,
         width: 17.5,
+        borderRadius: 8.75,
       },
     },
     title: {
@@ -54,6 +57,7 @@ export default {
   middle: {
     container: {
       flexDirection: 'row',
+      justifyContent: 'space-between',
       alignItems: 'center',
       marginTop: 15,
     },
@@ -64,6 +68,11 @@ export default {
     content: {
       marginTop: 5,
       fontWeight: 'bold',
+    },
+    subtitle: {
+      color: '#666666',
+      fontWeight: 'bold',
+      fontSize: 11,
     },
     up: {
       color: '#09AC32',

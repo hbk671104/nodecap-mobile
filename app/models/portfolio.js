@@ -1,6 +1,7 @@
 import * as R from 'ramda';
 import {
   portfolioIndex,
+  investmentIndex,
   projectDetail,
   getProjectInvestTokens,
   getProjectInvestEquities,
@@ -16,7 +17,10 @@ const paginate = (state, action, key) => {
   if (action.params) {
     const oldStatus = R.pathOr('', [key, 'params', 'status'])(state);
     const newStatus = R.pathOr('', ['params', 'status'])(action);
-    if (!R.equals(oldStatus, newStatus)) {
+
+    const oldRank = R.pathOr('', [key, 'params', 'rank'])(state);
+    const newRank = R.pathOr('', ['params', 'rank'])(action);
+    if (!R.equals(oldStatus, newStatus) || !R.equals(oldRank, newRank)) {
       return action.payload;
     }
   }
@@ -36,7 +40,9 @@ export default {
   state: {
     exchangeable: {
       index: null,
-      params: {},
+      params: {
+        rank: 'profits',
+      },
     },
     unexchangeable: {
       index: null,
@@ -59,6 +65,26 @@ export default {
           type: 'list',
           payload: res.data,
           params: payload,
+          key: 'unexchangeable',
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *investment({ payload = {}, callback }, { call, put }) {
+      try {
+        const req = {
+          ...payload,
+        };
+        const res = yield call(investmentIndex, req);
+        yield put({
+          type: 'list',
+          payload: res.data,
+          params: payload,
+          key: 'exchangeable',
         });
         if (callback) {
           callback();
@@ -147,7 +173,7 @@ export default {
   },
   reducers: {
     list(state, action) {
-      const key = 'unexchangeable';
+      const { key } = action;
       return {
         ...state,
         [key]: {
