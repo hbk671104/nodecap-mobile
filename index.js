@@ -46,8 +46,10 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 }
 
 moment.locale('zh-cn');
-WeChat.registerApp('wxf1aab19d2adf1107');
-Sentry.config('https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872').install();
+WeChat.registerApp('wx9e13272f60a68c63');
+Sentry.config(
+  'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
+).install();
 if (Platform.OS === 'ios') {
   JPush.setupPush();
 } else {

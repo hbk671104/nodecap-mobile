@@ -14,6 +14,7 @@ import * as R from 'ramda';
 import { connect } from 'react-redux';
 import ViewShot from 'react-native-view-shot';
 import * as WeChat from 'react-native-wechat';
+import Touchable from 'component/uikit/touchable';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ProfitSwiper from './sharePartials/profitSwiper';
 import DashboardGroup from './sharePartials/group';
@@ -43,7 +44,7 @@ export default class ShareModal extends Component {
     this.getDashboardData(currentFund.id);
   }
 
-  getDashboardData = (id) => {
+  getDashboardData = id => {
     this.props.dispatch({
       type: 'dashboard/fetch',
       payload: id,
@@ -121,7 +122,7 @@ export default class ShareModal extends Component {
         {
           title: 'My App Storage Permission',
           message: 'My App needs access to your storage',
-        }
+        },
       );
       return granted;
     } catch (err) {
@@ -131,7 +132,10 @@ export default class ShareModal extends Component {
   };
 
   renderBackground = () => (
-    <Image style={styles.background} source={require('asset/dashboard_bg.png')} />
+    <Image
+      style={styles.background}
+      source={require('asset/dashboard_bg.png')}
+    />
   );
 
   renderForeground = () => (
@@ -158,7 +162,7 @@ export default class ShareModal extends Component {
         >
           <ViewShot
             options={{ format: 'jpg', quality: 0.9 }}
-            ref={(ref) => {
+            ref={ref => {
               this.viewShot = ref;
             }}
           >
@@ -182,7 +186,9 @@ export default class ShareModal extends Component {
             </View>
 
             <View
-              onLayout={e => this.setState({ backgroundHeight: e.nativeEvent.layout.height })}
+              onLayout={e =>
+                this.setState({ backgroundHeight: e.nativeEvent.layout.height })
+              }
               style={{
                 marginTop: 120,
                 transform: [
@@ -213,33 +219,60 @@ export default class ShareModal extends Component {
                 }}
               >
                 {roiRankCount > 0 && (
-                  <DashboardGroup style={styles.dashboardGroup} title="投资回报率榜" icon="TOP">
-                    {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+                  <DashboardGroup
+                    style={styles.dashboardGroup}
+                    title="投资回报率榜"
+                    icon="TOP"
+                  >
+                    {dashboard.ROIRank.map((r, i) => (
+                      <ProjectItem key={i} index={i} data={r} />
+                    ))}
                   </DashboardGroup>
                 )}
-                <DashboardGroup style={styles.dashboardGroup} title="投资概况" icon="yitouxiangmu">
+                <DashboardGroup
+                  style={styles.dashboardGroup}
+                  title="投资概况"
+                  icon="yitouxiangmu"
+                >
                   <InvestNumber data={dashboard.portfolio} />
                 </DashboardGroup>
-                <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
+                <DashboardGroup
+                  style={styles.dashboardGroup}
+                  title="投资金额"
+                  icon="touzijine"
+                >
                   <Investment data={dashboard.investment} />
                 </DashboardGroup>
               </View>
               <ProfitSwiper
                 autoplay={false}
                 style={styles.swiper}
-                total={R.pick(['ETH'])(R.path(['totalProfits', 'count'])(dashboard))}
-                daily={R.pick(['ETH'])(R.path(['dailyProfits', 'count'])(dashboard))}
-                weekly={R.pick(['ETH'])(R.path(['weeklyProfits', 'count'])(dashboard))}
+                total={R.pick(['ETH'])(
+                  R.path(['totalProfits', 'count'])(dashboard),
+                )}
+                daily={R.pick(['ETH'])(
+                  R.path(['dailyProfits', 'count'])(dashboard),
+                )}
+                weekly={R.pick(['ETH'])(
+                  R.path(['weeklyProfits', 'count'])(dashboard),
+                )}
               />
             </View>
           </ViewShot>
         </ScrollView>
         <Flex justify="space-between" style={styles.actionsBar}>
-          <TouchableOpacity onPress={this.props.onClose}>
-            <Icon name="ios-arrow-back" style={styles.backButton} color="#a1a1a1" />
-          </TouchableOpacity>
+          <Touchable borderless onPress={this.props.onClose}>
+            <Icon
+              name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
+              style={styles.backButton}
+              color="#a1a1a1"
+            />
+          </Touchable>
           <Flex>
-            <TouchableOpacity disabled={this.props.loading.camera} onPress={this.saveToCameraRoll}>
+            {/* <TouchableOpacity
+              disabled={this.props.loading.camera}
+              onPress={this.saveToCameraRoll}
+            >
               <Text
                 style={[
                   styles.saveToCameraRoll,
@@ -248,6 +281,15 @@ export default class ShareModal extends Component {
               >
                 {this.state.loading.camera ? '保存中...' : '保存图片至相册'}
               </Text>
+            </TouchableOpacity> */}
+            <TouchableOpacity onPress={this.shareTo('wechat')}>
+              <Image source={require('asset/wechat_icon.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ marginLeft: 24 }}
+              onPress={this.shareTo('moment')}
+            >
+              <Image source={require('asset/wechat_moment_icon.png')} />
             </TouchableOpacity>
           </Flex>
         </Flex>
