@@ -10,7 +10,8 @@ export default {
   divider: {
     backgroundColor: '#E9E9E9',
     height: StyleSheet.hairlineWidth,
-    marginHorizontal: 12,
+    marginLeft: 22,
+    marginRight: 12,
   },
   modal: {
     margin: 0,
