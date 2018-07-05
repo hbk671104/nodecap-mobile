@@ -53,6 +53,7 @@ export default {
     searchList: {
       index: null,
     },
+    current: null,
   },
   effects: {
     *index({ payload = {}, callback }, { call, put }) {
@@ -148,25 +149,43 @@ export default {
      * @param put
      * @param all
      */
-    *get({ payload, callback }, { all, call }) {
+    *get({ payload }, { put, call }) {
       try {
-        const { res, investTokens, investEquities } = yield all({
-          res: call(projectDetail, {
-            id: payload,
-          }),
-          investTokens: call(getProjectInvestTokens, payload),
-          investEquities: call(getProjectInvestEquities, payload),
+        const res = yield call(projectDetail, {
+          id: payload,
         });
 
-        const data = {
-          ...res.data,
-          invest_tokens: investTokens.data,
-          invest_equities: investEquities.data,
-        };
+        yield put({
+          type: 'saveDetail',
+          payload: res.data,
+        });
+        yield put({
+          type: 'getInvest',
+          payload,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getInvest({ payload }, { call, put }) {
+      try {
+        const investTokens = yield call(getProjectInvestTokens, payload);
+        yield put({
+          type: 'saveInvest',
+          payload: investTokens.data,
+          relatedType: 'invest_tokens',
+        });
+      } catch (e) {
+        console.log(e);
+      }
 
-        if (callback) {
-          callback(data);
-        }
+      try {
+        const investEquities = yield call(getProjectInvestEquities, payload);
+        yield put({
+          type: 'saveInvest',
+          payload: investEquities.data,
+          relatedType: 'invest_equities',
+        });
       } catch (e) {
         console.log(e);
       }
@@ -196,6 +215,30 @@ export default {
         ...state,
         searchList: {
           index: null,
+        },
+      };
+    },
+    clearDetail(state) {
+      return {
+        ...state,
+        currentProject: null,
+      };
+    },
+    saveDetail(state, action) {
+      return {
+        ...state,
+        current: {
+          ...(state.current || {}),
+          ...action.payload,
+        },
+      };
+    },
+    saveInvest(state, action) {
+      return {
+        ...state,
+        current: {
+          ...(state.current || {}),
+          [action.relatedType]: action.payload,
         },
       };
     },

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
-import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
+import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
 import { setStatusBar } from 'component/uikit/statusBar';
 import SearchBarDisplay from 'component/searchBar/display';
@@ -83,6 +83,31 @@ export default class Portfolio extends Component {
   };
 
   render() {
+    if (!hasPermission('project-list')) {
+      return (
+        <View style={[styles.container, {
+          backgroundColor: 'white',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }]}
+        >
+          <Image
+            style={{
+              width: 156,
+              height: 103,
+              resizeMode: 'contain',
+            }}
+            source={require('../../../asset/permission_lock.png')}
+          />
+          <Text style={{
+            color: 'rgba(0, 0, 0, .45)',
+            marginTop: 30,
+          }}
+          >您尚未开通查看项目列表权限
+          </Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <TabView

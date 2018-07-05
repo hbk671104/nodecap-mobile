@@ -172,6 +172,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-wechat')
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
     compile project(':react-native-sentry')
