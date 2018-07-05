@@ -160,7 +160,7 @@ export default class ShareModal extends Component {
           showsVerticalScrollIndicator={false}
         >
           <ViewShot
-            options={{ format: 'jpg', quality: 0.9 }}
+            options={{ format: 'jpg', quality: 1 }}
             ref={ref => {
               this.viewShot = ref;
             }}
@@ -169,7 +169,7 @@ export default class ShareModal extends Component {
               style={{
                 ...styles.shareBackground,
                 width: 375,
-                height: this.state.backgroundHeight + 120,
+                height: this.state.backgroundHeight + 120 + 167,
                 overflow: 'hidden',
               }}
             >
@@ -177,13 +177,12 @@ export default class ShareModal extends Component {
                 style={[
                   styles.shareBackground,
                   {
-                    height: 1722,
+                    height: 1889,
                   },
                 ]}
                 source={require('asset/share_background.jpg')}
               />
             </View>
-
             <View
               onLayout={e =>
                 this.setState({ backgroundHeight: e.nativeEvent.layout.height })
@@ -255,6 +254,18 @@ export default class ShareModal extends Component {
                 weekly={R.pick(['ETH'])(
                   R.path(['weeklyProfits', 'count'])(dashboard),
                 )}
+              />
+            </View>
+            <View style={{
+              marginTop: -50,
+              marginBottom: 100,
+              flexDirection: 'row',
+              alignItem: 'center',
+              justifyContent: 'center',
+            }}
+            >
+              <Image
+                source={require('../../../asset/qr_welcome.png')}
               />
             </View>
           </ViewShot>
