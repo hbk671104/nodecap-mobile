@@ -9,6 +9,7 @@ import List from 'component/uikit/list';
 import ProjectItem from 'component/project/item';
 import PriceChangeItem from 'component/project/priceChangeItem';
 import InvestmentItem from 'component/project/investmentItem';
+import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
 import styles from './style';
 
@@ -49,6 +50,9 @@ export default class Exchangeable extends Component {
   };
 
   handleItemPress = item => () => {
+    if (!hasPermission('project-view')) {
+      return;
+    }
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',

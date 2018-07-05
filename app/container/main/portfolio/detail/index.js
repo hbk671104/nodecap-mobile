@@ -10,10 +10,11 @@ import Market from './route/market';
 import Investment from './route/investment';
 import Holdings from './route/holdings';
 import styles, { deviceWidth, indicatorWidth } from './style';
+import { hasPermission } from 'component/auth/permission/lock';
 
-@compose(withState('portfolio', 'setPortfolio', {}))
-@connect(({ global }) => ({
+@connect(({ global, portfolio }) => ({
   constants: global.constants,
+  portfolio: portfolio.current,
 }))
 export default class PortfolioDetail extends Component {
   state = {
@@ -26,7 +27,17 @@ export default class PortfolioDetail extends Component {
   };
 
   componentWillMount() {
-    this.loadDetail();
+    InteractionManager.runAfterInteractions(() => {
+      this.loadDetail();
+    });
+  }
+
+  componentWillUnmount() {
+    InteractionManager.runAfterInteractions(() => {
+      this.props.dispatch({
+        type: 'portfolio/clearDetail',
+      });
+    });
   }
 
   loadDetail = () => {
@@ -35,12 +46,6 @@ export default class PortfolioDetail extends Component {
       this.props.dispatch({
         type: 'portfolio/get',
         payload: item.id,
-        callback: (res) => {
-          const { setPortfolio } = this.props;
-          InteractionManager.runAfterInteractions(() => {
-            setPortfolio(res);
-          });
-        },
       });
     }
   };
@@ -109,7 +114,7 @@ export default class PortfolioDetail extends Component {
 
   render() {
     const item = this.props.navigation.getParam('item');
-    const displayTab = item && item.can_calculate;
+    const displayTab = item && item.can_calculate && hasPermission('project-statistic');
     return (
       <SafeAreaView style={styles.container}>
         <TabView

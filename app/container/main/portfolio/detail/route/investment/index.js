@@ -8,6 +8,7 @@ import Header from './header';
 import BaseInfo from './baseInfo';
 import InvestmentInfo from './investment';
 import Loading from 'component/uikit/loading';
+import Lock from 'component/auth/permission/lock';
 
 @connect(({ loading }) => ({
   loading: loading.effects['portfolio/get'],
@@ -23,7 +24,9 @@ class Investment extends PureComponent {
         <ScrollView style={styles.scrollView}>
           <Header {...this.props} />
           <BaseInfo {...this.props} />
-          <InvestmentInfo {...this.props} />
+          <Lock name="invest-view">
+            <InvestmentInfo {...this.props} />
+          </Lock>
         </ScrollView>
       </View>
     );

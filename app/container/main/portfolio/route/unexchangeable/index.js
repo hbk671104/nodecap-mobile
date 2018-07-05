@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import List from 'component/uikit/list';
 import Loading from 'component/uikit/loading';
 import UnexchangeableItem from 'component/project/unexchangeable';
+import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
 import styles from './style';
 
@@ -47,6 +48,9 @@ export default class Unexchangeable extends Component {
   };
 
   handleItemPress = item => () => {
+    if (!hasPermission('project-view')) {
+      return;
+    }
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',
