@@ -18,6 +18,7 @@ const priceChangeItem = ({ item, index, onPress }) => {
   const price = R.path(['current_price', 'CNY'])(stat);
   const ratio = price / unitCost > 1 ? price / unitCost : -unitCost / price;
 
+  const nameLength = item.name.length || 0;
   return (
     <Touchable style={styles.container} onPress={onPress}>
       <View style={styles.wrapper}>
@@ -25,14 +26,25 @@ const priceChangeItem = ({ item, index, onPress }) => {
           <View style={styles.left.group}>
             {!!item.logo_url && (
               <View style={styles.left.logo.container}>
-                <Image style={styles.left.logo.image} source={{ uri: item.logo_url }} />
+                <Image
+                  resizeMode="contain"
+                  style={styles.left.logo.image}
+                  source={{ uri: item.logo_url }}
+                />
               </View>
             )}
             <View style={styles.left.title.container}>
-              <Text style={styles.left.title.text} adjustsFontSizeToFit>
+              <Text
+                style={[
+                  styles.left.title.text,
+                  nameLength >= 11 && { fontSize: 13 },
+                ]}
+              >
                 {item.name}
               </Text>
-              {!!item.token_name && <Text style={styles.left.subtitle}>({item.token_name})</Text>}
+              {!!item.token_name && (
+                <Text style={styles.left.subtitle}>({item.token_name})</Text>
+              )}
             </View>
           </View>
         </View>
@@ -49,13 +61,28 @@ const priceChangeItem = ({ item, index, onPress }) => {
           <Text style={[styles.middle.roi, ratio < 0 && { color: '#F5222D' }]}>
             {Accounting.formatNumber(ratio, 1)}倍{' '}
             <Image
-              source={ratio < 0 ? require('asset/item/down.png') : require('asset/item/up.png')}
+              source={
+                ratio < 0
+                  ? require('asset/item/down.png')
+                  : require('asset/item/up.png')
+              }
             />
           </Text>
         </View>
         <View style={styles.right.container}>
-          <View style={[styles.right.wrapper, roi < 0 && { backgroundColor: '#F5222D' }]}>
-            <Text style={styles.right.title}>
+          <View
+            style={[
+              styles.right.wrapper,
+              roi < 0 && { backgroundColor: '#F5222D' },
+            ]}
+          >
+            <Text
+              style={[
+                styles.right.title,
+                Math.abs(roi) > 100 && { fontSize: 12 },
+                Math.abs(roi) > 1000 && { fontSize: 10 },
+              ]}
+            >
               <Text>{roi}</Text>%
             </Text>
           </View>

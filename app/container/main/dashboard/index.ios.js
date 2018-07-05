@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Animated, Text, View, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  Animated,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import ParallaxScrollView from 'react-native-parallax-scroll-view';
 import ModalDropdown from 'react-native-modal-dropdown';
@@ -12,6 +19,7 @@ import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
 import { setStatusBar } from 'component/uikit/statusBar';
 import Empty from 'component/empty';
+import Loading from 'component/uikit/loading';
 
 import { getCurrentScreen } from '../../../router';
 import Header from './partials/header';
@@ -41,7 +49,7 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
       outputRange: ['rgba(255, 255, 255, 0)', 'white'],
       extrapolate: 'clamp',
     }),
-  }))
+  })),
 )
 @connect(({ dashboard, fund, loading, router }) => ({
   dashboard: dashboard.data,
@@ -63,12 +71,14 @@ export default class Dashboard extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.isCurrent) {
       setStatusBar(
-        nextProps.offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'
+        nextProps.offsetY > PARALLAX_HEADER_HEIGHT / 2
+          ? 'dark-content'
+          : 'light-content',
       );
     }
   }
 
-  getDashboardData = (id) => {
+  getDashboardData = id => {
     this.props.dispatch({
       type: 'dashboard/fetch',
       payload: id,
@@ -86,7 +96,10 @@ export default class Dashboard extends Component {
   };
 
   renderBackground = () => (
-    <Image style={styles.background} source={require('asset/dashboard_bg.png')} />
+    <Image
+      style={styles.background}
+      source={require('asset/dashboard_bg.png')}
+    />
   );
 
   renderForeground = () => <Header {...this.props} style={styles.foreground} />;
@@ -117,7 +130,9 @@ export default class Dashboard extends Component {
         renderSeparator={() => <View style={styles.dropdown.separator} />}
         onSelect={(i, value) => this.getDashboardData(value.id)}
       >
-        <Animated.Text style={[styles.navbar.title, { color: titleColorRange }]}>
+        <Animated.Text
+          style={[styles.navbar.title, { color: titleColorRange }]}
+        >
           {currentFund.name}
           <AnimatedIcon style={{ color: titleColorRange }} name="xiala" />
         </Animated.Text>
@@ -128,17 +143,26 @@ export default class Dashboard extends Component {
   renderFixedHeader = () => {
     const { colorRange, dashboard, offsetY } = this.props;
     return (
-      <View style={{ position: 'absolute', left: 0, right: 0, top: 0, zIndex: 10 }}>
+      <View
+        style={{ position: 'absolute', left: 0, right: 0, top: 0, zIndex: 10 }}
+      >
         <NavBar
           wrapperStyle={{ backgroundColor: colorRange }}
-          barStyle={offsetY > PARALLAX_HEADER_HEIGHT / 2 ? 'dark-content' : 'light-content'}
+          barStyle={
+            offsetY > PARALLAX_HEADER_HEIGHT / 2
+              ? 'dark-content'
+              : 'light-content'
+          }
           renderTitle={this.renderNavBarTitle}
           renderRight={() => {
             const invalid = !dashboard || !this.state.currentFund;
             if (invalid) return null;
             return (
               <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
-                <Image source={require('asset/share.png')} style={styles.shareButton} />
+                <Image
+                  source={require('asset/share.png')}
+                  style={styles.shareButton}
+                />
               </TouchableOpacity>
             );
           }}
@@ -201,6 +225,7 @@ export default class Dashboard extends Component {
           </View>
         </Empty>
       );
+      return <Loading />;
     }
 
     return (
@@ -226,7 +251,7 @@ export default class Dashboard extends Component {
             ],
             {
               listener: this.handleOnScroll,
-            }
+            },
           )}
         >
           <ProfitSwiper
@@ -239,12 +264,22 @@ export default class Dashboard extends Component {
           <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
             <InvestNumber data={dashboard.portfolio} />
           </DashboardGroup>
-          <DashboardGroup style={styles.dashboardGroup} title="投资金额" icon="touzijine">
+          <DashboardGroup
+            style={styles.dashboardGroup}
+            title="投资金额"
+            icon="touzijine"
+          >
             <Investment data={dashboard.investment} />
           </DashboardGroup>
           {roiRankCount > 0 && (
-            <DashboardGroup style={styles.dashboardGroup} title="投资回报率榜" icon="TOP">
-              {dashboard.ROIRank.map((r, i) => <ProjectItem key={i} index={i} data={r} />)}
+            <DashboardGroup
+              style={styles.dashboardGroup}
+              title="投资回报率榜"
+              icon="TOP"
+            >
+              {dashboard.ROIRank.map((r, i) => (
+                <ProjectItem key={i} index={i} data={r} />
+              ))}
             </DashboardGroup>
           )}
         </ParallaxScrollView>

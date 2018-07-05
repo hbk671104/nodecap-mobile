@@ -28,12 +28,18 @@ const projectItem = ({ item, index, onPress }) => {
           <View style={styles.top.group}>
             {!!item.logo_url && (
               <View style={styles.top.logo.container}>
-                <Image style={styles.top.logo.image} source={{ uri: item.logo_url }} />
+                <Image
+                  resizeMode="contain"
+                  style={styles.top.logo.image}
+                  source={{ uri: item.logo_url }}
+                />
               </View>
             )}
             <Text style={styles.top.title}>
               {item.name}{' '}
-              {!!item.token_name && <Text style={styles.top.subtitle}>({item.token_name})</Text>}
+              {!!item.token_name && (
+                <Text style={styles.top.subtitle}>({item.token_name})</Text>
+              )}
             </Text>
           </View>
           {medalMap(index)}
@@ -44,7 +50,10 @@ const projectItem = ({ item, index, onPress }) => {
             <Text style={[styles.middle.content, { fontSize: 24 }]}>
               <Text colorAware>{profit}</Text>{' '}
               <Text
-                style={[styles.middle.subtitle, profit < 0 ? styles.middle.down : styles.middle.up]}
+                style={[
+                  styles.middle.subtitle,
+                  profit < 0 ? styles.middle.down : styles.middle.up,
+                ]}
               >
                 CNY
               </Text>
@@ -54,7 +63,9 @@ const projectItem = ({ item, index, onPress }) => {
             <Text style={styles.middle.title}>回报率</Text>
             <Text style={[styles.middle.content, { fontSize: 18 }]}>
               <Text colorAware>{roi}</Text>
-              <Text style={profit < 0 ? styles.middle.down : styles.middle.up}>%</Text>
+              <Text style={profit < 0 ? styles.middle.down : styles.middle.up}>
+                %
+              </Text>
             </Text>
           </View>
         </View>
@@ -68,7 +79,8 @@ const projectItem = ({ item, index, onPress }) => {
           <View style={styles.bottom.group}>
             <Text style={styles.bottom.title}>成本价/市价</Text>
             <Text style={styles.bottom.content}>
-              <Price symbol="CNY">{unitCost}</Price> / <Price symbol="CNY">{price}</Price>
+              <Price symbol="CNY">{unitCost}</Price> /{' '}
+              <Price symbol="CNY">{price}</Price>
             </Text>
             <View
               style={[
@@ -77,7 +89,9 @@ const projectItem = ({ item, index, onPress }) => {
                 ratio < 0 && styles.bottom.label.down,
               ]}
             >
-              <Text style={styles.bottom.label.title}>{Accounting.formatNumber(ratio, 1)}倍</Text>
+              <Text style={styles.bottom.label.title}>
+                {Accounting.formatNumber(ratio, 1)}倍
+              </Text>
             </View>
           </View>
         </View>

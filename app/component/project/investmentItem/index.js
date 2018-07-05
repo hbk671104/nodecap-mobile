@@ -15,6 +15,7 @@ const investmentItem = ({ item, index, onPress }) => {
   const profit = R.path(['profits', 'CNY'])(investment);
   const cost = R.path(['total_cost', 'CNY'])(investment);
 
+  const nameLength = item.name.length || 0;
   return (
     <Touchable style={styles.container} onPress={onPress}>
       <View style={styles.wrapper}>
@@ -22,12 +23,25 @@ const investmentItem = ({ item, index, onPress }) => {
           <View style={styles.left.group}>
             {!!item.logo_url && (
               <View style={styles.left.logo.container}>
-                <Image style={styles.left.logo.image} source={{ uri: item.logo_url }} />
+                <Image
+                  resizeMode="contain"
+                  style={styles.left.logo.image}
+                  source={{ uri: item.logo_url }}
+                />
               </View>
             )}
             <View style={styles.left.title.container}>
-              <Text style={styles.left.title.text}>{item.name}</Text>
-              {!!item.token_name && <Text style={styles.left.subtitle}>({item.token_name})</Text>}
+              <Text
+                style={[
+                  styles.left.title.text,
+                  nameLength >= 11 && { fontSize: 14 },
+                ]}
+              >
+                {item.name}
+              </Text>
+              {!!item.token_name && (
+                <Text style={styles.left.subtitle}>({item.token_name})</Text>
+              )}
             </View>
           </View>
         </View>

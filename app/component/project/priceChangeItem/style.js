@@ -14,10 +14,11 @@ export default {
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
+    paddingRight: 24,
   },
   left: {
     container: {
-      width: 130,
+      flex: 5,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -60,7 +61,7 @@ export default {
   },
   middle: {
     container: {
-      flex: 1,
+      flex: 3,
     },
     title: {
       fontSize: 15,
@@ -85,7 +86,7 @@ export default {
   },
   right: {
     container: {
-      marginRight: 24,
+      flex: 2,
     },
     wrapper: {
       height: 27,
