@@ -60,7 +60,7 @@ const styles = {
     alignItems: 'center',
   },
   bottom: {
-    marginTop: 40,
+    marginTop: 30,
     flexDirection: 'row',
     alignItems: 'center',
   },
