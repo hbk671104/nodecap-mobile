@@ -100,6 +100,9 @@ export default {
     top: PARALLAX_HEADER_HEIGHT / 2 - 50,
     height: PARALLAX_HEADER_HEIGHT,
   },
+  scrollViewWrap: {
+    marginBottom: 80,
+  },
   scrollView: {
     alignSelf: 'center',
     width: 375,

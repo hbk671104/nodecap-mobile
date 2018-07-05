@@ -154,40 +154,41 @@ export default class ShareModal extends Component {
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
     return (
       <View style={[styles.container]}>
-        <ScrollView
-          style={styles.scrollView}
-          contentContainerStyle={styles.scrollViewContainer}
-          showsVerticalScrollIndicator={false}
-        >
-          <ViewShot
-            options={{ format: 'jpg', quality: 1 }}
-            ref={ref => {
+        <View style={styles.scrollViewWrap}>
+          <ScrollView
+            style={styles.scrollView}
+            contentContainerStyle={styles.scrollViewContainer}
+            showsVerticalScrollIndicator={false}
+          >
+            <ViewShot
+              options={{ format: 'jpg', quality: 1 }}
+              ref={ref => {
               this.viewShot = ref;
             }}
-          >
-            <View
-              style={{
+            >
+              <View
+                style={{
                 ...styles.shareBackground,
                 width: 375,
-                height: this.state.backgroundHeight + 120 + 167,
+                height: this.state.backgroundHeight + 120 + 177,
                 overflow: 'hidden',
               }}
-            >
-              <Image
-                style={[
+              >
+                <Image
+                  style={[
                   styles.shareBackground,
                   {
                     height: 1889,
                   },
                 ]}
-                source={require('asset/share_background.jpg')}
-              />
-            </View>
-            <View
-              onLayout={e =>
+                  source={require('asset/share_background.jpg')}
+                />
+              </View>
+              <View
+                onLayout={e =>
                 this.setState({ backgroundHeight: e.nativeEvent.layout.height })
               }
-              style={{
+                style={{
                 marginTop: 120,
                 transform: [
                   {
@@ -198,25 +199,25 @@ export default class ShareModal extends Component {
                   },
                 ],
               }}
-            >
-              <View style={styles.parallax}>
-                {this.renderBackground()}
-                {this.renderForeground()}
-                <View style={styles.fundName}>
-                  <Text style={styles.fundNameText}>
-                    {R.path(['currentFund', 'name'])(this.state)}
-                  </Text>
+              >
+                <View style={styles.parallax}>
+                  {this.renderBackground()}
+                  {this.renderForeground()}
+                  <View style={styles.fundName}>
+                    <Text style={styles.fundNameText}>
+                      {R.path(['currentFund', 'name'])(this.state)}
+                    </Text>
+                  </View>
                 </View>
-              </View>
-              <View
-                style={{
+                <View
+                  style={{
                   flex: 1,
                   paddingTop: 50,
                   backgroundColor: 'white',
                   paddingBottom: 20,
                 }}
-              >
-                {roiRankCount > 0 && (
+                >
+                  {roiRankCount > 0 && (
                   <DashboardGroup
                     style={styles.dashboardGroup}
                     title="投资回报率榜"
@@ -227,48 +228,49 @@ export default class ShareModal extends Component {
                     ))}
                   </DashboardGroup>
                 )}
-                <DashboardGroup
-                  style={styles.dashboardGroup}
-                  title="投资概况"
-                  icon="yitouxiangmu"
-                >
-                  <InvestNumber data={dashboard.portfolio} />
-                </DashboardGroup>
-                <DashboardGroup
-                  style={styles.dashboardGroup}
-                  title="投资金额"
-                  icon="touzijine"
-                >
-                  <Investment data={dashboard.investment} />
-                </DashboardGroup>
-              </View>
-              <ProfitSwiper
-                autoplay={false}
-                style={styles.swiper}
-                total={R.pick(['ETH'])(
+                  <DashboardGroup
+                    style={styles.dashboardGroup}
+                    title="投资概况"
+                    icon="yitouxiangmu"
+                  >
+                    <InvestNumber data={dashboard.portfolio} />
+                  </DashboardGroup>
+                  <DashboardGroup
+                    style={styles.dashboardGroup}
+                    title="投资金额"
+                    icon="touzijine"
+                  >
+                    <Investment data={dashboard.investment} />
+                  </DashboardGroup>
+                </View>
+                <ProfitSwiper
+                  autoplay={false}
+                  style={styles.swiper}
+                  total={R.pick(['ETH'])(
                   R.path(['totalProfits', 'count'])(dashboard),
                 )}
-                daily={R.pick(['ETH'])(
+                  daily={R.pick(['ETH'])(
                   R.path(['dailyProfits', 'count'])(dashboard),
                 )}
-                weekly={R.pick(['ETH'])(
+                  weekly={R.pick(['ETH'])(
                   R.path(['weeklyProfits', 'count'])(dashboard),
                 )}
-              />
-            </View>
-            <View style={{
+                />
+              </View>
+              <View style={{
               marginTop: -50,
               flexDirection: 'row',
               alignItem: 'center',
               justifyContent: 'center',
             }}
-            >
-              <Image
-                source={require('../../../asset/qr_welcome.png')}
-              />
-            </View>
-          </ViewShot>
-        </ScrollView>
+              >
+                <Image
+                  source={require('../../../asset/qr_welcome.png')}
+                />
+              </View>
+            </ViewShot>
+          </ScrollView>
+        </View>
         <Flex justify="space-between" style={styles.actionsBar}>
           <Touchable borderless onPress={this.props.onClose}>
             <Icon
