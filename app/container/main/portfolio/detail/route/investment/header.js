@@ -63,7 +63,7 @@ class header extends PureComponent {
           <Flex justify="space-between">
             <View>
               <Text style={styles.name}>{projectProps(['name'])}</Text>
-              <StatusBadge status={4} />
+              <StatusBadge status={projectProps(['status'])} />
               {!!projectProps(['token_name']) && (
                 <Text style={styles.header.tokenName}>Token: {projectProps(['token_name'])}</Text>
               )}
