@@ -49,7 +49,6 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new WeChatPackage(),
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
             new RNSentryPackage(),
             new RNExitAppPackage(),

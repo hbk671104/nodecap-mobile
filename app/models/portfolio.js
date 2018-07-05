@@ -227,7 +227,7 @@ export default {
     clearDetail(state) {
       return {
         ...state,
-        currentProject: null,
+        current: null,
       };
     },
     saveDetail(state, action) {
