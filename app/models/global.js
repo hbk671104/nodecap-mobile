@@ -20,12 +20,12 @@ export default {
   effects: {
     * startup(_, { put, call, all }) {
       try {
-        const res = yield [call(getConstants)];
+        const res = yield call(getConstants);
 
         yield all([
           put({
             type: 'getConstants',
-            payload: res[0].data,
+            payload: res.data,
           }),
         ]);
       } catch (e) {

@@ -15,6 +15,7 @@ class Investment extends Component {
     const projectProps = path => R.path([...path])(field);
     const tokens = R.pathOr([], ['constants', 'tokens'])(this.props);
     const stages = R.pathOr([], ['constants', 'finance_stages'])(this.props);
+    console.log('field', R.find(R.propEq('id', field.invest_token))(tokens));
     const getStageName = item => R.prop('name')(R.find(R.propEq('id', item.stage_id))(stages));
     const getTokenName = item => R.prop('name')(R.find(R.propEq('id', item.invest_token))(tokens));
     const tokenName = R.path(['portfolio', 'token_name'])(this.props);
