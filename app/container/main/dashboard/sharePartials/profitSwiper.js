@@ -29,90 +29,79 @@ const symbol = (b, size = 22) => {
 };
 
 const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
+  const b = R.keys(total)[0];
+  const totalProfit = R.path([b])(total);
+  const dailyProfit = R.path([b, 'count'])(daily);
+  const weeklyProfit = R.path([b, 'count'])(weekly);
   return (
     <View style={[styles.container, style]}>
-      <Swiper
-        height={120}
-        autoplay={autoplay}
-        autoplayTimeout={10}
-        activeDotColor="#1890FF"
-        paginationStyle={{ bottom: 0 }}
-      >
-        {R.keys(total).map((b) => {
-          const totalProfit = R.path([b])(total);
-          const dailyProfit = R.path([b, 'count'])(daily);
-          const weeklyProfit = R.path([b, 'count'])(weekly);
-          return (
-            <Card key={b} containerStyle={styles.card}>
-              <View style={{ alignItems: 'center' }}>
-                <Text style={styles.label}>浮动盈亏</Text>
-                <View style={styles.content.container}>
-                  {Platform.OS === 'ios' ? (
-                    <Shimmer opacity={0.8}>
-                      <Flex>
-                        <BlurView>
-                          <Text
-                            style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}
-                          >
-                            {symbol(b)} <Text>{totalProfit}</Text>{' '}
-                          </Text>
-                        </BlurView>
-                        <Text style={styles.content.label}>{b}</Text>
-                      </Flex>
-                    </Shimmer>
-                  ) : (
-                    <Flex>
-                      <BlurView>
-                        <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
-                          {symbol(b)} <Text>{totalProfit}</Text>{' '}
-                        </Text>
-                      </BlurView>
-                      <Text style={styles.content.label}>{b}</Text>
-                    </Flex>
-                  )}
-                </View>
-                <View style={styles.sub.container}>
+      <Card key={b} containerStyle={styles.card}>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.label}>浮动盈亏</Text>
+          <View style={styles.content.container}>
+            {Platform.OS === 'ios' ? (
+              <Shimmer opacity={0.8}>
+                <Flex>
                   <BlurView>
-                    <View>
-                      <Text>
-                        {symbol(b, 12)} <Text>{dailyProfit}</Text>{' '}
-                      </Text>
-                    </View>
+                    <Text
+                      style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}
+                    >
+                      {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                    </Text>
                   </BlurView>
-                  <Text
-                    style={[
-                      styles.sub.text,
-                      {
-                        marginLeft: 5,
-                        marginRight: 10,
-                      },
-                    ]}
-                  >
-                    {'今日'} {arrow(dailyProfit)}
+                  <Text style={styles.content.label}>{b}</Text>
+                </Flex>
+              </Shimmer>
+            ) : (
+              <Flex>
+                <BlurView>
+                  <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
+                    {symbol(b)} <Text>{totalProfit}</Text>{' '}
                   </Text>
-                  <BlurView>
-                    <View>
-                      <Text>
-                        {symbol(b, 12)} <Text>{weeklyProfit}</Text>
-                      </Text>
-                    </View>
-                  </BlurView>
-                  <Text
-                    style={[
-                      styles.sub.text,
-                      {
-                        marginLeft: 5,
-                      },
-                    ]}
-                  >
-                    {'本周'} {arrow(weeklyProfit)}
-                  </Text>
-                </View>
+                </BlurView>
+                <Text style={styles.content.label}>{b}</Text>
+              </Flex>
+            )}
+          </View>
+          <View style={styles.sub.container}>
+            <BlurView>
+              <View>
+                <Text>
+                  {symbol(b, 12)} <Text>{dailyProfit}</Text>{' '}
+                </Text>
               </View>
-            </Card>
-          );
-        })}
-      </Swiper>
+            </BlurView>
+            <Text
+              style={[
+                styles.sub.text,
+                {
+                  marginLeft: 5,
+                  marginRight: 10,
+                },
+              ]}
+            >
+              {'今日'} {arrow(dailyProfit)}
+            </Text>
+            <BlurView>
+              <View>
+                <Text>
+                  {symbol(b, 12)} <Text>{weeklyProfit}</Text>
+                </Text>
+              </View>
+            </BlurView>
+            <Text
+              style={[
+                styles.sub.text,
+                {
+                  marginLeft: 5,
+                },
+              ]}
+            >
+              {'本周'} {arrow(weeklyProfit)}
+            </Text>
+          </View>
+        </View>
+      </Card>
     </View>
   );
 };
