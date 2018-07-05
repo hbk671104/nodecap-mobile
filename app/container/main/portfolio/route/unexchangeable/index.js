@@ -5,19 +5,23 @@ import * as R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
+import Loading from 'component/uikit/loading';
 import UnexchangeableItem from 'component/project/unexchangeable';
 import Header from './header';
 import styles from './style';
 
 @connect(({ portfolio, loading }) => ({
   data: R.pathOr(null, ['unexchangeable', 'index', 'data'])(portfolio),
-  pagination: R.pathOr(null, ['unexchangeable', 'index', 'pagination'])(portfolio),
+  pagination: R.pathOr(null, ['unexchangeable', 'index', 'pagination'])(
+    portfolio,
+  ),
   params: R.pathOr(null, ['unexchangeable', 'params'])(portfolio),
   loading: loading.effects['portfolio/index'],
 }))
 export default class Unexchangeable extends Component {
   state = {
     status: R.path(['params', 'status'])(this.props),
+    switching: false,
   };
 
   requestData = (page, size, callback) => {
@@ -33,8 +37,13 @@ export default class Unexchangeable extends Component {
     });
   };
 
-  handleSelect = (status) => {
-    this.setState({ status }, this.requestData);
+  handleSelect = status => {
+    if (R.equals(status, this.state.status)) return;
+    this.setState({ switching: true, status }, () =>
+      this.requestData(undefined, undefined, () => {
+        this.setState({ switching: false });
+      }),
+    );
   };
 
   handleItemPress = item => () => {
@@ -44,7 +53,7 @@ export default class Unexchangeable extends Component {
         params: {
           item,
         },
-      })
+      }),
     );
   };
 
@@ -52,22 +61,29 @@ export default class Unexchangeable extends Component {
     <UnexchangeableItem item={item} onPress={this.handleItemPress(item)} />
   );
 
-  renderHeader = () => <Header value={this.state.status} onSelect={this.handleSelect} />;
+  renderHeader = () => (
+    <Header value={this.state.status} onSelect={this.handleSelect} />
+  );
 
   render() {
     const { data, pagination, loading } = this.props;
+    const { switching } = this.state;
     return (
       <View style={styles.container}>
-        <List
-          action={this.requestData}
-          data={data}
-          pagination={pagination}
-          loading={loading}
-          renderItem={this.renderItem}
-          renderHeader={this.renderHeader}
-          onScroll={this.props.onScroll}
-          scrollEventThrottle={500}
-        />
+        {switching ? (
+          <Loading />
+        ) : (
+          <List
+            action={this.requestData}
+            data={data}
+            pagination={pagination}
+            loading={loading}
+            renderItem={this.renderItem}
+            renderHeader={this.renderHeader}
+            onScroll={this.props.onScroll}
+            scrollEventThrottle={500}
+          />
+        )}
       </View>
     );
   }

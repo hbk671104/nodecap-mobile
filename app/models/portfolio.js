@@ -15,13 +15,19 @@ const paginate = (state, action, key) => {
   const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
 
   if (action.params) {
-    const oldStatus = R.pathOr('', [key, 'params', 'status'])(state);
-    const newStatus = R.pathOr('', ['params', 'status'])(action);
-
-    const oldRank = R.pathOr('', [key, 'params', 'rank'])(state);
-    const newRank = R.pathOr('', ['params', 'rank'])(action);
-    if (!R.equals(oldStatus, newStatus) || !R.equals(oldRank, newRank)) {
-      return action.payload;
+    if (key === 'exchangeable') {
+      const oldRank = R.pathOr('', [key, 'params', 'rank'])(state);
+      const newRank = R.pathOr('', ['params', 'rank'])(action);
+      if (!R.equals(oldRank, newRank)) {
+        return action.payload;
+      }
+    }
+    if (key === 'unexchangeable') {
+      const oldStatus = R.pathOr('', [key, 'params', 'status'])(state);
+      const newStatus = R.pathOr('', ['params', 'status'])(action);
+      if (!R.equals(oldStatus, newStatus)) {
+        return action.payload;
+      }
     }
   }
 
@@ -64,7 +70,7 @@ export default {
         yield put({
           type: 'list',
           payload: res.data,
-          params: payload,
+          params: req,
           key: 'unexchangeable',
         });
         if (callback) {
@@ -83,7 +89,7 @@ export default {
         yield put({
           type: 'list',
           payload: res.data,
-          params: payload,
+          params: req,
           key: 'exchangeable',
         });
         if (callback) {

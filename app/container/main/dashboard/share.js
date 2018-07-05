@@ -66,9 +66,8 @@ export default class ShareModal extends Component {
     try {
       const uri = await this.viewShot.capture();
       const request = {
-        type: 'file',
-        filePath: uri,
-        fileExtension: '.jpg',
+        type: 'imageFile',
+        imageUrl: `file://${uri}`,
       };
 
       if (type === 'wechat') {

@@ -97,7 +97,11 @@ class List extends PureComponent {
   };
 
   renderEmpty = () => {
-    if (this.props.refreshing || this.props.loading || R.isNil(this.props.data)) {
+    if (
+      this.props.refreshing ||
+      this.props.loading ||
+      R.isNil(this.props.data)
+    ) {
       return null;
     }
     if (this.props.renderEmpty) {
@@ -130,7 +134,7 @@ class List extends PureComponent {
       style,
       contentContainerStyle,
     } = this.props;
-    if ((loading && !pagination) || (loading && pagination && pagination.current === 1)) {
+    if (loading && !pagination) {
       return <Loading />;
     }
     return (
