@@ -1,8 +1,15 @@
 import React, { PureComponent } from 'react';
-import { View, ScrollView, Platform, Dimensions, StatusBar } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Platform,
+  Dimensions,
+  StatusBar,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
 import Modal from 'react-native-modal';
+import { isIphoneX } from 'react-native-iphone-x-helper';
 import R from 'ramda';
 
 import Loading from 'component/uikit/loading';
@@ -32,7 +39,7 @@ class Market extends PureComponent {
     this.loadStat();
   }
 
-  onPairSelected = (symbol) => {
+  onPairSelected = symbol => {
     this.toggleVisible();
     const { setCurrentSymbol } = this.props;
     setCurrentSymbol(symbol, () => {
@@ -44,11 +51,19 @@ class Market extends PureComponent {
     const { height } = layout;
     const deviceHeight = Dimensions.get('window').height;
     const statusBar = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;
-    this.setState({ modalOffset: deviceHeight - height - statusBar + 40 });
+    this.setState({
+      modalOffset: deviceHeight - height - statusBar + (isIphoneX() ? 0 : 40),
+    });
   };
 
   loadStat = () => {
-    const { id, setStat, setSymbols, setCurrentSymbol, currentSymbol } = this.props;
+    const {
+      id,
+      setStat,
+      setSymbols,
+      setCurrentSymbol,
+      currentSymbol,
+    } = this.props;
     this.props.dispatch({
       type: 'portfolio/projectStat',
       id,
