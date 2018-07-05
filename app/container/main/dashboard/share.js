@@ -258,7 +258,6 @@ export default class ShareModal extends Component {
             </View>
             <View style={{
               marginTop: -50,
-              marginBottom: 100,
               flexDirection: 'row',
               alignItem: 'center',
               justifyContent: 'center',
