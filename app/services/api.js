@@ -20,7 +20,11 @@ export async function login({ account, password }) {
  * @param password
  * @returns {AxiosPromise<any>}
  */
-export function setPassword({ password_reset_token, confirm_password, password }) {
+export function setPassword({
+  password_reset_token,
+  confirm_password,
+  password,
+}) {
   return request.post('/users/reset-password', {
     password_reset_token,
     confirm_password,
@@ -52,7 +56,9 @@ export function projectIndex(params = {}) {
  * @returns {AxiosPromise<any>}
  */
 export function projectDetail({ id }) {
-  return request.get(`/projects/${id}?expand=post_user,tags,white_papers,members`);
+  return request.get(
+    `/projects/${id}?expand=post_user,tags,white_papers,members`,
+  );
 }
 
 /**
@@ -147,7 +153,9 @@ export function addProjectTags(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function getProjectFinanceToken(projectId) {
-  return request.get(`/projects/${projectId}/finance-tokens?expand=items,tokens`);
+  return request.get(
+    `/projects/${projectId}/finance-tokens?expand=items,tokens`,
+  );
 }
 
 /**
@@ -156,7 +164,9 @@ export function getProjectFinanceToken(projectId) {
  * @returns {AxiosPromise<any>}
  */
 export function getProjectFinanceEquities(projectId) {
-  return request.get(`/projects/${projectId}/finance-equities?expand=tokens,items`);
+  return request.get(
+    `/projects/${projectId}/finance-equities?expand=tokens,items`,
+  );
 }
 
 /**
@@ -209,7 +219,10 @@ export function updateProjectMembers({ memberId, member }) {
  * @returns {AxiosPromise<any>}
  */
 export function createProjectFinanceInfo({ projectId, financeInfo, type }) {
-  return request.post(`/projects/${projectId}/finance-${type}?expand=tokens,items`, financeInfo);
+  return request.post(
+    `/projects/${projectId}/finance-${type}?expand=tokens,items`,
+    financeInfo,
+  );
 }
 
 /**
@@ -318,8 +331,6 @@ export function investmentIndex(params = {}) {
     ...params,
     page: p.currentPage,
     'per-page': p.pageSize,
-    can_calculate: 1,
-    symbol: 'CNY',
   });
   return request.get('/projects/invested', {
     params: paramsTransform(params),

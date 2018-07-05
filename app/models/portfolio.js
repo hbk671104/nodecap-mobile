@@ -66,8 +66,9 @@ export default {
       try {
         const req = {
           ...payload,
+          can_calculate: 0,
         };
-        const res = yield call(portfolioIndex, req);
+        const res = yield call(investmentIndex, req);
         yield put({
           type: 'list',
           payload: res.data,
@@ -85,6 +86,8 @@ export default {
       try {
         const req = {
           ...payload,
+          can_calculate: 1,
+          symbol: 'CNY',
         };
         const res = yield call(investmentIndex, req);
         yield put({

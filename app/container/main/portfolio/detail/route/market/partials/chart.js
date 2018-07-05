@@ -2,7 +2,12 @@ import React, { PureComponent } from 'react';
 import R from 'ramda';
 import moment from 'moment';
 import { View, Text } from 'react-native';
-import { VictoryAxis, VictoryChart, VictoryLine, VictoryArea } from 'victory-native';
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryLine,
+  VictoryArea,
+} from 'victory-native';
 import Touchable from 'component/uikit/touchable';
 
 class Chart extends PureComponent {
@@ -21,19 +26,13 @@ class Chart extends PureComponent {
       return null;
     }
 
-    const data = R.pipe(
-      R.path([this.state.period]),
-      R.map(i => ({
-        price: i.price,
-        datetime: i.datetime,
-      }))
-    )(trend);
+    const data = R.pipe(R.path([this.state.period]))(trend);
 
     const formatMate = {
       '24_hours': 'HH:mm',
       '7_days': 'MM/DD',
       '30_days': 'MM/DD',
-      '365_days': 'YYYY/MM',
+      '365_days': 'YYYY/MM/DD',
     };
 
     const { period } = this.state;
@@ -43,25 +42,47 @@ class Chart extends PureComponent {
           <Text style={styles.top.title}>价格走势</Text>
           <View style={styles.periods}>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: '24_hours' })}>
-                <Text style={[styles.periodItem, period === '24_hours' && styles.periodActive]}>
+              <Touchable
+                borderless
+                onPress={() => this.setState({ period: '24_hours' })}
+              >
+                <Text
+                  style={[
+                    styles.periodItem,
+                    period === '24_hours' && styles.periodActive,
+                  ]}
+                >
                   24h
                 </Text>
               </Touchable>
               {period === '24_hours' && <View style={styles.periodline} />}
             </View>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: '7_days' })}>
-                <Text style={[styles.periodItem, period === '7_days' && styles.periodActive]}>
+              <Touchable
+                borderless
+                onPress={() => this.setState({ period: '7_days' })}
+              >
+                <Text
+                  style={[
+                    styles.periodItem,
+                    period === '7_days' && styles.periodActive,
+                  ]}
+                >
                   周
                 </Text>
               </Touchable>
               {period === '7_days' && <View style={styles.periodline} />}
             </View>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: '30_days' })}>
+              <Touchable
+                borderless
+                onPress={() => this.setState({ period: '30_days' })}
+              >
                 <Text
-                  style={[styles.periodItem, period === '30_days' ? styles.periodActive : null]}
+                  style={[
+                    styles.periodItem,
+                    period === '30_days' ? styles.periodActive : null,
+                  ]}
                 >
                   月
                 </Text>
@@ -69,9 +90,15 @@ class Chart extends PureComponent {
               {period === '30_days' && <View style={styles.periodline} />}
             </View>
             <View style={styles.periodWrapper}>
-              <Touchable borderless onPress={() => this.setState({ period: '365_days' })}>
+              <Touchable
+                borderless
+                onPress={() => this.setState({ period: '365_days' })}
+              >
                 <Text
-                  style={[styles.periodItem, period === '365_days' ? styles.periodActive : null]}
+                  style={[
+                    styles.periodItem,
+                    period === '365_days' ? styles.periodActive : null,
+                  ]}
                 >
                   年
                 </Text>
@@ -88,9 +115,15 @@ class Chart extends PureComponent {
               tickFormat={x => moment(x).format(formatMate[this.state.period])}
             />
             <VictoryAxis dependentAxis style={styles.axis.dependent} />
-            <VictoryArea style={styles.bar} data={data} cornerRadius={8} x="datetime" y="price" />
             <VictoryLine
               style={styles.line}
+              interpolation="natural"
+              data={data}
+              x="datetime"
+              y="price"
+            />
+            <VictoryArea
+              style={styles.bar}
               interpolation="natural"
               data={data}
               x="datetime"
@@ -141,7 +174,8 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: 12,
+      paddingLeft: 22,
+      paddingRight: 12,
     },
     title: {
       color: '#999999',
