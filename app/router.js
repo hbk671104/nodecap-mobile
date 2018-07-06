@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { BackHandler, Linking, Alert } from 'react-native';
+import { BackHandler, Linking, Alert, Image } from 'react-native';
 import RNExitApp from 'react-native-exit-app';
 import { NavigationActions } from './utils';
 import {
@@ -19,11 +19,11 @@ import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
+import Management from 'container/main/management';
+import Self from 'container/main/self';
 import Codepush from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
-
-import NodeCapIcon from 'component/icon/nodecap';
 
 const CodePushStack = createStackNavigator(
   {
@@ -31,7 +31,7 @@ const CodePushStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-  }
+  },
 );
 
 const AuthStack = createStackNavigator(
@@ -41,7 +41,7 @@ const AuthStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-  }
+  },
 );
 
 const Tab = createBottomTabNavigator(
@@ -51,6 +51,18 @@ const Tab = createBottomTabNavigator(
       screen: Portfolio,
       navigationOptions: {
         title: '投资库',
+      },
+    },
+    Management: {
+      screen: Management,
+      navigationOptions: {
+        title: '资产管理',
+      },
+    },
+    Self: {
+      screen: Self,
+      navigationOptions: {
+        title: '我的机构',
       },
     },
   },
@@ -64,19 +76,55 @@ const Tab = createBottomTabNavigator(
       inactiveTintColor: '#999999',
     },
     navigationOptions: ({ navigation: { state } }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
+      tabBarIcon: ({ focused }) => {
         const { routeName } = state;
         switch (routeName) {
           case 'Dashboard':
-            return <NodeCapIcon name="dashboard" size={25} color={tintColor} />;
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/dashboard_highlight.png')
+                    : require('asset/tabIcon/dashboard.png')
+                }
+              />
+            );
           case 'Portfolio':
-            return <NodeCapIcon name="investment" size={20} color={tintColor} />;
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/portfolio_highlight.png')
+                    : require('asset/tabIcon/portfolio.png')
+                }
+              />
+            );
+          case 'Management':
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/asset_highlight.png')
+                    : require('asset/tabIcon/asset.png')
+                }
+              />
+            );
+          case 'Self':
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/me_highlight.png')
+                    : require('asset/tabIcon/me.png')
+                }
+              />
+            );
           default:
             return null;
         }
       },
     }),
-  }
+  },
 );
 const MainStack = createStackNavigator(
   {
@@ -86,7 +134,7 @@ const MainStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-  }
+  },
 );
 
 const AppRouter = createSwitchNavigator(
@@ -98,7 +146,7 @@ const AppRouter = createSwitchNavigator(
   },
   {
     initialRouteName: 'Landing',
-  }
+  },
 );
 
 export function getCurrentScreen(navigationState) {
@@ -112,7 +160,10 @@ export function getCurrentScreen(navigationState) {
   return route.routeName;
 }
 
-export const routerMiddleware = createReactNavigationReduxMiddleware('root', state => state.router);
+export const routerMiddleware = createReactNavigationReduxMiddleware(
+  'root',
+  state => state.router,
+);
 const addListener = createReduxBoundAddListener('root');
 
 @connect(({ app, router }) => ({ app, router }))
