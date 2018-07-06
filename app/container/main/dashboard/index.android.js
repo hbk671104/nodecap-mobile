@@ -296,6 +296,8 @@ export default class Dashboard extends Component {
           style={{
             margin: 0,
           }}
+          useNativeDriver
+          hideModalContentWhileAnimating
           onBackButtonPress={() => this.props.setShareModal(false)}
         >
           <ShareModal

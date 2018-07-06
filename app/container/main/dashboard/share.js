@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   CameraRoll,
   Platform,
+  ImageBackground,
   PermissionsAndroid,
 } from 'react-native';
 import { Flex } from 'antd-mobile';
@@ -32,7 +33,6 @@ import styles from './share.style';
 export default class ShareModal extends Component {
   state = {
     currentFund: this.props.fund,
-    backgroundHeight: 0,
     loading: {
       wechat: false,
       timeline: false,
@@ -154,52 +154,22 @@ export default class ShareModal extends Component {
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
     return (
       <View style={[styles.container]}>
-        <View style={styles.scrollViewWrap}>
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollViewContainer}
-            showsVerticalScrollIndicator={false}
-          >
-            <ViewShot
-              options={{ format: 'jpg', quality: 1 }}
-              ref={ref => {
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <ViewShot
+            ref={ref => {
               this.viewShot = ref;
             }}
+          >
+            <ImageBackground
+              resizeMode="contain"
+              style={styles.shareBackground}
+              source={require('asset/share_background.png')}
             >
-              <View
-                style={{
-                ...styles.shareBackground,
-                width: 375,
-                height: this.state.backgroundHeight + 120 + 177,
-                overflow: 'hidden',
-              }}
-              >
-                <Image
-                  style={[
-                  styles.shareBackground,
-                  {
-                    height: 1889,
-                  },
-                ]}
-                  source={require('asset/share_background.jpg')}
-                />
-              </View>
-              <View
-                onLayout={e =>
-                this.setState({ backgroundHeight: e.nativeEvent.layout.height })
-              }
-                style={{
-                marginTop: 120,
-                transform: [
-                  {
-                    scaleY: 0.89,
-                  },
-                  {
-                    scaleX: 0.89,
-                  },
-                ],
-              }}
-              >
+              <View style={styles.content}>
                 <View style={styles.parallax}>
                   {this.renderBackground()}
                   {this.renderForeground()}
@@ -211,23 +181,22 @@ export default class ShareModal extends Component {
                 </View>
                 <View
                   style={{
-                  flex: 1,
-                  paddingTop: 50,
-                  backgroundColor: 'white',
-                  paddingBottom: 20,
-                }}
+                    paddingTop: 50,
+                    backgroundColor: 'white',
+                    paddingBottom: 20,
+                  }}
                 >
                   {roiRankCount > 0 && (
-                  <DashboardGroup
-                    style={styles.dashboardGroup}
-                    title="投资回报率榜"
-                    icon="TOP"
-                  >
-                    {dashboard.ROIRank.map((r, i) => (
-                      <ProjectItem key={i} index={i} data={r} />
-                    ))}
-                  </DashboardGroup>
-                )}
+                    <DashboardGroup
+                      style={styles.dashboardGroup}
+                      title="投资回报率榜"
+                      icon="TOP"
+                    >
+                      {dashboard.ROIRank.map((r, i) => (
+                        <ProjectItem key={i} index={i} data={r} />
+                      ))}
+                    </DashboardGroup>
+                  )}
                   <DashboardGroup
                     style={styles.dashboardGroup}
                     title="投资概况"
@@ -247,30 +216,26 @@ export default class ShareModal extends Component {
                   autoplay={false}
                   style={styles.swiper}
                   total={R.pick(['ETH'])(
-                  R.path(['totalProfits', 'count'])(dashboard),
-                )}
+                    R.path(['totalProfits', 'count'])(dashboard),
+                  )}
                   daily={R.pick(['ETH'])(
-                  R.path(['dailyProfits', 'count'])(dashboard),
-                )}
+                    R.path(['dailyProfits', 'count'])(dashboard),
+                  )}
                   weekly={R.pick(['ETH'])(
-                  R.path(['weeklyProfits', 'count'])(dashboard),
-                )}
+                    R.path(['weeklyProfits', 'count'])(dashboard),
+                  )}
                 />
               </View>
-              <View style={{
-              marginTop: -50,
-              flexDirection: 'row',
-              alignItem: 'center',
-              justifyContent: 'center',
-            }}
-              >
-                <Image
-                  source={require('../../../asset/qr_welcome.png')}
-                />
+              <View style={styles.qrCode.container}>
+                <Image source={require('../../../asset/qr_welcome.png')} />
+                <Text style={styles.qrCode.title}>扫码入驻 Hotnode</Text>
+                <Text style={styles.qrCode.subtitle}>
+                  做最专业的 Token Fund
+                </Text>
               </View>
-            </ViewShot>
-          </ScrollView>
-        </View>
+            </ImageBackground>
+          </ViewShot>
+        </ScrollView>
         <Flex justify="space-between" style={styles.actionsBar}>
           <Touchable borderless onPress={this.props.onClose}>
             <Icon

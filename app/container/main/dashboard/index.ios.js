@@ -289,6 +289,8 @@ export default class Dashboard extends Component {
           style={{
             margin: 0,
           }}
+          useNativeDriver
+          hideModalContentWhileAnimating
         >
           <ShareModal
             fund={this.state.currentFund}

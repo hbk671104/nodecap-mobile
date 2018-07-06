@@ -15,10 +15,16 @@ const investNumber = ({ style, data = {} }) => {
           <View style={{ flexDirection: 'row', marginTop: 16 }}>
             <Text style={styles.left.subtitle}>
               本周{'  '}
-              {data.week} {data.week > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
+              {data.week}{' '}
+              {data.week > 0 && (
+                <NodeCapIcon name="shangsheng" color="#09AC32" />
+              )}
               {'     '}
               本月{'  '}
-              {data.month} {data.month > 0 && <NodeCapIcon name="shangsheng" color="#09AC32" />}
+              {data.month}{' '}
+              {data.month > 0 && (
+                <NodeCapIcon name="shangsheng" color="#09AC32" />
+              )}
             </Text>
           </View>
         </View>
@@ -31,13 +37,12 @@ const investNumber = ({ style, data = {} }) => {
                 stroke: '#35C3FF',
               },
             }}
-            interpolation="natural"
+            interpolation="basis"
             data={trend}
             x="dateTime"
             y="count"
-            width={91}
-            height={100}
-            domain={{ y: [0, 5] }}
+            width={120}
+            height={80}
             padding={0}
           />
         )}

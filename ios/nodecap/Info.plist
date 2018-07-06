@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>CodePushDeploymentKey</key>
 	<string>__RN_CONFIG_CODEPUSH_DEPLOYMENT_KEY_IOS</string>
 	<key>LSApplicationQueriesSchemes</key>
@@ -60,7 +60,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string/>
+	<string></string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Hotnode 需要您的同意, 才能写入相册</string>
 	<key>NSPhotoLibraryUsageDescription</key>
