@@ -32,7 +32,7 @@ class Chart extends PureComponent {
       '24_hours': 'HH:mm',
       '7_days': 'MM/DD',
       '30_days': 'MM/DD',
-      '365_days': 'YYYY/MM/DD',
+      '365_days': 'YYYY/MM',
     };
 
     const { period } = this.state;
