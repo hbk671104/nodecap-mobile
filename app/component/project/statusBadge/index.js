@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text } from 'react-native';
+import R from 'ramda';
 import styles from './styles';
-
 
 const STATUS_MAP = {
   4: {
@@ -27,20 +27,21 @@ class StatusBadge extends Component {
           style={[
             styles.dot.container,
             {
-              backgroundColor: STATUS_MAP[status].color,
+              backgroundColor: R.pathOr('transparent', [status, 'color'])(
+                STATUS_MAP,
+              ),
             },
           ]}
         />
         <Text style={styles.text}>
-          {STATUS_MAP[status].name}
+          {R.pathOr('', [status, 'name'])(STATUS_MAP)}
         </Text>
       </View>
     );
   }
 }
 
-StatusBadge.propTypes = {
-};
+StatusBadge.propTypes = {};
 StatusBadge.defaultProps = {};
 
 export default StatusBadge;

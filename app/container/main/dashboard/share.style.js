@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet } from 'react-native';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { ifIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { borderColor } from 'component/uikit/color';
 import { mainColor } from '../../../component/uikit/color';
 
@@ -97,8 +97,8 @@ export default {
     height: PARALLAX_HEADER_HEIGHT,
   },
   scrollViewContainer: {
-    paddingTop: 24,
-    paddingBottom: 24 + 80,
+    paddingTop: getStatusBarHeight(true),
+    paddingBottom: getStatusBarHeight(true) + 80,
   },
   dashboardGroup: {
     marginTop: 31,

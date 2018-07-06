@@ -10,7 +10,7 @@ export default {
   },
 
   effects: {
-    * login({ payload, callback }, { call, put, take }) {
+    *login({ payload, callback }, { call, put, take }) {
       try {
         const { data } = yield call(login, payload);
         yield put({
@@ -24,7 +24,7 @@ export default {
               params: {
                 resetToken: data.password_reset_token,
               },
-            })
+            }),
           );
         } else {
           yield put({
@@ -35,6 +35,10 @@ export default {
             },
           });
           yield put({
+            type: 'global/startup',
+          });
+          yield take('global/startup/@@end');
+          yield put({
             type: 'global/initial',
           });
 
@@ -43,7 +47,7 @@ export default {
           yield put(
             routerRedux.navigate({
               routeName: 'Dashboard',
-            })
+            }),
           );
         }
       } catch (e) {
@@ -55,7 +59,7 @@ export default {
         });
       }
     },
-    * setPassword({ payload }, { call, put, take }) {
+    *setPassword({ payload }, { call, put, take }) {
       try {
         const { data } = yield call(setPassword, payload);
         yield put({
@@ -74,7 +78,7 @@ export default {
         yield put(
           routerRedux.navigate({
             routeName: 'Dashboard',
-          })
+          }),
         );
       } catch (e) {
         yield put({
@@ -85,7 +89,7 @@ export default {
         });
       }
     },
-    * logout(_, { put }) {
+    *logout(_, { put }) {
       try {
         request.defaults.headers.common.Authorization = null;
         request.defaults.headers.common['X-Company-ID'] = null;

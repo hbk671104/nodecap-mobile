@@ -225,64 +225,65 @@ export default class Dashboard extends Component {
           </View>
         </Empty>
       );
-      return <Loading />;
     }
 
     return (
       <View style={styles.container}>
         {this.renderFixedHeader()}
-        <ParallaxScrollView
-          contentContainerStyle={styles.scrollView.container}
-          outputScaleValue={10}
-          showsVerticalScrollIndicator={false}
-          parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
-          renderForeground={this.renderForeground}
-          renderBackground={this.renderBackground}
-          scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    y: scrollY,
+        {dashboard && (
+          <ParallaxScrollView
+            contentContainerStyle={styles.scrollView.container}
+            outputScaleValue={10}
+            showsVerticalScrollIndicator={false}
+            parallaxHeaderHeight={PARALLAX_HEADER_HEIGHT}
+            renderForeground={this.renderForeground}
+            renderBackground={this.renderBackground}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      y: scrollY,
+                    },
                   },
                 },
+              ],
+              {
+                listener: this.handleOnScroll,
               },
-            ],
-            {
-              listener: this.handleOnScroll,
-            },
-          )}
-        >
-          <ProfitSwiper
-            style={styles.swiper}
-            total={R.path(['totalProfits', 'count'])(dashboard)}
-            daily={R.path(['dailyProfits', 'count'])(dashboard)}
-            weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
-          />
-          <ReturnRateChart style={styles.roiChart} {...this.props} />
-          <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
-            <InvestNumber data={dashboard.portfolio} />
-          </DashboardGroup>
-          <DashboardGroup
-            style={styles.dashboardGroup}
-            title="投资金额"
-            icon="touzijine"
+            )}
           >
-            <Investment data={dashboard.investment} />
-          </DashboardGroup>
-          {roiRankCount > 0 && (
+            <ProfitSwiper
+              style={styles.swiper}
+              total={R.path(['totalProfits', 'count'])(dashboard)}
+              daily={R.path(['dailyProfits', 'count'])(dashboard)}
+              weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
+            />
+            <ReturnRateChart style={styles.roiChart} {...this.props} />
+            <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
+              <InvestNumber data={dashboard.portfolio} />
+            </DashboardGroup>
             <DashboardGroup
               style={styles.dashboardGroup}
-              title="投资回报率榜"
-              icon="TOP"
+              title="投资金额"
+              icon="touzijine"
             >
-              {dashboard.ROIRank.map((r, i) => (
-                <ProjectItem key={i} index={i} data={r} />
-              ))}
+              <Investment data={dashboard.investment} />
             </DashboardGroup>
-          )}
-        </ParallaxScrollView>
+            {roiRankCount > 0 && (
+              <DashboardGroup
+                style={styles.dashboardGroup}
+                title="投资回报率榜"
+                icon="TOP"
+              >
+                {dashboard.ROIRank.map((r, i) => (
+                  <ProjectItem key={i} index={i} data={r} />
+                ))}
+              </DashboardGroup>
+            )}
+          </ParallaxScrollView>
+        )}
         {empty}
         <Modal
           isVisible={this.props.showShareModal}
