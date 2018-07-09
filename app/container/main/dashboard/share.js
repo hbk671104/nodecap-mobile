@@ -37,11 +37,19 @@ export default class ShareModal extends Component {
       wechat: false,
       timeline: false,
     },
+    isWXAppSupportApi: false,
+    isWXAppInstalled: false,
   };
 
-  componentWillMount() {
+  async componentWillMount() {
     const { currentFund } = this.state;
     this.getDashboardData(currentFund.id);
+
+    // check wechat availability
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+      isWXAppInstalled: await WeChat.isWXAppInstalled(),
+    });
   }
 
   getDashboardData = id => {
@@ -119,8 +127,8 @@ export default class ShareModal extends Component {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-          title: 'My App Storage Permission',
-          message: 'My App needs access to your storage',
+          title: 'Hotnode Storage Permission',
+          message: 'Hotnode needs access to your storage',
         },
       );
       return granted;
@@ -152,6 +160,9 @@ export default class ShareModal extends Component {
   render() {
     const { dashboard } = this.props;
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
+
+    const { isWXAppSupportApi, isWXAppInstalled } = this.state;
+    const wechatAvailable = isWXAppSupportApi && isWXAppInstalled;
     return (
       <View style={[styles.container]}>
         <ScrollView
@@ -258,15 +269,19 @@ export default class ShareModal extends Component {
                 {this.state.loading.camera ? '保存中...' : '保存图片至相册'}
               </Text>
             </TouchableOpacity> */}
-            <TouchableOpacity onPress={this.shareTo('wechat')}>
-              <Image source={require('asset/wechat_icon.png')} />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{ marginLeft: 24 }}
-              onPress={this.shareTo('moment')}
-            >
-              <Image source={require('asset/wechat_moment_icon.png')} />
-            </TouchableOpacity>
+            {wechatAvailable && (
+              <TouchableOpacity onPress={this.shareTo('wechat')}>
+                <Image source={require('asset/wechat_icon.png')} />
+              </TouchableOpacity>
+            )}
+            {wechatAvailable && (
+              <TouchableOpacity
+                style={{ marginLeft: 24 }}
+                onPress={this.shareTo('moment')}
+              >
+                <Image source={require('asset/wechat_moment_icon.png')} />
+              </TouchableOpacity>
+            )}
           </Flex>
         </Flex>
       </View>
