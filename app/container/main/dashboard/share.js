@@ -256,19 +256,6 @@ export default class ShareModal extends Component {
             />
           </Touchable>
           <Flex>
-            {/* <TouchableOpacity
-              disabled={this.props.loading.camera}
-              onPress={this.saveToCameraRoll}
-            >
-              <Text
-                style={[
-                  styles.saveToCameraRoll,
-                  this.state.loading.camera && styles.saveToCameraRollDisabled,
-                ]}
-              >
-                {this.state.loading.camera ? '保存中...' : '保存图片至相册'}
-              </Text>
-            </TouchableOpacity> */}
             {wechatAvailable && (
               <TouchableOpacity onPress={this.shareTo('wechat')}>
                 <Image source={require('asset/wechat_icon.png')} />
@@ -282,6 +269,12 @@ export default class ShareModal extends Component {
                 <Image source={require('asset/wechat_moment_icon.png')} />
               </TouchableOpacity>
             )}
+            <TouchableOpacity
+              style={{ marginLeft: 24 }}
+              onPress={this.saveToCameraRoll}
+            >
+              <Image source={require('asset/save.png')} />
+            </TouchableOpacity>
           </Flex>
         </Flex>
       </View>
