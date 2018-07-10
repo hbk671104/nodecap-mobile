@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import * as R from 'ramda';
 import moment from 'moment';
 import { View, Text, ViewPropTypes, TouchableOpacity } from 'react-native';
-import { VictoryAxis, VictoryChart, VictoryLine, VictoryArea } from 'victory-native';
+import {
+  VictoryAxis,
+  VictoryChart,
+  VictoryLine,
+  VictoryArea,
+} from 'victory-native';
 
 class returnRateChart extends Component {
   constructor(props) {
@@ -26,8 +31,10 @@ class returnRateChart extends Component {
       R.map(i => ({
         ROI: i.ROI,
         dateTime: i.dateTime,
-      }))
+      })),
     )(dashboard);
+
+    if (R.length(data) <= 1) return null;
 
     const formatMate = {
       H24: 'HH:mm',
@@ -44,7 +51,12 @@ class returnRateChart extends Component {
             style={styles.periodWrapper}
             onPress={() => this.setState({ period: 'H24' })}
           >
-            <Text style={[styles.periodItem, period === 'H24' ? styles.periodActive : null]}>
+            <Text
+              style={[
+                styles.periodItem,
+                period === 'H24' ? styles.periodActive : null,
+              ]}
+            >
               24h
             </Text>
             {period === 'H24' && <View style={styles.periodline} />}
@@ -53,7 +65,12 @@ class returnRateChart extends Component {
             style={styles.periodWrapper}
             onPress={() => this.setState({ period: 'W1' })}
           >
-            <Text style={[styles.periodItem, period === 'W1' ? styles.periodActive : null]}>
+            <Text
+              style={[
+                styles.periodItem,
+                period === 'W1' ? styles.periodActive : null,
+              ]}
+            >
               周
             </Text>
             {period === 'W1' && <View style={styles.periodline} />}
@@ -62,7 +79,12 @@ class returnRateChart extends Component {
             style={styles.periodWrapper}
             onPress={() => this.setState({ period: 'D30' })}
           >
-            <Text style={[styles.periodItem, period === 'D30' ? styles.periodActive : null]}>
+            <Text
+              style={[
+                styles.periodItem,
+                period === 'D30' ? styles.periodActive : null,
+              ]}
+            >
               月
             </Text>
             {period === 'D30' && <View style={styles.periodline} />}
@@ -71,7 +93,12 @@ class returnRateChart extends Component {
             style={styles.periodWrapper}
             onPress={() => this.setState({ period: 'Y1' })}
           >
-            <Text style={[styles.periodItem, period === 'Y1' ? styles.periodActive : null]}>
+            <Text
+              style={[
+                styles.periodItem,
+                period === 'Y1' ? styles.periodActive : null,
+              ]}
+            >
               年
             </Text>
             {period === 'Y1' && <View style={styles.periodline} />}
@@ -85,8 +112,18 @@ class returnRateChart extends Component {
               style={styles.axis.cross}
               tickFormat={x => moment(x).format(formatMate[this.state.period])}
             />
-            <VictoryAxis dependentAxis style={styles.axis.dependent} tickFormat={x => `${x}%`} />
-            <VictoryArea style={styles.bar} data={data} cornerRadius={8} x="dateTime" y="ROI" />
+            <VictoryAxis
+              dependentAxis
+              style={styles.axis.dependent}
+              tickFormat={x => `${x}%`}
+            />
+            <VictoryArea
+              style={styles.bar}
+              data={data}
+              cornerRadius={8}
+              x="dateTime"
+              y="ROI"
+            />
             <VictoryLine
               style={styles.line}
               interpolation="natural"

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   CameraRoll,
   Platform,
+  ImageBackground,
   PermissionsAndroid,
 } from 'react-native';
 import { Flex } from 'antd-mobile';
@@ -32,16 +33,23 @@ import styles from './share.style';
 export default class ShareModal extends Component {
   state = {
     currentFund: this.props.fund,
-    backgroundHeight: 0,
     loading: {
       wechat: false,
       timeline: false,
     },
+    isWXAppSupportApi: false,
+    isWXAppInstalled: false,
   };
 
-  componentWillMount() {
+  async componentWillMount() {
     const { currentFund } = this.state;
     this.getDashboardData(currentFund.id);
+
+    // check wechat availability
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+      isWXAppInstalled: await WeChat.isWXAppInstalled(),
+    });
   }
 
   getDashboardData = id => {
@@ -119,8 +127,8 @@ export default class ShareModal extends Component {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-          title: 'My App Storage Permission',
-          message: 'My App needs access to your storage',
+          title: 'Hotnode Storage Permission',
+          message: 'Hotnode needs access to your storage',
         },
       );
       return granted;
@@ -152,54 +160,27 @@ export default class ShareModal extends Component {
   render() {
     const { dashboard } = this.props;
     const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
+
+    const { isWXAppSupportApi, isWXAppInstalled } = this.state;
+    const wechatAvailable = isWXAppSupportApi && isWXAppInstalled;
     return (
       <View style={[styles.container]}>
-        <View style={styles.scrollViewWrap}>
-          <ScrollView
-            style={styles.scrollView}
-            contentContainerStyle={styles.scrollViewContainer}
-            showsVerticalScrollIndicator={false}
-          >
-            <ViewShot
-              options={{ format: 'jpg', quality: 1 }}
-              ref={ref => {
+        <ScrollView
+          style={styles.scrollView}
+          contentContainerStyle={styles.scrollViewContainer}
+          showsVerticalScrollIndicator={false}
+        >
+          <ViewShot
+            ref={ref => {
               this.viewShot = ref;
             }}
+          >
+            <ImageBackground
+              resizeMode="contain"
+              style={styles.shareBackground}
+              source={require('asset/share_background.png')}
             >
-              <View
-                style={{
-                ...styles.shareBackground,
-                width: 375,
-                height: this.state.backgroundHeight + 120 + 177,
-                overflow: 'hidden',
-              }}
-              >
-                <Image
-                  style={[
-                  styles.shareBackground,
-                  {
-                    height: 1889,
-                  },
-                ]}
-                  source={require('asset/share_background.jpg')}
-                />
-              </View>
-              <View
-                onLayout={e =>
-                this.setState({ backgroundHeight: e.nativeEvent.layout.height })
-              }
-                style={{
-                marginTop: 120,
-                transform: [
-                  {
-                    scaleY: 0.89,
-                  },
-                  {
-                    scaleX: 0.89,
-                  },
-                ],
-              }}
-              >
+              <View style={styles.content}>
                 <View style={styles.parallax}>
                   {this.renderBackground()}
                   {this.renderForeground()}
@@ -211,23 +192,22 @@ export default class ShareModal extends Component {
                 </View>
                 <View
                   style={{
-                  flex: 1,
-                  paddingTop: 50,
-                  backgroundColor: 'white',
-                  paddingBottom: 20,
-                }}
+                    paddingTop: 50,
+                    backgroundColor: 'white',
+                    paddingBottom: 20,
+                  }}
                 >
                   {roiRankCount > 0 && (
-                  <DashboardGroup
-                    style={styles.dashboardGroup}
-                    title="投资回报率榜"
-                    icon="TOP"
-                  >
-                    {dashboard.ROIRank.map((r, i) => (
-                      <ProjectItem key={i} index={i} data={r} />
-                    ))}
-                  </DashboardGroup>
-                )}
+                    <DashboardGroup
+                      style={styles.dashboardGroup}
+                      title="投资回报率榜"
+                      icon="TOP"
+                    >
+                      {dashboard.ROIRank.map((r, i) => (
+                        <ProjectItem key={i} index={i} data={r} />
+                      ))}
+                    </DashboardGroup>
+                  )}
                   <DashboardGroup
                     style={styles.dashboardGroup}
                     title="投资概况"
@@ -247,30 +227,26 @@ export default class ShareModal extends Component {
                   autoplay={false}
                   style={styles.swiper}
                   total={R.pick(['ETH'])(
-                  R.path(['totalProfits', 'count'])(dashboard),
-                )}
+                    R.path(['totalProfits', 'count'])(dashboard),
+                  )}
                   daily={R.pick(['ETH'])(
-                  R.path(['dailyProfits', 'count'])(dashboard),
-                )}
+                    R.path(['dailyProfits', 'count'])(dashboard),
+                  )}
                   weekly={R.pick(['ETH'])(
-                  R.path(['weeklyProfits', 'count'])(dashboard),
-                )}
+                    R.path(['weeklyProfits', 'count'])(dashboard),
+                  )}
                 />
               </View>
-              <View style={{
-              marginTop: -50,
-              flexDirection: 'row',
-              alignItem: 'center',
-              justifyContent: 'center',
-            }}
-              >
-                <Image
-                  source={require('../../../asset/qr_welcome.png')}
-                />
+              <View style={styles.qrCode.container}>
+                <Image source={require('../../../asset/qr_welcome.png')} />
+                <Text style={styles.qrCode.title}>扫码入驻 Hotnode</Text>
+                <Text style={styles.qrCode.subtitle}>
+                  做最专业的 Token Fund
+                </Text>
               </View>
-            </ViewShot>
-          </ScrollView>
-        </View>
+            </ImageBackground>
+          </ViewShot>
+        </ScrollView>
         <Flex justify="space-between" style={styles.actionsBar}>
           <Touchable borderless onPress={this.props.onClose}>
             <Icon
@@ -280,27 +256,24 @@ export default class ShareModal extends Component {
             />
           </Touchable>
           <Flex>
-            {/* <TouchableOpacity
-              disabled={this.props.loading.camera}
-              onPress={this.saveToCameraRoll}
-            >
-              <Text
-                style={[
-                  styles.saveToCameraRoll,
-                  this.state.loading.camera && styles.saveToCameraRollDisabled,
-                ]}
+            {wechatAvailable && (
+              <TouchableOpacity onPress={this.shareTo('wechat')}>
+                <Image source={require('asset/wechat_icon.png')} />
+              </TouchableOpacity>
+            )}
+            {wechatAvailable && (
+              <TouchableOpacity
+                style={{ marginLeft: 24 }}
+                onPress={this.shareTo('moment')}
               >
-                {this.state.loading.camera ? '保存中...' : '保存图片至相册'}
-              </Text>
-            </TouchableOpacity> */}
-            <TouchableOpacity onPress={this.shareTo('wechat')}>
-              <Image source={require('asset/wechat_icon.png')} />
-            </TouchableOpacity>
+                <Image source={require('asset/wechat_moment_icon.png')} />
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
               style={{ marginLeft: 24 }}
-              onPress={this.shareTo('moment')}
+              onPress={this.saveToCameraRoll}
             >
-              <Image source={require('asset/wechat_moment_icon.png')} />
+              <Image source={require('asset/save.png')} />
             </TouchableOpacity>
           </Flex>
         </Flex>

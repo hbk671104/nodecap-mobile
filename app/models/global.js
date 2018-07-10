@@ -18,26 +18,26 @@ export default {
   },
 
   effects: {
-    * startup(_, { put, call, all }) {
+    *startup(_, { put, call }) {
       try {
         const res = yield call(getConstants);
 
-        yield all([
-          put({
-            type: 'getConstants',
-            payload: res.data,
-          }),
-        ]);
+        yield put({
+          type: 'getConstants',
+          payload: res.data,
+        });
       } catch (e) {
         console.log(e);
       }
     },
-    * initial({ callback }, { select, put, call, all, take }) {
+    *initial({ callback }, { select, put, call, all, take }) {
       const token = yield select(state => state.login.token);
       const companies = yield select(state => state.login.companies);
       if (token) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        axios.defaults.headers.common['X-Company-ID'] = R.path([0, 'id'])(companies);
+        axios.defaults.headers.common['X-Company-ID'] = R.path([0, 'id'])(
+          companies,
+        );
       }
       try {
         const res = yield call(getAllPermissions);

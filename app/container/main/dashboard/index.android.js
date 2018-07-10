@@ -225,77 +225,80 @@ export default class Dashboard extends Component {
           </View>
         </Empty>
       );
-      return <Loading />;
     }
 
     return (
       <View style={styles.container}>
         {this.renderFixedHeader()}
-        <ScrollView
-          contentContainerStyle={styles.scrollView.container}
-          showsVerticalScrollIndicator={false}
-          scrollEventThrottle={16}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    y: scrollY,
+        {dashboard && (
+          <ScrollView
+            contentContainerStyle={styles.scrollView.container}
+            showsVerticalScrollIndicator={false}
+            scrollEventThrottle={16}
+            onScroll={Animated.event(
+              [
+                {
+                  nativeEvent: {
+                    contentOffset: {
+                      y: scrollY,
+                    },
                   },
                 },
+              ],
+              {
+                listener: this.handleOnScroll,
               },
-            ],
-            {
-              listener: this.handleOnScroll,
-            },
-          )}
-        >
-          <View style={styles.parallax}>
-            {this.renderBackground()}
-            {this.renderForeground()}
-          </View>
-          <View
-            style={{
-              flex: 1,
-              paddingTop: 50,
-            }}
+            )}
           >
-            <ProfitSwiper
-              style={styles.swiper}
-              total={R.path(['totalProfits', 'count'])(dashboard)}
-              daily={R.path(['dailyProfits', 'count'])(dashboard)}
-              weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
-            />
-            <ReturnRateChart style={styles.roiChart} {...this.props} />
-            <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
-              <InvestNumber data={dashboard.portfolio} />
-            </DashboardGroup>
-            <DashboardGroup
-              style={styles.dashboardGroup}
-              title="投资金额"
-              icon="touzijine"
+            <View style={styles.parallax}>
+              {this.renderBackground()}
+              {this.renderForeground()}
+            </View>
+            <View
+              style={{
+                flex: 1,
+                paddingTop: 50,
+              }}
             >
-              <Investment data={dashboard.investment} />
-            </DashboardGroup>
-            {roiRankCount > 0 && (
+              <ProfitSwiper
+                style={styles.swiper}
+                total={R.path(['totalProfits', 'count'])(dashboard)}
+                daily={R.path(['dailyProfits', 'count'])(dashboard)}
+                weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
+              />
+              <ReturnRateChart style={styles.roiChart} {...this.props} />
+              <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
+                <InvestNumber data={dashboard.portfolio} />
+              </DashboardGroup>
               <DashboardGroup
                 style={styles.dashboardGroup}
-                title="投资回报率 TOP 5"
-                icon="TOP"
+                title="投资金额"
+                icon="touzijine"
               >
-                {dashboard.ROIRank.map((r, i) => (
-                  <ProjectItem key={i} index={i} data={r} />
-                ))}
+                <Investment data={dashboard.investment} />
               </DashboardGroup>
-            )}
-          </View>
-        </ScrollView>
+              {roiRankCount > 0 && (
+                <DashboardGroup
+                  style={styles.dashboardGroup}
+                  title="投资回报率 TOP 5"
+                  icon="TOP"
+                >
+                  {dashboard.ROIRank.map((r, i) => (
+                    <ProjectItem key={i} index={i} data={r} />
+                  ))}
+                </DashboardGroup>
+              )}
+            </View>
+          </ScrollView>
+        )}
         {empty}
         <Modal
           isVisible={this.props.showShareModal}
           style={{
             margin: 0,
           }}
+          useNativeDriver
+          hideModalContentWhileAnimating
           onBackButtonPress={() => this.props.setShareModal(false)}
         >
           <ShareModal

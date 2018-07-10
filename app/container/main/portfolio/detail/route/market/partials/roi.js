@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, ViewPropTypes } from 'react-native';
 import * as R from 'ramda';
+import Accounting from 'accounting';
 import { shadow } from '../../../../../../../utils/style';
 
-const icon = (k) => {
+const icon = k => {
   switch (k) {
     case 'BTC':
       return require('asset/crypto/transparent/BTC.png');
@@ -24,14 +25,17 @@ const roi = ({ style, data }) => (
     {R.keys(data).map((k, i) => {
       const item = data[k];
       return (
-        <View key={k} style={[styles.group.container, i === 0 && { marginLeft: 0 }]}>
+        <View
+          key={k}
+          style={[styles.group.container, i === 0 && { marginLeft: 0 }]}
+        >
           <View style={styles.group.inner}>
             <View style={styles.image.container}>
               <Image source={icon(k)} />
             </View>
             <Text style={styles.title}>{k}</Text>
             <Text style={styles.subtitle}>
-              {item.value.toFixed(0)}
+              {Accounting.formatNumber(item.value)}
               <Text style={{ fontSize: 12 }}>%</Text>
             </Text>
           </View>

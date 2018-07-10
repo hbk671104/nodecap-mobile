@@ -1,5 +1,5 @@
-import { Dimensions } from 'react-native';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { Dimensions, StyleSheet } from 'react-native';
+import { ifIphoneX, getStatusBarHeight } from 'react-native-iphone-x-helper';
 import { borderColor } from 'component/uikit/color';
 import { mainColor } from '../../../component/uikit/color';
 
@@ -9,15 +9,11 @@ export const PARALLAX_HEADER_HEIGHT = 254;
 export const DEVICE_WIDTH = window.width;
 
 export default {
-  container: {
-    // width: 375,
-    // backgroundColor: '#FF8A00',
-  },
+  container: {},
   shareBackground: {
-    position: 'absolute',
     width: 375,
-    left: 0,
-    top: 0,
+    height: 1889,
+    alignSelf: 'center',
   },
   swiper: {
     position: 'absolute',
@@ -69,7 +65,7 @@ export default {
   parallax: {
     width: '100%',
     height: PARALLAX_HEADER_HEIGHT,
-    zIndex: -1,
+    // zIndex: -1,
   },
   fundName: {
     width: '100%',
@@ -89,7 +85,7 @@ export default {
     left: 0,
     right: 0,
     top: 0,
-    zIndex: -1,
+    // zIndex: -1,
     width: '100%',
     height: PARALLAX_HEADER_HEIGHT,
   },
@@ -100,15 +96,9 @@ export default {
     top: PARALLAX_HEADER_HEIGHT / 2 - 50,
     height: PARALLAX_HEADER_HEIGHT,
   },
-  scrollViewWrap: {
-    marginBottom: 80,
-  },
-  scrollView: {
-    alignSelf: 'center',
-    width: 375,
-  },
   scrollViewContainer: {
-    paddingTop: 15,
+    paddingTop: getStatusBarHeight(true),
+    paddingBottom: getStatusBarHeight(true) + 80,
   },
   dashboardGroup: {
     marginTop: 31,
@@ -161,7 +151,7 @@ export default {
       {
         paddingBottom: 22,
       },
-      {}
+      {},
     ),
     height: 80,
     backgroundColor: 'white',
@@ -170,7 +160,7 @@ export default {
     bottom: 0,
     left: 0,
     right: 0,
-    borderTopWidth: 0.5,
+    borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: borderColor,
     flexDirection: 'row',
     alignItems: 'center',
@@ -191,5 +181,28 @@ export default {
   },
   saveToCameraRollDisabled: {
     color: '#666666',
+  },
+  qrCode: {
+    container: {
+      marginTop: 18,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    title: {
+      fontSize: 16,
+      color: 'white',
+      fontWeight: 'bold',
+      marginTop: 12,
+    },
+    subtitle: {
+      fontSize: 14,
+      color: 'white',
+      fontWeight: 'bold',
+      marginTop: 4,
+    },
+  },
+  content: {
+    marginTop: 200,
+    marginHorizontal: 20,
   },
 };

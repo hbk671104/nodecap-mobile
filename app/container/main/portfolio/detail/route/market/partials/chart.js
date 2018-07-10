@@ -28,6 +28,10 @@ class Chart extends PureComponent {
 
     const data = R.pipe(R.path([this.state.period]))(trend);
 
+    if (R.length(data) <= 1) {
+      return null;
+    }
+
     const formatMate = {
       '24_hours': 'HH:mm',
       '7_days': 'MM/DD',

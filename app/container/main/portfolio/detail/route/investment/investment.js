@@ -4,28 +4,42 @@ import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
 import moment from 'moment';
 import Group from 'component/project/group';
+import Accounting from 'accounting';
 
 import { renderField } from './field';
 import styles from './investmentStyle';
 
-const dateFormat = date => (date ? moment(date).format('YYYY年MM月DD日 HH:mm') : null);
+const dateFormat = date =>
+  (date ? moment(date).format('YYYY年MM月DD日 HH:mm') : null);
 
 class Investment extends Component {
   renderItemFields(field) {
     const projectProps = path => R.path([...path])(field);
     const tokens = R.pathOr([], ['constants', 'tokens'])(this.props);
     const stages = R.pathOr([], ['constants', 'finance_stages'])(this.props);
-    console.log('field', R.find(R.propEq('id', field.invest_token))(tokens));
-    const getStageName = item => R.prop('name')(R.find(R.propEq('id', item.stage_id))(stages));
-    const getTokenName = item => R.prop('name')(R.find(R.propEq('id', item.invest_token))(tokens));
+    const getStageName = item =>
+      R.prop('name')(R.find(R.propEq('id', item.stage_id))(stages));
+    const getTokenName = item =>
+      R.prop('name')(R.find(R.propEq('id', item.invest_token))(tokens));
     const tokenName = R.path(['portfolio', 'token_name'])(this.props);
+
+    const investCount = projectProps(['invest_count'])
+      ? Accounting.formatNumber(projectProps(['invest_count']))
+      : projectProps(['invest_count']);
+    const transfer_price = projectProps(['transfer_price'])
+      ? Accounting.formatNumber(projectProps(['transfer_price']))
+      : projectProps(['transfer_price']);
+    const returnCount = projectProps(['return_count'])
+      ? Accounting.formatNumber(projectProps(['return_count']))
+      : projectProps(['return_count']);
     return (
       <View>
         <View>
           <Flex>
             {renderField({
               name: '投资类型',
-              value: projectProps(['financeType']) === 'token' ? 'Token' : '股权',
+              value:
+                projectProps(['financeType']) === 'token' ? 'Token' : '股权',
               style: {
                 flex: 1,
                 // alignItems: projectProps(['stage_id']) ? 'flex-start' : 'space-between',
@@ -54,7 +68,7 @@ class Investment extends Component {
             })}
             {renderField({
               name: '投资数量',
-              value: projectProps(['invest_count']),
+              value: investCount,
               style: {
                 flex: 1,
               },
@@ -62,14 +76,15 @@ class Investment extends Component {
           </Flex>
           {renderField({
             name: '兑换比例',
-            value: projectProps(['transfer_price'])
-              ? `1 ${getTokenName(field) || ''} = ${field.transfer_price || ''} ${tokenName || ''}`
+            value: transfer_price
+              ? `1 ${getTokenName(field) || ''} = ${transfer_price ||
+                  ''} ${tokenName || ''}`
               : null,
           })}
           {renderField({
             name: '应回币数量',
-            value: projectProps(['return_count'])
-              ? `${projectProps(['return_count']) || ''} ${tokenName || ''}`
+            value: returnCount
+              ? `${returnCount || ''} ${tokenName || ''}`
               : null,
           })}
           <Flex>
@@ -128,8 +143,12 @@ class Investment extends Component {
     );
   }
   render() {
-    const finance_token = R.pathOr([], ['item', 'invest_tokens', 'data'])(this.props);
-    const finance_equities = R.pathOr([], ['item', 'invest_equities', 'data'])(this.props);
+    const finance_token = R.pathOr([], ['item', 'invest_tokens', 'data'])(
+      this.props,
+    );
+    const finance_equities = R.pathOr([], ['item', 'invest_equities', 'data'])(
+      this.props,
+    );
 
     const financeData = finance_token
       .map(i => ({
@@ -140,9 +159,11 @@ class Investment extends Component {
         finance_equities.map(i => ({
           ...i,
           financeType: 'equities',
-        }))
+        })),
       );
-    const afterSort = R.sort((a, b) => b.created_at - a.created_at)(financeData);
+    const afterSort = R.sort((a, b) => b.created_at - a.created_at)(
+      financeData,
+    );
     if (R.isNil(afterSort) || R.isEmpty(afterSort)) {
       return null;
     }

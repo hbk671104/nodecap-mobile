@@ -32,7 +32,7 @@ class Search extends Component {
     this.props.dispatch({ type: 'portfolio/clearSearch' });
   }
 
-  onSearchTextChange = (text) => {
+  onSearchTextChange = text => {
     this.setState({ searchText: text }, this.searchDelayed);
   };
 
@@ -69,7 +69,7 @@ class Search extends Component {
         params: {
           item,
         },
-      })
+      }),
     );
   };
 
@@ -78,7 +78,7 @@ class Search extends Component {
   };
 
   renderNavBar = () => {
-    const { searchText } = this.state;
+    // const { searchText } = this.state;
     return (
       <NavBar
         gradient
@@ -88,7 +88,7 @@ class Search extends Component {
               style={styles.searchBar.bar}
               autoFocus
               onChangeText={this.onSearchTextChange}
-              value={searchText}
+              // value={searchText}
             />
           </View>
         )}
