@@ -17,11 +17,11 @@ const header = ({ user, style, onPress }) => {
           <Avatar size={50} innerRatio={1} source={{ uri: user.avatar_url }} />
           <View style={styles.content.container}>
             <Text style={styles.content.title}>{user.realname}</Text>
-            <View style={styles.content.company.container}>
+            <Touchable style={styles.content.company.container}>
               <Text style={styles.content.company.title}>
                 {company} <Icon name="arrow-forward" size={10} color="white" />
               </Text>
-            </View>
+            </Touchable>
           </View>
         </View>
         <Icon name="arrow-forward" size={20} color="rgba(0, 0, 0, 0.25)" />
@@ -79,11 +79,13 @@ const styles = {
 
 header.defaultProps = {
   onPress: () => null,
+  onCompanyPress: () => null,
 };
 
 header.propTypes = {
   user: PropTypes.object,
   onPress: PropTypes.func,
+  onCompanyPress: PropTypes.func,
 };
 
 export default header;

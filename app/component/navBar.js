@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, LayoutAnimation, Platform } from 'react-native';
+import { View, Animated, LayoutAnimation, Platform, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -21,6 +21,7 @@ class NavBar extends Component {
     hidden: PropTypes.bool,
     gradient: PropTypes.bool,
     back: PropTypes.bool,
+    title: PropTypes.string,
   };
 
   static defaultProps = {
@@ -52,6 +53,7 @@ class NavBar extends Component {
       hidden,
       gradient,
       back,
+      title,
     } = this.props;
     const WrapperComp = gradient ? Gradient : View;
     return (
@@ -66,6 +68,7 @@ class NavBar extends Component {
         >
           <View style={[styles.wrapper, hidden && styles.hidden.wrapper]}>
             <View style={styles.title.container}>
+              {!!title && <Text style={styles.title.text}>{title}</Text>}
               {renderTitle && renderTitle()}
             </View>
             <View style={styles.group.left}>
@@ -131,6 +134,11 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    text: {
+      fontSize: 17,
+      color: 'white',
+      fontWeight: 'bold',
     },
   },
   hidden: {

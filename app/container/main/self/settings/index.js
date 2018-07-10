@@ -11,20 +11,17 @@ import styles from './style';
   user: user.currentUser,
 }))
 class Self extends Component {
-  renderNavBar = () => (
-    <NavBar
-      gradient
-      title="我的"
-      renderBottom={() => <View style={styles.navBar.bottom} />}
-    />
-  );
+  renderNavBar = () => <NavBar gradient title="设置" />;
 
   render() {
     const { user } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        <ScrollView contentContainerStyle={styles.scroll.content}>
+        <ScrollView
+          style={styles.scroll.container}
+          contentContainerStyle={styles.scroll.content}
+        >
           <Item icon={require('asset/mine/fund.png')} title="我的基金" />
           <Item icon={require('asset/mine/resources.png')} title="我的人脉" />
           <Item icon={require('asset/mine/colleague.png')} title="我的同事" />

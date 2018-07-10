@@ -24,9 +24,6 @@ export default {
     top: realBarHeight + 64 - headerHeight / 2,
   },
   scroll: {
-    container: {
-      backgroundColor: 'white',
-    },
     content: {
       paddingTop: 85,
     },
