@@ -62,7 +62,7 @@ const Tab = createBottomTabNavigator(
     Self: {
       screen: Self,
       navigationOptions: {
-        title: '我的机构',
+        title: '我的',
       },
     },
   },

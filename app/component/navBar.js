@@ -57,14 +57,24 @@ class NavBar extends Component {
     return (
       <WrapperComp style={style}>
         <StatusBar barStyle={barStyle} />
-        <Animated.View style={[styles.container, wrapperStyle, hidden && styles.hidden.container]}>
+        <Animated.View
+          style={[
+            styles.container,
+            wrapperStyle,
+            hidden && styles.hidden.container,
+          ]}
+        >
           <View style={[styles.wrapper, hidden && styles.hidden.wrapper]}>
-            <View style={styles.title.container}>{renderTitle && renderTitle()}</View>
+            <View style={styles.title.container}>
+              {renderTitle && renderTitle()}
+            </View>
             <View style={styles.group.left}>
               {back && (
                 <Touchable borderless onPress={this.handleBackAction}>
                   <Icon
-                    name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
+                    name={
+                      Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'
+                    }
                     size={26}
                     color={gradient ? 'white' : '#333333'}
                   />
@@ -72,7 +82,9 @@ class NavBar extends Component {
               )}
               {renderLeft && renderLeft()}
             </View>
-            <View style={styles.group.right}>{renderRight && renderRight()}</View>
+            <View style={styles.group.right}>
+              {renderRight && renderRight()}
+            </View>
           </View>
         </Animated.View>
         {renderBottom && renderBottom()}
@@ -82,10 +94,12 @@ class NavBar extends Component {
 }
 
 export const navBarHeight = 44;
+export const statusBarHeight = getStatusBarHeight(true);
+export const realBarHeight = navBarHeight + statusBarHeight;
 
 const styles = {
   container: {
-    height: navBarHeight + getStatusBarHeight(true),
+    height: realBarHeight,
     justifyContent: 'flex-end',
   },
   wrapper: {
@@ -121,7 +135,7 @@ const styles = {
   },
   hidden: {
     container: {
-      height: getStatusBarHeight(true),
+      height: statusBarHeight,
     },
     wrapper: {
       height: 0,
