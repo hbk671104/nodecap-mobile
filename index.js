@@ -33,9 +33,6 @@ const app = dva({
     codepushModel,
   ],
   onAction: [routerMiddleware],
-  onError(e) {
-    console.log('onError', e);
-  },
   extraEnhancers: [autoRehydrate()],
 });
 
