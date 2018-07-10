@@ -230,7 +230,7 @@ export default class Dashboard extends Component {
     return (
       <View style={styles.container}>
         {this.renderFixedHeader()}
-        {dashboard && (
+        {!!dashboard && (
           <ParallaxScrollView
             contentContainerStyle={styles.scrollView.container}
             outputScaleValue={10}
