@@ -226,11 +226,10 @@ export default class Dashboard extends Component {
         </Empty>
       );
     }
-
     return (
       <View style={styles.container}>
         {this.renderFixedHeader()}
-        {dashboard && (
+        {!!dashboard && (
           <ScrollView
             contentContainerStyle={styles.scrollView.container}
             showsVerticalScrollIndicator={false}

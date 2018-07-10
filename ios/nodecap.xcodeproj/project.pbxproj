@@ -81,7 +81,6 @@
 		DD41DFFF20E5118A007696F1 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD41DFFE20E5116C007696F1 /* libRCTCameraRoll.a */; };
 		E26ADC9C95884822B181D9C8 /* libRNSentry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2919AABC6CE64A3C8503DC74 /* libRNSentry.a */; };
 		E428D934D949492794638C8A /* libRNExitApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE0FADE63FE4127947428ED /* libRNExitApp.a */; };
-		EAFCBCB55EDD40998D873A43 /* RCTWeChatTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = 42C8BFCFF87B4957AAAD230F /* RCTWeChatTests.xctest */; };
 		F3F567A7A4A74E1EB9E60D60 /* libRCTJPushModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0022A7FEF1DF4F149837E6CD /* libRCTJPushModule.a */; };
 /* End PBXBuildFile section */
 
@@ -648,7 +647,6 @@
 				E428D934D949492794638C8A /* libRNExitApp.a in Frameworks */,
 				09B7416C1BBD45779D3A3B7E /* libRNViewShot.a in Frameworks */,
 				B8BB34A79BDB4840917EA23A /* libRCTWeChat.a in Frameworks */,
-				EAFCBCB55EDD40998D873A43 /* RCTWeChatTests.xctest in Frameworks */,
 				E26ADC9C95884822B181D9C8 /* libRNSentry.a in Frameworks */,
 				F3F567A7A4A74E1EB9E60D60 /* libRCTJPushModule.a in Frameworks */,
 				58CD5580B4C048D19A3D019C /* UserNotifications.framework in Frameworks */,
