@@ -1,3 +1,4 @@
+import { StyleSheet } from 'react-native';
 import { realBarHeight } from 'component/navBar';
 import { headerHeight } from './header';
 
@@ -21,5 +22,19 @@ export default {
     left: 12,
     right: 12,
     top: realBarHeight + 64 - headerHeight / 2,
+  },
+  scroll: {
+    container: {
+      backgroundColor: 'white',
+    },
+    content: {
+      paddingTop: 85,
+    },
+    divider: {
+      height: StyleSheet.hairlineWidth,
+      backgroundColor: '#E9E9E9',
+      marginLeft: 12,
+      marginVertical: 15,
+    },
   },
 };
