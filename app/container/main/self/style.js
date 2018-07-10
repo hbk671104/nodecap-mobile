@@ -8,11 +8,6 @@ export default {
     backgroundColor: 'white',
   },
   navBar: {
-    title: {
-      fontSize: 17,
-      color: 'white',
-      fontWeight: 'bold',
-    },
     bottom: {
       height: 64,
     },

@@ -3,40 +3,30 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 
 import NavBar from 'component/navBar';
-import Header from './header';
+import Touchable from 'component/uikit/touchable';
 import Item from './item';
 import styles from './style';
 
 @connect(({ user }) => ({
   user: user.currentUser,
 }))
-class Self extends Component {
-  renderNavBar = () => <NavBar gradient title="设置" />;
-
+class Settings extends Component {
   render() {
     const { user } = this.props;
     return (
       <View style={styles.container}>
-        {this.renderNavBar()}
-        <ScrollView
-          style={styles.scroll.container}
-          contentContainerStyle={styles.scroll.content}
-        >
-          <Item icon={require('asset/mine/fund.png')} title="我的基金" />
-          <Item icon={require('asset/mine/resources.png')} title="我的人脉" />
-          <Item icon={require('asset/mine/colleague.png')} title="我的同事" />
-          <View style={styles.scroll.divider} />
-          <Item
-            icon={require('asset/mine/notif.png')}
-            title="通知中心"
-            badge={24}
-          />
-          <Item icon={require('asset/mine/settings.png')} title="设置" />
+        <NavBar gradient back title="设置" />
+        <ScrollView contentContainerStyle={styles.scroll.content}>
+          <Item title="清除缓存" content="10.92M" />
+          <Item title="检测新版本" content="v1.0" />
+          <Item title="评价 Hotnode" />
         </ScrollView>
-        <Header style={styles.header} user={user} />
+        <Touchable style={styles.bottom.container}>
+          <Text style={styles.bottom.title}>退出当前账号</Text>
+        </Touchable>
       </View>
     );
   }
 }
 
-export default Self;
+export default Settings;

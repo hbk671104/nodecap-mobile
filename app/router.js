@@ -21,18 +21,10 @@ import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
 import Management from 'container/main/management';
 import Self from 'container/main/self';
-import Codepush from 'container/codepush';
+import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
-
-const CodePushStack = createStackNavigator(
-  {
-    Loading: Codepush,
-  },
-  {
-    headerMode: 'none',
-  },
-);
+import Settings from 'container/main/self/settings';
 
 const AuthStack = createStackNavigator(
   {
@@ -131,6 +123,7 @@ const MainStack = createStackNavigator(
     Tab,
     PortfolioDetail,
     Search,
+    Settings,
   },
   {
     headerMode: 'none',
@@ -141,7 +134,7 @@ const AppRouter = createSwitchNavigator(
   {
     Auth: AuthStack,
     Main: MainStack,
-    CodePush: CodePushStack,
+    CodePush: CodePushPage,
     Landing: RehydrateLoader,
   },
   {

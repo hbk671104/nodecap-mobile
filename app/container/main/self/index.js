@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Header from './header';
@@ -11,6 +12,14 @@ import styles from './style';
   user: user.currentUser,
 }))
 class Self extends Component {
+  handleSettingsPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Settings',
+      }),
+    );
+  };
+
   renderNavBar = () => (
     <NavBar
       gradient
@@ -34,7 +43,11 @@ class Self extends Component {
             title="通知中心"
             badge={24}
           />
-          <Item icon={require('asset/mine/settings.png')} title="设置" />
+          <Item
+            icon={require('asset/mine/settings.png')}
+            title="设置"
+            onPress={this.handleSettingsPress}
+          />
         </ScrollView>
         <Header style={styles.header} user={user} />
       </View>
