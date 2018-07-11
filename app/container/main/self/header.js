@@ -51,8 +51,9 @@ const styles = {
   },
   content: {
     container: {
-      // flex: 1,
+      flex: 1,
       marginHorizontal: 15,
+      alignItems: 'flex-start',
     },
     title: {
       fontSize: 17,

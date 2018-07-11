@@ -31,7 +31,7 @@ const item = ({
 
 const styles = {
   container: {
-    height: 55,
+    minHeight: 55,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12,
@@ -43,12 +43,13 @@ const styles = {
     fontSize: 14,
     color: 'rgba(0, 0, 0, 0.85)',
   },
-  group: {
-    flex: 1,
-  },
+  group: {},
   content: {
     container: {
+      flex: 1,
+      marginLeft: 10,
       marginRight: 10,
+      alignItems: 'flex-end',
     },
     text: {
       fontSize: 14,
