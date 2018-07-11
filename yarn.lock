@@ -5913,9 +5913,9 @@ react-native-code-push-saga@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-code-push-saga/-/react-native-code-push-saga-1.0.1.tgz#66af9a7ede4cfd5e2dbf6752ebbcac2933f05886"
 
-react-native-code-push@^5.3.5:
-  version "5.3.5"
-  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-5.3.5.tgz#fd092a9cf5097cb3ce674cf9a2447e43b7c1108a"
+react-native-code-push@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-code-push/-/react-native-code-push-5.4.0.tgz#f8e1309a89c66c624079cd4a158a6dac31a8aa1d"
   dependencies:
     code-push "2.0.5"
     glob "^5.0.15"

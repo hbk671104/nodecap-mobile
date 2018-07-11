@@ -1,6 +1,6 @@
 import React from 'react';
-import { AppRegistry, UIManager, Platform } from 'react-native';
-import { autoRehydrate } from 'redux-persist';
+import { AppRegistry, UIManager, Platform, AsyncStorage } from 'react-native';
+import { autoRehydrate, persistStore } from 'redux-persist';
 import * as WeChat from 'react-native-wechat';
 import { Sentry } from 'react-native-sentry';
 import JPush from 'jpush-react-native';
@@ -35,6 +35,18 @@ const app = dva({
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
 });
+
+export let persistor;
+export const persist = callback => {
+  persistor = persistStore(
+    app._store,
+    {
+      storage: AsyncStorage,
+      blacklist: ['loading', 'router', 'project', 'fund', 'portfolio'],
+    },
+    callback,
+  );
+};
 
 const App = app.start(<Router store={app._store} />);
 

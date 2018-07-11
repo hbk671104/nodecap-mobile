@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { View, AsyncStorage } from 'react-native';
-import { persistStore } from 'redux-persist';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import { connect } from '../../utils/dva';
 import { NavigationActions } from '../../utils';
-import store from '../../../index';
+import { persist } from '../../../index';
 
 @connect(({ global, login }) => ({
   constants: global.constants,
@@ -18,42 +16,33 @@ class RehydrateLoader extends Component {
   }
 
   componentWillMount() {
-    SplashScreen.hide();
+    persist(async () => {
+      if (this.props.isLogin) {
+        await this.props.dispatch({
+          type: 'global/startup',
+        });
 
-    persistStore(
-      store,
-      {
-        storage: AsyncStorage,
-        blacklist: ['loading', 'router', 'project', 'fund', 'portfolio'],
-      },
-      async () => {
-        if (this.props.isLogin) {
-          this.props.dispatch({
-            type: 'global/startup',
-          });
+        await this.props.dispatch({
+          type: 'global/initial',
+        });
 
-          await this.props.dispatch({
-            type: 'global/initial',
-          });
-
-          this.props.dispatch(
-            NavigationActions.navigate({
-              routeName: 'Main',
-            })
-          );
-        } else {
-          this.props.dispatch(
-            NavigationActions.navigate({
-              routeName: 'Auth',
-            })
-          );
-        }
-        initializeListeners('root', this.props.router);
-
-        // Splash Screen came off
-        SplashScreen.hide();
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'Main',
+          }),
+        );
+      } else {
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'Auth',
+          }),
+        );
       }
-    );
+      initializeListeners('root', this.props.router);
+
+      // Splash Screen came off
+      SplashScreen.hide();
+    });
   }
 
   render() {
