@@ -4,12 +4,10 @@ import { connect } from 'react-redux';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
-import Item from './item';
+import ListItem from 'component/listItem';
 import styles from './style';
 
-@connect(({ user }) => ({
-  user: user.currentUser,
-}))
+@connect()
 class Settings extends Component {
   logout = () => {
     this.props.dispatch({ type: 'login/logout' });
@@ -23,14 +21,13 @@ class Settings extends Component {
   };
 
   render() {
-    const { user } = this.props;
     return (
       <View style={styles.container}>
         <NavBar gradient back title="设置" />
         <ScrollView contentContainerStyle={styles.scroll.content}>
-          <Item title="清除缓存" content="10.92M" />
-          <Item title="检测新版本" content="v1.0" />
-          <Item title="评价 Hotnode" />
+          <ListItem title="清除缓存" content="10.92M" />
+          <ListItem title="检测新版本" content="v1.0" />
+          <ListItem title="评价 Hotnode" />
         </ScrollView>
         <Touchable
           style={styles.bottom.container}
