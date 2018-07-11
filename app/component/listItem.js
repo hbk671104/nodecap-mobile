@@ -4,14 +4,25 @@ import { View, Text, StyleSheet } from 'react-native';
 import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 
-const item = ({ title, titleStyle, content, contentStyle, onPress }) => (
+const item = ({
+  title,
+  titleStyle,
+  content,
+  contentStyle,
+  renderContent,
+  onPress,
+}) => (
   <Touchable foreground onPress={onPress}>
     <View style={styles.container}>
       <View style={styles.group}>
         <Text style={[styles.title, titleStyle]}>{title}</Text>
       </View>
       <View style={styles.content.container}>
-        <Text style={[styles.content.text, contentStyle]}>{content}</Text>
+        {renderContent ? (
+          renderContent()
+        ) : (
+          <Text style={[styles.content.text, contentStyle]}>{content}</Text>
+        )}
       </View>
       <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
     </View>
@@ -57,6 +68,7 @@ item.propTypes = {
   titleStyle: PropTypes.object,
   content: PropTypes.string,
   contentStyle: PropTypes.object,
+  renderContent: PropTypes.func,
   onPress: PropTypes.func,
 };
 

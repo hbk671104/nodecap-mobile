@@ -24,7 +24,7 @@ class Settings extends Component {
     return (
       <View style={styles.container}>
         <NavBar gradient back title="设置" />
-        <ScrollView contentContainerStyle={styles.scroll.content}>
+        <ScrollView>
           <ListItem title="清除缓存" content="10.92M" />
           <ListItem title="检测新版本" content="v1.0" />
           <ListItem title="评价 Hotnode" />

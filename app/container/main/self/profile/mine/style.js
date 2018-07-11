@@ -4,6 +4,16 @@ export default {
     backgroundColor: 'white',
   },
   navBar: {},
+  listItem: {
+    title: {
+      color: 'rgba(0, 0, 0, 0.45)',
+      fontSize: 14,
+    },
+    content: {
+      color: 'rgba(0, 0, 0, 0.85)',
+      fontSize: 14,
+    },
+  },
   bottom: {
     container: {
       height: 49,

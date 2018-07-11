@@ -25,6 +25,8 @@ import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
 import Settings from 'container/main/self/settings';
+import MyProfile from 'container/main/self/profile/mine';
+import EditProfile from 'container/main/self/profile/edit';
 
 const AuthStack = createStackNavigator(
   {
@@ -124,6 +126,8 @@ const MainStack = createStackNavigator(
     PortfolioDetail,
     Search,
     Settings,
+    MyProfile,
+    EditProfile,
   },
   {
     headerMode: 'none',

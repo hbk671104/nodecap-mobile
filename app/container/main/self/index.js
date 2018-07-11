@@ -20,6 +20,14 @@ class Self extends Component {
     );
   };
 
+  handleHeaderPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'MyProfile',
+      }),
+    );
+  };
+
   renderNavBar = () => (
     <NavBar
       gradient
@@ -49,7 +57,11 @@ class Self extends Component {
             onPress={this.handleSettingsPress}
           />
         </ScrollView>
-        <Header style={styles.header} user={user} />
+        <Header
+          style={styles.header}
+          user={user}
+          onPress={this.handleHeaderPress}
+        />
       </View>
     );
   }

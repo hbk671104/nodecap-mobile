@@ -1,29 +1,33 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { TextInput } from 'react-native';
 
-const textInput = props => (
-  <TextInput
-    {...props}
-    style={[styles, props.style]}
-    underlineColorAndroid="transparent"
-    placeholderTextColor={props.placeholderTextColor}
-    clearButtonMode="while-editing"
-  />
-);
+class Input extends PureComponent {
+  static propTypes = {
+    placeholderTextColor: PropTypes.string,
+  };
 
-textInput.defaultProps = {
-  placeholderTextColor: '#999999',
-};
+  static defaultProps = {
+    placeholderTextColor: '#999999',
+  };
 
-textInput.propTypes = {
-  mask: PropTypes.string,
-  placeholderTextColor: PropTypes.string,
-};
+  render() {
+    return (
+      <TextInput
+        {...this.props}
+        style={[styles, this.props.style]}
+        underlineColorAndroid="transparent"
+        placeholderTextColor={this.props.placeholderTextColor}
+        clearButtonMode="while-editing"
+        onChangeText={this.props.onChange}
+      />
+    );
+  }
+}
 
 const styles = {
   paddingTop: 0,
   paddingBottom: 0,
 };
 
-export default textInput;
+export default Input;
