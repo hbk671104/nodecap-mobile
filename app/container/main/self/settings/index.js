@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
@@ -13,11 +12,7 @@ import styles from './style';
 }))
 class Settings extends Component {
   logout = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Auth',
-      }),
-    );
+    this.props.dispatch({ type: 'login/logout' });
   };
 
   handleLogoutPress = () => {
