@@ -28,26 +28,37 @@ class MyProfile extends Component {
 
   handleAvatarPress = () => {
     this.setState({ barStyle: 'dark-content' }, () => {
-      ImagePicker.showImagePicker(null, response => {
-        this.setState({ barStyle: 'light-content' }, () => {
-          if (response.didCancel) {
-            console.log('User cancelled image picker');
-          } else if (response.error) {
-            console.log('ImagePicker Error: ', response.error);
-          } else if (response.customButton) {
-            console.log('User tapped custom button: ', response.customButton);
-          } else {
-            const source = { uri: response.uri };
+      ImagePicker.showImagePicker(
+        {
+          title: null,
+          chooseFromLibraryButtonTitle: '相册中选择...',
+          takePhotoButtonTitle: '拍照...',
+          cancelButtonTitle: '取消',
+          mediaType: 'photo',
+          quality: 1,
+          allowsEditing: true,
+        },
+        response => {
+          this.setState({ barStyle: 'light-content' }, () => {
+            if (response.didCancel) {
+              console.log('User cancelled image picker');
+            } else if (response.error) {
+              console.log('ImagePicker Error: ', response.error);
+            } else if (response.customButton) {
+              console.log('User tapped custom button: ', response.customButton);
+            } else {
+              const source = { uri: response.uri };
 
-            // You can also display the image using data:
-            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+              // You can also display the image using data:
+              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-            // this.setState({
-            //   avatarSource: source,
-            // });
-          }
-        });
-      });
+              // this.setState({
+              //   avatarSource: source,
+              // });
+            }
+          });
+        },
+      );
     });
   };
 
