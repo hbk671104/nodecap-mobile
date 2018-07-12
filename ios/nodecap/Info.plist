@@ -60,11 +60,15 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Hotnode 需要您的同意, 才能读取定位信息</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Hotnode 需要您的同意, 才能写入相册</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Hotnode 需要您的同意, 才能访问相册</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Hotnode 需要您的同意, 才能使用相机</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Hotnode 需要您的同意, 才能使用麦克风</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Entypo.ttf</string>

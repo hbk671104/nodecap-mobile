@@ -10,7 +10,7 @@ export const setStatusBar = (barStyle, animated = false) => {
 };
 
 const statusBar = props => (
-  <StatusBar {...props} animated={false} translucent backgroundColor="transparent" />
+  <StatusBar {...props} animated translucent backgroundColor="transparent" />
 );
 
 export default statusBar;

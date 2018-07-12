@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import ImagePicker from 'react-native-image-picker';
 
 import NavBar from 'component/navBar';
 import Avatar from 'component/uikit/avatar';
@@ -12,6 +13,10 @@ import styles from './style';
   user: user.currentUser,
 }))
 class MyProfile extends Component {
+  state = {
+    barStyle: 'light-content',
+  };
+
   handleItemPress = params => () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -21,11 +26,36 @@ class MyProfile extends Component {
     );
   };
 
+  handleAvatarPress = () => {
+    this.setState({ barStyle: 'dark-content' }, () => {
+      ImagePicker.showImagePicker(null, response => {
+        this.setState({ barStyle: 'light-content' }, () => {
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+          } else {
+            const source = { uri: response.uri };
+
+            // You can also display the image using data:
+            // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+            // this.setState({
+            //   avatarSource: source,
+            // });
+          }
+        });
+      });
+    });
+  };
+
   render() {
     const { user } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient back title="我的信息" />
+        <NavBar barStyle={this.state.barStyle} gradient back title="我的信息" />
         <ScrollView>
           <ListItem
             title="头像"
@@ -37,6 +67,7 @@ class MyProfile extends Component {
                 source={{ uri: user.avatar_url }}
               />
             )}
+            onPress={this.handleAvatarPress}
           />
           <ListItem
             title="姓名"

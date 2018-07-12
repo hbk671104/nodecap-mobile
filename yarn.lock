@@ -4026,9 +4026,9 @@ istanbul-reports@^1.3.0:
   dependencies:
     handlebars "^4.0.3"
 
-jcore-react-native@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/jcore-react-native/-/jcore-react-native-1.2.6.tgz#7a45596ebb5b5581f58c772feb15a38e3176360b"
+jcore-react-native@^1.2.7:
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/jcore-react-native/-/jcore-react-native-1.2.7.tgz#94bc3abc0626f527b02480366cfaa72254e78a78"
 
 jest-changed-files@^22.2.0:
   version "22.4.3"
@@ -4328,9 +4328,9 @@ jest@23.0.0:
     import-local "^1.0.0"
     jest-cli "^23.0.0"
 
-jpush-react-native@^2.2.5:
-  version "2.2.5"
-  resolved "https://registry.yarnpkg.com/jpush-react-native/-/jpush-react-native-2.2.5.tgz#a9fc0b198f020a1c8b5a2a387f03fb08e10c1312"
+jpush-react-native@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/jpush-react-native/-/jpush-react-native-2.2.6.tgz#aa57dddbb9d04e820432e2d5641fdc4be8a8da3b"
   dependencies:
     inquirer "*"
     mpatch "^0.1.0"
@@ -5973,6 +5973,10 @@ react-native-exit-app@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-exit-app/-/react-native-exit-app-1.0.0.tgz#a2fbb121d902e6967cd8a365fe8453e5c4bc3172"
 
+react-native-image-picker@^0.26.10:
+  version "0.26.10"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.10.tgz#0bb9ab928984948c67aee0b9e64216bee007a9fc"
+
 react-native-iphone-x-helper@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.3.tgz#7a2f1e0574e899a0f1d426e6167fd98990083214"
@@ -6040,9 +6044,9 @@ react-native-safe-area-view@^0.8.0:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-react-native-sentry@^0.38.1:
-  version "0.38.1"
-  resolved "https://registry.yarnpkg.com/react-native-sentry/-/react-native-sentry-0.38.1.tgz#a65540db41886cc0dd803012b0044b8e9f38199a"
+react-native-sentry@^0.38.2:
+  version "0.38.2"
+  resolved "https://registry.yarnpkg.com/react-native-sentry/-/react-native-sentry-0.38.2.tgz#13f203519086bba2d5297c810c43a8feab179c36"
   dependencies:
     "@sentry/wizard" "^0.9.5"
     raven-js "^3.24.2"
