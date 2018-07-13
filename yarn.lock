@@ -5785,9 +5785,9 @@ rc-collapse@~1.9.1:
     prop-types "^15.5.6"
     rc-animate "2.x"
 
-rc-form@^2.2.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/rc-form/-/rc-form-2.2.0.tgz#ea596c6c92c7df6092f95cbbf8f15014ea07e9f5"
+rc-form@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/rc-form/-/rc-form-2.2.1.tgz#9c6d968f1460fd3872d2e9371324d717775af260"
   dependencies:
     async-validator "1.x"
     babel-runtime "6.x"
