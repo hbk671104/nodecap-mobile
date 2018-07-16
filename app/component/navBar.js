@@ -19,6 +19,7 @@ class NavBar extends Component {
     renderTitle: PropTypes.func,
     renderBottom: PropTypes.func,
     hidden: PropTypes.bool,
+    bottomHidden: PropTypes.bool,
     gradient: PropTypes.bool,
     back: PropTypes.bool,
     title: PropTypes.string,
@@ -27,12 +28,16 @@ class NavBar extends Component {
   static defaultProps = {
     barStyle: 'light-content',
     hidden: false,
+    bottomHidden: false,
     gradient: false,
     back: false,
   };
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.hidden !== this.props.hidden) {
+    if (
+      nextProps.hidden !== this.props.hidden ||
+      nextProps.bottomHidden !== this.props.bottomHidden
+    ) {
       LayoutAnimation.easeInEaseOut();
     }
   }
@@ -51,6 +56,7 @@ class NavBar extends Component {
       renderRight,
       renderBottom,
       hidden,
+      bottomHidden,
       gradient,
       back,
       title,
@@ -90,7 +96,7 @@ class NavBar extends Component {
             </View>
           </View>
         </Animated.View>
-        {renderBottom && renderBottom()}
+        {renderBottom && !bottomHidden && renderBottom()}
       </WrapperComp>
     );
   }
