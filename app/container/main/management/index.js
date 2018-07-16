@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';
+import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
@@ -12,14 +14,23 @@ import Header from './header';
 import styles from './style';
 
 @compose(withState('offsetY', 'setOffsetY', 0))
+@connect()
 class Management extends Component {
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     this.props.setOffsetY(contentOffset.y);
   };
 
+  handleKeyPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'KeyManagement',
+      }),
+    );
+  };
+
   renderNavBarRight = () => (
     <View style={styles.navBar.right.container}>
-      <Touchable style={{ marginRight: 12 }}>
+      <Touchable style={{ marginRight: 12 }} onPress={this.handleKeyPress}>
         <Image
           resizeMode="contain"
           style={styles.navBar.right.item}
@@ -57,6 +68,7 @@ class Management extends Component {
         />
         {this.renderListHeader()}
         <List
+          contentContainerStyle={styles.list.contentContainer}
           // action={this.requestData}
           data={[
             { id: 1 },

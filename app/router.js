@@ -24,6 +24,7 @@ import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
+import KeyManagement from 'container/main/management/key';
 import Settings from 'container/main/self/settings';
 import MyProfile from 'container/main/self/profile/mine';
 import EditProfile from 'container/main/self/profile/edit';
@@ -125,6 +126,7 @@ const MainStack = createStackNavigator(
     Tab,
     PortfolioDetail,
     Search,
+    KeyManagement,
     Settings,
     MyProfile,
     EditProfile,

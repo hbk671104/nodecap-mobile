@@ -26,4 +26,9 @@ export default {
     backgroundColor: '#E9E9E9',
     height: StyleSheet.hairlineWidth,
   },
+  list: {
+    contentContainer: {
+      paddingVertical: 0,
+    },
+  },
 };

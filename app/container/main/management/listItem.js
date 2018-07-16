@@ -1,25 +1,38 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { View, Text, Image } from 'react-native';
 
-const listItem = props => (
-  <View style={styles.container}>
-    <View style={styles.left.container}>
-      <Image style={styles.left.avatar} />
-      <View style={styles.left.group}>
-        <Text style={styles.left.title}>ZIL</Text>
-        <Text style={styles.left.source}>钱包倒入</Text>
+import Touchable from 'component/uikit/touchable';
+
+const listItem = ({ onPress }) => (
+  <Touchable onPress={onPress}>
+    <View style={styles.container}>
+      <View style={styles.left.container}>
+        <Image style={styles.left.avatar} />
+        <View style={styles.left.group}>
+          <Text style={styles.left.title}>ZIL</Text>
+          <Text style={styles.left.source}>钱包倒入</Text>
+        </View>
+      </View>
+      <View style={styles.middle.container}>
+        <Text style={styles.middle.title}>283,713.01</Text>
+        <Text style={styles.middle.subtitle}>3,823,761 ZIL</Text>
+      </View>
+      <View style={styles.right.container}>
+        <Text style={styles.right.price}>0.4343</Text>
+        <Text style={styles.right.change}>-0.35%</Text>
       </View>
     </View>
-    <View style={styles.middle.container}>
-      <Text style={styles.middle.title}>283,713.01</Text>
-      <Text style={styles.middle.subtitle}>3,823,761 ZIL</Text>
-    </View>
-    <View style={styles.right.container}>
-      <Text style={styles.right.price}>0.4343</Text>
-      <Text style={styles.right.change}>-0.35%</Text>
-    </View>
-  </View>
+  </Touchable>
 );
+
+listItem.defaultProps = {
+  onPress: () => null,
+};
+
+listItem.propTypes = {
+  onPress: PropTypes.func,
+};
 
 const styles = {
   container: {
