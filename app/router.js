@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { BackHandler, Linking, Alert, Image } from 'react-native';
 import RNExitApp from 'react-native-exit-app';
-import { NavigationActions } from './utils';
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -11,8 +10,10 @@ import {
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import RehydrateLoader from './component/RehydrateLoader';
 import { connect } from './utils/dva';
+import { NavigationActions } from './utils';
 
 // Screen
 import Login from 'container/auth/login';
@@ -204,7 +205,11 @@ class Router extends PureComponent {
       state: router,
       addListener,
     };
-    return <AppRouter navigation={navigation} />;
+    return (
+      <ActionSheetProvider>
+        <AppRouter navigation={navigation} />
+      </ActionSheetProvider>
+    );
   }
 }
 

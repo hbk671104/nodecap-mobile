@@ -20,6 +20,7 @@
     "codepush:ios:staging": "code-push release-react hotnode-ios ios -d Staging -m"
   },
   "dependencies": {
+    "@expo/react-native-action-sheet": "^1.0.2",
     "accounting": "^0.4.1",
     "antd-mobile": "^2.1.11",
     "axios": "^0.18.0",

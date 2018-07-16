@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
@@ -8,7 +9,21 @@ import Touchable from 'component/uikit/touchable';
 import KeyItem from './item';
 import styles from './style';
 
+@connectActionSheet
 class KeyManagement extends Component {
+  handleItemPress = () => {
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['查看 API Key', '重置', '删除', '取消'],
+        cancelButtonIndex: 3,
+        destructiveButtonIndex: 2,
+      },
+      buttonIndex => {
+        // Do something here depending on the button index selected
+      },
+    );
+  };
+
   renderNavBarRight = () => (
     <View style={styles.navBar.right.container}>
       <Touchable>
@@ -28,7 +43,7 @@ class KeyManagement extends Component {
     </View>
   );
 
-  renderItem = ({ item }) => <KeyItem />;
+  renderItem = ({ item }) => <KeyItem onPress={this.handleItemPress} />;
 
   renderSeparator = () => <View style={styles.separator} />;
 
