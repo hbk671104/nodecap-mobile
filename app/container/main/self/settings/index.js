@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
 
 import NavBar from 'component/navBar';
-import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
+import AuthButton from 'component/auth/button';
 import styles from './style';
 
 @connect()
@@ -29,12 +29,12 @@ class Settings extends Component {
           <ListItem title="检测新版本" content="v1.0" />
           <ListItem title="评价 Hotnode" />
         </ScrollView>
-        <Touchable
+        <AuthButton
           style={styles.bottom.container}
-          onPress={this.handleLogoutPress}
-        >
-          <Text style={styles.bottom.title}>退出当前账号</Text>
-        </Touchable>
+          disabled={false}
+          title="退出登录"
+          onPress={this.logout}
+        />
       </View>
     );
   }

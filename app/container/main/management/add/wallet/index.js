@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
+import { createForm } from 'rc-form';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
 import Input from 'component/uikit/textInput';
+import AuthButton from 'component/auth/button';
 
 import styles from './style';
 
+@createForm()
 class AddWallet extends Component {
+  handleImportPress = () => {};
+
   render() {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const address = getFieldValue('address');
     return (
       <View style={styles.container}>
         <NavBar back gradient title="从钱包导入" />
@@ -32,10 +39,20 @@ class AddWallet extends Component {
             titleStyle={styles.listItem.title}
             contentContainerStyle={styles.listItem.content.container}
             renderContent={() => (
-              <Input placeholder="请手动输入或粘贴您的钱包地址" />
+              <View>
+                {getFieldDecorator('address')(
+                  <Input placeholder="请手动输入或粘贴您的钱包地址" />,
+                )}
+              </View>
             )}
           />
         </ScrollView>
+        <AuthButton
+          style={styles.import.container}
+          title="导 入"
+          disabled={!address}
+          onPress={this.handleImportPress}
+        />
       </View>
     );
   }

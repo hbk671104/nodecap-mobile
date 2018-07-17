@@ -6,18 +6,11 @@ export default {
   navBar: {},
   bottom: {
     container: {
-      height: 49,
       position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: '#FF3C00',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    title: {
-      color: 'white',
-      fontSize: 15,
+      left: 24,
+      right: 24,
+      bottom: 24,
+      backgroundColor: '#F7423A',
     },
   },
 };

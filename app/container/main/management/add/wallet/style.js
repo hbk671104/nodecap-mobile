@@ -32,4 +32,12 @@ export default {
       fontSize: 13,
     },
   },
+  import: {
+    container: {
+      position: 'absolute',
+      left: 24,
+      right: 24,
+      bottom: 24,
+    },
+  },
 };

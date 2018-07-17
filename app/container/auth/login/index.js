@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
+import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
