@@ -34,13 +34,13 @@ class AddHolding extends Component {
       <View style={styles.container}>
         <NavBar back gradient title="记录持仓盈亏" />
         <ScrollView>
-          <ListItem
+          {/* <ListItem
             style={styles.listItem.container}
             icon={require('asset/management/add/manual.png')}
             title="手动模式"
             titleStyle={styles.listItem.title}
             subtitle="支持手动添加用户记录交易所，法币资产"
-          />
+          /> */}
           <ListItem
             style={styles.listItem.container}
             icon={require('asset/management/add/wallet.png')}

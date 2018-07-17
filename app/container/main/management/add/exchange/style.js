@@ -40,4 +40,14 @@ export default {
       bottom: 24,
     },
   },
+  help: {
+    container: {
+      marginTop: 15,
+      marginLeft: 12,
+    },
+    title: {
+      color: 'rgba(3, 3, 3, 0.45)',
+      fontSize: 12,
+    },
+  },
 };

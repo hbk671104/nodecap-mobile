@@ -6,6 +6,7 @@ import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
 import Input from 'component/uikit/textInput';
 import AuthButton from 'component/auth/button';
+import Icon from 'component/uikit/icon';
 
 import styles from './style';
 
@@ -56,6 +57,12 @@ class AddExchange extends Component {
               </View>
             )}
           />
+          <View style={styles.help.container}>
+            <Text style={styles.help.title}>
+              查看获取 {title} 的 API Key 和 Secret Key 的方式{' '}
+              <Icon name="arrow-forward" color="rgba(0, 0, 0, 0.25)" />
+            </Text>
+          </View>
         </ScrollView>
         <AuthButton
           style={styles.import.container}
