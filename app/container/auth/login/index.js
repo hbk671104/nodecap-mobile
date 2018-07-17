@@ -48,7 +48,13 @@ class Login extends Component {
           <View style={{ marginTop: 55 }}>
             {getFieldDecorator('account', {
               rules: [{ required: true, message: '请输入邮箱账号' }],
-            })(<AuthInput style={styles.input} title="账号" placeholder="请输入邮箱账号" />)}
+            })(
+              <AuthInput
+                style={styles.input}
+                title="账号"
+                placeholder="请输入邮箱账号"
+              />,
+            )}
             {getFieldDecorator('password', {
               rules: [{ required: true, message: '请输入密码' }],
             })(
@@ -57,7 +63,7 @@ class Login extends Component {
                 title="密码"
                 placeholder="请输入密码"
                 inputProps={{ secureTextEntry: true }}
-              />
+              />,
             )}
           </View>
           <AuthButton
