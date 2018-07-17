@@ -41,6 +41,14 @@ export default {
       paddingVertical: 0,
     },
   },
+  item: {
+    container: {
+      minHeight: 60,
+    },
+    title: {
+      fontWeight: 'bold',
+    },
+  },
   separator: {
     backgroundColor: '#E9E9E9',
     height: StyleSheet.hairlineWidth,

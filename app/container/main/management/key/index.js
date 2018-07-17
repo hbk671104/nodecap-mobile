@@ -5,8 +5,8 @@ import { connectActionSheet } from '@expo/react-native-action-sheet';
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import Touchable from 'component/uikit/touchable';
+import ListItem from 'component/listItem';
 
-import KeyItem from './item';
 import styles from './style';
 
 @connectActionSheet
@@ -26,7 +26,7 @@ class KeyManagement extends Component {
 
   renderNavBarRight = () => (
     <View style={styles.navBar.right.container}>
-      <Touchable>
+      <Touchable borderless>
         <Text style={styles.navBar.right.text}>更新</Text>
       </Touchable>
     </View>
@@ -43,7 +43,17 @@ class KeyManagement extends Component {
     </View>
   );
 
-  renderItem = ({ item }) => <KeyItem onPress={this.handleItemPress} />;
+  renderItem = ({ item, index }) => (
+    <ListItem
+      style={styles.item.container}
+      noBottomBorder
+      icon={require('asset/management/exchange/huobi.png')}
+      title={`${index}`}
+      titleStyle={styles.item.title}
+      subtitle="上次同步时间：2018/06/14 10:43:20"
+      onPress={this.handleItemPress}
+    />
+  );
 
   renderSeparator = () => <View style={styles.separator} />;
 
@@ -60,12 +70,10 @@ class KeyManagement extends Component {
           contentContainerStyle={styles.list.contentContainer}
           // action={this.requestData}
           data={[{ id: 1 }, { id: 2 }]}
-          // pagination={pagination}
           // loading={loading}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           renderSeparator={this.renderSeparator}
-          // renderHeader={this.renderHeader}
         />
       </View>
     );

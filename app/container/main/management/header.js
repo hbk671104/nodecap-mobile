@@ -39,7 +39,7 @@ class Header extends PureComponent {
         </View>
         <View style={styles.bottom.container}>
           <View style={styles.bottom.group.container}>
-            <Touchable onPress={this.handleItemPress('24h')}>
+            <Touchable borderless onPress={this.handleItemPress('24h')}>
               <View style={styles.bottom.group.wrapper}>
                 <Text style={styles.bottom.group.title}>24H</Text>
                 {timeSpan === '24h' && (
@@ -49,7 +49,7 @@ class Header extends PureComponent {
             </Touchable>
           </View>
           <View style={styles.bottom.group.container}>
-            <Touchable onPress={this.handleItemPress('w')}>
+            <Touchable borderless onPress={this.handleItemPress('w')}>
               <View style={styles.bottom.group.wrapper}>
                 <Text style={styles.bottom.group.title}>周</Text>
                 {timeSpan === 'w' && (
@@ -59,7 +59,7 @@ class Header extends PureComponent {
             </Touchable>
           </View>
           <View style={styles.bottom.group.container}>
-            <Touchable onPress={this.handleItemPress('m')}>
+            <Touchable borderless onPress={this.handleItemPress('m')}>
               <View style={styles.bottom.group.wrapper}>
                 <Text style={styles.bottom.group.title}>月</Text>
                 {timeSpan === 'm' && (
@@ -69,7 +69,7 @@ class Header extends PureComponent {
             </Touchable>
           </View>
           <View style={styles.bottom.group.container}>
-            <Touchable onPress={this.handleItemPress('y')}>
+            <Touchable borderless onPress={this.handleItemPress('y')}>
               <View style={styles.bottom.group.wrapper}>
                 <Text style={styles.bottom.group.title}>年</Text>
                 {timeSpan === 'y' && (
