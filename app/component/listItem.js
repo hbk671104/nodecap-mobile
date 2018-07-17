@@ -15,11 +15,12 @@ const item = ({
   icon,
   children,
   noBottomBorder,
+  disablePress,
   renderContent,
   onPress,
 }) => (
   <View>
-    <Touchable foreground onPress={onPress}>
+    <Touchable foreground disabled={disablePress} onPress={onPress}>
       <View
         style={[
           styles.container,
@@ -43,7 +44,9 @@ const item = ({
             <Text style={[styles.content.text, contentStyle]}>{content}</Text>
           )}
         </View>
-        <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
+        {!disablePress && (
+          <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
+        )}
       </View>
     </Touchable>
     {children}
@@ -98,6 +101,7 @@ item.defaultProps = {
   contentStyle: {},
   style: {},
   noBottomBorder: false,
+  disablePress: false,
 };
 
 item.propTypes = {
@@ -111,6 +115,7 @@ item.propTypes = {
   icon: PropTypes.number,
   noBottomBorder: PropTypes.bool,
   renderContent: PropTypes.func,
+  disablePress: PropTypes.bool,
   onPress: PropTypes.func,
 };
 

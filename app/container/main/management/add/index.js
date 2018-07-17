@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -11,7 +11,7 @@ class AddHolding extends Component {
     return (
       <View style={styles.container}>
         <NavBar back gradient title="记录持仓盈亏" />
-        <View>
+        <ScrollView>
           <ListItem
             style={styles.listItem.container}
             icon={require('asset/management/add/manual.png')}
@@ -28,13 +28,43 @@ class AddHolding extends Component {
           />
           <ListItem
             noBottomBorder
+            disablePress
             style={styles.listItem.container}
             icon={require('asset/management/add/automatic.png')}
             title="自动模式"
             titleStyle={styles.listItem.title}
             subtitle="使用交易所API自动同步"
-          />
-        </View>
+          >
+            <ListItem
+              noBottomBorder
+              style={styles.exchangeItem.container}
+              // icon={require('asset/management/add/automatic.png')}
+              title="Huobi Pro"
+              titleStyle={styles.exchangeItem.title}
+            />
+            <ListItem
+              noBottomBorder
+              style={styles.exchangeItem.container}
+              // icon={require('asset/management/add/automatic.png')}
+              title="Binance"
+              titleStyle={styles.exchangeItem.title}
+            />
+            <ListItem
+              noBottomBorder
+              style={styles.exchangeItem.container}
+              // icon={require('asset/management/add/automatic.png')}
+              title="Gate.io"
+              titleStyle={styles.exchangeItem.title}
+            />
+            <ListItem
+              noBottomBorder
+              style={styles.exchangeItem.container}
+              // icon={require('asset/management/add/automatic.png')}
+              title="OKEx"
+              titleStyle={styles.exchangeItem.title}
+            />
+          </ListItem>
+        </ScrollView>
       </View>
     );
   }

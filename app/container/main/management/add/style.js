@@ -15,6 +15,16 @@ export default {
       color: 'rgba(0, 0, 0, 0.85)',
     },
   },
+  exchangeItem: {
+    container: {
+      minHeight: 40,
+      paddingLeft: 12 + 32,
+    },
+    title: {
+      fontSize: 14,
+      color: 'rgba(0, 0, 0, 0.65)',
+    },
+  },
   separator: {
     backgroundColor: '#E9E9E9',
     height: StyleSheet.hairlineWidth,
