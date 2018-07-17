@@ -3,6 +3,7 @@ package com.nodecap;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.realm.react.RealmReactPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.oblador.keychain.KeychainPackage;
 
@@ -50,6 +51,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RealmReactPackage(),
             new ImagePickerPackage(),
             new KeychainPackage(),
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),

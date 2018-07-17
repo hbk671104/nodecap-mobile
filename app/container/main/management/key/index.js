@@ -7,10 +7,15 @@ import List from 'component/uikit/list';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 
+import { getKeychain } from '../../../../utils/keychain';
 import styles from './style';
 
 @connectActionSheet
 class KeyManagement extends Component {
+  requestKeychain = () => {
+    getKeychain();
+  };
+
   handleItemPress = () => {
     this.props.showActionSheetWithOptions(
       {
@@ -68,7 +73,7 @@ class KeyManagement extends Component {
         />
         <List
           contentContainerStyle={styles.list.contentContainer}
-          // action={this.requestData}
+          action={this.requestKeychain}
           data={[{ id: 1 }, { id: 2 }]}
           // loading={loading}
           renderItem={this.renderItem}

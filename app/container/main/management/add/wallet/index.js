@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { createForm } from 'rc-form';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
 import Input from 'component/uikit/textInput';
 import AuthButton from 'component/auth/button';
 
+import { setKeychain } from '../../../../../utils/keychain';
 import styles from './style';
 
 @createForm()
+@connect()
 class AddWallet extends Component {
-  handleImportPress = () => {};
+  handleImportPress = address => () => {
+    setKeychain({
+      type: 'eth',
+      address,
+    });
+    this.goBack();
+  };
+
+  goBack = () => {
+    this.props.dispatch(NavigationActions.back());
+  };
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -54,7 +68,7 @@ class AddWallet extends Component {
           style={styles.import.container}
           title="导 入"
           disabled={!address}
-          onPress={this.handleImportPress}
+          onPress={this.handleImportPress(address)}
         />
       </View>
     );

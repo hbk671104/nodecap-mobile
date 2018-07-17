@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as R from 'ramda';
 import { getConstants, getAllPermissions } from '../services/api';
+import { initKeychain } from '../utils/keychain';
 
 export default {
   namespace: 'global',
@@ -53,6 +54,9 @@ export default {
         });
 
         yield take('fund/fetch/@@end');
+
+        // init keychain
+        initKeychain();
       } catch (e) {
         console.log(e);
       }
