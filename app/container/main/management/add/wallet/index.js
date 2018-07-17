@@ -30,7 +30,10 @@ class AddWallet extends Component {
             icon={require('asset/management/add/wallet_address.png')}
             title="钱包地址"
             titleStyle={styles.listItem.title}
-            renderContent={() => <Input />}
+            contentContainerStyle={styles.listItem.content.container}
+            renderContent={() => (
+              <Input placeholder="请手动输入或粘贴您的钱包地址" />
+            )}
           />
         </ScrollView>
       </View>

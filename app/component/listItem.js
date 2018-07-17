@@ -11,6 +11,7 @@ const item = ({
   subtitleStyle,
   content,
   contentStyle,
+  contentContainerStyle,
   style,
   icon,
   children,
@@ -37,7 +38,7 @@ const item = ({
             <Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Text>
           )}
         </View>
-        <View style={styles.content.container}>
+        <View style={[styles.content.container, contentContainerStyle]}>
           {renderContent ? (
             renderContent()
           ) : (
@@ -99,6 +100,7 @@ item.defaultProps = {
   onPress: () => null,
   titleStyle: {},
   contentStyle: {},
+  contentContainerStyle: {},
   style: {},
   noBottomBorder: false,
   disablePress: false,
@@ -111,6 +113,7 @@ item.propTypes = {
   subtitleStyle: PropTypes.object,
   content: PropTypes.string,
   contentStyle: PropTypes.object,
+  contentContainerStyle: PropTypes.object,
   style: PropTypes.object,
   icon: PropTypes.number,
   noBottomBorder: PropTypes.bool,

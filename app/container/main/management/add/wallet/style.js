@@ -13,6 +13,11 @@ export default {
       fontSize: 14,
       color: 'rgba(0, 0, 0, 0.85)',
     },
+    content: {
+      container: {
+        marginRight: 0,
+      },
+    },
   },
   notice: {
     container: {
