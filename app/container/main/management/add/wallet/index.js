@@ -41,7 +41,10 @@ class AddWallet extends Component {
             renderContent={() => (
               <View>
                 {getFieldDecorator('address')(
-                  <Input placeholder="请手动输入或粘贴您的钱包地址" />,
+                  <Input
+                    style={styles.listItem.input}
+                    placeholder="请手动输入或粘贴您的钱包地址"
+                  />,
                 )}
               </View>
             )}

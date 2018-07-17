@@ -38,7 +38,12 @@ class AddExchange extends Component {
             contentContainerStyle={styles.listItem.content.container}
             renderContent={() => (
               <View>
-                {getFieldDecorator('key')(<Input placeholder="请手动输入" />)}
+                {getFieldDecorator('key')(
+                  <Input
+                    style={styles.listItem.input}
+                    placeholder="请手动输入"
+                  />,
+                )}
               </View>
             )}
           />
@@ -52,7 +57,10 @@ class AddExchange extends Component {
             renderContent={() => (
               <View>
                 {getFieldDecorator('secret')(
-                  <Input placeholder="请手动输入" />,
+                  <Input
+                    style={styles.listItem.input}
+                    placeholder="请手动输入"
+                  />,
                 )}
               </View>
             )}

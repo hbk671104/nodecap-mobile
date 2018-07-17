@@ -16,7 +16,11 @@ export default {
     content: {
       container: {
         marginRight: 0,
+        alignItems: undefined,
       },
+    },
+    input: {
+      textAlign: 'right',
     },
   },
   notice: {
