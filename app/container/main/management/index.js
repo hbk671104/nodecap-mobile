@@ -28,6 +28,14 @@ class Management extends Component {
     );
   };
 
+  handlePlusPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'AddHolding',
+      }),
+    );
+  };
+
   renderNavBarRight = () => (
     <View style={styles.navBar.right.container}>
       <Touchable style={{ marginRight: 12 }} onPress={this.handleKeyPress}>
@@ -37,7 +45,7 @@ class Management extends Component {
           source={require('asset/management/key.png')}
         />
       </Touchable>
-      <Touchable>
+      <Touchable onPress={this.handlePlusPress}>
         <Image
           resizeMode="contain"
           style={styles.navBar.right.item}

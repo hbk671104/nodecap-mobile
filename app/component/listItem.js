@@ -1,21 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 
 const item = ({
   title,
   titleStyle,
+  subtitle,
+  subtitleStyle,
   content,
   contentStyle,
+  style,
+  icon,
+  noBottomBorder,
   renderContent,
   onPress,
 }) => (
   <Touchable foreground onPress={onPress}>
-    <View style={styles.container}>
+    <View
+      style={[styles.container, noBottomBorder && styles.noBottomBorder, style]}
+    >
+      {!!icon && (
+        <Image resizeMode="contain" style={styles.image} source={icon} />
+      )}
       <View style={styles.group}>
         <Text style={[styles.title, titleStyle]}>{title}</Text>
+        {!!subtitle && (
+          <Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Text>
+        )}
       </View>
       <View style={styles.content.container}>
         {renderContent ? (
@@ -39,9 +52,22 @@ const styles = {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
   },
+  noBottomBorder: {
+    borderBottomWidth: 0,
+  },
+  image: {
+    marginRight: 12,
+    height: 18,
+    width: 18,
+  },
   title: {
     fontSize: 14,
     color: 'rgba(0, 0, 0, 0.85)',
+  },
+  subtitle: {
+    fontSize: 11,
+    color: 'rgba(0, 0, 0, 0.45)',
+    marginTop: 7,
   },
   group: {},
   content: {
@@ -62,13 +88,20 @@ item.defaultProps = {
   onPress: () => null,
   titleStyle: {},
   contentStyle: {},
+  style: {},
+  noBottomBorder: false,
 };
 
 item.propTypes = {
   title: PropTypes.string.isRequired,
   titleStyle: PropTypes.object,
+  subtitle: PropTypes.string,
+  subtitleStyle: PropTypes.object,
   content: PropTypes.string,
   contentStyle: PropTypes.object,
+  style: PropTypes.object,
+  icon: PropTypes.number,
+  noBottomBorder: PropTypes.bool,
   renderContent: PropTypes.func,
   onPress: PropTypes.func,
 };
