@@ -18,6 +18,17 @@ class AddHolding extends Component {
     );
   };
 
+  handleExchangePress = title => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'AddExchange',
+        params: {
+          title,
+        },
+      }),
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -28,7 +39,7 @@ class AddHolding extends Component {
             icon={require('asset/management/add/manual.png')}
             title="手动模式"
             titleStyle={styles.listItem.title}
-            subtitle="支持手动添加用户记录交易所,法币资产"
+            subtitle="支持手动添加用户记录交易所，法币资产"
           />
           <ListItem
             style={styles.listItem.container}
@@ -50,30 +61,34 @@ class AddHolding extends Component {
             <ListItem
               noBottomBorder
               style={styles.exchangeItem.container}
-              // icon={require('asset/management/add/automatic.png')}
-              title="Huobi Pro"
+              icon={require('asset/management/exchange/huobi.png')}
+              title="Huobi Global"
               titleStyle={styles.exchangeItem.title}
+              onPress={this.handleExchangePress('Huobi Global')}
             />
             <ListItem
               noBottomBorder
               style={styles.exchangeItem.container}
-              // icon={require('asset/management/add/automatic.png')}
+              icon={require('asset/management/exchange/binance.png')}
               title="Binance"
               titleStyle={styles.exchangeItem.title}
+              onPress={this.handleExchangePress('Binance')}
             />
             <ListItem
               noBottomBorder
               style={styles.exchangeItem.container}
-              // icon={require('asset/management/add/automatic.png')}
+              icon={require('asset/management/exchange/gate.png')}
               title="Gate.io"
               titleStyle={styles.exchangeItem.title}
+              onPress={this.handleExchangePress('Gate.io')}
             />
             <ListItem
               noBottomBorder
               style={styles.exchangeItem.container}
-              // icon={require('asset/management/add/automatic.png')}
+              icon={require('asset/management/exchange/okex.png')}
               title="OKEx"
               titleStyle={styles.exchangeItem.title}
+              onPress={this.handleExchangePress('OKex')}
             />
           </ListItem>
         </ScrollView>
