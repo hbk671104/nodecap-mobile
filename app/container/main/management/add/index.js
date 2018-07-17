@@ -1,12 +1,23 @@
 import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
 
 import styles from './style';
 
+@connect()
 class AddHolding extends Component {
+  handleWalletPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'AddWallet',
+      }),
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -25,6 +36,7 @@ class AddHolding extends Component {
             title="钱包导入资产"
             titleStyle={styles.listItem.title}
             subtitle="支持 ETH 和 ERC-20 资产导入"
+            onPress={this.handleWalletPress}
           />
           <ListItem
             noBottomBorder
