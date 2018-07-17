@@ -13,33 +13,41 @@ const item = ({
   contentStyle,
   style,
   icon,
+  children,
   noBottomBorder,
   renderContent,
   onPress,
 }) => (
-  <Touchable foreground onPress={onPress}>
-    <View
-      style={[styles.container, noBottomBorder && styles.noBottomBorder, style]}
-    >
-      {!!icon && (
-        <Image resizeMode="contain" style={styles.image} source={icon} />
-      )}
-      <View style={styles.group}>
-        <Text style={[styles.title, titleStyle]}>{title}</Text>
-        {!!subtitle && (
-          <Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Text>
+  <View>
+    <Touchable foreground onPress={onPress}>
+      <View
+        style={[
+          styles.container,
+          noBottomBorder && styles.noBottomBorder,
+          style,
+        ]}
+      >
+        {!!icon && (
+          <Image resizeMode="contain" style={styles.image} source={icon} />
         )}
+        <View style={styles.group}>
+          <Text style={[styles.title, titleStyle]}>{title}</Text>
+          {!!subtitle && (
+            <Text style={[styles.subtitle, subtitleStyle]}>{subtitle}</Text>
+          )}
+        </View>
+        <View style={styles.content.container}>
+          {renderContent ? (
+            renderContent()
+          ) : (
+            <Text style={[styles.content.text, contentStyle]}>{content}</Text>
+          )}
+        </View>
+        <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
       </View>
-      <View style={styles.content.container}>
-        {renderContent ? (
-          renderContent()
-        ) : (
-          <Text style={[styles.content.text, contentStyle]}>{content}</Text>
-        )}
-      </View>
-      <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
-    </View>
-  </Touchable>
+    </Touchable>
+    {children}
+  </View>
 );
 
 const styles = {
