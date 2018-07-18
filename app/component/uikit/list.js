@@ -46,7 +46,7 @@ class List extends PureComponent {
     }
   }
 
-  extractKey = (item, index) => `${item.id}` || `${index}`;
+  extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
 
   handleOnRefresh = () => {
     if (this.props.action) {

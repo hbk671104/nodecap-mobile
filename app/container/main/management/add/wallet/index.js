@@ -9,18 +9,21 @@ import ListItem from 'component/listItem';
 import Input from 'component/uikit/textInput';
 import AuthButton from 'component/auth/button';
 
-import { setKeychain } from '../../../../../utils/keychain';
+import { addKeychain } from '../../../../../utils/keychain';
 import styles from './style';
 
 @createForm()
 @connect()
 class AddWallet extends Component {
   handleImportPress = address => () => {
-    setKeychain({
-      type: 'eth',
-      address,
-    });
-    this.goBack();
+    addKeychain(
+      {
+        type: 'eth',
+        name: 'ETH Wallet',
+        address,
+      },
+      this.goBack,
+    );
   };
 
   goBack = () => {
@@ -33,7 +36,7 @@ class AddWallet extends Component {
     return (
       <View style={styles.container}>
         <NavBar back gradient title="从钱包导入" />
-        <ScrollView>
+        <ScrollView keyboardDismissMode="on-drag">
           <View style={styles.notice.container}>
             <Text style={styles.notice.title}>
               扫描二维码或手动粘贴你的钱包地址

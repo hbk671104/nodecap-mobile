@@ -88,7 +88,7 @@ class AddHolding extends Component {
               icon={require('asset/management/exchange/okex.png')}
               title="OKEx"
               titleStyle={styles.exchangeItem.title}
-              onPress={this.handleExchangePress('OKex')}
+              onPress={this.handleExchangePress('OKEx')}
             />
           </ListItem>
         </ScrollView>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { createForm } from 'rc-form';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -8,11 +10,27 @@ import Input from 'component/uikit/textInput';
 import AuthButton from 'component/auth/button';
 import Icon from 'component/uikit/icon';
 
+import { addKeychain } from '../../../../../utils/keychain';
 import styles from './style';
 
 @createForm()
+@connect()
 class AddExchange extends Component {
-  handleImportPress = () => {};
+  handleImportPress = ({ name, apiKey, secretKey }) => () => {
+    addKeychain(
+      {
+        type: 'exchange',
+        name,
+        apiKey,
+        secretKey,
+      },
+      this.goBack,
+    );
+  };
+
+  goBack = () => {
+    this.props.dispatch(NavigationActions.back());
+  };
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
@@ -23,7 +41,7 @@ class AddExchange extends Component {
     return (
       <View style={styles.container}>
         <NavBar back gradient title={title} />
-        <ScrollView>
+        <ScrollView keyboardDismissMode="on-drag">
           <View style={styles.notice.container}>
             <Text style={styles.notice.title}>
               手动导入 API Key 与 Secret Key
@@ -76,7 +94,7 @@ class AddExchange extends Component {
           style={styles.import.container}
           title="导 入"
           disabled={!apiKey || !secretKey}
-          onPress={this.handleImportPress}
+          onPress={this.handleImportPress({ apiKey, secretKey, name: title })}
         />
       </View>
     );
