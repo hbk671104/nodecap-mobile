@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import { View, Image, Text, ScrollView } from 'react-native';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 
-import { getKeychain, deleteKeychain } from '../../../../utils/keychain';
+import { realm, getKeychain, deleteKeychain } from '../../../../utils/keychain';
 import styles from './style';
 
 @connectActionSheet
+@connect()
 class KeyManagement extends Component {
   state = {
     data: null,
@@ -17,6 +20,11 @@ class KeyManagement extends Component {
 
   componentWillMount() {
     this.requestKeychain();
+    realm.addListener('change', this.handleKeychainChange);
+  }
+
+  componentWillUnmount() {
+    realm.removeListener('change', this.handleKeychainChange);
   }
 
   requestKeychain = () => {
@@ -26,10 +34,40 @@ class KeyManagement extends Component {
     }
   };
 
-  removeKeychain = created => {
-    deleteKeychain(created, data => {
-      this.setState({ data });
-    });
+  removeKeychain = item => {
+    deleteKeychain(item);
+  };
+
+  handleKeychainChange = () => {
+    this.requestKeychain();
+  };
+
+  handleResetPress = item => {
+    switch (item.type) {
+      case 'eth':
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'AddWallet',
+            params: {
+              item,
+            },
+          }),
+        );
+        break;
+      case 'exchange':
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'AddExchange',
+            params: {
+              title: item.name,
+              item,
+            },
+          }),
+        );
+        break;
+      default:
+        break;
+    }
   };
 
   handleItemPress = item => () => {
@@ -40,10 +78,12 @@ class KeyManagement extends Component {
         destructiveButtonIndex: 2,
       },
       buttonIndex => {
-        // Do something here depending on the button index selected
         switch (buttonIndex) {
+          case 1:
+            this.handleResetPress(item);
+            break;
           case 2:
-            this.removeKeychain(item.created);
+            this.removeKeychain(item);
             break;
           default:
             break;

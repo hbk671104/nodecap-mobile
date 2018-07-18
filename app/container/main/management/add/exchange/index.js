@@ -10,22 +10,33 @@ import Input from 'component/uikit/textInput';
 import AuthButton from 'component/auth/button';
 import Icon from 'component/uikit/icon';
 
-import { addKeychain } from '../../../../../utils/keychain';
+import { addKeychain, updateKeychain } from '../../../../../utils/keychain';
 import styles from './style';
 
 @createForm()
 @connect()
 class AddExchange extends Component {
-  handleImportPress = ({ name, apiKey, secretKey }) => () => {
-    addKeychain(
-      {
-        type: 'exchange',
-        name,
-        apiKey,
-        secretKey,
-      },
-      this.goBack,
-    );
+  handleImportPress = ({ name, apiKey, secretKey }, item) => () => {
+    if (item) {
+      updateKeychain(
+        item,
+        {
+          apiKey,
+          secretKey,
+        },
+        this.goBack,
+      );
+    } else {
+      addKeychain(
+        {
+          type: 'exchange',
+          name,
+          apiKey,
+          secretKey,
+        },
+        this.goBack,
+      );
+    }
   };
 
   goBack = () => {
@@ -37,7 +48,9 @@ class AddExchange extends Component {
     const apiKey = getFieldValue('key');
     const secretKey = getFieldValue('secret');
 
-    const title = this.props.navigation.getParam('title', '导入 Key 与 Secret');
+    const title = this.props.navigation.getParam('title');
+    const item = this.props.navigation.getParam('item');
+
     return (
       <View style={styles.container}>
         <NavBar back gradient title={title} />
@@ -48,6 +61,12 @@ class AddExchange extends Component {
             </Text>
           </View>
           <ListItem
+            style={styles.listItem.container}
+            icon={require('asset/management/add/scan.png')}
+            title="扫一扫"
+            titleStyle={styles.listItem.title}
+          />
+          <ListItem
             disablePress
             style={styles.listItem.container}
             icon={require('asset/management/add/key.png')}
@@ -56,7 +75,9 @@ class AddExchange extends Component {
             contentContainerStyle={styles.listItem.content.container}
             renderContent={() => (
               <View>
-                {getFieldDecorator('key')(
+                {getFieldDecorator('key', {
+                  initialValue: (item && item.apiKey) || undefined,
+                })(
                   <Input
                     style={styles.listItem.input}
                     placeholder="请手动输入"
@@ -74,7 +95,9 @@ class AddExchange extends Component {
             contentContainerStyle={styles.listItem.content.container}
             renderContent={() => (
               <View>
-                {getFieldDecorator('secret')(
+                {getFieldDecorator('secret', {
+                  initialValue: (item && item.secretKey) || undefined,
+                })(
                   <Input
                     style={styles.listItem.input}
                     placeholder="请手动输入"
@@ -94,7 +117,10 @@ class AddExchange extends Component {
           style={styles.import.container}
           title="导 入"
           disabled={!apiKey || !secretKey}
-          onPress={this.handleImportPress({ apiKey, secretKey, name: title })}
+          onPress={this.handleImportPress(
+            { apiKey, secretKey, name: title },
+            item,
+          )}
         />
       </View>
     );

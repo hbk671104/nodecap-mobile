@@ -15,7 +15,7 @@ const KeychainSchema = {
   },
 };
 
-let realm;
+export let realm;
 
 export const initKeychain = () => {
   realm = new Realm({ schema: [KeychainSchema] });
@@ -33,12 +33,34 @@ export const addKeychain = (entry, callback) => {
   });
 };
 
-export const deleteKeychain = (created, callback) => {
+export const updateKeychain = (item, payload, callback) => {
+  const newItem = item;
   realm.write(() => {
-    const key = realm.objects('Keychain').filtered(`created = "${created}"`);
-    realm.delete(key);
+    const { lastSync, address, apiKey, secretKey } = payload;
+    if (lastSync) {
+      newItem.lastSync = lastSync;
+    }
+    if (address) {
+      newItem.address = address;
+    }
+    if (apiKey) {
+      newItem.apiKey = apiKey;
+    }
+    if (secretKey) {
+      newItem.secretKey = secretKey;
+    }
+
     if (callback) {
-      callback(getKeychain());
+      callback();
+    }
+  });
+};
+
+export const deleteKeychain = (item, callback) => {
+  realm.write(() => {
+    realm.delete(item);
+    if (callback) {
+      callback();
     }
   });
 };

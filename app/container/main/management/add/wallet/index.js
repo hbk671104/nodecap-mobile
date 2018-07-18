@@ -9,21 +9,31 @@ import ListItem from 'component/listItem';
 import Input from 'component/uikit/textInput';
 import AuthButton from 'component/auth/button';
 
-import { addKeychain } from '../../../../../utils/keychain';
+import { addKeychain, updateKeychain } from '../../../../../utils/keychain';
 import styles from './style';
 
 @createForm()
 @connect()
 class AddWallet extends Component {
-  handleImportPress = address => () => {
-    addKeychain(
-      {
-        type: 'eth',
-        name: 'ETH Wallet',
-        address,
-      },
-      this.goBack,
-    );
+  handleImportPress = (address, item) => () => {
+    if (item) {
+      updateKeychain(
+        item,
+        {
+          address,
+        },
+        this.goBack,
+      );
+    } else {
+      addKeychain(
+        {
+          type: 'eth',
+          name: 'ETH Wallet',
+          address,
+        },
+        this.goBack,
+      );
+    }
   };
 
   goBack = () => {
@@ -33,6 +43,7 @@ class AddWallet extends Component {
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const address = getFieldValue('address');
+    const item = this.props.navigation.getParam('item');
     return (
       <View style={styles.container}>
         <NavBar back gradient title="从钱包导入" />
@@ -57,7 +68,9 @@ class AddWallet extends Component {
             contentContainerStyle={styles.listItem.content.container}
             renderContent={() => (
               <View>
-                {getFieldDecorator('address')(
+                {getFieldDecorator('address', {
+                  initialValue: (item && item.address) || undefined,
+                })(
                   <Input
                     style={styles.listItem.input}
                     placeholder="请手动输入或粘贴您的钱包地址"
@@ -71,7 +84,7 @@ class AddWallet extends Component {
           style={styles.import.container}
           title="导 入"
           disabled={!address}
-          onPress={this.handleImportPress(address)}
+          onPress={this.handleImportPress(address, item)}
         />
       </View>
     );
