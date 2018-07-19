@@ -8,7 +8,11 @@ import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 
-import { realm, getKeychain, deleteKeychain } from '../../../../utils/keychain';
+import {
+  openRealm,
+  getKeychain,
+  deleteKeychain,
+} from '../../../../utils/keychain';
 import styles from './style';
 
 @connectActionSheet
@@ -20,11 +24,12 @@ class KeyManagement extends Component {
 
   componentWillMount() {
     this.requestKeychain();
-    realm.addListener('change', this.handleKeychainChange);
+    this.realm = openRealm();
+    this.realm.addListener('change', this.handleKeychainChange);
   }
 
   componentWillUnmount() {
-    realm.removeListener('change', this.handleKeychainChange);
+    this.realm.removeListener('change', this.handleKeychainChange);
   }
 
   requestKeychain = () => {

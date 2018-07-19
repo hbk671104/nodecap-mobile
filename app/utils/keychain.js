@@ -1,6 +1,9 @@
+import { NativeModules } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import Realm from 'realm';
 import moment from 'moment';
+
+const HotnodeManager = NativeModules.HotnodeManager;
 
 const KeychainSchema = {
   name: 'Keychain',
@@ -15,22 +18,31 @@ const KeychainSchema = {
   },
 };
 
-export let realm;
+const config = { schema: [KeychainSchema] };
 let encryptionKey;
+
+const base64StringToInt8Array = data => {
+  return Int8Array.from(atob(data), c => c.charCodeAt(0));
+};
 
 export const initKeychain = async () => {
   const credential = await Keychain.getGenericPassword();
   if (credential) {
-    encryptionKey = Int8Array.from(credential.password);
+    encryptionKey = base64StringToInt8Array(credential.password);
   } else {
-    encryptionKey = new Int8Array(64);
-    // generate unique encryption key
-    Keychain.setGenericPassword('encryptionKey', encryptionKey.join(''));
+    const data = await HotnodeManager.randomBytes(64);
+    encryptionKey = base64StringToInt8Array(data);
+    await Keychain.setGenericPassword('encryptionKey', data);
   }
-  realm = await Realm.open({ schema: [KeychainSchema], encryptionKey });
+};
+
+export const openRealm = () => {
+  const realm = new Realm({ ...config, encryptionKey });
+  return realm;
 };
 
 export const addKeychain = (entry, callback) => {
+  const realm = openRealm();
   realm.write(() => {
     realm.create('Keychain', {
       ...entry,
@@ -43,6 +55,7 @@ export const addKeychain = (entry, callback) => {
 };
 
 export const updateKeychain = (item, payload, callback) => {
+  const realm = openRealm();
   const newItem = item;
   realm.write(() => {
     const { lastSync, address, apiKey, secretKey } = payload;
@@ -66,6 +79,7 @@ export const updateKeychain = (item, payload, callback) => {
 };
 
 export const deleteKeychain = (item, callback) => {
+  const realm = openRealm();
   realm.write(() => {
     realm.delete(item);
     if (callback) {
@@ -75,15 +89,15 @@ export const deleteKeychain = (item, callback) => {
 };
 
 export const getKeychain = () => {
+  const realm = openRealm();
   return realm.objects('Keychain').sorted('created', true);
 };
 
-export const clearKeychain = async callback => {
+export const clearKeychain = async () => {
   await Keychain.resetGenericPassword();
-  realm.write(() => {
-    realm.deleteAll();
-    if (callback) {
-      callback();
-    }
-  });
+  try {
+    Realm.deleteFile({ ...config, encryptionKey });
+  } catch (error) {
+    console.log(error);
+  }
 };

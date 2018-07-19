@@ -50,6 +50,7 @@
 		3E90CA9306F745209D7F75CE /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 013FF2F625DF42258D52DFFE /* libRNImagePicker.a */; };
 		402B017320DA0F26004AE4F8 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017120DA0F26004AE4F8 /* logo@2x.png */; };
 		402B017420DA0F26004AE4F8 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017220DA0F26004AE4F8 /* logo@3x.png */; };
+		40838CCB2100703400D30474 /* HotnodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40838CCA2100703400D30474 /* HotnodeManager.m */; };
 		40C1B94320C66C8300B0E87B /* NodeCapIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */; };
 		4DD671B3E5EB4744B4CD2195 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C08F30F43034D7B8C8648C3 /* UIKit.framework */; };
 		58CD5580B4C048D19A3D019C /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0EE067834A3483DAA52F799 /* UserNotifications.framework */; };
@@ -571,6 +572,8 @@
 		3850EE822DA7480DB8385457 /* RealmReact.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RealmReact.xcodeproj; path = "../node_modules/realm/react-native/ios/RealmReact.xcodeproj"; sourceTree = "<group>"; };
 		402B017120DA0F26004AE4F8 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		402B017220DA0F26004AE4F8 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
+		40838CC92100703400D30474 /* HotnodeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HotnodeManager.h; path = nodecap/HotnodeManager.h; sourceTree = "<group>"; };
+		40838CCA2100703400D30474 /* HotnodeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HotnodeManager.m; path = nodecap/HotnodeManager.m; sourceTree = "<group>"; };
 		40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NodeCapIcon.ttf; sourceTree = "<group>"; };
 		42C8BFCFF87B4957AAAD230F /* RCTWeChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RCTWeChatTests.xctest; sourceTree = "<group>"; };
 		44275941D9B54CE2946651BC /* Foundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -793,6 +796,7 @@
 		13B07FAE1A68108700A75B9A /* nodecap */ = {
 			isa = PBXGroup;
 			children = (
+				40838CC821006FEF00D30474 /* module */,
 				DD41DFF820E50F0D007696F1 /* nodecap.entitlements */,
 				403BAC6A20C13A9C0057EC84 /* asset */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -907,6 +911,15 @@
 				4069093A20C777C4004B1CE1 /* libRNBlur.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		40838CC821006FEF00D30474 /* module */ = {
+			isa = PBXGroup;
+			children = (
+				40838CC92100703400D30474 /* HotnodeManager.h */,
+				40838CCA2100703400D30474 /* HotnodeManager.m */,
+			);
+			name = module;
 			sourceTree = "<group>";
 		};
 		4088FCEA20BED9A700753F7C /* Products */ = {
@@ -1958,6 +1971,7 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				40838CCB2100703400D30474 /* HotnodeManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
