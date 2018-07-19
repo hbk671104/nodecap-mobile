@@ -1,5 +1,5 @@
-import Realm from 'realm';
 import * as Keychain from 'react-native-keychain';
+import Realm from 'realm';
 import moment from 'moment';
 
 const KeychainSchema = {
@@ -16,9 +16,17 @@ const KeychainSchema = {
 };
 
 export let realm;
+let encryptionKey;
 
-export const initKeychain = () => {
-  realm = new Realm({ schema: [KeychainSchema] });
+export const initKeychain = async () => {
+  const credential = await Keychain.getGenericPassword();
+  if (credential) {
+    encryptionKey = Int8Array.from(credential.password);
+  } else {
+    encryptionKey = new Int8Array(64);
+    Keychain.setGenericPassword('encryptionKey', encryptionKey.join(''));
+  }
+  realm = await Realm.open({ schema: [KeychainSchema] });
 };
 
 export const addKeychain = (entry, callback) => {
@@ -69,7 +77,12 @@ export const getKeychain = () => {
   return realm.objects('Keychain').sorted('created', true);
 };
 
-export const clearKeychain = () => {
-  Realm.deleteFile({ schema: [KeychainSchema] });
-  realm = null;
+export const clearKeychain = async callback => {
+  await Keychain.resetGenericPassword();
+  realm.write(() => {
+    realm.deleteAll();
+    if (callback) {
+      callback();
+    }
+  });
 };
