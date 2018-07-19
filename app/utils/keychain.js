@@ -24,9 +24,10 @@ export const initKeychain = async () => {
     encryptionKey = Int8Array.from(credential.password);
   } else {
     encryptionKey = new Int8Array(64);
+    // generate unique encryption key
     Keychain.setGenericPassword('encryptionKey', encryptionKey.join(''));
   }
-  realm = await Realm.open({ schema: [KeychainSchema] });
+  realm = await Realm.open({ schema: [KeychainSchema], encryptionKey });
 };
 
 export const addKeychain = (entry, callback) => {
