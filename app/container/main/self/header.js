@@ -33,16 +33,17 @@ const header = ({ user, style, onPress }) => {
 export const headerHeight = 100;
 
 const styles = {
-  wrapper: {},
-  container: {
-    height: headerHeight,
+  wrapper: {
     backgroundColor: 'white',
     borderRadius: 2,
+    ...shadow,
+  },
+  container: {
+    height: headerHeight,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 20,
     paddingRight: 15,
-    ...shadow,
   },
   group: {
     flex: 1,
