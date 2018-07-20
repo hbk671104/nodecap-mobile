@@ -1,32 +1,34 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import Touchable from 'component/uikit/touchable';
 
-const display = ({ setModalVisible, currentItem }) => (
+const display = ({ setModalVisible, currentItem: { item, icon } }) => (
   <View style={styles.container}>
     <View style={styles.top.container}>
-      <View>
-        <Text style={styles.top.title}>{currentItem.name}</Text>
+      <View style={styles.top.title.container}>
+        <Image source={icon} />
+        <Text style={styles.top.title.text}>
+          {'   '}
+          {item.name}
+        </Text>
       </View>
       <View style={styles.top.wrapper}>
-        {!!currentItem.address && (
+        {!!item.address && (
           <View style={styles.top.group.container}>
             <Text style={styles.top.group.title}>Address</Text>
-            <Text style={styles.top.group.content}>{currentItem.address}</Text>
+            <Text style={styles.top.group.content}>{item.address}</Text>
           </View>
         )}
-        {!!currentItem.apiKey && (
+        {!!item.apiKey && (
           <View style={styles.top.group.container}>
             <Text style={styles.top.group.title}>API Key</Text>
-            <Text style={styles.top.group.content}>{currentItem.apiKey}</Text>
+            <Text style={styles.top.group.content}>{item.apiKey}</Text>
           </View>
         )}
-        {!!currentItem.secretKey && (
+        {!!item.secretKey && (
           <View style={styles.top.group.container}>
             <Text style={styles.top.group.title}>Secret Key</Text>
-            <Text style={styles.top.group.content}>
-              {currentItem.secretKey}
-            </Text>
+            <Text style={styles.top.group.content}>{item.secretKey}</Text>
           </View>
         )}
       </View>
@@ -56,9 +58,15 @@ const styles = {
       paddingBottom: 18,
     },
     title: {
-      color: 'rgba(0, 0, 0, 0.85)',
-      fontSize: 16,
-      fontWeight: 'bold',
+      container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      text: {
+        color: 'rgba(0, 0, 0, 0.85)',
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
     },
     wrapper: {
       marginVertical: 16,

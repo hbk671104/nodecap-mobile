@@ -77,7 +77,7 @@ class KeyManagement extends Component {
     }
   };
 
-  handleItemPress = item => () => {
+  handleItemPress = ({ item, icon }) => () => {
     this.props.showActionSheetWithOptions(
       {
         options: ['查看 API Key', '重置', '删除', '取消'],
@@ -87,7 +87,7 @@ class KeyManagement extends Component {
       buttonIndex => {
         switch (buttonIndex) {
           case 0:
-            this.props.setCurrentItem(item, this.toggleVisible);
+            this.props.setCurrentItem({ item, icon }, this.toggleVisible);
             break;
           case 1:
             this.handleResetPress(item);
@@ -141,15 +141,16 @@ class KeyManagement extends Component {
           return require('asset/management/exchange/ETH.png');
       }
     };
+    const icon = optIcon(item.name);
     return (
       <ListItem
         key={index}
         style={styles.item.container}
-        icon={optIcon(item.name)}
+        icon={icon}
         title={`${item.name}（创建于${item.created}）`}
         titleStyle={styles.item.title}
         subtitle={item.lastSync || '暂未同步'}
-        onPress={this.handleItemPress(item)}
+        onPress={this.handleItemPress({ item, icon })}
       />
     );
   };
