@@ -46,19 +46,30 @@ export default {
           type: 'getPermissions',
           payload: res.data,
         });
-        yield put({
-          type: 'user/fetchCurrent',
-        });
-        yield put({
-          type: 'fund/fetch',
-        });
 
-        yield take('fund/fetch/@@end');
-
-        // init keychain
-        initKeychain();
+        yield all([
+          put({
+            type: 'user/fetchCurrent',
+          }),
+          put({
+            type: 'fund/fetch',
+          }),
+          put({
+            type: 'initRealm',
+          }),
+        ]);
       } catch (e) {
         console.log(e);
+      }
+    },
+    *initRealm({ callback }, { call }) {
+      try {
+        yield call(initKeychain);
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },

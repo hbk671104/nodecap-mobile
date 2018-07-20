@@ -33,7 +33,7 @@ class Settings extends Component {
           style={styles.bottom.container}
           disabled={false}
           title="退出登录"
-          onPress={this.logout}
+          onPress={this.handleLogoutPress}
         />
       </View>
     );
