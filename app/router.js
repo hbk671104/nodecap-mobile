@@ -29,6 +29,7 @@ import KeyManagement from 'container/main/management/key';
 import AddHolding from 'container/main/management/add';
 import AddWallet from 'container/main/management/add/wallet';
 import AddExchange from 'container/main/management/add/exchange';
+import Scanner from 'container/main/management/add/scanner';
 import Settings from 'container/main/self/settings';
 import MyProfile from 'container/main/self/profile/mine';
 import EditProfile from 'container/main/self/profile/edit';
@@ -134,6 +135,7 @@ const MainStack = createStackNavigator(
     AddHolding,
     AddWallet,
     AddExchange,
+    Scanner,
     Settings,
     MyProfile,
     EditProfile,

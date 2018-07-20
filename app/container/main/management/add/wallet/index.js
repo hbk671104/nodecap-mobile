@@ -15,6 +15,21 @@ import styles from './style';
 @createForm()
 @connect()
 class AddWallet extends Component {
+  onScanComplete = url => {
+    console.log(url);
+  };
+
+  handleScannerPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Scanner',
+        params: {
+          onComplete: this.onScanComplete,
+        },
+      }),
+    );
+  };
+
   handleImportPress = (address, item) => () => {
     if (item) {
       updateKeychain(
@@ -58,6 +73,7 @@ class AddWallet extends Component {
             icon={require('asset/management/add/scan.png')}
             title="扫一扫"
             titleStyle={styles.listItem.title}
+            onPress={this.handleScannerPress}
           />
           <ListItem
             disablePress
