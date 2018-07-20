@@ -2,6 +2,8 @@ import { NativeModules } from 'react-native';
 import * as Keychain from 'react-native-keychain';
 import Realm from 'realm';
 import moment from 'moment';
+import Base64 from 'base-64';
+import 'core-js';
 
 const HotnodeManager = NativeModules.HotnodeManager;
 
@@ -19,13 +21,13 @@ const KeychainSchema = {
 };
 
 const config = { schema: [KeychainSchema] };
-let encryptionKey;
 
 const base64StringToInt8Array = data => {
-  return Int8Array.from(atob(data), c => c.charCodeAt(0));
+  return Int8Array.from(Base64.decode(data), c => c.charCodeAt(0));
 };
 
 export const initKeychain = async () => {
+  let encryptionKey;
   const credential = await Keychain.getGenericPassword();
   if (credential) {
     encryptionKey = base64StringToInt8Array(credential.password);
@@ -34,10 +36,12 @@ export const initKeychain = async () => {
     encryptionKey = base64StringToInt8Array(data);
     await Keychain.setGenericPassword('encryptionKey', data);
   }
+
+  global.encryptionKey = encryptionKey;
 };
 
 export const openRealm = () => {
-  const realm = new Realm({ ...config, encryptionKey });
+  const realm = new Realm({ ...config, encryptionKey: global.encryptionKey });
   return realm;
 };
 
@@ -96,7 +100,8 @@ export const getKeychain = () => {
 export const clearKeychain = async () => {
   await Keychain.resetGenericPassword();
   try {
-    Realm.deleteFile({ ...config, encryptionKey });
+    Realm.deleteFile({ ...config, encryptionKey: global.encryptionKey });
+    global.encryptionKey = null;
   } catch (error) {
     console.log(error);
   }
