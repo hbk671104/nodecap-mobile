@@ -3,6 +3,7 @@ package com.nodecap;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import org.reactnative.camera.RNCameraPackage;
 import io.realm.react.RealmReactPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.nodecap.module.HotnodePackage;
@@ -52,6 +53,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNCameraPackage(),
             new HotnodePackage(),
             new RealmReactPackage(),
             new ImagePickerPackage(),
