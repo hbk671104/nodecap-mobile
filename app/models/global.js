@@ -58,6 +58,7 @@ export default {
             type: 'initRealm',
           }),
         ]);
+        yield take('fund/fetch/@@end');
       } catch (e) {
         console.log(e);
       }

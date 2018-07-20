@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { View, Image, Text, ScrollView } from 'react-native';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { connect } from 'react-redux';
+import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
+import Modal from 'component/modal';
+import Display from './display';
 
 import {
   openRealm,
@@ -16,12 +19,11 @@ import {
 import styles from './style';
 
 @connectActionSheet
+@compose(withState('modalVisible', 'setModalVisible', false))
+@compose(withState('data', 'setData', []))
+@compose(withState('currentItem', 'setCurrentItem', {}))
 @connect()
 class KeyManagement extends Component {
-  state = {
-    data: null,
-  };
-
   componentWillMount() {
     this.requestKeychain();
     this.realm = openRealm();
@@ -35,7 +37,7 @@ class KeyManagement extends Component {
   requestKeychain = () => {
     const data = getKeychain();
     if (data) {
-      this.setState({ data });
+      this.props.setData(data);
     }
   };
 
@@ -84,6 +86,9 @@ class KeyManagement extends Component {
       },
       buttonIndex => {
         switch (buttonIndex) {
+          case 0:
+            this.props.setCurrentItem(item, this.toggleVisible);
+            break;
           case 1:
             this.handleResetPress(item);
             break;
@@ -95,6 +100,11 @@ class KeyManagement extends Component {
         }
       },
     );
+  };
+
+  toggleVisible = () => {
+    const { modalVisible, setModalVisible } = this.props;
+    setModalVisible(!modalVisible);
   };
 
   renderNavBarRight = () => (
@@ -147,7 +157,7 @@ class KeyManagement extends Component {
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data } = this.state;
+    const { modalVisible, data } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -160,6 +170,13 @@ class KeyManagement extends Component {
           {this.renderHeader()}
           {!!data && data.map(this.renderItem)}
         </ScrollView>
+        <Modal
+          style={styles.modal}
+          isVisible={modalVisible}
+          onBackdropPress={this.toggleVisible}
+        >
+          <Display {...this.props} />
+        </Modal>
       </View>
     );
   }
