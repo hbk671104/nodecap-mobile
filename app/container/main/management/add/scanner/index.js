@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 
@@ -22,8 +23,11 @@ class Scanner extends Component {
   handleOnBarcodeRead = url => {
     if (!this.detected) {
       this.detected = true;
-      const onComplete = this.props.navigation.getParam('onComplete');
-      onComplete(url, this.goBack);
+      const data = R.pathOr('', ['data'])(url);
+      if (!R.isEmpty(data)) {
+        const onComplete = this.props.navigation.getParam('onComplete');
+        onComplete(data, this.goBack);
+      }
     }
   };
 

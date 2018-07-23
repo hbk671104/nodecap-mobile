@@ -16,7 +16,7 @@ import styles from './style';
 @createForm()
 @connect()
 class AddWallet extends Component {
-  onScanComplete = ({ data }, callback) => {
+  onScanComplete = (data, callback) => {
     const address = parseIBAN(data);
     const { setFieldsValue } = this.props.form;
     setFieldsValue({

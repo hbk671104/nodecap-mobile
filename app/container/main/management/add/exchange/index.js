@@ -3,6 +3,7 @@ import { View, Text, ScrollView } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -16,6 +17,25 @@ import styles from './style';
 @createForm()
 @connect()
 class AddExchange extends Component {
+  onScanComplete = (data, callback) => {
+    const dataObj = JSON.parse(data);
+    if (R.isNil(dataObj)) {
+      return;
+    }
+    const key = R.pathOr('', ['apiKey'])(dataObj);
+    const secret = R.pathOr('', ['secretKey'])(dataObj);
+    if (!R.isEmpty(key) || !R.isEmpty(secret)) {
+      this.props.form.setFieldsValue({
+        key,
+        secret,
+      });
+    }
+
+    if (callback) {
+      callback();
+    }
+  };
+
   handleImportPress = ({ name, apiKey, secretKey }, item) => () => {
     if (item) {
       updateKeychain(
@@ -37,6 +57,17 @@ class AddExchange extends Component {
         this.goBack,
       );
     }
+  };
+
+  handleScannerPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Scanner',
+        params: {
+          onComplete: this.onScanComplete,
+        },
+      }),
+    );
   };
 
   goBack = () => {
@@ -65,6 +96,7 @@ class AddExchange extends Component {
             icon={require('asset/management/add/scan.png')}
             title="扫一扫"
             titleStyle={styles.listItem.title}
+            onPress={this.handleScannerPress}
           />
           <ListItem
             disablePress
