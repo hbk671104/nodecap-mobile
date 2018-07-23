@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { RNCamera } from 'react-native-camera';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -36,10 +36,20 @@ class Scanner extends Component {
       <View style={styles.container}>
         <NavBar back gradient title="扫一扫" />
         <RNCamera
-          style={{ flex: 1 }}
+          style={styles.camera}
           barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
           onBarCodeRead={this.handleOnBarcodeRead}
-        />
+        >
+          {({ camera, status }) => {
+            if (status !== 'READY') return null;
+            return (
+              <View style={styles.content}>
+                <View style={styles.frame} />
+                <Text style={styles.title}>对准二维码到框内即可扫描</Text>
+              </View>
+            );
+          }}
+        </RNCamera>
       </View>
     );
   }
