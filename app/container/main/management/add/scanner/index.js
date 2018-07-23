@@ -6,7 +6,7 @@ import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
-
+import BorderCorner from './borderCorner';
 import styles from './style';
 
 @connect()
@@ -44,7 +44,12 @@ class Scanner extends Component {
             if (status !== 'READY') return null;
             return (
               <View style={styles.content}>
-                <View style={styles.frame} />
+                <View style={styles.frame}>
+                  <BorderCorner position="topLeft" />
+                  <BorderCorner position="topRight" />
+                  <BorderCorner position="bottomLeft" />
+                  <BorderCorner position="bottomRight" />
+                </View>
                 <Text style={styles.title}>对准二维码到框内即可扫描</Text>
               </View>
             );

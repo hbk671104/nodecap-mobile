@@ -16,8 +16,6 @@ export default {
   frame: {
     width: 240,
     height: 240,
-    borderWidth: 2,
-    borderColor: 'white',
   },
   title: {
     marginTop: 44,
