@@ -40,20 +40,15 @@ class Scanner extends Component {
           barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
           onBarCodeRead={this.handleOnBarcodeRead}
         >
-          {({ camera, status }) => {
-            if (status !== 'READY') return null;
-            return (
-              <View style={styles.content}>
-                <View style={styles.frame}>
-                  <BorderCorner position="topLeft" />
-                  <BorderCorner position="topRight" />
-                  <BorderCorner position="bottomLeft" />
-                  <BorderCorner position="bottomRight" />
-                </View>
-                <Text style={styles.title}>对准二维码到框内即可扫描</Text>
-              </View>
-            );
-          }}
+          <View style={styles.content}>
+            <View style={styles.frame}>
+              <BorderCorner position="topLeft" />
+              <BorderCorner position="topRight" />
+              <BorderCorner position="bottomLeft" />
+              <BorderCorner position="bottomRight" />
+            </View>
+            <Text style={styles.title}>对准二维码到框内即可扫描</Text>
+          </View>
         </RNCamera>
       </View>
     );

@@ -10,7 +10,7 @@ const borderCorner = ({ position }) => (
         points={styles.points[position]}
         fill="none"
         stroke="white"
-        strokeWidth="2"
+        strokeWidth={3}
       />
     </Svg>
   </View>
