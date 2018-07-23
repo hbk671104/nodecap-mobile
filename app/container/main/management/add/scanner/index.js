@@ -10,19 +10,31 @@ import styles from './style';
 
 @connect()
 class Scanner extends Component {
+  constructor(props) {
+    super(props);
+    this.detected = false;
+  }
+
   goBack = () => {
     this.props.dispatch(NavigationActions.back());
   };
 
+  handleOnBarcodeRead = url => {
+    if (!this.detected) {
+      this.detected = true;
+      const onComplete = this.props.navigation.getParam('onComplete');
+      onComplete(url, this.goBack);
+    }
+  };
+
   render() {
-    const onComplete = this.props.navigation.getParam('onComplete');
     return (
       <View style={styles.container}>
         <NavBar back gradient title="扫一扫" />
         <RNCamera
           style={{ flex: 1 }}
           barCodeTypes={[RNCamera.Constants.BarCodeType.qr]}
-          onBarCodeRead={onComplete}
+          onBarCodeRead={this.handleOnBarcodeRead}
         />
       </View>
     );

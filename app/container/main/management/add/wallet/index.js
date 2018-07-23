@@ -10,13 +10,21 @@ import Input from 'component/uikit/textInput';
 import AuthButton from 'component/auth/button';
 
 import { addKeychain, updateKeychain } from '../../../../../utils/keychain';
+import { parseIBAN } from '../../../../../utils/iban';
 import styles from './style';
 
 @createForm()
 @connect()
 class AddWallet extends Component {
-  onScanComplete = url => {
-    console.log(url);
+  onScanComplete = ({ data }, callback) => {
+    const address = parseIBAN(data);
+    const { setFieldsValue } = this.props.form;
+    setFieldsValue({
+      address,
+    });
+    if (callback) {
+      callback();
+    }
   };
 
   handleScannerPress = () => {

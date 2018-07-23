@@ -1780,6 +1780,10 @@ big-integer@^1.6.7:
   version "1.6.28"
   resolved "https://registry.yarnpkg.com/big-integer/-/big-integer-1.6.28.tgz#8cef0fda3ccde8759c2c66efcfacc35aea658283"
 
+bignumber.js@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-7.2.1.tgz#80c048759d826800807c4bfd521e50edbba57a5f"
+
 bl@^1.0.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/bl/-/bl-1.2.2.tgz#a160911717103c07410cef63ef51b397c025af9c"
@@ -6321,9 +6325,9 @@ react-native-iphone-x-helper@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.3.tgz#7a2f1e0574e899a0f1d426e6167fd98990083214"
 
-react-native-keychain@^3.0.0-rc.3:
-  version "3.0.0-rc.3"
-  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-3.0.0-rc.3.tgz#891ea07a564d1bf46b644bc615af21f15a04b12b"
+react-native-keychain@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-3.0.0.tgz#29da1dfa43c2581f76bf9420914fd38a1558cf18"
 
 react-native-linear-gradient@^2.4.0:
   version "2.4.0"
