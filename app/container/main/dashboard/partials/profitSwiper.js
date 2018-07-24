@@ -9,7 +9,7 @@ import Text from 'component/text';
 
 import NodeCapIcon from 'component/icon/nodecap';
 
-const arrow = (profit) => {
+const arrow = profit => {
   if (profit > 0) {
     return <NodeCapIcon name="shangsheng" color="#09AC32" />;
   }
@@ -36,8 +36,9 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
         autoplayTimeout={10}
         activeDotColor="#1890FF"
         paginationStyle={{ bottom: 0 }}
+        removeClippedSubviews={false}
       >
-        {R.keys(total).map((b) => {
+        {R.keys(total).map(b => {
           const totalProfit = R.path([b])(total);
           const dailyProfit = R.path([b, 'count'])(daily);
           const weeklyProfit = R.path([b, 'count'])(weekly);
@@ -48,13 +49,23 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                 <View style={styles.content.container}>
                   {Platform.OS === 'ios' ? (
                     <Shimmer opacity={0.8}>
-                      <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
+                      <Text
+                        style={[
+                          styles.content.gain,
+                          totalProfit < 0 && styles.content.lost,
+                        ]}
+                      >
                         {symbol(b)} <Text>{totalProfit}</Text>{' '}
                         <Text style={styles.content.label}>{b}</Text>
                       </Text>
                     </Shimmer>
                   ) : (
-                    <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
+                    <Text
+                      style={[
+                        styles.content.gain,
+                        totalProfit < 0 && styles.content.lost,
+                      ]}
+                    >
                       {symbol(b)} <Text>{totalProfit}</Text>{' '}
                       <Text style={styles.content.label}>{b}</Text>
                     </Text>
