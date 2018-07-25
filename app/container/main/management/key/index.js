@@ -116,13 +116,19 @@ class KeyManagement extends Component {
     setModalVisible(!modalVisible);
   };
 
-  renderNavBarRight = () => (
-    <View style={styles.navBar.right.container}>
-      <Touchable borderless>
-        <Text style={styles.navBar.right.text}>更新</Text>
-      </Touchable>
-    </View>
-  );
+  renderNavBarRight = () => {
+    const { data } = this.props;
+    if (data && data.length === 0) {
+      return null;
+    }
+    return (
+      <View style={styles.navBar.right.container}>
+        <Touchable borderless>
+          <Text style={styles.navBar.right.text}>更新</Text>
+        </Touchable>
+      </View>
+    );
+  };
 
   renderHeader = () => (
     <View style={styles.header.container}>
