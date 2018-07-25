@@ -70,7 +70,20 @@ class List extends PureComponent {
     }
   };
 
+  renderHeader = () => {
+    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+      return null;
+    }
+    if (this.props.renderHeader) {
+      return this.props.renderHeader();
+    }
+    return null;
+  };
+
   renderFooter = () => {
+    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+      return null;
+    }
     if (this.props.renderFooter) {
       return this.props.renderFooter();
     }
@@ -129,7 +142,6 @@ class List extends PureComponent {
       loading,
       action,
       renderItem,
-      renderHeader,
       refreshing,
       style,
       contentContainerStyle,
@@ -145,7 +157,7 @@ class List extends PureComponent {
         ref={listRef}
         data={data}
         renderItem={renderItem}
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={this.renderHeader}
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         ItemSeparatorComponent={this.renderSeparator}
