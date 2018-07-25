@@ -2,6 +2,9 @@ export default {
   container: {
     flex: 1,
   },
+  listContent: {
+    paddingVertical: 0,
+  },
   searchBar: {
     container: {
       flex: 1,

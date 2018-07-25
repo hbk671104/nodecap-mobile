@@ -33,7 +33,7 @@ searchBar.propTypes = {
   placeholder: PropTypes.string,
   placeholderTextColor: PropTypes.string,
   returnKeyType: PropTypes.string,
-  iconColor: PropTypes.object,
+  iconColor: PropTypes.string,
 };
 
 export default searchBar;

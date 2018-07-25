@@ -12,6 +12,7 @@ const avatar = props => (
   >
     <Image
       {...props}
+      resizeMode="contain"
       style={{
         height: props.size * props.innerRatio,
         width: props.size * props.innerRatio,

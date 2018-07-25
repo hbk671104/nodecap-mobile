@@ -1,12 +1,16 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {
     flex: 1,
   },
-  navBar: {
-    right: {
-      color: 'white',
-      fontSize: 14,
-    },
+  listContent: {
+    paddingVertical: 0,
+  },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 12,
+    backgroundColor: '#E9E9E9',
   },
   searchBar: {
     container: {
@@ -24,6 +28,28 @@ export default {
     input: {
       fontSize: 14,
       color: '#333333',
+    },
+  },
+  footer: {
+    container: {
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: '#E9E9E9',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: '#E9E9E9',
+      height: 42,
+      paddingLeft: 22,
+      paddingRight: 12,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+    },
+    title: {
+      color: 'rgba(0, 0, 0, 0.45)',
+      fontSize: 13,
+    },
+    subtitle: {
+      color: '#1890FF',
+      fontSize: 12,
     },
   },
 };

@@ -102,6 +102,7 @@ class Search extends Component {
       <SafeAreaView style={styles.container}>
         {this.renderNavBar()}
         <List
+          contentContainerStyle={styles.listContent}
           loadOnStart={false}
           action={this.requestData}
           data={data}

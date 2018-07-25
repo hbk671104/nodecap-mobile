@@ -11,6 +11,9 @@ import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import SearchBar from 'component/searchBar';
+import Icon from 'component/uikit/icon';
+
+import SearchItem from './item';
 import styles from './style';
 
 @connect(({ portfolio, loading }) => ({
@@ -50,20 +53,9 @@ class CreateProject extends Component {
     });
   };
 
-  renderNavBar = () => (
-    <NavBar
-      gradient
-      back
-      title="添加项目"
-      renderRight={() => (
-        <Touchable borderless>
-          <Text style={styles.navBar.right}>手动添加</Text>
-        </Touchable>
-      )}
-    />
-  );
+  handleManuallyCreate = () => {};
 
-  renderItem = ({ item }) => <Text>{item.name}</Text>;
+  renderItem = ({ item }) => <SearchItem item={item} />;
 
   renderHeader = () => (
     <View style={styles.searchBar.container}>
@@ -79,18 +71,35 @@ class CreateProject extends Component {
     </View>
   );
 
+  renderFooter = () => (
+    <Touchable onPress={this.handleManuallyCreate}>
+      <View style={styles.footer.container}>
+        <Text style={styles.footer.title}>没有我想要的项目？</Text>
+        <Text style={styles.footer.subtitle}>
+          手动添加{'   '}
+          <Icon name="arrow-forward" size={12} />
+        </Text>
+      </View>
+    </Touchable>
+  );
+
+  renderSeparator = () => <View style={styles.separator} />;
+
   render() {
     const { data, loading } = this.props;
     return (
       <SafeAreaView style={styles.container}>
-        {this.renderNavBar()}
+        <NavBar gradient back title="添加项目" />
         {this.renderHeader()}
         <List
+          contentContainerStyle={styles.listContent}
           loadOnStart={false}
           action={this.requestData}
           data={data}
           loading={loading}
           renderItem={this.renderItem}
+          renderFooter={this.renderFooter}
+          renderSeparator={this.renderSeparator}
         />
       </SafeAreaView>
     );
