@@ -5,7 +5,7 @@ import Accounting from 'accounting';
 
 const price = ({ symbol, children }) => {
   if (symbol === 'CNY' || symbol === 'USD') {
-    return <Text>{Accounting.formatNumber(children, 2)}</Text>;
+    return <Text>{Number(children).toPrecision(4)}</Text>;
   }
   return <Text>{Accounting.formatNumber(children, 9)}</Text>;
 };
