@@ -4,6 +4,7 @@ import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
+import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
 import Input from 'component/uikit/textInput';
@@ -68,7 +69,7 @@ class AddWallet extends Component {
     const address = getFieldValue('address');
     const item = this.props.navigation.getParam('item');
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <NavBar back gradient title="从钱包导入" />
         <ScrollView keyboardDismissMode="on-drag">
           <View style={styles.notice.container}>
@@ -110,7 +111,7 @@ class AddWallet extends Component {
           disabled={!address}
           onPress={this.handleImportPress(address, item)}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

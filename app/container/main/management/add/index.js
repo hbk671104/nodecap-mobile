@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
+import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
 
@@ -31,7 +32,7 @@ class AddHolding extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <NavBar back gradient title="记录持仓盈亏" />
         <ScrollView>
           {/* <ListItem
@@ -92,7 +93,7 @@ class AddHolding extends Component {
             />
           </ListItem>
         </ScrollView>
-      </View>
+      </SafeAreaView>
     );
   }
 }
