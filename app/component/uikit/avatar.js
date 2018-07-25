@@ -8,6 +8,7 @@ const avatar = props => (
     style={[
       styles.container,
       { height: props.size, width: props.size, borderRadius: props.size / 2 },
+      props.style,
     ]}
   >
     <Image

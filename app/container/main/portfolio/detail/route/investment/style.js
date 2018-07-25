@@ -25,11 +25,21 @@ export default {
       paddingHorizontal: 22,
     },
     tokenName: {
-      fontFamily: 'PingFangSC-Medium',
+      // fontFamily: 'PingFangSC-Medium',
       fontSize: 14,
       color: '#666666',
       letterSpacing: 0.17,
       marginTop: 5,
+    },
+    contentText: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: '#1890FF',
+    },
+    avatar: {
+      position: 'absolute',
+      top: 28,
+      right: 12,
     },
     descContainer: {
       marginTop: 9,

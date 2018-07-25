@@ -6,6 +6,7 @@ import ReadMore from 'react-native-read-more-text';
 import StatusBadge from 'component/project/statusBadge';
 import Avatar from 'component/uikit/avatar';
 import Touchable from 'component/uikit/touchable';
+import Price from 'component/price';
 import styles from './style';
 
 class header extends PureComponent {
@@ -60,16 +61,37 @@ class header extends PureComponent {
     return (
       <View style={styles.header.root}>
         <View style={styles.header.container}>
-          <Flex justify="space-between">
-            <View>
+          <Flex>
+            <View style={{ flex: 1 }}>
               <Text style={styles.name}>{projectProps(['name'])}</Text>
               <StatusBadge status={projectProps(['status'])} />
-              {!!projectProps(['token_name']) && (
-                <Text style={styles.header.tokenName}>Token: {projectProps(['token_name'])}</Text>
-              )}
-            </View>
-            <View>
-              <Avatar size={65} source={{ uri: projectProps(['logo_url']) }} />
+              <View style={{ marginTop: 3 }}>
+                {!!projectProps(['token_name']) && (
+                  <Text style={styles.header.tokenName}>
+                    Token:{' '}
+                    <Text style={styles.header.contentText}>
+                      {projectProps(['token_name'])}
+                    </Text>
+                  </Text>
+                )}
+                <Text style={styles.header.tokenName}>
+                  成本价:{' '}
+                  {projectProps(['unit_cost']) ? (
+                    <Text style={styles.header.contentText}>
+                      <Price symbol="ETH">
+                        {projectProps(['unit_cost', 'ETH'])}
+                      </Price>{' '}
+                      ETH ≈{' '}
+                      <Price symbol="CNY">
+                        {projectProps(['unit_cost', 'CNY'])}
+                      </Price>{' '}
+                      CNY
+                    </Text>
+                  ) : (
+                    '前往网页版添加投资记录，查看成本价'
+                  )}
+                </Text>
+              </View>
             </View>
           </Flex>
           <View style={styles.header.descContainer}>
@@ -78,9 +100,16 @@ class header extends PureComponent {
               renderRevealedFooter={this.renderViewLess}
               numberOfLines={2}
             >
-              <Text style={styles.header.desc}>{projectProps(['description'])}</Text>
+              <Text style={styles.header.desc}>
+                {projectProps(['description'])}
+              </Text>
             </ReadMore>
           </View>
+          <Avatar
+            style={styles.header.avatar}
+            size={65}
+            source={{ uri: projectProps(['logo_url']) }}
+          />
         </View>
         {this.renderLinks({
           white_papers: projectProps(['white_papers', 0, 'attachment']),
