@@ -8,6 +8,7 @@ import { Toast } from 'antd-mobile';
 import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
+import InputItem from 'component/inputItem';
 
 import Header from './header';
 import styles from './style';
@@ -21,6 +22,7 @@ class ExpressCreate extends Component {
         <NavBar gradient back title="快速添加 (1/2)" />
         <ScrollView keyboardDismissMode="on-drag">
           <Header item={item} />
+          <InputItem title="项目来源" placeholder="请输入项目来源" />
         </ScrollView>
       </SafeAreaView>
     );
