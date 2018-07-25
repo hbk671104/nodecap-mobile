@@ -53,4 +53,24 @@ export default {
     backgroundColor: '#E9E9E9',
     height: StyleSheet.hairlineWidth,
   },
+  empty: {
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      paddingHorizontal: 24,
+    },
+    image: {
+      alignSelf: 'center',
+    },
+    title: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: 'rgba(0, 0, 0, 0.65)',
+      marginTop: 32,
+      alignSelf: 'center',
+    },
+    button: {
+      marginTop: 90,
+    },
+  },
 };

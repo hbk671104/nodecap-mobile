@@ -9,6 +9,7 @@ import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 import Modal from 'component/modal';
+import AuthButton from 'component/auth/button';
 import Display from './display';
 
 import {
@@ -102,6 +103,14 @@ class KeyManagement extends Component {
     );
   };
 
+  handleAddPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'AddHolding',
+      }),
+    );
+  };
+
   toggleVisible = () => {
     const { modalVisible, setModalVisible } = this.props;
     setModalVisible(!modalVisible);
@@ -157,6 +166,22 @@ class KeyManagement extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderEmpty = () => (
+    <View style={styles.empty.container}>
+      <Image
+        style={styles.empty.image}
+        source={require('asset/management/guard.png')}
+      />
+      <Text style={styles.empty.title}>尚未添加Key，立即去添加吧</Text>
+      <AuthButton
+        disabled={false}
+        style={styles.empty.button}
+        title="立即添加"
+        onPress={this.handleAddPress}
+      />
+    </View>
+  );
+
   render() {
     const { modalVisible, data } = this.props;
     return (
@@ -167,10 +192,14 @@ class KeyManagement extends Component {
           title="Key 管家"
           renderRight={this.renderNavBarRight}
         />
-        <ScrollView>
-          {this.renderHeader()}
-          {!!data && data.map(this.renderItem)}
-        </ScrollView>
+        {data && data.length > 0 ? (
+          <ScrollView>
+            {this.renderHeader()}
+            {!!data && data.map(this.renderItem)}
+          </ScrollView>
+        ) : (
+          this.renderEmpty()
+        )}
         <Modal
           style={styles.modal}
           isVisible={modalVisible}
