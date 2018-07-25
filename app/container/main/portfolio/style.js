@@ -19,12 +19,17 @@ export default {
       fontSize: 17,
       fontWeight: 'bold',
     },
+    right: {
+      fontSize: 14,
+      color: 'white',
+    },
   },
   searchBar: {
     container: {
       flex: 1,
       backgroundColor: 'transparent',
       paddingHorizontal: 12,
+      paddingRight: 12 + 44,
     },
   },
   tabBar: {

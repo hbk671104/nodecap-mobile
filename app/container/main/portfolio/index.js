@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 
 import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
+import Touchable from 'component/uikit/touchable';
 import { setStatusBar } from 'component/uikit/statusBar';
 import SearchBarDisplay from 'component/searchBar/display';
 import Exchangeable from './route/exchangeable';
@@ -48,6 +49,12 @@ export default class Portfolio extends Component {
     );
   };
 
+  renderBarRight = () => (
+    <Touchable>
+      <Text style={styles.navBar.right}>添加</Text>
+    </Touchable>
+  );
+
   renderHeader = props => {
     const { offsetY } = this.props;
     return (
@@ -73,6 +80,7 @@ export default class Portfolio extends Component {
             ]}
           />
         )}
+        renderRight={this.renderBarRight}
       />
     );
   };
