@@ -12,7 +12,7 @@ import SearchBarDisplay from 'component/searchBar/display';
 import Exchangeable from './route/exchangeable';
 import Unexchangeable from './route/unexchangeable';
 import { getCurrentScreen } from '../../../router';
-import styles from './style';
+import styles, { deviceWidth, indicatorWidth } from './style';
 
 @compose(withState('offsetY', 'setOffsetY', 0))
 @connect(({ global, router }) => ({
@@ -44,11 +44,11 @@ export default class Portfolio extends Component {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Search',
-      })
+      }),
     );
   };
 
-  renderHeader = (props) => {
+  renderHeader = props => {
     const { offsetY } = this.props;
     return (
       <NavBar
@@ -64,7 +64,13 @@ export default class Portfolio extends Component {
             {...props}
             style={styles.tabBar.container}
             labelStyle={styles.tabBar.label}
-            indicatorStyle={styles.tabBar.indicator}
+            indicatorStyle={[
+              styles.tabBar.indicator,
+              {
+                left:
+                  (deviceWidth / this.state.routes.length - indicatorWidth) / 2,
+              },
+            ]}
           />
         )}
       />
@@ -85,11 +91,15 @@ export default class Portfolio extends Component {
   render() {
     if (!hasPermission('project-list')) {
       return (
-        <View style={[styles.container, {
-          backgroundColor: 'white',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }]}
+        <View
+          style={[
+            styles.container,
+            {
+              backgroundColor: 'white',
+              alignItems: 'center',
+              justifyContent: 'center',
+            },
+          ]}
         >
           <Image
             style={{
@@ -99,11 +109,13 @@ export default class Portfolio extends Component {
             }}
             source={require('../../../asset/permission_lock.png')}
           />
-          <Text style={{
-            color: 'rgba(0, 0, 0, .45)',
-            marginTop: 30,
-          }}
-          >您尚未开通查看项目列表权限
+          <Text
+            style={{
+              color: 'rgba(0, 0, 0, .45)',
+              marginTop: 30,
+            }}
+          >
+            您尚未开通查看项目列表权限
           </Text>
         </View>
       );
@@ -112,7 +124,10 @@ export default class Portfolio extends Component {
       <View style={styles.container}>
         <TabView
           initialLayout={styles.initialLayout}
-          navigationState={{ index: this.state.index, routes: this.state.routes }}
+          navigationState={{
+            index: this.state.index,
+            routes: this.state.routes,
+          }}
           renderScene={this.renderScene}
           tabBarPosition="top"
           renderTabBar={this.renderHeader}

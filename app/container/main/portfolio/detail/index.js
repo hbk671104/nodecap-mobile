@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, InteractionManager } from 'react-native';
+import { InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { compose, withState } from 'recompose';
 
 import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
