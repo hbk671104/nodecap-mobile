@@ -3,6 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import ImagePicker from 'react-native-image-picker';
+import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Avatar from 'component/uikit/avatar';
@@ -26,6 +27,19 @@ class MyProfile extends Component {
     );
   };
 
+  handleAvatarUpdate = response => {
+    Toast.loading('更新中...', 0);
+    this.props.dispatch({
+      type: 'user/updateUserProfile',
+      payload: {
+        avatar_url: response,
+      },
+      callback: () => {
+        Toast.hide();
+      },
+    });
+  };
+
   handleAvatarPress = () => {
     this.setState({ barStyle: 'dark-content' }, () => {
       ImagePicker.showImagePicker(
@@ -40,21 +54,8 @@ class MyProfile extends Component {
         },
         response => {
           this.setState({ barStyle: 'light-content' }, () => {
-            if (response.didCancel) {
-              console.log('User cancelled image picker');
-            } else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);
-            } else if (response.customButton) {
-              console.log('User tapped custom button: ', response.customButton);
-            } else {
-              const source = { uri: response.uri };
-
-              // You can also display the image using data:
-              // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-              // this.setState({
-              //   avatarSource: source,
-              // });
+            if (!response.didCancel && !response.error) {
+              this.handleAvatarUpdate(response);
             }
           });
         },
