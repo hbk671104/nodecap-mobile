@@ -87,7 +87,7 @@ class Search extends Component {
             <SearchBar
               style={styles.searchBar.bar}
               autoFocus
-              onChangeText={this.onSearchTextChange}
+              onChange={this.onSearchTextChange}
               // value={searchText}
             />
           </View>

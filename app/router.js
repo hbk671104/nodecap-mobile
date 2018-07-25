@@ -25,6 +25,7 @@ import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
+import CreateProject from 'container/main/portfolio/create';
 import KeyManagement from 'container/main/management/key';
 import AddHolding from 'container/main/management/add';
 import AddWallet from 'container/main/management/add/wallet';
@@ -131,6 +132,7 @@ const MainStack = createStackNavigator(
     Tab,
     PortfolioDetail,
     Search,
+    CreateProject,
     KeyManagement,
     AddHolding,
     AddWallet,

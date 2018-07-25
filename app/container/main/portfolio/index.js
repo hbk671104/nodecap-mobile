@@ -49,8 +49,16 @@ export default class Portfolio extends Component {
     );
   };
 
+  handleRightPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateProject',
+      }),
+    );
+  };
+
   renderBarRight = () => (
-    <Touchable>
+    <Touchable borderless onPress={this.handleRightPress}>
       <Text style={styles.navBar.right}>添加</Text>
     </Touchable>
   );
