@@ -22,8 +22,9 @@ export default function (options) {
         'portfolio/projectStat',
         'portfolio/get',
         'portfolio/search',
+        'portfolio/searchMatchedCoin',
       ],
-    })
+    }),
   );
   app.start();
   // eslint-disable-next-line no-underscore-dangle

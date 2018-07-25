@@ -560,3 +560,9 @@ export function getProjectChartData({ id, payload }) {
 export function getProjectSymbol(id) {
   return request.get(`/projects/${id}/symbols`);
 }
+
+export function getMatchedCoin(payload) {
+  return request.get('/coins/matched', {
+    params: payload,
+  });
+}

@@ -7,6 +7,7 @@ import {
   getProjectInvestEquities,
   getProjectChartData,
   getProjectSymbol,
+  getMatchedCoin,
 } from '../services/api';
 
 const paginate = (state, action, key) => {
@@ -57,6 +58,9 @@ export default {
       },
     },
     searchList: {
+      index: null,
+    },
+    matchCoinList: {
       index: null,
     },
     current: null,
@@ -112,6 +116,23 @@ export default {
         const res = yield call(portfolioIndex, req);
         yield put({
           type: 'searchList',
+          payload: res.data,
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *searchMatchedCoin({ payload = {}, callback }, { call, put }) {
+      try {
+        const req = {
+          ...payload,
+        };
+        const res = yield call(getMatchedCoin, req);
+        yield put({
+          type: 'matchCoinList',
           payload: res.data,
         });
         if (callback) {
@@ -215,7 +236,15 @@ export default {
       return {
         ...state,
         searchList: {
-          index: paginate(state, action, 'searchList'),
+          index: action.payload,
+        },
+      };
+    },
+    matchCoinList(state, action) {
+      return {
+        ...state,
+        matchCoinList: {
+          index: action.payload,
         },
       };
     },
@@ -223,6 +252,14 @@ export default {
       return {
         ...state,
         searchList: {
+          index: null,
+        },
+      };
+    },
+    clearMatchCoin(state) {
+      return {
+        ...state,
+        matchCoinList: {
           index: null,
         },
       };

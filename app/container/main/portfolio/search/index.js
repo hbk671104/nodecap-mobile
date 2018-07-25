@@ -16,7 +16,6 @@ import styles from './style';
 
 @connect(({ portfolio, loading }) => ({
   data: R.pathOr(null, ['searchList', 'index', 'data'])(portfolio),
-  pagination: R.pathOr(null, ['searchList', 'index', 'pagination'])(portfolio),
   loading: loading.effects['portfolio/search'],
 }))
 class Search extends Component {
@@ -25,7 +24,7 @@ class Search extends Component {
     this.state = {
       searchText: '',
     };
-    this.searchDelayed = _.debounce(this.searchData, 250);
+    this.searchDelayed = _.debounce(this.requestData, 250);
   }
 
   componentWillUnmount() {
@@ -36,30 +35,20 @@ class Search extends Component {
     this.setState({ searchText: text }, this.searchDelayed);
   };
 
-  requestData = (page, size) => {
+  requestData = () => {
     const { searchText } = this.state;
     if (R.isEmpty(searchText)) return;
 
-    if (R.isNil(page)) {
-      Toast.loading('loading...', 0);
-    }
+    Toast.loading('loading...', 0);
     this.props.dispatch({
       type: 'portfolio/search',
       payload: {
         q: searchText,
-        currentPage: page,
-        pageSize: size,
       },
       callback: () => {
-        if (R.isNil(page)) {
-          Toast.hide();
-        }
+        Toast.hide();
       },
     });
-  };
-
-  searchData = () => {
-    this.requestData();
   };
 
   handleItemPress = item => () => {
@@ -78,7 +67,6 @@ class Search extends Component {
   };
 
   renderNavBar = () => {
-    // const { searchText } = this.state;
     return (
       <NavBar
         gradient
@@ -88,7 +76,6 @@ class Search extends Component {
               style={styles.searchBar.bar}
               autoFocus
               onChange={this.onSearchTextChange}
-              // value={searchText}
             />
           </View>
         )}
@@ -110,7 +97,7 @@ class Search extends Component {
   );
 
   render() {
-    const { data, pagination, loading } = this.props;
+    const { data, loading } = this.props;
     return (
       <SafeAreaView style={styles.container}>
         {this.renderNavBar()}
@@ -118,7 +105,6 @@ class Search extends Component {
           loadOnStart={false}
           action={this.requestData}
           data={data}
-          pagination={pagination}
           loading={loading}
           renderItem={this.renderItem}
         />

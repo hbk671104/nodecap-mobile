@@ -11,7 +11,7 @@ export default {
     },
     bar: {
       paddingLeft: 12,
-      paddingRight: 16 + 24,
+      paddingRight: 32,
     },
     cancel: {
       container: {
