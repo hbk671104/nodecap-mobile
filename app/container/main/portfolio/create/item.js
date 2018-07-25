@@ -9,7 +9,7 @@ import Icon from 'component/uikit/icon';
 const searchItem = ({ item, onPress }) => (
   <Touchable foreground onPress={onPress}>
     <View style={styles.container}>
-      <Avatar source={{ uri: item.icon }} />
+      <Avatar size={40} source={{ uri: item.icon }} />
       <Text style={styles.title} numberOfLines={1}>
         {item.name}
       </Text>

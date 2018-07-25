@@ -26,6 +26,7 @@ import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
 import CreateProject from 'container/main/portfolio/create';
+import ExpressCreate from 'container/main/portfolio/create/express';
 import KeyManagement from 'container/main/management/key';
 import AddHolding from 'container/main/management/add';
 import AddWallet from 'container/main/management/add/wallet';
@@ -133,6 +134,7 @@ const MainStack = createStackNavigator(
     PortfolioDetail,
     Search,
     CreateProject,
+    ExpressCreate,
     KeyManagement,
     AddHolding,
     AddWallet,

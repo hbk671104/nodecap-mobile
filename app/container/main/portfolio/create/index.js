@@ -53,9 +53,22 @@ class CreateProject extends Component {
     });
   };
 
-  handleManuallyCreate = () => {};
+  handleManualCreate = () => {};
 
-  renderItem = ({ item }) => <SearchItem item={item} />;
+  handleExpressCreate = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ExpressCreate',
+        params: {
+          item,
+        },
+      }),
+    );
+  };
+
+  renderItem = ({ item }) => (
+    <SearchItem item={item} onPress={this.handleExpressCreate(item)} />
+  );
 
   renderHeader = () => (
     <View style={styles.searchBar.container}>
@@ -72,7 +85,7 @@ class CreateProject extends Component {
   );
 
   renderFooter = () => (
-    <Touchable onPress={this.handleManuallyCreate}>
+    <Touchable onPress={this.handleManualCreate}>
       <View style={styles.footer.container}>
         <Text style={styles.footer.title}>没有我想要的项目？</Text>
         <Text style={styles.footer.subtitle}>
