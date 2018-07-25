@@ -19,5 +19,18 @@ export default {
         textAlign: 'center',
       },
     },
+    subtitle: {
+      container: {
+        position: 'absolute',
+        bottom: 12,
+        left: 0,
+        right: 0,
+      },
+      text: {
+        color: 'rgba(0, 0, 0, 0.25)',
+        fontSize: 12,
+        textAlign: 'center',
+      },
+    },
   },
 };

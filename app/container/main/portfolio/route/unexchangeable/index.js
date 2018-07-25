@@ -90,7 +90,7 @@ export default class Unexchangeable extends Component {
         ) : (
           <List
             action={this.requestData}
-            data={[]}
+            data={data}
             pagination={pagination}
             loading={loading}
             renderItem={this.renderItem}
@@ -99,6 +99,13 @@ export default class Unexchangeable extends Component {
             onScroll={this.props.onScroll}
             scrollEventThrottle={500}
           />
+        )}
+        {R.isEmpty(data) && (
+          <View style={styles.empty.subtitle.container}>
+            <Text style={styles.empty.subtitle.text}>
+              Hotnode 现已支持 Top10 交易所的最新数据
+            </Text>
+          </View>
         )}
       </View>
     );
