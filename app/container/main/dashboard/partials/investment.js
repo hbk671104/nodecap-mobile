@@ -4,18 +4,8 @@ import { View, ViewPropTypes, StyleSheet, ImageBackground } from 'react-native';
 import * as R from 'ramda';
 import Text from 'component/text';
 
+import { symbol } from '../../../../utils/icon';
 import NodeCapIcon from 'component/icon/nodecap';
-
-const symbol = (b, size = 22) => {
-  switch (b) {
-    case 'USD':
-      return <NodeCapIcon name="tubiaozhizuomoban" size={size} />;
-    case 'CNY':
-      return <NodeCapIcon name="icomoon" size={size} />;
-    default:
-      return <NodeCapIcon name={b} size={size} />;
-  }
-};
 
 const investment = ({ style, data }) => {
   const investCount = R.pathOr({}, ['investCount'])(data);
@@ -32,7 +22,9 @@ const investment = ({ style, data }) => {
         <View style={styles.top.bar.container}>
           <View style={[styles.top.bar.left, { flex: investCNY }]} />
           {profitCNY > 0 ? (
-            <View style={[styles.top.bar.right, { flex: Math.abs(profitCNY) }]} />
+            <View
+              style={[styles.top.bar.right, { flex: Math.abs(profitCNY) }]}
+            />
           ) : (
             <ImageBackground
               source={require('asset/background_img.png')}
@@ -62,12 +54,19 @@ const investment = ({ style, data }) => {
             return (
               <View
                 key={i}
-                style={[styles.top.content.item, (c === 'CNY' || c === 'USD') && { marginTop: 8 }]}
+                style={[
+                  styles.top.content.item,
+                  (c === 'CNY' || c === 'USD') && { marginTop: 8 },
+                ]}
               >
                 <Text
-                  style={[styles.top.content.text, c === 'CNY' && styles.top.content.investment]}
+                  style={[
+                    styles.top.content.text,
+                    c === 'CNY' && styles.top.content.investment,
+                  ]}
                 >
-                  {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{countItem}</Text>
+                  {symbol(c, { fontSize: c === 'CNY' ? 13 : 12 })}{' '}
+                  <Text>{countItem}</Text>
                 </Text>
                 <Text
                   style={[
@@ -76,7 +75,8 @@ const investment = ({ style, data }) => {
                     c === 'CNY' && profitItem < 0 && styles.top.content.deficit,
                   ]}
                 >
-                  {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{profitItem}</Text>
+                  {symbol(c, { fontSize: c === 'CNY' ? 13 : 12 })}{' '}
+                  <Text>{profitItem}</Text>
                 </Text>
               </View>
             );
@@ -92,11 +92,12 @@ const investment = ({ style, data }) => {
               key={i}
               style={[
                 styles.bottom.item.container,
-                i !== R.keys(currencies).length - 1 && styles.bottom.item.divider,
+                i !== R.keys(currencies).length - 1 &&
+                  styles.bottom.item.divider,
               ]}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {symbol(c)}
+                {symbol(c, { fontSize: 22 })}
                 <Text style={styles.bottom.item.title}> {c}</Text>
               </View>
               <Text style={styles.bottom.item.subtitle} disablePrefix>

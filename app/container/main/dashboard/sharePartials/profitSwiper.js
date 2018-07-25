@@ -2,30 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ViewPropTypes, Platform } from 'react-native';
 import { Flex } from 'antd-mobile';
-import Swiper from 'react-native-swiper';
 import { Card } from 'react-native-elements';
 import * as R from 'ramda';
 import Shimmer from 'react-native-shimmer';
 import Text from 'component/text';
 import NodeCapIcon from 'component/icon/nodecap';
-import BlurView from './blur';
 
-const arrow = (profit) => {
+import BlurView from './blur';
+import { symbol } from '../../../../utils/icon';
+
+const arrow = profit => {
   if (profit > 0) {
     return <NodeCapIcon name="shangsheng" color="#09AC32" />;
   }
   return <NodeCapIcon name="xiala1" color="#F5222D" />;
-};
-
-const symbol = (b, size = 22) => {
-  switch (b) {
-    case 'USD':
-      return <NodeCapIcon name="tubiaozhizuomoban" size={size} />;
-    case 'CNY':
-      return <NodeCapIcon name="icomoon" size={size} />;
-    default:
-      return <NodeCapIcon name={b} size={size} />;
-  }
 };
 
 const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
@@ -44,9 +34,12 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                 <Flex>
                   <BlurView>
                     <Text
-                      style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}
+                      style={[
+                        styles.content.gain,
+                        totalProfit < 0 && styles.content.lost,
+                      ]}
                     >
-                      {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                      {symbol(b, { fontSize: 22 })} <Text>{totalProfit}</Text>{' '}
                     </Text>
                   </BlurView>
                   <Text style={styles.content.label}>{b}</Text>
@@ -55,8 +48,13 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
             ) : (
               <Flex>
                 <BlurView>
-                  <Text style={[styles.content.gain, totalProfit < 0 && styles.content.lost]}>
-                    {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                  <Text
+                    style={[
+                      styles.content.gain,
+                      totalProfit < 0 && styles.content.lost,
+                    ]}
+                  >
+                    {symbol(b, { fontSize: 22 })} <Text>{totalProfit}</Text>{' '}
                   </Text>
                 </BlurView>
                 <Text style={styles.content.label}>{b}</Text>
@@ -67,7 +65,7 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
             <BlurView>
               <View>
                 <Text>
-                  {symbol(b, 12)} <Text>{dailyProfit}</Text>{' '}
+                  {symbol(b, { fontSize: 12 })} <Text>{dailyProfit}</Text>{' '}
                 </Text>
               </View>
             </BlurView>
@@ -85,7 +83,7 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
             <BlurView>
               <View>
                 <Text>
-                  {symbol(b, 12)} <Text>{weeklyProfit}</Text>
+                  {symbol(b, { fontSize: 12 })} <Text>{weeklyProfit}</Text>
                 </Text>
               </View>
             </BlurView>

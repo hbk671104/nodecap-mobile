@@ -7,6 +7,7 @@ import * as R from 'ramda';
 import Shimmer from 'react-native-shimmer';
 import Text from 'component/text';
 
+import { symbol } from '../../../../utils/icon';
 import NodeCapIcon from 'component/icon/nodecap';
 
 const arrow = profit => {
@@ -14,17 +15,6 @@ const arrow = profit => {
     return <NodeCapIcon name="shangsheng" color="#09AC32" />;
   }
   return <NodeCapIcon name="xiala1" color="#F5222D" />;
-};
-
-const symbol = (b, size = 22) => {
-  switch (b) {
-    case 'USD':
-      return <NodeCapIcon name="tubiaozhizuomoban" size={size} />;
-    case 'CNY':
-      return <NodeCapIcon name="icomoon" size={size} />;
-    default:
-      return <NodeCapIcon name={b} size={size} />;
-  }
 };
 
 const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
@@ -55,7 +45,7 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                           totalProfit < 0 && styles.content.lost,
                         ]}
                       >
-                        {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                        {symbol(b, { fontSize: 22 })} <Text>{totalProfit}</Text>{' '}
                         <Text style={styles.content.label}>{b}</Text>
                       </Text>
                     </Shimmer>
@@ -66,17 +56,19 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
                         totalProfit < 0 && styles.content.lost,
                       ]}
                     >
-                      {symbol(b)} <Text>{totalProfit}</Text>{' '}
+                      {symbol(b, { fontSize: 22 })} <Text>{totalProfit}</Text>{' '}
                       <Text style={styles.content.label}>{b}</Text>
                     </Text>
                   )}
                 </View>
                 <View style={styles.sub.container}>
                   <Text style={styles.sub.text}>
-                    {symbol(b, 12)} <Text>{dailyProfit}</Text> {'今日'}
+                    {symbol(b, { fontSize: 12 })} <Text>{dailyProfit}</Text>{' '}
+                    {'今日'}
                     {arrow(dailyProfit)}
                     {'  '}
-                    {symbol(b, 12)} <Text>{weeklyProfit}</Text> {'本周'}
+                    {symbol(b, { fontSize: 12 })} <Text>{weeklyProfit}</Text>{' '}
+                    {'本周'}
                     {arrow(weeklyProfit)}
                   </Text>
                 </View>

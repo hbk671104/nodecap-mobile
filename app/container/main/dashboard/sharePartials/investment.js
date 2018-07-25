@@ -2,22 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, ViewPropTypes, StyleSheet, ImageBackground } from 'react-native';
 import * as R from 'ramda';
-import Accounting from 'accounting';
 import Text from 'component/text';
 import BlurView from './blur';
 
 import NodeCapIcon from 'component/icon/nodecap';
-
-const symbol = (b, size = 22) => {
-  switch (b) {
-    case 'USD':
-      return <NodeCapIcon name="tubiaozhizuomoban" size={size} />;
-    case 'CNY':
-      return <NodeCapIcon name="icomoon" size={size} />;
-    default:
-      return <NodeCapIcon name={b} size={size} />;
-  }
-};
+import { symbol } from '../../../../utils/icon';
 
 const investment = ({ style, data }) => {
   const investCount = R.pathOr({}, ['investCount'])(data);
@@ -79,16 +68,22 @@ const investment = ({ style, data }) => {
                         c === 'CNY' && styles.top.content.investment,
                       ]}
                     >
-                      {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{countItem}</Text>
+                      {symbol(c, { fontSize: c === 'CNY' ? 13 : 12 })}{' '}
+                      <Text>{countItem}</Text>
                     </Text>
                     <Text
                       style={[
                         styles.top.content.text,
-                        c === 'CNY' && profitItem > 0 && styles.top.content.profit,
-                        c === 'CNY' && profitItem < 0 && styles.top.content.deficit,
+                        c === 'CNY' &&
+                          profitItem > 0 &&
+                          styles.top.content.profit,
+                        c === 'CNY' &&
+                          profitItem < 0 &&
+                          styles.top.content.deficit,
                       ]}
                     >
-                      {symbol(c, c === 'CNY' ? 13 : 12)} <Text>{profitItem}</Text>
+                      {symbol(c, { fontSize: c === 'CNY' ? 13 : 12 })}{' '}
+                      <Text>{profitItem}</Text>
                     </Text>
                   </View>
                 );
@@ -107,11 +102,11 @@ const investment = ({ style, data }) => {
               style={[
                 styles.bottom.item.container,
                 i !== R.keys(currencies).length - 1 &&
-                styles.bottom.item.divider,
+                  styles.bottom.item.divider,
               ]}
             >
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                {symbol(c)}
+                {symbol(c, { fontSize: 22 })}
                 <Text style={styles.bottom.item.title}> {c}</Text>
               </View>
               <BlurView>
