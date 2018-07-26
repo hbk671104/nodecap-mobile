@@ -36,7 +36,7 @@ class InputItem extends PureComponent {
           }
         >
           {renderContent ? (
-            renderContent()
+            renderContent({ onChange, value })
           ) : (
             <Input
               style={[

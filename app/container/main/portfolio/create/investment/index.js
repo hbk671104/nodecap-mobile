@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Picker } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -14,34 +14,84 @@ import InputItem from 'component/inputItem';
 
 import styles from './style';
 
-@connect()
+@connect(({ fund, global }) => ({
+  funds: R.pathOr([], ['funds', 'data'])(fund),
+  stages: R.pathOr([], ['constants', 'finance_stages'])(global),
+}))
 @createForm()
 class InvestmentCreate extends Component {
   handleSkip = () => {};
 
+  handleSubmit = () => {
+    this.props.form.validateFields((error, value) => {
+      if (R.isNil(error)) {
+        // this.props.dispatch(
+        //   NavigationActions.navigate({
+        //     routeName: 'InvestmentCreate',
+        //   }),
+        // );
+      }
+    });
+  };
+
   render() {
     // const item = this.props.navigation.getParam('item');
     const { getFieldDecorator } = this.props.form;
+    const { funds, stages } = this.props;
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="快速添加 (2/2)" />
         <KeyboardAwareScrollView keyboardDismissMode="on-drag">
-          {getFieldDecorator('fund', {
-            rules: [
-              {
-                required: true,
-                message: '请选择投资主体',
-              },
-            ],
-          })(<InputItem title="投资主体" placeholder="请选择投资主体" />)}
-          {getFieldDecorator('stage_id', {
-            rules: [
-              {
-                required: true,
-                message: '请选择所投阶段',
-              },
-            ],
-          })(<InputItem title="所投阶段" placeholder="请选择所投阶段" />)}
+          {!R.isEmpty(funds) &&
+            getFieldDecorator('fund', {
+              initialValue: R.path([0, 'id'])(funds),
+              rules: [
+                {
+                  required: true,
+                  message: '请选择投资主体',
+                },
+              ],
+            })(
+              <InputItem
+                title="投资主体"
+                placeholder="请选择投资主体"
+                renderContent={({ onChange, value }) => (
+                  <Picker
+                    selectedValue={value}
+                    onValueChange={itemValue => onChange(itemValue)}
+                  >
+                    {funds.map(f => (
+                      <Picker.Item key={f.id} label={f.name} value={f.id} />
+                    ))}
+                  </Picker>
+                )}
+              />,
+            )}
+          {!R.isEmpty(stages) &&
+            getFieldDecorator('stage_id', {
+              initialValue: R.path([0, 'id'])(stages),
+              rules: [
+                {
+                  required: true,
+                  message: '请选择所投阶段',
+                },
+              ],
+            })(
+              <InputItem
+                title="所投阶段"
+                placeholder="请选择所投阶段"
+                renderContent={({ onChange, value }) => (
+                  <Picker
+                    selectedValue={value}
+                    onValueChange={itemValue => onChange(itemValue)}
+                  >
+                    {stages.map(s => (
+                      <Picker.Item key={s.id} label={s.name} value={s.id} />
+                    ))}
+                  </Picker>
+                )}
+              />,
+            )}
           {getFieldDecorator('invest_token', {
             rules: [
               {
@@ -91,7 +141,12 @@ class InvestmentCreate extends Component {
             </Text>
           </Text>
         </View>
-        <AuthButton style={styles.confirm} disabled={false} title="提交" />
+        <AuthButton
+          style={styles.confirm}
+          disabled={false}
+          title="提交"
+          onPress={this.handleSubmit}
+        />
       </SafeAreaView>
     );
   }
