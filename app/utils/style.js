@@ -32,7 +32,7 @@ export const shadow = {
   }),
 };
 
-export const medalMap = (index) => {
+export const medalMap = index => {
   switch (index) {
     case 0:
       return <Image source={require('asset/medal/gold.png')} />;
@@ -41,6 +41,23 @@ export const medalMap = (index) => {
     case 2:
       return <Image source={require('asset/medal/brown.png')} />;
     default:
-      return <Text style={{ fontSize: 12, color: '#999999' }}>#{index + 1}</Text>;
+      return (
+        <Text style={{ fontSize: 12, color: '#999999' }}>#{index + 1}</Text>
+      );
+  }
+};
+
+export const iconMap = name => {
+  switch (name) {
+    case 'BTC':
+      return <Image source={require('asset/crypto/BTC.png')} />;
+    case 'ETH':
+      return <Image source={require('asset/crypto/ETH.png')} />;
+    case 'EOS':
+      return <Image source={require('asset/crypto/EOS.png')} />;
+    case 'USDT':
+      return <Image source={require('asset/crypto/USDT.png')} />;
+    default:
+      return null;
   }
 };

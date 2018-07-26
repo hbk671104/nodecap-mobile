@@ -11,12 +11,17 @@ import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import AuthButton from 'component/auth/button';
 import InputItem from 'component/inputItem';
+import TokenSelector, { tokenDisplay } from 'component/tokenSelector';
 
 import styles from './style';
 
 @connect(({ fund, global }) => ({
   funds: R.pathOr([], ['funds', 'data'])(fund),
   stages: R.pathOr([], ['constants', 'finance_stages'])(global),
+  tokens: R.pipe(
+    R.pathOr([], ['constants', 'tokens']),
+    R.filter(t => t.type === 1),
+  )(global),
 }))
 @createForm()
 class InvestmentCreate extends Component {
@@ -34,10 +39,16 @@ class InvestmentCreate extends Component {
     });
   };
 
+  handleSelectPress = () => {};
+
   render() {
-    // const item = this.props.navigation.getParam('item');
-    const { getFieldDecorator } = this.props.form;
-    const { funds, stages } = this.props;
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { funds, stages, tokens } = this.props;
+
+    const initialSelectToken = R.path([0, 'id'])(tokens);
+    const selectedId = getFieldValue('invest_token') || initialSelectToken;
+    const selectedToken = R.find(t => t.id === selectedId)(tokens);
+
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="快速添加 (2/2)" />
@@ -92,14 +103,28 @@ class InvestmentCreate extends Component {
                 )}
               />,
             )}
-          {getFieldDecorator('invest_token', {
-            rules: [
-              {
-                required: true,
-                message: '请选择所投币种',
-              },
-            ],
-          })(<InputItem title="投资币种" />)}
+          {!R.isEmpty(tokens) &&
+            getFieldDecorator('invest_token', {
+              initialValue: initialSelectToken,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择所投币种',
+                },
+              ],
+            })(
+              <InputItem
+                vertical
+                title="投资币种"
+                renderContent={({ onChange, value }) => (
+                  <TokenSelector
+                    data={tokens}
+                    value={value}
+                    onChange={onChange}
+                  />
+                )}
+              />,
+            )}
           {getFieldDecorator('invest_count', {
             rules: [
               {
@@ -107,7 +132,16 @@ class InvestmentCreate extends Component {
                 message: '请填写应投资数额',
               },
             ],
-          })(<InputItem title="投资数额" placeholder="请输入投资数额" />)}
+          })(
+            <InputItem
+              title="投资数额"
+              placeholder="请输入投资数额"
+              inputProps={{ keyboardType: 'numeric' }}
+              renderRight={() =>
+                tokenDisplay({ t: selectedToken, selected: true })
+              }
+            />,
+          )}
           {getFieldDecorator('return_count', {
             rules: [
               {

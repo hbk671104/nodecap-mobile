@@ -10,6 +10,7 @@ class InputItem extends PureComponent {
     placeholder: PropTypes.string,
     vertical: PropTypes.bool,
     renderContent: PropTypes.func,
+    renderRight: PropTypes.func,
     inputProps: PropTypes.object,
   };
 
@@ -23,6 +24,7 @@ class InputItem extends PureComponent {
       title,
       vertical,
       renderContent,
+      renderRight,
       placeholder,
       onChange,
       inputProps,
@@ -41,18 +43,21 @@ class InputItem extends PureComponent {
           {renderContent ? (
             renderContent({ onChange, value })
           ) : (
-            <Input
-              {...inputProps}
-              style={[
-                styles.content.horizontal.input,
-                vertical && styles.content.vertical.input,
-              ]}
-              multiline={vertical}
-              placeholder={placeholder}
-              placeholderTextColor="rgba(0, 0, 0, 0.25)"
-              onChange={onChange}
-              value={value || ''}
-            />
+            <View style={styles.content.horizontal.wrapper}>
+              <Input
+                {...inputProps}
+                style={[
+                  styles.content.horizontal.input,
+                  vertical && styles.content.vertical.input,
+                ]}
+                multiline={vertical}
+                placeholder={placeholder}
+                placeholderTextColor="rgba(0, 0, 0, 0.25)"
+                onChange={onChange}
+                value={value || ''}
+              />
+              {renderRight && renderRight()}
+            </View>
           )}
         </View>
       </View>
@@ -84,7 +89,12 @@ const styles = {
         marginLeft: 9,
       },
       input: {
+        flex: 1,
         color: 'rgba(0, 0, 0, 0.85)',
+      },
+      wrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
       },
     },
     vertical: {
