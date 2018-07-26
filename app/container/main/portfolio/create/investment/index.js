@@ -115,7 +115,13 @@ class InvestmentCreate extends Component {
                 message: '请填写应回币数量',
               },
             ],
-          })(<InputItem title="应回币数量" placeholder="请输入应回币数量" />)}
+          })(
+            <InputItem
+              title="应回币数量"
+              placeholder="请输入应回币数量"
+              inputProps={{ keyboardType: 'numeric' }}
+            />,
+          )}
           {getFieldDecorator('paid_at', {
             rules: [
               {

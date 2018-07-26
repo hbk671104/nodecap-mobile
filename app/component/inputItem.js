@@ -10,10 +10,12 @@ class InputItem extends PureComponent {
     placeholder: PropTypes.string,
     vertical: PropTypes.bool,
     renderContent: PropTypes.func,
+    inputProps: PropTypes.object,
   };
 
   static defaultProps = {
     vertical: false,
+    inputProps: {},
   };
 
   render() {
@@ -23,6 +25,7 @@ class InputItem extends PureComponent {
       renderContent,
       placeholder,
       onChange,
+      inputProps,
       value,
     } = this.props;
     return (
@@ -39,6 +42,7 @@ class InputItem extends PureComponent {
             renderContent({ onChange, value })
           ) : (
             <Input
+              {...inputProps}
               style={[
                 styles.content.horizontal.input,
                 vertical && styles.content.vertical.input,
