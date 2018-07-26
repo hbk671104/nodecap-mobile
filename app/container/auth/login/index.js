@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { View, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Animatable from 'react-native-animatable';
 
 import AuthButton from 'component/auth/button';
@@ -36,9 +37,9 @@ class Login extends Component {
     const account = getFieldValue('account');
     const password = getFieldValue('password');
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <KeyboardAvoidingView behavior="position">
+        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
           <Animatable.Image
             animation="fadeInDownBig"
             delay={250}
@@ -72,8 +73,8 @@ class Login extends Component {
             style={styles.button}
             onPress={this.handleOnSubmit}
           />
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </KeyboardAwareScrollView>
+      </View>
     );
   }
 }
