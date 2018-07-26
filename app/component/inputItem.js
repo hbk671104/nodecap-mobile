@@ -9,6 +9,7 @@ class InputItem extends PureComponent {
     title: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
     vertical: PropTypes.bool,
+    renderContent: PropTypes.func,
   };
 
   static defaultProps = {
@@ -19,8 +20,8 @@ class InputItem extends PureComponent {
     const {
       title,
       vertical,
+      renderContent,
       placeholder,
-      children,
       onChange,
       value,
     } = this.props;
@@ -34,7 +35,9 @@ class InputItem extends PureComponent {
               : styles.content.horizontal.container
           }
         >
-          {children || (
+          {renderContent ? (
+            renderContent()
+          ) : (
             <Input
               style={[
                 styles.content.horizontal.input,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Linking } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -20,6 +20,14 @@ import styles from './style';
 class ExpressCreate extends Component {
   handleHeaderPress = item => () => {
     Linking.openURL(item.homepage);
+  };
+
+  handleNext = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InvestmentCreate',
+      }),
+    );
   };
 
   render() {
@@ -63,6 +71,7 @@ class ExpressCreate extends Component {
           style={styles.confirm}
           disabled={false}
           title="信息无误，下一步"
+          onPress={this.handleNext}
         />
       </SafeAreaView>
     );
