@@ -75,7 +75,7 @@ const styles = {
     },
     innerWrapper: {
       flexDirection: 'row',
-      justifyContent: 'center',
+      alignItems: 'center',
     },
     title: {
       color: 'rgba(0, 0, 0, 0.45)',
