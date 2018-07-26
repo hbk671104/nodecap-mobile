@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Linking } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -12,16 +12,11 @@ import NavBar from 'component/navBar';
 import AuthButton from 'component/auth/button';
 import InputItem from 'component/inputItem';
 
-import Header from './header';
 import styles from './style';
 
 @connect()
 @createForm()
-class ExpressCreate extends Component {
-  handleHeaderPress = item => () => {
-    Linking.openURL(item.homepage);
-  };
-
+class ManualCreate extends Component {
   handleNext = () => {
     this.props.form.validateFields((error, value) => {
       if (R.isNil(error)) {
@@ -29,7 +24,7 @@ class ExpressCreate extends Component {
           NavigationActions.navigate({
             routeName: 'InvestmentCreate',
             params: {
-              express: true,
+              express: false,
             },
           }),
         );
@@ -38,13 +33,32 @@ class ExpressCreate extends Component {
   };
 
   render() {
-    const item = this.props.navigation.getParam('item');
     const { getFieldDecorator } = this.props.form;
     return (
       <SafeAreaView style={styles.container}>
-        <NavBar gradient back title="快速添加 (1/2)" />
+        <NavBar gradient back title="手动添加 (1/2)" />
         <KeyboardAwareScrollView>
-          <Header item={item} onPress={this.handleHeaderPress(item)} />
+          {getFieldDecorator('name', {
+            rules: [
+              {
+                required: true,
+                message: '请输入项目名称',
+              },
+            ],
+          })(<InputItem title="项目名称" placeholder="请输入项目名称" />)}
+          {getFieldDecorator('token_name', {
+            rules: [
+              {
+                required: true,
+                message: '请输入 Token 简称',
+              },
+            ],
+          })(
+            <InputItem
+              title="Token 简称"
+              placeholder="请输入项目 Token 简称"
+            />,
+          )}
           {getFieldDecorator('source', {
             rules: [
               {
@@ -54,7 +68,6 @@ class ExpressCreate extends Component {
             ],
           })(<InputItem title="项目来源" placeholder="请输入项目来源" />)}
           {getFieldDecorator('description', {
-            initialValue: item.description,
             rules: [
               {
                 required: true,
@@ -77,7 +90,7 @@ class ExpressCreate extends Component {
         <AuthButton
           style={styles.confirm}
           disabled={false}
-          title="信息无误，下一步"
+          title="下一步"
           onPress={this.handleNext}
         />
       </SafeAreaView>
@@ -85,4 +98,4 @@ class ExpressCreate extends Component {
   }
 }
 
-export default ExpressCreate;
+export default ManualCreate;

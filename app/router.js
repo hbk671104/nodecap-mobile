@@ -27,6 +27,7 @@ import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
 import CreateProject from 'container/main/portfolio/create';
 import ExpressCreate from 'container/main/portfolio/create/express';
+import ManualCreate from 'container/main/portfolio/create/manual';
 import InvestmentCreate from 'container/main/portfolio/create/investment';
 import CreateDone from 'container/main/portfolio/create/done';
 import KeyManagement from 'container/main/management/key';
@@ -137,6 +138,7 @@ const MainStack = createStackNavigator(
     Search,
     CreateProject,
     ExpressCreate,
+    ManualCreate,
     InvestmentCreate,
     CreateDone,
     KeyManagement,

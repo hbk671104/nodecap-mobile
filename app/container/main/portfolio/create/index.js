@@ -53,7 +53,13 @@ class CreateProject extends Component {
     });
   };
 
-  handleManualCreate = () => {};
+  handleManualCreate = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ManualCreate',
+      }),
+    );
+  };
 
   handleExpressCreate = item => () => {
     this.props.dispatch(

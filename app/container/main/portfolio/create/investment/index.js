@@ -51,6 +51,7 @@ class InvestmentCreate extends Component {
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { funds, stages, tokens } = this.props;
+    const isExpress = this.props.navigation.getParam('express');
 
     const initialSelectToken = R.path([0, 'id'])(tokens);
     const selectedId = getFieldValue('invest_token') || initialSelectToken;
@@ -58,7 +59,11 @@ class InvestmentCreate extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <NavBar gradient back title="快速添加 (2/2)" />
+        <NavBar
+          gradient
+          back
+          title={`${isExpress ? '快速' : '手动'}添加 (2/2)`}
+        />
         <KeyboardAwareScrollView>
           {!R.isEmpty(funds) &&
             getFieldDecorator('fund', {
