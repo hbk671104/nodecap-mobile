@@ -4,7 +4,14 @@ import { View, Text, ViewPropTypes, ActivityIndicator } from 'react-native';
 import Touchable from 'component/uikit/touchable';
 import styles from './style';
 
-const authButton = ({ style, disabled, loading, title, onPress }) => {
+const authButton = ({
+  style,
+  disabled,
+  loading,
+  title,
+  titleStyle,
+  onPress,
+}) => {
   const Wrapper = disabled ? View : Touchable;
   return (
     <Wrapper
@@ -19,7 +26,11 @@ const authButton = ({ style, disabled, loading, title, onPress }) => {
         <ActivityIndicator color="white" />
       ) : (
         <Text
-          style={[styles.title.normal, !disabled && styles.title.highlight]}
+          style={[
+            styles.title.normal,
+            !disabled && styles.title.highlight,
+            titleStyle,
+          ]}
         >
           {title}
         </Text>
@@ -36,6 +47,7 @@ authButton.defaultProps = {
 
 authButton.propTypes = {
   style: ViewPropTypes.style,
+  titleStyle: PropTypes.object,
   title: PropTypes.string,
   disabled: PropTypes.bool,
   loading: PropTypes.bool,

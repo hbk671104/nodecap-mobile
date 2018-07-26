@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { View } from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 
@@ -17,7 +18,7 @@ const datePicker = props => {
       maxDate={moment().format('LL')}
       confirmBtnText="确认"
       cancelBtnText="取消"
-      iconComponent={() => null}
+      iconComponent={<View />}
       onDateChange={date => {
         onChange(date);
       }}
@@ -45,7 +46,7 @@ const styles = {
       color: 'rgba(0, 0, 0, 0.25)',
       fontSize: 14,
     },
-    btnConfirm: {
+    btnTextConfirm: {
       color: '#1890FF',
     },
   },

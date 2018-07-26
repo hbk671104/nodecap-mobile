@@ -26,7 +26,13 @@ import styles from './style';
 }))
 @createForm()
 class InvestmentCreate extends Component {
-  handleSkip = () => {};
+  handleSkip = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateDone',
+      }),
+    );
+  };
 
   handleSubmit = () => {
     this.props.form.validateFields((error, value) => {
