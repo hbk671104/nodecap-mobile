@@ -23,11 +23,15 @@ class ExpressCreate extends Component {
   };
 
   handleNext = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'InvestmentCreate',
-      }),
-    );
+    this.props.form.validateFields((error, value) => {
+      if (R.isNil(error)) {
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'InvestmentCreate',
+          }),
+        );
+      }
+    });
   };
 
   render() {
