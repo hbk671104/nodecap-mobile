@@ -6,11 +6,9 @@ export default {
   navBar: {},
   bottom: {
     container: {
-      position: 'absolute',
-      left: 24,
-      right: 24,
-      bottom: 24,
       backgroundColor: '#F7423A',
+      marginHorizontal: 24,
+      marginVertical: 24,
     },
   },
 };

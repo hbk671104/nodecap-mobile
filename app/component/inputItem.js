@@ -1,43 +1,94 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
 import Input from 'component/uikit/textInput';
 
-const inputItem = props => (
-  <View style={styles.container}>
-    <Text style={styles.title}>{props.title}</Text>
-    <Input
-      {...props}
-      style={styles.input}
-      placeholder={props.placeholder}
-      placeholderTextColor="rgba(0, 0, 0, 0.25)"
-    />
-  </View>
-);
+class InputItem extends PureComponent {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    placeholder: PropTypes.string,
+    vertical: PropTypes.bool,
+  };
+
+  static defaultProps = {
+    vertical: false,
+  };
+
+  render() {
+    const {
+      title,
+      vertical,
+      placeholder,
+      children,
+      onChange,
+      value,
+    } = this.props;
+    return (
+      <View style={[styles.container, vertical && styles.vertical]}>
+        <Text style={styles.title}>{title}</Text>
+        <View
+          style={
+            vertical
+              ? styles.content.vertical.container
+              : styles.content.horizontal.container
+          }
+        >
+          {children || (
+            <Input
+              style={[
+                styles.content.horizontal.input,
+                vertical && styles.content.vertical.input,
+              ]}
+              multiline={vertical}
+              placeholder={placeholder}
+              placeholderTextColor="rgba(0, 0, 0, 0.25)"
+              onChange={onChange}
+              value={value || ''}
+            />
+          )}
+        </View>
+      </View>
+    );
+  }
+}
 
 const styles = {
   container: {
-    minHeight: 56,
     marginLeft: 12,
     paddingRight: 12,
+    paddingVertical: 20,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
     flexDirection: 'row',
     alignItems: 'center',
   },
+  vertical: {
+    flexDirection: 'column',
+    alignItems: undefined,
+  },
   title: {
     color: 'rgba(0, 0, 0, 0.45)',
   },
-  input: {
-    flex: 1,
-    marginLeft: 9,
+  content: {
+    horizontal: {
+      container: {
+        flex: 1,
+        marginLeft: 9,
+      },
+      input: {
+        color: 'rgba(0, 0, 0, 0.85)',
+      },
+    },
+    vertical: {
+      container: {
+        marginTop: 12,
+      },
+      input: {
+        lineHeight: 20,
+      },
+    },
   },
 };
 
-inputItem.propTypes = {
-  title: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-};
-
-export default inputItem;
+export default InputItem;

@@ -3,24 +3,27 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import R from 'ramda';
 
+import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 import { shadow } from '../../../../../utils/style';
 
-const header = ({ item }) => (
-  <View style={styles.container}>
-    <Avatar size={60} source={{ uri: item.icon }} />
-    <View style={styles.content.container}>
-      <Text style={styles.content.title}>{item.name}</Text>
-      <View style={styles.content.subtitle.container}>
-        <Text style={styles.content.subtitle.text}>
-          Token:{' '}
-          <Text style={styles.content.subtitle.highlight}>
-            {R.toUpper(item.symbol)}
+const header = ({ item, onPress }) => (
+  <Touchable foreground onPress={onPress}>
+    <View style={styles.container}>
+      <Avatar size={60} source={{ uri: item.icon }} />
+      <View style={styles.content.container}>
+        <Text style={styles.content.title}>{item.name}</Text>
+        <View style={styles.content.subtitle.container}>
+          <Text style={styles.content.subtitle.text}>
+            Token:{' '}
+            <Text style={styles.content.subtitle.highlight}>
+              {R.toUpper(item.symbol)}
+            </Text>
           </Text>
-        </Text>
+        </View>
       </View>
     </View>
-  </View>
+  </Touchable>
 );
 
 const styles = {

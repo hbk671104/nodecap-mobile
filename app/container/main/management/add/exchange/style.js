@@ -38,10 +38,8 @@ export default {
   },
   import: {
     container: {
-      position: 'absolute',
-      left: 24,
-      right: 24,
-      bottom: 24,
+      marginHorizontal: 24,
+      marginVertical: 24,
     },
   },
   help: {
