@@ -40,7 +40,7 @@ class ExpressCreate extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="快速添加 (1/2)" />
-        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
+        <KeyboardAwareScrollView>
           <Header item={item} onPress={this.handleHeaderPress(item)} />
           {getFieldDecorator('source', {
             rules: [

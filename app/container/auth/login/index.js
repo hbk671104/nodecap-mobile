@@ -39,7 +39,7 @@ class Login extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
+        <KeyboardAwareScrollView>
           <Animatable.Image
             animation="fadeInDownBig"
             delay={250}

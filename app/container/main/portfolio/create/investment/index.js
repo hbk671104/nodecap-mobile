@@ -12,6 +12,7 @@ import NavBar from 'component/navBar';
 import AuthButton from 'component/auth/button';
 import InputItem from 'component/inputItem';
 import TokenSelector, { tokenDisplay } from 'component/tokenSelector';
+import DatePicker from 'component/datePicker';
 
 import styles from './style';
 
@@ -52,7 +53,7 @@ class InvestmentCreate extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="快速添加 (2/2)" />
-        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
+        <KeyboardAwareScrollView>
           {!R.isEmpty(funds) &&
             getFieldDecorator('fund', {
               initialValue: R.path([0, 'id'])(funds),
@@ -163,7 +164,15 @@ class InvestmentCreate extends Component {
                 message: '请选择打币时间',
               },
             ],
-          })(<InputItem title="打币时间" placeholder="请选择打币时间" />)}
+          })(
+            <InputItem
+              title="打币时间"
+              placeholder="请选择打币时间"
+              renderContent={({ onChange, value }) => (
+                <DatePicker onChange={onChange} value={value} />
+              )}
+            />,
+          )}
           <View style={styles.notice.container}>
             <Text style={styles.notice.text}>
               添加更多投资信息可前往网页版 hotnode.io
