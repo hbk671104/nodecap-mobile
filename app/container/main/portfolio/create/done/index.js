@@ -21,7 +21,17 @@ class CreateDone extends Component {
     );
   };
 
-  checkDetail = () => {};
+  checkDetail = () => {
+    const item = this.props.navigation.getParam('data', {});
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item,
+        },
+      }),
+    );
+  };
 
   handleFinishPress = () => {
     this.props.dispatch(
@@ -32,7 +42,7 @@ class CreateDone extends Component {
   };
 
   render() {
-    // const item = this.props.navigation.getParam('item');
+    const data = this.props.navigation.getParam('data', {});
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar hidden />
@@ -50,16 +60,16 @@ class CreateDone extends Component {
           <View style={styles.content.item.container}>
             <Text style={styles.content.item.title}>
               项目：
-              <Text style={styles.content.item.highlight}>ZIL</Text>
+              <Text style={styles.content.item.highlight}>{data.name}</Text>
             </Text>
             <Text style={styles.content.item.title}>
               项目来源：
-              <Text style={styles.content.item.subtitle}>李柯瑶</Text>
+              <Text style={styles.content.item.subtitle}>{data.source}</Text>
             </Text>
             <Text style={[styles.content.item.title, { lineHeight: 21 }]}>
               项目描述：
               <Text style={styles.content.item.subtitle}>
-                该项目作为基础链，旨在解决交易速度和扩展性的问题，用于解决当前区块链的第一大难题。
+                {data.description}
               </Text>
             </Text>
           </View>

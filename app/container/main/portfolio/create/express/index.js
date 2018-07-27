@@ -25,11 +25,18 @@ class ExpressCreate extends Component {
   handleNext = () => {
     this.props.form.validateFields((error, value) => {
       if (R.isNil(error)) {
+        const item = this.props.navigation.getParam('item', {});
         this.props.dispatch(
           NavigationActions.navigate({
             routeName: 'InvestmentCreate',
             params: {
               express: true,
+              projectInfo: {
+                coin_id: item.id,
+                name: item.name,
+                token_name: R.toUpper(item.symbol),
+                ...value,
+              },
             },
           }),
         );
@@ -38,7 +45,7 @@ class ExpressCreate extends Component {
   };
 
   render() {
-    const item = this.props.navigation.getParam('item');
+    const item = this.props.navigation.getParam('item', {});
     const { getFieldDecorator } = this.props.form;
     return (
       <SafeAreaView style={styles.container}>

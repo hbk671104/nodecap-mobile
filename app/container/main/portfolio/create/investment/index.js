@@ -27,32 +27,45 @@ import styles from './style';
 }))
 @createForm()
 class InvestmentCreate extends Component {
-  handleSkip = () => {
+  createDone = data => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateDone',
+        params: {
+          data,
+        },
       }),
     );
   };
 
-  handleSubmit = () => {
-    this.props.form.validateFields((error, value) => {
-      if (R.isNil(error)) {
-        // this.props.dispatch(
-        //   NavigationActions.navigate({
-        //     routeName: 'InvestmentCreate',
-        //   }),
-        // );
-      }
-    });
+  handleSkip = () => {
+    const projectInfo = this.props.navigation.getParam('projectInfo', {});
+    if (!R.isEmpty(projectInfo)) {
+      Toast.loading('创建中...', 0);
+      this.props.dispatch({
+        type: 'portfolio/createProject',
+        payload: {
+          ...projectInfo,
+        },
+        callback: data => {
+          Toast.hide();
+          this.createDone(data);
+        },
+      });
+    }
   };
 
-  handleSelectPress = () => {};
+  handleSubmit = () => {
+    this.props.form.validateFields((error, value) => {
+      // if (R.isNil(error)) {
+      // }
+    });
+  };
 
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { funds, stages, tokens } = this.props;
-    const isExpress = this.props.navigation.getParam('express');
+    const isExpress = this.props.navigation.getParam('express', false);
 
     const initialSelectToken = R.path([0, 'id'])(tokens);
     const selectedId = getFieldValue('invest_token') || initialSelectToken;

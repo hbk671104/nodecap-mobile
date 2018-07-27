@@ -8,6 +8,8 @@ import {
   getProjectChartData,
   getProjectSymbol,
   getMatchedCoin,
+  createProject,
+  createProjectInvestInfo,
 } from '../services/api';
 
 const paginate = (state, action, key) => {
@@ -216,6 +218,16 @@ export default {
           payload: investEquities.data,
           relatedType: 'invest_equities',
         });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *createProject({ payload = {}, callback }, { call }) {
+      try {
+        const { data: projectData } = yield call(createProject, payload);
+        if (callback) {
+          callback(projectData);
+        }
       } catch (e) {
         console.log(e);
       }
