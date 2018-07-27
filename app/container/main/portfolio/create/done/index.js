@@ -44,7 +44,7 @@ class CreateDone extends Component {
   render() {
     const data = this.props.navigation.getParam('data', {});
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
         <StatusBar barStyle="default" />
         <ScrollView
           style={styles.content.container}
