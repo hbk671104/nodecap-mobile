@@ -67,7 +67,7 @@ class InvestmentCreate extends Component {
   };
 
   render() {
-    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const { getFieldDecorator, getFieldValue, getFieldError } = this.props.form;
     const { funds, stages, tokens } = this.props;
     const isExpress = this.props.navigation.getParam('express', false);
 
@@ -174,6 +174,7 @@ class InvestmentCreate extends Component {
               renderRight={() =>
                 tokenDisplay({ t: selectedToken, selected: true })
               }
+              error={getFieldError('invest_count')}
             />,
           )}
           {getFieldDecorator('return_count', {
@@ -188,6 +189,7 @@ class InvestmentCreate extends Component {
               title="应回币数量"
               placeholder="请输入应回币数量"
               inputProps={{ keyboardType: 'numeric' }}
+              error={getFieldError('return_count')}
             />,
           )}
           {getFieldDecorator('paid_at', {
@@ -204,6 +206,7 @@ class InvestmentCreate extends Component {
               renderContent={({ onChange, value }) => (
                 <DatePicker onChange={onChange} value={value} />
               )}
+              error={getFieldError('paid_at')}
             />,
           )}
           <View style={styles.notice.container}>

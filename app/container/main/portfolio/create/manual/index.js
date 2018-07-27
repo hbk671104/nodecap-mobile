@@ -36,7 +36,7 @@ class ManualCreate extends Component {
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="手动添加 (1/2)" />
@@ -53,6 +53,7 @@ class ManualCreate extends Component {
               title="项目名称"
               placeholder="请输入项目名称"
               inputProps={{ autoFocus: true }}
+              error={getFieldError('name')}
             />,
           )}
           {getFieldDecorator('token_name', {
@@ -66,6 +67,7 @@ class ManualCreate extends Component {
             <InputItem
               title="Token 简称"
               placeholder="请输入项目 Token 简称"
+              error={getFieldError('token_name')}
             />,
           )}
           {getFieldDecorator('source', {
@@ -75,7 +77,13 @@ class ManualCreate extends Component {
                 message: '请输入项目来源',
               },
             ],
-          })(<InputItem title="项目来源" placeholder="请输入项目来源" />)}
+          })(
+            <InputItem
+              title="项目来源"
+              placeholder="请输入项目来源"
+              error={getFieldError('source')}
+            />,
+          )}
           {getFieldDecorator('description', {
             rules: [
               {
@@ -88,6 +96,7 @@ class ManualCreate extends Component {
               title="项目描述"
               placeholder="请输入项目描述"
               vertical
+              error={getFieldError('description')}
             />,
           )}
           <View style={styles.notice.container}>
