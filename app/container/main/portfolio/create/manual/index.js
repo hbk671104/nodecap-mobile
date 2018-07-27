@@ -25,6 +25,9 @@ class ManualCreate extends Component {
             routeName: 'InvestmentCreate',
             params: {
               express: false,
+              projectInfo: {
+                ...value,
+              },
             },
           }),
         );
