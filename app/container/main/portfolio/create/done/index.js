@@ -44,7 +44,7 @@ class CreateDone extends Component {
     const data = this.props.navigation.getParam('data', {});
     return (
       <SafeAreaView style={styles.container}>
-        <StatusBar barStyle="default" />
+        <StatusBar barStyle="dark-content" />
         <ScrollView
           style={styles.content.container}
           contentContainerStyle={styles.content.contentContainer}

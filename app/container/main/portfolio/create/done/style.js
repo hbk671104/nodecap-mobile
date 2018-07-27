@@ -60,7 +60,7 @@ export default {
   done: {
     container: {
       position: 'absolute',
-      top: 32 + getStatusBarHeight(true),
+      top: 10 + getStatusBarHeight(true),
       right: 24,
     },
     text: {

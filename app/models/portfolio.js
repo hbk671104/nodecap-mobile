@@ -57,7 +57,7 @@ export default {
     unexchangeable: {
       index: null,
       params: {
-        status: '4,5,6',
+        status: '0/1/2/3/4/5/6',
       },
     },
     searchList: {
@@ -114,7 +114,6 @@ export default {
       try {
         const req = {
           ...payload,
-          status: '4,5,6',
         };
         const res = yield call(portfolioIndex, req);
         yield put({

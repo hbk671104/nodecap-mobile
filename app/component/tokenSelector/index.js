@@ -24,7 +24,7 @@ const tokenSelector = ({ data, value, onChange }) => (
           key={t.id}
           style={[styles.item.wrapper, i === 0 && { marginLeft: 0 }]}
         >
-          <Touchable foreground onPress={() => onChange(t.id)}>
+          <Touchable borderless onPress={() => onChange(t.id)}>
             <View
               style={[
                 styles.item.container,
