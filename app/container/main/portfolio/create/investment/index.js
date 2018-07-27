@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -13,6 +13,7 @@ import AuthButton from 'component/auth/button';
 import InputItem from 'component/inputItem';
 import TokenSelector, { tokenDisplay } from 'component/tokenSelector';
 import DatePicker from 'component/datePicker';
+import PickerSelect from 'component/picker';
 
 import styles from './style';
 
@@ -79,14 +80,16 @@ class InvestmentCreate extends Component {
                 title="投资主体"
                 placeholder="请选择投资主体"
                 renderContent={({ onChange, value }) => (
-                  <Picker
-                    selectedValue={value}
-                    onValueChange={itemValue => onChange(itemValue)}
-                  >
-                    {funds.map(f => (
-                      <Picker.Item key={f.id} label={f.name} value={f.id} />
-                    ))}
-                  </Picker>
+                  <PickerSelect
+                    hideIcon
+                    placeholder={{
+                      label: '请选择投资主体',
+                      value: null,
+                    }}
+                    data={funds.map(f => ({ label: f.name, value: f.id }))}
+                    onChange={onChange}
+                    value={value}
+                  />
                 )}
               />,
             )}
@@ -104,14 +107,16 @@ class InvestmentCreate extends Component {
                 title="所投阶段"
                 placeholder="请选择所投阶段"
                 renderContent={({ onChange, value }) => (
-                  <Picker
-                    selectedValue={value}
-                    onValueChange={itemValue => onChange(itemValue)}
-                  >
-                    {stages.map(s => (
-                      <Picker.Item key={s.id} label={s.name} value={s.id} />
-                    ))}
-                  </Picker>
+                  <PickerSelect
+                    hideIcon
+                    placeholder={{
+                      label: '请选择所投阶段',
+                      value: null,
+                    }}
+                    data={stages.map(s => ({ label: s.name, value: s.id }))}
+                    onChange={onChange}
+                    value={value}
+                  />
                 )}
               />,
             )}
