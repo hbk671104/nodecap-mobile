@@ -48,7 +48,13 @@ class ManualCreate extends Component {
                 message: '请输入项目名称',
               },
             ],
-          })(<InputItem title="项目名称" placeholder="请输入项目名称" />)}
+          })(
+            <InputItem
+              title="项目名称"
+              placeholder="请输入项目名称"
+              inputProps={{ autoFocus: true }}
+            />,
+          )}
           {getFieldDecorator('token_name', {
             rules: [
               {

@@ -46,7 +46,7 @@ class ExpressCreate extends Component {
 
   render() {
     const item = this.props.navigation.getParam('item', {});
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="快速添加 (1/2)" />
@@ -59,7 +59,14 @@ class ExpressCreate extends Component {
                 message: '请输入项目来源',
               },
             ],
-          })(<InputItem title="项目来源" placeholder="请输入项目来源" />)}
+          })(
+            <InputItem
+              title="项目来源"
+              placeholder="请输入项目来源"
+              inputProps={{ autoFocus: true }}
+              error={getFieldError('source')}
+            />,
+          )}
           {getFieldDecorator('description', {
             initialValue: item.description,
             rules: [
@@ -73,6 +80,7 @@ class ExpressCreate extends Component {
               title="项目描述"
               placeholder="请输入项目描述"
               vertical
+              error={getFieldError('description')}
             />,
           )}
           <View style={styles.notice.container}>
