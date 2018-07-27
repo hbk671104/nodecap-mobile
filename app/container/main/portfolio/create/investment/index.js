@@ -38,27 +38,31 @@ class InvestmentCreate extends Component {
     );
   };
 
-  handleSkip = () => {
-    const projectInfo = this.props.navigation.getParam('projectInfo', {});
-    if (!R.isEmpty(projectInfo)) {
-      Toast.loading('创建中...', 0);
-      this.props.dispatch({
-        type: 'portfolio/createProject',
-        payload: {
+  handleCreate = (investInfo = {}) => () => {
+    const projectInfo = this.props.navigation.getParam('projectInfo');
+    Toast.loading('创建中...', 0);
+    this.props.dispatch({
+      type: 'portfolio/createProject',
+      payload: {
+        project: {
           ...projectInfo,
         },
-        callback: data => {
-          Toast.hide();
-          this.createDone(data);
+        invest: {
+          ...investInfo,
         },
-      });
-    }
+      },
+      callback: data => {
+        Toast.hide();
+        this.createDone(data);
+      },
+    });
   };
 
   handleSubmit = () => {
     this.props.form.validateFields((error, value) => {
-      // if (R.isNil(error)) {
-      // }
+      if (R.isNil(error)) {
+        this.handleCreate(value)();
+      }
     });
   };
 
@@ -78,7 +82,7 @@ class InvestmentCreate extends Component {
           back
           title={`${isExpress ? '快速' : '手动'}添加 (2/2)`}
         />
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
           {!R.isEmpty(funds) &&
             getFieldDecorator('fund', {
               initialValue: R.path([0, 'id'])(funds),
@@ -213,7 +217,7 @@ class InvestmentCreate extends Component {
             暂无投资数据，
             <Text
               style={styles.noInvestment.highlight}
-              onPress={this.handleSkip}
+              onPress={this.handleCreate()}
             >
               {'跳过 >'}
             </Text>

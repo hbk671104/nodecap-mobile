@@ -49,6 +49,7 @@ class CreateDone extends Component {
         <ScrollView
           style={styles.content.container}
           contentContainerStyle={styles.content.contentContainer}
+          showsVerticalScrollIndicator={false}
         >
           <View>
             <Image

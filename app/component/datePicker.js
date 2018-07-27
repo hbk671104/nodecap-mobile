@@ -14,8 +14,8 @@ const datePicker = props => {
       date={value}
       mode="date"
       placeholder="请选择日期"
-      format="LL"
-      maxDate={moment().format('LL')}
+      format="YYYY-MM-DD"
+      maxDate={moment().format('YYYY-MM-DD')}
       confirmBtnText="确认"
       cancelBtnText="取消"
       iconComponent={<View />}

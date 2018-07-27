@@ -11,6 +11,7 @@ import {
   createProject,
   createProjectInvestInfo,
 } from '../services/api';
+import moment from 'moment';
 
 const paginate = (state, action, key) => {
   const oldData = R.pathOr([], [key, 'index', 'data'])(state);
@@ -222,11 +223,32 @@ export default {
         console.log(e);
       }
     },
-    *createProject({ payload = {}, callback }, { call }) {
+    *createProject(
+      {
+        payload: { project, invest },
+        callback,
+      },
+      { call },
+    ) {
       try {
-        const { data: projectData } = yield call(createProject, payload);
+        const { data: projectRes } = yield call(createProject, project);
+        if (!R.isEmpty(invest)) {
+          const financeInfo = {
+            ...invest,
+            fund: {
+              id: invest.fund,
+            },
+            paid_at: moment(invest.paid_at, 'YYYY-MM-DD').toISOString(),
+            is_paid: true,
+          };
+          yield call(createProjectInvestInfo, {
+            financeInfo,
+            type: 'tokens',
+            projectId: projectRes.id,
+          });
+        }
         if (callback) {
-          callback(projectData);
+          callback(projectRes);
         }
       } catch (e) {
         console.log(e);

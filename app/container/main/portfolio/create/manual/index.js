@@ -40,7 +40,7 @@ class ManualCreate extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="手动添加 (1/2)" />
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
           {getFieldDecorator('name', {
             rules: [
               {
