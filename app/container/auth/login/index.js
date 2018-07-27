@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as Animatable from 'react-native-animatable';
 
+import EnhancedScroll from 'component/enhancedScroll';
 import AuthButton from 'component/auth/button';
 import AuthInput from 'component/auth/input';
 import StatusBar from 'component/uikit/statusBar';
@@ -39,7 +39,7 @@ class Login extends Component {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <KeyboardAwareScrollView>
+        <EnhancedScroll>
           <Animatable.Image
             animation="fadeInDownBig"
             delay={250}
@@ -73,7 +73,7 @@ class Login extends Component {
             style={styles.button}
             onPress={this.handleOnSubmit}
           />
-        </KeyboardAwareScrollView>
+        </EnhancedScroll>
       </View>
     );
   }

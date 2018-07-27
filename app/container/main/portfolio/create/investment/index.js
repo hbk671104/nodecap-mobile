@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import { createForm } from 'rc-form';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Toast } from 'antd-mobile';
 
+import EnhancedScroll from 'component/enhancedScroll';
 import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import AuthButton from 'component/auth/button';
@@ -82,7 +82,7 @@ class InvestmentCreate extends Component {
           back
           title={`${isExpress ? '快速' : '手动'}添加 (2/2)`}
         />
-        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
+        <EnhancedScroll>
           {!R.isEmpty(funds) &&
             getFieldDecorator('fund', {
               initialValue: R.path([0, 'id'])(funds),
@@ -214,7 +214,7 @@ class InvestmentCreate extends Component {
               添加更多投资信息可前往网页版 hotnode.io
             </Text>
           </View>
-        </KeyboardAwareScrollView>
+        </EnhancedScroll>
         <View style={styles.noInvestment.container}>
           <Text style={styles.noInvestment.title}>
             暂无投资数据，

@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import { createForm } from 'rc-form';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Toast } from 'antd-mobile';
 
+import EnhancedScroll from 'component/enhancedScroll';
 import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import AuthButton from 'component/auth/button';
@@ -50,7 +49,7 @@ class ExpressCreate extends Component {
     return (
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="快速添加 (1/2)" />
-        <KeyboardAwareScrollView keyboardDismissMode="on-drag">
+        <EnhancedScroll>
           <Header item={item} onPress={this.handleHeaderPress(item)} />
           {getFieldDecorator('source', {
             rules: [
@@ -88,7 +87,7 @@ class ExpressCreate extends Component {
               添加更多投资信息可前往网页版 hotnode.io
             </Text>
           </View>
-        </KeyboardAwareScrollView>
+        </EnhancedScroll>
         <AuthButton
           style={styles.confirm}
           disabled={false}

@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
+import EnhancedScroll from 'component/enhancedScroll';
 import AuthButton from 'component/auth/button';
 import AuthInput from 'component/auth/input';
 import styles from './style';
@@ -81,7 +81,7 @@ class SetPassword extends Component {
     )(getFieldsError(['confirm_password', 'password']));
 
     return (
-      <KeyboardAwareScrollView style={styles.container}>
+      <EnhancedScroll style={styles.container}>
         <View style={styles.titleWrapper}>
           <Text style={styles.title}>重设您的密码</Text>
           <Text style={styles.tip}>
@@ -120,7 +120,7 @@ class SetPassword extends Component {
           style={styles.button}
           onPress={this.handleOnSubmit}
         />
-      </KeyboardAwareScrollView>
+      </EnhancedScroll>
     );
   }
 }
