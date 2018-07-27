@@ -19,6 +19,9 @@ const styles = {
   inputAndroid: {
     color: 'rgba(0, 0, 0, 0.85)',
   },
+  underline: {
+    borderTopWidth: 0,
+  },
 };
 
 export default picker;
