@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { Toast } from 'antd-mobile';
 
 import StatusBar from 'component/uikit/statusBar';
 import SafeAreaView from 'component/uikit/safeArea';
@@ -44,7 +43,7 @@ class CreateDone extends Component {
   render() {
     const data = this.props.navigation.getParam('data', {});
     return (
-      <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
+      <SafeAreaView style={styles.container}>
         <StatusBar barStyle="default" />
         <ScrollView
           style={styles.content.container}

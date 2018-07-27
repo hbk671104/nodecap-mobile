@@ -1,3 +1,5 @@
+import { getStatusBarHeight } from 'react-native-iphone-x-helper';
+
 export default {
   container: {
     flex: 1,
@@ -58,7 +60,7 @@ export default {
   done: {
     container: {
       position: 'absolute',
-      top: 32,
+      top: 32 + getStatusBarHeight(true),
       right: 24,
     },
     text: {
