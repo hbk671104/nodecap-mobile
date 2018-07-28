@@ -34,9 +34,9 @@ class Header extends PureComponent {
             <Text style={styles.middle.group.content}>72,362,631.12</Text>
           </View>
         </View>
-        <View style={styles.graph.container}>
+        {/* <View style={styles.graph.container}>
           <Text style={{ color: 'white', fontSize: 24 }}>这里是个图</Text>
-        </View>
+        </View> */}
         <View style={styles.bottom.container}>
           <View style={styles.bottom.group.container}>
             <Touchable borderless onPress={this.handleItemPress('24h')}>

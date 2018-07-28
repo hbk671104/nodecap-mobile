@@ -42,7 +42,7 @@ class Self extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView contentContainerStyle={styles.scroll.content}>
-          <Item icon={require('asset/mine/fund.png')} title="我的基金" />
+          {/* <Item icon={require('asset/mine/fund.png')} title="我的基金" />
           <Item icon={require('asset/mine/resources.png')} title="我的人脉" />
           <Item icon={require('asset/mine/colleague.png')} title="我的同事" />
           <View style={styles.scroll.divider} />
@@ -50,7 +50,7 @@ class Self extends Component {
             icon={require('asset/mine/notif.png')}
             title="通知中心"
             badge={24}
-          />
+          /> */}
           <Item
             icon={require('asset/mine/settings.png')}
             title="设置"

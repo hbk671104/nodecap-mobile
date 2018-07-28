@@ -79,29 +79,29 @@ class MyProfile extends Component {
                 source={{ uri: user.avatar_url }}
               />
             )}
-            onPress={this.handleAvatarPress}
+            // onPress={this.handleAvatarPress}
           />
           <ListItem
             title="姓名"
             content={user.realname}
             titleStyle={styles.listItem.title}
             contentStyle={styles.listItem.content}
-            onPress={this.handleItemPress({
-              key: 'realname',
-              title: '姓名',
-              default: user.realname,
-            })}
+            // onPress={this.handleItemPress({
+            //   key: 'realname',
+            //   title: '姓名',
+            //   default: user.realname,
+            // })}
           />
           <ListItem
             title="手机"
             content={user.mobile}
             titleStyle={styles.listItem.title}
             contentStyle={styles.listItem.content}
-            onPress={this.handleItemPress({
-              key: 'mobile',
-              title: '手机',
-              default: user.mobile,
-            })}
+            // onPress={this.handleItemPress({
+            //   key: 'mobile',
+            //   title: '手机',
+            //   default: user.mobile,
+            // })}
           />
           <ListItem
             title="登录账号"

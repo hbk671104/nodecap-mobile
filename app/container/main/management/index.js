@@ -13,6 +13,59 @@ import ListHeader from './listHeader';
 import Header from './header';
 import styles from './style';
 
+const mock = [
+  {
+    id: 1,
+    name: 'BTC',
+    holding: {
+      base: 20,
+      CNY: 1000000,
+    },
+    price: 54201,
+    change: -0.14,
+  },
+  {
+    id: 2,
+    name: 'BCH',
+    holding: {
+      base: 450,
+      CNY: 2250000,
+    },
+    price: 5473,
+    change: -0.71,
+  },
+  {
+    id: 3,
+    name: 'ETH',
+    holding: {
+      base: 3648,
+      CNY: 1860000,
+    },
+    price: 3212,
+    change: -1.2,
+  },
+  {
+    id: 4,
+    name: 'EOS',
+    holding: {
+      base: 46276,
+      CNY: 2545180,
+    },
+    price: 55.67,
+    change: -0.71,
+  },
+  {
+    id: 5,
+    name: 'IOTA',
+    holding: {
+      base: 464304,
+      CNY: 3166553.28,
+    },
+    price: 6.82,
+    change: -0.65,
+  },
+];
+
 @compose(withState('offsetY', 'setOffsetY', 0))
 @connect()
 class Management extends Component {
@@ -59,7 +112,7 @@ class Management extends Component {
 
   renderListHeader = () => <ListHeader />;
 
-  renderItem = ({ item }) => <ListItem />;
+  renderItem = ({ item }) => <ListItem item={item} />;
 
   renderSeparator = () => <View style={styles.separator} />;
 
@@ -78,20 +131,7 @@ class Management extends Component {
         <List
           contentContainerStyle={styles.list.contentContainer}
           // action={this.requestData}
-          data={[
-            { id: 1 },
-            { id: 2 },
-            { id: 3 },
-            { id: 4 },
-            { id: 5 },
-            { id: 6 },
-            { id: 7 },
-            { id: 8 },
-            { id: 9 },
-            { id: 10 },
-            { id: 11 },
-            { id: 12 },
-          ]}
+          data={mock}
           // pagination={pagination}
           // loading={loading}
           renderItem={this.renderItem}
