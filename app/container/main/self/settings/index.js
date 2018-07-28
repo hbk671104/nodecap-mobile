@@ -26,7 +26,7 @@ class Settings extends Component {
         <NavBar gradient back title="设置" />
         <ScrollView>
           {/* <ListItem title="清除缓存" content="10.92M" /> */}
-          <ListItem title="当前版本" content="v5.0" />
+          <ListItem disablePress title="当前版本" content="v5.0" />
           {/* <ListItem title="评价 Hotnode" /> */}
         </ScrollView>
         <AuthButton
