@@ -7,7 +7,11 @@ import {
   getProjectInvestEquities,
   getProjectChartData,
   getProjectSymbol,
+  getMatchedCoin,
+  createProject,
+  createProjectInvestInfo,
 } from '../services/api';
+import moment from 'moment';
 
 const paginate = (state, action, key) => {
   const oldData = R.pathOr([], [key, 'index', 'data'])(state);
@@ -53,10 +57,13 @@ export default {
     unexchangeable: {
       index: null,
       params: {
-        status: '4,5,6',
+        status: '0,1,2,3,4,5,6',
       },
     },
     searchList: {
+      index: null,
+    },
+    matchCoinList: {
       index: null,
     },
     current: null,
@@ -66,9 +73,8 @@ export default {
       try {
         const req = {
           ...payload,
-          can_calculate: 0,
         };
-        const res = yield call(investmentIndex, req);
+        const res = yield call(portfolioIndex, req);
         yield put({
           type: 'list',
           payload: res.data,
@@ -107,11 +113,27 @@ export default {
       try {
         const req = {
           ...payload,
-          status: '4,5,6',
         };
         const res = yield call(portfolioIndex, req);
         yield put({
           type: 'searchList',
+          payload: res.data,
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *searchMatchedCoin({ payload = {}, callback }, { call, put }) {
+      try {
+        const req = {
+          ...payload,
+        };
+        const res = yield call(getMatchedCoin, req);
+        yield put({
+          type: 'matchCoinList',
           payload: res.data,
         });
         if (callback) {
@@ -199,6 +221,37 @@ export default {
         console.log(e);
       }
     },
+    *createProject(
+      {
+        payload: { project, invest },
+        callback,
+      },
+      { call },
+    ) {
+      try {
+        const { data: projectRes } = yield call(createProject, project);
+        if (!R.isEmpty(invest)) {
+          const financeInfo = {
+            ...invest,
+            fund: {
+              id: invest.fund,
+            },
+            paid_at: moment(invest.paid_at, 'YYYY-MM-DD').toISOString(),
+            is_paid: true,
+          };
+          yield call(createProjectInvestInfo, {
+            financeInfo,
+            type: 'tokens',
+            projectId: projectRes.id,
+          });
+        }
+        if (callback) {
+          callback(projectRes);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   reducers: {
     list(state, action) {
@@ -215,7 +268,15 @@ export default {
       return {
         ...state,
         searchList: {
-          index: paginate(state, action, 'searchList'),
+          index: action.payload,
+        },
+      };
+    },
+    matchCoinList(state, action) {
+      return {
+        ...state,
+        matchCoinList: {
+          index: action.payload,
         },
       };
     },
@@ -223,6 +284,14 @@ export default {
       return {
         ...state,
         searchList: {
+          index: null,
+        },
+      };
+    },
+    clearMatchCoin(state) {
+      return {
+        ...state,
+        matchCoinList: {
           index: null,
         },
       };

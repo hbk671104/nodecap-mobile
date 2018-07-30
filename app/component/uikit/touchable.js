@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Touchable from 'react-native-platform-touchable';
 
-const touchable = (props) => {
+const touchable = props => {
   const effect = props.borderless
     ? Touchable.SelectableBackgroundBorderless()
     : Touchable.SelectableBackground();
   return (
     <Touchable
       {...props}
-      activeOpacity={0.6}
+      activeOpacity={0.8}
       hitSlop={props.hitSlop}
       {...{
         [props.foreground ? 'foreground' : 'background']: effect,

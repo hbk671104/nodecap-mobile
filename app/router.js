@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
-import { BackHandler, Linking, Alert } from 'react-native';
+import { BackHandler, Linking, Alert, Image } from 'react-native';
 import RNExitApp from 'react-native-exit-app';
-import { NavigationActions } from './utils';
 import {
   createSwitchNavigator,
   createStackNavigator,
@@ -11,28 +10,34 @@ import {
   createReduxBoundAddListener,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
+import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import RehydrateLoader from './component/RehydrateLoader';
 import { connect } from './utils/dva';
+import { NavigationActions } from './utils';
 
 // Screen
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
-import Codepush from 'container/codepush';
+import Management from 'container/main/management';
+import Self from 'container/main/self';
+import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import Search from 'container/main/portfolio/search';
-
-import NodeCapIcon from 'component/icon/nodecap';
-
-const CodePushStack = createStackNavigator(
-  {
-    Loading: Codepush,
-  },
-  {
-    headerMode: 'none',
-  }
-);
+import CreateProject from 'container/main/portfolio/create';
+import ExpressCreate from 'container/main/portfolio/create/express';
+import ManualCreate from 'container/main/portfolio/create/manual';
+import InvestmentCreate from 'container/main/portfolio/create/investment';
+import CreateDone from 'container/main/portfolio/create/done';
+import KeyManagement from 'container/main/management/key';
+import AddHolding from 'container/main/management/add';
+import AddWallet from 'container/main/management/add/wallet';
+import AddExchange from 'container/main/management/add/exchange';
+import Scanner from 'container/main/management/add/scanner';
+import Settings from 'container/main/self/settings';
+import MyProfile from 'container/main/self/profile/mine';
+import EditProfile from 'container/main/self/profile/edit';
 
 const AuthStack = createStackNavigator(
   {
@@ -41,7 +46,7 @@ const AuthStack = createStackNavigator(
   },
   {
     headerMode: 'none',
-  }
+  },
 );
 
 const Tab = createBottomTabNavigator(
@@ -51,6 +56,18 @@ const Tab = createBottomTabNavigator(
       screen: Portfolio,
       navigationOptions: {
         title: '投资库',
+      },
+    },
+    // Management: {
+    //   screen: Management,
+    //   navigationOptions: {
+    //     title: '资产管理',
+    //   },
+    // },
+    Self: {
+      screen: Self,
+      navigationOptions: {
+        title: '我的',
       },
     },
   },
@@ -64,41 +81,90 @@ const Tab = createBottomTabNavigator(
       inactiveTintColor: '#999999',
     },
     navigationOptions: ({ navigation: { state } }) => ({
-      tabBarIcon: ({ focused, tintColor }) => {
+      tabBarIcon: ({ focused }) => {
         const { routeName } = state;
         switch (routeName) {
           case 'Dashboard':
-            return <NodeCapIcon name="dashboard" size={25} color={tintColor} />;
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/dashboard_highlight.png')
+                    : require('asset/tabIcon/dashboard.png')
+                }
+              />
+            );
           case 'Portfolio':
-            return <NodeCapIcon name="investment" size={20} color={tintColor} />;
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/portfolio_highlight.png')
+                    : require('asset/tabIcon/portfolio.png')
+                }
+              />
+            );
+          case 'Management':
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/asset_highlight.png')
+                    : require('asset/tabIcon/asset.png')
+                }
+              />
+            );
+          case 'Self':
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/me_highlight.png')
+                    : require('asset/tabIcon/me.png')
+                }
+              />
+            );
           default:
             return null;
         }
       },
     }),
-  }
+  },
 );
 const MainStack = createStackNavigator(
   {
     Tab,
     PortfolioDetail,
     Search,
+    CreateProject,
+    ExpressCreate,
+    ManualCreate,
+    InvestmentCreate,
+    CreateDone,
+    KeyManagement,
+    AddHolding,
+    AddWallet,
+    AddExchange,
+    Scanner,
+    Settings,
+    MyProfile,
+    EditProfile,
   },
   {
     headerMode: 'none',
-  }
+  },
 );
 
 const AppRouter = createSwitchNavigator(
   {
     Auth: AuthStack,
     Main: MainStack,
-    CodePush: CodePushStack,
+    CodePush: CodePushPage,
     Landing: RehydrateLoader,
   },
   {
     initialRouteName: 'Landing',
-  }
+  },
 );
 
 export function getCurrentScreen(navigationState) {
@@ -112,7 +178,10 @@ export function getCurrentScreen(navigationState) {
   return route.routeName;
 }
 
-export const routerMiddleware = createReactNavigationReduxMiddleware('root', state => state.router);
+export const routerMiddleware = createReactNavigationReduxMiddleware(
+  'root',
+  state => state.router,
+);
 const addListener = createReduxBoundAddListener('root');
 
 @connect(({ app, router }) => ({ app, router }))
@@ -154,7 +223,11 @@ class Router extends PureComponent {
       state: router,
       addListener,
     };
-    return <AppRouter navigation={navigation} />;
+    return (
+      <ActionSheetProvider>
+        <AppRouter navigation={navigation} />
+      </ActionSheetProvider>
+    );
   }
 }
 

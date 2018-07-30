@@ -8,10 +8,10 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
-import Modal from 'react-native-modal';
 import { isIphoneX } from 'react-native-iphone-x-helper';
 import R from 'ramda';
 
+import Modal from 'component/modal';
 import Loading from 'component/uikit/loading';
 import Header from './partials/header';
 import Group from './partials/group';
@@ -120,9 +120,6 @@ class Market extends PureComponent {
         <Modal
           style={[styles.modal, { marginTop: modalOffset }]}
           isVisible={selectorVisible}
-          backdropOpacity={0.4}
-          animationIn="fadeIn"
-          animationOut="fadeOut"
           onBackdropPress={this.toggleVisible}
         >
           <Selector {...this.props} onSelect={this.onPairSelected} />

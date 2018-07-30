@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as R from 'ramda';
 import { getConstants, getAllPermissions } from '../services/api';
+import { initKeychain } from '../utils/keychain';
 
 export default {
   namespace: 'global',
@@ -45,16 +46,31 @@ export default {
           type: 'getPermissions',
           payload: res.data,
         });
-        yield put({
-          type: 'user/fetchCurrent',
-        });
-        yield put({
-          type: 'fund/fetch',
-        });
 
+        yield all([
+          put({
+            type: 'user/fetchCurrent',
+          }),
+          put({
+            type: 'fund/fetch',
+          }),
+          put({
+            type: 'initRealm',
+          }),
+        ]);
         yield take('fund/fetch/@@end');
       } catch (e) {
         console.log(e);
+      }
+    },
+    *initRealm({ callback }, { call }) {
+      try {
+        yield call(initKeychain);
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },

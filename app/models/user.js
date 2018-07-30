@@ -1,6 +1,17 @@
-import * as R from 'ramda';
-import { getUser, getUsers, getUserById, updateUserById, createUser, updateUserProfile, updateUserPassword, deleteUserById, adminResetPassword } from '../services/api';
+import R from 'ramda';
+import {
+  getUser,
+  getUsers,
+  getUserById,
+  updateUserById,
+  createUser,
+  updateUserProfile,
+  updateUserPassword,
+  deleteUserById,
+  adminResetPassword,
+} from '../services/api';
 import { transformSorter } from '../utils/';
+import { uploadImage } from '../services/upload';
 
 export default {
   namespace: 'user',
@@ -81,8 +92,19 @@ export default {
      */
     *updateUserProfile({ payload, callback }, { call, put }) {
       try {
+        let uploadRes;
+        /**
+         * 上传头像
+         */
+        if (payload.avatar_url) {
+          uploadRes = yield call(uploadImage, {
+            image: payload.avatar_url,
+            type: 'avatar',
+          });
+        }
         yield call(updateUserProfile, {
           ...payload,
+          avatar_url: R.prop('url')(R.head()(uploadRes || [])),
         });
         yield put({
           type: 'fetchCurrent',

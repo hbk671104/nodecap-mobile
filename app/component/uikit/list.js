@@ -9,7 +9,9 @@ import {
   ViewPropTypes,
   StyleSheet,
 } from 'react-native';
+import { Toast } from 'antd-mobile';
 import R from 'ramda';
+
 import * as Color from 'component/uikit/color';
 import Loading from 'component/uikit/loading';
 
@@ -46,7 +48,19 @@ class List extends PureComponent {
     }
   }
 
-  extractKey = (item, index) => `${item.id}` || `${index}`;
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.pagination) {
+      return;
+    }
+    if (nextProps.loading) {
+      Toast.loading('加载中...', 0);
+    }
+    if (!nextProps.loading) {
+      Toast.hide();
+    }
+  }
+
+  extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
 
   handleOnRefresh = () => {
     if (this.props.action) {
@@ -70,7 +84,20 @@ class List extends PureComponent {
     }
   };
 
+  renderHeader = () => {
+    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+      return null;
+    }
+    if (this.props.renderHeader) {
+      return this.props.renderHeader();
+    }
+    return null;
+  };
+
   renderFooter = () => {
+    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+      return null;
+    }
     if (this.props.renderFooter) {
       return this.props.renderFooter();
     }
@@ -129,7 +156,6 @@ class List extends PureComponent {
       loading,
       action,
       renderItem,
-      renderHeader,
       refreshing,
       style,
       contentContainerStyle,
@@ -145,7 +171,7 @@ class List extends PureComponent {
         ref={listRef}
         data={data}
         renderItem={renderItem}
-        ListHeaderComponent={renderHeader}
+        ListHeaderComponent={this.renderHeader}
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         ItemSeparatorComponent={this.renderSeparator}

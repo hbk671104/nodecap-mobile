@@ -2,7 +2,7 @@ export default {
   container: {
     normal: {
       height: 55,
-      backgroundColor: 'rgba(186, 186, 186, 0.55)',
+      backgroundColor: 'rgba(24, 144, 255, 0.6)',
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 4,
@@ -15,7 +15,7 @@ export default {
     normal: {
       fontSize: 17,
       fontWeight: 'bold',
-      color: '#B4B4B4',
+      color: 'rgba(255, 255, 255, 0.8)',
     },
     highlight: {
       color: 'white',

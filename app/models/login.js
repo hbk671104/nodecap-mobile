@@ -1,6 +1,8 @@
 import { NavigationActions as routerRedux } from '../utils';
 import { login, setPassword } from '../services/api';
 import request from '../utils/request';
+import { NavigationActions } from 'react-navigation';
+import { clearKeychain } from '../utils/keychain';
 
 export default {
   namespace: 'login',
@@ -93,12 +95,16 @@ export default {
       try {
         request.defaults.headers.common.Authorization = null;
         request.defaults.headers.common['X-Company-ID'] = null;
-        routerRedux.replace('/user/login');
+        clearKeychain();
       } finally {
         yield put({
           type: 'logoutSuccess',
         });
-        yield put(routerRedux.replace('/user/login'));
+        yield put(
+          NavigationActions.navigate({
+            routeName: 'Auth',
+          }),
+        );
       }
     },
   },

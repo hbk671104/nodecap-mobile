@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, InteractionManager } from 'react-native';
+import { View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { compose, withState } from 'recompose';
 
-import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Market from './route/market';
 import Investment from './route/investment';
@@ -52,33 +50,20 @@ export default class PortfolioDetail extends Component {
 
   handleIndexChange = index => this.setState({ index });
 
-  renderNavBar = (bottom) => {
+  renderNavBar = bottom => {
     const item = this.props.navigation.getParam('item');
     return (
-      <NavBar
-        gradient
-        back
-        renderTitle={() => (
-          <View style={styles.searchBar.container}>
-            <Text style={styles.searchBar.title}>{item.name}</Text>
-          </View>
-        )}
-        renderBottom={() => bottom}
-      />
+      <NavBar gradient back title={item.name} renderBottom={() => bottom} />
     );
   };
 
-  renderHeader = displayTab => (props) => {
+  renderHeader = displayTab => props => {
     const item = this.props.navigation.getParam('item');
     return (
       <NavBar
         gradient
         back
-        renderTitle={() => (
-          <View style={styles.searchBar.container}>
-            <Text style={styles.searchBar.title}>{item.name}</Text>
-          </View>
-        )}
+        title={item.name}
         renderBottom={() => {
           if (!displayTab) return null;
           return (
@@ -88,7 +73,11 @@ export default class PortfolioDetail extends Component {
               labelStyle={styles.tabBar.label}
               indicatorStyle={[
                 styles.tabBar.indicator,
-                { left: (deviceWidth / this.state.routes.length - indicatorWidth) / 2 },
+                {
+                  left:
+                    (deviceWidth / this.state.routes.length - indicatorWidth) /
+                    2,
+                },
               ]}
             />
           );
@@ -114,21 +103,24 @@ export default class PortfolioDetail extends Component {
 
   render() {
     const item = this.props.navigation.getParam('item');
-    const displayTab = item && item.can_calculate && hasPermission('project-statistic');
+    const displayTab =
+      item && item.can_calculate && hasPermission('project-statistic');
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <TabView
           initialLayout={styles.initialLayout}
           navigationState={{
             index: this.state.index,
-            routes: displayTab ? this.state.routes : [{ key: 'investment', title: '投资信息' }],
+            routes: displayTab
+              ? this.state.routes
+              : [{ key: 'investment', title: '投资信息' }],
           }}
           renderScene={this.renderScene}
           tabBarPosition="top"
           renderTabBar={this.renderHeader(displayTab)}
           onIndexChange={this.handleIndexChange}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }

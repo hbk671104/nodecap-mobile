@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
-import Loading from 'component/uikit/loading';
 import List from 'component/uikit/list';
 import ProjectItem from 'component/project/item';
 import PriceChangeItem from 'component/project/priceChangeItem';
@@ -24,7 +23,6 @@ import styles from './style';
 export default class Exchangeable extends Component {
   state = {
     rank: R.path(['params', 'rank'])(this.props),
-    switching: false,
   };
 
   requestData = (page, size, callback) => {
@@ -42,11 +40,7 @@ export default class Exchangeable extends Component {
 
   handleSelect = rank => {
     if (R.equals(rank, this.state.rank)) return;
-    this.setState({ switching: true, rank }, () =>
-      this.requestData(undefined, undefined, () => {
-        this.setState({ switching: false });
-      }),
-    );
+    this.setState({ rank }, () => this.requestData());
   };
 
   handleItemPress = item => () => {
@@ -101,23 +95,18 @@ export default class Exchangeable extends Component {
 
   render() {
     const { data, pagination, loading } = this.props;
-    const { switching } = this.state;
     return (
       <View style={styles.container}>
-        {switching ? (
-          <Loading />
-        ) : (
-          <List
-            action={this.requestData}
-            data={data}
-            pagination={pagination}
-            loading={loading}
-            renderItem={this.renderItem}
-            renderHeader={this.renderHeader}
-            onScroll={this.props.onScroll}
-            scrollEventThrottle={500}
-          />
-        )}
+        <List
+          action={this.requestData}
+          data={data}
+          pagination={pagination}
+          loading={loading}
+          renderItem={this.renderItem}
+          renderHeader={this.renderHeader}
+          onScroll={this.props.onScroll}
+          scrollEventThrottle={500}
+        />
       </View>
     );
   }

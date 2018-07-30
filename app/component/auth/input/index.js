@@ -15,7 +15,14 @@ class AuthInput extends PureComponent {
   };
 
   render() {
-    const { style, title, placeholder, onChange, value, inputProps } = this.props;
+    const {
+      style,
+      title,
+      placeholder,
+      onChange,
+      value,
+      inputProps,
+    } = this.props;
     return (
       <View style={[style]}>
         <Text style={styles.title}>{title}</Text>
@@ -24,7 +31,7 @@ class AuthInput extends PureComponent {
           style={styles.input}
           placeholder={placeholder}
           value={value}
-          onChangeText={onChange}
+          onChange={onChange}
         />
       </View>
     );

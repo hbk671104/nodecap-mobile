@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Image, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
 
+import EnhancedScroll from 'component/enhancedScroll';
 import AuthButton from 'component/auth/button';
 import AuthInput from 'component/auth/input';
 import StatusBar from 'component/uikit/statusBar';
@@ -36,9 +37,9 @@ class Login extends Component {
     const account = getFieldValue('account');
     const password = getFieldValue('password');
     return (
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
-        <KeyboardAvoidingView behavior="position">
+        <EnhancedScroll>
           <Animatable.Image
             animation="fadeInDownBig"
             delay={250}
@@ -48,7 +49,13 @@ class Login extends Component {
           <View style={{ marginTop: 55 }}>
             {getFieldDecorator('account', {
               rules: [{ required: true, message: '请输入邮箱账号' }],
-            })(<AuthInput style={styles.input} title="账号" placeholder="请输入邮箱账号" />)}
+            })(
+              <AuthInput
+                style={styles.input}
+                title="账号"
+                placeholder="请输入邮箱账号"
+              />,
+            )}
             {getFieldDecorator('password', {
               rules: [{ required: true, message: '请输入密码' }],
             })(
@@ -57,7 +64,7 @@ class Login extends Component {
                 title="密码"
                 placeholder="请输入密码"
                 inputProps={{ secureTextEntry: true }}
-              />
+              />,
             )}
           </View>
           <AuthButton
@@ -66,8 +73,8 @@ class Login extends Component {
             style={styles.button}
             onPress={this.handleOnSubmit}
           />
-        </KeyboardAvoidingView>
-      </ScrollView>
+        </EnhancedScroll>
+      </View>
     );
   }
 }

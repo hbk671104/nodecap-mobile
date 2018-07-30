@@ -3,22 +3,31 @@ import { PropTypes } from 'prop-types';
 import { View, Text } from 'react-native';
 
 import Touchable from 'component/uikit/touchable';
+import { shadow } from '../../../../../utils/style';
 
 const header = ({ value, onSelect }) => (
   <View style={styles.container}>
-    <Touchable borderless onPress={() => onSelect('4,5,6')}>
+    <Touchable borderless onPress={() => onSelect('0,1,2,3,4,5,6')}>
       <View style={styles.group.container}>
         <Text
-          style={[styles.group.title.normal, value === '4,5,6' && styles.group.title.highlight]}
+          style={[
+            styles.group.title.normal,
+            value === '0,1,2,3,4,5,6' && styles.group.title.highlight,
+          ]}
         >
           全部
         </Text>
-        {value === '4,5,6' && <View style={styles.group.line} />}
+        {value === '0,1,2,3,4,5,6' && <View style={styles.group.line} />}
       </View>
     </Touchable>
     <Touchable borderless onPress={() => onSelect('4')}>
       <View style={styles.group.container}>
-        <Text style={[styles.group.title.normal, value === '4' && styles.group.title.highlight]}>
+        <Text
+          style={[
+            styles.group.title.normal,
+            value === '4' && styles.group.title.highlight,
+          ]}
+        >
           确定意向
         </Text>
         {value === '4' && <View style={styles.group.line} />}
@@ -26,7 +35,12 @@ const header = ({ value, onSelect }) => (
     </Touchable>
     <Touchable borderless onPress={() => onSelect('5')}>
       <View style={styles.group.container}>
-        <Text style={[styles.group.title.normal, value === '5' && styles.group.title.highlight]}>
+        <Text
+          style={[
+            styles.group.title.normal,
+            value === '5' && styles.group.title.highlight,
+          ]}
+        >
           待打币
         </Text>
         {value === '5' && <View style={styles.group.line} />}
@@ -34,7 +48,12 @@ const header = ({ value, onSelect }) => (
     </Touchable>
     <Touchable borderless onPress={() => onSelect('6')}>
       <View style={styles.group.container}>
-        <Text style={[styles.group.title.normal, value === '6' && styles.group.title.highlight]}>
+        <Text
+          style={[
+            styles.group.title.normal,
+            value === '6' && styles.group.title.highlight,
+          ]}
+        >
           已打币
         </Text>
         {value === '6' && <View style={styles.group.line} />}
@@ -51,8 +70,10 @@ header.propTypes = {
 const styles = {
   container: {
     paddingLeft: 5,
-    paddingVertical: 20,
+    paddingVertical: 15,
     flexDirection: 'row',
+    backgroundColor: 'white',
+    ...shadow,
   },
   group: {
     container: {
