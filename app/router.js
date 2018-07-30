@@ -58,12 +58,12 @@ const Tab = createBottomTabNavigator(
         title: '投资库',
       },
     },
-    Management: {
-      screen: Management,
-      navigationOptions: {
-        title: '资产管理',
-      },
-    },
+    // Management: {
+    //   screen: Management,
+    //   navigationOptions: {
+    //     title: '资产管理',
+    //   },
+    // },
     Self: {
       screen: Self,
       navigationOptions: {
