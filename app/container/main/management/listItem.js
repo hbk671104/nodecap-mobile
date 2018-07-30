@@ -1,26 +1,36 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image } from 'react-native';
+import { View, Image, Text } from 'react-native';
+import Accounting from 'accounting';
 
 import Touchable from 'component/uikit/touchable';
 
-const listItem = ({ onPress }) => (
+const listItem = ({ item, onPress }) => (
   <Touchable onPress={onPress}>
     <View style={styles.container}>
       <View style={styles.left.container}>
         <Image style={styles.left.avatar} />
         <View style={styles.left.group}>
-          <Text style={styles.left.title}>ZIL</Text>
-          <Text style={styles.left.source}>钱包倒入</Text>
+          <Text style={styles.left.title}>{item.name}</Text>
+          <Text style={styles.left.source}>钱包导入</Text>
         </View>
       </View>
       <View style={styles.middle.container}>
-        <Text style={styles.middle.title}>283,713.01</Text>
-        <Text style={styles.middle.subtitle}>3,823,761 ZIL</Text>
+        <Text style={styles.middle.title} disablePrefix>
+          {Accounting.formatNumber(item.holding.CNY)}
+        </Text>
+        <Text style={styles.middle.subtitle}>
+          {Accounting.formatNumber(item.holding.base)} {item.name}
+        </Text>
       </View>
       <View style={styles.right.container}>
-        <Text style={styles.right.price}>0.4343</Text>
-        <Text style={styles.right.change}>-0.35%</Text>
+        <Text style={styles.right.price}>
+          {Accounting.formatNumber(item.price, 1)}
+        </Text>
+        <Text style={styles.right.change}>
+          <Text>{Accounting.formatNumber(item.change, 2)}</Text>
+          %
+        </Text>
       </View>
     </View>
   </Touchable>
@@ -32,6 +42,7 @@ listItem.defaultProps = {
 
 listItem.propTypes = {
   onPress: PropTypes.func,
+  item: PropTypes.object.isRequired,
 };
 
 const styles = {

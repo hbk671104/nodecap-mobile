@@ -70,6 +70,7 @@ class MyProfile extends Component {
         <NavBar barStyle={this.state.barStyle} gradient back title="我的信息" />
         <ScrollView>
           <ListItem
+            disablePress
             title="头像"
             titleStyle={styles.listItem.title}
             renderContent={() => (
@@ -82,6 +83,7 @@ class MyProfile extends Component {
             onPress={this.handleAvatarPress}
           />
           <ListItem
+            disablePress
             title="姓名"
             content={user.realname}
             titleStyle={styles.listItem.title}
@@ -93,6 +95,7 @@ class MyProfile extends Component {
             })}
           />
           <ListItem
+            disablePress
             title="手机"
             content={user.mobile}
             titleStyle={styles.listItem.title}
@@ -104,6 +107,7 @@ class MyProfile extends Component {
             })}
           />
           <ListItem
+            disablePress
             title="登录账号"
             content={user.email}
             titleStyle={styles.listItem.title}
