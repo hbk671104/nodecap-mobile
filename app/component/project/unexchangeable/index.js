@@ -15,7 +15,9 @@ const unexchangeableItem = ({ item, onPress }) => (
           <View style={styles.top.title.container}>
             <Text style={styles.top.title.text}>{item.name}</Text>
             {!!item.token_name && (
-              <Text style={[styles.top.title.text, { fontSize: 13, marginLeft: 5 }]}>
+              <Text
+                style={[styles.top.title.text, { fontSize: 13, marginLeft: 5 }]}
+              >
                 ({item.token_name})
               </Text>
             )}
@@ -26,12 +28,20 @@ const unexchangeableItem = ({ item, onPress }) => (
             <View
               style={[
                 styles.top.status.dot.container,
+                item.status === 0 && { backgroundColor: '#bfbfbf' },
+                item.status === 1 && { backgroundColor: '#F5222D' },
+                item.status === 2 && { backgroundColor: '#FAAD14' },
+                item.status === 3 && { backgroundColor: '#1890FF' },
                 item.status === 4 && { backgroundColor: '#7376F4' },
                 item.status === 5 && { backgroundColor: '#E634CE' },
                 item.status === 6 && { backgroundColor: '#1ECEA7' },
               ]}
             />
             <Text style={styles.top.status.text}>
+              {item.status === 0 && '待初筛'}
+              {item.status === 1 && '待上会'}
+              {item.status === 2 && '已Pass'}
+              {item.status === 3 && '待跟进'}
               {item.status === 4 && '确定意向'}
               {item.status === 5 && '待打币'}
               {item.status === 6 && '已打币'}
@@ -41,13 +51,17 @@ const unexchangeableItem = ({ item, onPress }) => (
       </View>
       <View style={styles.bottom.container}>
         <View>
-          <Text style={styles.bottom.content}>项目来源：{item.source || '未收录'}</Text>
+          <Text style={styles.bottom.content}>
+            项目来源：{item.source || '未收录'}
+          </Text>
           <Text style={[styles.bottom.content, { marginTop: 7 }]}>
             跟进人：{item.watch_user || '未收录'}
           </Text>
         </View>
         <View style={{ justifyContent: 'flex-end' }}>
-          <Text style={styles.bottom.content}>{moment(item.created_at).format('LL')} 录入</Text>
+          <Text style={styles.bottom.content}>
+            {moment(item.created_at).format('LL')} 录入
+          </Text>
         </View>
       </View>
     </View>
