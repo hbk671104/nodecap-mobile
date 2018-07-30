@@ -9,7 +9,9 @@ import {
   ViewPropTypes,
   StyleSheet,
 } from 'react-native';
+import { Toast } from 'antd-mobile';
 import R from 'ramda';
+
 import * as Color from 'component/uikit/color';
 import Loading from 'component/uikit/loading';
 
@@ -43,6 +45,18 @@ class List extends PureComponent {
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
       this.props.action();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!nextProps.pagination) {
+      return;
+    }
+    if (nextProps.loading) {
+      Toast.loading('加载中...', 0);
+    }
+    if (!nextProps.loading) {
+      Toast.hide();
     }
   }
 

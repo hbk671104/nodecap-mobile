@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { View, Text } from 'react-native';
 
 import Touchable from 'component/uikit/touchable';
+import { shadow } from '../../../../../utils/style';
 
 const header = ({ value, onSelect }) => (
   <View style={styles.container}>
@@ -69,8 +70,10 @@ header.propTypes = {
 const styles = {
   container: {
     paddingLeft: 5,
-    paddingVertical: 20,
+    paddingVertical: 15,
     flexDirection: 'row',
+    backgroundColor: 'white',
+    ...shadow,
   },
   group: {
     container: {

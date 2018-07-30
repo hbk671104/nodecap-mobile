@@ -5,7 +5,6 @@ import * as R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
-import Loading from 'component/uikit/loading';
 import UnexchangeableItem from 'component/project/unexchangeable';
 import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
@@ -22,7 +21,6 @@ import styles from './style';
 export default class Unexchangeable extends Component {
   state = {
     status: R.path(['params', 'status'])(this.props),
-    switching: false,
   };
 
   requestData = (page, size, callback) => {
@@ -40,11 +38,7 @@ export default class Unexchangeable extends Component {
 
   handleSelect = status => {
     if (R.equals(status, this.state.status)) return;
-    this.setState({ switching: true, status }, () =>
-      this.requestData(undefined, undefined, () => {
-        this.setState({ switching: false });
-      }),
-    );
+    this.setState({ status }, () => this.requestData());
   };
 
   handleItemPress = item => () => {
@@ -82,24 +76,21 @@ export default class Unexchangeable extends Component {
 
   render() {
     const { data, pagination, loading } = this.props;
-    const { switching } = this.state;
     return (
       <View style={styles.container}>
-        {switching ? (
-          <Loading />
-        ) : (
-          <List
-            action={this.requestData}
-            data={data}
-            pagination={pagination}
-            loading={loading}
-            renderItem={this.renderItem}
-            renderHeader={this.renderHeader}
-            renderEmpty={this.renderEmpty}
-            onScroll={this.props.onScroll}
-            scrollEventThrottle={500}
-          />
-        )}
+        {this.renderHeader()}
+        <List
+          style={{ marginTop: 5 }}
+          action={this.requestData}
+          data={data}
+          pagination={pagination}
+          loading={loading}
+          renderItem={this.renderItem}
+          // renderHeader={this.renderHeader}
+          renderEmpty={this.renderEmpty}
+          onScroll={this.props.onScroll}
+          scrollEventThrottle={500}
+        />
         {R.isEmpty(data) && (
           <View style={styles.empty.subtitle.container}>
             <Text style={styles.empty.subtitle.text}>

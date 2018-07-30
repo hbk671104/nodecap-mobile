@@ -38,14 +38,7 @@ class NavBar extends Component {
       nextProps.hidden !== this.props.hidden ||
       nextProps.bottomHidden !== this.props.bottomHidden
     ) {
-      LayoutAnimation.configureNext({
-        duration: 250,
-        create: {
-          type: LayoutAnimation.Types.easeInEaseOut,
-          property: LayoutAnimation.Properties.opacity,
-        },
-        update: { type: LayoutAnimation.Types.easeInEaseOut },
-      });
+      LayoutAnimation.easeInEaseOut();
     }
   }
 
