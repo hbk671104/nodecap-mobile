@@ -6,7 +6,6 @@ import { NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile';
 import _ from 'lodash';
 
-import SafeAreaView from 'component/uikit/safeArea';
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
@@ -107,7 +106,7 @@ class CreateProject extends Component {
   render() {
     const { data, loading } = this.props;
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <NavBar gradient back title="添加项目" />
         {this.renderHeader()}
         <List
@@ -120,7 +119,7 @@ class CreateProject extends Component {
           renderFooter={this.renderFooter}
           renderSeparator={this.renderSeparator}
         />
-      </SafeAreaView>
+      </View>
     );
   }
 }

@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 
-import SafeAreaView from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
@@ -186,7 +185,7 @@ class KeyManagement extends Component {
   render() {
     const { modalVisible, data } = this.props;
     return (
-      <SafeAreaView style={styles.container}>
+      <View style={styles.container}>
         <NavBar
           back
           gradient
@@ -213,7 +212,7 @@ class KeyManagement extends Component {
         >
           <Display {...this.props} />
         </Modal>
-      </SafeAreaView>
+      </View>
     );
   }
 }

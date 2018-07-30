@@ -6,17 +6,17 @@ import Touchable from 'component/uikit/touchable';
 
 const header = ({ value, onSelect }) => (
   <View style={styles.container}>
-    <Touchable borderless onPress={() => onSelect('0/1/2/3/4/5/6')}>
+    <Touchable borderless onPress={() => onSelect('0,1,2,3,4,5,6')}>
       <View style={styles.group.container}>
         <Text
           style={[
             styles.group.title.normal,
-            value === '0/1/2/3/4/5/6' && styles.group.title.highlight,
+            value === '0,1,2,3,4,5,6' && styles.group.title.highlight,
           ]}
         >
           全部
         </Text>
-        {value === '0/1/2/3/4/5/6' && <View style={styles.group.line} />}
+        {value === '0,1,2,3,4,5,6' && <View style={styles.group.line} />}
       </View>
     </Touchable>
     <Touchable borderless onPress={() => onSelect('4')}>

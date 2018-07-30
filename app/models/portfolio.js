@@ -57,7 +57,7 @@ export default {
     unexchangeable: {
       index: null,
       params: {
-        status: '0/1/2/3/4/5/6',
+        status: '0,1,2,3,4,5,6',
       },
     },
     searchList: {
