@@ -54,9 +54,13 @@ export default {
   },
   bottom: {
     container: {
-      flexDirection: 'row',
+      // flexDirection: 'row',
       marginTop: 18,
+      // justifyContent: 'space-between',
+    },
+    contentContainer: {
       justifyContent: 'space-between',
+      flexDirection: 'row',
     },
     content: {
       color: '#666666',

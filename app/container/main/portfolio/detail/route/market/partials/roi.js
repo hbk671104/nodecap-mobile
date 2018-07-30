@@ -11,6 +11,7 @@ const icon = k => {
       return require('asset/crypto/transparent/BTC.png');
     case 'ETH':
       return require('asset/crypto/transparent/ETH.png');
+    case 'USDT':
     case 'USD':
       return require('asset/crypto/transparent/USD.png');
     case 'CNY':
@@ -22,26 +23,28 @@ const icon = k => {
 
 const roi = ({ style, data }) => (
   <View style={[styles.container, style]}>
-    {R.keys(data).map((k, i) => {
-      const item = data[k];
-      return (
-        <View
-          key={k}
-          style={[styles.group.container, i === 0 && { marginLeft: 0 }]}
-        >
-          <View style={styles.group.inner}>
-            <View style={styles.image.container}>
-              <Image source={icon(k)} />
+    {R.keys(data)
+      .filter(c => c !== 'USDT')
+      .map((k, i) => {
+        const item = data[k];
+        return (
+          <View
+            key={k}
+            style={[styles.group.container, i === 0 && { marginLeft: 0 }]}
+          >
+            <View style={styles.group.inner}>
+              <View style={styles.image.container}>
+                <Image source={icon(k)} />
+              </View>
+              <Text style={styles.title}>{k}</Text>
+              <Text style={styles.subtitle}>
+                {Accounting.formatNumber(item.value)}
+                <Text style={{ fontSize: 12 }}>%</Text>
+              </Text>
             </View>
-            <Text style={styles.title}>{k}</Text>
-            <Text style={styles.subtitle}>
-              {Accounting.formatNumber(item.value)}
-              <Text style={{ fontSize: 12 }}>%</Text>
-            </Text>
           </View>
-        </View>
-      );
-    })}
+        );
+      })}
   </View>
 );
 

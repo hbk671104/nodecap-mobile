@@ -8,6 +8,8 @@ export const symbol = (b, style = {}) => {
       return <NodeCapIcon style={style} name="tubiaozhizuomoban" />;
     case 'CNY':
       return <NodeCapIcon style={style} name="icomoon" />;
+    case 'HT':
+      return null;
     default:
       return <NodeCapIcon style={style} name={b} />;
   }

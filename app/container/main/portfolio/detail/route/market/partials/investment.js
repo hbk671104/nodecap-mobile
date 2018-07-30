@@ -25,7 +25,9 @@ const investment = ({ style, data }) => {
         <View style={styles.top.bar.container}>
           <View style={[styles.top.bar.left, { flex: investCNY }]} />
           {profitCNY > 0 ? (
-            <View style={[styles.top.bar.right, { flex: Math.abs(profitCNY) }]} />
+            <View
+              style={[styles.top.bar.right, { flex: Math.abs(profitCNY) }]}
+            />
           ) : (
             <ImageBackground
               source={require('asset/background_img.png')}
@@ -46,34 +48,46 @@ const investment = ({ style, data }) => {
             <Text style={styles.top.content.title}>投资金额</Text>
             <Text style={styles.top.content.title}>利润</Text>
           </View>
-          {R.keys(cost).map((c, i) => {
-            const countItem = R.path([c])(cost);
-            const profitItem = R.path([c])(profit);
-            if (R.isNil(countItem) || R.isEmpty(countItem)) {
-              return null;
-            }
-            return (
-              <View
-                key={i}
-                style={[styles.top.content.item, (c === 'CNY' || c === 'USD') && { marginTop: 8 }]}
-              >
-                <Text
-                  style={[styles.top.content.text, c === 'CNY' && styles.top.content.investment]}
-                >
-                  {symbol(c)} <Text disablePrefix>{countItem}</Text>
-                </Text>
-                <Text
+          {R.keys(cost)
+            .filter(c => c !== 'USDT')
+            .map((c, i) => {
+              const countItem = R.path([c])(cost);
+              const profitItem = R.path([c])(profit);
+              if (R.isNil(countItem) || R.isEmpty(countItem)) {
+                return null;
+              }
+              return (
+                <View
+                  key={i}
                   style={[
-                    styles.top.content.text,
-                    c === 'CNY' && profitItem > 0 && styles.top.content.profit,
-                    c === 'CNY' && profitItem < 0 && styles.top.content.deficit,
+                    styles.top.content.item,
+                    (c === 'CNY' || c === 'USD') && { marginTop: 8 },
                   ]}
                 >
-                  {symbol(c)} <Text disablePrefix>{profitItem}</Text>
-                </Text>
-              </View>
-            );
-          })}
+                  <Text
+                    style={[
+                      styles.top.content.text,
+                      c === 'CNY' && styles.top.content.investment,
+                    ]}
+                  >
+                    {symbol(c)} <Text disablePrefix>{countItem}</Text>
+                  </Text>
+                  <Text
+                    style={[
+                      styles.top.content.text,
+                      c === 'CNY' &&
+                        profitItem > 0 &&
+                        styles.top.content.profit,
+                      c === 'CNY' &&
+                        profitItem < 0 &&
+                        styles.top.content.deficit,
+                    ]}
+                  >
+                    {symbol(c)} <Text disablePrefix>{profitItem}</Text>
+                  </Text>
+                </View>
+              );
+            })}
         </View>
       </View>
     </View>

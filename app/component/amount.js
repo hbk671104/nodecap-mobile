@@ -2,8 +2,13 @@ import React from 'react';
 import { PropTypes } from 'prop-types';
 import { Text } from 'react-native';
 import Accounting from 'accounting';
+import R from 'ramda';
 
 const amount = ({ children, disableFormatting }) => {
+  if (R.isNil(children)) {
+    return <Text>--</Text>;
+  }
+
   let comp = Accounting.formatNumber(children);
   if (children > 100000000 && !disableFormatting) {
     const num = children / 100000000;

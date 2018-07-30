@@ -8,17 +8,21 @@ import Price from 'component/price';
 import { symbol } from '../../../../../../../utils/icon';
 import { shadow } from '../../../../../../../utils/style';
 
-const asset = (props) => {
+const asset = props => {
   const statProps = path => R.path(['stat', ...path])(props);
   const currentSym = R.pipe(
     R.pathOr('', ['currentSymbol', 'symbol']),
     R.split('/'),
-    R.last
+    R.last,
   )(props);
 
   const holdings = statProps(['investment', 'cap', currentSym]);
   const profits = statProps(['investment', 'profits', currentSym]);
-  const profitChange = statProps(['investment', 'profits_change_24h', currentSym]);
+  const profitChange = statProps([
+    'investment',
+    'profits_change_24h',
+    currentSym,
+  ]);
   const cost = statProps(['investment', 'total_cost', currentSym]);
   const unitCost = statProps(['investment', 'unit_cost', currentSym]);
   const count = statProps(['possession'], currentSym);
@@ -27,17 +31,19 @@ const asset = (props) => {
       <View style={styles.top.container}>
         <Text style={styles.top.title}>持仓市值</Text>
         <Text style={styles.top.content}>
-          {symbol(currentSym, styles.top.content)} {Accounting.formatNumber(holdings, 2)}{' '}
-          {currentSym}
+          {symbol(currentSym, styles.top.content)}{' '}
+          {Accounting.formatNumber(holdings, 2)} {currentSym}
         </Text>
       </View>
       <View style={styles.middle.container}>
         <Text style={styles.middle.title}>
-          净成本 {symbol(currentSym, styles.middle.title)} {Accounting.formatNumber(cost, 2)}
+          净成本 {symbol(currentSym, styles.middle.title)}{' '}
+          <Price symbol={currentSym}>{cost}</Price>
         </Text>
         <Text style={styles.middle.subtitle}>
-          持仓数量 {Accounting.formatNumber(count)}
-          {'          '}平均持仓成本 {symbol(currentSym, styles.middle.subtitle)}{' '}
+          持仓数量 <Price>{count}</Price>
+          {'          '}平均持仓成本{' '}
+          {symbol(currentSym, styles.middle.subtitle)}{' '}
           <Price symbol={currentSym}>{unitCost}</Price>
         </Text>
       </View>
@@ -46,24 +52,34 @@ const asset = (props) => {
           <Col>
             <View style={[styles.bottom.group.container, { marginRight: 5 }]}>
               <Text style={styles.bottom.group.title}>浮动盈亏</Text>
-              <Text style={[styles.bottom.group.content, profits < 0 && { color: '#F5222D' }]}>
+              <Text
+                style={[
+                  styles.bottom.group.content,
+                  profits < 0 && { color: '#F5222D' },
+                ]}
+              >
                 {symbol(currentSym, [
                   styles.bottom.group.content,
                   profits < 0 && { color: '#F5222D' },
                 ])}{' '}
-                {Accounting.formatNumber(profits, 2)}
+                <Price symbol={currentSym}>{profits}</Price>
               </Text>
             </View>
           </Col>
           <Col>
             <View style={[styles.bottom.group.container, { marginLeft: 5 }]}>
               <Text style={styles.bottom.group.title}>今日盈亏</Text>
-              <Text style={[styles.bottom.group.content, profitChange < 0 && { color: '#F5222D' }]}>
+              <Text
+                style={[
+                  styles.bottom.group.content,
+                  profitChange < 0 && { color: '#F5222D' },
+                ]}
+              >
                 {symbol(currentSym, [
                   styles.bottom.group.content,
                   profitChange < 0 && { color: '#F5222D' },
                 ])}{' '}
-                {Accounting.formatNumber(profitChange, 2)}
+                <Price symbol={currentSym}>{profitChange}</Price>
               </Text>
             </View>
           </Col>

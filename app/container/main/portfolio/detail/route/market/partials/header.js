@@ -1,30 +1,30 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import * as R from 'ramda';
+import R from 'ramda';
 import Accounting from 'accounting';
 
 import Price from 'component/price';
 import NodeCapIcon from 'component/icon/nodecap';
 import { symbol } from '../../../../../../../utils/icon';
 
-const headers = (props) => {
+const headers = props => {
   const projectProps = path => R.path(['item', ...path])(props);
   const statProps = path => R.path(['stat', ...path])(props);
 
   const baseSym = R.pipe(
     R.pathOr('', ['currentSymbol', 'symbol']),
-    R.split('/')
+    R.split('/'),
   )(props)[0];
   const currentSym = R.pipe(
     R.pathOr('', ['currentSymbol', 'symbol']),
     R.split('/'),
-    R.last
+    R.last,
   )(props);
   const currentMarket = R.path(['currentSymbol', 'market'])(props);
   const market = R.pipe(
     R.pathOr([], ['symbols']),
     R.map(s => s.market),
-    R.uniq
+    R.uniq,
   )(props);
 
   const price = statProps(['current_price', currentSym]);
@@ -32,7 +32,7 @@ const headers = (props) => {
   const ratio = price / cost > 1 ? price / cost : -cost / price;
   const change24h = statProps(['price_change_percentage_24h']);
   const roi = statProps(['investment', 'roi', currentSym, 'value']);
-  const roiRank = statProps(['investment', 'roi_rank']);
+  const roiRank = statProps(['investment', 'roi_rank']) || '--';
   const vol24h = statProps(['total_volume', currentSym]);
   const amount24h = statProps(['total_volume', baseSym]);
   const peak24h = statProps(['high_24h', currentSym]);
@@ -41,46 +41,71 @@ const headers = (props) => {
     <View style={styles.container}>
       <View style={styles.top.container}>
         <Text style={styles.top.title}>{projectProps(['name'])}</Text>
-        <TouchableOpacity style={styles.top.switch.container} onPress={props.toggle}>
+        <TouchableOpacity
+          style={styles.top.switch.container}
+          onPress={props.toggle}
+        >
           <Text style={styles.top.switch.title}>
             {currentMarket} <NodeCapIcon name="xiala" />
           </Text>
-          <Text style={styles.top.switch.subtitle}>支持 Top10 交易所及第三方数据源</Text>
+          <Text style={styles.top.switch.subtitle}>
+            支持 Top10 交易所及第三方数据源
+          </Text>
         </TouchableOpacity>
       </View>
       <View style={styles.price.container}>
         <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
           <Text style={[styles.price.text, ratio < 0 && { color: '#F5222D' }]}>
-            {symbol(currentSym, [styles.price.text, ratio < 0 && { color: '#F5222D' }])}{' '}
+            {symbol(currentSym, [
+              styles.price.text,
+              ratio < 0 && { color: '#F5222D' },
+            ])}{' '}
             <Price symbol={currentSym}>{price}</Price>
             <Text style={styles.price.label}> {currentSym}</Text>
           </Text>
-          <View style={[styles.price.roi.container, ratio < 0 && { backgroundColor: '#F5222D' }]}>
-            <Text style={styles.price.roi.text}>{Accounting.formatNumber(ratio, 1)} 倍</Text>
+          <View
+            style={[
+              styles.price.roi.container,
+              ratio < 0 && { backgroundColor: '#F5222D' },
+            ]}
+          >
+            <Text style={styles.price.roi.text}>
+              {isNaN(ratio) ? '--' : Accounting.formatNumber(ratio, 1)} 倍
+            </Text>
           </View>
         </View>
         <Text style={styles.price.cost}>
-          成本价：{symbol(currentSym, styles.price.cost)} <Price symbol={currentSym}>{cost}</Price>
+          成本价：{symbol(currentSym, styles.price.cost)}{' '}
+          <Price symbol={currentSym}>{cost}</Price>
         </Text>
       </View>
       <View style={styles.middle.container}>
         <View style={styles.middle.top.container}>
           <View style={{ flex: 2 }}>
-            <Text style={[styles.middle.top.text, change24h < 0 && { color: '#F5222D' }]}>
+            <Text
+              style={[
+                styles.middle.top.text,
+                change24h < 0 && { color: '#F5222D' },
+              ]}
+            >
               {Accounting.formatNumber(change24h, 2)}%
             </Text>
             <Text style={styles.middle.top.label}>今日涨跌</Text>
           </View>
           <View style={styles.middle.top.divider} />
           <View style={{ flex: 3, alignItems: 'center' }}>
-            <Text style={[styles.middle.top.text, roi < 0 && { color: '#F5222D' }]}>
-              {Accounting.formatNumber(roi)}%
+            <Text
+              style={[styles.middle.top.text, roi < 0 && { color: '#F5222D' }]}
+            >
+              <Price>{roi}</Price>%
             </Text>
             <Text style={styles.middle.top.label}>投资回报率</Text>
           </View>
           <View style={styles.middle.top.divider} />
           <View style={{ flex: 3, alignItems: 'center' }}>
-            <Text style={[styles.middle.top.text, { color: '#666666' }]}>#{roiRank}</Text>
+            <Text style={[styles.middle.top.text, { color: '#666666' }]}>
+              #{roiRank}
+            </Text>
             <Text style={styles.middle.top.label}>投资回报率排名</Text>
           </View>
         </View>

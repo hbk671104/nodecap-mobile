@@ -4,12 +4,13 @@ import { View, Text, Image, ViewPropTypes, StyleSheet } from 'react-native';
 import * as R from 'ramda';
 import Accounting from 'accounting';
 
-const icon = (k) => {
+const icon = k => {
   switch (k) {
     case 'BTC':
       return require('asset/crypto/BTC.png');
     case 'ETH':
       return require('asset/crypto/ETH.png');
+    case 'USDT':
     case 'USD':
       return require('asset/crypto/USD.png');
     case 'CNY':
@@ -21,18 +22,25 @@ const icon = (k) => {
 
 const holdings = ({ style, data }) => (
   <View style={[styles.container, style]}>
-    {R.keys(data).map((k, i) => {
-      const count = data[k];
-      return (
-        <View key={k} style={[styles.group.container, i === 0 && { borderTopWidth: 0 }]}>
-          <View style={styles.group.title.container}>
-            <Image source={icon(k)} />
-            <Text style={styles.group.title.text}>{k}</Text>
+    {R.keys(data)
+      .filter(c => c !== 'USDT')
+      .map((k, i) => {
+        const count = data[k];
+        return (
+          <View
+            key={k}
+            style={[styles.group.container, i === 0 && { borderTopWidth: 0 }]}
+          >
+            <View style={styles.group.title.container}>
+              <Image source={icon(k)} />
+              <Text style={styles.group.title.text}>{k}</Text>
+            </View>
+            <Text style={styles.group.content}>
+              {Accounting.formatNumber(count)}
+            </Text>
           </View>
-          <Text style={styles.group.content}>{Accounting.formatNumber(count)}</Text>
-        </View>
-      );
-    })}
+        );
+      })}
   </View>
 );
 
