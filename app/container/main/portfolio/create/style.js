@@ -52,4 +52,23 @@ export default {
       fontSize: 12,
     },
   },
+  empty: {
+    container: {
+      marginTop: 24,
+    },
+    image: {
+      alignSelf: 'center',
+    },
+    title: {
+      fontWeight: 'bold',
+      fontSize: 14,
+      color: 'rgba(0, 0, 0, 0.65)',
+      textAlign: 'center',
+      marginTop: 24,
+    },
+    button: {
+      marginHorizontal: 24,
+      marginTop: 24,
+    },
+  },
 };

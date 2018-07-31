@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -10,6 +10,7 @@ import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import SearchBar from 'component/searchBar';
+import AuthButton from 'component/auth/button';
 import Icon from 'component/uikit/icon';
 
 import SearchItem from './item';
@@ -103,6 +104,22 @@ class CreateProject extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderEmpty = () => (
+    <View style={styles.empty.container}>
+      <Image
+        style={styles.empty.image}
+        source={require('asset/project/create/no_project_found.png')}
+      />
+      <Text style={styles.empty.title}>搜索不到该项目，请手动添加</Text>
+      <AuthButton
+        style={styles.empty.button}
+        disabled={false}
+        title="立即添加"
+        onPress={this.handleManualCreate}
+      />
+    </View>
+  );
+
   render() {
     const { data, loading } = this.props;
     return (
@@ -118,6 +135,7 @@ class CreateProject extends Component {
           renderItem={this.renderItem}
           renderFooter={this.renderFooter}
           renderSeparator={this.renderSeparator}
+          renderEmpty={this.renderEmpty}
         />
       </View>
     );
