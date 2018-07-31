@@ -226,7 +226,7 @@ export default {
         payload: { project, invest },
         callback,
       },
-      { call },
+      { call, put },
     ) {
       try {
         const { data: projectRes } = yield call(createProject, project);
@@ -245,6 +245,15 @@ export default {
             projectId: projectRes.id,
           });
         }
+
+        // refresh list
+        yield put({
+          type: 'index',
+          payload: {
+            status: '0,1,2,3,4,5,6',
+          },
+        });
+
         if (callback) {
           callback(projectRes);
         }

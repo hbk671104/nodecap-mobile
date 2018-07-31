@@ -17,4 +17,14 @@ export default {
     marginHorizontal: 24,
     marginVertical: 24,
   },
+  clear: {
+    container: {
+      position: 'absolute',
+      top: 20,
+      right: 12,
+    },
+    title: {
+      color: '#1890FF',
+    },
+  },
 };
