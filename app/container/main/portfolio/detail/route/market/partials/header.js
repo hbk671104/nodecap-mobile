@@ -98,7 +98,7 @@ const headers = props => {
             <Text
               style={[styles.middle.top.text, roi < 0 && { color: '#F5222D' }]}
             >
-              <Format digit={1}>{roi}</Format>%
+              <Format digit={0}>{roi}</Format>%
             </Text>
             <Text style={styles.middle.top.label}>投资回报率</Text>
           </View>
