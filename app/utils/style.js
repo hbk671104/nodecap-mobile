@@ -5,12 +5,12 @@ export const raised = {
   ...Platform.select({
     ios: {
       shadowColor: 'rgba(0,0,0, .4)',
-      shadowOffset: { height: 3, width: 0 },
+      shadowOffset: { height: 1, width: 1 },
       shadowOpacity: 0.5,
-      shadowRadius: 3,
+      shadowRadius: 1,
     },
     android: {
-      elevation: 4,
+      elevation: 2,
     },
   }),
 };
