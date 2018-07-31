@@ -4,14 +4,18 @@ import { Text } from 'react-native';
 import Accounting from 'accounting';
 import R from 'ramda';
 
+export const priceFormat = ({ symbol, text }) => {
+  if (symbol === 'CNY' || symbol === 'USD' || symbol === 'USDT') {
+    return Number(text).toPrecision(4);
+  }
+  return Accounting.formatNumber(text, 9);
+};
+
 const price = ({ symbol, children }) => {
   if (R.isNil(children)) {
     return <Text>--</Text>;
   }
-  if (symbol === 'CNY' || symbol === 'USD') {
-    return <Text>{Number(children).toPrecision(4)}</Text>;
-  }
-  return <Text>{Accounting.formatNumber(children, 9)}</Text>;
+  return <Text>{priceFormat({ symbol, text: children })}</Text>;
 };
 
 price.propTypes = {

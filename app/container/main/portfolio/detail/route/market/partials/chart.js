@@ -8,7 +8,9 @@ import {
   VictoryLine,
   VictoryArea,
 } from 'victory-native';
+
 import Touchable from 'component/uikit/touchable';
+import { priceFormat } from 'component/price';
 
 class Chart extends PureComponent {
   constructor(props) {
@@ -21,16 +23,26 @@ class Chart extends PureComponent {
   render() {
     const style = this.props.style;
     const trend = R.path(['stat', 'trend'])(this.props);
-
     if (R.isNil(trend)) {
       return null;
     }
 
     const data = R.pipe(R.path([this.state.period]))(trend);
-
     if (R.length(data) <= 1) {
       return null;
     }
+
+    const currentSym = R.pipe(
+      R.pathOr('', ['currentSymbol', 'symbol']),
+      R.split('/'),
+      R.last,
+    )(this.props);
+    const chartPadding = {
+      ...styles.chart,
+      ...(currentSym === 'USD' || currentSym === 'USDT' || currentSym === 'CNY'
+        ? { left: 60 }
+        : {}),
+    };
 
     const formatMate = {
       '24_hours': 'HH:mm',
@@ -112,13 +124,17 @@ class Chart extends PureComponent {
           </View>
         </View>
         <View pointerEvents="none">
-          <VictoryChart height={215} padding={styles.chart} allowZoom={false}>
+          <VictoryChart height={215} padding={chartPadding} allowZoom={false}>
             <VictoryAxis
               crossAxis
               style={styles.axis.cross}
               tickFormat={x => moment(x).format(formatMate[this.state.period])}
             />
-            <VictoryAxis dependentAxis style={styles.axis.dependent} />
+            <VictoryAxis
+              dependentAxis
+              style={styles.axis.dependent}
+              tickFormat={y => priceFormat({ symbol: currentSym, text: y })}
+            />
             <VictoryLine
               style={styles.line}
               interpolation="natural"
@@ -145,7 +161,7 @@ const styles = {
     marginTop: 24,
   },
   chart: {
-    left: 72,
+    left: 92,
     right: 24,
     bottom: 36,
     top: 24,
