@@ -14,6 +14,7 @@ import * as R from 'ramda';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import Communications from 'react-native-communications';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
@@ -93,6 +94,20 @@ export default class Dashboard extends Component {
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     const { setOffsetY } = this.props;
     setOffsetY(contentOffset.y);
+  };
+
+  handleProjectItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item: {
+            ...item,
+            can_calculate: true,
+          },
+        },
+      }),
+    );
   };
 
   renderBackground = () => (
@@ -283,7 +298,12 @@ export default class Dashboard extends Component {
                   icon="TOP"
                 >
                   {dashboard.ROIRank.map((r, i) => (
-                    <ProjectItem key={i} index={i} data={r} />
+                    <ProjectItem
+                      key={i}
+                      index={i}
+                      data={r}
+                      onPress={this.handleProjectItemPress(r)}
+                    />
                   ))}
                 </DashboardGroup>
               )}

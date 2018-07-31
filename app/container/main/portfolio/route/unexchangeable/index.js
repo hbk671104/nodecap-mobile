@@ -89,6 +89,8 @@ export default class Unexchangeable extends Component {
           // renderHeader={this.renderHeader}
           renderEmpty={this.renderEmpty}
           onScroll={this.props.onScroll}
+          onMomentumScrollBegin={this.props.onMomentumScrollBegin}
+          onMomentumScrollEnd={this.props.onMomentumScrollEnd}
           scrollEventThrottle={500}
         />
         {R.isEmpty(data) && (

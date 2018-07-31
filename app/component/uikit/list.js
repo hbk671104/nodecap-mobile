@@ -184,6 +184,7 @@ class List extends PureComponent {
         onEndReached={this.handleOnEndReached}
         onEndReachedThreshold={0.5}
         onMomentumScrollBegin={() => {
+          this.props.onMomentumScrollBegin();
           this.onEndReachedCalledDuringMomentum = false;
           return null;
         }}

@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { raised } from '../../../utils/style';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const indicatorWidth = 25;
@@ -29,7 +30,7 @@ export default {
       flex: 1,
       backgroundColor: 'transparent',
       paddingHorizontal: 12,
-      paddingRight: 12 + 44,
+      paddingRight: 12,
     },
   },
   tabBar: {
@@ -46,6 +47,23 @@ export default {
       width: indicatorWidth,
       borderRadius: 1.5,
       bottom: 5,
+    },
+  },
+  add: {
+    container: {
+      position: 'absolute',
+      right: 12,
+      bottom: 60,
+      backgroundColor: '#1890ff',
+      borderRadius: 25,
+      ...raised,
+    },
+    content: {
+      height: 50,
+      width: 50,
+      borderRadius: 25,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   },
 };

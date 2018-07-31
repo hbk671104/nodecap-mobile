@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
@@ -10,12 +10,14 @@ import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import { setStatusBar } from 'component/uikit/statusBar';
 import SearchBarDisplay from 'component/searchBar/display';
+
 import Exchangeable from './route/exchangeable';
 import Unexchangeable from './route/unexchangeable';
 import { getCurrentScreen } from '../../../router';
 import styles, { deviceWidth, indicatorWidth } from './style';
 
 @compose(withState('offsetY', 'setOffsetY', 0))
+@compose(withState('addButtonVisible', 'setAddButtonVisible', true))
 @connect(({ global, router }) => ({
   constants: global.constants,
   isCurrent: getCurrentScreen(router) === 'Portfolio',
@@ -49,6 +51,16 @@ export default class Portfolio extends Component {
     );
   };
 
+  handleMomentumScrollBegin = () => {
+    LayoutAnimation.easeInEaseOut();
+    this.props.setAddButtonVisible(false);
+  };
+
+  handleMomentumScrollEnd = () => {
+    LayoutAnimation.easeInEaseOut();
+    this.props.setAddButtonVisible(true);
+  };
+
   handleRightPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -56,12 +68,6 @@ export default class Portfolio extends Component {
       }),
     );
   };
-
-  renderBarRight = () => (
-    <Touchable borderless onPress={this.handleRightPress}>
-      <Text style={styles.navBar.right}>添加</Text>
-    </Touchable>
-  );
 
   renderHeader = props => {
     const { offsetY } = this.props;
@@ -88,7 +94,6 @@ export default class Portfolio extends Component {
             ]}
           />
         )}
-        renderRight={this.renderBarRight}
       />
     );
   };
@@ -96,9 +101,21 @@ export default class Portfolio extends Component {
   renderScene = ({ route }) => {
     switch (route.key) {
       case 'exchangeable':
-        return <Exchangeable onScroll={this.handleOnScroll} />;
+        return (
+          <Exchangeable
+            onScroll={this.handleOnScroll}
+            onMomentumScrollBegin={this.handleMomentumScrollBegin}
+            onMomentumScrollEnd={this.handleMomentumScrollEnd}
+          />
+        );
       case 'unexchangeable':
-        return <Unexchangeable onScroll={this.handleOnScroll} />;
+        return (
+          <Unexchangeable
+            onScroll={this.handleOnScroll}
+            onMomentumScrollBegin={this.handleMomentumScrollBegin}
+            onMomentumScrollEnd={this.handleMomentumScrollEnd}
+          />
+        );
       default:
         return null;
     }
@@ -136,6 +153,7 @@ export default class Portfolio extends Component {
         </View>
       );
     }
+    const { addButtonVisible } = this.props;
     return (
       <View style={styles.container}>
         <TabView
@@ -149,6 +167,17 @@ export default class Portfolio extends Component {
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
+        {!!addButtonVisible && (
+          <View style={styles.add.container}>
+            <Touchable
+              borderless
+              style={styles.add.content}
+              onPress={this.handleRightPress}
+            >
+              <Image source={require('asset/project/plus.png')} />
+            </Touchable>
+          </View>
+        )}
       </View>
     );
   }

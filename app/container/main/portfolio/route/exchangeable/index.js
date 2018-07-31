@@ -105,6 +105,8 @@ export default class Exchangeable extends Component {
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           onScroll={this.props.onScroll}
+          onMomentumScrollBegin={this.props.onMomentumScrollBegin}
+          onMomentumScrollEnd={this.props.onMomentumScrollEnd}
           scrollEventThrottle={500}
         />
       </View>
