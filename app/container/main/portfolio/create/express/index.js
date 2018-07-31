@@ -97,9 +97,9 @@ class ExpressCreate extends Component {
                 error={getFieldError('description')}
               />,
             )}
-            <View style={styles.clear.container}>
+            {/* <View style={styles.clear.container}>
               {this.renderClearButton()}
-            </View>
+            </View> */}
           </View>
           <View style={styles.notice.container}>
             <Text style={styles.notice.text}>
