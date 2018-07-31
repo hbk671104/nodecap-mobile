@@ -5,6 +5,7 @@ import Accounting from 'accounting';
 
 import Price from 'component/price';
 import NodeCapIcon from 'component/icon/nodecap';
+import Format from 'component/format';
 import { symbol } from '../../../../../../../utils/icon';
 
 const headers = props => {
@@ -70,7 +71,7 @@ const headers = props => {
             ]}
           >
             <Text style={styles.price.roi.text}>
-              {isNaN(ratio) ? '--' : Accounting.formatNumber(ratio, 1)} 倍
+              <Format digit={1}>{ratio}</Format> 倍
             </Text>
           </View>
         </View>
@@ -97,7 +98,7 @@ const headers = props => {
             <Text
               style={[styles.middle.top.text, roi < 0 && { color: '#F5222D' }]}
             >
-              <Price>{roi}</Price>%
+              <Format digit={1}>{roi}</Format>%
             </Text>
             <Text style={styles.middle.top.label}>投资回报率</Text>
           </View>

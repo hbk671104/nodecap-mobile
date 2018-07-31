@@ -5,6 +5,7 @@ import Accounting from 'accounting';
 import { Col, Grid } from 'react-native-easy-grid';
 
 import Price from 'component/price';
+import Format from 'component/format';
 import { symbol } from '../../../../../../../utils/icon';
 import { shadow } from '../../../../../../../utils/style';
 
@@ -38,10 +39,10 @@ const asset = props => {
       <View style={styles.middle.container}>
         <Text style={styles.middle.title}>
           净成本 {symbol(currentSym, styles.middle.title)}{' '}
-          <Price symbol={currentSym}>{cost}</Price>
+          <Format>{cost}</Format>
         </Text>
         <Text style={styles.middle.subtitle}>
-          持仓数量 <Price>{count}</Price>
+          持仓数量 <Format digit={0}>{count}</Format>
           {'          '}平均持仓成本{' '}
           {symbol(currentSym, styles.middle.subtitle)}{' '}
           <Price symbol={currentSym}>{unitCost}</Price>
@@ -62,7 +63,7 @@ const asset = props => {
                   styles.bottom.group.content,
                   profits < 0 && { color: '#F5222D' },
                 ])}{' '}
-                <Price symbol={currentSym}>{profits}</Price>
+                <Format>{profits}</Format>
               </Text>
             </View>
           </Col>
@@ -79,7 +80,7 @@ const asset = props => {
                   styles.bottom.group.content,
                   profitChange < 0 && { color: '#F5222D' },
                 ])}{' '}
-                <Price symbol={currentSym}>{profitChange}</Price>
+                <Format>{profitChange}</Format>
               </Text>
             </View>
           </Col>
