@@ -6,11 +6,11 @@ export const raised = {
     ios: {
       shadowColor: 'rgba(0,0,0, .4)',
       shadowOffset: { height: 3, width: 0 },
-      shadowOpacity: 0.8,
+      shadowOpacity: 0.5,
       shadowRadius: 3,
     },
     android: {
-      elevation: 5,
+      elevation: 4,
     },
   }),
 };
