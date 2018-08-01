@@ -11,9 +11,6 @@ export default {
     container: {
       flex: 1,
     },
-    contentContainer: {
-      backgroundColor: 'white',
-    },
   },
   navBar: {
     content: {
@@ -94,6 +91,7 @@ export default {
   roi: {
     container: {
       paddingBottom: 20,
+      backgroundColor: 'white',
     },
     top: {
       container: {
@@ -139,6 +137,7 @@ export default {
     container: {
       width: window.width,
       height: 1,
+      backgroundColor: 'white',
     },
     coordinate: {
       x1: 32,
@@ -149,6 +148,7 @@ export default {
   },
   propaganda: {
     container: {
+      backgroundColor: 'white',
       flexDirection: 'row',
       alignItems: 'flex-end',
       paddingTop: 12,

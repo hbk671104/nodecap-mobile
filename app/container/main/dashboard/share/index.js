@@ -128,19 +128,24 @@ class Share extends PureComponent {
         </Touchable>
         <View style={styles.actionBar.content.container}>
           {wechatAvailable && (
-            <Touchable onPress={this.shareTo('wechat')}>
+            <Touchable borderless onPress={this.shareTo('wechat')}>
               <Image source={require('asset/wechat_icon.png')} />
             </Touchable>
           )}
           {wechatAvailable && (
             <Touchable
+              borderless
               style={{ marginLeft: 24 }}
               onPress={this.shareTo('moment')}
             >
               <Image source={require('asset/wechat_moment_icon.png')} />
             </Touchable>
           )}
-          <Touchable style={{ marginLeft: 24 }} onPress={this.saveToCameraRoll}>
+          <Touchable
+            borderless
+            style={{ marginLeft: 24 }}
+            onPress={this.saveToCameraRoll}
+          >
             <Image source={require('asset/save_icon.png')} />
           </Touchable>
         </View>
@@ -230,7 +235,7 @@ class Share extends PureComponent {
             titleStyle={styles.roi.item.title}
             subtitleStyle={styles.roi.item.subtitle}
             rankingStyle={styles.roi.item.ranking}
-            avatarProps={{ size: 40 }}
+            avatarProps={{ size: 40, innerRatio: 0.75 }}
             key={i}
             index={i}
             data={r}
@@ -257,10 +262,7 @@ class Share extends PureComponent {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView
-          style={styles.scroll.container}
-          contentContainerStyle={styles.scroll.contentContainer}
-        >
+        <ScrollView style={styles.scroll.container}>
           <ViewShot
             ref={ref => {
               this.viewShot = ref;
