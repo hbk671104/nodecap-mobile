@@ -68,7 +68,7 @@ export default class Unexchangeable extends Component {
       <Image source={require('asset/project/empty_unexchangeable.png')} />
       <View style={styles.empty.title.container}>
         <Text style={styles.empty.title.text}>
-          {'库中暂无项目，点击右上角添加项目\n即可查看详细的可视化收益统计'}
+          {'库中暂无项目，点击右下角添加项目\n即可查看详细的可视化收益统计'}
         </Text>
       </View>
     </View>

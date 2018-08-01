@@ -7,6 +7,7 @@ import org.reactnative.camera.RNCameraPackage;
 import io.realm.react.RealmReactPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.nodecap.module.HotnodePackage;
+import com.nodecap.module.RNSensorsAnalyticsPackage;
 import com.oblador.keychain.KeychainPackage;
 
 import cn.jpush.reactnativejpush.JPushPackage;
@@ -53,6 +54,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNSensorsAnalyticsPackage(),
             new RNCameraPackage(),
             new HotnodePackage(),
             new RealmReactPackage(),

@@ -1,0 +1,18 @@
+PODS:
+  - SensorsAnalyticsSDK/core (1.10.8)
+  - SensorsAnalyticsSDK/ENABLE_REACT_NATIVE_APPCLICK (1.10.8):
+    - SensorsAnalyticsSDK/core
+
+DEPENDENCIES:
+  - SensorsAnalyticsSDK/ENABLE_REACT_NATIVE_APPCLICK
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SensorsAnalyticsSDK
+
+SPEC CHECKSUMS:
+  SensorsAnalyticsSDK: 1207f9c2bbe89421008e173b81afd0d02d3393e6
+
+PODFILE CHECKSUM: 701f66abee4426cca70f4d152fd3a86970b7731a
+
+COCOAPODS: 1.5.3

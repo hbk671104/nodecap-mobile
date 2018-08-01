@@ -1,5 +1,4 @@
-import { Dimensions } from 'react-native';
-import { raised } from '../../../utils/style';
+import { Dimensions, Platform } from 'react-native';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const indicatorWidth = 25;
@@ -56,7 +55,17 @@ export default {
       bottom: 60,
       backgroundColor: '#1890ff',
       borderRadius: 25,
-      ...raised,
+      ...Platform.select({
+        ios: {
+          shadowColor: 'rgba(0,0,0, .4)',
+          shadowOffset: { height: 3, width: 0 },
+          shadowOpacity: 0.5,
+          shadowRadius: 3,
+        },
+        android: {
+          elevation: 4,
+        },
+      }),
     },
     content: {
       height: 50,

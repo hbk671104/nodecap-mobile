@@ -84,6 +84,20 @@ class List extends PureComponent {
     }
   };
 
+  handleOnMomentumScrollBegin = () => {
+    if (this.props.onMomentumScrollBegin) {
+      this.props.onMomentumScrollBegin();
+    }
+    this.onEndReachedCalledDuringMomentum = false;
+    return null;
+  };
+
+  handleOnMomentumScrollEnd = () => {
+    if (this.props.onMomentumScrollEnd) {
+      this.props.onMomentumScrollEnd();
+    }
+  };
+
   renderHeader = () => {
     if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
       return null;
@@ -183,11 +197,8 @@ class List extends PureComponent {
           : {})}
         onEndReached={this.handleOnEndReached}
         onEndReachedThreshold={0.5}
-        onMomentumScrollBegin={() => {
-          this.props.onMomentumScrollBegin();
-          this.onEndReachedCalledDuringMomentum = false;
-          return null;
-        }}
+        onMomentumScrollBegin={this.handleOnMomentumScrollBegin}
+        onMomentumScrollEnd={this.handleOnMomentumScrollEnd}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         keyExtractor={this.extractKey}
