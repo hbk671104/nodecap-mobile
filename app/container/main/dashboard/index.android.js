@@ -8,7 +8,6 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-import Modal from 'react-native-modal';
 import ModalDropdown from 'react-native-modal-dropdown';
 import * as R from 'ramda';
 import { connect } from 'react-redux';
@@ -20,7 +19,7 @@ import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
 import { setStatusBar } from 'component/uikit/statusBar';
 import Empty from 'component/empty';
-import Loading from 'component/uikit/loading';
+import Modal from 'component/modal';
 
 import { getCurrentScreen } from '../../../router';
 import Header from './partials/header';
@@ -313,12 +312,9 @@ export default class Dashboard extends Component {
         {empty}
         <Modal
           isVisible={this.props.showShareModal}
-          style={{
-            margin: 0,
-          }}
+          style={styles.modal}
           useNativeDriver
           hideModalContentWhileAnimating
-          onBackButtonPress={() => this.props.setShareModal(false)}
         >
           <ShareModal
             fund={this.state.currentFund}

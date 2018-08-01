@@ -95,7 +95,7 @@ export default {
           },
           {
             paddingTop: 20,
-          }
+          },
         ),
         height: PARALLAX_HEADER_HEIGHT,
       },
@@ -184,5 +184,8 @@ export default {
   shareButton: {
     width: 18,
     height: 18,
+  },
+  modal: {
+    margin: 0,
   },
 };
