@@ -15,15 +15,85 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
 #if __has_include(<React/RNSentry.h>)
 #import <React/RNSentry.h> // This is used for versions of react >= 0.40
 #else
 #import "RNSentry.h" // This is used for versions of react < 0.40
 #endif
 #import "SplashScreen.h"  // here
-#import <React/RCTLinkingManager.h>
+#import "SensorsAnalyticsSDK.h"
+#import "ReactNativeConfig.h"
+
+// Debug 模式选项
+//   SensorsAnalyticsDebugOff - 关闭 Debug 模式
+//   SensorsAnalyticsDebugOnly - 打开 Debug 模式，校验数据，但不进行数据导入
+//   SensorsAnalyticsDebugAndTrack - 打开 Debug 模式，校验数据，并将数据导入到 Sensors Analytics 中
+// 注意！请不要在正式发布的 App 中使用 Debug 模式！
+#define SA_DEBUG_MODE SensorsAnalyticsDebugOff
 
 @implementation AppDelegate
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  NSURL *jsCodeLocation;
+
+    #ifdef DEBUG
+        jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+    #else
+        jsCodeLocation = [CodePush bundleURL];
+    #endif
+
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
+                                                      moduleName:@"nodecap"
+                                               initialProperties:nil
+                                                   launchOptions:launchOptions];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+
+  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+  UIViewController *rootViewController = [UIViewController new];
+  rootViewController.view = rootView;
+  self.window.rootViewController = rootViewController;
+  [self.window makeKeyAndVisible];
+  
+  // JPush
+  [JPUSHService setupWithOption:launchOptions appKey:@"3d43f5402c9364c5b35f0ab0"
+                        channel:nil apsForProduction:nil];
+  
+  // Sentry
+  [RNSentry installWithRootView:rootView];
+  
+  // 初始化 SDK
+  [SensorsAnalyticsSDK sharedInstanceWithServerURL:[ReactNativeConfig envFor:@"SENSOR_SDK_URL"]
+                                  andLaunchOptions:launchOptions
+                                      andDebugMode:SA_DEBUG_MODE];
+  [[SensorsAnalyticsSDK sharedInstance] enableTrackScreenOrientation:YES]; // CoreMotion 采集屏幕方向
+  [[SensorsAnalyticsSDK sharedInstance] enableTrackGPSLocation:YES];// CoreLocation 采集 GPS 信息
+  // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
+  [[SensorsAnalyticsSDK sharedInstance] enableAutoTrack:SensorsAnalyticsEventTypeAppStart |
+   SensorsAnalyticsEventTypeAppEnd |
+   SensorsAnalyticsEventTypeAppViewScreen |
+   SensorsAnalyticsEventTypeAppClick];
+  
+  [SplashScreen show];  // here
+  
+  return YES;
+}
+
+// ios 8.x or older
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  return [RCTLinkingManager application:application openURL:url
+                      sourceApplication:sourceApplication annotation:annotation];
+}
+
+// ios 9.0+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
@@ -52,7 +122,7 @@
     [JPUSHService handleRemoteNotification:userInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
   }
-
+  
   completionHandler(UNNotificationPresentationOptionAlert);
 }
 
@@ -63,56 +133,8 @@
     [JPUSHService handleRemoteNotification:userInfo];
     [[NSNotificationCenter defaultCenter] postNotificationName:kJPFOpenNotification object:userInfo];
   }
-
+  
   completionHandler();
-}
-
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  [JPUSHService setupWithOption:launchOptions appKey:@"3d43f5402c9364c5b35f0ab0"
-                        channel:nil apsForProduction:nil];
-
-  NSURL *jsCodeLocation;
-
-  
-    #ifdef DEBUG
-        jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-    #else
-        jsCodeLocation = [CodePush bundleURL];
-    #endif
-RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"nodecap"
-                                               initialProperties:nil
-                                                   launchOptions:launchOptions];
-
-  [RNSentry installWithRootView:rootView];
-
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
-
-  self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-  UIViewController *rootViewController = [UIViewController new];
-  rootViewController.view = rootView;
-  self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
-  
-  [SplashScreen show];  // here
-  return YES;
-}
-
-// ios 8.x or older
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-  return [RCTLinkingManager application:application openURL:url
-                      sourceApplication:sourceApplication annotation:annotation];
-}
-
-// ios 9.0+
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-            options:(NSDictionary<NSString*, id> *)options
-{
-  return [RCTLinkingManager application:application openURL:url options:options];
 }
 
 @end
