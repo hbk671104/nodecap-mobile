@@ -307,6 +307,8 @@ export default class Dashboard extends Component {
         {empty}
         {!!dashboard && (
           <Modal
+            animationIn="slideInUp"
+            animationOut="slideOutDown"
             isVisible={this.props.showShareModal}
             style={styles.modal}
             useNativeDriver

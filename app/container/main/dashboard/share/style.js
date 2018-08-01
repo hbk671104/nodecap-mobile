@@ -138,7 +138,7 @@ export default {
   divider: {
     container: {
       width: window.width,
-      height: StyleSheet.hairlineWidth,
+      height: 1,
     },
     coordinate: {
       x1: 32,
