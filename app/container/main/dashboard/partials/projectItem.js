@@ -1,28 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, ViewPropTypes } from 'react-native';
+import { View, ViewPropTypes } from 'react-native';
 
 import Text from 'component/text';
 import Touchable from 'component/uikit/touchable';
-import { raised } from '../../../../utils/style';
+import Avatar from 'component/uikit/avatar';
 
-const roiItem = ({ style, index, data, onPress }) => (
+const roiItem = ({
+  style,
+  contentContainerStyle,
+  titleStyle,
+  subtitleStyle,
+  rankingStyle,
+  index,
+  data,
+  onPress,
+  avatarProps,
+}) => (
   <Touchable foreground onPress={onPress}>
     <View style={[styles.container, style]}>
-      <View style={styles.icon.wrapper}>
-        <Image
-          resizeMode="contain"
-          style={styles.icon.image}
-          source={{ uri: data.logo_url }}
-        />
-      </View>
-      <View style={styles.content.container}>
-        <Text style={styles.content.title}>{data.name}</Text>
-        <Text style={styles.content.subtitle}>
-          <Text>{data.ROI}</Text> %
+      <Avatar source={{ uri: data.logo_url }} size={50} {...avatarProps} />
+      <View style={[styles.content.container, contentContainerStyle]}>
+        <Text style={[styles.content.title, titleStyle]}>{data.name}</Text>
+        <Text style={[styles.content.subtitle, subtitleStyle]}>
+          <Text disablePrefix>{data.ROI}</Text> %
         </Text>
       </View>
-      <Text style={styles.ranking}>#{index + 1}</Text>
+      <Text style={[styles.ranking, rankingStyle]}>#{index + 1}</Text>
     </View>
   </Touchable>
 );
@@ -34,22 +38,6 @@ const styles = {
     paddingVertical: 17,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  icon: {
-    wrapper: {
-      height: 50,
-      width: 50,
-      borderRadius: 25,
-      backgroundColor: 'white',
-      justifyContent: 'center',
-      alignItems: 'center',
-      ...raised,
-    },
-    image: {
-      height: 35,
-      width: 35,
-      borderRadius: 17.5,
-    },
   },
   content: {
     container: {
@@ -79,6 +67,11 @@ roiItem.defaultProps = {
 
 roiItem.propTypes = {
   style: ViewPropTypes.style,
+  contentContainerStyle: ViewPropTypes.style,
+  titleStyle: PropTypes.object,
+  subtitleStyle: PropTypes.object,
+  rankingStyle: PropTypes.object,
+  avatarProps: PropTypes.object,
   index: PropTypes.number,
   data: PropTypes.object,
   onPress: PropTypes.func,

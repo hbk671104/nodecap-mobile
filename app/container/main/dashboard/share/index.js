@@ -1,9 +1,20 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  CameraRoll,
+  PermissionsAndroid,
+  Platform,
+} from 'react-native';
+import Svg, { Line } from 'react-native-svg';
+import ViewShot from 'react-native-view-shot';
 import * as WeChat from 'react-native-wechat';
 import R from 'ramda';
 import moment from 'moment';
+import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import SafeAreaView from 'component/uikit/safeArea';
@@ -11,6 +22,7 @@ import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 import Gradient from 'component/uikit/gradient';
 import Format from 'component/format';
+import ProjectItem from '../partials/projectItem';
 import styles from './style';
 
 class Share extends PureComponent {
@@ -31,7 +43,7 @@ class Share extends PureComponent {
   };
 
   componentWillMount() {
-    // this.checkWechatAval();
+    this.checkWechatAval();
   }
 
   checkWechatAval = async () => {
@@ -39,6 +51,70 @@ class Share extends PureComponent {
       isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
       isWXAppInstalled: await WeChat.isWXAppInstalled(),
     });
+  };
+
+  shareTo = type => async () => {
+    try {
+      const uri = await this.handleViewShot();
+      if (uri) {
+        const request = {
+          type: 'imageFile',
+          imageUrl: `file://${uri}`,
+        };
+
+        if (type === 'wechat') {
+          WeChat.shareToSession(request);
+        } else {
+          WeChat.shareToTimeline(request);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  saveToCameraRoll = async () => {
+    try {
+      const uri = await this.handleViewShot();
+      if (uri) {
+        const granted =
+          Platform.OS === 'ios'
+            ? true
+            : await this.requestExternalStoragePermission();
+        if (granted) {
+          const result = await CameraRoll.saveToCameraRoll(uri);
+          if (result) {
+            Toast.success('照片存储成功！');
+            this.props.onClose();
+          }
+        } else {
+          Toast.fail('没有授予存储权限');
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  requestExternalStoragePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Hotnode Storage Permission',
+          message: 'Hotnode needs access to your storage',
+        },
+      );
+      return granted;
+    } catch (err) {
+      console.error('Failed to request permission ', err);
+      return null;
+    }
+  };
+
+  handleViewShot = async () => {
+    const uri = await this.viewShot.capture();
+    return uri;
   };
 
   renderActionBar = () => {
@@ -102,7 +178,10 @@ class Share extends PureComponent {
             </Text>
           </View>
         </View>
-        <Image source={require('asset/share/share_background.png')} />
+        <Image
+          style={styles.navBar.bottom.image}
+          source={require('asset/share/share_background.png')}
+        />
         <Gradient
           style={styles.navBar.bar.container}
           colors={['#25A7FF', '#1A94FF']}
@@ -125,16 +204,84 @@ class Share extends PureComponent {
     );
   };
 
+  renderROI = () => {
+    const { dashboard } = this.props;
+
+    const roiRank = R.pathOr([], ['ROIRank'])(dashboard);
+
+    if (R.isEmpty(roiRank)) {
+      return null;
+    }
+    return (
+      <View style={styles.roi.container}>
+        <View style={styles.roi.top.container}>
+          <View style={styles.roi.top.wrapper}>
+            <Image source={require('asset/share/left_image.png')} />
+            <Text style={styles.roi.top.title}>
+              {'  '}项目回报榜 TOP 5{'  '}
+            </Text>
+            <Image source={require('asset/share/right_image.png')} />
+          </View>
+        </View>
+        {roiRank.map((r, i) => (
+          <ProjectItem
+            style={styles.roi.item.container}
+            contentContainerStyle={styles.roi.item.contentContainer}
+            titleStyle={styles.roi.item.title}
+            subtitleStyle={styles.roi.item.subtitle}
+            rankingStyle={styles.roi.item.ranking}
+            avatarProps={{ size: 40 }}
+            key={i}
+            index={i}
+            data={r}
+          />
+        ))}
+      </View>
+    );
+  };
+
+  renderPropaganda = () => (
+    <View style={styles.propaganda.container}>
+      <View style={styles.propaganda.left.container}>
+        <Image source={require('asset/share/logo_propaganda.png')} />
+        <Text style={styles.propaganda.left.title}>
+          Help Token Fund to be smarter
+        </Text>
+      </View>
+      <View style={styles.propaganda.image.container}>
+        <Image source={require('asset/share/qrcode.png')} />
+      </View>
+    </View>
+  );
+
   render() {
-    const { fund } = this.props;
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView>
-          <NavBar
-            gradient
-            renderContent={this.renderNavBarContent}
-            renderBottom={this.renderNavBarBottom}
-          />
+        <ScrollView
+          style={styles.scroll.container}
+          contentContainerStyle={styles.scroll.contentContainer}
+        >
+          <ViewShot
+            ref={ref => {
+              this.viewShot = ref;
+            }}
+          >
+            <NavBar
+              gradient
+              renderContent={this.renderNavBarContent}
+              renderBottom={this.renderNavBarBottom}
+            />
+            {this.renderROI()}
+            <Svg style={styles.divider.container}>
+              <Line
+                {...styles.divider.coordinate}
+                stroke="#CDCDCD"
+                strokeWidth={styles.divider.container.height}
+                strokeDasharray="2, 2"
+              />
+            </Svg>
+            {this.renderPropaganda()}
+          </ViewShot>
         </ScrollView>
         {this.renderActionBar()}
       </SafeAreaView>

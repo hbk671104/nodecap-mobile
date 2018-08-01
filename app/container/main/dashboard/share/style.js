@@ -1,10 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions, Platform } from 'react-native';
+
+const window = Dimensions.get('window');
 
 export default {
   container: {
     flex: 1,
-    // backgroundColor: 'white',
-    // width: 375,
+    backgroundColor: 'white',
+  },
+  scroll: {
+    container: {
+      flex: 1,
+    },
+    contentContainer: {
+      backgroundColor: 'white',
+    },
   },
   navBar: {
     content: {
@@ -51,6 +60,9 @@ export default {
           fontWeight: 'bold',
         },
       },
+      image: {
+        width: window.width,
+      },
     },
     bar: {
       container: {
@@ -79,14 +91,101 @@ export default {
       },
     },
   },
+  roi: {
+    container: {
+      paddingBottom: 20,
+    },
+    top: {
+      container: {
+        paddingTop: 20,
+        paddingBottom: 15,
+        alignItems: 'center',
+      },
+      wrapper: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      title: {
+        color: '#1890FF',
+        fontSize: 17,
+        fontWeight: 'bold',
+      },
+    },
+    item: {
+      container: {
+        paddingVertical: 10,
+        paddingLeft: 32,
+        paddingRight: 32,
+      },
+      contentContainer: {
+        marginLeft: 36,
+      },
+      title: {
+        color: 'rgba(0, 0, 0, 0.45)',
+      },
+      subtitle: {
+        color: '#1890FF',
+        fontSize: 20,
+        marginTop: 2,
+      },
+      ranking: {
+        fontSize: 14,
+        color: 'rgba(0, 0, 0, 0.45)',
+        alignSelf: 'flex-start',
+      },
+    },
+  },
+  divider: {
+    container: {
+      width: window.width,
+      height: StyleSheet.hairlineWidth,
+    },
+    coordinate: {
+      x1: 32,
+      y1: 0,
+      x2: window.width - 32,
+      y2: 0,
+    },
+  },
+  propaganda: {
+    container: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      paddingTop: 12,
+      paddingBottom: 17,
+      paddingLeft: 27.5,
+      paddingRight: 32,
+    },
+    left: {
+      container: {
+        flex: 1,
+      },
+      title: {
+        color: 'rgba(0, 0, 0, 0.45)',
+        fontSize: 11,
+        marginTop: 8,
+      },
+    },
+    image: {
+      container: {
+        ...Platform.select({
+          ios: {
+            shadowColor: 'rgba(11, 26, 39, .25)',
+            shadowOffset: { height: 1, width: 0 },
+            shadowOpacity: 0.8,
+            shadowRadius: 1,
+          },
+          android: {
+            elevation: 3,
+          },
+        }),
+      },
+    },
+  },
   actionBar: {
     container: {
       height: 65,
       backgroundColor: 'white',
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
       borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: '#E9E9E9',
       flexDirection: 'row',
