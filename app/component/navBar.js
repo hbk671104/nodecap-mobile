@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, LayoutAnimation, Platform, Text } from 'react-native';
+import { View, Animated, LayoutAnimation, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 
 import Touchable from 'component/uikit/touchable';
+import Icon from 'component/uikit/icon';
 import StatusBar from './uikit/statusBar';
 import Gradient from './uikit/gradient';
 
@@ -14,6 +14,7 @@ import Gradient from './uikit/gradient';
 class NavBar extends Component {
   static propTypes = {
     barStyle: PropTypes.string,
+    renderContent: PropTypes.func,
     renderLeft: PropTypes.func,
     renderRight: PropTypes.func,
     renderTitle: PropTypes.func,
@@ -51,6 +52,7 @@ class NavBar extends Component {
       style,
       wrapperStyle,
       barStyle,
+      renderContent,
       renderTitle,
       renderLeft,
       renderRight,
@@ -72,28 +74,34 @@ class NavBar extends Component {
             hidden && styles.hidden.container,
           ]}
         >
-          <View style={[styles.wrapper, hidden && styles.hidden.wrapper]}>
-            <View style={styles.title.container}>
-              {!!title && <Text style={styles.title.text}>{title}</Text>}
-              {renderTitle && renderTitle()}
-            </View>
-            <View style={styles.group.left}>
-              {back && (
-                <Touchable borderless onPress={this.handleBackAction}>
-                  <Icon
-                    name={
-                      Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'
-                    }
-                    size={26}
-                    color={gradient ? 'white' : '#333333'}
-                  />
-                </Touchable>
-              )}
-              {renderLeft && renderLeft()}
-            </View>
-            <View style={styles.group.right}>
-              {renderRight && renderRight()}
-            </View>
+          <View
+            style={[styles.wrapper.container, hidden && styles.hidden.wrapper]}
+          >
+            {renderContent ? (
+              renderContent()
+            ) : (
+              <View style={styles.wrapper.content}>
+                <View style={styles.title.container}>
+                  {!!title && <Text style={styles.title.text}>{title}</Text>}
+                  {renderTitle && renderTitle()}
+                </View>
+                <View style={styles.group.left}>
+                  {back && (
+                    <Touchable borderless onPress={this.handleBackAction}>
+                      <Icon
+                        name="arrow-back"
+                        size={26}
+                        color={gradient ? 'white' : '#333333'}
+                      />
+                    </Touchable>
+                  )}
+                  {renderLeft && renderLeft()}
+                </View>
+                <View style={styles.group.right}>
+                  {renderRight && renderRight()}
+                </View>
+              </View>
+            )}
           </View>
         </Animated.View>
         {renderBottom && !bottomHidden && renderBottom()}
@@ -112,9 +120,14 @@ const styles = {
     justifyContent: 'flex-end',
   },
   wrapper: {
-    height: navBarHeight,
-    flexDirection: 'row',
-    alignItems: 'center',
+    container: {
+      height: navBarHeight,
+    },
+    content: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
   },
   group: {
     left: {

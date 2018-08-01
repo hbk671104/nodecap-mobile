@@ -51,12 +51,13 @@ const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
     }),
   })),
 )
-@connect(({ dashboard, fund, loading, router }) => ({
+@connect(({ dashboard, fund, loading, router, user }) => ({
   dashboard: dashboard.data,
   funds: R.pathOr([], ['funds', 'data'])(fund),
   fundsError: fund.error,
   loading: loading.effects['dashboard/fetch'],
   isCurrent: getCurrentScreen(router) === 'Dashboard',
+  company: R.pathOr({}, ['currentUser', 'companies', 0])(user),
 }))
 export default class Dashboard extends Component {
   state = {
@@ -304,17 +305,21 @@ export default class Dashboard extends Component {
           </ParallaxScrollView>
         )}
         {empty}
-        <Modal
-          isVisible={this.props.showShareModal}
-          style={styles.modal}
-          useNativeDriver
-          hideModalContentWhileAnimating
-        >
-          <ShareModal
-            fund={this.state.currentFund}
-            onClose={() => this.props.setShareModal(false)}
-          />
-        </Modal>
+        {!!dashboard && (
+          <Modal
+            isVisible={this.props.showShareModal}
+            style={styles.modal}
+            useNativeDriver
+            hideModalContentWhileAnimating
+          >
+            <ShareModal
+              fund={this.state.currentFund}
+              company={this.props.company}
+              dashboard={dashboard}
+              onClose={() => this.props.setShareModal(false)}
+            />
+          </Modal>
+        )}
       </View>
     );
   }
