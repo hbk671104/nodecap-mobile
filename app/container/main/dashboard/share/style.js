@@ -168,6 +168,7 @@ export default {
     },
     image: {
       container: {
+        backgroundColor: 'white',
         ...Platform.select({
           ios: {
             shadowColor: 'rgba(11, 26, 39, .25)',
@@ -176,7 +177,7 @@ export default {
             shadowRadius: 1,
           },
           android: {
-            elevation: 3,
+            elevation: 2,
           },
         }),
       },
