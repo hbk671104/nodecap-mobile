@@ -16,6 +16,10 @@ import Unexchangeable from './route/unexchangeable';
 import { getCurrentScreen } from '../../../router';
 import styles, { deviceWidth, indicatorWidth } from './style';
 
+@global.bindTrack({
+  page: '投资库',
+  name: 'App_ProjectOperation',
+})
 @compose(withState('offsetY', 'setOffsetY', 0))
 @compose(withState('addButtonVisible', 'setAddButtonVisible', true))
 @connect(({ global, router }) => ({
@@ -44,6 +48,7 @@ export default class Portfolio extends Component {
   };
 
   handleSearchBarPress = () => {
+    this.props.track('搜索框');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Search',
@@ -62,6 +67,7 @@ export default class Portfolio extends Component {
   };
 
   handleRightPress = () => {
+    this.props.track('添加项目');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateProject',

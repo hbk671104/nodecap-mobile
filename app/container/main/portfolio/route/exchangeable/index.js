@@ -12,6 +12,9 @@ import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
 import styles from './style';
 
+@global.bindTrack({
+  subModuleName: '已投项目',
+})
 @connect(({ portfolio, loading }) => ({
   data: R.pathOr(null, ['exchangeable', 'index', 'data'])(portfolio),
   pagination: R.pathOr(null, ['exchangeable', 'index', 'pagination'])(
@@ -38,8 +41,9 @@ export default class Exchangeable extends Component {
     });
   };
 
-  handleSelect = rank => {
+  handleSelect = (rank, name) => {
     if (R.equals(rank, this.state.rank)) return;
+    this.props.track(name);
     this.setState({ rank }, () => this.requestData());
   };
 
@@ -47,6 +51,7 @@ export default class Exchangeable extends Component {
     if (!hasPermission('project-view')) {
       return;
     }
+    this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',

@@ -7,6 +7,7 @@ import JPush from 'jpush-react-native';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import './app/utils/sensor';
 import dva from './app/utils/dva';
 import Router, { routerMiddleware } from './app/router';
 import dashboard from './app/models/dashboard';

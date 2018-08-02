@@ -7,7 +7,7 @@ import { shadow } from '../../../../../utils/style';
 
 const header = ({ value, onSelect }) => (
   <View style={styles.container}>
-    <Touchable borderless onPress={() => onSelect('0,1,2,3,4,5,6')}>
+    <Touchable borderless onPress={() => onSelect('0,1,2,3,4,5,6', '全部')}>
       <View style={styles.group.container}>
         <Text
           style={[
@@ -20,7 +20,7 @@ const header = ({ value, onSelect }) => (
         {value === '0,1,2,3,4,5,6' && <View style={styles.group.line} />}
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('4')}>
+    <Touchable borderless onPress={() => onSelect('4', '确定意向')}>
       <View style={styles.group.container}>
         <Text
           style={[
@@ -33,7 +33,7 @@ const header = ({ value, onSelect }) => (
         {value === '4' && <View style={styles.group.line} />}
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('5')}>
+    <Touchable borderless onPress={() => onSelect('5', '待打币')}>
       <View style={styles.group.container}>
         <Text
           style={[
@@ -46,7 +46,7 @@ const header = ({ value, onSelect }) => (
         {value === '5' && <View style={styles.group.line} />}
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('6')}>
+    <Touchable borderless onPress={() => onSelect('6', '已打币')}>
       <View style={styles.group.container}>
         <Text
           style={[

@@ -10,6 +10,9 @@ import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
 import styles from './style';
 
+@global.bindTrack({
+  subModuleName: '未投项目',
+})
 @connect(({ portfolio, loading }) => ({
   data: R.pathOr(null, ['unexchangeable', 'index', 'data'])(portfolio),
   pagination: R.pathOr(null, ['unexchangeable', 'index', 'pagination'])(
@@ -36,8 +39,9 @@ export default class Unexchangeable extends Component {
     });
   };
 
-  handleSelect = status => {
+  handleSelect = (status, name) => {
     if (R.equals(status, this.state.status)) return;
+    this.props.track(name);
     this.setState({ status }, () => this.requestData());
   };
 
@@ -45,6 +49,7 @@ export default class Unexchangeable extends Component {
     if (!hasPermission('project-view')) {
       return;
     }
+    this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',
