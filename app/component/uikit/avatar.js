@@ -13,7 +13,7 @@ const avatar = props => (
   >
     <Image
       {...props}
-      resizeMode="contain"
+      resizeMode={props.resizeMode}
       style={{
         height: props.size * props.innerRatio,
         width: props.size * props.innerRatio,
@@ -26,11 +26,13 @@ const avatar = props => (
 avatar.defaultProps = {
   size: 42,
   innerRatio: 2 / 3,
+  resizeMode: 'contain',
 };
 
 avatar.propTypes = {
   size: PropTypes.number,
   innerRatio: PropTypes.number,
+  resizeMode: PropTypes.string,
 };
 
 const styles = {

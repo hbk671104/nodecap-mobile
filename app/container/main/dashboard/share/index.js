@@ -57,9 +57,11 @@ class Share extends PureComponent {
     try {
       const uri = await this.handleViewShot();
       if (uri) {
+        const { dashboard } = this.props;
         const request = {
           type: 'imageFile',
           imageUrl: `file://${uri}`,
+          title: dashboard.name,
         };
 
         if (type === 'wechat') {
@@ -235,7 +237,7 @@ class Share extends PureComponent {
             titleStyle={styles.roi.item.title}
             subtitleStyle={styles.roi.item.subtitle}
             rankingStyle={styles.roi.item.ranking}
-            avatarProps={{ size: 40, innerRatio: 0.75 }}
+            avatarProps={{ size: 40, innerRatio: 0.8, resizeMode: 'cover' }}
             key={i}
             index={i}
             data={r}
