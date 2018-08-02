@@ -197,6 +197,21 @@ RCT_EXPORT_METHOD(trackViewScreen:(NSString *)url withProperties:(NSDictionary *
   }
   
 }
+
+/**
+ * 导出 set 方法给 RN 使用.
+ *
+ * @param propertyDict 用户属性
+ *
+ */
+RCT_EXPORT_METHOD(registerSuperProperties:(NSDictionary *)propertyDict){
+  @try {
+    [[SensorsAnalyticsSDK sharedInstance] registerSuperProperties:propertyDict] ;
+  } @catch (NSException *exception) {
+    NSLog(@"[RNSensorsAnalytics] error:%@",exception);
+  }
+}
+
 /**
  * 导出 set 方法给 RN 使用.
  *

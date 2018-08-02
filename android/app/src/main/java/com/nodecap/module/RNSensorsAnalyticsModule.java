@@ -276,6 +276,20 @@ public class RNSensorsAnalyticsModule extends ReactContextBaseJavaModule {
     }
 
     /**
+     * 导出 registerSuperProperties 方法给 RN 使用.
+     *
+     */
+    @ReactMethod
+    public void registerSuperProperties(ReadableMap properties) {
+        try {
+            SensorsDataAPI.sharedInstance().registerSuperProperties(convertToJSONObject(properties));
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e(LOGTAG, e.toString() + "");
+        }
+    }
+
+    /**
      * 导出 profileSet 方法给 RN 使用.
      *
      * @param properties 用户属性

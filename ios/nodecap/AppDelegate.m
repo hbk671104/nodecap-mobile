@@ -21,7 +21,7 @@
 #else
 #import "RNSentry.h" // This is used for versions of react < 0.40
 #endif
-#import "SplashScreen.h"  // here
+#import "RNSplashScreen.h"  // here
 #import "SensorsAnalyticsSDK.h"
 #import "ReactNativeConfig.h"
 
@@ -75,7 +75,7 @@
    SensorsAnalyticsEventTypeAppViewScreen |
    SensorsAnalyticsEventTypeAppClick];
   
-  [SplashScreen show];  // here
+  [RNSplashScreen show];  // here
   
   return YES;
 }
