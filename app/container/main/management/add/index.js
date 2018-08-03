@@ -18,13 +18,10 @@ class AddHolding extends Component {
     );
   };
 
-  handleExchangePress = title => () => {
+  handleExchangeListPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'AddExchange',
-        params: {
-          title,
-        },
+        routeName: 'ExchangeList',
       }),
     );
   };
@@ -50,47 +47,13 @@ class AddHolding extends Component {
             onPress={this.handleWalletPress}
           />
           <ListItem
-            noBottomBorder
-            disablePress
             style={styles.listItem.container}
             icon={require('asset/management/add/automatic.png')}
             title="自动模式"
             titleStyle={styles.listItem.title}
             subtitle="使用交易所API自动同步"
-          >
-            <ListItem
-              noBottomBorder
-              style={styles.exchangeItem.container}
-              icon={require('asset/management/exchange/huobi.png')}
-              title="Huobi Global"
-              titleStyle={styles.exchangeItem.title}
-              onPress={this.handleExchangePress('Huobi Global')}
-            />
-            <ListItem
-              noBottomBorder
-              style={styles.exchangeItem.container}
-              icon={require('asset/management/exchange/binance.png')}
-              title="Binance"
-              titleStyle={styles.exchangeItem.title}
-              onPress={this.handleExchangePress('Binance')}
-            />
-            <ListItem
-              noBottomBorder
-              style={styles.exchangeItem.container}
-              icon={require('asset/management/exchange/gate.png')}
-              title="Gate.io"
-              titleStyle={styles.exchangeItem.title}
-              onPress={this.handleExchangePress('Gate.io')}
-            />
-            <ListItem
-              noBottomBorder
-              style={styles.exchangeItem.container}
-              icon={require('asset/management/exchange/okex.png')}
-              title="OKEx"
-              titleStyle={styles.exchangeItem.title}
-              onPress={this.handleExchangePress('OKEx')}
-            />
-          </ListItem>
+            onPress={this.handleExchangeListPress}
+          />
         </ScrollView>
       </View>
     );
