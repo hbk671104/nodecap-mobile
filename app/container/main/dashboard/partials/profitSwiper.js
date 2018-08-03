@@ -17,7 +17,14 @@ const arrow = profit => {
   return <NodeCapIcon name="xiala1" color="#F5222D" />;
 };
 
-const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
+const profitSwiper = ({
+  style,
+  total,
+  daily,
+  weekly,
+  autoplay = true,
+  onChange,
+}) => {
   return (
     <View style={[styles.container, style]}>
       <Swiper
@@ -27,6 +34,7 @@ const profitSwiper = ({ style, total, daily, weekly, autoplay = true }) => {
         activeDotColor="#1890FF"
         paginationStyle={{ bottom: 0 }}
         removeClippedSubviews={false}
+        onIndexChanged={onChange}
       >
         {R.keys(total).map(b => {
           const totalProfit = R.path([b])(total);

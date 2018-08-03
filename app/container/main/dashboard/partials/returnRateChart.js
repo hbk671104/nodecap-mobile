@@ -18,6 +18,12 @@ class returnRateChart extends Component {
     };
   }
 
+  handleSwitch = period => () => {
+    this.setState({ period }, () => {
+      this.props.track('价格走势时间跨度');
+    });
+  };
+
   render() {
     const style = this.props.style;
     const dashboard = this.props.dashboard;
@@ -47,7 +53,7 @@ class returnRateChart extends Component {
         <View style={styles.periods}>
           <TouchableOpacity
             style={styles.periodWrapper}
-            onPress={() => this.setState({ period: 'H24' })}
+            onPress={this.handleSwitch('H24')}
           >
             <Text
               style={[
@@ -61,7 +67,7 @@ class returnRateChart extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.periodWrapper}
-            onPress={() => this.setState({ period: 'W1' })}
+            onPress={this.handleSwitch('W1')}
           >
             <Text
               style={[
@@ -75,7 +81,7 @@ class returnRateChart extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.periodWrapper}
-            onPress={() => this.setState({ period: 'D30' })}
+            onPress={this.handleSwitch('D30')}
           >
             <Text
               style={[
@@ -89,7 +95,7 @@ class returnRateChart extends Component {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.periodWrapper}
-            onPress={() => this.setState({ period: 'Y1' })}
+            onPress={this.handleSwitch('Y1')}
           >
             <Text
               style={[

@@ -34,6 +34,10 @@ import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
 
+@global.bindTrack({
+  page: '项目详情',
+  name: 'App_DashboardOperation',
+})
 @compose(
   withState('showShareModal', 'setShareModal', false),
   withState('scrollY', 'setScrollY', new Animated.Value(0)),
@@ -96,7 +100,12 @@ export default class Dashboard extends Component {
     setOffsetY(contentOffset.y);
   };
 
+  handleSwiperChange = () => {
+    this.props.track('价格走势时间跨度');
+  };
+
   handleProjectItemPress = item => () => {
+    this.props.track('回报率卡片');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',
@@ -108,6 +117,11 @@ export default class Dashboard extends Component {
         },
       }),
     );
+  };
+
+  handleFundSwitch = (i, value) => {
+    this.props.track('基金切换');
+    this.getDashboardData(value.id);
   };
 
   renderBackground = () => (
@@ -143,7 +157,7 @@ export default class Dashboard extends Component {
           </TouchableOpacity>
         )}
         renderSeparator={() => <View style={styles.dropdown.separator} />}
-        onSelect={(i, value) => this.getDashboardData(value.id)}
+        onSelect={this.handleFundSwitch}
       >
         <Animated.Text
           style={[styles.navbar.title, { color: titleColorRange }]}
@@ -173,7 +187,12 @@ export default class Dashboard extends Component {
             const invalid = !dashboard || !this.state.currentFund;
             if (invalid) return null;
             return (
-              <TouchableOpacity onPress={() => this.props.setShareModal(true)}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.track('分享');
+                  this.props.setShareModal(true);
+                }}
+              >
                 <Image
                   source={require('asset/share.png')}
                   style={styles.shareButton}
@@ -279,6 +298,7 @@ export default class Dashboard extends Component {
                 total={R.path(['totalProfits', 'count'])(dashboard)}
                 daily={R.path(['dailyProfits', 'count'])(dashboard)}
                 weekly={R.path(['weeklyProfits', 'count'])(dashboard)}
+                onChange={this.handleSwiperChange}
               />
               <ReturnRateChart style={styles.roiChart} {...this.props} />
               <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
