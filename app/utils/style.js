@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, Platform } from 'react-native';
+import { Image, Text, Platform, StyleSheet } from 'react-native';
 
 export const raised = {
   ...Platform.select({
@@ -21,10 +21,10 @@ export const shadow = {
       shadowColor: 'rgba(44, 64, 83, 0.1)',
       shadowRadius: 2,
       shadowOffset: {
-        width: 0,
+        width: StyleSheet.hairlineWidth,
         height: 2,
       },
-      shadowOpacity: 0.7,
+      shadowOpacity: 1,
     },
     android: {
       elevation: 2,
