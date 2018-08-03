@@ -10,6 +10,10 @@ import Holdings from './route/holdings';
 import styles, { deviceWidth, indicatorWidth } from './style';
 import { hasPermission } from 'component/auth/permission/lock';
 
+@global.bindTrack({
+  page: '项目详情',
+  name: 'App_ProjectDetailOperation',
+})
 @connect(({ global, portfolio }) => ({
   constants: global.constants,
   portfolio: portfolio.current,

@@ -20,6 +20,12 @@ class Chart extends PureComponent {
     };
   }
 
+  handlePeriodSwitch = period => () => {
+    this.setState({ period }, () => {
+      this.props.track('价格走势时间跨度');
+    });
+  };
+
   render() {
     const style = this.props.style;
     const trend = R.path(['stat', 'trend'])(this.props);
@@ -60,7 +66,7 @@ class Chart extends PureComponent {
             <View style={styles.periodWrapper}>
               <Touchable
                 borderless
-                onPress={() => this.setState({ period: '24_hours' })}
+                onPress={this.handlePeriodSwitch('24_hours')}
               >
                 <Text
                   style={[
@@ -74,10 +80,7 @@ class Chart extends PureComponent {
               {period === '24_hours' && <View style={styles.periodline} />}
             </View>
             <View style={styles.periodWrapper}>
-              <Touchable
-                borderless
-                onPress={() => this.setState({ period: '7_days' })}
-              >
+              <Touchable borderless onPress={this.handlePeriodSwitch('7_days')}>
                 <Text
                   style={[
                     styles.periodItem,
@@ -92,7 +95,7 @@ class Chart extends PureComponent {
             <View style={styles.periodWrapper}>
               <Touchable
                 borderless
-                onPress={() => this.setState({ period: '30_days' })}
+                onPress={this.handlePeriodSwitch('30_days')}
               >
                 <Text
                   style={[
@@ -108,7 +111,7 @@ class Chart extends PureComponent {
             <View style={styles.periodWrapper}>
               <Touchable
                 borderless
-                onPress={() => this.setState({ period: '365_days' })}
+                onPress={this.handlePeriodSwitch('365_days')}
               >
                 <Text
                   style={[

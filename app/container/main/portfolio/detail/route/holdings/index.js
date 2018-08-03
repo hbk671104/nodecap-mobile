@@ -6,6 +6,9 @@ import Asset from './partials/asset';
 import TransactionItem from './partials/transaction';
 import styles from './style';
 
+@global.bindTrack({
+  subModuleName: '持仓信息',
+})
 class Holdings extends PureComponent {
   render() {
     return (

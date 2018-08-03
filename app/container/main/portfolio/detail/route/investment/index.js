@@ -10,6 +10,9 @@ import InvestmentInfo from './investment';
 import Loading from 'component/uikit/loading';
 import Lock from 'component/auth/permission/lock';
 
+@global.bindTrack({
+  subModuleName: '投资信息',
+})
 @connect(({ loading }) => ({
   loading: loading.effects['portfolio/get'],
 }))

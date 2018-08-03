@@ -23,6 +23,9 @@ import Chart from './partials/chart';
 import Selector from './selector';
 import styles from './style';
 
+@global.bindTrack({
+  subModuleName: '项目行情',
+})
 @compose(withState('selectorVisible', 'setSelectorVisible', false))
 @compose(withState('currentSymbol', 'setCurrentSymbol', {}))
 @compose(withState('symbols', 'setSymbols', []))
@@ -41,8 +44,8 @@ class Market extends PureComponent {
 
   onPairSelected = symbol => {
     this.toggleVisible();
-    const { setCurrentSymbol } = this.props;
-    setCurrentSymbol(symbol, () => {
+    this.props.track('本位币切换');
+    this.props.setCurrentSymbol(symbol, () => {
       this.loadStat();
     });
   };
