@@ -10,9 +10,14 @@ import AuthButton from 'component/auth/button';
 
 import styles from './style';
 
+@global.bindTrack({
+  page: '项目完成创建',
+  name: 'App_ProjectCreateDoneOperation',
+})
 @connect()
 class CreateDone extends Component {
   createAnother = () => {
+    this.props.track('继续添加');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateProject',
@@ -22,6 +27,7 @@ class CreateDone extends Component {
 
   checkDetail = () => {
     const item = this.props.navigation.getParam('data', {});
+    this.props.track('查看项目');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',
@@ -33,6 +39,7 @@ class CreateDone extends Component {
   };
 
   handleFinishPress = () => {
+    this.props.track('完成');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Portfolio',

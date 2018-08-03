@@ -16,6 +16,10 @@ import Icon from 'component/uikit/icon';
 import SearchItem from './item';
 import styles from './style';
 
+@global.bindTrack({
+  page: '项目创建匹配',
+  name: 'App_ProjectCreateMatchOperation',
+})
 @connect(({ portfolio, loading }) => ({
   data: R.pathOr(null, ['matchCoinList', 'index', 'data'])(portfolio),
   loading: loading.effects['portfolio/searchMatchedCoin'],
@@ -54,6 +58,7 @@ class CreateProject extends Component {
   };
 
   handleManualCreate = () => {
+    this.props.track('卡片');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ManualCreate',
@@ -62,6 +67,7 @@ class CreateProject extends Component {
   };
 
   handleExpressCreate = item => () => {
+    this.props.track('手动');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ExpressCreate',

@@ -7,9 +7,14 @@ import ListItem from 'component/listItem';
 import AuthButton from 'component/auth/button';
 import styles from './style';
 
+@global.bindTrack({
+  page: '设置',
+  name: 'App_SettingsOperation',
+})
 @connect()
 class Settings extends Component {
   logout = () => {
+    this.props.track('退出登录');
     this.props.dispatch({ type: 'login/logout' });
   };
 

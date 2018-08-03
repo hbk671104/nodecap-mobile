@@ -17,6 +17,10 @@ import PickerSelect from 'component/picker';
 
 import styles from './style';
 
+@global.bindTrack({
+  page: '项目投资创建',
+  name: 'App_ProjectCreateInvestmentOperation',
+})
 @connect(({ fund, global }) => ({
   funds: R.pathOr([], ['funds', 'data'])(fund),
   stages: R.pathOr([], ['constants', 'finance_stages'])(global),
@@ -220,7 +224,10 @@ class InvestmentCreate extends Component {
             暂无投资数据，
             <Text
               style={styles.noInvestment.highlight}
-              onPress={this.handleCreate()}
+              onPress={() => {
+                this.props.track('跳过');
+                this.handleCreate()();
+              }}
             >
               {'跳过 >'}
             </Text>
@@ -230,7 +237,10 @@ class InvestmentCreate extends Component {
           style={styles.confirm}
           disabled={false}
           title="提交"
-          onPress={this.handleSubmit}
+          onPress={() => {
+            this.props.track('提交');
+            this.handleSubmit();
+          }}
         />
       </SafeAreaView>
     );

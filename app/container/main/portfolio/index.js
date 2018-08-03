@@ -173,17 +173,18 @@ export default class Portfolio extends Component {
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
-        {!!addButtonVisible && (
-          <View style={styles.add.container}>
-            <Touchable
-              borderless
-              style={styles.add.content}
-              onPress={this.handleRightPress}
-            >
-              <Image source={require('asset/project/plus.png')} />
-            </Touchable>
-          </View>
-        )}
+        {!!addButtonVisible &&
+          hasPermission('project-create') && (
+            <View style={styles.add.container}>
+              <Touchable
+                borderless
+                style={styles.add.content}
+                onPress={this.handleRightPress}
+              >
+                <Image source={require('asset/project/plus.png')} />
+              </Touchable>
+            </View>
+          )}
       </View>
     );
   }

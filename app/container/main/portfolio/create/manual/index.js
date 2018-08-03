@@ -13,12 +13,17 @@ import InputItem from 'component/inputItem';
 
 import styles from './style';
 
+@global.bindTrack({
+  page: '项目手动创建',
+  name: 'App_ProjectCreateManualOperation',
+})
 @connect()
 @createForm()
 class ManualCreate extends Component {
   handleNext = () => {
     this.props.form.validateFields((error, value) => {
       if (R.isNil(error)) {
+        this.props.track('下一步');
         this.props.dispatch(
           NavigationActions.navigate({
             routeName: 'InvestmentCreate',

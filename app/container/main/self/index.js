@@ -8,11 +8,16 @@ import Header from './header';
 import Item from './item';
 import styles from './style';
 
+@global.bindTrack({
+  page: '我的模块',
+  name: 'App_MineOperation',
+})
 @connect(({ user }) => ({
   user: user.currentUser,
 }))
 class Self extends Component {
   handleSettingsPress = () => {
+    this.props.track('设置');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Settings',
@@ -21,6 +26,7 @@ class Self extends Component {
   };
 
   handleHeaderPress = () => {
+    this.props.track('个人信息卡片');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'MyProfile',

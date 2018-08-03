@@ -15,6 +15,10 @@ import Touchable from 'component/uikit/touchable';
 import Header from './header';
 import styles from './style';
 
+@global.bindTrack({
+  page: '项目快速创建',
+  name: 'App_ProjectCreateExpressOperation',
+})
 @connect()
 @createForm()
 class ExpressCreate extends Component {
@@ -25,6 +29,7 @@ class ExpressCreate extends Component {
   handleNext = () => {
     this.props.form.validateFields((error, value) => {
       if (R.isNil(error)) {
+        this.props.track('下一步');
         const item = this.props.navigation.getParam('item', {});
         this.props.dispatch(
           NavigationActions.navigate({
