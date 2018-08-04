@@ -124,6 +124,21 @@ export default class Dashboard extends Component {
     this.getDashboardData(value.id);
   };
 
+  handleItemPress = item => () => {
+    this.props.track('上所项目');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item: {
+            ...item,
+            can_calculate: true,
+          },
+        },
+      }),
+    );
+  };
+
   renderBackground = () => (
     <Image
       style={styles.background}
@@ -207,7 +222,7 @@ export default class Dashboard extends Component {
 
   render() {
     const { scrollY, dashboard, loading } = this.props;
-    const roiRankCount = R.length(R.path(['ROIRank'])(dashboard));
+    const roiRank = R.pathOr([], ['ROIRank'])(dashboard);
 
     let empty = null;
     const invalid = !dashboard || !this.state.currentFund;
@@ -296,8 +311,12 @@ export default class Dashboard extends Component {
               onChange={this.handleSwiperChange}
             />
             <ReturnRateChart style={styles.roiChart} {...this.props} />
-            <DashboardGroup title="已投项目数量" icon="yitouxiangmu">
-              <InvestNumber data={dashboard.portfolio} />
+            <DashboardGroup title="投资概况" icon="yitouxiangmu">
+              <InvestNumber
+                data={dashboard.portfolio}
+                roiRank={roiRank}
+                onItemPress={this.handleItemPress}
+              />
             </DashboardGroup>
             <DashboardGroup
               style={styles.dashboardGroup}
@@ -306,22 +325,20 @@ export default class Dashboard extends Component {
             >
               <Investment data={dashboard.investment} />
             </DashboardGroup>
-            {roiRankCount > 0 && (
-              <DashboardGroup
-                style={styles.dashboardGroup}
-                title="投资回报率榜"
-                icon="TOP"
-              >
-                {dashboard.ROIRank.map((r, i) => (
-                  <ProjectItem
-                    key={i}
-                    index={i}
-                    data={r}
-                    onPress={this.handleProjectItemPress(r)}
-                  />
-                ))}
-              </DashboardGroup>
-            )}
+            <DashboardGroup
+              style={styles.dashboardGroup}
+              title="投资回报率榜"
+              icon="TOP"
+            >
+              {R.slice(0, 5, roiRank).map((r, i) => (
+                <ProjectItem
+                  key={i}
+                  index={i}
+                  data={r}
+                  onPress={this.handleProjectItemPress(r)}
+                />
+              ))}
+            </DashboardGroup>
           </ParallaxScrollView>
         )}
         {empty}

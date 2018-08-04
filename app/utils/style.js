@@ -22,7 +22,7 @@ export const shadow = {
       shadowRadius: 2,
       shadowOffset: {
         width: StyleSheet.hairlineWidth,
-        height: 2,
+        height: 1,
       },
       shadowOpacity: 1,
     },
