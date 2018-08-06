@@ -120,7 +120,6 @@ export default class Dashboard extends Component {
   };
 
   handleFundSwitch = (i, value) => {
-    this.props.track('基金切换');
     this.getDashboardData(value.id);
   };
 

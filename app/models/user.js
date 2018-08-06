@@ -1,4 +1,5 @@
 import R from 'ramda';
+import { Platform } from 'react-native';
 import {
   getUser,
   getUsers,
@@ -74,10 +75,20 @@ export default {
     },
     *fetchCurrent(_, { call, put }) {
       try {
-        const response = yield call(getUser);
+        const { data } = yield call(getUser);
+
+        // sensor login and set profile
+        global.s().login(`${data.id}`);
+        const company = R.path(['companies', 0])(data);
+        global.s()[Platform.OS === 'ios' ? 'set' : 'profileSet']({
+          realname: data.realname,
+          companyName: company.name,
+          companyID: company.id,
+        });
+
         yield put({
           type: 'saveCurrentUser',
-          payload: response.data,
+          payload: data,
         });
       } catch (e) {
         console.log(e);
