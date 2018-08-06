@@ -16,6 +16,7 @@ import { connect } from './utils/dva';
 import { NavigationActions } from './utils';
 
 // Screen
+import Landing from 'container/auth/landing';
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import Dashboard from 'container/main/dashboard';
@@ -42,6 +43,7 @@ import EditProfile from 'container/main/self/profile/edit';
 
 const AuthStack = createStackNavigator(
   {
+    Landing,
     Login,
     SetPassword,
   },
