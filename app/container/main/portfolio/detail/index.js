@@ -52,7 +52,23 @@ export default class PortfolioDetail extends Component {
     }
   };
 
-  handleIndexChange = index => this.setState({ index });
+  handleIndexChange = index => {
+    const subModuleName = () => {
+      switch (index) {
+        case 0:
+          return '项目行情';
+        case 1:
+          return '投资信息';
+        case 2:
+          return '持仓记录';
+        default:
+          return null;
+      }
+    };
+    this.setState({ index }, () => {
+      this.props.track('Tab切换', { subModuleName: subModuleName() });
+    });
+  };
 
   renderNavBar = bottom => {
     const item = this.props.navigation.getParam('item');

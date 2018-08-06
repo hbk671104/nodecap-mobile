@@ -41,7 +41,21 @@ export default class Portfolio extends Component {
     }
   }
 
-  handleIndexChange = index => this.setState({ index });
+  handleIndexChange = index => {
+    const subModuleName = () => {
+      switch (index) {
+        case 0:
+          return '已投项目';
+        case 1:
+          return '未投项目';
+        default:
+          return null;
+      }
+    };
+    this.setState({ index }, () => {
+      this.props.track('Tab切换', { subModuleName: subModuleName() });
+    });
+  };
 
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     this.props.setOffsetY(contentOffset.y);
