@@ -11,6 +11,8 @@ import Loading from 'component/uikit/loading';
 import Lock from 'component/auth/permission/lock';
 
 @global.bindTrack({
+  page: '项目详情',
+  name: 'App_ProjectDetailOperation',
   subModuleName: '投资信息',
 })
 @connect(({ loading }) => ({

@@ -24,6 +24,8 @@ import Selector from './selector';
 import styles from './style';
 
 @global.bindTrack({
+  page: '项目详情',
+  name: 'App_ProjectDetailOperation',
   subModuleName: '项目行情',
 })
 @compose(withState('selectorVisible', 'setSelectorVisible', false))

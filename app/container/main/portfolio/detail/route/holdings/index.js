@@ -7,6 +7,8 @@ import TransactionItem from './partials/transaction';
 import styles from './style';
 
 @global.bindTrack({
+  page: '项目详情',
+  name: 'App_ProjectDetailOperation',
   subModuleName: '持仓信息',
 })
 class Holdings extends PureComponent {

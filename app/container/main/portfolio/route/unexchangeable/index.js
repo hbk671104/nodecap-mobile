@@ -11,6 +11,8 @@ import Header from './header';
 import styles from './style';
 
 @global.bindTrack({
+  page: '投资库',
+  name: 'App_ProjectOperation',
   subModuleName: '未投项目',
 })
 @connect(({ portfolio, loading }) => ({
