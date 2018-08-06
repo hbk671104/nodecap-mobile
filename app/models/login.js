@@ -96,6 +96,9 @@ export default {
         request.defaults.headers.common.Authorization = null;
         request.defaults.headers.common['X-Company-ID'] = null;
         clearKeychain();
+
+        // sensor logout
+        global.s().logout();
       } finally {
         yield put({
           type: 'logoutSuccess',
