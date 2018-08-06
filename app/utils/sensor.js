@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NativeModules } from 'react-native';
+import { NativeModules, Platform } from 'react-native';
 import store from '../../index';
 
 const RNSensorsAnalyticsModule = NativeModules.RNSensorsAnalyticsModule;
@@ -56,6 +56,7 @@ global.track = function(operationID, rest = {}) {
     store.getState(),
   );
   s().track(trackName, {
+    platformType: Platform.OS === 'ios' ? 'iOS' : 'Android',
     enterpriseID: companyId,
     pageName,
     operationID,
