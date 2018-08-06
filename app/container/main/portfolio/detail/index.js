@@ -34,6 +34,10 @@ export default class PortfolioDetail extends Component {
     });
   }
 
+  componentDidMount() {
+    this.props.track('进入');
+  }
+
   componentWillUnmount() {
     InteractionManager.runAfterInteractions(() => {
       this.props.dispatch({
