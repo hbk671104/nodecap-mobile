@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import Config from 'react-native-config';
 
 import WebView from 'component/uikit/webview';
 import NavBar from 'component/navBar';
@@ -13,11 +14,7 @@ class ResetPwd extends Component {
     this.props.dispatch(NavigationActions.back());
   };
 
-  handleOnMessage = ({
-    event: {
-      nativeEvent: { data },
-    },
-  }) => {
+  handleOnMessage = ({ nativeEvent: { data } }) => {
     if (data === 'backToLogin') {
       this.handleBack();
     }
@@ -29,7 +26,7 @@ class ResetPwd extends Component {
         <NavBar barStyle="dark-content" back />
         <WebView
           startInLoadingState
-          source={{ uri: 'http://www.hotnode.io/user/forget' }}
+          source={{ uri: `${Config.WEB_URL}/user/forget?v=1` }}
           onMessage={this.handleOnMessage}
         />
       </View>

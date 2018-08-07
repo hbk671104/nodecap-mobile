@@ -68,7 +68,7 @@ class Investment extends Component {
             })}
             {renderField({
               name: '投资数量',
-              value: investCount,
+              value: `${investCount} ${getTokenName(field)}`,
               style: {
                 flex: 1,
               },

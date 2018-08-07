@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableHighlight } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
@@ -11,7 +11,11 @@ import { shadow } from '../../../utils/style';
 const header = ({ user, style, onPress }) => {
   const company = R.pathOr('', ['companies', 0, 'name'])(user);
   return (
-    <Touchable style={[styles.wrapper, style]} onPress={onPress}>
+    <TouchableHighlight
+      underlayColor="white"
+      style={[styles.wrapper, style]}
+      onPress={onPress}
+    >
       <View style={styles.container}>
         <View style={styles.group}>
           <Avatar size={50} innerRatio={1} source={{ uri: user.avatar_url }} />
@@ -26,7 +30,7 @@ const header = ({ user, style, onPress }) => {
         </View>
         <Icon name="arrow-forward" size={20} color="rgba(0, 0, 0, 0.25)" />
       </View>
-    </Touchable>
+    </TouchableHighlight>
   );
 };
 
