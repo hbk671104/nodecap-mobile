@@ -78,6 +78,7 @@ class MyProfile extends Component {
                 innerRatio={1}
                 size={38}
                 source={{ uri: user.avatar_url }}
+                resizeMode="cover"
               />
             )}
             onPress={this.handleAvatarPress}

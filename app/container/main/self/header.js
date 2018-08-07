@@ -18,7 +18,12 @@ const header = ({ user, style, onPress }) => {
     >
       <View style={styles.container}>
         <View style={styles.group}>
-          <Avatar size={50} innerRatio={1} source={{ uri: user.avatar_url }} />
+          <Avatar
+            size={50}
+            innerRatio={1}
+            source={{ uri: user.avatar_url }}
+            resizeMode="cover"
+          />
           <View style={styles.content.container}>
             <Text style={styles.content.title}>{user.realname}</Text>
             <Touchable style={styles.content.company.container}>
