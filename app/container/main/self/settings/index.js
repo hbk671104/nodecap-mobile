@@ -35,7 +35,7 @@ class Settings extends Component {
           <ListItem
             disablePress
             title="当前版本"
-            content={DeviceInfo.getVersion()}
+            content={`v${DeviceInfo.getVersion()}`}
           />
           {/* <ListItem title="评价 Hotnode" /> */}
         </ScrollView>
