@@ -18,8 +18,9 @@ import { NavigationActions } from 'react-navigation';
 import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
 import { setStatusBar } from 'component/uikit/statusBar';
-import Empty from 'component/empty';
 import Modal from 'component/modal';
+import AuthButton from 'component/auth/button';
+import { hasPermission } from 'component/auth/permission/lock';
 
 import { getCurrentScreen } from '../../../router';
 import Header from './partials/header';
@@ -30,6 +31,7 @@ import InvestNumber from './partials/investNumber';
 import ProjectItem from './partials/projectItem';
 import Investment from './partials/investment';
 import ShareModal from './share';
+import Empty from './empty';
 import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
@@ -123,6 +125,15 @@ export default class Dashboard extends Component {
     this.getDashboardData(value.id);
   };
 
+  handleCreateProjectPress = () => {
+    this.props.track('添加项目');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateProject',
+      }),
+    );
+  };
+
   handleItemPress = item => () => {
     this.props.track('上所项目');
     this.props.dispatch(
@@ -183,13 +194,14 @@ export default class Dashboard extends Component {
     );
   };
 
-  renderFixedHeader = () => {
+  renderFixedHeader = gradient => {
     const { colorRange, dashboard, offsetY } = this.props;
     return (
       <View
         style={{ position: 'absolute', left: 0, right: 0, top: 0, zIndex: 10 }}
       >
         <NavBar
+          gradient={!!gradient}
           wrapperStyle={{ backgroundColor: colorRange }}
           barStyle={
             offsetY > PARALLAX_HEADER_HEIGHT / 2
@@ -258,6 +270,14 @@ export default class Dashboard extends Component {
                 {' hotnode.io '}
               </Text>，录入更快捷、高效
             </Text>
+            {hasPermission('project-create') && (
+              <AuthButton
+                title="导 入"
+                disabled={false}
+                style={styles.empty.group.button}
+                onPress={this.handleCreateProjectPress}
+              />
+            )}
           </View>
           <View style={styles.empty.bottom.container}>
             <Text style={styles.empty.bottom.title}>
@@ -277,7 +297,7 @@ export default class Dashboard extends Component {
 
     return (
       <View style={styles.container}>
-        {this.renderFixedHeader()}
+        {this.renderFixedHeader(empty)}
         {!!dashboard && (
           <ParallaxScrollView
             contentContainerStyle={styles.scrollView.container}
