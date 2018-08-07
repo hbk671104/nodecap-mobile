@@ -13,11 +13,25 @@ class ResetPwd extends Component {
     this.props.dispatch(NavigationActions.back());
   };
 
+  handleOnMessage = ({
+    event: {
+      nativeEvent: { data },
+    },
+  }) => {
+    if (data === 'backToLogin') {
+      this.handleBack();
+    }
+  };
+
   render() {
     return (
       <View style={styles.container}>
         <NavBar barStyle="dark-content" back />
-        <WebView source={{ uri: 'http://www.hotnode.io/user/forget' }} />
+        <WebView
+          startInLoadingState
+          source={{ uri: 'http://www.hotnode.io/user/forget' }}
+          onMessage={this.handleOnMessage}
+        />
       </View>
     );
   }
