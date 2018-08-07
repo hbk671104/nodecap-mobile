@@ -19,6 +19,7 @@ import { NavigationActions } from './utils';
 import Landing from 'container/auth/landing';
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
+import ResetPwd from 'container/auth/resetPwd';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
 import Management from 'container/main/management';
@@ -46,6 +47,7 @@ const AuthStack = createStackNavigator(
     Landing,
     Login,
     SetPassword,
+    ResetPwd,
   },
   {
     headerMode: 'none',

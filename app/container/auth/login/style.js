@@ -4,10 +4,8 @@ export default {
     backgroundColor: 'white',
   },
   logo: {
-    width: 187,
-    height: 100,
     alignSelf: 'center',
-    marginTop: 128,
+    marginTop: 100 - 64,
     resizeMode: 'contain',
   },
   input: {
@@ -17,5 +15,16 @@ export default {
     marginTop: 50,
     marginHorizontal: 40,
     borderWidth: 0,
+  },
+  resetPwd: {
+    container: {
+      marginTop: 12,
+      alignSelf: 'flex-end',
+      marginRight: 32,
+    },
+    text: {
+      fontSize: 14,
+      color: '#1890FF',
+    },
   },
 };

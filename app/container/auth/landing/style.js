@@ -2,18 +2,38 @@ export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
+    justifyContent: 'space-between',
   },
-  logo: {
-    alignSelf: 'center',
-    marginTop: 128,
-    resizeMode: 'contain',
+  top: {
+    container: {
+      marginTop: 100,
+      alignSelf: 'center',
+      alignItems: 'center',
+    },
+    intro: {
+      fontSize: 11,
+      fontWeight: '100',
+      color: 'rgba(0, 0, 0, 0.45)',
+      marginTop: 13,
+    },
   },
-  input: {
-    marginHorizontal: 38,
-  },
-  button: {
-    marginTop: 50,
-    marginHorizontal: 40,
-    borderWidth: 0,
+  bottom: {
+    container: {
+      marginBottom: 68.5,
+    },
+    login: {
+      marginHorizontal: 40,
+    },
+    createCompany: {
+      marginHorizontal: 40,
+      marginTop: 22,
+      backgroundColor: 'white',
+      borderRadius: 4,
+      borderWidth: 1,
+      borderColor: '#1890FF',
+    },
+    titleStyle: {
+      color: '#1890FF',
+    },
   },
 };
