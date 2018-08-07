@@ -16,7 +16,6 @@ import io.sentry.RNSentryPackage;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.theweflex.react.WeChatPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
-import com.cmcewen.blurview.BlurViewPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.microsoft.codepush.react.CodePush;
@@ -67,7 +66,6 @@ public class MainApplication extends Application implements ReactApplication {
             new RNExitAppPackage(),
             new WeChatPackage(),
             new RNViewShotPackage(),
-            new BlurViewPackage(),
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),
             new CodePush(BuildConfig.CODEPUSH_DEPLOYMENT_KEY_ANDROID, getApplicationContext(), BuildConfig.DEBUG),

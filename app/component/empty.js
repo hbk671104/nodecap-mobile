@@ -1,42 +1,23 @@
-import React, { Component } from 'react';
-import { View, Image, findNodeHandle, StyleSheet, Dimensions } from 'react-native';
-import { BlurView } from 'react-native-blur';
+import React from 'react';
+import { View, Image, StyleSheet, Dimensions } from 'react-native';
+
 import StatusBar from './uikit/statusBar';
 
-class Empty extends Component {
-  state = {
-    viewRef: null,
-  };
-
-  imageLoaded = () => {
-    this.setState({ viewRef: findNodeHandle(this.backgroundImage) });
-  };
-
-  render() {
-    return (
-      <View style={[styles.container, this.props.style]}>
-        <StatusBar />
-        <Image
-          ref={(img) => {
-            this.backgroundImage = img;
-          }}
-          style={styles.blur}
-          source={require('asset/dashboard_placeholder.png')}
-          onLoadEnd={this.imageLoaded}
-        />
-        {!!this.state.viewRef && (
-          <BlurView
-            viewRef={this.state.viewRef}
-            style={styles.blur}
-            blurAmount={8}
-            blurType="light"
-          />
-        )}
-        <View style={styles.wrapper}>{this.props.children}</View>
-      </View>
-    );
-  }
-}
+const empty = props => (
+  <View style={[styles.container, props.style]}>
+    <StatusBar barStyle="light-content" />
+    <Image
+      ref={img => {
+        this.backgroundImage = img;
+      }}
+      style={styles.blur}
+      source={require('asset/dashboard_placeholder.png')}
+      onLoadEnd={this.imageLoaded}
+      blurRadius={7}
+    />
+    <View style={styles.wrapper}>{props.children}</View>
+  </View>
+);
 
 const styles = {
   container: {
@@ -54,4 +35,4 @@ const styles = {
   },
 };
 
-export default Empty;
+export default empty;

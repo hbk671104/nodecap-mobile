@@ -185,7 +185,6 @@ dependencies {
     compile project(':react-native-exit-app')
     compile project(':RCTWeChat')
     compile project(':react-native-view-shot')
-    compile project(':react-native-blur')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-splash-screen')
     compile project(':react-native-code-push')
