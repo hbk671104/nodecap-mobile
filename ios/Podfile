@@ -7,4 +7,6 @@ target 'nodecap' do
 
   # Pods for nodecap
   pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
+  pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
+
 end

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -30,8 +31,12 @@ class Settings extends Component {
       <View style={styles.container}>
         <NavBar gradient back title="设置" />
         <ScrollView>
-          {/* <ListItem title="清除缓存" content="10.92M" /> */}
-          <ListItem disablePress title="当前版本" content="v5.0" />
+          {/* <ListItem title="清D除缓存" content="10.92M" /> */}
+          <ListItem
+            disablePress
+            title="当前版本"
+            content={DeviceInfo.getVersion()}
+          />
           {/* <ListItem title="评价 Hotnode" /> */}
         </ScrollView>
         <AuthButton
