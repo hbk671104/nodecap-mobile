@@ -570,3 +570,20 @@ export function getMatchedCoin(payload) {
 export function modifyCompany(params) {
   return request.put('/company', params);
 }
+
+/**
+ * 注册验证码
+ * @param mobile
+ * @returns {AxiosPromise<any>}
+ */
+export function getSMSCode(mobile) {
+  return request.post('/signup/code', { mobile });
+}
+
+/**
+ * 创建公司
+ * @param data
+ */
+export function createCompany(data) {
+  return request.post('/signup', data);
+}

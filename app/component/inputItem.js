@@ -8,6 +8,7 @@ import Input from 'component/uikit/textInput';
 class InputItem extends PureComponent {
   static propTypes = {
     title: PropTypes.string.isRequired,
+    titleStyle: PropTypes.object,
     placeholder: PropTypes.string,
     vertical: PropTypes.bool,
     renderContent: PropTypes.func,
@@ -32,6 +33,7 @@ class InputItem extends PureComponent {
   render() {
     const {
       title,
+      titleStyle,
       vertical,
       renderContent,
       renderRight,
@@ -44,7 +46,7 @@ class InputItem extends PureComponent {
     return (
       <View style={styles.container}>
         <View style={[styles.wrapper, vertical && styles.vertical]}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={[styles.title, titleStyle]}>{title}</Text>
           <View
             style={
               vertical
