@@ -6314,9 +6314,9 @@ react-native-datepicker@^1.7.2:
   dependencies:
     moment "^2.22.0"
 
-react-native-device-info@^0.22.2:
-  version "0.22.2"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.2.tgz#ff2829ebe40d75be1d3b6560f0cd48e794a5a287"
+react-native-device-info@^0.22.3:
+  version "0.22.3"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.3.tgz#25e81f275eda85f181bc3eaf9dadca140e6decf6"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
@@ -6724,9 +6724,9 @@ readable-stream@2, readable-stream@^2.0.1, readable-stream@^2.0.6, readable-stre
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-realm@^2.14.0:
-  version "2.14.0"
-  resolved "https://registry.yarnpkg.com/realm/-/realm-2.14.0.tgz#47c4b4459c6bac3e5965da44fc4b51617cc34d66"
+realm@^2.14.1:
+  version "2.14.1"
+  resolved "https://registry.yarnpkg.com/realm/-/realm-2.14.1.tgz#35358b209b39ab8606bd3e0512bfc94f2da66be0"
   dependencies:
     command-line-args "^4.0.6"
     decompress "^4.2.0"

@@ -1,12 +1,17 @@
+import { realBarHeight } from 'component/navBar';
+
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  wrapper: {
+    flex: 1,
     justifyContent: 'space-between',
   },
   top: {
     container: {
-      marginTop: 100,
+      marginTop: 100 - realBarHeight,
       alignSelf: 'center',
       alignItems: 'center',
     },
