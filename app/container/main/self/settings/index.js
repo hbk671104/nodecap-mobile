@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -26,6 +27,14 @@ class Settings extends Component {
     ]);
   };
 
+  handleChangelogPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ChangeLog',
+      }),
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -37,6 +46,7 @@ class Settings extends Component {
             title="当前版本"
             content={`v${DeviceInfo.getVersion()}`}
           />
+          <ListItem title="版本更新" onPress={this.handleChangelogPress} />
           {/* <ListItem title="评价 Hotnode" /> */}
         </ScrollView>
         <AuthButton

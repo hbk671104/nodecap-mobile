@@ -39,6 +39,7 @@ import AddExchange from 'container/main/management/add/exchange';
 import ExchangeList from 'container/main/management/add/exchangeList';
 import Scanner from 'container/main/management/add/scanner';
 import Settings from 'container/main/self/settings';
+import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
 import EditProfile from 'container/main/self/profile/edit';
 
@@ -153,6 +154,7 @@ const MainStack = createStackNavigator(
     ExchangeList,
     Scanner,
     Settings,
+    ChangeLog,
     MyProfile,
     EditProfile,
   },
@@ -169,7 +171,7 @@ const AppRouter = createSwitchNavigator(
     Landing: RehydrateLoader,
   },
   {
-    initialRouteName: 'CodePush',
+    initialRouteName: 'Landing',
   },
 );
 
