@@ -29,7 +29,7 @@ const instance = axios.create({
   timeout: 60000,
 });
 
-instance.interceptors.response.use((res) => {
+instance.interceptors.response.use(res => {
   const hasPagination = R.allPass([
     R.has('x-pagination-current-page'),
     R.has('x-pagination-page-count'),
@@ -40,10 +40,16 @@ instance.interceptors.response.use((res) => {
     res.data = {
       data: res.data,
       pagination: {
-        pageCount: parseInt(R.path(['x-pagination-page-count'])(res.headers), 10),
+        pageCount: parseInt(
+          R.path(['x-pagination-page-count'])(res.headers),
+          10,
+        ),
         pageSize: parseInt(R.path(['x-pagination-per-page'])(res.headers), 10),
         total: parseInt(R.path(['x-pagination-total-count'])(res.headers), 10),
-        current: parseInt(R.path(['x-pagination-current-page'])(res.headers), 10),
+        current: parseInt(
+          R.path(['x-pagination-current-page'])(res.headers),
+          10,
+        ),
       },
     };
   }
@@ -67,13 +73,6 @@ function checkStatus({ response = {} }) {
     codeMessage[R.path(['data', 'code'])(response)] ||
     R.path(['data', 'message'])(response) ||
     R.path(['data', 0, 'message'])(response);
-  // const errorObject = global.__DEV__ ? {
-  //   message: `请求错误 ${response.status}: ${R.path(['config', 'url'])(response)}`,
-  //   description: errortext,
-  // } : {
-  //   message: errortext,
-  //   description: ' ',
-  // };
 
   Toast.fail(errortext, 1);
 

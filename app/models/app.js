@@ -1,5 +1,9 @@
-import { createAction, NavigationActions as routerRedux, Storage } from '../utils';
-import codepush from 'react-native-code-push';
+import {
+  createAction,
+  NavigationActions as routerRedux,
+  Storage,
+} from '../utils';
+import codePush from 'react-native-code-push';
 import codePushSaga from 'react-native-code-push-saga';
 import { login } from '../services/api';
 import request from '../utils/request';
@@ -43,38 +47,41 @@ export default {
     },
   },
   effects: {
-    * checkCodePush(_, { spawn, put }) {
+    *checkCodePush(_, { spawn }) {
       if (!global.__DEV__) {
-        codepush.allowRestart();
+        codePush.allowRestart();
         yield spawn(codePushSaga, {
-          codePushStatusDidChange: (e) => {
-            if (e === codepush.SyncStatus.DOWNLOADING_PACKAGE) {
-              store.dispatch(routerRedux.navigate({
-                routeName: 'CodePush',
-              }));
+          codePushStatusDidChange: e => {
+            if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE) {
+              store.dispatch(
+                routerRedux.navigate({
+                  routeName: 'CodePush',
+                }),
+              );
             }
             store.dispatch({
               type: 'codePush/changeState',
               payload: e,
             });
           },
-          codePushDownloadDidProgress: (progress) => {
-            const percent = (progress.receivedBytes / progress.totalBytes).toFixed(2);
+          codePushDownloadDidProgress: progress => {
+            const percent = (
+              progress.receivedBytes / progress.totalBytes
+            ).toFixed(2);
             store.dispatch({
               type: 'codePush/changePercent',
               payload: percent,
             });
           },
           syncOptions: {
-            updateDialog: null,
-            installMode: codepush.InstallMode.IMMEDIATE,
+            installMode: codePush.InstallMode.IMMEDIATE,
             syncOnResume: true,
             syncOnInterval: 60,
           },
         });
       }
     },
-    * loadStorage(action, { call, put, take }) {
+    *loadStorage(action, { call, put, take }) {
       yield put({
         type: 'checkCodePush',
       });
@@ -82,7 +89,7 @@ export default {
       const token = yield call(Storage.get, 'login', false);
       yield put(createAction('updateState')({ login: token, loading: false }));
     },
-    * login({ payload }, { call, put }) {
+    *login({ payload }, { call, put }) {
       yield put(createAction('updateState')({ fetching: true }));
       try {
         const { data } = yield call(login, payload);
@@ -96,7 +103,9 @@ export default {
             token: data.access_token,
           },
         });
-        request.defaults.headers.common.Authorization = `Bearer ${data.access_token}`;
+        request.defaults.headers.common.Authorization = `Bearer ${
+          data.access_token
+        }`;
         Storage.set('login', data.access_token);
         yield put(routerRedux.push('/projects/'));
       } catch (e) {
@@ -108,7 +117,7 @@ export default {
         });
       }
     },
-    * logout(action, { call, put }) {
+    *logout(action, { call, put }) {
       yield call(Storage.set, 'login', false);
       yield put(createAction('updateState')({ login: false }));
     },
