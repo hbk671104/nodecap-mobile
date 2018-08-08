@@ -566,3 +566,7 @@ export function getMatchedCoin(payload) {
     params: payload,
   });
 }
+
+export function modifyCompany(params) {
+  return request.put('/company', params);
+}

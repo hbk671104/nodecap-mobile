@@ -34,6 +34,15 @@ class Self extends Component {
     );
   };
 
+  handleCompanyPress = () => {
+    this.props.track('公司信息');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'MyCompany',
+      }),
+    );
+  };
+
   renderNavBar = () => (
     <NavBar
       gradient
@@ -67,6 +76,7 @@ class Self extends Component {
           style={styles.header}
           user={user}
           onPress={this.handleHeaderPress}
+          onCompanyPress={this.handleCompanyPress}
         />
       </View>
     );

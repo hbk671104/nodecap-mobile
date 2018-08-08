@@ -8,7 +8,7 @@ import Avatar from 'component/uikit/avatar';
 import Icon from 'component/uikit/icon';
 import { shadow } from '../../../utils/style';
 
-const header = ({ user, style, onPress }) => {
+const header = ({ user, style, onPress, onCompanyPress }) => {
   const company = R.pathOr('', ['companies', 0, 'name'])(user);
   return (
     <TouchableHighlight
@@ -26,7 +26,10 @@ const header = ({ user, style, onPress }) => {
           />
           <View style={styles.content.container}>
             <Text style={styles.content.title}>{user.realname}</Text>
-            <Touchable style={styles.content.company.container}>
+            <Touchable
+              style={styles.content.company.container}
+              onPress={onCompanyPress}
+            >
               <Text style={styles.content.company.title}>
                 {company} <Icon name="arrow-forward" size={10} color="white" />
               </Text>

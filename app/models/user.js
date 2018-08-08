@@ -10,6 +10,7 @@ import {
   updateUserPassword,
   deleteUserById,
   adminResetPassword,
+  modifyCompany,
 } from '../services/api';
 import { transformSorter } from '../utils/';
 import { uploadImage } from '../services/upload';
@@ -191,6 +192,17 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *updateCompany({ payload, callback }, { call, put }) {
+      yield call(modifyCompany, {
+        ...payload,
+      });
+      yield put({
+        type: 'fetchCurrent',
+      });
+      if (callback) {
+        callback();
       }
     },
   },

@@ -41,6 +41,7 @@ import Scanner from 'container/main/management/add/scanner';
 import Settings from 'container/main/self/settings';
 import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
+import MyCompany from 'container/main/self/profile/company';
 import EditProfile from 'container/main/self/profile/edit';
 
 const AuthStack = createStackNavigator(
@@ -156,6 +157,7 @@ const MainStack = createStackNavigator(
     Settings,
     ChangeLog,
     MyProfile,
+    MyCompany,
     EditProfile,
   },
   {

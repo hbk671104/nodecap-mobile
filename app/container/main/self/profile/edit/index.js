@@ -16,9 +16,10 @@ class EditProfile extends Component {
   handleConfirmPress = () => {
     this.props.form.validateFields((err, value) => {
       if (!err) {
+        const isCompany = this.props.navigation.getParam('isCompany', false);
         Toast.loading('更新中...', 0);
         this.props.dispatch({
-          type: 'user/updateUserProfile',
+          type: isCompany ? 'user/updateCompany' : 'user/updateUserProfile',
           payload: {
             ...value,
           },
