@@ -18,7 +18,13 @@ class Landing extends Component {
     );
   };
 
-  handleCreateCompanyPress = () => {};
+  handleCreateCompanyPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateCompany',
+      }),
+    );
+  };
 
   render() {
     return (

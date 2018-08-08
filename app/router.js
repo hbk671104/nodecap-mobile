@@ -17,6 +17,7 @@ import { NavigationActions } from './utils';
 
 // Screen
 import Landing from 'container/auth/landing';
+import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
@@ -47,6 +48,7 @@ import EditProfile from 'container/main/self/profile/edit';
 const AuthStack = createStackNavigator(
   {
     Landing,
+    CreateCompany,
     Login,
     SetPassword,
     ResetPwd,
