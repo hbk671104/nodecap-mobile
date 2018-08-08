@@ -38,6 +38,8 @@ class EditProfile extends Component {
     const editKey = navigation.getParam('key');
     const editTitle = navigation.getParam('title');
     const initialValue = navigation.getParam('default');
+    const multiline = navigation.getParam('multiline', false);
+
     return (
       <View style={styles.container}>
         <NavBar
@@ -51,8 +53,10 @@ class EditProfile extends Component {
           )}
         />
         <View style={styles.item.container}>
-          {getFieldDecorator(editKey, { initialValue })(
-            <Input autoFocus style={styles.item.input} />,
+          {getFieldDecorator(editKey, {
+            initialValue,
+          })(
+            <Input autoFocus multiline={multiline} style={styles.item.input} />,
           )}
         </View>
       </View>

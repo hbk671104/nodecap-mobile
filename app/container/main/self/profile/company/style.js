@@ -14,20 +14,15 @@ export default {
       fontSize: 14,
     },
   },
-  bottom: {
+  company: {
     container: {
-      height: 49,
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: '#FF3C00',
-      justifyContent: 'center',
-      alignItems: 'center',
+      paddingHorizontal: 12,
+      paddingBottom: 17,
     },
-    title: {
-      color: 'white',
-      fontSize: 15,
+    text: {
+      color: 'rgba(0, 0, 0, 0.85)',
+      fontSize: 14,
+      lineHeight: 20,
     },
   },
 };

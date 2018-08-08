@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile';
@@ -63,6 +63,17 @@ class MyCompany extends Component {
         <NavBar barStyle={this.state.barStyle} gradient back title="我的公司" />
         <ScrollView>
           <ListItem
+            title="公司名称"
+            content={company.name}
+            titleStyle={styles.listItem.title}
+            contentStyle={styles.listItem.content}
+            onPress={this.handleItemPress({
+              key: 'name',
+              title: '公司名称',
+              default: company.name,
+            })}
+          />
+          <ListItem
             disablePress
             title="公司 Logo"
             titleStyle={styles.listItem.title}
@@ -77,27 +88,20 @@ class MyCompany extends Component {
             onPress={this.handleAvatarPress}
           />
           <ListItem
-            title="公司名称"
-            content={company.name}
-            titleStyle={styles.listItem.title}
-            contentStyle={styles.listItem.content}
-            onPress={this.handleItemPress({
-              key: 'name',
-              title: '公司名称',
-              default: company.name,
-            })}
-          />
-          <ListItem
             title="公司简介"
-            content={company.description}
             titleStyle={styles.listItem.title}
             contentStyle={styles.listItem.content}
             onPress={this.handleItemPress({
               key: 'description',
               title: '公司简介',
               default: company.description,
+              multiline: true,
             })}
-          />
+          >
+            <View style={styles.company.container}>
+              <Text style={styles.company.text}>{company.description}</Text>
+            </View>
+          </ListItem>
         </ScrollView>
       </View>
     );
