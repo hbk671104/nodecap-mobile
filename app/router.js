@@ -169,7 +169,7 @@ const AppRouter = createSwitchNavigator(
     Landing: RehydrateLoader,
   },
   {
-    initialRouteName: 'Landing',
+    initialRouteName: 'CodePush',
   },
 );
 

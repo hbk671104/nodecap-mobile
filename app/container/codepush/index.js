@@ -1,24 +1,22 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
-// import {View, Image, Platform} from 'react-native'
-import StatusBar from 'component/uikit/statusBar';
-import styles from './styles.js';
-import { Bar } from 'react-native-progress';
 import { connect } from 'react-redux';
+import { Bar } from 'react-native-progress';
+
+import NavBar from 'component/navBar';
+import StatusBar from 'component/uikit/statusBar';
+import styles from './styles';
 
 @connect(state => ({
   codepush: state.codePush.percent || 0,
 }))
-class CodePushPage extends Component {
+class CodePush extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <StatusBar />
+        <NavBar barStyle="dark-content" />
         <View style={styles.logoTextWrap}>
-          <Image
-            style={styles.logoText}
-            source={require('../../asset/big_logo.png')}
-          />
+          <Image style={styles.logo} source={require('asset/big_logo.png')} />
           <View
             style={{
               marginTop: 50,
@@ -46,4 +44,4 @@ class CodePushPage extends Component {
   }
 }
 
-export default CodePushPage;
+export default CodePush;
