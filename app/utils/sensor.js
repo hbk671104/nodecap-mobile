@@ -14,7 +14,8 @@ global.s = () => {
       registerSuperProperties: EMPTY_FUNCTION,
       login: EMPTY_FUNCTION,
       logout: EMPTY_FUNCTION,
-      // setProfile: EMPTY_FUNCTION,
+      profileSet: EMPTY_FUNCTION,
+      set: EMPTY_FUNCTION,
     }));
   return sFunction;
 };

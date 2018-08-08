@@ -79,12 +79,18 @@ export default {
 
         // sensor login and set profile
         global.s().login(`${data.id}`);
+
         const company = R.path(['companies', 0])(data);
-        global.s()[Platform.OS === 'ios' ? 'set' : 'profileSet']({
+        const input = {
           realname: data.realname,
           companyName: company.name,
           companyID: company.id,
-        });
+        };
+        if (Platform.OS === 'ios') {
+          global.s().set(input);
+        } else {
+          global.s().profileSet(input);
+        }
 
         yield put({
           type: 'saveCurrentUser',
