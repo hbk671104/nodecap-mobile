@@ -56,7 +56,13 @@ class ExpressCreate extends Component {
       return null;
     }
     return (
-      <Touchable borderless onPress={() => setFieldsValue({ description: '' })}>
+      <Touchable
+        borderless
+        onPress={() => {
+          setFieldsValue({ description: '' });
+          this.descInput.clear();
+        }}
+      >
         <Text style={styles.clear.title}>清空</Text>
       </Touchable>
     );
@@ -96,15 +102,20 @@ class ExpressCreate extends Component {
               ],
             })(
               <InputItem
+                inputProps={{
+                  inputRef: ref => {
+                    this.descInput = ref;
+                  },
+                }}
                 title="项目描述"
                 placeholder="请输入项目描述"
                 vertical
                 error={getFieldError('description')}
               />,
             )}
-            {/* <View style={styles.clear.container}>
+            <View style={styles.clear.container}>
               {this.renderClearButton()}
-            </View> */}
+            </View>
           </View>
           <View style={styles.notice.container}>
             <Text style={styles.notice.text}>
