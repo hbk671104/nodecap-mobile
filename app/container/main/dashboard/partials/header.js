@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import * as R from 'ramda';
-import { View, ViewPropTypes, Animated } from 'react-native';
+import { View, Animated } from 'react-native';
 import Shimmer from 'react-native-shimmer';
+
+import Format from 'component/format';
 import Text from 'component/text';
 
 const header = ({ style, dashboard, loading }) => {
@@ -16,7 +18,7 @@ const header = ({ style, dashboard, loading }) => {
         <Text style={styles.label}>投资回报率</Text>
         <Shimmer style={{ marginTop: 12 }} animating={loading}>
           <Text style={[styles.title]}>
-            <Text>{ROIETH}</Text>
+            <Format>{ROIETH}</Format>
             % <Text style={{ fontSize: 13 }}>ETH</Text>
           </Text>
         </Shimmer>
@@ -24,7 +26,7 @@ const header = ({ style, dashboard, loading }) => {
       <View style={styles.bottom}>
         <Shimmer animating={loading}>
           <Text style={styles.subtitle}>
-            <Text>{ROIBTC}</Text>
+            <Format>{ROIBTC}</Format>
             % BTC
           </Text>
         </Shimmer>
@@ -33,7 +35,7 @@ const header = ({ style, dashboard, loading }) => {
         </Text>
         <Shimmer animating={loading}>
           <Text style={styles.subtitle}>
-            <Text>{ROI}</Text>
+            <Format>{ROI}</Format>
             % CNY
           </Text>
         </Shimmer>
@@ -42,7 +44,7 @@ const header = ({ style, dashboard, loading }) => {
         </Text>
         <Shimmer animating={loading}>
           <Text style={styles.subtitle}>
-            <Text>{ROIUSD}</Text>
+            <Format>{ROIUSD}</Format>
             % USD
           </Text>
         </Shimmer>
@@ -86,7 +88,6 @@ const styles = {
 };
 
 header.propTypes = {
-  // style: ViewPropTypes.style,
   data: PropTypes.object,
 };
 

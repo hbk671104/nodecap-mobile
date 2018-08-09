@@ -62,7 +62,9 @@ const projectItem = ({ item, index, onPress }) => {
           <View style={{ flex: 3 }}>
             <Text style={styles.middle.title}>回报率</Text>
             <Text style={[styles.middle.content, { fontSize: 18 }]}>
-              <Text colorAware>{roi}</Text>
+              <Text colorAware digit={2}>
+                {roi}
+              </Text>
               <Text style={profit < 0 ? styles.middle.down : styles.middle.up}>
                 %
               </Text>

@@ -90,7 +90,7 @@ export default {
     },
     wrapper: {
       height: 27,
-      paddingHorizontal: 8,
+      paddingHorizontal: 4,
       borderRadius: 2,
       backgroundColor: '#09AC32',
       justifyContent: 'center',

@@ -196,7 +196,7 @@ class Share extends PureComponent {
           <View style={styles.navBar.bar.group}>
             <Text style={styles.navBar.bar.title}>本期投资回报率</Text>
             <Text style={styles.navBar.bar.content}>
-              <Format digit={0}>{roi}</Format>
+              <Format>{roi}</Format>
               <Text style={{ fontSize: 17 }}>%</Text>
             </Text>
           </View>
