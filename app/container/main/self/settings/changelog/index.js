@@ -12,6 +12,31 @@ class ChangeLog extends Component {
         <NavBar gradient back title="版本更新" />
         <ScrollView>
           <ChangeLogItem
+            version="v5.0.5"
+            date="2018-08-08"
+            changelog={[
+              '支持公司创建',
+              '支持公司信息编辑',
+              '支持个人信息编辑',
+              '投资回报率 UI 优化',
+              '热更新页面优化',
+              '新增版本更新页',
+              '项目添加新增清空按钮，录入更便捷',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
+            version="v5.0.4"
+            date="2018-08-07"
+            changelog={[
+              '登录页重构，支持用户重置密码',
+              'Dashboard 缺省页重构，一键启动项目录入，方便快捷',
+              '项目详情页投资金额/数量 UI 优化',
+              '我的模块个人信息卡片点击优化',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
             version="v5.0.3"
             date="2018-08-05"
             changelog={['新增神策埋点能力', 'Bug 修复']}
