@@ -20,7 +20,7 @@ const dashboardGroup = ({ style, icon, title, children }) => {
 
 dashboardGroup.propTypes = {
   style: ViewPropTypes.style,
-  icon: PropTypes.string,
+  icon: PropTypes.number,
   title: PropTypes.string.isRequired,
 };
 
