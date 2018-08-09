@@ -22,8 +22,12 @@ class CreateCompany extends Component {
     countdown: 30,
   };
 
-  handleBack = () => {
-    this.props.dispatch(NavigationActions.back());
+  goToLogin = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Login',
+      }),
+    );
   };
 
   handleSubmit = () => {
@@ -36,7 +40,7 @@ class CreateCompany extends Component {
           },
           callback: () => {
             Toast.success('成功创建企业账户，现在即可登录使用！');
-            this.handleBack();
+            this.goToLogin();
           },
         });
       }
