@@ -86,6 +86,22 @@ class CreateCompany extends Component {
                   required: true,
                   message: '请输入邀请码',
                 },
+                {
+                  validator: (rule, value, callback) => {
+                    if (
+                      !R.contains(value, [
+                        'AaNuqM',
+                        'YnsZxj',
+                        '8s39BD',
+                        'eihEhL',
+                        '5mGaxv',
+                        'irlfIX',
+                      ])
+                    ) {
+                      callback('无效的邀请码');
+                    }
+                  },
+                },
               ],
             })(
               <InputItem
