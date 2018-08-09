@@ -19,12 +19,14 @@ const roiItem = ({
 }) => (
   <Touchable foreground onPress={onPress}>
     <View style={[styles.container, style]}>
-      <Avatar source={{ uri: data.logo_url }} size={50} {...avatarProps} />
+      <Avatar source={{ uri: data.logo_url }} size={40} {...avatarProps} />
       <View style={[styles.content.container, contentContainerStyle]}>
         <Text style={[styles.content.title, titleStyle]}>{data.name}</Text>
-        <Text style={[styles.content.subtitle, subtitleStyle]}>
-          <Text disablePrefix>{data.ROI}</Text> %
-        </Text>
+        {!!data.ROI && (
+          <Text style={[styles.content.subtitle, subtitleStyle]}>
+            <Text disablePrefix>{data.ROI}</Text> %
+          </Text>
+        )}
       </View>
       <Text style={[styles.ranking, rankingStyle]}>#{index + 1}</Text>
     </View>
@@ -35,29 +37,31 @@ const styles = {
   container: {
     paddingLeft: 22,
     paddingRight: 18,
-    paddingVertical: 17,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
   },
   content: {
     container: {
       flex: 1,
-      marginLeft: 25,
+      marginLeft: 36,
     },
     title: {
-      color: '#666666',
+      color: 'rgba(0, 0, 0, 0.85)',
       fontSize: 14,
       fontWeight: 'bold',
     },
     subtitle: {
-      color: '#000000',
-      fontSize: 24,
+      color: 'rgba(0, 0, 0, 0.65)',
+      fontSize: 17,
       fontWeight: 'bold',
+      marginTop: 5,
     },
   },
   ranking: {
-    fontSize: 19,
-    color: '#1890FF',
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.45)',
+    alignSelf: 'flex-start',
   },
 };
 

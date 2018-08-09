@@ -4,12 +4,19 @@ export default {
   container: {
     paddingHorizontal: 12,
   },
+  group: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+    marginLeft: 10,
+  },
   title: {
     color: '#333333',
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 16,
-    marginLeft: 10,
+  },
+  image: {
+    marginRight: 10,
   },
   card: {
     margin: 0,

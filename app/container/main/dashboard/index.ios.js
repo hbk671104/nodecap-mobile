@@ -29,6 +29,7 @@ import ReturnRateChart from './partials/returnRateChart';
 import DashboardGroup from './partials/group';
 import InvestNumber from './partials/investNumber';
 import ProjectItem from './partials/projectItem';
+import ProjectGroup from './partials/projectGroup';
 import Investment from './partials/investment';
 import ShareModal from './share';
 import Empty from './empty';
@@ -106,7 +107,7 @@ export default class Dashboard extends Component {
     this.props.track('价格走势时间跨度');
   };
 
-  handleProjectItemPress = item => () => {
+  handleProjectItemPress = (item, can_calculate = true) => () => {
     this.props.track('回报率卡片');
     this.props.dispatch(
       NavigationActions.navigate({
@@ -114,7 +115,7 @@ export default class Dashboard extends Component {
         params: {
           item: {
             ...item,
-            can_calculate: true,
+            can_calculate,
           },
         },
       }),
@@ -234,6 +235,7 @@ export default class Dashboard extends Component {
   render() {
     const { scrollY, dashboard, loading } = this.props;
     const roiRank = R.pathOr([], ['ROIRank'])(dashboard);
+    const idleProject = R.pathOr([], ['idle_projects'])(dashboard);
 
     let empty = null;
     const invalid = !dashboard || !this.state.currentFund;
@@ -330,7 +332,10 @@ export default class Dashboard extends Component {
               onChange={this.handleSwiperChange}
             />
             <ReturnRateChart style={styles.roiChart} {...this.props} />
-            <DashboardGroup title="投资概况" icon="yitouxiangmu">
+            <DashboardGroup
+              title="投资概况"
+              icon={require('asset/dashboard/project.png')}
+            >
               <InvestNumber
                 data={dashboard.portfolio}
                 roiRank={roiRank}
@@ -340,23 +345,45 @@ export default class Dashboard extends Component {
             <DashboardGroup
               style={styles.dashboardGroup}
               title="投资金额"
-              icon="touzijine"
+              icon={require('asset/dashboard/investment.png')}
             >
               <Investment data={dashboard.investment} />
             </DashboardGroup>
             <DashboardGroup
               style={styles.dashboardGroup}
-              title="投资回报率榜"
-              icon="TOP"
+              title="本期基金项目概览"
+              icon={require('asset/dashboard/directory.png')}
             >
-              {R.slice(0, 5, roiRank).map((r, i) => (
-                <ProjectItem
-                  key={i}
-                  index={i}
-                  data={r}
-                  onPress={this.handleProjectItemPress(r)}
-                />
-              ))}
+              <ProjectGroup
+                title="项目收益排行"
+                subtitle="ETH本位"
+                content={R.length(roiRank) < 5 ? `${R.length(roiRank)}` : '5'}
+              >
+                {R.slice(0, 5, roiRank).map((r, i) => (
+                  <ProjectItem
+                    key={i}
+                    index={i}
+                    data={r}
+                    onPress={this.handleProjectItemPress(r)}
+                  />
+                ))}
+              </ProjectGroup>
+              <ProjectGroup
+                title="其他项目"
+                subtitle="由于未上主流交易所或未进行数据匹配，暂无收益排行"
+                content={
+                  R.length(idleProject) < 4 ? `${R.length(idleProject)}` : '4'
+                }
+              >
+                {R.slice(0, 4, idleProject).map((r, i) => (
+                  <ProjectItem
+                    key={i}
+                    index={i}
+                    data={r}
+                    onPress={this.handleProjectItemPress(r, false)}
+                  />
+                ))}
+              </ProjectGroup>
             </DashboardGroup>
           </ParallaxScrollView>
         )}

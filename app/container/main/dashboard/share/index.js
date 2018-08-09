@@ -230,7 +230,7 @@ class Share extends PureComponent {
             <Image source={require('asset/share/right_image.png')} />
           </View>
         </View>
-        {roiRank.map((r, i) => (
+        {R.slice(0, 5)(roiRank).map((r, i) => (
           <ProjectItem
             style={styles.roi.item.container}
             contentContainerStyle={styles.roi.item.contentContainer}
