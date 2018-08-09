@@ -43,7 +43,7 @@ export default {
       fontSize: 12,
       lineHeight: 17,
       marginTop: 9,
-      textAlign: 'center',
+      // textAlign: 'center',
     },
   },
 };
