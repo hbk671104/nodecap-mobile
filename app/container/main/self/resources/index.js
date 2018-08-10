@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
 import SearchBarDisplay from 'component/searchBar/display';
+import ResourceList from './list';
 import styles from './style';
 
 @connect(({ resource }) => ({
@@ -16,9 +17,9 @@ class Resources extends Component {
   state = {
     index: 0,
     routes: [
-      { key: 'all', title: '全部' },
+      { key: '0', title: '全部' },
       ...this.props.routes.map(r => ({
-        key: r.key,
+        key: `${r.id}`,
         title: r.name,
       })),
     ],
@@ -75,9 +76,7 @@ class Resources extends Component {
     );
   };
 
-  renderScene = ({ route }) => {
-    return null;
-  };
+  renderScene = ({ route }) => <ResourceList type={route.key} />;
 
   render() {
     return (

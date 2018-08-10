@@ -7,22 +7,20 @@ import {
   deleteResource,
 } from '../services/api';
 
-// const typeMapper = type => {
-//   switch (type) {
-//     case '1':
-//       return 'investor';
-//     case '2':
-//       return 'fa';
-//     case '3':
-//       return 'startup_service';
-//     case '4':
-//       return 'media';
-//     case '5':
-//       return 'entrepreneur';
-//     default:
-//       return 'all';
-//   }
-// };
+const paginate = (state, action, key) => {
+  const oldData = R.pathOr([], [key, 'index', 'data'])(state);
+  const newData = R.pathOr([], ['payload', 'data'])(action);
+  const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
+
+  if (R.path(['current'])(pagination) === 1) {
+    return action.payload;
+  }
+
+  return {
+    ...action.payload,
+    data: R.concat(oldData, newData),
+  };
+};
 
 export default {
   namespace: 'resource',
@@ -30,30 +28,26 @@ export default {
     types: [
       {
         id: 1,
-        key: 'investor',
         name: '投资人',
       },
       {
         id: 2,
-        key: 'fa',
         name: 'FA',
       },
       {
         id: 3,
-        key: 'startup_service',
         name: '创业服务',
       },
       {
         id: 4,
-        key: 'media',
         name: '媒体',
       },
       {
         id: 5,
-        key: 'entrepreneur',
         name: '创业者',
       },
     ],
+    list: null,
     search: null,
     current: null,
   },
@@ -226,8 +220,16 @@ export default {
   },
   reducers: {
     list(state, action) {
+      const { type } = action.params;
       return {
         ...state,
+        list: {
+          ...state.list,
+          [type]: {
+            index: paginate(state.list, action, type),
+            params: action.params,
+          },
+        },
       };
     },
     detail(state, action) {

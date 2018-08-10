@@ -347,6 +347,7 @@ export function resourceIndex(params = {}) {
     ...params,
     page: p.currentPage,
     'per-page': p.pageSize,
+    type: params.type === '0' ? undefined : params.type,
   });
   return request.get('/resources', {
     params: paramsTransform(params),

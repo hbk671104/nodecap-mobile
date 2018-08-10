@@ -25,6 +25,7 @@ export default function (options) {
         'portfolio/searchMatchedCoin',
         'user/createCompany',
         'resource/get',
+        'resource/index',
       ],
     }),
   );
