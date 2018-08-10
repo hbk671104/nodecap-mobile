@@ -19,6 +19,7 @@ import globalModel from './app/models/global';
 import portfolioModel from './app/models/portfolio';
 import userModel from './app/models/user';
 import codepushModel from './app/models/codepush';
+import resourceModel from './app/models/resource';
 
 const app = dva({
   initialState: {},
@@ -32,6 +33,7 @@ const app = dva({
     portfolioModel,
     userModel,
     codepushModel,
+    resourceModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -43,7 +45,14 @@ export const persist = callback => {
     app._store,
     {
       storage: AsyncStorage,
-      blacklist: ['loading', 'router', 'project', 'fund', 'portfolio'],
+      blacklist: [
+        'loading',
+        'router',
+        'project',
+        'fund',
+        'portfolio',
+        'resource',
+      ],
     },
     callback,
   );

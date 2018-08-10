@@ -10,13 +10,13 @@ import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
 import Touchable from 'component/uikit/touchable';
-import UnexchangeableItem from 'component/project/unexchangeable';
+import ResourceItem from 'component/resources/item';
 import styles from './style';
 
-@connect(({ portfolio }) => ({
-  data: R.pathOr(null, ['searchList', 'index', 'data'])(portfolio),
+@connect(({ resource }) => ({
+  data: R.pathOr(null, ['search', 'index', 'data'])(resource),
 }))
-class Search extends Component {
+class ResourceSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,7 +26,7 @@ class Search extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch({ type: 'portfolio/clearSearch' });
+    this.props.dispatch({ type: 'resource/clearSearch' });
   }
 
   onSearchTextChange = text => {
@@ -39,7 +39,7 @@ class Search extends Component {
 
     Toast.loading('loading...', 0);
     this.props.dispatch({
-      type: 'portfolio/search',
+      type: 'resource/search',
       payload: {
         q: searchText,
       },
@@ -73,6 +73,7 @@ class Search extends Component {
             <SearchBar
               style={styles.searchBar.bar}
               autoFocus
+              placeholder="输入人脉关键字搜索"
               onChange={this.onSearchTextChange}
             />
           </View>
@@ -90,9 +91,7 @@ class Search extends Component {
     );
   };
 
-  renderItem = ({ item }) => (
-    <UnexchangeableItem item={item} onPress={this.handleItemPress(item)} />
-  );
+  renderItem = ({ item }) => <ResourceItem data={item} />;
 
   render() {
     const { data } = this.props;
@@ -111,4 +110,4 @@ class Search extends Component {
   }
 }
 
-export default Search;
+export default ResourceSearch;
