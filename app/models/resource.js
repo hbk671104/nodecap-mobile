@@ -127,10 +127,14 @@ export default {
      * @param callback
      * @param call
      */
-    *create({ payload, callback }, { call }) {
+    *create({ payload, callback }, { call, put }) {
       try {
         const res = yield call(createResource, {
           ...payload,
+        });
+
+        yield put({
+          type: 'refresh',
         });
 
         if (callback) {
@@ -148,7 +152,7 @@ export default {
      * @param callback
      * @param call
      */
-    *save({ id, payload, callback }, { call, put }) {
+    *save({ id, payload, callback }, { call, put, take }) {
       try {
         const res = yield call(editResource, id, {
           ...payload,
@@ -158,6 +162,7 @@ export default {
           type: 'get',
           payload: id,
         });
+        yield take('get/@@end');
 
         yield put({
           type: 'refresh',
