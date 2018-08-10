@@ -42,6 +42,7 @@ import Scanner from 'container/main/management/add/scanner';
 import Resources from 'container/main/self/resources';
 import ResourceSearch from 'container/main/self/resources/search';
 import ResourceDetail from 'container/main/self/resources/detail';
+import ResourceAdd from 'container/main/self/resources/add';
 import Settings from 'container/main/self/settings';
 import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
@@ -162,6 +163,7 @@ const MainStack = createStackNavigator(
     Resources,
     ResourceSearch,
     ResourceDetail,
+    ResourceAdd,
     Settings,
     ChangeLog,
     MyProfile,

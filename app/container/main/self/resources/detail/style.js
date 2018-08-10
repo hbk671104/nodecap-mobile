@@ -3,6 +3,22 @@ export default {
     flex: 1,
     backgroundColor: 'white',
   },
+  navBar: {
+    right: {
+      container: {
+        flexDirection: 'row',
+        alignItems: 'center',
+      },
+      group: {
+        container: {
+          marginLeft: 15,
+        },
+        title: {
+          color: 'white',
+        },
+      },
+    },
+  },
   item: {
     container: {},
     title: {

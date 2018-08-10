@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
+import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 import styles from './style';
 
@@ -34,6 +36,20 @@ class ResourceDetail extends Component {
     this.props.dispatch({ type: 'resource/clearCurrent' });
   };
 
+  handleEditPress = () => {
+    const { data } = this.props;
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ResourceAdd',
+        params: {
+          default: data,
+        },
+      }),
+    );
+  };
+
+  handleDeletePress = () => {};
+
   renderContent = content => (
     <View style={styles.item.content.container}>
       <Text
@@ -47,13 +63,41 @@ class ResourceDetail extends Component {
     </View>
   );
 
+  renderNavBarRight = () => (
+    <View style={styles.navBar.right.container}>
+      <Touchable
+        style={styles.navBar.right.group.container}
+        onPress={this.handleDeletePress}
+      >
+        <Text style={styles.navBar.right.group.title}>删除</Text>
+      </Touchable>
+      <Touchable
+        style={styles.navBar.right.group.container}
+        onPress={this.handleEditPress}
+      >
+        <Text style={styles.navBar.right.group.title}>编辑</Text>
+      </Touchable>
+    </View>
+  );
+
   render() {
     const item = this.props.navigation.getParam('item');
     const { data, loading } = this.props;
+    const invalid = R.isNil(data) || loading;
     return (
       <View style={styles.container}>
-        <NavBar gradient back title={item.name} />
-        {R.isNil(data) || loading ? (
+        <NavBar
+          gradient
+          back
+          title={item.name}
+          renderRight={() => {
+            if (invalid) {
+              return null;
+            }
+            return this.renderNavBarRight();
+          }}
+        />
+        {invalid ? (
           <Loading />
         ) : (
           <ScrollView>
