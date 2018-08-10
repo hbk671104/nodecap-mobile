@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import Communications from 'react-native-communications';
 import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
@@ -171,10 +172,11 @@ class ResourceDetail extends Component {
               renderContent={() => this.renderContent(data.title)}
             />
             <ListItem
-              disablePress
+              disablePress={!data.mobile}
               title="手机"
               titleStyle={styles.item.title}
               renderContent={() => this.renderContent(data.mobile)}
+              onPress={() => Communications.phonecall(data.mobile, false)}
             />
             <ListItem
               disablePress
@@ -183,10 +185,19 @@ class ResourceDetail extends Component {
               renderContent={() => this.renderContent(data.wechat)}
             />
             <ListItem
-              disablePress
+              disablePress={!data.email}
               title="邮箱"
               titleStyle={styles.item.title}
               renderContent={() => this.renderContent(data.email)}
+              onPress={() =>
+                Communications.email(
+                  data.email,
+                  null,
+                  null,
+                  'From Hotnode',
+                  null,
+                )
+              }
             />
             <ListItem
               disablePress

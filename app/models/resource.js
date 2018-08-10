@@ -30,22 +30,27 @@ export default {
     types: [
       {
         id: 1,
+        key: 'investor',
         name: '投资人',
       },
       {
         id: 2,
+        key: 'fa',
         name: 'FA',
       },
       {
         id: 3,
+        key: 'startup_service',
         name: '创业服务',
       },
       {
         id: 4,
+        key: 'media',
         name: '媒体',
       },
       {
         id: 5,
+        key: 'entrepreneur',
         name: '创业者',
       },
     ],
