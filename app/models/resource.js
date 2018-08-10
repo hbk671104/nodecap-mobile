@@ -28,6 +28,7 @@ export default {
   namespace: 'resource',
   state: {
     search: null,
+    current: null,
   },
   effects: {
     /**
@@ -80,10 +81,14 @@ export default {
      * @param put
      * @param all
      */
-    *get({ payload, callback }, { call }) {
+    *get({ payload, callback }, { call, put }) {
       try {
         const res = yield call(resourceDetail, {
           id: payload,
+        });
+        yield put({
+          type: 'detail',
+          payload: res.data,
         });
 
         if (callback) {
@@ -167,6 +172,12 @@ export default {
         },
       };
     },
+    detail(state, action) {
+      return {
+        ...state,
+        current: action.payload,
+      };
+    },
     searchlist(state, action) {
       return {
         ...state,
@@ -174,6 +185,12 @@ export default {
           index: action.payload,
           params: action.params,
         },
+      };
+    },
+    clearCurrent(state) {
+      return {
+        ...state,
+        current: null,
       };
     },
     clearSearch(state) {

@@ -41,6 +41,7 @@ import ExchangeList from 'container/main/management/add/exchangeList';
 import Scanner from 'container/main/management/add/scanner';
 import Resources from 'container/main/self/resources';
 import ResourceSearch from 'container/main/self/resources/search';
+import ResourceDetail from 'container/main/self/resources/detail';
 import Settings from 'container/main/self/settings';
 import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
@@ -160,6 +161,7 @@ const MainStack = createStackNavigator(
     Scanner,
     Resources,
     ResourceSearch,
+    ResourceDetail,
     Settings,
     ChangeLog,
     MyProfile,

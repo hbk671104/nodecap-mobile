@@ -52,7 +52,7 @@ class ResourceSearch extends Component {
   handleItemPress = item => () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PortfolioDetail',
+        routeName: 'ResourceDetail',
         params: {
           item,
         },
@@ -91,7 +91,9 @@ class ResourceSearch extends Component {
     );
   };
 
-  renderItem = ({ item }) => <ResourceItem data={item} />;
+  renderItem = ({ item }) => (
+    <ResourceItem data={item} onPress={this.handleItemPress(item)} />
+  );
 
   render() {
     const { data } = this.props;
