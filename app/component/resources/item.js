@@ -22,8 +22,7 @@ const resources = ({ data, onPress }) => {
               </Text>
               {types.map(t => (
                 <Text key={t.id}>
-                  <Title data={t} />
-                  {'  '}
+                  <Title data={t} />{' '}
                 </Text>
               ))}
             </View>

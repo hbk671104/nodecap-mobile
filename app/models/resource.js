@@ -7,22 +7,22 @@ import {
   deleteResource,
 } from '../services/api';
 
-const typeMapper = type => {
-  switch (type) {
-    case '1':
-      return 'investor';
-    case '2':
-      return 'fa';
-    case '3':
-      return 'startup_service';
-    case '4':
-      return 'media';
-    case '5':
-      return 'entrepreneur';
-    default:
-      return 'all';
-  }
-};
+// const typeMapper = type => {
+//   switch (type) {
+//     case '1':
+//       return 'investor';
+//     case '2':
+//       return 'fa';
+//     case '3':
+//       return 'startup_service';
+//     case '4':
+//       return 'media';
+//     case '5':
+//       return 'entrepreneur';
+//     default:
+//       return 'all';
+//   }
+// };
 
 export default {
   namespace: 'resource',
@@ -159,6 +159,10 @@ export default {
           payload: id,
         });
 
+        yield put({
+          type: 'refresh',
+        });
+
         if (callback) {
           yield call(callback, res.data);
         }
@@ -177,8 +181,9 @@ export default {
       try {
         const res = yield call(deleteResource, id);
 
-        // reload all list
-        yield put({ type: 'reload' });
+        yield put({
+          type: 'refresh',
+        });
 
         if (callback) {
           yield call(callback, res.data);
@@ -187,16 +192,32 @@ export default {
         console.log(e);
       }
     },
+    *refresh({ callback }, { put, call, select }) {
+      try {
+        // search
+        const search = yield select(state =>
+          R.path(['resource', 'search'])(state),
+        );
+        if (!R.isNil(search)) {
+          yield put({
+            type: 'search',
+            payload: search.params,
+          });
+        }
+
+        // others
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   reducers: {
     list(state, action) {
-      const key = typeMapper(R.path(['params', 'type'])(action));
       return {
         ...state,
-        [key]: {
-          index: action.payload,
-          params: action.params,
-        },
       };
     },
     detail(state, action) {

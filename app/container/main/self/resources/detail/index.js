@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, InteractionManager } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  InteractionManager,
+  Alert,
+} from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
@@ -32,8 +39,27 @@ class ResourceDetail extends Component {
     }
   };
 
+  goBack = () => {
+    this.props.dispatch(NavigationActions.back());
+  };
+
   clearData = () => {
     this.props.dispatch({ type: 'resource/clearCurrent' });
+  };
+
+  confirmDelete = () => {
+    const item = this.props.navigation.getParam('item');
+    if (item && item.id) {
+      Toast.loading('正在删除...', 0);
+      this.props.dispatch({
+        type: 'resource/delete',
+        id: item.id,
+        callback: () => {
+          Toast.hide();
+          this.goBack();
+        },
+      });
+    }
   };
 
   handleEditPress = () => {
@@ -48,7 +74,13 @@ class ResourceDetail extends Component {
     );
   };
 
-  handleDeletePress = () => {};
+  handleDeletePress = () => {
+    const { data } = this.props;
+    Alert.alert('提示', `确认删除人脉 [${data.name}] 吗？`, [
+      { text: '确认', onPress: this.confirmDelete },
+      { text: '取消', style: 'cancel' },
+    ]);
+  };
 
   renderContent = content => (
     <View style={styles.item.content.container}>
