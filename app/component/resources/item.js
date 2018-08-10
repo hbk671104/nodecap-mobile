@@ -16,12 +16,17 @@ const resources = ({ data, onPress }) => {
         <View style={styles.top.container}>
           <Text style={styles.top.title}>{data.name}</Text>
           {!R.isEmpty(types) && (
-            <Text style={styles.top.divider}>
-              {'  '}|{'  '}
+            <View style={styles.top.group}>
+              <Text style={styles.top.divider}>
+                {'  '}|{'  '}
+              </Text>
               {types.map(t => (
-                <Title key={t.id} data={t} />
+                <Text key={t.id}>
+                  <Title data={t} />
+                  {'  '}
+                </Text>
               ))}
-            </Text>
+            </View>
           )}
         </View>
         <Grid style={styles.bottom.container}>
@@ -80,9 +85,13 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
     },
+    group: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
     divider: {
-      fontSize: 12,
-      color: '#E0E0E0',
+      color: '#E9E9E9',
+      fontSize: 13,
     },
     title: {
       color: '#333333',

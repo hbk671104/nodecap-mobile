@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text } from 'react-native';
 
-const title = ({ data }) => (
+const title = ({ style, data }) => (
   <Text
     style={[
       styles.base,
@@ -11,6 +11,7 @@ const title = ({ data }) => (
       data.id === 3 && { color: '#FF7600' },
       data.id === 4 && { color: '#4D59F1' },
       data.id === 5 && { color: '#F54750' },
+      style,
     ]}
   >
     {data.name}

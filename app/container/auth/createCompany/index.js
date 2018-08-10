@@ -246,14 +246,14 @@ class CreateCompany extends Component {
               />,
             )}
           </View>
+          <AuthButton
+            loading={loading}
+            disabled={false}
+            style={styles.confirm}
+            title="提 交"
+            onPress={this.handleSubmit}
+          />
         </EnhancedScroll>
-        <AuthButton
-          loading={loading}
-          disabled={false}
-          style={styles.confirm}
-          title="提 交"
-          onPress={this.handleSubmit}
-        />
       </View>
     );
   }

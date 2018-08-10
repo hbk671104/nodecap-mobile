@@ -3,25 +3,47 @@ import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { createForm } from 'rc-form';
+import { Toast } from 'antd-mobile';
 import R from 'ramda';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
 import AuthButton from 'component/auth/button';
+import Selector from './selector';
 import styles from './style';
 
-@connect()
+@connect(({ resource }) => ({
+  types: resource.types,
+}))
 @createForm()
 class ResourceAdd extends Component {
   handleSubmitPress = () => {
     this.props.form.validateFields((err, value) => {
-      // if (!err) {}
+      if (!err) {
+        const initial = this.props.navigation.getParam('default', {});
+        const hasInitial = !R.isEmpty(initial);
+        Toast.loading(hasInitial ? '更新中...' : '创建中...', 0);
+        this.props.dispatch({
+          type: `resource/${hasInitial ? 'save' : 'create'}`,
+          payload: value,
+          ...(hasInitial ? { id: initial.id } : {}),
+          callback: () => {
+            Toast.hide();
+            this.goBack();
+          },
+        });
+      }
     });
+  };
+
+  goBack = () => {
+    this.props.dispatch(NavigationActions.back());
   };
 
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
+    const { types } = this.props;
     const initial = this.props.navigation.getParam('default', {});
     const hasInitial = !R.isEmpty(initial);
     return (
@@ -42,6 +64,24 @@ class ResourceAdd extends Component {
               titleStyle={styles.item.title}
               placeholder="请输入姓名"
               error={getFieldError('name')}
+            />,
+          )}
+          {getFieldDecorator('types', {
+            initialValue: initial.types,
+            rules: [
+              {
+                required: true,
+                message: '请至少选择一个类型',
+              },
+            ],
+          })(
+            <InputItem
+              vertical
+              title="类型"
+              renderContent={({ onChange, value }) => (
+                <Selector data={types} onChange={onChange} value={value} />
+              )}
+              error={getFieldError('types')}
             />,
           )}
           {getFieldDecorator('org', {
@@ -121,13 +161,13 @@ class ResourceAdd extends Component {
               error={getFieldError('comment')}
             />,
           )}
+          <AuthButton
+            style={styles.bottom.container}
+            disabled={false}
+            title={hasInitial ? '保 存' : '创 建'}
+            onPress={this.handleSubmitPress}
+          />
         </EnhancedScroll>
-        <AuthButton
-          style={styles.bottom.container}
-          disabled={false}
-          title="保 存"
-          onPress={this.handleSubmitPress}
-        />
       </View>
     );
   }

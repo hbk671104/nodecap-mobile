@@ -118,7 +118,9 @@ class ResourceDetail extends Component {
                 return (
                   <View style={styles.typesContainer}>
                     {data.types.map(t => (
-                      <View key={t.id}>{this.renderContent(t.name)}</View>
+                      <View key={t.id} style={{ marginRight: 8 }}>
+                        {this.renderContent(t.name)}
+                      </View>
                     ))}
                   </View>
                 );

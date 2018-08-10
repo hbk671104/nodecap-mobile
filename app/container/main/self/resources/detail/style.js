@@ -38,5 +38,6 @@ export default {
   },
   typesContainer: {
     alignSelf: 'flex-start',
+    flexDirection: 'row',
   },
 };

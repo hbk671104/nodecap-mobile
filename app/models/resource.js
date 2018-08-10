@@ -27,6 +27,28 @@ const typeMapper = type => {
 export default {
   namespace: 'resource',
   state: {
+    types: [
+      {
+        id: 1,
+        name: '投资人',
+      },
+      {
+        id: 2,
+        name: 'FA',
+      },
+      {
+        id: 3,
+        name: '创业服务',
+      },
+      {
+        id: 4,
+        name: '媒体',
+      },
+      {
+        id: 5,
+        name: '创业者',
+      },
+    ],
     search: null,
     current: null,
   },
@@ -126,10 +148,15 @@ export default {
      * @param callback
      * @param call
      */
-    *save({ id, payload, callback }, { call }) {
+    *save({ id, payload, callback }, { call, put }) {
       try {
         const res = yield call(editResource, id, {
           ...payload,
+        });
+
+        yield put({
+          type: 'get',
+          payload: id,
         });
 
         if (callback) {
