@@ -8,11 +8,10 @@ import { hasPermission } from 'component/auth/permission/lock';
 import List from 'component/uikit/list';
 import ResourceItem from 'component/resources/item';
 
-// @global.bindTrack({
-//   page: '投资库',
-//   name: 'App_ProjectOperation',
-//   subModuleName: '未投项目',
-// })
+@global.bindTrack({
+  page: '人脉资源库',
+  name: 'App_HumanResourceOperation',
+})
 @connect(({ resource, loading }, { type }) => ({
   data: R.pathOr(null, ['list', type, 'index', 'data'])(resource),
   pagination: R.pathOr(null, ['list', type, 'index', 'pagination'])(resource),
@@ -33,10 +32,10 @@ export default class ResourceList extends Component {
   };
 
   handleItemPress = item => () => {
-    if (!hasPermission('project-view')) {
+    if (!hasPermission('resource-view')) {
       return;
     }
-    // this.props.track('项目卡片');
+    this.props.track('项目卡片', { subModuleName: this.props.type });
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ResourceDetail',
@@ -60,6 +59,8 @@ export default class ResourceList extends Component {
           data={data}
           pagination={pagination}
           loading={loading}
+          // refreshing={loading}
+          // onRefresh={this.requestData}
           renderItem={this.renderItem}
           onMomentumScrollBegin={this.props.onMomentumScrollBegin}
           onMomentumScrollEnd={this.props.onMomentumScrollEnd}

@@ -13,6 +13,10 @@ import Touchable from 'component/uikit/touchable';
 import ResourceItem from 'component/resources/item';
 import styles from './style';
 
+@global.bindTrack({
+  page: '人脉资源库搜索',
+  name: 'App_HumanResourceSearchOperation',
+})
 @connect(({ resource }) => ({
   data: R.pathOr(null, ['search', 'index', 'data'])(resource),
 }))
@@ -50,6 +54,7 @@ class ResourceSearch extends Component {
   };
 
   handleItemPress = item => () => {
+    this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ResourceDetail',

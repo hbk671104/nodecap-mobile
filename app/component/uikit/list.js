@@ -48,17 +48,17 @@ class List extends PureComponent {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.pagination) {
-      return;
-    }
-    if (nextProps.loading) {
-      Toast.loading('加载中...', 0);
-    }
-    if (!nextProps.loading) {
-      Toast.hide();
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (!nextProps.pagination) {
+  //     return;
+  //   }
+  //   if (nextProps.loading) {
+  //     Toast.loading('加载中...', 0);
+  //   }
+  //   if (!nextProps.loading) {
+  //     Toast.hide();
+  //   }
+  // }
 
   extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
 
@@ -168,18 +168,29 @@ class List extends PureComponent {
       data,
       pagination,
       loading,
-      action,
       renderItem,
-      refreshing,
       style,
       contentContainerStyle,
     } = this.props;
-    if (loading && !pagination) {
-      return <Loading />;
-    }
+    // if (loading && !pagination) {
+    //   return <Loading />;
+    // }
+    const isRefreshing = () => {
+      if (loading) {
+        if (!pagination) {
+          return true;
+        }
+        if (pagination && pagination.current === 1) {
+          return true;
+        }
+      }
+      return false;
+    };
     return (
       <FlatList
         {...this.props}
+        refreshing={isRefreshing()}
+        onRefresh={this.handleOnRefresh}
         style={[styles.container, style]}
         contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         ref={listRef}
@@ -189,12 +200,6 @@ class List extends PureComponent {
         ListFooterComponent={this.renderFooter}
         ListEmptyComponent={this.renderEmpty}
         ItemSeparatorComponent={this.renderSeparator}
-        {...(refreshing
-          ? {
-              onRefresh: () => action(),
-              refreshing,
-            }
-          : {})}
         onEndReached={this.handleOnEndReached}
         onEndReachedThreshold={0.5}
         onMomentumScrollBegin={this.handleOnMomentumScrollBegin}

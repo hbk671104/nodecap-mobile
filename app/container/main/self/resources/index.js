@@ -1,15 +1,22 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
+import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 
 import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
+import AddButton from 'component/add';
 import SearchBarDisplay from 'component/searchBar/display';
 import ResourceList from './list';
 import styles from './style';
 
+@global.bindTrack({
+  page: '人脉资源库',
+  name: 'App_HumanResourceOperation',
+})
+@compose(withState('addButtonVisible', 'setAddButtonVisible', true))
 @connect(({ resource }) => ({
   routes: resource.types,
 }))
@@ -26,25 +33,33 @@ class Resources extends Component {
   };
 
   handleIndexChange = index => {
-    // const subModuleName = () => {
-    //   switch (index) {
-    //     case 0:
-    //       return '已投项目';
-    //     case 1:
-    //       return '未投项目';
-    //     default:
-    //       return null;
-    //   }
-    // };
     this.setState({ index }, () => {
-      // this.props.track('Tab切换', { subModuleName: subModuleName() });
+      this.props.track('Tab切换', { subModuleName: index });
     });
+  };
+
+  handleMomentumScrollBegin = () => {
+    LayoutAnimation.easeInEaseOut();
+    this.props.setAddButtonVisible(false);
+  };
+
+  handleMomentumScrollEnd = () => {
+    LayoutAnimation.easeInEaseOut();
+    this.props.setAddButtonVisible(true);
   };
 
   handleSearchPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ResourceSearch',
+      }),
+    );
+  };
+
+  handleAddPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ResourceAdd',
       }),
     );
   };
@@ -76,9 +91,16 @@ class Resources extends Component {
     );
   };
 
-  renderScene = ({ route }) => <ResourceList type={route.key} />;
+  renderScene = ({ route }) => (
+    <ResourceList
+      type={route.key}
+      onMomentumScrollBegin={this.handleMomentumScrollBegin}
+      onMomentumScrollEnd={this.handleMomentumScrollEnd}
+    />
+  );
 
   render() {
+    const { addButtonVisible } = this.props;
     return (
       <View style={styles.container}>
         <TabView
@@ -92,6 +114,10 @@ class Resources extends Component {
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
+        {!!addButtonVisible &&
+          hasPermission('resource-create') && (
+            <AddButton onPress={this.handleAddPress} />
+          )}
       </View>
     );
   }

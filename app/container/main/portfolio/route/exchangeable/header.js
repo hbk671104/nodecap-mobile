@@ -1,10 +1,11 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 
 import NodeCapIcon from 'component/icon/nodecap';
 import Touchable from 'component/uikit/touchable';
 import Gradient from 'component/uikit/gradient';
+import { shadow } from '../../../../../utils/style';
 
 const header = ({ value, onSelect }) => (
   <View style={styles.container}>
@@ -108,6 +109,8 @@ const styles = {
     paddingVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: 'white',
+    ...shadow,
   },
   group: {
     container: {

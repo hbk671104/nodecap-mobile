@@ -104,13 +104,14 @@ export default class Exchangeable extends Component {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
+        {this.renderHeader()}
         <List
+          style={{ marginTop: 5 }}
           action={this.requestData}
           data={data}
           pagination={pagination}
           loading={loading}
           renderItem={this.renderItem}
-          renderHeader={this.renderHeader}
           onScroll={this.props.onScroll}
           onMomentumScrollBegin={this.props.onMomentumScrollBegin}
           onMomentumScrollEnd={this.props.onMomentumScrollEnd}

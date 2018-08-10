@@ -165,6 +165,7 @@ export default {
 
         yield put({
           type: 'refresh',
+          payload,
         });
 
         if (callback) {
@@ -181,12 +182,13 @@ export default {
      * @param callback
      * @param call
      */
-    *delete({ id, callback }, { put, call }) {
+    *delete({ id, payload, callback }, { put, call }) {
       try {
         const res = yield call(deleteResource, id);
 
         yield put({
           type: 'refresh',
+          payload,
         });
 
         if (callback) {
@@ -196,7 +198,7 @@ export default {
         console.log(e);
       }
     },
-    *refresh({ callback }, { put, call, select }) {
+    *refresh({ payload, callback }, { put, call, select }) {
       try {
         // search
         const search = yield select(state =>
@@ -210,6 +212,16 @@ export default {
         }
 
         // others
+        // let type = payload.types;
+        // if (R.length(types) === 0)
+        // type = type.map(t => t.id).join(',');
+        // yield put({
+        //   type: 'index',
+        //   payload: {
+        //     type,
+        //   },
+        // });
+
         if (callback) {
           yield call(callback);
         }

@@ -13,6 +13,10 @@ import AuthButton from 'component/auth/button';
 import Selector from './selector';
 import styles from './style';
 
+@global.bindTrack({
+  page: '人脉资源添加/编辑',
+  name: 'App_HumanResourceAdd/UpdateOperation',
+})
 @connect(({ resource }) => ({
   types: resource.types,
 }))
@@ -23,6 +27,7 @@ class ResourceAdd extends Component {
       if (!err) {
         const initial = this.props.navigation.getParam('default', {});
         const hasInitial = !R.isEmpty(initial);
+        this.props.track(hasInitial ? '更新' : '创建');
         Toast.loading(hasInitial ? '更新中...' : '创建中...', 0);
         this.props.dispatch({
           type: `resource/${hasInitial ? 'save' : 'create'}`,
@@ -67,7 +72,7 @@ class ResourceAdd extends Component {
             />,
           )}
           {getFieldDecorator('types', {
-            initialValue: initial.types,
+            initialValue: initial.types || [],
             rules: [
               {
                 required: true,
@@ -161,13 +166,13 @@ class ResourceAdd extends Component {
               error={getFieldError('comment')}
             />,
           )}
-          <AuthButton
-            style={styles.bottom.container}
-            disabled={false}
-            title={hasInitial ? '保 存' : '创 建'}
-            onPress={this.handleSubmitPress}
-          />
         </EnhancedScroll>
+        <AuthButton
+          style={styles.bottom.container}
+          disabled={false}
+          title={hasInitial ? '保 存' : '创 建'}
+          onPress={this.handleSubmitPress}
+        />
       </View>
     );
   }

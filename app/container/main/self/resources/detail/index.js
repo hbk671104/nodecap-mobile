@@ -12,12 +12,17 @@ import { NavigationActions } from 'react-navigation';
 import Communications from 'react-native-communications';
 import { Toast } from 'antd-mobile';
 
+import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 import styles from './style';
 
+@global.bindTrack({
+  page: '人脉资源详情',
+  name: 'App_HumanResourceDetailOperation',
+})
 @connect(({ resource, loading }) => ({
   data: R.pathOr(null, ['current'])(resource),
   loading: loading.effects['resource/get'],
@@ -51,10 +56,12 @@ class ResourceDetail extends Component {
   confirmDelete = () => {
     const item = this.props.navigation.getParam('item');
     if (item && item.id) {
+      this.props.track('删除');
       Toast.loading('正在删除...', 0);
       this.props.dispatch({
         type: 'resource/delete',
         id: item.id,
+        payload: item,
         callback: () => {
           Toast.hide();
           this.goBack();
@@ -65,6 +72,7 @@ class ResourceDetail extends Component {
 
   handleEditPress = () => {
     const { data } = this.props;
+    this.props.track('编辑');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ResourceAdd',
@@ -98,18 +106,22 @@ class ResourceDetail extends Component {
 
   renderNavBarRight = () => (
     <View style={styles.navBar.right.container}>
-      <Touchable
-        style={styles.navBar.right.group.container}
-        onPress={this.handleDeletePress}
-      >
-        <Text style={styles.navBar.right.group.title}>删除</Text>
-      </Touchable>
-      <Touchable
-        style={styles.navBar.right.group.container}
-        onPress={this.handleEditPress}
-      >
-        <Text style={styles.navBar.right.group.title}>编辑</Text>
-      </Touchable>
+      {hasPermission('resource-delete') && (
+        <Touchable
+          style={styles.navBar.right.group.container}
+          onPress={this.handleDeletePress}
+        >
+          <Text style={styles.navBar.right.group.title}>删除</Text>
+        </Touchable>
+      )}
+      {hasPermission('resource-update') && (
+        <Touchable
+          style={styles.navBar.right.group.container}
+          onPress={this.handleEditPress}
+        >
+          <Text style={styles.navBar.right.group.title}>编辑</Text>
+        </Touchable>
+      )}
     </View>
   );
 

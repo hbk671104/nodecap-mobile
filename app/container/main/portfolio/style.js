@@ -48,31 +48,4 @@ export default {
       bottom: 5,
     },
   },
-  add: {
-    container: {
-      position: 'absolute',
-      right: 12,
-      bottom: 60,
-      backgroundColor: '#1890ff',
-      borderRadius: 25,
-      ...Platform.select({
-        ios: {
-          shadowColor: 'rgba(0,0,0, .4)',
-          shadowOffset: { height: 3, width: 0 },
-          shadowOpacity: 0.5,
-          shadowRadius: 3,
-        },
-        android: {
-          elevation: 4,
-        },
-      }),
-    },
-    content: {
-      height: 50,
-      width: 50,
-      borderRadius: 25,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-  },
 };

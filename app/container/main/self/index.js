@@ -5,6 +5,7 @@ import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import { setStatusBar } from 'component/uikit/statusBar';
+import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
 import Item from './item';
 import { getCurrentScreen } from '../../../router';
@@ -75,11 +76,13 @@ class Self extends Component {
         {this.renderNavBar()}
         <ScrollView contentContainerStyle={styles.scroll.content}>
           {/* <Item icon={require('asset/mine/fund.png')} title="我的基金" /> */}
-          <Item
-            icon={require('asset/mine/resources.png')}
-            title="我的人脉"
-            onPress={this.handleResourcesPress}
-          />
+          {hasPermission('resource-list') && (
+            <Item
+              icon={require('asset/mine/resources.png')}
+              title="我的人脉"
+              onPress={this.handleResourcesPress}
+            />
+          )}
           {/* <Item icon={require('asset/mine/colleague.png')} title="我的同事" /> */}
           <View style={styles.scroll.divider} />
           {/* <Item
