@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableHighlight } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
@@ -8,16 +8,28 @@ import Avatar from 'component/uikit/avatar';
 import Icon from 'component/uikit/icon';
 import { shadow } from '../../../utils/style';
 
-const header = ({ user, style, onPress }) => {
+const header = ({ user, style, onPress, onCompanyPress }) => {
   const company = R.pathOr('', ['companies', 0, 'name'])(user);
   return (
-    <Touchable style={[styles.wrapper, style]} onPress={onPress}>
+    <TouchableHighlight
+      underlayColor="white"
+      style={[styles.wrapper, style]}
+      onPress={onPress}
+    >
       <View style={styles.container}>
         <View style={styles.group}>
-          <Avatar size={50} innerRatio={1} source={{ uri: user.avatar_url }} />
+          <Avatar
+            size={50}
+            innerRatio={1}
+            source={{ uri: user.avatar_url }}
+            resizeMode="cover"
+          />
           <View style={styles.content.container}>
             <Text style={styles.content.title}>{user.realname}</Text>
-            <Touchable style={styles.content.company.container}>
+            <Touchable
+              style={styles.content.company.container}
+              onPress={onCompanyPress}
+            >
               <Text style={styles.content.company.title}>
                 {company} <Icon name="arrow-forward" size={10} color="white" />
               </Text>
@@ -26,7 +38,7 @@ const header = ({ user, style, onPress }) => {
         </View>
         <Icon name="arrow-forward" size={20} color="rgba(0, 0, 0, 0.25)" />
       </View>
-    </Touchable>
+    </TouchableHighlight>
   );
 };
 

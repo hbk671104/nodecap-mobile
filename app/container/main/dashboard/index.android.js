@@ -18,8 +18,9 @@ import { NavigationActions } from 'react-navigation';
 import NavBar from 'component/navBar';
 import NodeCapIcon from 'component/icon/nodecap';
 import { setStatusBar } from 'component/uikit/statusBar';
-import Empty from 'component/empty';
 import Modal from 'component/modal';
+import AuthButton from 'component/auth/button';
+import { hasPermission } from 'component/auth/permission/lock';
 
 import { getCurrentScreen } from '../../../router';
 import Header from './partials/header';
@@ -28,8 +29,10 @@ import ReturnRateChart from './partials/returnRateChart';
 import DashboardGroup from './partials/group';
 import InvestNumber from './partials/investNumber';
 import ProjectItem from './partials/projectItem';
+import ProjectGroup from './partials/projectGroup';
 import Investment from './partials/investment';
 import ShareModal from './share';
+import Empty from './empty';
 import styles, { PARALLAX_HEADER_HEIGHT } from './style';
 
 const AnimatedIcon = Animated.createAnimatedComponent(NodeCapIcon);
@@ -104,7 +107,7 @@ export default class Dashboard extends Component {
     this.props.track('价格走势时间跨度');
   };
 
-  handleProjectItemPress = item => () => {
+  handleProjectItemPress = (item, can_calculate = true) => () => {
     this.props.track('回报率卡片');
     this.props.dispatch(
       NavigationActions.navigate({
@@ -112,7 +115,7 @@ export default class Dashboard extends Component {
         params: {
           item: {
             ...item,
-            can_calculate: true,
+            can_calculate,
           },
         },
       }),
@@ -121,6 +124,15 @@ export default class Dashboard extends Component {
 
   handleFundSwitch = (i, value) => {
     this.getDashboardData(value.id);
+  };
+
+  handleCreateProjectPress = () => {
+    this.props.track('添加项目');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateProject',
+      }),
+    );
   };
 
   handleItemPress = item => () => {
@@ -183,13 +195,14 @@ export default class Dashboard extends Component {
     );
   };
 
-  renderFixedHeader = () => {
+  renderFixedHeader = gradient => {
     const { colorRange, dashboard, offsetY } = this.props;
     return (
       <View
         style={{ position: 'absolute', left: 0, right: 0, top: 0, zIndex: 10 }}
       >
         <NavBar
+          gradient={!!gradient}
           wrapperStyle={{ backgroundColor: colorRange }}
           barStyle={
             offsetY > PARALLAX_HEADER_HEIGHT / 2
@@ -222,6 +235,7 @@ export default class Dashboard extends Component {
   render() {
     const { scrollY, dashboard, loading } = this.props;
     const roiRank = R.pathOr([], ['ROIRank'])(dashboard);
+    const idleProject = R.pathOr([], ['idle_projects'])(dashboard);
 
     let empty = null;
     const invalid = !dashboard || !this.state.currentFund;
@@ -258,6 +272,14 @@ export default class Dashboard extends Component {
                 {' hotnode.io '}
               </Text>，录入更快捷、高效
             </Text>
+            {hasPermission('project-create') && (
+              <AuthButton
+                title="导 入"
+                disabled={false}
+                style={styles.empty.group.button}
+                onPress={this.handleCreateProjectPress}
+              />
+            )}
           </View>
           <View style={styles.empty.bottom.container}>
             <Text style={styles.empty.bottom.title}>
@@ -276,7 +298,7 @@ export default class Dashboard extends Component {
     }
     return (
       <View style={styles.container}>
-        {this.renderFixedHeader()}
+        {this.renderFixedHeader(empty)}
         {!!dashboard && (
           <ScrollView
             contentContainerStyle={styles.scrollView.container}
@@ -315,7 +337,10 @@ export default class Dashboard extends Component {
                 onChange={this.handleSwiperChange}
               />
               <ReturnRateChart style={styles.roiChart} {...this.props} />
-              <DashboardGroup title="投资概况" icon="yitouxiangmu">
+              <DashboardGroup
+                title="投资概况"
+                icon={require('asset/dashboard/project.png')}
+              >
                 <InvestNumber
                   data={dashboard.portfolio}
                   roiRank={roiRank}
@@ -325,23 +350,45 @@ export default class Dashboard extends Component {
               <DashboardGroup
                 style={styles.dashboardGroup}
                 title="投资金额"
-                icon="touzijine"
+                icon={require('asset/dashboard/investment.png')}
               >
                 <Investment data={dashboard.investment} />
               </DashboardGroup>
               <DashboardGroup
                 style={styles.dashboardGroup}
-                title="投资回报率 TOP 5"
-                icon="TOP"
+                title="本期基金项目概览"
+                icon={require('asset/dashboard/directory.png')}
               >
-                {R.slice(0, 5, roiRank).map((r, i) => (
-                  <ProjectItem
-                    key={i}
-                    index={i}
-                    data={r}
-                    onPress={this.handleProjectItemPress(r)}
-                  />
-                ))}
+                <ProjectGroup
+                  title="项目收益排行"
+                  subtitle="ETH本位"
+                  content={R.length(roiRank) < 5 ? `${R.length(roiRank)}` : '5'}
+                >
+                  {R.slice(0, 5, roiRank).map((r, i) => (
+                    <ProjectItem
+                      key={i}
+                      index={i}
+                      data={r}
+                      onPress={this.handleProjectItemPress(r)}
+                    />
+                  ))}
+                </ProjectGroup>
+                <ProjectGroup
+                  title="其他项目"
+                  subtitle="由于未上主流交易所或未进行数据匹配，暂无收益排行"
+                  content={
+                    R.length(idleProject) < 4 ? `${R.length(idleProject)}` : '4'
+                  }
+                >
+                  {R.slice(0, 4, idleProject).map((r, i) => (
+                    <ProjectItem
+                      key={i}
+                      index={i}
+                      data={r}
+                      onPress={this.handleProjectItemPress(r, false)}
+                    />
+                  ))}
+                </ProjectGroup>
               </DashboardGroup>
             </View>
           </ScrollView>

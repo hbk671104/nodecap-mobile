@@ -10,6 +10,9 @@ import {
   updateUserPassword,
   deleteUserById,
   adminResetPassword,
+  modifyCompany,
+  createCompany,
+  getSMSCode,
 } from '../services/api';
 import { transformSorter } from '../utils/';
 import { uploadImage } from '../services/upload';
@@ -197,6 +200,43 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *createCompany({ payload, callback }, { call }) {
+      try {
+        yield call(createCompany, {
+          ...payload,
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *updateCompany({ payload, callback }, { call, put }) {
+      try {
+        yield call(modifyCompany, {
+          ...payload,
+        });
+        yield put({
+          type: 'fetchCurrent',
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *sendSMS({ payload, callback }, { call }) {
+      try {
+        yield call(getSMSCode, payload);
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },

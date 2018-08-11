@@ -13,9 +13,8 @@ import Touchable from 'component/uikit/touchable';
 import UnexchangeableItem from 'component/project/unexchangeable';
 import styles from './style';
 
-@connect(({ portfolio, loading }) => ({
+@connect(({ portfolio }) => ({
   data: R.pathOr(null, ['searchList', 'index', 'data'])(portfolio),
-  loading: loading.effects['portfolio/search'],
 }))
 class Search extends Component {
   constructor(props) {
@@ -96,7 +95,7 @@ class Search extends Component {
   );
 
   render() {
-    const { data, loading } = this.props;
+    const { data } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -105,7 +104,6 @@ class Search extends Component {
           loadOnStart={false}
           action={this.requestData}
           data={data}
-          loading={loading}
           renderItem={this.renderItem}
         />
       </View>

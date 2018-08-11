@@ -196,7 +196,7 @@ class Share extends PureComponent {
           <View style={styles.navBar.bar.group}>
             <Text style={styles.navBar.bar.title}>本期投资回报率</Text>
             <Text style={styles.navBar.bar.content}>
-              <Format digit={0}>{roi}</Format>
+              <Format>{roi}</Format>
               <Text style={{ fontSize: 17 }}>%</Text>
             </Text>
           </View>
@@ -230,7 +230,7 @@ class Share extends PureComponent {
             <Image source={require('asset/share/right_image.png')} />
           </View>
         </View>
-        {roiRank.map((r, i) => (
+        {R.slice(0, 5)(roiRank).map((r, i) => (
           <ProjectItem
             style={styles.roi.item.container}
             contentContainerStyle={styles.roi.item.contentContainer}

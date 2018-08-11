@@ -347,6 +347,7 @@ export function resourceIndex(params = {}) {
     ...params,
     page: p.currentPage,
     'per-page': p.pageSize,
+    type: params.type === '0' ? undefined : params.type,
   });
   return request.get('/resources', {
     params: paramsTransform(params),
@@ -565,4 +566,25 @@ export function getMatchedCoin(payload) {
   return request.get('/coins/matched', {
     params: payload,
   });
+}
+
+export function modifyCompany(params) {
+  return request.put('/company', params);
+}
+
+/**
+ * 注册验证码
+ * @param mobile
+ * @returns {AxiosPromise<any>}
+ */
+export function getSMSCode(mobile) {
+  return request.post('/signup/code', { mobile });
+}
+
+/**
+ * 创建公司
+ * @param data
+ */
+export function createCompany(data) {
+  return request.post('/signup', data);
 }

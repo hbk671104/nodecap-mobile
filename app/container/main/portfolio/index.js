@@ -7,9 +7,9 @@ import { NavigationActions } from 'react-navigation';
 
 import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
-import Touchable from 'component/uikit/touchable';
 import { setStatusBar } from 'component/uikit/statusBar';
 import SearchBarDisplay from 'component/searchBar/display';
+import AddButton from 'component/add';
 
 import Exchangeable from './route/exchangeable';
 import Unexchangeable from './route/unexchangeable';
@@ -189,15 +189,7 @@ export default class Portfolio extends Component {
         />
         {!!addButtonVisible &&
           hasPermission('project-create') && (
-            <View style={styles.add.container}>
-              <Touchable
-                borderless
-                style={styles.add.content}
-                onPress={this.handleRightPress}
-              >
-                <Image source={require('asset/project/plus.png')} />
-              </Touchable>
-            </View>
+            <AddButton onPress={this.handleRightPress} />
           )}
       </View>
     );

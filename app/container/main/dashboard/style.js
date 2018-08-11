@@ -27,9 +27,7 @@ export default {
   },
   empty: {
     group: {
-      container: {
-        alignItems: 'center',
-      },
+      container: {},
       title: {
         color: '#666666',
         fontSize: 17,
@@ -42,6 +40,11 @@ export default {
         color: '#666666',
         fontWeight: 'bold',
         marginTop: 12,
+        textAlign: 'center',
+      },
+      button: {
+        marginHorizontal: 24,
+        marginTop: 44,
       },
     },
     bottom: {

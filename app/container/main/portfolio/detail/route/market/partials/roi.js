@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, ViewPropTypes } from 'react-native';
 import * as R from 'ramda';
-import Accounting from 'accounting';
+import Format from 'component/format';
 import { shadow } from '../../../../../../../utils/style';
 
 const icon = k => {
@@ -38,7 +38,7 @@ const roi = ({ style, data }) => (
               </View>
               <Text style={styles.title}>{k}</Text>
               <Text style={styles.subtitle}>
-                {Accounting.formatNumber(item.value)}
+                <Format>{item.value}</Format>
                 <Text style={{ fontSize: 12 }}>%</Text>
               </Text>
             </View>
@@ -80,7 +80,7 @@ const styles = {
   },
   subtitle: {
     color: '#1890FF',
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: 'bold',
     marginTop: 6,
   },

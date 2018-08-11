@@ -5,6 +5,7 @@ import { TextInput, Platform } from 'react-native';
 class Input extends Component {
   static propTypes = {
     placeholderTextColor: PropTypes.string,
+    inputRef: PropTypes.func,
   };
 
   static defaultProps = {
@@ -20,6 +21,7 @@ class Input extends Component {
     return (
       <TextInput
         {...this.props}
+        ref={this.props.inputRef}
         style={[styles, this.props.style]}
         underlineColorAndroid="transparent"
         placeholderTextColor={this.props.placeholderTextColor}

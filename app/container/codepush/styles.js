@@ -1,31 +1,49 @@
-import { Dimensions } from 'react-native';
-
-const window = Dimensions.get('window');
+import { realBarHeight } from 'component/navBar';
 
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
-    flexDirection: 'column',
   },
-  logoTextWrap: {
-    alignSelf: 'center',
-    height: Dimensions.get('window').height,
-    justifyContent: 'center',
+  wrapper: {
+    flex: 1,
   },
-  logoText: {
-    resizeMode: 'contain',
-    alignSelf: 'center',
-    width: 115,
+  top: {
+    container: {
+      marginTop: 100 - realBarHeight,
+      alignItems: 'center',
+    },
+    intro: {
+      fontSize: 11,
+      fontWeight: '100',
+      color: 'rgba(0, 0, 0, 0.45)',
+      marginTop: 13,
+    },
   },
-  logoBgWrap: {
-    position: 'absolute',
-    bottom: 0,
-  },
-  logoBg: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').width / 2.8089,
-    position: 'absolute',
-    bottom: 0,
+  bar: {
+    container: {
+      marginTop: 145,
+      alignItems: 'center',
+      marginHorizontal: 60,
+    },
+    wrapper: {
+      marginTop: 18,
+      alignItems: 'center',
+    },
+    title: {
+      color: 'rgba(0, 0, 0, 0.45)',
+      fontSize: 12,
+    },
+    highlight: {
+      fontWeight: 'bold',
+      color: '#1890FF',
+    },
+    content: {
+      color: 'rgba(0, 0, 0, 0.45)',
+      fontSize: 12,
+      lineHeight: 17,
+      marginTop: 9,
+      // textAlign: 'center',
+    },
   },
 };

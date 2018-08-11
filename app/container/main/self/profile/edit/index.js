@@ -16,9 +16,10 @@ class EditProfile extends Component {
   handleConfirmPress = () => {
     this.props.form.validateFields((err, value) => {
       if (!err) {
+        const isCompany = this.props.navigation.getParam('isCompany', false);
         Toast.loading('更新中...', 0);
         this.props.dispatch({
-          type: 'user/updateUserProfile',
+          type: isCompany ? 'user/updateCompany' : 'user/updateUserProfile',
           payload: {
             ...value,
           },
@@ -37,6 +38,8 @@ class EditProfile extends Component {
     const editKey = navigation.getParam('key');
     const editTitle = navigation.getParam('title');
     const initialValue = navigation.getParam('default');
+    const multiline = navigation.getParam('multiline', false);
+
     return (
       <View style={styles.container}>
         <NavBar
@@ -50,8 +53,10 @@ class EditProfile extends Component {
           )}
         />
         <View style={styles.item.container}>
-          {getFieldDecorator(editKey, { initialValue })(
-            <Input autoFocus style={styles.item.input} />,
+          {getFieldDecorator(editKey, {
+            initialValue,
+          })(
+            <Input autoFocus multiline={multiline} style={styles.item.input} />,
           )}
         </View>
       </View>

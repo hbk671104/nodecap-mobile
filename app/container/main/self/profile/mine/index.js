@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import ImagePicker from 'react-native-image-picker';
 import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Avatar from 'component/uikit/avatar';
 import ListItem from 'component/listItem';
+import { launchImagePicker } from '../../../../../utils/imagepicker';
 import styles from './style';
 
 @connect(({ user }) => ({
@@ -42,24 +42,13 @@ class MyProfile extends Component {
 
   handleAvatarPress = () => {
     this.setState({ barStyle: 'dark-content' }, () => {
-      ImagePicker.showImagePicker(
-        {
-          title: null,
-          chooseFromLibraryButtonTitle: '相册中选择...',
-          takePhotoButtonTitle: '拍照...',
-          cancelButtonTitle: '取消',
-          mediaType: 'photo',
-          quality: 1,
-          allowsEditing: true,
-        },
-        response => {
-          this.setState({ barStyle: 'light-content' }, () => {
-            if (!response.didCancel && !response.error) {
-              this.handleAvatarUpdate(response);
-            }
-          });
-        },
-      );
+      launchImagePicker(response => {
+        this.setState({ barStyle: 'light-content' }, () => {
+          if (!response.didCancel && !response.error) {
+            this.handleAvatarUpdate(response);
+          }
+        });
+      });
     });
   };
 
@@ -78,12 +67,12 @@ class MyProfile extends Component {
                 innerRatio={1}
                 size={38}
                 source={{ uri: user.avatar_url }}
+                resizeMode="cover"
               />
             )}
             onPress={this.handleAvatarPress}
           />
           <ListItem
-            disablePress
             title="姓名"
             content={user.realname}
             titleStyle={styles.listItem.title}
@@ -95,7 +84,6 @@ class MyProfile extends Component {
             })}
           />
           <ListItem
-            disablePress
             title="手机"
             content={user.mobile}
             titleStyle={styles.listItem.title}

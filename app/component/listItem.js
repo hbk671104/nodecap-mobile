@@ -20,15 +20,9 @@ const item = ({
   renderContent,
   onPress,
 }) => (
-  <View>
-    <Touchable foreground disabled={disablePress} onPress={onPress}>
-      <View
-        style={[
-          styles.container,
-          noBottomBorder && styles.noBottomBorder,
-          style,
-        ]}
-      >
+  <Touchable foreground disabled={disablePress} onPress={onPress}>
+    <View style={[styles.wrapper, noBottomBorder && styles.noBottomBorder]}>
+      <View style={[styles.container, style]}>
         {!!icon && (
           <Image resizeMode="contain" style={styles.image} source={icon} />
         )}
@@ -49,20 +43,22 @@ const item = ({
           <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
         )}
       </View>
-    </Touchable>
-    {children}
-  </View>
+      {children}
+    </View>
+  </Touchable>
 );
 
 const styles = {
+  wrapper: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E9E9E9',
+  },
   container: {
     minHeight: 55,
     flexDirection: 'row',
     alignItems: 'center',
     marginLeft: 12,
     paddingRight: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E9E9E9',
   },
   noBottomBorder: {
     borderBottomWidth: 0,

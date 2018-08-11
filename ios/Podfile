@@ -7,4 +7,5 @@ target 'nodecap' do
 
   # Pods for nodecap
   pod 'SensorsAnalyticsSDK', :subspecs => ['ENABLE_REACT_NATIVE_APPCLICK']
+
 end

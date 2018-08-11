@@ -16,8 +16,11 @@ import { connect } from './utils/dva';
 import { NavigationActions } from './utils';
 
 // Screen
+import Landing from 'container/auth/landing';
+import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
+import ResetPwd from 'container/auth/resetPwd';
 import Dashboard from 'container/main/dashboard';
 import Portfolio from 'container/main/portfolio';
 import Management from 'container/main/management';
@@ -36,14 +39,23 @@ import AddWallet from 'container/main/management/add/wallet';
 import AddExchange from 'container/main/management/add/exchange';
 import ExchangeList from 'container/main/management/add/exchangeList';
 import Scanner from 'container/main/management/add/scanner';
+import Resources from 'container/main/self/resources';
+import ResourceSearch from 'container/main/self/resources/search';
+import ResourceDetail from 'container/main/self/resources/detail';
+import ResourceAdd from 'container/main/self/resources/add';
 import Settings from 'container/main/self/settings';
+import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
+import MyCompany from 'container/main/self/profile/company';
 import EditProfile from 'container/main/self/profile/edit';
 
 const AuthStack = createStackNavigator(
   {
+    Landing,
+    CreateCompany,
     Login,
     SetPassword,
+    ResetPwd,
   },
   {
     headerMode: 'none',
@@ -148,8 +160,14 @@ const MainStack = createStackNavigator(
     AddExchange,
     ExchangeList,
     Scanner,
+    Resources,
+    ResourceSearch,
+    ResourceDetail,
+    ResourceAdd,
     Settings,
+    ChangeLog,
     MyProfile,
+    MyCompany,
     EditProfile,
   },
   {

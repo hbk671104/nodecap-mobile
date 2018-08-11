@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
-import * as Animatable from 'react-native-animatable';
+import { NavigationActions } from 'react-navigation';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import AuthButton from 'component/auth/button';
 import AuthInput from 'component/auth/input';
-import StatusBar from 'component/uikit/statusBar';
+import Touchable from 'component/uikit/touchable';
+import NavBar from 'component/navBar';
 import styles from './style';
 
 @connect(({ loading }) => ({
@@ -31,6 +32,14 @@ class Login extends Component {
     });
   };
 
+  handleResetPwdPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ResetPwd',
+      }),
+    );
+  };
+
   render() {
     const { getFieldDecorator, getFieldValue } = this.props.form;
     const { loading } = this.props;
@@ -38,14 +47,9 @@ class Login extends Component {
     const password = getFieldValue('password');
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
+        <NavBar barStyle="dark-content" back />
         <EnhancedScroll>
-          <Animatable.Image
-            animation="fadeInDownBig"
-            delay={250}
-            style={styles.logo}
-            source={require('asset/big_logo.png')}
-          />
+          <Image style={styles.logo} source={require('asset/big_logo.png')} />
           <View style={{ marginTop: 55 }}>
             {getFieldDecorator('account', {
               rules: [{ required: true, message: '请输入邮箱账号' }],
@@ -73,6 +77,13 @@ class Login extends Component {
             style={styles.button}
             onPress={this.handleOnSubmit}
           />
+          <Touchable
+            borderless
+            style={styles.resetPwd.container}
+            onPress={this.handleResetPwdPress}
+          >
+            <Text style={styles.resetPwd.text}>忘记密码？</Text>
+          </Touchable>
         </EnhancedScroll>
       </View>
     );

@@ -1,14 +1,13 @@
+import { realBarHeight } from 'component/navBar';
+
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
   logo: {
-    width: 187,
-    height: 100,
     alignSelf: 'center',
-    marginTop: 128,
-    resizeMode: 'contain',
+    marginTop: 100 - realBarHeight,
   },
   input: {
     marginHorizontal: 38,
@@ -17,5 +16,16 @@ export default {
     marginTop: 50,
     marginHorizontal: 40,
     borderWidth: 0,
+  },
+  resetPwd: {
+    container: {
+      marginTop: 12,
+      alignSelf: 'flex-end',
+      marginRight: 32,
+    },
+    text: {
+      fontSize: 14,
+      color: '#1890FF',
+    },
   },
 };

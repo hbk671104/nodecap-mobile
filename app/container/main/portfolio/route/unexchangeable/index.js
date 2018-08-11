@@ -93,7 +93,6 @@ export default class Unexchangeable extends Component {
           pagination={pagination}
           loading={loading}
           renderItem={this.renderItem}
-          // renderHeader={this.renderHeader}
           renderEmpty={this.renderEmpty}
           onScroll={this.props.onScroll}
           onMomentumScrollBegin={this.props.onMomentumScrollBegin}

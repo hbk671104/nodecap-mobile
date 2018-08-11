@@ -79,11 +79,12 @@ const priceChangeItem = ({ item, index, onPress }) => {
             <Text
               style={[
                 styles.right.title,
-                Math.abs(roi) > 100 && { fontSize: 12 },
-                Math.abs(roi) > 1000 && { fontSize: 10 },
+                Math.abs(roi) > 10 && { fontSize: 11 },
+                Math.abs(roi) > 100 && { fontSize: 10 },
+                Math.abs(roi) > 1000 && { fontSize: 9 },
               ]}
             >
-              <Text>{roi}</Text>%
+              <Text digit={2}>{roi}</Text>%
             </Text>
           </View>
         </View>
