@@ -1,16 +1,10 @@
 import React, { PureComponent } from 'react';
-import {
-  View,
-  ScrollView,
-  Platform,
-  Dimensions,
-  StatusBar,
-} from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState } from 'recompose';
-import { isIphoneX } from 'react-native-iphone-x-helper';
 import R from 'ramda';
 
+import { realBarHeight } from 'component/navBar';
 import Modal from 'component/modal';
 import Loading from 'component/uikit/loading';
 import Header from './partials/header';
@@ -36,10 +30,6 @@ import styles from './style';
   loading: loading.effects['portfolio/projectStat'],
 }))
 class Market extends PureComponent {
-  state = {
-    modalOffset: 0,
-  };
-
   componentWillMount() {
     this.loadStat();
   }
@@ -49,15 +39,6 @@ class Market extends PureComponent {
     this.props.track('本位币切换');
     this.props.setCurrentSymbol(symbol, () => {
       this.loadStat();
-    });
-  };
-
-  onLayout = ({ nativeEvent: { layout } }) => {
-    const { height } = layout;
-    const deviceHeight = Dimensions.get('window').height;
-    const statusBar = Platform.OS === 'ios' ? 0 : StatusBar.currentHeight;
-    this.setState({
-      modalOffset: deviceHeight - height - statusBar + (isIphoneX() ? 0 : 40),
     });
   };
 
@@ -91,12 +72,11 @@ class Market extends PureComponent {
   render() {
     const { investment } = this.props.stat;
     const { loading, selectorVisible } = this.props;
-    const { modalOffset } = this.state;
     if (loading || R.isNil(this.props.stat)) {
       return <Loading />;
     }
     return (
-      <View style={styles.container} onLayout={this.onLayout}>
+      <View style={styles.container}>
         <ScrollView style={styles.scrollView}>
           <Header {...this.props} toggle={this.toggleVisible} />
           <View style={styles.divider} />
@@ -123,7 +103,7 @@ class Market extends PureComponent {
             )}
         </ScrollView>
         <Modal
-          style={[styles.modal, { marginTop: modalOffset }]}
+          style={[styles.modal, { marginTop: realBarHeight + 84 }]}
           isVisible={selectorVisible}
           onBackdropPress={this.toggleVisible}
         >
