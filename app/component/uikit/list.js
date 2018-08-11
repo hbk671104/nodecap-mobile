@@ -9,11 +9,9 @@ import {
   ViewPropTypes,
   StyleSheet,
 } from 'react-native';
-import { Toast } from 'antd-mobile';
 import R from 'ramda';
 
 import * as Color from 'component/uikit/color';
-import Loading from 'component/uikit/loading';
 
 class List extends PureComponent {
   static propTypes = {
@@ -48,18 +46,6 @@ class List extends PureComponent {
     }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (!nextProps.pagination) {
-  //     return;
-  //   }
-  //   if (nextProps.loading) {
-  //     Toast.loading('加载中...', 0);
-  //   }
-  //   if (!nextProps.loading) {
-  //     Toast.hide();
-  //   }
-  // }
-
   extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
 
   handleOnRefresh = () => {
@@ -89,7 +75,6 @@ class List extends PureComponent {
       this.props.onMomentumScrollBegin();
     }
     this.onEndReachedCalledDuringMomentum = false;
-    return null;
   };
 
   handleOnMomentumScrollEnd = () => {
@@ -117,7 +102,7 @@ class List extends PureComponent {
     }
     if (this.props.pagination && this.props.data.length > 0) {
       const { current, pageCount } = this.props.pagination;
-      if (this.props.loading && current > 1) {
+      if (this.props.loading && current >= 1) {
         return (
           <View style={styles.footerRefresher.container}>
             <ActivityIndicator />
@@ -172,15 +157,12 @@ class List extends PureComponent {
       style,
       contentContainerStyle,
     } = this.props;
-    // if (loading && !pagination) {
-    //   return <Loading />;
-    // }
     const isRefreshing = () => {
       if (loading) {
         if (!pagination) {
           return true;
         }
-        if (pagination && pagination.current === 1) {
+        if (pagination && pagination.current <= 1) {
           return true;
         }
       }
