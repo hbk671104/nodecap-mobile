@@ -92,6 +92,10 @@ class CreateCompany extends Component {
                 },
                 {
                   validator: (rule, value, callback) => {
+                    if (R.isNil(value) || R.isEmpty(value)) {
+                      callback();
+                      return;
+                    }
                     if (
                       !R.contains(value, [
                         'AaNuqM',
@@ -103,7 +107,9 @@ class CreateCompany extends Component {
                       ])
                     ) {
                       callback('无效的邀请码');
+                      return;
                     }
+                    callback();
                   },
                 },
               ],
