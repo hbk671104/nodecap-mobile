@@ -3,68 +3,67 @@ import { PropTypes } from 'prop-types';
 import { View, Text } from 'react-native';
 
 import Touchable from 'component/uikit/touchable';
-import { shadow } from '../../../../../utils/style';
 
-const header = ({ value, onSelect }) => (
+const header = ({ activeTab, goToPage }) => (
   <View style={styles.container}>
-    <Touchable borderless onPress={() => onSelect('0,1,2,3,4,5,6', '全部')}>
+    <Touchable borderless onPress={() => goToPage(0)}>
       <View style={styles.group.container}>
         <Text
           style={[
             styles.group.title.normal,
-            value === '0,1,2,3,4,5,6' && styles.group.title.highlight,
+            activeTab === 0 && styles.group.title.highlight,
           ]}
         >
           全部
         </Text>
-        {value === '0,1,2,3,4,5,6' && <View style={styles.group.line} />}
+        {activeTab === 0 && <View style={styles.group.line} />}
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('4', '确定意向')}>
+    <Touchable borderless onPress={() => goToPage(1)}>
       <View style={styles.group.container}>
         <Text
           style={[
             styles.group.title.normal,
-            value === '4' && styles.group.title.highlight,
+            activeTab === 1 && styles.group.title.highlight,
           ]}
         >
           确定意向
         </Text>
-        {value === '4' && <View style={styles.group.line} />}
+        {activeTab === 1 && <View style={styles.group.line} />}
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('5', '待打币')}>
+    <Touchable borderless onPress={() => goToPage(2)}>
       <View style={styles.group.container}>
         <Text
           style={[
             styles.group.title.normal,
-            value === '5' && styles.group.title.highlight,
+            activeTab === 2 && styles.group.title.highlight,
           ]}
         >
           待打币
         </Text>
-        {value === '5' && <View style={styles.group.line} />}
+        {activeTab === 2 && <View style={styles.group.line} />}
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('6', '已打币')}>
+    <Touchable borderless onPress={() => goToPage(3)}>
       <View style={styles.group.container}>
         <Text
           style={[
             styles.group.title.normal,
-            value === '6' && styles.group.title.highlight,
+            activeTab === 3 && styles.group.title.highlight,
           ]}
         >
           已打币
         </Text>
-        {value === '6' && <View style={styles.group.line} />}
+        {activeTab === 3 && <View style={styles.group.line} />}
       </View>
     </Touchable>
   </View>
 );
 
 header.propTypes = {
-  value: PropTypes.string,
-  onSelect: PropTypes.func,
+  activeTab: PropTypes.number,
+  goToPage: PropTypes.func,
 };
 
 const styles = {
@@ -73,7 +72,6 @@ const styles = {
     paddingVertical: 15,
     flexDirection: 'row',
     backgroundColor: 'white',
-    ...shadow,
   },
   group: {
     container: {

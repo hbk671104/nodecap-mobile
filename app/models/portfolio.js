@@ -18,23 +18,6 @@ const paginate = (state, action, key) => {
   const newData = R.pathOr([], ['payload', 'data'])(action);
   const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
 
-  if (action.params) {
-    if (key === 'exchangeable') {
-      const oldRank = R.pathOr('', [key, 'params', 'rank'])(state);
-      const newRank = R.pathOr('', ['params', 'rank'])(action);
-      if (!R.equals(oldRank, newRank)) {
-        return action.payload;
-      }
-    }
-    if (key === 'unexchangeable') {
-      const oldStatus = R.pathOr('', [key, 'params', 'status'])(state);
-      const newStatus = R.pathOr('', ['params', 'status'])(action);
-      if (!R.equals(oldStatus, newStatus)) {
-        return action.payload;
-      }
-    }
-  }
-
   if (R.path(['current'])(pagination) === 1) {
     return action.payload;
   }
@@ -49,15 +32,55 @@ export default {
   namespace: 'portfolio',
   state: {
     exchangeable: {
-      index: null,
-      params: {
-        rank: 'profits',
+      profits: {
+        index: null,
+        params: {
+          rank: 'profits',
+        },
+      },
+      roi: {
+        index: null,
+        params: {
+          rank: 'roi',
+        },
+      },
+      increase: {
+        index: null,
+        params: {
+          rank: 'increase',
+        },
+      },
+      cost: {
+        index: null,
+        params: {
+          rank: 'cost',
+        },
       },
     },
     unexchangeable: {
-      index: null,
-      params: {
-        status: '0,1,2,3,4,5,6',
+      '0,1,2,3,4,5,6': {
+        index: null,
+        params: {
+          status: '0,1,2,3,4,5,6',
+        },
+      },
+      4: {
+        index: null,
+        params: {
+          status: '4',
+        },
+      },
+      5: {
+        index: null,
+        params: {
+          status: '5',
+        },
+      },
+      6: {
+        index: null,
+        params: {
+          status: '6',
+        },
       },
     },
     searchList: {
@@ -76,10 +99,9 @@ export default {
         };
         const res = yield call(portfolioIndex, req);
         yield put({
-          type: 'list',
+          type: 'unexchangeablelist',
           payload: res.data,
           params: req,
-          key: 'unexchangeable',
         });
         if (callback) {
           callback();
@@ -97,10 +119,9 @@ export default {
         };
         const res = yield call(investmentIndex, req);
         yield put({
-          type: 'list',
+          type: 'exchangeablelist',
           payload: res.data,
           params: req,
-          key: 'exchangeable',
         });
         if (callback) {
           callback();
@@ -263,13 +284,29 @@ export default {
     },
   },
   reducers: {
-    list(state, action) {
-      const { key } = action;
+    unexchangeablelist(state, action) {
+      const { params } = action;
       return {
         ...state,
-        [key]: {
-          index: paginate(state, action, key),
-          params: action.params,
+        unexchangeable: {
+          ...state.unexchangeable,
+          [params.status]: {
+            index: paginate(state.unexchangeable, action, params.status),
+            params,
+          },
+        },
+      };
+    },
+    exchangeablelist(state, action) {
+      const { params } = action;
+      return {
+        ...state,
+        exchangeable: {
+          ...state.exchangeable,
+          [params.rank]: {
+            index: paginate(state.exchangeable, action, params.rank),
+            params,
+          },
         },
       };
     },

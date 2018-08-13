@@ -5,13 +5,12 @@ import { View, Text } from 'react-native';
 import NodeCapIcon from 'component/icon/nodecap';
 import Touchable from 'component/uikit/touchable';
 import Gradient from 'component/uikit/gradient';
-import { shadow } from '../../../../../utils/style';
 
-const header = ({ value, onSelect }) => (
+const header = ({ activeTab, goToPage }) => (
   <View style={styles.container}>
-    <Touchable borderless onPress={() => onSelect('profits', '盈余榜')}>
+    <Touchable borderless onPress={() => goToPage(0)}>
       <View style={styles.group.container}>
-        {value === 'profits' ? (
+        {activeTab === 0 ? (
           <Gradient
             style={[styles.group.top, { borderWidth: 0, overflow: 'hidden' }]}
           >
@@ -23,18 +22,15 @@ const header = ({ value, onSelect }) => (
           </View>
         )}
         <Text
-          style={[
-            styles.group.title,
-            value !== 'profits' && { color: '#999999' },
-          ]}
+          style={[styles.group.title, activeTab === 0 && { color: '#333333' }]}
         >
           盈余榜
         </Text>
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('roi', '回报率榜')}>
+    <Touchable borderless onPress={() => goToPage(1)}>
       <View style={styles.group.container}>
-        {value === 'roi' ? (
+        {activeTab === 1 ? (
           <Gradient
             style={[styles.group.top, { borderWidth: 0, overflow: 'hidden' }]}
           >
@@ -46,15 +42,15 @@ const header = ({ value, onSelect }) => (
           </View>
         )}
         <Text
-          style={[styles.group.title, value !== 'roi' && { color: '#999999' }]}
+          style={[styles.group.title, activeTab === 1 && { color: '#333333' }]}
         >
           回报率榜
         </Text>
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('increase', '涨跌榜')}>
+    <Touchable borderless onPress={() => goToPage(2)}>
       <View style={styles.group.container}>
-        {value === 'increase' ? (
+        {activeTab === 2 ? (
           <Gradient
             style={[styles.group.top, { borderWidth: 0, overflow: 'hidden' }]}
           >
@@ -66,18 +62,15 @@ const header = ({ value, onSelect }) => (
           </View>
         )}
         <Text
-          style={[
-            styles.group.title,
-            value !== 'increase' && { color: '#999999' },
-          ]}
+          style={[styles.group.title, activeTab === 2 && { color: '#333333' }]}
         >
           涨跌榜
         </Text>
       </View>
     </Touchable>
-    <Touchable borderless onPress={() => onSelect('cost', '投资榜')}>
+    <Touchable borderless onPress={() => goToPage(3)}>
       <View style={styles.group.container}>
-        {value === 'cost' ? (
+        {activeTab === 3 ? (
           <Gradient
             style={[styles.group.top, { borderWidth: 0, overflow: 'hidden' }]}
           >
@@ -89,7 +82,7 @@ const header = ({ value, onSelect }) => (
           </View>
         )}
         <Text
-          style={[styles.group.title, value !== 'cost' && { color: '#999999' }]}
+          style={[styles.group.title, activeTab === 3 && { color: '#333333' }]}
         >
           投资榜
         </Text>
@@ -99,8 +92,8 @@ const header = ({ value, onSelect }) => (
 );
 
 header.propTypes = {
-  value: PropTypes.string,
-  onSelect: PropTypes.func,
+  activeTab: PropTypes.number,
+  goToPage: PropTypes.func,
 };
 
 const styles = {
@@ -110,7 +103,6 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: 'white',
-    ...shadow,
   },
   group: {
     container: {
@@ -126,9 +118,9 @@ const styles = {
       borderColor: '#1890FF',
     },
     title: {
-      fontSize: 14,
-      color: '#333333',
-      marginTop: 6.5,
+      fontSize: 12,
+      color: '#999999',
+      marginTop: 7,
     },
   },
 };

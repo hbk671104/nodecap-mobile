@@ -9,7 +9,6 @@ import ProjectItem from 'component/project/item';
 import PriceChangeItem from 'component/project/priceChangeItem';
 import InvestmentItem from 'component/project/investmentItem';
 import { hasPermission } from 'component/auth/permission/lock';
-import Header from './header';
 import styles from './style';
 
 @global.bindTrack({
@@ -17,21 +16,17 @@ import styles from './style';
   name: 'App_ProjectOperation',
   subModuleName: '已投项目',
 })
-@connect(({ portfolio, loading }) => ({
-  data: R.pathOr(null, ['exchangeable', 'index', 'data'])(portfolio),
-  pagination: R.pathOr(null, ['exchangeable', 'index', 'pagination'])(
+@connect(({ portfolio, loading }, { rank }) => ({
+  data: R.pathOr(null, ['exchangeable', rank, 'index', 'data'])(portfolio),
+  pagination: R.pathOr(null, ['exchangeable', rank, 'index', 'pagination'])(
     portfolio,
   ),
-  params: R.pathOr(null, ['exchangeable', 'params'])(portfolio),
+  params: R.pathOr(null, ['exchangeable', rank, 'params'])(portfolio),
   loading: loading.effects['portfolio/investment'],
 }))
 export default class Exchangeable extends Component {
-  state = {
-    rank: R.path(['params', 'rank'])(this.props),
-  };
-
   requestData = (page, size, callback) => {
-    const { rank } = this.state;
+    const { rank } = this.props;
     this.props.dispatch({
       type: 'portfolio/investment',
       payload: {
@@ -41,12 +36,6 @@ export default class Exchangeable extends Component {
       },
       callback,
     });
-  };
-
-  handleSelect = (rank, name) => {
-    if (R.equals(rank, this.state.rank)) return;
-    this.props.track(name);
-    this.setState({ rank }, () => this.requestData());
   };
 
   handleItemPress = item => () => {
@@ -65,7 +54,7 @@ export default class Exchangeable extends Component {
   };
 
   renderItem = ({ item, index }) => {
-    switch (this.state.rank) {
+    switch (this.props.rank) {
       case 'profits':
       case 'roi':
         return (
@@ -96,17 +85,11 @@ export default class Exchangeable extends Component {
     }
   };
 
-  renderHeader = () => (
-    <Header value={this.state.rank} onSelect={this.handleSelect} />
-  );
-
   render() {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        {this.renderHeader()}
         <List
-          style={{ marginTop: 5 }}
           action={this.requestData}
           data={data}
           pagination={pagination}

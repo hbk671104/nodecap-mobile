@@ -7,7 +7,6 @@ import { NavigationActions } from 'react-navigation';
 import List from 'component/uikit/list';
 import UnexchangeableItem from 'component/project/unexchangeable';
 import { hasPermission } from 'component/auth/permission/lock';
-import Header from './header';
 import styles from './style';
 
 @global.bindTrack({
@@ -15,21 +14,17 @@ import styles from './style';
   name: 'App_ProjectOperation',
   subModuleName: '未投项目',
 })
-@connect(({ portfolio, loading }) => ({
-  data: R.pathOr(null, ['unexchangeable', 'index', 'data'])(portfolio),
-  pagination: R.pathOr(null, ['unexchangeable', 'index', 'pagination'])(
+@connect(({ portfolio, loading }, { status }) => ({
+  data: R.pathOr(null, ['unexchangeable', status, 'index', 'data'])(portfolio),
+  pagination: R.pathOr(null, ['unexchangeable', status, 'index', 'pagination'])(
     portfolio,
   ),
-  params: R.pathOr(null, ['unexchangeable', 'params'])(portfolio),
+  params: R.pathOr(null, ['unexchangeable', status, 'params'])(portfolio),
   loading: loading.effects['portfolio/index'],
 }))
 export default class Unexchangeable extends Component {
-  state = {
-    status: R.path(['params', 'status'])(this.props),
-  };
-
   requestData = (page, size, callback) => {
-    const { status } = this.state;
+    const { status } = this.props;
     this.props.dispatch({
       type: 'portfolio/index',
       payload: {
@@ -39,12 +34,6 @@ export default class Unexchangeable extends Component {
       },
       callback,
     });
-  };
-
-  handleSelect = (status, name) => {
-    if (R.equals(status, this.state.status)) return;
-    this.props.track(name);
-    this.setState({ status }, () => this.requestData());
   };
 
   handleItemPress = item => () => {
@@ -66,10 +55,6 @@ export default class Unexchangeable extends Component {
     <UnexchangeableItem item={item} onPress={this.handleItemPress(item)} />
   );
 
-  renderHeader = () => (
-    <Header value={this.state.status} onSelect={this.handleSelect} />
-  );
-
   renderEmpty = () => (
     <View style={styles.empty.container}>
       <Image source={require('asset/project/empty_unexchangeable.png')} />
@@ -85,9 +70,7 @@ export default class Unexchangeable extends Component {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        {this.renderHeader()}
         <List
-          style={{ marginTop: 5 }}
           action={this.requestData}
           data={data}
           pagination={pagination}

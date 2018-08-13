@@ -11,8 +11,8 @@ import { setStatusBar } from 'component/uikit/statusBar';
 import SearchBarDisplay from 'component/searchBar/display';
 import AddButton from 'component/add';
 
-import Exchangeable from './route/exchangeable';
-import Unexchangeable from './route/unexchangeable';
+import UnexchangeableWrapper from './route/unexchangeable/wrapper';
+import ExchangeableWrapper from './route/exchangeable/wrapper';
 import { getCurrentScreen } from '../../../router';
 import styles, { deviceWidth, indicatorWidth } from './style';
 
@@ -122,7 +122,7 @@ export default class Portfolio extends Component {
     switch (route.key) {
       case 'exchangeable':
         return (
-          <Exchangeable
+          <ExchangeableWrapper
             onScroll={this.handleOnScroll}
             onMomentumScrollBegin={this.handleMomentumScrollBegin}
             onMomentumScrollEnd={this.handleMomentumScrollEnd}
@@ -130,7 +130,7 @@ export default class Portfolio extends Component {
         );
       case 'unexchangeable':
         return (
-          <Unexchangeable
+          <UnexchangeableWrapper
             onScroll={this.handleOnScroll}
             onMomentumScrollBegin={this.handleMomentumScrollBegin}
             onMomentumScrollEnd={this.handleMomentumScrollEnd}
