@@ -134,6 +134,7 @@ export default {
 
         yield put({
           type: 'refresh',
+          payload,
         });
 
         if (callback) {
@@ -198,7 +199,7 @@ export default {
         console.log(e);
       }
     },
-    *refresh({ payload, callback }, { put, call, select }) {
+    *refresh({ payload, callback }, { all, put, call, select }) {
       try {
         // search
         const search = yield select(state =>
@@ -211,16 +212,27 @@ export default {
           });
         }
 
-        // others
-        // let type = payload.types;
-        // if (R.length(types) === 0)
-        // type = type.map(t => t.id).join(',');
-        // yield put({
-        //   type: 'index',
-        //   payload: {
-        //     type,
-        //   },
-        // });
+        // refresh all
+        yield put({
+          type: 'index',
+          payload: {
+            type: '0',
+          },
+        });
+
+        const types = R.pathOr([], ['types'])(payload);
+        if (!R.isEmpty(types)) {
+          yield all(
+            types.map(t => {
+              return put({
+                type: 'index',
+                payload: {
+                  type: t.id,
+                },
+              });
+            }),
+          );
+        }
 
         if (callback) {
           yield call(callback);

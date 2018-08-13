@@ -85,7 +85,7 @@ class ResourceDetail extends Component {
 
   handleDeletePress = () => {
     const { data } = this.props;
-    Alert.alert('提示', `确认删除人脉 [${data.name}] 吗？`, [
+    Alert.alert('提示', `确认删除人脉 「${data.name}」 吗？`, [
       { text: '确认', onPress: this.confirmDelete },
       { text: '取消', style: 'cancel' },
     ]);
