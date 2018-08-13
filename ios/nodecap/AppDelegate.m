@@ -67,8 +67,6 @@
   [SensorsAnalyticsSDK sharedInstanceWithServerURL:[ReactNativeConfig envFor:@"SENSOR_SDK_URL"]
                                   andLaunchOptions:launchOptions
                                       andDebugMode:SA_DEBUG_MODE];
-  [[SensorsAnalyticsSDK sharedInstance] enableTrackScreenOrientation:YES]; // CoreMotion 采集屏幕方向
-  [[SensorsAnalyticsSDK sharedInstance] enableTrackGPSLocation:YES];// CoreLocation 采集 GPS 信息
   // 打开自动采集, 并指定追踪哪些 AutoTrack 事件
   [[SensorsAnalyticsSDK sharedInstance] enableAutoTrack:SensorsAnalyticsEventTypeAppStart |
    SensorsAnalyticsEventTypeAppEnd |
