@@ -58,22 +58,10 @@ class Investment extends Component {
               },
             })}
           </Flex>
-          <Flex>
-            {renderField({
-              name: '投资币种',
-              value: getTokenName(field),
-              style: {
-                flex: 1,
-              },
-            })}
-            {renderField({
-              name: '投资数量',
-              value: `${investCount} ${getTokenName(field)}`,
-              style: {
-                flex: 1,
-              },
-            })}
-          </Flex>
+          {renderField({
+            name: '投资数量',
+            value: `${investCount} ${getTokenName(field)}`,
+          })}
           {renderField({
             name: '兑换比例',
             value: transfer_price
