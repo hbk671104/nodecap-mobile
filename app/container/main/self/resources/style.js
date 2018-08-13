@@ -2,6 +2,7 @@ import { Dimensions } from 'react-native';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const indicatorWidth = 42;
+const tabWidth = 78;
 export default {
   container: {
     flex: 1,
@@ -26,7 +27,7 @@ export default {
     },
     tab: {
       height: 44,
-      width: 72,
+      width: tabWidth,
       padding: 0,
     },
     label: {
@@ -36,7 +37,7 @@ export default {
       height: 3,
       backgroundColor: 'white',
       width: indicatorWidth,
-      left: (70 - indicatorWidth) / 2,
+      left: (tabWidth - indicatorWidth) / 2,
     },
   },
 };
