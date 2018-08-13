@@ -86,11 +86,11 @@ class Share extends PureComponent {
         if (granted) {
           const result = await CameraRoll.saveToCameraRoll(uri);
           if (result) {
-            Toast.success('照片存储成功！');
+            Toast.success('照片存储成功', Toast.SHORT);
             this.props.onClose();
           }
         } else {
-          Toast.fail('没有授予存储权限');
+          Toast.fail('没有授予存储权限', Toast.SHORT);
         }
       }
     } catch (error) {
@@ -181,7 +181,8 @@ class Share extends PureComponent {
           </View>
           <View style={styles.navBar.bottom.date.container}>
             <Text style={styles.navBar.bottom.date.text}>
-              统计日期：{moment().format('YYYY.MM.DD')}
+              统计日期：
+              {moment().format('YYYY.MM.DD')}
             </Text>
           </View>
         </View>
@@ -225,7 +226,8 @@ class Share extends PureComponent {
           <View style={styles.roi.top.wrapper}>
             <Image source={require('asset/share/left_image.png')} />
             <Text style={styles.roi.top.title}>
-              {'  '}项目回报榜 TOP 5{'  '}
+              {'  '}
+              项目回报榜 TOP 5{'  '}
             </Text>
             <Image source={require('asset/share/right_image.png')} />
           </View>

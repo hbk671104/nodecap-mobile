@@ -39,7 +39,7 @@ class CreateCompany extends Component {
             ...value,
           },
           callback: () => {
-            Toast.success('成功创建企业账户，现在即可登录使用！');
+            Toast.success('成功创建企业账户', Toast.SHORT);
             this.goToLogin();
           },
         });

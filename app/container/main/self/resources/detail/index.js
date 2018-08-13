@@ -5,6 +5,7 @@ import {
   ScrollView,
   InteractionManager,
   Alert,
+  Clipboard,
 } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
@@ -89,6 +90,11 @@ class ResourceDetail extends Component {
       { text: '确认', onPress: this.confirmDelete },
       { text: '取消', style: 'cancel' },
     ]);
+  };
+
+  handleWechatPress = wechat => () => {
+    Clipboard.setString(wechat);
+    Toast.success('微信复制成功', Toast.SHORT);
   };
 
   renderContent = content => (
@@ -191,10 +197,11 @@ class ResourceDetail extends Component {
               onPress={() => Communications.phonecall(data.mobile, false)}
             />
             <ListItem
-              disablePress
+              disablePress={!data.wechat}
               title="微信"
               titleStyle={styles.item.title}
               renderContent={() => this.renderContent(data.wechat)}
+              onPress={this.handleWechatPress(data.wechat)}
             />
             <ListItem
               disablePress={!data.email}
