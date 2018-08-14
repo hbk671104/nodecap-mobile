@@ -5,6 +5,21 @@ import { View, Text, ViewPropTypes } from 'react-native';
 
 import NodeCapIcon from 'component/icon/nodecap';
 
+export const textList = ({ roiRank, onItemPress }) => {
+  return (
+    <Text>
+      {roiRank.map((r, i) => (
+        <Text key={r.id}>
+          {i !== 0 && <Text style={styles.bottom.content.divider}> | </Text>}
+          <Text style={styles.bottom.content.text} onPress={onItemPress(r)}>
+            {r.name}
+          </Text>
+        </Text>
+      ))}
+    </Text>
+  );
+};
+
 const investNumber = ({ style, data, roiRank, onItemPress }) => {
   const roiCount = R.length(roiRank);
   return (
@@ -45,21 +60,7 @@ const investNumber = ({ style, data, roiRank, onItemPress }) => {
           </Text>
         </View>
         <View style={styles.bottom.content.container}>
-          <Text>
-            {roiRank.map((r, i) => (
-              <Text key={r.id}>
-                {i !== 0 && (
-                  <Text style={styles.bottom.content.divider}> | </Text>
-                )}
-                <Text
-                  style={styles.bottom.content.text}
-                  onPress={onItemPress(r)}
-                >
-                  {r.name}
-                </Text>
-              </Text>
-            ))}
-          </Text>
+          {textList({ roiRank, onItemPress })}
         </View>
       </View>
     </View>

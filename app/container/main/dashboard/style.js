@@ -188,6 +188,11 @@ export default {
     width: 18,
     height: 18,
   },
+  textList: {
+    container: {
+      paddingHorizontal: 24,
+    },
+  },
   modal: {
     margin: 0,
   },

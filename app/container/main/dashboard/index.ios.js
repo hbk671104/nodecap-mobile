@@ -27,7 +27,7 @@ import Header from './partials/header';
 import ProfitSwiper from './partials/profitSwiper';
 import ReturnRateChart from './partials/returnRateChart';
 import DashboardGroup from './partials/group';
-import InvestNumber from './partials/investNumber';
+import InvestNumber, { textList as TextList } from './partials/investNumber';
 import ProjectItem from './partials/projectItem';
 import ProjectGroup from './partials/projectGroup';
 import Investment from './partials/investment';
@@ -264,13 +264,15 @@ export default class Dashboard extends Component {
             </Text>
             <Text style={styles.empty.group.subtitle}>
               <NodeCapIcon name="diannao" color="#4A4A4A" size={14} />
-              {'  '}使用电脑端打开
+              {'  '}
+              使用电脑端打开
               <Text
                 style={{ color: '#1890FF' }}
                 onPress={() => Communications.web('https://hotnode.io')}
               >
                 {' hotnode.io '}
-              </Text>，录入更快捷、高效
+              </Text>
+              ，录入更快捷、高效
             </Text>
             {hasPermission('project-create') && (
               <AuthButton
@@ -284,7 +286,8 @@ export default class Dashboard extends Component {
           <View style={styles.empty.bottom.container}>
             <Text style={styles.empty.bottom.title}>
               <NodeCapIcon name="kefu" color="black" size={14} />
-              {'  '}7x24小时服务热线
+              {'  '}
+              7x24小时服务热线
             </Text>
             <Text
               style={styles.empty.bottom.subtitle}
@@ -371,18 +374,16 @@ export default class Dashboard extends Component {
               <ProjectGroup
                 title="其他项目"
                 subtitle="由于未上主流交易所或未进行数据匹配，暂无收益排行"
-                content={
-                  R.length(idleProject) < 4 ? `${R.length(idleProject)}` : '4'
-                }
+                content={`${R.length(idleProject)}`}
               >
-                {R.slice(0, 4, idleProject).map((r, i) => (
-                  <ProjectItem
-                    key={i}
-                    index={i}
-                    data={r}
-                    onPress={this.handleProjectItemPress(r, false)}
+                <View style={styles.textList.container}>
+                  <TextList
+                    roiRank={idleProject}
+                    onItemPress={item =>
+                      this.handleProjectItemPress(item, false)
+                    }
                   />
-                ))}
+                </View>
               </ProjectGroup>
             </DashboardGroup>
           </ParallaxScrollView>
