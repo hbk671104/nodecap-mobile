@@ -164,7 +164,7 @@ class Share extends PureComponent {
   renderNavBarBottom = () => {
     const { fund, dashboard, company } = this.props;
 
-    const roi = R.path(['ROI', 'CNY'])(dashboard);
+    const roi = R.path(['ROI', 'ETH'])(dashboard);
     const portfolioCount = R.path(['portfolio', 'count'])(dashboard);
 
     return (
