@@ -12,6 +12,16 @@ class ChangeLog extends Component {
         <NavBar gradient back title="版本更新" />
         <ScrollView>
           <ChangeLogItem
+            version="v5.1.0"
+            date="2018-08-13"
+            changelog={[
+              '投资库交互形式全新升级，滑动切换，便捷高效',
+              '项目详情页投资数量 UI 优化',
+              '修复人脉资源库数据同步的问题',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
             version="v5.0.5"
             date="2018-08-08"
             changelog={[
