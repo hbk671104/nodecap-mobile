@@ -1,4 +1,5 @@
 import { Dimensions } from 'react-native';
+import { navBarHeight } from 'component/navBar';
 
 export const deviceWidth = Dimensions.get('window').width;
 export const indicatorWidth = 42;
@@ -24,9 +25,10 @@ export default {
   tabBar: {
     container: {
       backgroundColor: 'transparent',
+      height: navBarHeight,
+      justifyContent: 'center',
     },
     tab: {
-      height: 44,
       width: tabWidth,
       padding: 0,
     },
