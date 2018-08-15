@@ -5,6 +5,7 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
+import FundWrapper from './wrapper';
 import styles from './style';
 import ReportItem from './components/reportItem';
 
@@ -82,7 +83,7 @@ class Fund extends Component {
     if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
       return null;
     }
-    return <ReportItem />;
+    return <FundWrapper />;
   };
 
   render() {
