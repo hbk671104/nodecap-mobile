@@ -6,6 +6,7 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import styles from './style';
+import ReportItem from './components/reportItem';
 
 @global.bindTrack({
   page: '基金管理',
@@ -81,7 +82,7 @@ class Fund extends Component {
     if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
       return null;
     }
-    return null;
+    return <ReportItem />;
   };
 
   render() {
