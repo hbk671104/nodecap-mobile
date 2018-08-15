@@ -104,13 +104,13 @@ const Tab = createBottomTabNavigator(
       tabBarIcon: ({ focused }) => {
         const { routeName } = state;
         switch (routeName) {
-          case 'Dashboard':
+          case 'Fund':
             return (
               <Image
                 source={
                   focused
-                    ? require('asset/tabIcon/dashboard_highlight.png')
-                    : require('asset/tabIcon/dashboard.png')
+                    ? require('asset/tabIcon/fund-sel.png')
+                    : require('asset/tabIcon/fund.png')
                 }
               />
             );
