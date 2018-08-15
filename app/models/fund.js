@@ -4,10 +4,9 @@ export default {
   namespace: 'fund',
   state: {
     funds: [],
-    error: {},
   },
   effects: {
-    * fetch(_, { call, put }) {
+    *fetch(_, { call, put }) {
       try {
         const res = yield call(getFunds);
         yield put({
@@ -15,11 +14,7 @@ export default {
           payload: res.data,
         });
       } catch (e) {
-        console.log('e', e);
-        yield put({
-          type: 'error',
-          payload: e,
-        });
+        console.log(e);
       }
     },
   },
@@ -28,12 +23,6 @@ export default {
       return {
         ...state,
         funds: action.payload,
-      };
-    },
-    error(state, action) {
-      return {
-        ...state,
-        error: action.payload,
       };
     },
   },

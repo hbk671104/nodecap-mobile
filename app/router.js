@@ -22,6 +22,7 @@ import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
 import Dashboard from 'container/main/dashboard';
+import Fund from 'container/main/fund';
 import Portfolio from 'container/main/portfolio';
 import Management from 'container/main/management';
 import Self from 'container/main/self';
@@ -64,7 +65,13 @@ const AuthStack = createStackNavigator(
 
 const Tab = createBottomTabNavigator(
   {
-    Dashboard,
+    // Dashboard,
+    Fund: {
+      screen: Fund,
+      navigationOptions: {
+        title: '基金管理',
+      },
+    },
     Portfolio: {
       screen: Portfolio,
       navigationOptions: {

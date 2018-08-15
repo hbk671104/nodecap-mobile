@@ -48,7 +48,7 @@ export default {
 
           yield put(
             routerRedux.navigate({
-              routeName: 'Dashboard',
+              routeName: 'Fund',
             }),
           );
         }
@@ -79,7 +79,7 @@ export default {
 
         yield put(
           routerRedux.navigate({
-            routeName: 'Dashboard',
+            routeName: 'Fund',
           }),
         );
       } catch (e) {

@@ -7,11 +7,7 @@ export default {
   namespace: 'global',
 
   state: {
-    collapsed: false,
-    title: 'Nodus 管理系统',
-    company: {
-      name: 'Node Capital',
-    },
+    title: 'Hotnode',
     constants: null,
     projectTags: [],
     financeStage: [],
@@ -76,12 +72,6 @@ export default {
   },
 
   reducers: {
-    changeLayoutCollapsed(state, { payload }) {
-      return {
-        ...state,
-        collapsed: payload,
-      };
-    },
     getConstants(state, { payload }) {
       return {
         ...state,

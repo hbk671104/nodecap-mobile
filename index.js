@@ -10,7 +10,6 @@ import 'moment/locale/zh-cn';
 import './app/utils/sensor';
 import dva from './app/utils/dva';
 import Router, { routerMiddleware } from './app/router';
-import dashboard from './app/models/dashboard';
 import routerModel from './app/models/router';
 import loginModel from './app/models/login';
 import appModel from './app/models/app';
@@ -24,7 +23,6 @@ import resourceModel from './app/models/resource';
 const app = dva({
   initialState: {},
   models: [
-    dashboard,
     routerModel,
     loginModel,
     appModel,
@@ -39,20 +37,12 @@ const app = dva({
   extraEnhancers: [autoRehydrate()],
 });
 
-export let persistor;
 export const persist = callback => {
-  persistor = persistStore(
+  persistStore(
     app._store,
     {
       storage: AsyncStorage,
-      blacklist: [
-        'loading',
-        'router',
-        'project',
-        'fund',
-        'portfolio',
-        'resource',
-      ],
+      whitelist: ['login', 'global', 'app', 'fund', 'user'],
     },
     callback,
   );
