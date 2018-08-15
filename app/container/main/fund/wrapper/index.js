@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import ScrollableTabView, {
   DefaultTabBar,
 } from 'react-native-scrollable-tab-view';
 
+import Holdings from '../holdings';
 import styles from './style';
 
 class FundWrapper extends Component {
@@ -25,7 +26,7 @@ class FundWrapper extends Component {
         >
           <View tabLabel="整体情况" />
           <View tabLabel="投资报表" />
-          <View tabLabel="持仓分析" />
+          <Holdings tabLabel="持仓分析" />
         </ScrollableTabView>
       </View>
     );
