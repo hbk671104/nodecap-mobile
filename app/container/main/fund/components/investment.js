@@ -23,12 +23,9 @@ const investment = props => (
       </View>
       <View style={styles.pie.container}>
         <VictoryPie
-          width={42}
-          height={42}
-          padding={0}
-          padAngle={2}
-          innerRadius={8}
-          data={[{ x: 1, y: 2 }, { x: 2, y: 3 }, { x: 3, y: 5 }]}
+          {...styles.pie.item}
+          colorScale={['#3A9CF7', '#F69038']}
+          data={[{ y: 39 }, { y: 23 }]}
         />
       </View>
     </View>
@@ -41,12 +38,9 @@ const investment = props => (
       </View>
       <View style={styles.pie.container}>
         <VictoryPie
-          width={42}
-          height={42}
-          padding={0}
-          padAngle={2}
-          innerRadius={8}
-          data={[{ x: 1, y: 2 }, { x: 2, y: 3 }, { x: 3, y: 5 }]}
+          {...styles.pie.item}
+          colorScale={['#F69038', '#3A9CF7', '#36C35A']}
+          data={[{ y: 17 }, { y: 32 }, { y: 14 }]}
         />
       </View>
     </View>
@@ -71,6 +65,13 @@ const styles = {
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
+    },
+    item: {
+      height: 42,
+      width: 42,
+      padding: 0,
+      padAngle: 3,
+      innerRadius: 8,
     },
   },
   item: {
