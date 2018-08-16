@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 
+import Touchable from 'component/uikit/touchable';
+import Icon from 'component/uikit/icon';
 import FundGroup from '../components/group';
 import Summary from '../components/summary';
 import DataItem from '../components/dataItem';
+import Investment from '../components/investment';
 import styles from './style';
 
 class FundOverall extends Component {
@@ -20,7 +23,20 @@ class FundOverall extends Component {
           >
             <Summary />
           </FundGroup>
-          <FundGroup title="投资数量" subtitle="(63)" />
+          <FundGroup
+            style={styles.investment.container}
+            title="投资数量"
+            subtitle="(63)"
+            renderRight={() => (
+              <Touchable>
+                <Text style={styles.investment.right}>
+                  项目清单 <Icon name="arrow-forward" />
+                </Text>
+              </Touchable>
+            )}
+          >
+            <Investment />
+          </FundGroup>
           <FundGroup
             contentContainer={styles.data.content}
             title="已上所项目浮盈统计"

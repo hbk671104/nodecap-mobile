@@ -1,5 +1,3 @@
-import { StyleSheet } from 'react-native';
-
 export default {
   container: {
     flex: 1,
@@ -8,6 +6,15 @@ export default {
     right: {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.65)',
+    },
+  },
+  investment: {
+    container: {
+      marginBottom: 0,
+    },
+    right: {
+      fontSize: 14,
+      color: '#0090FF',
     },
   },
   data: {
