@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
 
-import Group from './group';
-import Item from './item';
+import Group from '../components/holdingItem/group';
+import Item from '../components/holdingItem';
 import styles from './style';
 
 class FundHoldings extends Component {
