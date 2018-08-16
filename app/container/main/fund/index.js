@@ -7,6 +7,7 @@ import R from 'ramda';
 import NavBar from 'component/navBar';
 import FundWrapper from './wrapper';
 import styles from './style';
+import ReportItem from './components/reportItem';
 
 @global.bindTrack({
   page: '基金管理',
