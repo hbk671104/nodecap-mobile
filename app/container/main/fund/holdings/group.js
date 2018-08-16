@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 const group = ({ title, item, children }) => (
   <View style={styles.container}>
@@ -35,14 +35,18 @@ const styles = {
   container: {},
   bar: {
     container: {
-      height: 41,
+      height: 45,
       backgroundColor: '#F0F0F0',
       flexDirection: 'row',
       alignItems: 'center',
       paddingHorizontal: 12,
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: '#BDBDBD',
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: '#D5D5D5',
     },
     title: {
-      fontSize: 11,
+      fontSize: 13,
       color: 'rgba(0, 0, 0, 0.65)',
       fontWeight: 'bold',
     },

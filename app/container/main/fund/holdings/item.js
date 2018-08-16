@@ -20,7 +20,7 @@ const holdingItem = ({ item }) => (
 
 const styles = {
   container: {
-    height: 41,
+    height: 45,
     flexDirection: 'row',
     alignItems: 'center',
     borderBottomColor: '#E9E9E9',
