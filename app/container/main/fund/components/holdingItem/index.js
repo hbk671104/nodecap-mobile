@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 
-const holdingItem = ({ item }) => (
-  <View style={styles.container}>
+const holdingItem = ({ item, noBottomBorder }) => (
+  <View style={[styles.container, noBottomBorder && { borderBottomWidth: 0 }]}>
     <View style={{ flex: 3 }}>
       <Text style={styles.title}>DDD</Text>
       <Text style={[styles.content, { marginTop: 3 }]}>x 726,182</Text>
@@ -49,6 +49,11 @@ const styles = {
 
 holdingItem.propTypes = {
   item: PropTypes.object,
+  noBottomBorder: PropTypes.bool,
+};
+
+holdingItem.defaultProps = {
+  noBottomBorder: false,
 };
 
 export default holdingItem;

@@ -13,17 +13,17 @@ class FundHoldings extends Component {
           <Group title="剩余可投">
             <Item />
             <Item />
-            <Item />
+            <Item noBottomBorder />
           </Group>
           <Group title="已出货部分">
             <Item />
             <Item />
-            <Item />
+            <Item noBottomBorder />
           </Group>
           <Group title="当前持有">
             <Item />
             <Item />
-            <Item />
+            <Item noBottomBorder />
           </Group>
         </ScrollView>
       </View>
