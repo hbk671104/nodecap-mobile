@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text } from 'react-native';
+import { connect } from 'react-redux';
+import { NavigationActions } from 'react-navigation';
 
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
@@ -9,7 +11,16 @@ import DataItem from '../components/dataItem';
 import Investment from '../components/investment';
 import styles from './style';
 
+@connect()
 class FundOverall extends Component {
+  handleProjectPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'FundProject',
+      }),
+    );
+  };
+
   render() {
     return (
       <View style={styles.container}>
@@ -28,7 +39,7 @@ class FundOverall extends Component {
             title="投资数量"
             subtitle="(63)"
             renderRight={() => (
-              <Touchable>
+              <Touchable borderless onPress={this.handleProjectPress}>
                 <Text style={styles.investment.right}>
                   项目清单 <Icon name="arrow-forward" />
                 </Text>

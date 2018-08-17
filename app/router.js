@@ -23,6 +23,7 @@ import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
 import Dashboard from 'container/main/dashboard';
 import Fund from 'container/main/fund';
+import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
 import Management from 'container/main/management';
 import Self from 'container/main/self';
@@ -154,6 +155,7 @@ const Tab = createBottomTabNavigator(
 const MainStack = createStackNavigator(
   {
     Tab,
+    FundProject,
     PortfolioDetail,
     Search,
     CreateProject,
