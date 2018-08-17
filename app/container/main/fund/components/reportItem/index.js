@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 import { Flex } from 'antd-mobile';
+
 import Avatar from 'component/uikit/avatar';
-import style from './style';
-import ReportItemProgress from './progress';
+import Touchable from 'component/uikit/touchable';
 import { mainColor } from 'component/uikit/color';
+
+import ReportItemProgress from './progress';
+import style from './style';
 
 class ReportItem extends Component {
   /**
@@ -14,10 +17,7 @@ class ReportItem extends Component {
   renderAvatar() {
     return (
       <Flex>
-        <Avatar
-          source={{ uri: 'https://placehold.it/80x80' }}
-          size={40}
-        />
+        <Avatar source={{ uri: 'https://placehold.it/80x80' }} size={40} />
         <Text style={style.name}>SOC</Text>
       </Flex>
     );
@@ -30,15 +30,18 @@ class ReportItem extends Component {
   renderProjectInvestment() {
     return (
       <Flex direction="column" align="end">
-        <Text style={[style.investment, {
-          marginBottom: 5,
-        }]}
+        <Text
+          style={[
+            style.investment,
+            {
+              marginBottom: 5,
+            },
+          ]}
         >
-          投资 <Text style={style.investmentCount}>2,790,000</Text> ETH | 占基金 1.48%
+          投资 <Text style={style.investmentCount}>2,790,000</Text> ETH | 占基金
+          1.48%
         </Text>
-        <Text style={style.investment}>
-          约为 641.7 万元
-        </Text>
+        <Text style={style.investment}>约为 641.7 万元</Text>
       </Flex>
     );
   }
@@ -70,9 +73,10 @@ class ReportItem extends Component {
           {this.renderProjectInvestment()}
         </Flex>
         {this.renderROI()}
-        <View style={{
-          marginTop: 14,
-        }}
+        <View
+          style={{
+            marginTop: 14,
+          }}
         >
           <ReportItemProgress
             title="已回币"
@@ -83,9 +87,10 @@ class ReportItem extends Component {
             unit="ZIL"
           />
         </View>
-        <View style={{
-          marginTop: 20,
-        }}
+        <View
+          style={{
+            marginTop: 20,
+          }}
         >
           <ReportItemProgress
             title="已出货"
@@ -96,14 +101,14 @@ class ReportItem extends Component {
             unit="ZIL"
           />
         </View>
-        <Flex style={style.actionBar} align="center" justify="space-between">
-          <TouchableOpacity style={style.button}>
+        <Flex style={style.actionBar}>
+          <Touchable style={style.button}>
             <Text style={style.buttonText}>投资记录</Text>
-          </TouchableOpacity>
+          </Touchable>
           <View style={style.buttonDivision} />
-          <TouchableOpacity style={style.button}>
+          <Touchable style={style.button}>
             <Text style={style.buttonText}>出货记录</Text>
-          </TouchableOpacity>
+          </Touchable>
         </Flex>
       </View>
     );

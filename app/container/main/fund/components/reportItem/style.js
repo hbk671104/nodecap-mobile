@@ -72,8 +72,7 @@ export default {
     marginRight: 4,
   },
   actionBar: {
-    height: 36,
-    marginTop: 10,
+    paddingVertical: 12,
   },
   buttonDivision: {
     width: 0.5,
