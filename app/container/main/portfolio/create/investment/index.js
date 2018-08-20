@@ -31,12 +31,14 @@ import styles from './style';
 }))
 @createForm()
 class InvestmentCreate extends Component {
-  createDone = data => {
+  createDone = data => can_calculate => {
+    const isExpress = this.props.navigation.getParam('express', false);
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateDone',
         params: {
           data,
+          can_calculate: can_calculate && isExpress,
         },
       }),
     );
@@ -57,7 +59,7 @@ class InvestmentCreate extends Component {
       },
       callback: data => {
         Toast.hide();
-        this.createDone(data);
+        this.createDone(data)(!R.isEmpty(investInfo));
       },
     });
   };
