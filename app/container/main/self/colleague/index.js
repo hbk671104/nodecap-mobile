@@ -10,7 +10,7 @@ import NavBar from 'component/navBar';
 import AddButton from 'component/add';
 import SearchBarDisplay from 'component/searchBar/display';
 import List from 'component/uikit/list';
-import ResourceItem from 'component/resources/item';
+import ColleagueItem from 'component/colleague/item';
 import styles from './style';
 
 @global.bindTrack({
@@ -18,19 +18,17 @@ import styles from './style';
   name: 'App_ColleagueOperation',
 })
 @compose(withState('addButtonVisible', 'setAddButtonVisible', true))
-@connect(({ resource, loading }, { type }) => ({
-  data: R.pathOr(null, ['list', type, 'index', 'data'])(resource),
-  pagination: R.pathOr(null, ['list', type, 'index', 'pagination'])(resource),
-  params: R.pathOr(null, ['list', type, 'params'])(resource),
-  loading: loading.effects['resource/index'],
+@connect(({ colleague, loading }) => ({
+  data: R.pathOr(null, ['list', 'index', 'data'])(colleague),
+  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(colleague),
+  params: R.pathOr(null, ['list', 'params'])(colleague),
+  loading: loading.effects['colleague/index'],
 }))
 export default class Colleague extends Component {
   requestData = (page, size) => {
-    const { type } = this.props;
     this.props.dispatch({
-      type: 'resource/index',
+      type: 'colleague/index',
       payload: {
-        type,
         currentPage: page,
         pageSize: size,
       },
@@ -50,7 +48,7 @@ export default class Colleague extends Component {
   handleSearchPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ResourceSearch',
+        routeName: 'ColleagueSearch',
       }),
     );
   };
@@ -58,19 +56,19 @@ export default class Colleague extends Component {
   handleAddPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ResourceAdd',
+        routeName: 'ColleagueAdd',
       }),
     );
   };
 
   handleItemPress = item => () => {
-    if (!hasPermission('resource-view')) {
+    if (!hasPermission('user-view')) {
       return;
     }
-    this.props.track('项目卡片', { subModuleName: this.props.type });
+    this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ResourceDetail',
+        routeName: 'ColleagueDetail',
         params: {
           item,
         },
@@ -79,7 +77,7 @@ export default class Colleague extends Component {
   };
 
   renderItem = ({ item }) => (
-    <ResourceItem data={item} onPress={this.handleItemPress(item)} />
+    <ColleagueItem data={item} onPress={this.handleItemPress} />
   );
 
   renderNavBar = () => (
@@ -112,7 +110,7 @@ export default class Colleague extends Component {
           onMomentumScrollEnd={this.props.onMomentumScrollEnd}
         />
         {!!addButtonVisible &&
-          hasPermission('resource-create') && (
+          hasPermission('user-create') && (
             <AddButton onPress={this.handleAddPress} />
           )}
       </View>

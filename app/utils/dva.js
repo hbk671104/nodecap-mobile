@@ -26,6 +26,8 @@ export default function (options) {
         'user/createCompany',
         'resource/get',
         'resource/index',
+        'colleague/get',
+        'colleague/index',
       ],
     }),
   );
