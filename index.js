@@ -20,6 +20,7 @@ import portfolioModel from './app/models/portfolio';
 import userModel from './app/models/user';
 import codepushModel from './app/models/codepush';
 import resourceModel from './app/models/resource';
+import colleagueModel from './app/models/colleague';
 
 const app = dva({
   initialState: {},
@@ -34,6 +35,7 @@ const app = dva({
     userModel,
     codepushModel,
     resourceModel,
+    colleagueModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -52,6 +54,7 @@ export const persist = callback => {
         'fund',
         'portfolio',
         'resource',
+        'colleague',
       ],
     },
     callback,

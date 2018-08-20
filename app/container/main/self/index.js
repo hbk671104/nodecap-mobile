@@ -61,6 +61,14 @@ class Self extends Component {
     );
   };
 
+  handleColleaguePress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Colleague',
+      }),
+    );
+  };
+
   renderNavBar = () => (
     <NavBar
       gradient
@@ -83,7 +91,13 @@ class Self extends Component {
               onPress={this.handleResourcesPress}
             />
           )}
-          {/* <Item icon={require('asset/mine/colleague.png')} title="我的同事" /> */}
+          {hasPermission('user-list') && (
+            <Item
+              icon={require('asset/mine/colleague.png')}
+              title="我的同事"
+              onPress={this.handleColleaguePress}
+            />
+          )}
           <View style={styles.scroll.divider} />
           {/* <Item
             icon={require('asset/mine/notif.png')}

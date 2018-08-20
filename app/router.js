@@ -43,6 +43,10 @@ import Resources from 'container/main/self/resources';
 import ResourceSearch from 'container/main/self/resources/search';
 import ResourceDetail from 'container/main/self/resources/detail';
 import ResourceAdd from 'container/main/self/resources/add';
+import Colleague from 'container/main/self/colleague';
+import ColleagueSearch from 'container/main/self/colleague/search';
+import ColleagueDetail from 'container/main/self/colleague/detail';
+import ColleagueAdd from 'container/main/self/colleague/add';
 import Settings from 'container/main/self/settings';
 import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
@@ -164,6 +168,10 @@ const MainStack = createStackNavigator(
     ResourceSearch,
     ResourceDetail,
     ResourceAdd,
+    Colleague,
+    ColleagueSearch,
+    ColleagueDetail,
+    ColleagueAdd,
     Settings,
     ChangeLog,
     MyProfile,
