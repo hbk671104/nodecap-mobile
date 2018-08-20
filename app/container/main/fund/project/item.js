@@ -8,7 +8,7 @@ import Avatar from 'component/uikit/avatar';
 const item = ({ data, onPress }) => (
   <Touchable onPress={onPress}>
     <View style={styles.container}>
-      <Avatar size={37} />
+      <Avatar source={{ uri: 'https://placehold.it/80x80' }} size={37} />
       <View style={styles.content.container}>
         <Text style={styles.content.title}>
           Aelf
