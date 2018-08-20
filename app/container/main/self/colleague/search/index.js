@@ -6,21 +6,22 @@ import { NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile';
 import _ from 'lodash';
 
+import { hasPermission } from 'component/auth/permission/lock';
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
 import Touchable from 'component/uikit/touchable';
-import ResourceItem from 'component/resources/item';
+import ColleagueItem from 'component/colleague/item';
 import styles from './style';
 
 @global.bindTrack({
-  page: '人脉资源库搜索',
-  name: 'App_HumanResourceSearchOperation',
+  page: '我的同事搜索',
+  name: 'App_ColleagueSearchOperation',
 })
-@connect(({ resource }) => ({
-  data: R.pathOr(null, ['search', 'index', 'data'])(resource),
+@connect(({ colleague }) => ({
+  data: R.pathOr(null, ['search', 'index', 'data'])(colleague),
 }))
-class ResourceSearch extends Component {
+class ColleagueSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +31,7 @@ class ResourceSearch extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch({ type: 'resource/clearSearch' });
+    this.props.dispatch({ type: 'colleague/clearSearch' });
   }
 
   onSearchTextChange = text => {
@@ -43,7 +44,7 @@ class ResourceSearch extends Component {
 
     Toast.loading('loading...', 0);
     this.props.dispatch({
-      type: 'resource/search',
+      type: 'colleague/search',
       payload: {
         q: searchText,
       },
@@ -54,10 +55,13 @@ class ResourceSearch extends Component {
   };
 
   handleItemPress = item => () => {
+    if (!hasPermission('user-view')) {
+      return;
+    }
     this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ResourceDetail',
+        routeName: 'ColleagueDetail',
         params: {
           item,
         },
@@ -78,7 +82,7 @@ class ResourceSearch extends Component {
             <SearchBar
               style={styles.searchBar.bar}
               autoFocus
-              placeholder="输入人脉关键字搜索"
+              placeholder="输入姓名关键字搜索"
               onChange={this.onSearchTextChange}
             />
           </View>
@@ -97,7 +101,7 @@ class ResourceSearch extends Component {
   };
 
   renderItem = ({ item }) => (
-    <ResourceItem data={item} onPress={this.handleItemPress(item)} />
+    <ColleagueItem data={item} onPress={this.handleItemPress(item)} />
   );
 
   render() {
@@ -117,4 +121,4 @@ class ResourceSearch extends Component {
   }
 }
 
-export default ResourceSearch;
+export default ColleagueSearch;
