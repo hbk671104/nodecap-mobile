@@ -77,7 +77,7 @@ class ColleagueDetail extends Component {
     this.props.track('编辑');
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ResourceAdd',
+        routeName: 'ColleagueAdd',
         params: {
           default: data,
         },
@@ -128,19 +128,28 @@ class ColleagueDetail extends Component {
   );
 
   renderNavBarBottom = () => {
-    const item = this.props.navigation.getParam('item');
+    const { data, loading } = this.props;
+    const invalid = R.isNil(data) || loading;
     return (
       <View style={styles.navBar.bottom.container}>
-        <Avatar
-          raised={false}
-          resizeMode="cover"
-          source={{ uri: item.avatar_url }}
-          size={84}
-          innerRatio={0.94}
-        />
-        <View style={styles.navBar.bottom.title.container}>
-          <Text style={styles.navBar.bottom.title.text}>{item.realname}</Text>
-        </View>
+        {invalid ? (
+          <Loading style={{ backgroundColor: 'transparent' }} color="white" />
+        ) : (
+          <View style={styles.navBar.bottom.wrapper}>
+            <Avatar
+              raised={false}
+              resizeMode="cover"
+              source={{ uri: data.avatar_url }}
+              size={84}
+              innerRatio={0.94}
+            />
+            <View style={styles.navBar.bottom.title.container}>
+              <Text style={styles.navBar.bottom.title.text}>
+                {data.realname}
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
     );
   };
@@ -153,13 +162,8 @@ class ColleagueDetail extends Component {
         <NavBar
           gradient
           back
-          renderRight={() => {
-            if (invalid) {
-              return null;
-            }
-            return this.renderNavBarRight();
-          }}
-          renderBottom={this.renderNavBarBottom}
+          renderRight={this.renderNavBarRight}
+          renderBottom={() => this.renderNavBarBottom()}
         />
         {invalid ? (
           <Loading />
@@ -180,7 +184,7 @@ class ColleagueDetail extends Component {
             />
             <ListItem
               disablePress={!data.email}
-              title="账号"
+              title="登录账号"
               titleStyle={styles.item.title}
               renderContent={() => this.renderContent(data.email)}
               onPress={() =>

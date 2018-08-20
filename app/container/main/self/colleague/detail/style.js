@@ -21,7 +21,11 @@ export default {
     bottom: {
       container: {
         alignItems: 'center',
-        paddingVertical: 24,
+        justifyContent: 'center',
+        height: 168,
+      },
+      wrapper: {
+        alignItems: 'center',
       },
       title: {
         container: {
@@ -40,7 +44,7 @@ export default {
     title: {
       fontSize: 14,
       color: 'rgba(0, 0, 0, 0.45)',
-      width: 48,
+      width: 60,
     },
     content: {
       container: {

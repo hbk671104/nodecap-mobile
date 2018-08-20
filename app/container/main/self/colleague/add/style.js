@@ -6,7 +6,7 @@ export default {
   navBar: {},
   item: {
     title: {
-      width: 48,
+      width: 60,
     },
   },
   bottom: {

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as R from 'ramda';
-import { getConstants, getAllPermissions } from '../services/api';
+import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
 
 export default {
@@ -16,6 +16,7 @@ export default {
     projectTags: [],
     financeStage: [],
     permissions: [],
+    roles: [],
   },
 
   effects: {
@@ -55,6 +56,9 @@ export default {
             type: 'fund/fetch',
           }),
           put({
+            type: 'roles',
+          }),
+          put({
             type: 'initRealm',
           }),
         ]);
@@ -66,6 +70,20 @@ export default {
     *initRealm({ callback }, { call }) {
       try {
         yield call(initKeychain);
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *roles({ callback }, { call, put }) {
+      try {
+        const res = yield call(getAllRoles);
+        yield put({
+          type: 'getRoles',
+          payload: res.data,
+        });
         if (callback) {
           callback();
         }
@@ -104,6 +122,15 @@ export default {
       return {
         ...state,
         projectTags: payload,
+      };
+    },
+    getRoles(state, { payload }) {
+      return {
+        ...state,
+        constants: {
+          ...state.constants,
+          roles: payload,
+        },
       };
     },
   },

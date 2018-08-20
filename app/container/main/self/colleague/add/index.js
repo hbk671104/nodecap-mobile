@@ -8,31 +8,43 @@ import R from 'ramda';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
+import PickerSelect from 'component/picker';
 import InputItem from 'component/inputItem';
 import AuthButton from 'component/auth/button';
-import Selector from './selector';
 import styles from './style';
 
 @global.bindTrack({
-  page: '人脉资源添加/编辑',
-  name: 'App_HumanResourceAdd/UpdateOperation',
+  page: '我的同事添加/编辑',
+  name: 'App_ColleagueAdd/UpdateOperation',
 })
-@connect(({ resource }) => ({
-  types: resource.types,
-}))
 @createForm()
-class ResourceAdd extends Component {
+@connect(({ global }) => ({
+  roles: R.pathOr([], ['constants', 'roles'])(global),
+}))
+class ColleagueAdd extends Component {
   handleSubmitPress = () => {
     this.props.form.validateFields((err, value) => {
       if (!err) {
         const initial = this.props.navigation.getParam('default', {});
         const hasInitial = !R.isEmpty(initial);
-        this.props.track(hasInitial ? '更新' : '创建');
-        Toast.loading(hasInitial ? '更新中...' : '创建中...', 0);
+        const permissions = R.pipe(
+          R.find(r => r.name === value.role),
+          R.path(['permissions']),
+          R.keys,
+          R.map(r => ({ name: r })),
+        )(this.props.roles);
+
+        // track
+        this.props.track(hasInitial ? '更新' : '添加');
+
+        Toast.loading(hasInitial ? '更新中...' : '添加中...', 0);
         this.props.dispatch({
-          type: `resource/${hasInitial ? 'save' : 'create'}`,
-          payload: value,
-          ...(hasInitial ? { id: initial.id } : {}),
+          type: `colleague/${hasInitial ? 'save' : 'create'}`,
+          payload: {
+            ...value,
+            permissions,
+            ...(hasInitial ? { id: initial.id } : {}),
+          },
           callback: () => {
             Toast.hide();
             this.goBack();
@@ -48,15 +60,17 @@ class ResourceAdd extends Component {
 
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
-    const { types } = this.props;
+    const { roles } = this.props;
+
     const initial = this.props.navigation.getParam('default', {});
     const hasInitial = !R.isEmpty(initial);
+
     return (
       <View style={styles.container}>
-        <NavBar gradient back title={`${hasInitial ? '编辑' : '创建'}人脉`} />
+        <NavBar gradient back title={`${hasInitial ? '编辑' : '添加'}同事`} />
         <EnhancedScroll>
-          {getFieldDecorator('name', {
-            initialValue: initial.name,
+          {getFieldDecorator('realname', {
+            initialValue: initial.realname,
             rules: [
               {
                 required: true,
@@ -68,53 +82,38 @@ class ResourceAdd extends Component {
               title="姓名"
               titleStyle={styles.item.title}
               placeholder="请输入姓名"
-              error={getFieldError('name')}
+              error={getFieldError('realname')}
             />,
           )}
-          {getFieldDecorator('types', {
-            initialValue: initial.types || [],
-            rules: [
-              {
-                required: true,
-                message: '请至少选择一个类型',
-              },
-            ],
-          })(
-            <InputItem
-              vertical
-              title="类型"
-              renderContent={({ onChange, value }) => (
-                <Selector data={types} onChange={onChange} value={value} />
-              )}
-              error={getFieldError('types')}
-            />,
-          )}
-          {getFieldDecorator('org', {
-            initialValue: initial.org,
-            rules: [
-              {
-                required: true,
-                message: '请输入机构',
-              },
-            ],
-          })(
-            <InputItem
-              title="机构"
-              titleStyle={styles.item.title}
-              placeholder="请输入机构"
-              error={getFieldError('org')}
-            />,
-          )}
-          {getFieldDecorator('title', {
-            initialValue: initial.title,
-          })(
-            <InputItem
-              title="职位"
-              titleStyle={styles.item.title}
-              placeholder="请输入职位"
-              error={getFieldError('title')}
-            />,
-          )}
+          {!R.isEmpty(roles) &&
+            getFieldDecorator('role', {
+              initialValue: initial.role,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择角色',
+                },
+              ],
+            })(
+              <InputItem
+                title="角色"
+                titleStyle={styles.item.title}
+                placeholder="请选择角色"
+                renderContent={({ onChange, value }) => (
+                  <PickerSelect
+                    hideIcon
+                    placeholder={{
+                      label: '请选择角色',
+                      value: null,
+                    }}
+                    data={roles.map(f => ({ label: f.name, value: f.name }))}
+                    onChange={onChange}
+                    value={value}
+                  />
+                )}
+                error={getFieldError('role')}
+              />,
+            )}
           {getFieldDecorator('mobile', {
             initialValue: initial.mobile,
           })(
@@ -126,51 +125,43 @@ class ResourceAdd extends Component {
               error={getFieldError('mobile')}
             />,
           )}
-          {getFieldDecorator('wechat', {
-            initialValue: initial.wechat,
-          })(
-            <InputItem
-              title="微信"
-              titleStyle={styles.item.title}
-              placeholder="请输入微信"
-              error={getFieldError('wechat')}
-            />,
-          )}
           {getFieldDecorator('email', {
             initialValue: initial.email,
+            rules: [
+              {
+                required: true,
+                message: '请输入登录账号',
+              },
+            ],
           })(
             <InputItem
-              title="邮箱"
+              title="登录账号"
               titleStyle={styles.item.title}
-              placeholder="请输入邮箱"
+              placeholder="请输入登录账号"
               error={getFieldError('email')}
             />,
           )}
-          {getFieldDecorator('address', {
-            initialValue: initial.address,
-          })(
-            <InputItem
-              title="常驻地"
-              titleStyle={styles.item.title}
-              placeholder="请输入常驻地"
-              error={getFieldError('address')}
-            />,
-          )}
-          {getFieldDecorator('comment', {
-            initialValue: initial.comment,
-          })(
-            <InputItem
-              title="备注"
-              titleStyle={styles.item.title}
-              placeholder="请输入备注"
-              error={getFieldError('comment')}
-            />,
-          )}
+          {!hasInitial &&
+            getFieldDecorator('password', {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入初始密码',
+                },
+              ],
+            })(
+              <InputItem
+                title="初始密码"
+                titleStyle={styles.item.title}
+                placeholder="请输入初始密码"
+                error={getFieldError('password')}
+              />,
+            )}
         </EnhancedScroll>
         <AuthButton
           style={styles.bottom.container}
           disabled={false}
-          title={hasInitial ? '保 存' : '创 建'}
+          title={hasInitial ? '保 存' : '添 加'}
           onPress={this.handleSubmitPress}
         />
       </View>
@@ -178,4 +169,4 @@ class ResourceAdd extends Component {
   }
 }
 
-export default ResourceAdd;
+export default ColleagueAdd;
