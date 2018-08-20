@@ -15,20 +15,22 @@ import { Toast } from 'antd-mobile';
 
 import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
+import Avatar from 'component/uikit/avatar';
 import Loading from 'component/uikit/loading';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 import styles from './style';
+import { isMoment } from 'moment';
 
 @global.bindTrack({
-  page: '人脉资源详情',
-  name: 'App_HumanResourceDetailOperation',
+  page: '我的同事详情',
+  name: 'App_ColleagueDetailOperation',
 })
-@connect(({ resource, loading }) => ({
-  data: R.pathOr(null, ['current'])(resource),
-  loading: loading.effects['resource/get'],
+@connect(({ colleague, loading }) => ({
+  data: R.pathOr(null, ['current'])(colleague),
+  loading: loading.effects['colleague/get'],
 }))
-class ResourceDetail extends Component {
+class ColleagueDetail extends Component {
   componentWillMount() {
     InteractionManager.runAfterInteractions(() => {
       this.loadData();
@@ -42,7 +44,7 @@ class ResourceDetail extends Component {
   loadData = () => {
     const item = this.props.navigation.getParam('item');
     if (item && item.id) {
-      this.props.dispatch({ type: 'resource/get', payload: item.id });
+      this.props.dispatch({ type: 'colleague/get', payload: item.id });
     }
   };
 
@@ -51,7 +53,7 @@ class ResourceDetail extends Component {
   };
 
   clearData = () => {
-    this.props.dispatch({ type: 'resource/clearCurrent' });
+    this.props.dispatch({ type: 'colleague/clearCurrent' });
   };
 
   confirmDelete = () => {
@@ -60,9 +62,8 @@ class ResourceDetail extends Component {
       this.props.track('删除');
       Toast.loading('正在删除...', 0);
       this.props.dispatch({
-        type: 'resource/delete',
-        id: item.id,
-        payload: item,
+        type: 'colleague/delete',
+        payload: item.id,
         callback: () => {
           Toast.hide();
           this.goBack();
@@ -86,15 +87,10 @@ class ResourceDetail extends Component {
 
   handleDeletePress = () => {
     const { data } = this.props;
-    Alert.alert('提示', `确认删除人脉 「${data.name}」 吗？`, [
+    Alert.alert('提示', `确认删除同事 「${data.realname}」 吗？`, [
       { text: '确认', onPress: this.confirmDelete },
       { text: '取消', style: 'cancel' },
     ]);
-  };
-
-  handleWechatPress = wechat => () => {
-    Clipboard.setString(wechat);
-    Toast.success('微信复制成功', Toast.SHORT);
   };
 
   renderContent = content => (
@@ -112,7 +108,7 @@ class ResourceDetail extends Component {
 
   renderNavBarRight = () => (
     <View style={styles.navBar.right.container}>
-      {hasPermission('resource-delete') && (
+      {hasPermission('user-delete') && (
         <Touchable
           style={styles.navBar.right.group.container}
           onPress={this.handleDeletePress}
@@ -120,7 +116,7 @@ class ResourceDetail extends Component {
           <Text style={styles.navBar.right.group.title}>删除</Text>
         </Touchable>
       )}
-      {hasPermission('resource-update') && (
+      {hasPermission('user-update') && (
         <Touchable
           style={styles.navBar.right.group.container}
           onPress={this.handleEditPress}
@@ -131,8 +127,25 @@ class ResourceDetail extends Component {
     </View>
   );
 
-  render() {
+  renderNavBarBottom = () => {
     const item = this.props.navigation.getParam('item');
+    return (
+      <View style={styles.navBar.bottom.container}>
+        <Avatar
+          raised={false}
+          resizeMode="cover"
+          source={{ uri: item.avatar_url }}
+          size={84}
+          innerRatio={0.94}
+        />
+        <View style={styles.navBar.bottom.title.container}>
+          <Text style={styles.navBar.bottom.title.text}>{item.realname}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  render() {
     const { data, loading } = this.props;
     const invalid = R.isNil(data) || loading;
     return (
@@ -140,13 +153,13 @@ class ResourceDetail extends Component {
         <NavBar
           gradient
           back
-          title={item.name}
           renderRight={() => {
             if (invalid) {
               return null;
             }
             return this.renderNavBarRight();
           }}
+          renderBottom={this.renderNavBarBottom}
         />
         {invalid ? (
           <Loading />
@@ -154,58 +167,20 @@ class ResourceDetail extends Component {
           <ScrollView>
             <ListItem
               disablePress
-              title="姓名"
+              title="角色"
               titleStyle={styles.item.title}
-              renderContent={() => this.renderContent(data.name)}
-            />
-            <ListItem
-              disablePress
-              title="类别"
-              titleStyle={styles.item.title}
-              renderContent={() => {
-                if (R.isEmpty(data.types)) {
-                  return this.renderContent(null);
-                }
-                return (
-                  <View style={styles.typesContainer}>
-                    {data.types.map(t => (
-                      <View key={t.id} style={{ marginRight: 8 }}>
-                        {this.renderContent(t.name)}
-                      </View>
-                    ))}
-                  </View>
-                );
-              }}
-            />
-            <ListItem
-              disablePress
-              title="机构"
-              titleStyle={styles.item.title}
-              renderContent={() => this.renderContent(data.org)}
-            />
-            <ListItem
-              disablePress
-              title="职位"
-              titleStyle={styles.item.title}
-              renderContent={() => this.renderContent(data.title)}
+              renderContent={() => this.renderContent(data.role)}
             />
             <ListItem
               disablePress={!data.mobile}
-              title="手机"
+              title="手机号"
               titleStyle={styles.item.title}
               renderContent={() => this.renderContent(data.mobile)}
               onPress={() => Communications.phonecall(data.mobile, false)}
             />
             <ListItem
-              disablePress={!data.wechat}
-              title="微信"
-              titleStyle={styles.item.title}
-              renderContent={() => this.renderContent(data.wechat)}
-              onPress={this.handleWechatPress(data.wechat)}
-            />
-            <ListItem
               disablePress={!data.email}
-              title="邮箱"
+              title="账号"
               titleStyle={styles.item.title}
               renderContent={() => this.renderContent(data.email)}
               onPress={() =>
@@ -218,18 +193,6 @@ class ResourceDetail extends Component {
                 )
               }
             />
-            <ListItem
-              disablePress
-              title="常驻地"
-              titleStyle={styles.item.title}
-              renderContent={() => this.renderContent(data.address)}
-            />
-            <ListItem
-              disablePress
-              title="备注"
-              titleStyle={styles.item.title}
-              renderContent={() => this.renderContent(data.comment)}
-            />
           </ScrollView>
         )}
       </View>
@@ -237,4 +200,4 @@ class ResourceDetail extends Component {
   }
 }
 
-export default ResourceDetail;
+export default ColleagueDetail;

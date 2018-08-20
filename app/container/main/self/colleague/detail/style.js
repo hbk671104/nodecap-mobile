@@ -18,6 +18,22 @@ export default {
         },
       },
     },
+    bottom: {
+      container: {
+        alignItems: 'center',
+        paddingVertical: 24,
+      },
+      title: {
+        container: {
+          marginTop: 15,
+        },
+        text: {
+          color: 'white',
+          fontWeight: 'bold',
+          fontSize: 18,
+        },
+      },
+    },
   },
   item: {
     container: {},

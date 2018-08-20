@@ -77,7 +77,7 @@ export default class Colleague extends Component {
   };
 
   renderItem = ({ item }) => (
-    <ColleagueItem data={item} onPress={this.handleItemPress} />
+    <ColleagueItem data={item} onPress={this.handleItemPress(item)} />
   );
 
   renderNavBar = () => (
