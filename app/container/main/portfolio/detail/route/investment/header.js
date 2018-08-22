@@ -61,39 +61,39 @@ class header extends PureComponent {
     return (
       <View style={styles.header.root}>
         <View style={styles.header.container}>
-          <Flex>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.name}>{projectProps(['name'])}</Text>
-              <StatusBadge status={projectProps(['status'])} />
-              <View style={{ marginTop: 3 }}>
-                {!!projectProps(['token_name']) && (
-                  <Text style={styles.header.tokenName}>
-                    Token:{' '}
-                    <Text style={styles.header.contentText}>
-                      {projectProps(['token_name'])}
-                    </Text>
-                  </Text>
-                )}
+          <View>
+            <Text style={[styles.name, { marginRight: 65 }]}>
+              {projectProps(['name'])}
+            </Text>
+            <StatusBadge status={projectProps(['status'])} />
+            <View style={{ marginTop: 3 }}>
+              {!!projectProps(['token_name']) && (
                 <Text style={styles.header.tokenName}>
-                  成本价:{' '}
-                  {projectProps(['unit_cost']) ? (
-                    <Text style={styles.header.contentText}>
-                      <Price symbol="ETH">
-                        {projectProps(['unit_cost', 'ETH'])}
-                      </Price>{' '}
-                      ETH ≈{' '}
-                      <Price symbol="CNY">
-                        {projectProps(['unit_cost', 'CNY'])}
-                      </Price>{' '}
-                      CNY
-                    </Text>
-                  ) : (
-                    '前往网页版添加投资记录，查看成本价'
-                  )}
+                  Token:{' '}
+                  <Text style={styles.header.contentText}>
+                    {projectProps(['token_name'])}
+                  </Text>
                 </Text>
-              </View>
+              )}
+              <Text style={styles.header.tokenName}>
+                成本价:{' '}
+                {projectProps(['unit_cost']) ? (
+                  <Text style={styles.header.contentText}>
+                    <Price symbol="ETH">
+                      {projectProps(['unit_cost', 'ETH'])}
+                    </Price>{' '}
+                    ETH ≈{' '}
+                    <Price symbol="CNY">
+                      {projectProps(['unit_cost', 'CNY'])}
+                    </Price>{' '}
+                    CNY
+                  </Text>
+                ) : (
+                  '前往网页版添加投资记录，查看成本价'
+                )}
+              </Text>
             </View>
-          </Flex>
+          </View>
           <View style={styles.header.descContainer}>
             <ReadMore
               renderTruncatedFooter={this.renderViewMore}

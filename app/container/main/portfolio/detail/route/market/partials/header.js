@@ -76,7 +76,8 @@ const headers = props => {
           </View>
         </View>
         <Text style={styles.price.cost}>
-          成本价：{symbol(currentSym, styles.price.cost)}{' '}
+          成本价：
+          {symbol(currentSym, styles.price.cost)}{' '}
           <Price symbol={currentSym}>{cost}</Price>
         </Text>
       </View>
@@ -134,9 +135,9 @@ const styles = {
   top: {
     container: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
     },
     title: {
+      flex: 1,
       color: '#333333',
       fontSize: 20,
       fontWeight: 'bold',

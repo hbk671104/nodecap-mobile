@@ -53,17 +53,20 @@ const unexchangeableItem = ({ item, onPress }) => (
       <View style={styles.bottom.container}>
         {!!item.unit_cost && (
           <Text style={[styles.bottom.content, { marginBottom: 14 }]}>
-            成本价：<Price symbol="ETH">{item.unit_cost.ETH}</Price> ETH ≈{' '}
+            成本价：
+            <Price symbol="ETH">{item.unit_cost.ETH}</Price> ETH ≈{' '}
             <Price symbol="CNY">{item.unit_cost.CNY}</Price> CNY
           </Text>
         )}
         <View style={styles.bottom.contentContainer}>
           <View>
             <Text style={styles.bottom.content}>
-              项目来源：{item.source || '未收录'}
+              项目来源：
+              {item.source || '未收录'}
             </Text>
             <Text style={[styles.bottom.content, { marginTop: 7 }]}>
-              跟进人：{item.watch_user || '未收录'}
+              跟进人：
+              {item.watch_user || '未收录'}
             </Text>
           </View>
           <View style={{ justifyContent: 'flex-end' }}>

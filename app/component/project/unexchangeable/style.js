@@ -14,11 +14,12 @@ export default {
   top: {
     container: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
+      // justifyContent: 'space-between',
     },
     group: {
       flexDirection: 'row',
       alignItems: 'center',
+      flex: 1,
     },
     title: {
       container: {
