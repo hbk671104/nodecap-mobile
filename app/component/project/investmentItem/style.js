@@ -44,6 +44,7 @@ export default {
     title: {
       container: {
         marginLeft: 10,
+        flex: 1,
       },
       text: {
         color: '#333333',
