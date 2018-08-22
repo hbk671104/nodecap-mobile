@@ -123,11 +123,7 @@ class List extends PureComponent {
   };
 
   renderEmpty = () => {
-    if (
-      this.props.refreshing ||
-      this.props.loading ||
-      R.isNil(this.props.data)
-    ) {
+    if (R.isNil(this.props.data)) {
       return null;
     }
     if (this.props.renderEmpty) {

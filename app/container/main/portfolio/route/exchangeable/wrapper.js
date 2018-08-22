@@ -13,6 +13,7 @@ class Wrapper extends Component {
     return (
       <View style={styles.container}>
         <ScrollableTabView
+          locked
           prerenderingSiblingsNumber={Infinity}
           renderTabBar={this.renderHeader}
         >
