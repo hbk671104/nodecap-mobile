@@ -72,8 +72,13 @@ export default class Dashboard extends Component {
   };
 
   componentWillMount() {
-    const { currentFund } = this.state;
-    this.getDashboardData(currentFund.id);
+    this.getDashboardData();
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(() => {
+      this.getDashboardData();
+    }, 5000);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -86,7 +91,11 @@ export default class Dashboard extends Component {
     }
   }
 
-  getDashboardData = id => {
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  getDashboardData = (id = this.state.currentFund.id) => {
     this.props.dispatch({
       type: 'dashboard/fetch',
       payload: id,
