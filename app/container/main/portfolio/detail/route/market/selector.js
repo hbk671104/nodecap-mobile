@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import R from 'ramda';
 
@@ -14,7 +14,7 @@ const selector = ({ symbols, currentSymbol, onSelect }) => {
   return (
     <View style={styles.wrapper}>
       <Arrow style={styles.arrow} />
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         {symbols.map((s, i) => {
           const selected = currentSymbol === s.symbol;
           return (
@@ -35,7 +35,8 @@ const selector = ({ symbols, currentSymbol, onSelect }) => {
                           selected && styles.item.content.highlight,
                         ]}
                       >
-                        {k === 'CNY' && '≈'} <Price symbol={k}>{item}</Price> {k}
+                        {k === 'CNY' && '≈'} <Price symbol={k}>{item}</Price>{' '}
+                        {k}
                       </Text>
                     );
                   })}
@@ -44,7 +45,7 @@ const selector = ({ symbols, currentSymbol, onSelect }) => {
             </Touchable>
           );
         })}
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -57,6 +58,7 @@ const styles = {
   container: {
     backgroundColor: 'white',
     borderRadius: 2,
+    maxHeight: 325,
   },
   arrow: {
     alignSelf: 'flex-end',
