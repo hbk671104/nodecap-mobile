@@ -22,4 +22,13 @@ export default {
       marginTop: 8.5,
     },
   },
+  projectItem: {
+    container: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
+    contentContainer: {
+      marginLeft: 24,
+    },
+  },
 };

@@ -11,7 +11,7 @@ import styles from './style';
 @connect(({ fund, loading }, { fid }) => ({
   holding: R.pipe(
     R.pathOr([], ['funds']),
-    R.find(R.propEq('id', fid)),
+    R.find(f => `${f.id}` === fid),
     R.pathOr({}, ['holding_report']),
   )(fund),
   loading: loading.effects['fund/fetchHoldingReport'],

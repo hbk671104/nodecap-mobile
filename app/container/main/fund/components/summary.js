@@ -1,27 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
+import R from 'ramda';
 
-const summary = props => (
-  <View style={styles.container}>
-    <View style={styles.top.container}>
-      <View>
-        <Text style={styles.top.title}>累计投资</Text>
-        <Text style={[styles.top.subtitle, { marginTop: 4 }]}>280,000 ETH</Text>
+import Format from 'component/format';
+
+const summary = ({ overall }) => {
+  const symbol = R.pathOr('-', ['symbol'])(overall);
+  const invested = R.pathOr('--', ['invested_count'])(overall);
+  const rest = R.pathOr('--', ['rest_count'])(overall);
+  return (
+    <View style={styles.container}>
+      <View style={styles.top.container}>
+        <View>
+          <Text style={styles.top.title}>累计投资</Text>
+          <Text style={[styles.top.subtitle, { marginTop: 4 }]}>
+            <Format digit={0}>{invested}</Format> {symbol}
+          </Text>
+        </View>
+        <View style={{ alignItems: 'flex-end' }}>
+          <Text style={styles.top.title}>剩余可投</Text>
+          <Text style={[styles.top.subtitle, { marginTop: 4 }]}>
+            <Format digit={0}>{rest}</Format> {symbol}
+          </Text>
+        </View>
       </View>
-      <View style={{ alignItems: 'flex-end' }}>
-        <Text style={styles.top.title}>剩余可投</Text>
-        <Text style={[styles.top.subtitle, { marginTop: 4 }]}>3,712 ETH</Text>
-      </View>
+      {invested !== '--' &&
+        rest !== '--' && (
+          <View style={styles.bottom.container}>
+            <View style={styles.bottom.bar.container}>
+              <View
+                style={[
+                  styles.bottom.bar.invested,
+                  { flex: parseInt(invested, 10) },
+                ]}
+              />
+              <View
+                style={[styles.bottom.bar.rest, { flex: parseInt(rest, 10) }]}
+              />
+            </View>
+          </View>
+        )}
     </View>
-    <View style={styles.bottom.container}>
-      <View style={styles.bottom.bar.container}>
-        <View style={[styles.bottom.bar.invested, { flex: 3 }]} />
-        <View style={[styles.bottom.bar.rest, { flex: 1 }]} />
-      </View>
-    </View>
-  </View>
-);
+  );
+};
 
 const styles = {
   container: {},

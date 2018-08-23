@@ -8,13 +8,11 @@ import List from 'component/uikit/list';
 import ReportItem from '../components/reportItem';
 import styles from './style';
 
-const mock = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
-
 @connect(({ fund, loading }, { fid }) => ({
   investment: R.pipe(
     R.pathOr([], ['funds']),
-    R.find(R.propEq('id', fid)),
-    R.pathOr({}, ['investment_report']),
+    R.find(f => `${f.id}` === fid),
+    R.pathOr([], ['investment_report']),
   )(fund),
   loading: loading.effects['fund/fetchInvestmentReport'],
 }))
@@ -33,9 +31,14 @@ export default class Report extends Component {
   );
 
   render() {
+    const { loading, investment } = this.props;
     return (
       <View style={styles.container}>
-        <List data={mock} renderItem={this.renderItem} />
+        <List
+          loading={loading}
+          data={investment}
+          renderItem={this.renderItem}
+        />
       </View>
     );
   }
