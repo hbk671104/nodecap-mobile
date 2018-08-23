@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
@@ -11,8 +12,21 @@ import DataItem from '../components/dataItem';
 import Investment from '../components/investment';
 import styles from './style';
 
-@connect()
+@connect(({ fund }, { fid }) => ({
+  overall: R.pipe(
+    R.pathOr([], ['funds']),
+    R.find(R.propEq('id', fid)),
+    R.pathOr({}, ['general_report']),
+  )(fund),
+}))
 class FundOverall extends Component {
+  componentWillMount() {
+    this.props.dispatch({
+      type: 'fund/fetchGeneralReport',
+      id: this.props.fid,
+    });
+  }
+
   handleProjectPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
