@@ -26,9 +26,9 @@ class FundWrapper extends Component {
             />
           )}
         >
-          <Overall tabLabel="整体情况" />
-          <Report tabLabel="投资报表" />
-          <Holdings tabLabel="持仓分析" />
+          <Overall {...this.props} tabLabel="整体情况" />
+          <Report {...this.props} tabLabel="投资报表" />
+          <Holdings {...this.props} tabLabel="持仓分析" />
         </ScrollableTabView>
       </View>
     );

@@ -572,6 +572,18 @@ export function modifyCompany(params) {
   return request.put('/company', params);
 }
 
+export function holdingReport(fid) {
+  return request.get(`/funds/${fid}/position-report`);
+}
+
+export function investmentReport(fid) {
+  return request.get(`/funds/${fid}/investment-report`);
+}
+
+export function generalReport(fid) {
+  return request.get(`/funds/${fid}/general-report`);
+}
+
 /**
  * 注册验证码
  * @param mobile

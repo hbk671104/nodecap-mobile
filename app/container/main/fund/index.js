@@ -14,7 +14,7 @@ import ReportItem from './components/reportItem';
   name: 'App_FundManagementOperation',
 })
 @connect(({ fund }) => ({
-  fund: R.pathOr([], ['funds', 'data'])(fund),
+  fund: R.pathOr([], ['funds'])(fund),
 }))
 class Fund extends Component {
   state = {
@@ -83,7 +83,7 @@ class Fund extends Component {
     if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
       return null;
     }
-    return <FundWrapper />;
+    return <FundWrapper fid={route.key} />;
   };
 
   render() {

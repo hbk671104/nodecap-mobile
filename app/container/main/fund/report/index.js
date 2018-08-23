@@ -10,8 +10,21 @@ import styles from './style';
 
 const mock = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
 
-@connect()
+@connect(({ fund }, { fid }) => ({
+  investment: R.pipe(
+    R.pathOr([], ['funds']),
+    R.find(R.propEq('id', fid)),
+    R.pathOr({}, ['investment_report']),
+  )(fund),
+}))
 export default class Report extends Component {
+  componentWillMount() {
+    this.props.dispatch({
+      type: 'fund/fetchInvestmentReport',
+      id: this.props.fid,
+    });
+  }
+
   handleItemPress = item => () => {};
 
   renderItem = ({ item }) => (
