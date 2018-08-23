@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
+import RefreshableScroll from 'component/scrollView';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import FundGroup from '../components/group';
@@ -12,20 +13,25 @@ import DataItem from '../components/dataItem';
 import Investment from '../components/investment';
 import styles from './style';
 
-@connect(({ fund }, { fid }) => ({
+@connect(({ fund, loading }, { fid }) => ({
   overall: R.pipe(
     R.pathOr([], ['funds']),
     R.find(R.propEq('id', fid)),
     R.pathOr({}, ['general_report']),
   )(fund),
+  loading: loading.effects['fund/fetchGeneralReport'],
 }))
 class FundOverall extends Component {
   componentWillMount() {
+    this.loadOverall();
+  }
+
+  loadOverall = () => {
     this.props.dispatch({
       type: 'fund/fetchGeneralReport',
       id: this.props.fid,
     });
-  }
+  };
 
   handleProjectPress = () => {
     this.props.dispatch(
@@ -36,9 +42,14 @@ class FundOverall extends Component {
   };
 
   render() {
+    const { loading } = this.props;
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <RefreshableScroll
+          enableRefresh
+          loading={loading}
+          onRefresh={this.loadOverall}
+        >
           <FundGroup
             shadow
             title="基金概况"
@@ -94,7 +105,7 @@ class FundOverall extends Component {
             />
           </FundGroup>
           <FundGroup title="已上所项目收益 TOP 5" />
-        </ScrollView>
+        </RefreshableScroll>
       </View>
     );
   }

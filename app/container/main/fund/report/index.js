@@ -10,12 +10,13 @@ import styles from './style';
 
 const mock = [{ id: 0 }, { id: 1 }, { id: 2 }, { id: 3 }];
 
-@connect(({ fund }, { fid }) => ({
+@connect(({ fund, loading }, { fid }) => ({
   investment: R.pipe(
     R.pathOr([], ['funds']),
     R.find(R.propEq('id', fid)),
     R.pathOr({}, ['investment_report']),
   )(fund),
+  loading: loading.effects['fund/fetchInvestmentReport'],
 }))
 export default class Report extends Component {
   componentWillMount() {

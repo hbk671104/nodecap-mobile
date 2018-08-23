@@ -15,7 +15,6 @@ export default function (options) {
     createLoading({
       only: [
         'login/login',
-        'dashboard/fetch',
         'login/setPassword',
         'portfolio/index',
         'portfolio/investment',
@@ -26,6 +25,9 @@ export default function (options) {
         'user/createCompany',
         'resource/get',
         'resource/index',
+        'fund/fetchHoldingReport',
+        'fund/fetchGeneralReport',
+        'fund/fetchInvestmentReport',
       ],
     }),
   );

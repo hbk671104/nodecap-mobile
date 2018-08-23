@@ -80,7 +80,7 @@ class Fund extends Component {
   };
 
   renderScene = ({ route }) => {
-    if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
+    if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 1) {
       return null;
     }
     return <FundWrapper fid={route.key} />;

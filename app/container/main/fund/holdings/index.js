@@ -3,29 +3,40 @@ import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 
+import RefreshableScroll from 'component/scrollView';
 import Group from '../components/holdingItem/group';
 import Item from '../components/holdingItem';
 import styles from './style';
 
-@connect(({ fund }, { fid }) => ({
+@connect(({ fund, loading }, { fid }) => ({
   holding: R.pipe(
     R.pathOr([], ['funds']),
     R.find(R.propEq('id', fid)),
     R.pathOr({}, ['holding_report']),
   )(fund),
+  loading: loading.effects['fund/fetchHoldingReport'],
 }))
 class FundHoldings extends Component {
   componentWillMount() {
+    this.loadHolding();
+  }
+
+  loadHolding = () => {
     this.props.dispatch({
       type: 'fund/fetchHoldingReport',
       id: this.props.fid,
     });
-  }
+  };
 
   render() {
+    const { loading } = this.props;
     return (
       <View style={styles.container}>
-        <ScrollView>
+        <RefreshableScroll
+          enableRefresh
+          loading={loading}
+          onRefresh={this.loadHolding}
+        >
           <Group title="剩余可投">
             <Item />
             <Item />
@@ -41,7 +52,7 @@ class FundHoldings extends Component {
             <Item />
             <Item noBottomBorder />
           </Group>
-        </ScrollView>
+        </RefreshableScroll>
       </View>
     );
   }

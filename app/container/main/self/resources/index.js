@@ -92,9 +92,9 @@ class Resources extends Component {
   };
 
   renderScene = ({ route }) => {
-    if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
-      return null;
-    }
+    // if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
+    //   return null;
+    // }
     return (
       <ResourceList
         type={route.key}
