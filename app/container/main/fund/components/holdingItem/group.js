@@ -1,30 +1,45 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
+import R from 'ramda';
 
-const group = ({ title, item, children }) => (
-  <View style={styles.container}>
-    <View style={styles.bar.container}>
-      <View style={{ flex: 3 }}>
-        <Text style={styles.bar.title}>{title}</Text>
-      </View>
-      {!!item && (
+import Format from 'component/format';
+import Amount from 'component/amount';
+
+const group = ({ title, item, children }) => {
+  const ratio = R.pathOr('--', ['ratio'])(item);
+  const invest_symbol = R.pathOr('--', ['invest_symbol'])(item);
+  const valuation = R.pathOr('--', ['valuation', invest_symbol])(item);
+  const valuation_cny = R.pathOr('--', ['valuation', 'CNY'])(item);
+  return (
+    <View style={styles.container}>
+      <View style={styles.bar.container}>
         <View style={{ flex: 3 }}>
-          <Text style={styles.bar.subtitle}>27,220 ETH</Text>
-          <Text style={[styles.bar.content, { marginTop: 3 }]}>
-            约 4668.22万元
-          </Text>
+          <Text style={styles.bar.title}>{title}</Text>
         </View>
-      )}
-      {!!item && (
-        <View style={{ flex: 2, alignItems: 'flex-end' }}>
-          <Text style={styles.bar.subtitle}>12.10%</Text>
-        </View>
-      )}
+        {!!item && (
+          <View style={{ flex: 3 }}>
+            <Text style={styles.bar.subtitle}>
+              <Format>{valuation}</Format> {invest_symbol}
+            </Text>
+            <Text style={[styles.bar.content, { marginTop: 3 }]}>
+              约 <Amount>{valuation_cny}</Amount>元
+            </Text>
+          </View>
+        )}
+        {!!item && (
+          <View style={{ flex: 2, alignItems: 'flex-end' }}>
+            <Text style={styles.bar.content}>占总量</Text>
+            <Text style={[styles.bar.subtitle, { marginTop: 3 }]}>
+              <Format>{ratio}</Format>%
+            </Text>
+          </View>
+        )}
+      </View>
+      {children}
     </View>
-    {children}
-  </View>
-);
+  );
+};
 
 group.propTypes = {
   title: PropTypes.string.isRequired,

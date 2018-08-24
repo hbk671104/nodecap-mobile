@@ -45,9 +45,9 @@ class FundProject extends Component {
           <ProjectList tabLabel="全部" />
           <ProjectList tabLabel="已上所" />
           <ProjectList tabLabel="未上所" />
-          <ProjectList tabLabel="未出货" />
-          <ProjectList tabLabel="部分出货" />
-          <ProjectList tabLabel="完全出货" />
+          <ProjectList tabLabel="未卖出" />
+          <ProjectList tabLabel="部分卖出" />
+          <ProjectList tabLabel="完全卖出" />
         </ScrollableTabView>
       </View>
     );

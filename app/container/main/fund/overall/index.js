@@ -128,7 +128,7 @@ class FundOverall extends Component {
               subcontent={R.pathOr('--', ['CNY'])(cap)}
             />
             <DataItem
-              title="出货所得"
+              title="卖出所得"
               content={R.pathOr('--', [symbol])(sold_return)}
               symbol={symbol}
               subcontent={R.pathOr('--', ['CNY'])(sold_return)}

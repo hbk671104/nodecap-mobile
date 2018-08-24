@@ -17,17 +17,29 @@ import styles from './style';
   loading: loading.effects['fund/fetchInvestmentReport'],
 }))
 export default class Report extends Component {
-  componentWillMount() {
+  loadInvestment = () => {
     this.props.dispatch({
       type: 'fund/fetchInvestmentReport',
       id: this.props.fid,
     });
-  }
+  };
 
-  handleItemPress = item => () => {};
+  handleItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item: {
+            ...item,
+            can_calculate: true,
+          },
+        },
+      }),
+    );
+  };
 
   renderItem = ({ item }) => (
-    <ReportItem onPress={this.handleItemPress(item)} />
+    <ReportItem data={item} onPress={this.handleItemPress(item)} />
   );
 
   render() {
@@ -35,6 +47,8 @@ export default class Report extends Component {
     return (
       <View style={styles.container}>
         <List
+          contentContainerStyle={styles.listContent}
+          action={this.loadInvestment}
           loading={loading}
           data={investment}
           renderItem={this.renderItem}

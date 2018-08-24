@@ -50,9 +50,9 @@ const investment = ({ overall }) => {
       <View style={styles.divider} />
       <View style={[styles.group, { paddingLeft: 24 }]}>
         <View style={styles.item.group}>
-          {item({ title: '未出货', subtitle: unsold_count })}
-          {item({ title: '部分出货', subtitle: partial_sold_count })}
-          {item({ title: '完全出货', subtitle: total_sold_count })}
+          {item({ title: '未卖出', subtitle: unsold_count })}
+          {item({ title: '部分卖出', subtitle: partial_sold_count })}
+          {item({ title: '完全卖出', subtitle: total_sold_count })}
         </View>
         <View style={styles.pie.container}>
           <VictoryPie
