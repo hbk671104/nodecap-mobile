@@ -1,7 +1,8 @@
-import { Dimensions, Platform } from 'react-native';
+import { Dimensions } from 'react-native';
 
-export const deviceWidth = Dimensions.get('window').width;
-export const indicatorWidth = 25;
+const tabWidth = 125;
+const indicatorWidth = 25;
+
 export default {
   container: {
     flex: 1,
@@ -35,6 +36,11 @@ export default {
   tabBar: {
     container: {
       backgroundColor: 'transparent',
+      width: tabWidth * 2,
+    },
+    tab: {
+      width: tabWidth,
+      padding: 0,
     },
     label: {
       fontSize: 14,
@@ -45,7 +51,8 @@ export default {
       backgroundColor: 'white',
       width: indicatorWidth,
       borderRadius: 1.5,
-      bottom: 5,
+      bottom: 0,
+      left: (tabWidth - indicatorWidth) / 2,
     },
   },
 };

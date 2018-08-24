@@ -12,17 +12,17 @@ import styles from './style';
 @global.bindTrack({
   page: '投资库',
   name: 'App_ProjectOperation',
-  subModuleName: '未投项目',
+  subModuleName: '待投项目',
 })
 @connect(({ portfolio, loading }, { status }) => ({
-  data: R.pathOr(null, ['unexchangeable', status, 'index', 'data'])(portfolio),
-  pagination: R.pathOr(null, ['unexchangeable', status, 'index', 'pagination'])(
+  data: R.pathOr(null, ['projectList', status, 'index', 'data'])(portfolio),
+  pagination: R.pathOr(null, ['projectList', status, 'index', 'pagination'])(
     portfolio,
   ),
-  params: R.pathOr(null, ['unexchangeable', status, 'params'])(portfolio),
+  params: R.pathOr(null, ['projectList', status, 'params'])(portfolio),
   loading: loading.effects['portfolio/index'],
 }))
-export default class Unexchangeable extends Component {
+export default class Project extends Component {
   requestData = (page, size, callback) => {
     const { status } = this.props;
     this.props.dispatch({
@@ -71,6 +71,7 @@ export default class Unexchangeable extends Component {
     return (
       <View style={styles.container}>
         <List
+          contentContainerStyle={{ paddingTop: 10 }}
           action={this.requestData}
           data={data}
           pagination={pagination}

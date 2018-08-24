@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import Header from './header';
-import ExchangeableList from './index';
+import ProjectList from './index';
 import styles from './style';
 
 class Wrapper extends Component {
@@ -16,11 +16,12 @@ class Wrapper extends Component {
           locked
           prerenderingSiblingsNumber={Infinity}
           renderTabBar={this.renderHeader}
+          contentProps={{ style: { marginTop: 5 } }}
         >
-          <ExchangeableList {...this.props} rank="profits" />
-          <ExchangeableList {...this.props} rank="roi" />
-          <ExchangeableList {...this.props} rank="increase" />
-          <ExchangeableList {...this.props} rank="cost" />
+          <ProjectList {...this.props} status="0,1,2,3,4,5,6" />
+          <ProjectList {...this.props} status="4" />
+          <ProjectList {...this.props} status="5" />
+          <ProjectList {...this.props} status="6" />
         </ScrollableTabView>
       </View>
     );

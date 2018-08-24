@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import { compose, withState } from 'recompose';
 
 import List from 'component/uikit/list';
 import ProjectItem from 'component/project/item';
@@ -16,21 +17,26 @@ import styles from './style';
   name: 'App_ProjectOperation',
   subModuleName: '已投项目',
 })
-@connect(({ portfolio, loading }, { rank }) => ({
-  data: R.pathOr(null, ['exchangeable', rank, 'index', 'data'])(portfolio),
-  pagination: R.pathOr(null, ['exchangeable', rank, 'index', 'pagination'])(
-    portfolio,
-  ),
-  params: R.pathOr(null, ['exchangeable', rank, 'params'])(portfolio),
-  loading: loading.effects['portfolio/investment'],
-}))
-export default class Exchangeable extends Component {
+@compose(withState('rank', 'setRank', 'profits'))
+@connect(({ portfolio, loading }, { canCalculate }) => {
+  const key = canCalculate ? 'exchangeable' : 'unexchangeable';
+  return {
+    data: R.pathOr(null, ['portfolioList', key, 'index', 'data'])(portfolio),
+    pagination: R.pathOr(null, ['portfolioList', key, 'index', 'pagination'])(
+      portfolio,
+    ),
+    params: R.pathOr(null, ['portfolioList', key, 'params'])(portfolio),
+    loading: loading.effects['portfolio/investment'],
+  };
+})
+export default class Portfolio extends Component {
   requestData = (page, size, callback) => {
-    const { rank } = this.props;
+    const { rank, canCalculate } = this.props;
     this.props.dispatch({
       type: 'portfolio/investment',
       payload: {
         rank,
+        can_calculate: canCalculate ? 1 : 0,
         currentPage: page,
         pageSize: size,
       },
@@ -90,6 +96,7 @@ export default class Exchangeable extends Component {
     return (
       <View style={styles.container}>
         <List
+          contentContainerStyle={{ paddingTop: 10 }}
           action={this.requestData}
           data={data}
           pagination={pagination}
