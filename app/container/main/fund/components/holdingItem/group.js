@@ -14,13 +14,13 @@ const group = ({ title, item, children }) => {
   return (
     <View style={styles.container}>
       <View style={styles.bar.container}>
-        <View style={{ flex: 3 }}>
+        <View style={{ flex: 4 }}>
           <Text style={styles.bar.title}>{title}</Text>
         </View>
         {!!item && (
-          <View style={{ flex: 3 }}>
+          <View style={{ flex: 5 }}>
             <Text style={styles.bar.subtitle}>
-              <Format>{valuation}</Format> {invest_symbol}
+              <Format digit={1}>{valuation}</Format> {invest_symbol}
             </Text>
             <Text style={[styles.bar.content, { marginTop: 3 }]}>
               约 <Amount>{valuation_cny}</Amount>元

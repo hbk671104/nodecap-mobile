@@ -17,15 +17,15 @@ const holdingItem = ({ item, noBottomBorder }) => {
     <View
       style={[styles.container, noBottomBorder && { borderBottomWidth: 0 }]}
     >
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 4 }}>
         <Text style={styles.title}>{symbol}</Text>
         <Text style={[styles.content, { marginTop: 3 }]}>
           x <Format digit={0}>{count}</Format>
         </Text>
       </View>
-      <View style={{ flex: 3 }}>
+      <View style={{ flex: 5 }}>
         <Text style={styles.subtitle}>
-          <Format>{valuation}</Format> {invest_symbol}
+          <Format digit={1}>{valuation}</Format> {invest_symbol}
         </Text>
         <Text style={[styles.content, { marginTop: 3 }]}>
           约 <Amount>{valuation_cny}</Amount>元
