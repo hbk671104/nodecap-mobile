@@ -172,7 +172,7 @@ export default class Portfolio extends Component {
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
-        {!!addButtonVisible &&
+        {addButtonVisible &&
           hasPermission('project-create') && (
             <AddButton onPress={this.handleRightPress} />
           )}

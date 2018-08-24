@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import { compose, withState } from 'recompose';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import List from 'component/uikit/list';
 import ProjectItem from 'component/project/item';
 import PriceChangeItem from 'component/project/priceChangeItem';
 import InvestmentItem from 'component/project/investmentItem';
 import { hasPermission } from 'component/auth/permission/lock';
+
+import Selector from './selector';
 import styles from './style';
 
 @global.bindTrack({
@@ -17,7 +20,6 @@ import styles from './style';
   name: 'App_ProjectOperation',
   subModuleName: '已投项目',
 })
-@compose(withState('rank', 'setRank', 'profits'))
 @connect(({ portfolio, loading }, { canCalculate }) => {
   const key = canCalculate ? 'exchangeable' : 'unexchangeable';
   return {
@@ -26,16 +28,24 @@ import styles from './style';
       portfolio,
     ),
     params: R.pathOr(null, ['portfolioList', key, 'params'])(portfolio),
+    rank: R.path(['rank'])(portfolio),
     loading: loading.effects['portfolio/investment'],
   };
 })
+@compose(
+  withState('currentRank', 'setCurrentRank', props =>
+    R.path(['rank', 0])(props),
+  ),
+  withState('selectorVisible', 'setSelectorVisible', true),
+)
+@connectActionSheet
 export default class Portfolio extends Component {
   requestData = (page, size, callback) => {
-    const { rank, canCalculate } = this.props;
+    const { currentRank, canCalculate } = this.props;
     this.props.dispatch({
       type: 'portfolio/investment',
       payload: {
-        rank,
+        rank: currentRank.id,
         can_calculate: canCalculate ? 1 : 0,
         currentPage: page,
         pageSize: size,
@@ -59,8 +69,32 @@ export default class Portfolio extends Component {
     );
   };
 
+  handleSelectorPress = () => {
+    const { setCurrentRank, rank, showActionSheetWithOptions } = this.props;
+    showActionSheetWithOptions(
+      {
+        options: [...R.map(r => r.name)(rank), '取消'],
+        cancelButtonIndex: R.length(rank),
+      },
+      buttonIndex => {
+        const newRank = R.path([buttonIndex])(rank);
+        setCurrentRank(newRank, this.requestData);
+      },
+    );
+  };
+
+  handleMomentumScrollBegin = () => {
+    this.props.onMomentumScrollBegin();
+    this.props.setSelectorVisible(false);
+  };
+
+  handleMomentumScrollEnd = () => {
+    this.props.onMomentumScrollEnd();
+    this.props.setSelectorVisible(true);
+  };
+
   renderItem = ({ item, index }) => {
-    switch (this.props.rank) {
+    switch (this.props.currentRank.id) {
       case 'profits':
       case 'roi':
         return (
@@ -91,8 +125,21 @@ export default class Portfolio extends Component {
     }
   };
 
+  renderSelector = () => (
+    <Selector
+      item={this.props.currentRank}
+      onPress={this.handleSelectorPress}
+    />
+  );
+
   render() {
-    const { data, pagination, loading } = this.props;
+    const {
+      data,
+      pagination,
+      loading,
+      canCalculate,
+      selectorVisible,
+    } = this.props;
     return (
       <View style={styles.container}>
         <List
@@ -103,10 +150,11 @@ export default class Portfolio extends Component {
           loading={loading}
           renderItem={this.renderItem}
           onScroll={this.props.onScroll}
-          onMomentumScrollBegin={this.props.onMomentumScrollBegin}
-          onMomentumScrollEnd={this.props.onMomentumScrollEnd}
+          onMomentumScrollBegin={this.handleMomentumScrollBegin}
+          onMomentumScrollEnd={this.handleMomentumScrollEnd}
           scrollEventThrottle={500}
         />
+        {selectorVisible && canCalculate && this.renderSelector()}
       </View>
     );
   }

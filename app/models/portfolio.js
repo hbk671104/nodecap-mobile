@@ -77,6 +77,24 @@ export default {
     matchCoinList: {
       index: null,
     },
+    rank: [
+      {
+        id: 'profits',
+        name: '盈余榜',
+      },
+      {
+        id: 'roi',
+        name: '回报率榜',
+      },
+      {
+        id: 'increase',
+        name: '涨跌榜',
+      },
+      {
+        id: 'cost',
+        name: '投资榜',
+      },
+    ],
     current: null,
   },
   effects: {
