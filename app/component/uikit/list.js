@@ -42,7 +42,9 @@ class List extends PureComponent {
 
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
-      this.props.action();
+      if (R.isEmpty(this.props.data) || R.isNil(this.props.data)) {
+        this.props.action();
+      }
     }
   }
 

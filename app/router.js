@@ -22,6 +22,8 @@ import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
 import Dashboard from 'container/main/dashboard';
+import Fund from 'container/main/fund';
+import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
 import Management from 'container/main/management';
 import Self from 'container/main/self';
@@ -68,7 +70,13 @@ const AuthStack = createStackNavigator(
 
 const Tab = createBottomTabNavigator(
   {
-    Dashboard,
+    // Dashboard,
+    Fund: {
+      screen: Fund,
+      navigationOptions: {
+        title: '基金管理',
+      },
+    },
     Portfolio: {
       screen: Portfolio,
       navigationOptions: {
@@ -101,13 +109,13 @@ const Tab = createBottomTabNavigator(
       tabBarIcon: ({ focused }) => {
         const { routeName } = state;
         switch (routeName) {
-          case 'Dashboard':
+          case 'Fund':
             return (
               <Image
                 source={
                   focused
-                    ? require('asset/tabIcon/dashboard_highlight.png')
-                    : require('asset/tabIcon/dashboard.png')
+                    ? require('asset/tabIcon/fund-sel.png')
+                    : require('asset/tabIcon/fund.png')
                 }
               />
             );
@@ -151,6 +159,7 @@ const Tab = createBottomTabNavigator(
 const MainStack = createStackNavigator(
   {
     Tab,
+    FundProject,
     PortfolioDetail,
     Search,
     CreateProject,

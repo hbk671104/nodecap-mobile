@@ -2,8 +2,8 @@ import { Dimensions } from 'react-native';
 import { navBarHeight } from 'component/navBar';
 
 export const deviceWidth = Dimensions.get('window').width;
-export const indicatorWidth = 42;
-const tabWidth = 78;
+const tabWidth = 84;
+
 export default {
   container: {
     flex: 1,
@@ -13,33 +13,24 @@ export default {
     height: 0,
     width: Dimensions.get('window').width,
   },
-  navBar: {},
-  searchBar: {
-    container: {
-      flex: 1,
-      backgroundColor: 'transparent',
-      paddingLeft: 12 + 24,
-      paddingRight: 12,
-    },
-  },
   tabBar: {
     container: {
       backgroundColor: 'transparent',
       height: navBarHeight,
-      justifyContent: 'center',
+      justifyContent: 'flex-end',
+      paddingHorizontal: 20,
     },
     tab: {
       width: tabWidth,
       padding: 0,
+      marginBottom: 8,
     },
     label: {
       fontSize: 14,
+      color: 'white',
     },
     indicator: {
-      height: 3,
-      backgroundColor: 'white',
-      width: indicatorWidth,
-      left: (tabWidth - indicatorWidth) / 2,
+      height: 0,
     },
   },
 };
