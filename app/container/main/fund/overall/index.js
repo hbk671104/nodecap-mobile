@@ -99,13 +99,13 @@ class FundOverall extends Component {
             style={styles.investment.container}
             title="投资数量"
             subtitle={`(${invest_count})`}
-            renderRight={() => (
-              <Touchable borderless onPress={this.handleProjectAllPress}>
-                <Text style={styles.investment.right}>
-                  项目清单 <Icon name="arrow-forward" />
-                </Text>
-              </Touchable>
-            )}
+            // renderRight={() => (
+            //   <Touchable borderless onPress={this.handleProjectAllPress}>
+            //     <Text style={styles.investment.right}>
+            //       项目清单 <Icon name="arrow-forward" />
+            //     </Text>
+            //   </Touchable>
+            // )}
           >
             <Investment {...this.props} />
           </FundGroup>
