@@ -25,7 +25,7 @@ const summary = ({ overall }) => {
           </Text>
         </View>
       </View>
-      {invested !== '--' &&
+      {/* {invested !== '--' &&
         rest !== '--' && (
           <View style={styles.bottom.container}>
             <View style={styles.bottom.bar.container}>
@@ -40,7 +40,7 @@ const summary = ({ overall }) => {
               />
             </View>
           </View>
-        )}
+        )} */}
     </View>
   );
 };

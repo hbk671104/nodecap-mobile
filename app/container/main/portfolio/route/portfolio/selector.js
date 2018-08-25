@@ -6,7 +6,7 @@ import Touchable from 'component/uikit/touchable';
 import { shadow } from '../../../../../utils/style';
 
 const selector = ({ item, onPress }) => (
-  <Touchable onPress={onPress}>
+  <Touchable style={styles.wrapper} onPress={onPress}>
     <View style={styles.container}>
       <Text style={styles.title}>
         当前排序：
@@ -23,10 +23,12 @@ const selector = ({ item, onPress }) => (
 const deviceWidth = Dimensions.get('window').width;
 
 const styles = {
-  container: {
+  wrapper: {
     position: 'absolute',
     bottom: 15,
     left: (deviceWidth - 150) / 2,
+  },
+  container: {
     height: 35,
     width: 150,
     borderRadius: 17.5,
