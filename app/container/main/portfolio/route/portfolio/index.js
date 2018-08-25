@@ -77,7 +77,10 @@ export default class Portfolio extends Component {
         cancelButtonIndex: R.length(rank),
       },
       buttonIndex => {
-        const newRank = R.path([buttonIndex])(rank);
+        const newRank = R.pathOr({}, [buttonIndex])(rank);
+        if (R.isEmpty(newRank)) {
+          return;
+        }
         setCurrentRank(newRank, this.requestData);
       },
     );
