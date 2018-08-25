@@ -51,7 +51,7 @@ class ReportItem extends PureComponent {
           约为 <Format digit={1}>{invest_count_cny}</Format> 元
         </Text>
         <Text style={[style.investment, { marginTop: 5 }]}>
-          占基金 {ratio}%
+          占基金 <Format digit={1}>{ratio}</Format>%
         </Text>
       </Flex>
     );
