@@ -30,8 +30,8 @@ export default class Portfolio extends Component {
   state = {
     index: 0,
     routes: [
-      { key: 'portfolio', title: '已投项目(73)' },
-      { key: 'project', title: '待投项目(53)' },
+      { key: 'portfolio', title: '已投项目' },
+      { key: 'project', title: '待投项目' },
     ],
   };
 

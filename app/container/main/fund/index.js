@@ -38,7 +38,7 @@ class Fund extends Component {
     } = props;
 
     const currentIndex = routes.indexOf(route);
-    const inputRange = routes.map((x, i) => i);
+    const inputRange = [-1].concat(routes.map((x, i) => i));
     const outputRange = inputRange.map(i => (i === currentIndex ? 17 / 14 : 1));
     const scale = position.interpolate({
       inputRange,
