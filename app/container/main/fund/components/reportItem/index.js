@@ -22,7 +22,7 @@ class ReportItem extends PureComponent {
     const name = R.pathOr('--', ['name'])(data);
     return (
       <Flex>
-        <Avatar source={{ uri: data.logo_url }} size={40} />
+        <Avatar source={{ uri: data.logo_url || '' }} size={40} />
         <Text style={style.name}>{name}</Text>
       </Flex>
     );
