@@ -23,7 +23,7 @@ const roiItem = ({
   return (
     <Touchable foreground onPress={onPress}>
       <View style={[styles.container, style]}>
-        <Avatar source={{ uri: data.logo_url }} size={40} {...avatarProps} />
+        <Avatar source={{ uri: data.logo_url || '' }} size={40} {...avatarProps} />
         <View style={[styles.content.container, contentContainerStyle]}>
           <Text style={[styles.content.title, titleStyle]}>{data.name}</Text>
           <Text style={[styles.content.subtitle, subtitleStyle]}>
