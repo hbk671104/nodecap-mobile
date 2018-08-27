@@ -99,8 +99,8 @@ export default {
         }
 
         // jpush user init
-        JPush.setAlias(`${data.id}`, () => null);
-        JPush.setTags([`${company.id}`], () => null);
+        JPush.setAlias(`user_${data.id}`, () => null);
+        JPush.setTags([`company_${company.id}`], () => null);
 
         yield put({
           type: 'saveCurrentUser',
