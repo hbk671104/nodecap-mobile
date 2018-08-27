@@ -9,10 +9,10 @@ import Amount from 'component/amount';
 const holdingItem = ({ item, noBottomBorder }) => {
   const symbol = R.pathOr('--', ['symbol'])(item);
   const count = R.pathOr('--', ['count'])(item);
-  const ratio = R.pathOr('--', ['ratio'])(item);
+  const ratio = R.pathOr('', ['ratio'])(item);
   const invest_symbol = R.pathOr('--', ['invest_symbol'])(item);
-  const valuation = R.pathOr('--', ['valuation', invest_symbol])(item);
-  const valuation_cny = R.pathOr('--', ['valuation', 'CNY'])(item);
+  const valuation = R.pathOr('', ['valuation', invest_symbol])(item);
+  const valuation_cny = R.pathOr('', ['valuation', 'CNY'])(item);
   return (
     <View
       style={[styles.container, noBottomBorder && { borderBottomWidth: 0 }]}
@@ -24,17 +24,27 @@ const holdingItem = ({ item, noBottomBorder }) => {
         </Text>
       </View>
       <View style={{ flex: 5 }}>
-        <Text style={styles.subtitle}>
-          <Format digit={1}>{valuation}</Format> {invest_symbol}
-        </Text>
-        <Text style={[styles.content, { marginTop: 3 }]}>
-          约 <Amount>{valuation_cny}</Amount>元
-        </Text>
+        {R.isEmpty(valuation) || R.empty(valuation_cny) ? (
+          <Text style={styles.content}>未上所</Text>
+        ) : (
+          <View>
+            <Text style={styles.subtitle}>
+              <Format digit={1}>{valuation}</Format> {invest_symbol}
+            </Text>
+            <Text style={[styles.content, { marginTop: 3 }]}>
+              约 <Amount>{valuation_cny}</Amount>元
+            </Text>
+          </View>
+        )}
       </View>
       <View style={{ flex: 2, alignItems: 'flex-end' }}>
-        <Text style={styles.subtitle}>
-          <Format>{ratio}</Format>%
-        </Text>
+        {R.isEmpty(ratio) ? (
+          <Text style={styles.content}>-</Text>
+        ) : (
+          <Text style={styles.subtitle}>
+            <Format>{ratio}</Format>%
+          </Text>
+        )}
       </View>
     </View>
   );
