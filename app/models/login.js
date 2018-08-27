@@ -1,3 +1,4 @@
+import JPush from 'jpush-react-native';
 import { NavigationActions as routerRedux } from '../utils';
 import { login, setPassword } from '../services/api';
 import request from '../utils/request';
@@ -99,6 +100,10 @@ export default {
 
         // sensor logout
         global.s().logout();
+
+        // jpush remove corresponding info
+        JPush.deleteAlias(() => null);
+        JPush.cleanTags(() => null);
       } finally {
         yield put({
           type: 'logoutSuccess',
