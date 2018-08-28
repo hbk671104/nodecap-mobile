@@ -127,13 +127,20 @@ class ReportItem extends PureComponent {
             />
           </View>
           <Flex style={style.actionBar}>
-            <Touchable style={style.button}>
+            <Touchable
+              style={style.button}
+              onPress={this.props.onInvestmentPress}
+            >
               <Text style={style.buttonText}>投资记录</Text>
+            </Touchable>
+            {/* <View style={style.buttonDivision} />
+            <Touchable style={style.button}>
+              <Text style={style.buttonText}>回币记录</Text>
             </Touchable>
             <View style={style.buttonDivision} />
             <Touchable style={style.button}>
               <Text style={style.buttonText}>卖出记录</Text>
-            </Touchable>
+            </Touchable> */}
           </Flex>
         </View>
       </Touchable>
@@ -143,10 +150,12 @@ class ReportItem extends PureComponent {
 
 ReportItem.propTypes = {
   onPress: PropTypes.func,
+  onInvestmentPress: PropTypes.func,
 };
 
 ReportItem.defaultProps = {
   onPress: () => null,
+  onInvestmentPress: () => null,
 };
 
 export default ReportItem;
