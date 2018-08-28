@@ -52,6 +52,30 @@ export default {
           status: '0,1,2,3,4,5,6',
         },
       },
+      0: {
+        index: null,
+        params: {
+          status: '0',
+        },
+      },
+      1: {
+        index: null,
+        params: {
+          status: '1',
+        },
+      },
+      2: {
+        index: null,
+        params: {
+          status: '2',
+        },
+      },
+      3: {
+        index: null,
+        params: {
+          status: '3',
+        },
+      },
       4: {
         index: null,
         params: {

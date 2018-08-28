@@ -10,22 +10,24 @@ import Holdings from '../holdings';
 import styles from './style';
 
 class FundWrapper extends Component {
+  renderTabBar = () => (
+    <DefaultTabBar
+      style={styles.tabBar.container}
+      tabStyle={styles.tabBar.tab}
+      textStyle={styles.tabBar.text}
+      activeTextColor="#1890FF"
+      inactiveTextColor="rgba(0, 0, 0, 0.65)"
+      underlineStyle={styles.tabBar.underline}
+    />
+  );
+
   render() {
     return (
       <View style={styles.container}>
         <ScrollableTabView
           locked
-          prerenderingSiblingsNumber={Infinity}
-          renderTabBar={() => (
-            <DefaultTabBar
-              style={styles.tabBar.container}
-              tabStyle={styles.tabBar.tab}
-              textStyle={styles.tabBar.text}
-              activeTextColor="#1890FF"
-              inactiveTextColor="rgba(0, 0, 0, 0.65)"
-              underlineStyle={styles.tabBar.underline}
-            />
-          )}
+          scrollWithoutAnimation
+          renderTabBar={this.renderTabBar}
         >
           <Overall {...this.props} tabLabel="整体情况" />
           <Report {...this.props} tabLabel="投资报表" />

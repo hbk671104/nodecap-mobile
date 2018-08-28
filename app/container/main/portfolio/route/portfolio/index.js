@@ -10,6 +10,7 @@ import List from 'component/uikit/list';
 import ProjectItem from 'component/project/item';
 import PriceChangeItem from 'component/project/priceChangeItem';
 import InvestmentItem from 'component/project/investmentItem';
+import UnexchangeableItem from 'component/project/unexchangeable';
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Selector from './selector';
@@ -97,6 +98,11 @@ export default class Portfolio extends Component {
   };
 
   renderItem = ({ item, index }) => {
+    if (!this.props.canCalculate) {
+      return (
+        <UnexchangeableItem item={item} onPress={this.handleItemPress(item)} />
+      );
+    }
     switch (this.props.currentRank.id) {
       case 'profits':
       case 'roi':

@@ -52,12 +52,12 @@ class Login extends Component {
           <Image style={styles.logo} source={require('asset/big_logo.png')} />
           <View style={{ marginTop: 55 }}>
             {getFieldDecorator('account', {
-              rules: [{ required: true, message: '请输入邮箱账号' }],
+              rules: [{ required: true, message: '请输入手机号/邮箱登录' }],
             })(
               <AuthInput
                 style={styles.input}
                 title="账号"
-                placeholder="请输入邮箱账号"
+                placeholder="请输入手机号/邮箱登录"
               />,
             )}
             {getFieldDecorator('password', {

@@ -6451,9 +6451,9 @@ react-native-safe-area-view@^0.8.0:
   dependencies:
     hoist-non-react-statics "^2.3.1"
 
-"react-native-scrollable-tab-view@https://github.com/hbk671104/react-native-scrollable-tab-view.git":
+react-native-scrollable-tab-view@^0.8.0:
   version "0.8.0"
-  resolved "https://github.com/hbk671104/react-native-scrollable-tab-view.git#bfc69515a045c0a12f8159f704c970a9e52b04f8"
+  resolved "https://registry.yarnpkg.com/react-native-scrollable-tab-view/-/react-native-scrollable-tab-view-0.8.0.tgz#5cb1fcfce07bf530a3c81ab51fc5071144edac5c"
   dependencies:
     create-react-class "^15.6.2"
     prop-types "^15.6.0"
