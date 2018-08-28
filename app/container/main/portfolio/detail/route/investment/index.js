@@ -7,6 +7,8 @@ import styles from './style';
 import Header from './header';
 import BaseInfo from './baseInfo';
 import InvestmentInfo from './investment';
+import TokenReturn from './tokenReturn';
+import TokenExit from './tokenExit';
 import Loading from 'component/uikit/loading';
 import Lock from 'component/auth/permission/lock';
 
@@ -31,6 +33,12 @@ class Investment extends PureComponent {
           <BaseInfo {...this.props} />
           <Lock name="invest-view">
             <InvestmentInfo {...this.props} />
+          </Lock>
+          <Lock name="return_token-view">
+            <TokenReturn {...this.props} />
+          </Lock>
+          <Lock name="exit_token-view">
+            <TokenExit {...this.props} />
           </Lock>
         </ScrollView>
       </View>
