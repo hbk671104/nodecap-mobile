@@ -5,15 +5,17 @@ import { View, Text, StyleSheet } from 'react-native';
 import Format from 'component/format';
 import Amount from 'component/amount';
 
-const dataItem = ({ title, content, symbol, subcontent }) => (
+const dataItem = ({ title, content, symbol, subcontent, unit }) => (
   <View style={styles.container}>
     <Text style={styles.title}>{title}</Text>
     <View style={styles.group}>
       <Text style={styles.content}>
-        <Format digit={1}>{content}</Format> {symbol}
+        <Format digit={1}>{content}</Format>
+        {unit === '%' ? `% (${symbol})` : ` ${symbol}`}
       </Text>
       <Text style={[styles.subcontent, { marginTop: 6 }]}>
-        约 <Amount>{subcontent}</Amount> 元
+        约 <Amount>{subcontent}</Amount>
+        {unit === '%' ? '% (CNY)' : `${unit}`}
       </Text>
     </View>
   </View>
@@ -51,6 +53,11 @@ dataItem.propTypes = {
   content: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   symbol: PropTypes.string,
   subcontent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  unit: PropTypes.string,
+};
+
+dataItem.defaultProps = {
+  unit: '元',
 };
 
 export default dataItem;
