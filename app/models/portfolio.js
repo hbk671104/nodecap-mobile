@@ -144,7 +144,7 @@ export default {
       try {
         const req = {
           ...payload,
-          symbol: 'CNY',
+          symbol: 'ETH',
         };
         const res = yield call(investmentIndex, req);
         yield put({

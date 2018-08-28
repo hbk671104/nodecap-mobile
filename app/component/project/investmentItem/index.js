@@ -2,9 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
 import R from 'ramda';
-import Accounting from 'accounting';
 import Touchable from 'component/uikit/touchable';
 import Text from 'component/text';
+import NodeCapIcon from 'component/icon/nodecap';
+import Format from 'component/format';
 
 import { medalMap } from '../../../utils/style';
 import styles from './style';
@@ -12,8 +13,8 @@ import styles from './style';
 const investmentItem = ({ item, index, onPress }) => {
   const stat = R.path(['statistics'])(item);
   const investment = R.path(['investment'])(stat);
-  const profit = R.path(['profits', 'CNY'])(investment);
-  const cost = R.path(['total_cost', 'CNY'])(investment);
+  const profit = R.path(['profits', 'ETH'])(investment);
+  const cost = R.path(['total_cost', 'ETH'])(investment);
 
   const nameLength = item.name.length || 0;
   return (
@@ -48,11 +49,14 @@ const investmentItem = ({ item, index, onPress }) => {
         <View style={styles.middle.container}>
           <Text style={styles.middle.label}>投资金额</Text>
           <Text style={[styles.middle.title, { marginTop: 2 }]}>
-            ¥{Accounting.formatNumber(cost)}
+            <NodeCapIcon name="ETH" /> <Format digit={0}>{cost}</Format>
           </Text>
           <Text style={[styles.middle.label, { marginTop: 3 }]}>
             <Text>{profit}</Text>
-            <Text>{'  '}浮动盈余</Text>
+            <Text>
+              {'  '}
+              浮动盈余
+            </Text>
           </Text>
         </View>
         <View style={styles.ranking.container}>{medalMap(index)}</View>

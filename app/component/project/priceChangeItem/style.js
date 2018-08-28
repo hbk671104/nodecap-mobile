@@ -14,11 +14,10 @@ export default {
   wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingRight: 24,
   },
   left: {
     container: {
-      flex: 5,
+      flex: 4,
       flexDirection: 'row',
       alignItems: 'center',
     },
@@ -61,10 +60,10 @@ export default {
   },
   middle: {
     container: {
-      flex: 3,
+      flex: 4,
     },
     title: {
-      fontSize: 15,
+      fontSize: 14,
       fontWeight: 'bold',
       color: '#09AC32',
     },
@@ -87,9 +86,11 @@ export default {
   right: {
     container: {
       flex: 2,
+      alignItems: 'flex-end',
+      marginRight: 20,
     },
     wrapper: {
-      height: 27,
+      height: 24,
       paddingHorizontal: 4,
       borderRadius: 2,
       backgroundColor: '#09AC32',
