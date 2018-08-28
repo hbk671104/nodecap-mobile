@@ -38,7 +38,7 @@ export default class Report extends Component {
     );
   };
 
-  handleInvestmentPress = item => () => {
+  handleInvestmentPress = anchor_type => item => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',
@@ -48,6 +48,7 @@ export default class Report extends Component {
             can_calculate: true,
           },
           landing_index: 1,
+          anchor_type,
         },
       }),
     );
@@ -57,7 +58,9 @@ export default class Report extends Component {
     <ReportItem
       data={item}
       onPress={this.handleItemPress(item)}
-      onInvestmentPress={this.handleInvestmentPress(item)}
+      onInvestmentPress={anchor_type =>
+        this.handleInvestmentPress(anchor_type)(item)
+      }
     />
   );
 

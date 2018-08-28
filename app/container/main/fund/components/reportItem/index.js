@@ -129,18 +129,24 @@ class ReportItem extends PureComponent {
           <Flex style={style.actionBar}>
             <Touchable
               style={style.button}
-              onPress={this.props.onInvestmentPress}
+              onPress={() => this.props.onInvestmentPress('invest')}
             >
               <Text style={style.buttonText}>投资记录</Text>
             </Touchable>
-            {/* <View style={style.buttonDivision} />
-            <Touchable style={style.button}>
+            <View style={style.buttonDivision} />
+            <Touchable
+              style={style.button}
+              onPress={() => this.props.onInvestmentPress('return')}
+            >
               <Text style={style.buttonText}>回币记录</Text>
             </Touchable>
             <View style={style.buttonDivision} />
-            <Touchable style={style.button}>
+            <Touchable
+              style={style.button}
+              onPress={() => this.props.onInvestmentPress('exit')}
+            >
               <Text style={style.buttonText}>卖出记录</Text>
-            </Touchable> */}
+            </Touchable>
           </Flex>
         </View>
       </Touchable>

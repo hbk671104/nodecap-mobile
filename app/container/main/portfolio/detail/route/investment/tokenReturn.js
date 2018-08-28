@@ -78,7 +78,7 @@ class Investment extends Component {
     );
 
     return (
-      <View>
+      <View onLayout={this.props.onLayout}>
         <Group
           style={[styles.container, { marginTop: 0 }]}
           icon={require('asset/project/detail/return_tokens.png')}
