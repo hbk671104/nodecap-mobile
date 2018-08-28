@@ -13,6 +13,7 @@ const holdingItem = ({ item, noBottomBorder }) => {
   const invest_symbol = R.pathOr('--', ['invest_symbol'])(item);
   const valuation = R.pathOr('', ['valuation', invest_symbol])(item);
   const valuation_cny = R.pathOr('', ['valuation', 'CNY'])(item);
+
   return (
     <View
       style={[styles.container, noBottomBorder && { borderBottomWidth: 0 }]}
@@ -24,7 +25,7 @@ const holdingItem = ({ item, noBottomBorder }) => {
         </Text>
       </View>
       <View style={{ flex: 5 }}>
-        {R.isEmpty(valuation) || R.empty(valuation_cny) ? (
+        {R.isEmpty(valuation) || R.isEmpty(valuation_cny) ? (
           <Text style={styles.content}>未上所</Text>
         ) : (
           <View>
