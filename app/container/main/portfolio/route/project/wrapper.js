@@ -16,7 +16,7 @@ class Wrapper extends Component {
           locked
           scrollWithoutAnimation
           renderTabBar={this.renderTabBar}
-          contentProps={{ style: { marginTop: 5 } }}
+          contentProps={{ style: { flex: 1, marginTop: 5 } }}
         >
           <ProjectList {...this.props} tabLabel="全部" status="0,1,2,3,4,5,6" />
           <ProjectList {...this.props} tabLabel="待初筛" status="0" />

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import TabBar from '../tabbar';
@@ -16,7 +16,7 @@ class Wrapper extends Component {
           locked
           scrollWithoutAnimation
           renderTabBar={this.renderHeader}
-          contentProps={{ style: { marginTop: 5 } }}
+          contentProps={{ style: { flex: 1, marginTop: 5 } }}
         >
           <ProjectList {...this.props} tabLabel="已上所" canCalculate />
           <ProjectList {...this.props} tabLabel="未上所" canCalculate={false} />

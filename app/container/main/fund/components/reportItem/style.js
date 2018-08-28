@@ -1,17 +1,13 @@
 import { mainColor } from 'component/uikit/color';
+import { shadow } from '../../../../../utils/style';
 
 export default {
   container: {
+    marginBottom: 10,
     paddingHorizontal: 12,
-    paddingTop: 20,
+    paddingTop: 10,
     backgroundColor: 'white',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowRadius: 2,
-    shadowColor: '#0D2131',
-    shadowOpacity: 0.16,
+    ...shadow,
   },
   name: {
     fontSize: 16,

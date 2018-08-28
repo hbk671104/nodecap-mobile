@@ -6,18 +6,20 @@ import Touchable from 'component/uikit/touchable';
 import { shadow } from '../../../../../utils/style';
 
 const selector = ({ item, onPress }) => (
-  <Touchable style={styles.wrapper} onPress={onPress}>
-    <View style={styles.container}>
-      <Text style={styles.title}>
-        当前排序：
-        {item.name}
-      </Text>
-      <Image
-        style={styles.image}
-        source={require('asset/project/switch.png')}
-      />
-    </View>
-  </Touchable>
+  <View style={styles.wrapper}>
+    <Touchable borderless onPress={onPress}>
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          当前排序：
+          {item.name}
+        </Text>
+        <Image
+          style={styles.image}
+          source={require('asset/project/switch.png')}
+        />
+      </View>
+    </Touchable>
+  </View>
 );
 
 const deviceWidth = Dimensions.get('window').width;
@@ -27,16 +29,17 @@ const styles = {
     position: 'absolute',
     bottom: 15,
     left: (deviceWidth - 150) / 2,
+    ...shadow,
+    backgroundColor: 'white',
+    borderRadius: 17.5,
   },
   container: {
     height: 35,
     width: 150,
     borderRadius: 17.5,
-    backgroundColor: 'white',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    ...shadow,
   },
   title: {
     fontSize: 13,
