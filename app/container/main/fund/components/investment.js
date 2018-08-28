@@ -4,9 +4,9 @@ import { View, Text, StyleSheet } from 'react-native';
 import { VictoryPie } from 'victory-native';
 import R from 'ramda';
 
-const item = ({ style, title, subtitle }) => (
+const item = ({ style, title, subtitle, indicatorStyle }) => (
   <View style={[styles.item.container, style]}>
-    <View style={styles.item.indicator} />
+    <View style={[styles.item.indicator, indicatorStyle]} />
     <Text style={styles.item.title}>
       {title}
       {'   '}
@@ -36,13 +36,21 @@ const investment = ({ overall }) => {
     <View style={styles.container}>
       <View style={styles.group}>
         <View style={styles.item.group}>
-          {item({ title: '已上所', subtitle: calc_count })}
-          {item({ title: '未上所', subtitle: uncalc_count })}
+          {item({
+            title: '已上所',
+            subtitle: calc_count,
+            indicatorStyle: { backgroundColor: '#0090FF' },
+          })}
+          {item({
+            title: '未上所',
+            subtitle: uncalc_count,
+            indicatorStyle: { backgroundColor: '#F88E40' },
+          })}
         </View>
         <View style={styles.pie.container}>
           <VictoryPie
             {...styles.pie.item}
-            colorScale={['#3A9CF7', '#F69038']}
+            colorScale={['#0090FF', '#F88E40']}
             data={[{ y: calc_count }, { y: uncalc_count }]}
           />
         </View>
@@ -50,14 +58,26 @@ const investment = ({ overall }) => {
       <View style={styles.divider} />
       <View style={[styles.group, { paddingLeft: 24 }]}>
         <View style={styles.item.group}>
-          {item({ title: '未卖出', subtitle: unsold_count })}
-          {item({ title: '部分卖出', subtitle: partial_sold_count })}
-          {item({ title: '完全卖出', subtitle: total_sold_count })}
+          {item({
+            title: '未卖出',
+            subtitle: unsold_count,
+            indicatorStyle: { backgroundColor: '#0090FF' },
+          })}
+          {item({
+            title: '部分卖出',
+            subtitle: partial_sold_count,
+            indicatorStyle: { backgroundColor: '#F88E40' },
+          })}
+          {item({
+            title: '完全卖出',
+            subtitle: total_sold_count,
+            indicatorStyle: { backgroundColor: '#09AC32' },
+          })}
         </View>
         <View style={styles.pie.container}>
           <VictoryPie
             {...styles.pie.item}
-            colorScale={['#F69038', '#3A9CF7', '#36C35A']}
+            colorScale={['#0090FF', '#F88E40', '#09AC32']}
             data={[
               { y: unsold_count },
               { y: partial_sold_count },
@@ -93,7 +113,7 @@ const styles = {
       height: 42,
       width: 42,
       padding: 0,
-      padAngle: 3,
+      padAngle: 4,
       innerRadius: 8,
     },
   },
