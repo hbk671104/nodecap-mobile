@@ -30,8 +30,8 @@ const unexchangeableItem = ({ item, onPress }) => (
               style={[
                 styles.top.status.dot.container,
                 item.status === 0 && { backgroundColor: '#bfbfbf' },
-                item.status === 1 && { backgroundColor: '#F5222D' },
-                item.status === 2 && { backgroundColor: '#FAAD14' },
+                item.status === 1 && { backgroundColor: '#FAAD14' },
+                item.status === 2 && { backgroundColor: '#F5222D' },
                 item.status === 3 && { backgroundColor: '#1890FF' },
                 item.status === 4 && { backgroundColor: '#7376F4' },
                 item.status === 5 && { backgroundColor: '#E634CE' },
