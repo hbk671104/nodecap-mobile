@@ -26,6 +26,7 @@ class RehydrateLoader extends Component {
                 routeName: 'Main',
               }),
             );
+            SplashScreen.hide();
           },
         });
       } else {
@@ -34,11 +35,9 @@ class RehydrateLoader extends Component {
             routeName: 'Auth',
           }),
         );
+        SplashScreen.hide();
       }
       initializeListeners('root', this.props.router);
-
-      // Splash Screen came off
-      SplashScreen.hide();
     });
   }
 
