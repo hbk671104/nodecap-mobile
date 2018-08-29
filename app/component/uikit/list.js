@@ -47,16 +47,20 @@ class List extends PureComponent {
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
       if (R.isEmpty(this.props.data) || R.isNil(this.props.data)) {
-        this.props.action();
+        this.handleAction();
       }
     }
   }
 
   extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
 
+  handleAction = (current = 1, pageSize = 20) => {
+    this.props.action(current, pageSize);
+  };
+
   handleOnRefresh = () => {
     if (this.props.action) {
-      this.props.action();
+      this.handleAction();
     }
   };
 
@@ -64,7 +68,7 @@ class List extends PureComponent {
     if (this.props.action && this.props.pagination) {
       const { current, pageCount, pageSize } = this.props.pagination;
       if (current < pageCount) {
-        this.props.action(current + 1, pageSize);
+        this.handleAction(current + 1, pageSize);
       }
     }
   };
