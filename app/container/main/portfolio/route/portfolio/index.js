@@ -5,6 +5,7 @@ import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import { compose, withState } from 'recompose';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
+import { Toast } from 'antd-mobile';
 
 import List from 'component/uikit/list';
 import ProjectItem from 'component/project/item';
@@ -82,7 +83,13 @@ export default class Portfolio extends Component {
         if (R.isEmpty(newRank)) {
           return;
         }
-        setCurrentRank(newRank, this.requestData);
+        setCurrentRank(newRank, () => {
+          Toast.loading('加载中...', 0);
+          this.requestData(1, 20, () => {
+            this.list.scrollToOffset({ offset: 0, animated: false });
+            Toast.hide();
+          });
+        });
       },
     );
   };
@@ -152,6 +159,9 @@ export default class Portfolio extends Component {
     return (
       <View style={styles.container}>
         <List
+          listRef={ref => {
+            this.list = ref;
+          }}
           contentContainerStyle={{ paddingTop: 10 }}
           action={this.requestData}
           data={data}

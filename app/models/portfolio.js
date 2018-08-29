@@ -20,6 +20,17 @@ const paginate = (state, action, key) => {
   const newData = R.pathOr([], ['payload', 'data'])(action);
   const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
 
+  const oldRank = R.pathOr({}, [key, 'params', 'rank'])(state);
+  const newRank = R.pathOr({}, ['params', 'rank'])(action);
+
+  if (
+    !R.isEmpty(oldRank) &&
+    !R.isEmpty(newRank) &&
+    !R.equals(oldRank, newRank)
+  ) {
+    return action.payload;
+  }
+
   if (R.path(['current'])(pagination) === 1) {
     return action.payload;
   }
