@@ -37,7 +37,7 @@ export default {
             },
           });
 
-          yield put({
+          yield put.resolve({
             type: 'global/bootstrap',
           });
 
@@ -67,7 +67,7 @@ export default {
           },
         });
 
-        yield put({
+        yield put.resolve({
           type: 'global/bootstrap',
         });
 
