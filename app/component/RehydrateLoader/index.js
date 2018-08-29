@@ -16,21 +16,18 @@ class RehydrateLoader extends Component {
   }
 
   componentWillMount() {
-    persist(async () => {
+    persist(() => {
       if (this.props.isLogin) {
-        await this.props.dispatch({
-          type: 'global/startup',
+        this.props.dispatch({
+          type: 'global/bootstrap',
+          callback: () => {
+            this.props.dispatch(
+              NavigationActions.navigate({
+                routeName: 'Main',
+              }),
+            );
+          },
         });
-
-        await this.props.dispatch({
-          type: 'global/initial',
-        });
-
-        this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: 'Main',
-          }),
-        );
       } else {
         this.props.dispatch(
           NavigationActions.navigate({
