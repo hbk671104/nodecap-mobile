@@ -121,7 +121,7 @@ const headers = props => {
       </View>
       <View style={styles.bottom.container}>
         <Text style={styles.bottom.title}>已上交易所</Text>
-        <Text style={styles.bottom.content}>{market.join('|')}</Text>
+        <Text style={styles.bottom.content}>{market.join(' | ')}</Text>
       </View>
     </View>
   );

@@ -10,10 +10,10 @@ const amount = ({ children, disableFormatting }) => {
   }
 
   let comp = Accounting.formatNumber(children);
-  if (children > 100000000 && !disableFormatting) {
+  if (Math.abs(children) > 100000000 && !disableFormatting) {
     const num = children / 100000000;
     comp = `${Accounting.formatNumber(num)} 亿`;
-  } else if (children > 10000 && !disableFormatting) {
+  } else if (Math.abs(children) > 10000 && !disableFormatting) {
     const num = children / 10000;
     comp = `${Accounting.formatNumber(num, 1)} 万`;
   }

@@ -3,30 +3,30 @@ import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import R from 'ramda';
+import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
+import LoadingView from 'component/uikit/loading';
 import FundWrapper from './wrapper';
 import styles from './style';
-import ReportItem from './components/reportItem';
 
 @global.bindTrack({
   page: '基金管理',
   name: 'App_FundManagementOperation',
 })
 @connect(({ fund }) => ({
-  fund: R.pathOr([], ['funds'])(fund),
-}))
-class Fund extends Component {
-  state = {
-    index: 0,
-    routes: this.props.fund.map(f => ({
+  routes: R.pipe(
+    R.pathOr([], ['funds']),
+    R.map(f => ({
       key: `${f.id}`,
       title: f.name,
     })),
-  };
-
+  )(fund),
+}))
+@compose(withState('index', 'setIndex', 0))
+class Fund extends Component {
   handleIndexChange = index => {
-    this.setState({ index }, () => {
+    this.props.setIndex(index, () => {
       this.props.track('Tab切换', { subModuleName: index });
     });
   };
@@ -38,7 +38,7 @@ class Fund extends Component {
     } = props;
 
     const currentIndex = routes.indexOf(route);
-    const inputRange = [-1].concat(routes.map((x, i) => i));
+    const inputRange = [-1, ...routes.map((x, i) => i)];
     const outputRange = inputRange.map(i => (i === currentIndex ? 17 / 14 : 1));
     const scale = position.interpolate({
       inputRange,
@@ -60,43 +60,49 @@ class Fund extends Component {
     );
   };
 
-  renderHeader = props => {
-    return (
-      <NavBar
-        hidden
-        gradient
-        renderBottom={() => (
-          <TabBar
-            {...props}
-            scrollEnabled
-            style={styles.tabBar.container}
-            tabStyle={styles.tabBar.tab}
-            indicatorStyle={styles.tabBar.indicator}
-            renderLabel={this.renderBarLabel(props)}
-          />
-        )}
-      />
-    );
-  };
+  renderHeader = props => (
+    <NavBar
+      hidden
+      gradient
+      renderBottom={() => (
+        <TabBar
+          {...props}
+          scrollEnabled
+          style={styles.tabBar.container}
+          tabStyle={styles.tabBar.tab}
+          indicatorStyle={styles.tabBar.indicator}
+          renderLabel={this.renderBarLabel(props)}
+        />
+      )}
+    />
+  );
 
   renderScene = ({ route }) => {
-    if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 1) {
-      return null;
-    }
+    // if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 1) {
+    //   return null;
+    // }
     return <FundWrapper fid={route.key} />;
   };
 
   render() {
+    const { index, routes } = this.props;
+    if (R.isEmpty(routes)) {
+      return (
+        <View style={styles.container}>
+          <NavBar gradient title="加载中..." />
+          <LoadingView />;
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
         <TabView
           initialLayout={styles.initialLayout}
           navigationState={{
-            index: this.state.index,
-            routes: this.state.routes,
+            index,
+            routes,
           }}
           renderScene={this.renderScene}
-          tabBarPosition="top"
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />

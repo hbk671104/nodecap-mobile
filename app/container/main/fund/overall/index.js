@@ -144,6 +144,7 @@ class FundOverall extends Component {
               content={R.pathOr('--', [symbol])(roi)}
               symbol={symbol}
               subcontent={R.pathOr('--', ['CNY'])(roi)}
+              unit="%"
             />
           </FundGroup>
           <FundGroup title="已上所项目收益 TOP 5">

@@ -4,6 +4,8 @@ import {
   investmentIndex,
   projectDetail,
   getProjectInvestTokens,
+  getProjectReturnTokens,
+  getExitToken,
   getProjectInvestEquities,
   getProjectChartData,
   getProjectSymbol,
@@ -50,6 +52,30 @@ export default {
         index: null,
         params: {
           status: '0,1,2,3,4,5,6',
+        },
+      },
+      0: {
+        index: null,
+        params: {
+          status: '0',
+        },
+      },
+      1: {
+        index: null,
+        params: {
+          status: '1',
+        },
+      },
+      2: {
+        index: null,
+        params: {
+          status: '2',
+        },
+      },
+      3: {
+        index: null,
+        params: {
+          status: '3',
         },
       },
       4: {
@@ -120,7 +146,7 @@ export default {
       try {
         const req = {
           ...payload,
-          symbol: 'CNY',
+          symbol: 'ETH',
         };
         const res = yield call(investmentIndex, req);
         yield put({
@@ -216,12 +242,38 @@ export default {
           type: 'saveDetail',
           payload: res.data,
         });
+
+        // get extra
         yield put({
-          type: 'getInvest',
+          type: 'getExtra',
           payload,
         });
       } catch (e) {
         console.log(e);
+      }
+    },
+    *getExtra({ payload, callback }, { all, put, call }) {
+      try {
+        const result = yield all([
+          put({
+            type: 'getInvest',
+            payload,
+          }),
+          put({
+            type: 'getReturnToken',
+            payload,
+          }),
+          put({
+            type: 'getExitToken',
+            payload,
+          }),
+        ]);
+
+        if (callback) {
+          yield call(callback, result);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     *getInvest({ payload }, { call, put }) {
@@ -242,6 +294,30 @@ export default {
           type: 'saveInvest',
           payload: investEquities.data,
           relatedType: 'invest_equities',
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getReturnToken({ payload }, { call, put }) {
+      try {
+        const returnTokens = yield call(getProjectReturnTokens, payload);
+        yield put({
+          type: 'saveInvest',
+          payload: returnTokens.data,
+          relatedType: 'return_tokens',
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getExitToken({ payload }, { call, put }) {
+      try {
+        const exitTokens = yield call(getExitToken, payload);
+        yield put({
+          type: 'saveInvest',
+          payload: exitTokens.data,
+          relatedType: 'exit_tokens',
         });
       } catch (e) {
         console.log(e);

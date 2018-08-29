@@ -51,8 +51,8 @@ const investment = ({ style, data }) => {
           {R.keys(cost)
             .filter(c => c !== 'USDT')
             .map((c, i) => {
-              const countItem = R.path([c])(cost);
-              const profitItem = R.path([c])(profit);
+              const countItem = R.pathOr('--', [c])(cost);
+              const profitItem = R.pathOr('--', [c])(profit);
               if (R.isNil(countItem) || R.isEmpty(countItem)) {
                 return null;
               }

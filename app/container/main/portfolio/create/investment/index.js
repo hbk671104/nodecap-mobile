@@ -22,7 +22,7 @@ import styles from './style';
   name: 'App_ProjectCreateInvestmentOperation',
 })
 @connect(({ fund, global }) => ({
-  funds: R.pathOr([], ['funds', 'data'])(fund),
+  funds: R.pathOr([], ['funds'])(fund),
   stages: R.pathOr([], ['constants', 'finance_stages'])(global),
   tokens: R.pipe(
     R.pathOr([], ['constants', 'tokens']),

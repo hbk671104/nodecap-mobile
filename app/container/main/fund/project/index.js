@@ -38,10 +38,7 @@ class FundProject extends Component {
     return (
       <View style={styles.container}>
         <NavBar back gradient title="项目清单" />
-        <ScrollableTabView
-          prerenderingSiblingsNumber={Infinity}
-          renderTabBar={this.renderHeader}
-        >
+        <ScrollableTabView renderTabBar={this.renderHeader}>
           <ProjectList tabLabel="全部" />
           <ProjectList tabLabel="已上所" />
           <ProjectList tabLabel="未上所" />

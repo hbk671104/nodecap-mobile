@@ -38,8 +38,30 @@ export default class Report extends Component {
     );
   };
 
+  handleInvestmentPress = anchor_type => item => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetail',
+        params: {
+          item: {
+            ...item,
+            can_calculate: true,
+          },
+          landing_index: 1,
+          anchor_type,
+        },
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
-    <ReportItem data={item} onPress={this.handleItemPress(item)} />
+    <ReportItem
+      data={item}
+      onPress={this.handleItemPress(item)}
+      onInvestmentPress={anchor_type =>
+        this.handleInvestmentPress(anchor_type)(item)
+      }
+    />
   );
 
   render() {

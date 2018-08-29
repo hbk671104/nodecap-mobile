@@ -14,11 +14,11 @@ import styles from './style';
 const projectItem = ({ item, index, onPress }) => {
   const stat = R.path(['statistics'])(item);
   const investment = R.path(['investment'])(stat);
-  const profit = R.path(['profits', 'CNY'])(investment);
-  const cost = R.path(['total_cost', 'CNY'])(investment);
-  const roi = R.path(['roi', 'CNY', 'value'])(investment);
-  const unitCost = R.path(['unit_cost', 'CNY'])(investment);
-  const price = R.path(['current_price', 'CNY'])(stat);
+  const profit = R.path(['profits', 'ETH'])(investment);
+  const cost = R.path(['total_cost', 'ETH'])(investment);
+  const roi = R.path(['roi', 'ETH', 'value'])(investment);
+  const unitCost = R.path(['unit_cost', 'ETH'])(investment);
+  const price = R.path(['current_price', 'ETH'])(stat);
   const ratio = price / unitCost > 1 ? price / unitCost : -unitCost / price;
 
   return (
@@ -55,7 +55,7 @@ const projectItem = ({ item, index, onPress }) => {
                   profit < 0 ? styles.middle.down : styles.middle.up,
                 ]}
               >
-                CNY
+                ETH
               </Text>
             </Text>
           </View>
@@ -75,14 +75,14 @@ const projectItem = ({ item, index, onPress }) => {
           <View style={styles.bottom.group}>
             <Text style={styles.bottom.title}>投资金额</Text>
             <Text style={styles.bottom.content}>
-              ￥<Amount disableFormatting>{cost}</Amount>
+              <Amount disableFormatting>{cost}</Amount> ETH
             </Text>
           </View>
           <View style={styles.bottom.group}>
             <Text style={styles.bottom.title}>成本价/市价</Text>
             <Text style={styles.bottom.content}>
-              <Price symbol="CNY">{unitCost}</Price> /{' '}
-              <Price symbol="CNY">{price}</Price>
+              <Price symbol="ETH">{unitCost}</Price> /{' '}
+              <Price symbol="ETH">{price}</Price>
             </Text>
             <View
               style={[

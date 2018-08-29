@@ -13,7 +13,7 @@ export default {
   },
 
   effects: {
-    *login({ payload, callback }, { call, put, take }) {
+    *login({ payload }, { call, put, take }) {
       try {
         const { data } = yield call(login, payload);
         yield put({
@@ -37,15 +37,10 @@ export default {
               companies: data.companies,
             },
           });
-          yield put({
-            type: 'global/startup',
-          });
-          yield take('global/startup/@@end');
-          yield put({
-            type: 'global/initial',
-          });
 
-          yield take('global/initial/@@end');
+          yield put({
+            type: 'global/bootstrap',
+          });
 
           yield put(
             routerRedux.navigate({
@@ -62,7 +57,7 @@ export default {
         });
       }
     },
-    *setPassword({ payload }, { call, put, take }) {
+    *setPassword({ payload }, { call, put }) {
       try {
         const { data } = yield call(setPassword, payload);
         yield put({
@@ -72,11 +67,10 @@ export default {
             companies: data.companies,
           },
         });
-        yield put({
-          type: 'global/initial',
-        });
 
-        yield take('global/initial/@@end');
+        yield put({
+          type: 'global/bootstrap',
+        });
 
         yield put(
           routerRedux.navigate({

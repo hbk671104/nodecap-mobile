@@ -16,6 +16,24 @@ export default {
   },
 
   effects: {
+    *bootstrap({ callback }, { call, put, all }) {
+      try {
+        yield all([
+          put({
+            type: 'startup',
+          }),
+          put({
+            type: 'initial',
+          }),
+        ]);
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     *startup(_, { put, call }) {
       try {
         const res = yield call(getConstants);
@@ -28,7 +46,7 @@ export default {
         console.log(e);
       }
     },
-    *initial({ callback }, { select, put, call, all, take }) {
+    *initial(_, { select, put, call, all, take }) {
       const token = yield select(state => state.login.token);
       const companies = yield select(state => state.login.companies);
       if (token) {
@@ -58,7 +76,6 @@ export default {
             type: 'initRealm',
           }),
         ]);
-        yield take('fund/fetch/@@end');
       } catch (e) {
         console.log(e);
       }
