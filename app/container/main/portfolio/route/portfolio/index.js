@@ -85,8 +85,8 @@ export default class Portfolio extends Component {
         }
         setCurrentRank(newRank, () => {
           Toast.loading('加载中...', 0);
+          this.list.scrollToOffset({ offset: 0, animated: false });
           this.requestData(1, 20, () => {
-            this.list.scrollToOffset({ offset: 0, animated: false });
             Toast.hide();
           });
         });
