@@ -5,7 +5,6 @@ import {
   ScrollView,
   InteractionManager,
   Alert,
-  Clipboard,
 } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
@@ -20,7 +19,6 @@ import Loading from 'component/uikit/loading';
 import Touchable from 'component/uikit/touchable';
 import ListItem from 'component/listItem';
 import styles from './style';
-import { isMoment } from 'moment';
 
 @global.bindTrack({
   page: '我的同事详情',

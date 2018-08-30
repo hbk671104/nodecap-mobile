@@ -20,6 +20,7 @@ import userModel from './app/models/user';
 import codepushModel from './app/models/codepush';
 import resourceModel from './app/models/resource';
 import colleagueModel from './app/models/colleague';
+import notificationModel from './app/models/notification';
 
 const app = dva({
   initialState: {},
@@ -34,6 +35,7 @@ const app = dva({
     codepushModel,
     resourceModel,
     colleagueModel,
+    notificationModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],

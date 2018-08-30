@@ -30,6 +30,8 @@ export default function (options) {
         'fund/fetchHoldingReport',
         'fund/fetchGeneralReport',
         'fund/fetchInvestmentReport',
+        'notification/fetch',
+        'notification/get',
       ],
     }),
   );

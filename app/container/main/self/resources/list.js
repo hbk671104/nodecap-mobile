@@ -59,8 +59,6 @@ export default class ResourceList extends Component {
           data={data}
           pagination={pagination}
           loading={loading}
-          // refreshing={loading}
-          // onRefresh={this.requestData}
           renderItem={this.renderItem}
           onMomentumScrollBegin={this.props.onMomentumScrollBegin}
           onMomentumScrollEnd={this.props.onMomentumScrollEnd}

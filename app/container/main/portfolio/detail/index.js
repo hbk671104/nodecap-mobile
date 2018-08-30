@@ -39,10 +39,8 @@ export default class PortfolioDetail extends Component {
   }
 
   componentWillUnmount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.props.dispatch({
-        type: 'portfolio/clearDetail',
-      });
+    this.props.dispatch({
+      type: 'portfolio/clearDetail',
     });
   }
 

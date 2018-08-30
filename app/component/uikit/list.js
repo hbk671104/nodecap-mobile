@@ -28,6 +28,7 @@ class List extends PureComponent {
     loading: PropTypes.bool,
     onRefresh: PropTypes.func,
     loadOnStart: PropTypes.bool,
+    itemHeight: PropTypes.number,
 
     // styles
     style: ViewPropTypes.style,
@@ -46,13 +47,11 @@ class List extends PureComponent {
 
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
-      if (R.isEmpty(this.props.data) || R.isNil(this.props.data)) {
-        this.handleAction();
-      }
+      this.handleAction();
     }
   }
 
-  extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
+  extractKey = (item, index) => (item.id ? `${item.id}` : `${index}`);
 
   handleAction = (current = 1, pageSize = 20) => {
     this.props.action(current, pageSize);
@@ -95,6 +94,12 @@ class List extends PureComponent {
       this.props.onMomentumScrollEnd();
     }
   };
+
+  handleGetItemLayout = itemHeight => (data, index) => ({
+    length: itemHeight,
+    offset: itemHeight * index,
+    index,
+  });
 
   renderHeader = () => {
     if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
@@ -165,6 +170,7 @@ class List extends PureComponent {
       renderItem,
       style,
       contentContainerStyle,
+      itemHeight,
     } = this.props;
     const isRefreshing = () => {
       if (loading) {
@@ -198,7 +204,13 @@ class List extends PureComponent {
         onScrollEndDrag={() => this.setState({ listScrolled: true })}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
+        removeClippedSubviews
         keyExtractor={this.extractKey}
+        {...(itemHeight
+          ? {
+              getItemLayout: this.handleGetItemLayout(itemHeight),
+            }
+          : {})}
       />
     );
   }

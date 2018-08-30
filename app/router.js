@@ -26,6 +26,7 @@ import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
 import NotificationCenter from 'container/main/notification_center';
+import NotificationDetail from 'container/main/notification_center/detail';
 import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
@@ -184,6 +185,7 @@ const MainStack = createStackNavigator(
     ManualCreate,
     InvestmentCreate,
     CreateDone,
+    NotificationDetail,
     KeyManagement,
     AddHolding,
     AddWallet,

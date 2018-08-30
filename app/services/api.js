@@ -584,6 +584,14 @@ export function generalReport(fid) {
   return request.get(`/funds/${fid}/general-report`);
 }
 
+export function trendList() {
+  return request.get('/user-notifys/news');
+}
+
+export function trendDetail(id) {
+  return request.get(`/user-notifys/${id}/news-info`);
+}
+
 /**
  * 注册验证码
  * @param mobile
