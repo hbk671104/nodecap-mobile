@@ -1,54 +1,69 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
+import R from 'ramda';
+import moment from 'moment';
 
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
-const notificationItem = ({ data, onPress }) => (
-  <Touchable foreground onPress={onPress}>
-    <View style={styles.container}>
-      <Avatar size={50} />
-      <View style={styles.content.container}>
-        <View style={styles.content.top.container}>
-          <View style={styles.content.top.title.container}>
-            <Text style={styles.content.top.title.text}>
-              Zilliqa近日上线币安
+const notificationItem = ({ data, onPress }) => {
+  const trend = R.pathOr({}, ['coin_news'])(data);
+  if (R.isEmpty(trend)) {
+    return null;
+  }
+
+  const title = R.pathOr('--', ['title'])(trend);
+  const project_name = R.pathOr('--', ['project_name'])(trend);
+  const type = R.pathOr('--', ['type'])(trend);
+  const subtitle = R.pathOr('--', ['subtitle'])(trend);
+  const created_at = R.pathOr('--', ['created_at'])(trend);
+
+  return (
+    <Touchable foreground onPress={onPress(trend.id)}>
+      <View style={styles.container}>
+        <Avatar size={50} />
+        <View style={styles.content.container}>
+          <View style={styles.content.top.container}>
+            <View style={styles.content.top.title.container}>
+              <Text style={styles.content.top.title.text}>{title}</Text>
+            </View>
+            <Text style={styles.content.top.date}>
+              {moment.unix(created_at).format('MM-DD HH:ss')}
             </Text>
           </View>
-          <Text style={styles.content.top.date}>02-12 14:21</Text>
-        </View>
-        <View style={styles.content.tag.wrapper}>
-          <View
-            style={[
-              styles.content.tag.container,
-              { backgroundColor: '#E5F3FF' },
-            ]}
-          >
-            <Text style={[styles.content.tag.title, { color: '#1890FF' }]}>
-              Zilliqa
+          <View style={styles.content.tag.wrapper}>
+            <View
+              style={[
+                styles.content.tag.container,
+                { backgroundColor: '#E5F3FF' },
+              ]}
+            >
+              <Text style={[styles.content.tag.title, { color: '#1890FF' }]}>
+                {project_name}
+              </Text>
+            </View>
+            <View
+              style={[
+                styles.content.tag.container,
+                { backgroundColor: '#FFE9D6' },
+              ]}
+            >
+              <Text style={[styles.content.tag.title, { color: '#FF7600' }]}>
+                {type}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.content.subtitle.container}>
+            <Text numberOfLines={2} style={styles.content.subtitle.text}>
+              {subtitle}
             </Text>
           </View>
-          <View
-            style={[
-              styles.content.tag.container,
-              { backgroundColor: '#FFE9D6' },
-            ]}
-          >
-            <Text style={[styles.content.tag.title, { color: '#FF7600' }]}>
-              上币公告
-            </Text>
-          </View>
-        </View>
-        <View style={styles.content.subtitle.container}>
-          <Text numberOfLines={2} style={styles.content.subtitle.text}>
-            「上币早知道」两日后Zilliqa即将登陆币安，Zilliqa作为基础链，旨在解决交易速度和扩展性的问题。哈哈哈哈哈哈哈
-          </Text>
         </View>
       </View>
-    </View>
-  </Touchable>
-);
+    </Touchable>
+  );
+};
 
 const styles = {
   container: {

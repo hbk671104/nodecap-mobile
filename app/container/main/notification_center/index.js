@@ -21,19 +21,19 @@ export default class NotificationCenter extends Component {
     });
   };
 
-  handleItemPress = item => () => {
+  handleItemPress = id => () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'NotificationDetail',
         params: {
-          id: item.id,
+          id,
         },
       }),
     );
   };
 
   renderItem = ({ item }) => (
-    <NotificationItem onPress={this.handleItemPress(item)} />
+    <NotificationItem data={item} onPress={this.handleItemPress} />
   );
 
   renderSeparator = () => <View style={styles.separator} />;

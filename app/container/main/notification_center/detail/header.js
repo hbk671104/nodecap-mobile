@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import R from 'ramda';
+import moment from 'moment';
 
 import Touchable from 'component/uikit/touchable';
 
@@ -9,20 +10,28 @@ const header = ({ data, onLinkPress }) => {
   if (R.or(R.isNil(data), R.isEmpty(data))) {
     return null;
   }
+
+  const title = R.pathOr('--', ['title'])(data);
+  const source = R.pathOr('--', ['source'])(data);
+  const created_at = R.pathOr('--', ['created_at'])(data);
+  const link = R.pathOr('', ['original_link'])(data);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>
-        关于火币全球站开放VET新币充值，并上线VET交易的公告
-      </Text>
+      <Text style={styles.title}>{title}</Text>
       <View style={styles.bottom.container}>
         <Text style={styles.bottom.source}>
-          哈哈哈
+          {source}
           {'  '}
-          <Text style={styles.bottom.date}>02-12 14:21</Text>
+          <Text style={styles.bottom.date}>
+            {moment.unix(created_at).format('MM-DD HH:ss')}
+          </Text>
         </Text>
-        <Touchable onPress={onLinkPress}>
-          <Text style={styles.bottom.origin}>查看原文</Text>
-        </Touchable>
+        {!R.isEmpty(link) && (
+          <Touchable borderless onPress={onLinkPress(link)}>
+            <Text style={styles.bottom.origin}>查看原文</Text>
+          </Touchable>
+        )}
       </View>
     </View>
   );
