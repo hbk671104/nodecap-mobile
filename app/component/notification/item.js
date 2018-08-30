@@ -13,6 +13,7 @@ const notificationItem = ({ data, onPress }) => {
     return null;
   }
 
+  const logo_url = R.pathOr('', ['logo_url'])(trend);
   const title = R.pathOr('--', ['title'])(trend);
   const project_name = R.pathOr('--', ['project_name'])(trend);
   const type = R.pathOr('--', ['type'])(trend);
@@ -22,7 +23,7 @@ const notificationItem = ({ data, onPress }) => {
   return (
     <Touchable foreground onPress={onPress(trend.id)}>
       <View style={styles.container}>
-        <Avatar size={50} />
+        <Avatar size={50} source={{ uri: logo_url }} />
         <View style={styles.content.container}>
           <View style={styles.content.top.container}>
             <View style={styles.content.top.title.container}>
