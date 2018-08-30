@@ -40,19 +40,27 @@ class List extends PureComponent {
     loadOnStart: true,
   };
 
+  state = {
+    listScrolled: false,
+  };
+
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
       if (R.isEmpty(this.props.data) || R.isNil(this.props.data)) {
-        this.props.action();
+        this.handleAction();
       }
     }
   }
 
   extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
 
+  handleAction = (current = 1, pageSize = 20) => {
+    this.props.action(current, pageSize);
+  };
+
   handleOnRefresh = () => {
     if (this.props.action) {
-      this.props.action();
+      this.handleAction();
     }
   };
 
@@ -60,12 +68,15 @@ class List extends PureComponent {
     if (this.props.action && this.props.pagination) {
       const { current, pageCount, pageSize } = this.props.pagination;
       if (current < pageCount) {
-        this.props.action(current + 1, pageSize);
+        this.handleAction(current + 1, pageSize);
       }
     }
   };
 
   handleOnEndReached = () => {
+    if (!this.state.listScrolled) {
+      return;
+    }
     if (!this.onEndReachedCalledDuringMomentum) {
       this.handlePagination();
       this.onEndReachedCalledDuringMomentum = true;
@@ -104,7 +115,7 @@ class List extends PureComponent {
     }
     if (this.props.pagination && this.props.data.length > 0) {
       const { current, pageCount } = this.props.pagination;
-      if (this.props.loading && current >= 1) {
+      if (this.props.loading) {
         return (
           <View style={styles.footerRefresher.container}>
             <ActivityIndicator />
@@ -160,7 +171,7 @@ class List extends PureComponent {
         if (!pagination) {
           return true;
         }
-        if (pagination && pagination.current <= 1) {
+        if (pagination && pagination.current === 1) {
           return true;
         }
       }
@@ -184,6 +195,7 @@ class List extends PureComponent {
         onEndReachedThreshold={0.5}
         onMomentumScrollBegin={this.handleOnMomentumScrollBegin}
         onMomentumScrollEnd={this.handleOnMomentumScrollEnd}
+        onScrollEndDrag={() => this.setState({ listScrolled: true })}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         keyExtractor={this.extractKey}
@@ -214,7 +226,7 @@ const styles = {
   },
   footerRefresher: {
     container: {
-      paddingVertical: 10,
+      height: 36,
       justifyContent: 'center',
       flexDirection: 'row',
       alignItems: 'center',

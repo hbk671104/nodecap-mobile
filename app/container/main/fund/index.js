@@ -6,7 +6,6 @@ import R from 'ramda';
 import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
-import LoadingView from 'component/uikit/loading';
 import FundWrapper from './wrapper';
 import styles from './style';
 
@@ -86,14 +85,6 @@ class Fund extends Component {
 
   render() {
     const { index, routes } = this.props;
-    if (R.isEmpty(routes)) {
-      return (
-        <View style={styles.container}>
-          <NavBar gradient title="加载中..." />
-          <LoadingView />;
-        </View>
-      );
-    }
     return (
       <View style={styles.container}>
         <TabView

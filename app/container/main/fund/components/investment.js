@@ -113,7 +113,7 @@ const styles = {
       height: 42,
       width: 42,
       padding: 0,
-      padAngle: 4,
+      // padAngle: 4,
       innerRadius: 8,
     },
   },

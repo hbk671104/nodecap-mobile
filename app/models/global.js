@@ -18,11 +18,12 @@ export default {
   effects: {
     *bootstrap({ callback }, { call, put, all }) {
       try {
+        // put => non-blocking, put.resolve => blocking
         yield all([
-          put({
+          put.resolve({
             type: 'startup',
           }),
-          put({
+          put.resolve({
             type: 'initial',
           }),
         ]);
@@ -46,7 +47,7 @@ export default {
         console.log(e);
       }
     },
-    *initial(_, { select, put, call, all, take }) {
+    *initial(_, { select, put, call, all }) {
       const token = yield select(state => state.login.token);
       const companies = yield select(state => state.login.companies);
       if (token) {
@@ -63,16 +64,16 @@ export default {
         });
 
         yield all([
-          put({
+          put.resolve({
             type: 'user/fetchCurrent',
           }),
-          put({
+          put.resolve({
             type: 'fund/fetch',
           }),
-          put({
+          put.resolve({
             type: 'roles',
           }),
-          put({
+          put.resolve({
             type: 'initRealm',
           }),
         ]);
