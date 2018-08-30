@@ -25,6 +25,7 @@ import Dashboard from 'container/main/dashboard';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
+import NotificationCenter from 'container/main/notification_center';
 import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
@@ -89,6 +90,12 @@ const Tab = createBottomTabNavigator(
     //     title: '资产管理',
     //   },
     // },
+    NotificationCenter: {
+      screen: NotificationCenter,
+      navigationOptions: {
+        title: '项目动态',
+      },
+    },
     Self: {
       screen: Self,
       navigationOptions: {
@@ -136,6 +143,16 @@ const Tab = createBottomTabNavigator(
                   focused
                     ? require('asset/tabIcon/asset_highlight.png')
                     : require('asset/tabIcon/asset.png')
+                }
+              />
+            );
+          case 'NotificationCenter':
+            return (
+              <Image
+                source={
+                  focused
+                    ? require('asset/tabIcon/notification_center_selected.png')
+                    : require('asset/tabIcon/notification_center.png')
                 }
               />
             );
