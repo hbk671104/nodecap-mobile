@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import Communications from 'react-native-communications';
@@ -16,7 +16,9 @@ import styles from './style';
 }))
 export default class NotificationDetail extends Component {
   componentWillMount() {
-    this.loadDetail();
+    InteractionManager.runAfterInteractions(() => {
+      this.loadDetail();
+    });
   }
 
   componentWillUnmount() {
@@ -52,11 +54,12 @@ export default class NotificationDetail extends Component {
   };
 
   render() {
-    const { loading } = this.props;
+    const { loading, detail } = this.props;
+    const invalid = loading || R.isEmpty(detail);
     return (
       <View style={styles.container}>
         <NavBar back gradient title="上币公告" />
-        {loading ? <Loading /> : this.renderContent()}
+        {invalid ? <Loading /> : this.renderContent()}
       </View>
     );
   }
