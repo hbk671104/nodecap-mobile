@@ -10,6 +10,8 @@ package com.nodecap;
         import java.util.ArrayList;
         import java.util.List;
 
+        import cn.jpush.android.api.JPushInterface;
+
 public class MainActivity extends ReactActivity {
 
     // Debug 模式选项
@@ -33,6 +35,9 @@ public class MainActivity extends ReactActivity {
         SplashScreen.show(this, true);  // here
         super.onCreate(savedInstanceState);
 
+        // JPush
+        JPushInterface.init(this);
+        
         // 初始化 SDK
         SensorsDataAPI.sharedInstance(
                 this,                               // 传入 Context

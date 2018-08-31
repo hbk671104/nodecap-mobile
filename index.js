@@ -61,16 +61,9 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 moment.locale('zh-cn');
 
 if (!global.__DEV__) {
-  WeChat.registerApp('wx9e13272f60a68c63');
   Sentry.config(
     'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
   ).install();
-  if (Platform.OS === 'ios') {
-    JPush.setupPush();
-  } else {
-    JPush.initPush();
-    JPush.notifyJSDidLoad(() => null);
-  }
 }
 
 AppRegistry.registerComponent('nodecap', () => App);

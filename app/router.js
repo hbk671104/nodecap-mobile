@@ -1,7 +1,10 @@
-import React, { PureComponent } from 'react';
-import { BackHandler, Linking, Alert, Image } from 'react-native';
+import React, { Component } from 'react';
+import { BackHandler, Alert, Image, Platform, Vibration } from 'react-native';
+import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
+import * as WeChat from 'react-native-wechat';
 import {
+  NavigationActions,
   createSwitchNavigator,
   createStackNavigator,
   createBottomTabNavigator,
@@ -11,9 +14,10 @@ import {
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import RehydrateLoader from './component/RehydrateLoader';
-import { connect } from './utils/dva';
-import { NavigationActions } from './utils';
+import JPush from 'jpush-react-native';
+
+import RehydrateLoader from 'component/RehydrateLoader';
+import Loading from 'component/uikit/loading';
 
 // Screen
 import Landing from 'container/auth/landing';
@@ -241,20 +245,35 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 const addListener = createReduxBoundAddListener('root');
 
 @connect(({ app, router }) => ({ app, router }))
-class Router extends PureComponent {
+class Router extends Component {
+  state = {
+    isIOS: Platform.OS === 'ios',
+  };
+
   componentWillMount() {
+    WeChat.registerApp('wx9e13272f60a68c63');
+    if (!this.state.isIOS) {
+      JPush.notifyJSDidLoad(() => null);
+    }
+  }
+
+  componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
-    Linking.addEventListener('url', this.handleOpenURL);
+    JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.addReceiveNotificationListener(this.handleReceiveNotification);
+    if (this.state.isIOS) {
+      JPush.addOpenNotificationLaunchAppListener(this.handleOpenNotification);
+    }
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
-    Linking.removeEventListener('url', this.handleOpenURL);
+    JPush.removeReceiveOpenNotificationListener(() => null);
+    JPush.removeReceiveNotificationListener(() => null);
+    if (this.state.isIOS) {
+      JPush.removeOpenNotificationLaunchAppEventListener(() => null);
+    }
   }
-
-  handleOpenURL = ({ url }) => {
-    console.log(url);
-  };
 
   backHandle = () => {
     const { dispatch, router } = this.props;
@@ -270,9 +289,19 @@ class Router extends PureComponent {
     return true;
   };
 
+  handleOpenNotification = ({ appState, extras }) => {
+    console.log('open', extras);
+  };
+
+  handleReceiveNotification = ({ appState, extras }) => {
+    if (appState === 'active') {
+      Vibration.vibrate(500);
+    }
+  };
+
   render() {
     const { dispatch, app, router } = this.props;
-    if (app.loading) return null;
+    if (app.loading) return <Loading />;
 
     const navigation = {
       dispatch,
