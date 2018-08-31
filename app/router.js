@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, Image, Platform, Vibration } from 'react-native';
+import {
+  BackHandler,
+  Alert,
+  Image,
+  Platform,
+  Vibration,
+  AppState,
+} from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -18,6 +25,7 @@ import JPush from 'jpush-react-native';
 
 import RehydrateLoader from 'component/RehydrateLoader';
 import Loading from 'component/uikit/loading';
+import { handleOpen, handleReceive } from './utils/jpush_handler';
 
 // Screen
 import Landing from 'container/auth/landing';
@@ -248,6 +256,7 @@ const addListener = createReduxBoundAddListener('root');
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
+    appState: AppState.currentState,
   };
 
   componentWillMount() {
@@ -258,21 +267,17 @@ class Router extends Component {
   }
 
   componentDidMount() {
+    AppState.addEventListener('change', this.handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
     JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);
-    if (this.state.isIOS) {
-      JPush.addOpenNotificationLaunchAppListener(this.handleOpenNotification);
-    }
   }
 
   componentWillUnmount() {
+    AppState.removeEventListener('change', this.handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
-    JPush.removeReceiveOpenNotificationListener(() => null);
-    JPush.removeReceiveNotificationListener(() => null);
-    if (this.state.isIOS) {
-      JPush.removeOpenNotificationLaunchAppEventListener(() => null);
-    }
+    JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
   }
 
   backHandle = () => {
@@ -289,14 +294,27 @@ class Router extends Component {
     return true;
   };
 
-  handleOpenNotification = ({ appState, extras }) => {
-    console.log('open', extras);
+  handleOpenNotification = ({ extras }) => {
+    handleOpen(extras);
   };
 
   handleReceiveNotification = ({ appState, extras }) => {
     if (appState === 'active') {
       Vibration.vibrate(500);
     }
+    handleReceive(extras);
+  };
+
+  handleAppStateChange = nextAppState => {
+    if (
+      this.state.appState === 'active' &&
+      nextAppState.match(/inactive|background/)
+    ) {
+      if (this.state.isIOS) {
+        JPush.setBadge(0, () => null);
+      }
+    }
+    this.setState({ appState: nextAppState });
   };
 
   render() {

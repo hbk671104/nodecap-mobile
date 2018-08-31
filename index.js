@@ -1,9 +1,7 @@
 import React from 'react';
-import { AppRegistry, UIManager, Platform, AsyncStorage } from 'react-native';
+import { AppRegistry, UIManager, AsyncStorage } from 'react-native';
 import { autoRehydrate, persistStore } from 'redux-persist';
-import * as WeChat from 'react-native-wechat';
 import { Sentry } from 'react-native-sentry';
-import JPush from 'jpush-react-native';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
