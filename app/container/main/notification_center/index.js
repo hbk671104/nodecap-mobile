@@ -8,13 +8,23 @@ import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import NotificationItem from 'component/notification/item';
 
+import { getCurrentScreen } from '../../../router';
 import styles from './style';
 
-@connect(({ notification, loading }) => ({
+@connect(({ notification, loading, router }) => ({
   data: R.pathOr([], ['list'])(notification),
   loading: loading.effects['notification/fetch'],
+  isCurrent: getCurrentScreen(router) === 'NotificationCenter',
 }))
 export default class NotificationCenter extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isCurrent) {
+      this.props.dispatch({
+        type: 'notification/clearBadge',
+      });
+    }
+  }
+
   requestData = (page, size, callback) => {
     this.props.dispatch({
       type: 'notification/fetch',

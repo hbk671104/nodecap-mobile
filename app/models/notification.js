@@ -6,6 +6,7 @@ export default {
   state: {
     list: [],
     current: null,
+    badgeVisible: false,
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -48,6 +49,18 @@ export default {
       return {
         ...state,
         current: null,
+      };
+    },
+    showBadge(state) {
+      return {
+        ...state,
+        badgeVisible: true,
+      };
+    },
+    clearBadge(state) {
+      return {
+        ...state,
+        badgeVisible: false,
       };
     },
   },

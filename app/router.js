@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {
   BackHandler,
   Alert,
-  Image,
   Platform,
   Vibration,
   AppState,
@@ -25,6 +24,7 @@ import JPush from 'jpush-react-native';
 
 import RehydrateLoader from 'component/RehydrateLoader';
 import Loading from 'component/uikit/loading';
+import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
 
 // Screen
@@ -128,60 +128,7 @@ const Tab = createBottomTabNavigator(
     navigationOptions: ({ navigation: { state } }) => ({
       tabBarIcon: ({ focused }) => {
         const { routeName } = state;
-        switch (routeName) {
-          case 'Fund':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/fund-sel.png')
-                    : require('asset/tabIcon/fund.png')
-                }
-              />
-            );
-          case 'Portfolio':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/portfolio_highlight.png')
-                    : require('asset/tabIcon/portfolio.png')
-                }
-              />
-            );
-          case 'Management':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/asset_highlight.png')
-                    : require('asset/tabIcon/asset.png')
-                }
-              />
-            );
-          case 'NotificationCenter':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/notification_center_selected.png')
-                    : require('asset/tabIcon/notification_center.png')
-                }
-              />
-            );
-          case 'Self':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/me_highlight.png')
-                    : require('asset/tabIcon/me.png')
-                }
-              />
-            );
-          default:
-            return null;
-        }
+        return <BadgeTabIcon route={routeName} focused={focused} />;
       },
     }),
   },

@@ -7,14 +7,12 @@ import { NavigationActions } from 'react-navigation';
 
 import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
-import { setStatusBar } from 'component/uikit/statusBar';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import AddButton from 'component/add';
 
 import PortfolioWrapper from './route/portfolio/wrapper';
 import ProjectWrapper from './route/project/wrapper';
-import { getCurrentScreen } from '../../../router';
 import styles from './style';
 
 @global.bindTrack({
@@ -22,9 +20,8 @@ import styles from './style';
   name: 'App_ProjectOperation',
 })
 @compose(withState('addButtonVisible', 'setAddButtonVisible', true))
-@connect(({ global, router }) => ({
+@connect(({ global }) => ({
   constants: global.constants,
-  isCurrent: getCurrentScreen(router) === 'Portfolio',
 }))
 export default class Portfolio extends Component {
   state = {
@@ -34,12 +31,6 @@ export default class Portfolio extends Component {
       { key: 'project', title: '待投项目' },
     ],
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isCurrent) {
-      setStatusBar('light-content');
-    }
-  }
 
   handleIndexChange = index => {
     const subModuleName = () => {
