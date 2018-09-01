@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import Communications from 'react-native-communications';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
@@ -41,7 +41,16 @@ export default class NotificationDetail extends Component {
 
   handleLinkPress = link => () => {
     this.props.track('查看原文');
-    Communications.web(link);
+    const { detail } = this.props;
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'NotificationDetailRaw',
+        params: {
+          uri: link,
+          title: detail.title,
+        },
+      }),
+    );
   };
 
   renderContent = () => {

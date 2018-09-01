@@ -27,7 +27,9 @@ const notificationItem = ({ data, onPress }) => {
         <View style={styles.content.container}>
           <View style={styles.content.top.container}>
             <View style={styles.content.top.title.container}>
-              <Text style={styles.content.top.title.text}>{title}</Text>
+              <Text style={styles.content.top.title.text} numberOfLines={2}>
+                {title}
+              </Text>
             </View>
             <Text style={styles.content.top.date}>
               {moment.unix(created_at).format('MM-DD HH:ss')}

@@ -82,7 +82,11 @@ class NavBar extends Component {
             ) : (
               <View style={styles.wrapper.content}>
                 <View style={styles.title.container}>
-                  {!!title && <Text style={styles.title.text}>{title}</Text>}
+                  {!!title && (
+                    <Text style={styles.title.text} numberOfLines={1}>
+                      {title}
+                    </Text>
+                  )}
                   {renderTitle && renderTitle()}
                 </View>
                 <View style={styles.group.left}>
@@ -153,6 +157,7 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+      paddingHorizontal: 36,
     },
     text: {
       fontSize: 17,
