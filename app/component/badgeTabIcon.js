@@ -52,13 +52,13 @@ const styles = {
   badge: {
     wrapper: {
       position: 'absolute',
-      top: -2.5,
-      right: -5,
+      top: -3,
+      right: -6,
     },
     container: {
-      height: 5,
-      width: 5,
-      borderRadius: 2.5,
+      height: 10,
+      width: 10,
+      borderRadius: 5,
       backgroundColor: '#F5222D',
     },
   },

@@ -32,20 +32,19 @@ class Fund extends Component {
 
   componentDidMount() {
     if (this.state.isIOS) {
-      JPush.addOpenNotificationLaunchAppListener(this.handleOpenNotification);
+      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
     }
   }
 
-  componentWillUnmount() {
-    if (this.state.isIOS) {
-      JPush.removeOpenNotificationLaunchAppEventListener(
-        this.handleOpenNotification,
-      );
+  handleOpenLaunchNotification = result => {
+    if (R.isNil(result)) {
+      return;
     }
-  }
 
-  handleOpenNotification = ({ extras }) => {
-    handleOpen(extras);
+    setTimeout(() => {
+      const { extras } = result;
+      handleOpen(extras);
+    }, 500);
   };
 
   handleIndexChange = index => {
