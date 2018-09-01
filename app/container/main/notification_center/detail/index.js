@@ -3,7 +3,7 @@ import { View, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
-
+import HtmlWrapper from '../../../../services/htmlWraper';
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
 import WebView from 'component/uikit/webview';
@@ -58,7 +58,10 @@ export default class NotificationDetail extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Header data={detail} onLinkPress={this.handleLinkPress} />
-        <WebView scalesPageToFit={false} source={{ html: detail.content }} />
+        <WebView
+          scalesPageToFit={false}
+          source={{ html: HtmlWrapper(detail.content) }}
+        />
       </View>
     );
   };

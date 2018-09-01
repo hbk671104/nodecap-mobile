@@ -23,7 +23,14 @@ const notificationItem = ({ data, onPress }) => {
   return (
     <Touchable foreground onPress={onPress(trend.id)}>
       <View style={styles.container}>
-        <Avatar size={50} source={{ uri: logo_url }} />
+        <Avatar
+          size={50}
+          source={
+            R.isEmpty(logo_url)
+              ? require('asset/project/project_logo_default.png')
+              : { uri: logo_url }
+          }
+        />
         <View style={styles.content.container}>
           <View style={styles.content.top.container}>
             <View style={styles.content.top.title.container}>
