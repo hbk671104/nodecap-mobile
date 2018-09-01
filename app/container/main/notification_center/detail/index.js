@@ -44,11 +44,7 @@ export default class NotificationDetail extends Component {
     return (
       <View style={{ flex: 1 }}>
         <Header data={detail} onLinkPress={this.handleLinkPress} />
-        <WebView
-          scalesPageToFit={false}
-          style={{ paddingLeft: 12 }}
-          source={{ html: detail.content }}
-        />
+        <WebView scalesPageToFit={false} source={{ html: detail.content }} />
       </View>
     );
   };
