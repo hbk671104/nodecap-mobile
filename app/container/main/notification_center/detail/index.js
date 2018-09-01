@@ -10,6 +10,10 @@ import WebView from 'component/uikit/webview';
 import Header from './header';
 import styles from './style';
 
+@global.bindTrack({
+  page: '通知详情',
+  name: 'App_NotificationDetailOperation',
+})
 @connect(({ notification, loading }) => ({
   detail: R.pathOr({}, ['current'])(notification),
   loading: loading.effects['notification/get'],
@@ -36,6 +40,7 @@ export default class NotificationDetail extends Component {
   };
 
   handleLinkPress = link => () => {
+    this.props.track('查看原文');
     Communications.web(link);
   };
 

@@ -10,6 +10,10 @@ import NotificationItem from 'component/notification/item';
 
 import styles from './style';
 
+@global.bindTrack({
+  page: '通知中心',
+  name: 'App_NotificationCenterOperation',
+})
 @connect(({ notification, loading }) => ({
   data: R.pathOr([], ['list'])(notification),
   loading: loading.effects['notification/fetch'],
@@ -22,6 +26,7 @@ export default class NotificationCenter extends Component {
   };
 
   handleItemPress = id => () => {
+    this.props.track('点击进入详情');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'NotificationDetail',
