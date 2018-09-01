@@ -1,11 +1,5 @@
 import React, { Component } from 'react';
-import {
-  BackHandler,
-  Alert,
-  Platform,
-  Vibration,
-  AppState,
-} from 'react-native';
+import { BackHandler, Alert, Platform, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -26,6 +20,7 @@ import RehydrateLoader from 'component/RehydrateLoader';
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
+import { handleTabBarPress } from './utils/tabbar_handler';
 
 // Screen
 import Landing from 'container/auth/landing';
@@ -107,6 +102,12 @@ const Tab = createBottomTabNavigator(
       screen: NotificationCenter,
       navigationOptions: {
         title: '项目动态',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+
+          // some other things
+          handleTabBarPress('NotificationCenter');
+        },
       },
     },
     Self: {
@@ -203,7 +204,6 @@ const addListener = createReduxBoundAddListener('root');
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
-    appState: AppState.currentState,
   };
 
   componentWillMount() {
@@ -214,14 +214,12 @@ class Router extends Component {
   }
 
   componentDidMount() {
-    AppState.addEventListener('change', this.handleAppStateChange);
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
     JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);
   }
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this.handleAppStateChange);
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
     JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
@@ -250,18 +248,6 @@ class Router extends Component {
       Vibration.vibrate(500);
     }
     handleReceive(extras);
-  };
-
-  handleAppStateChange = nextAppState => {
-    if (
-      this.state.appState === 'active' &&
-      nextAppState.match(/inactive|background/)
-    ) {
-      if (this.state.isIOS) {
-        JPush.setBadge(0, () => null);
-      }
-    }
-    this.setState({ appState: nextAppState });
   };
 
   render() {
