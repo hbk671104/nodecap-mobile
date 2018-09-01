@@ -204,7 +204,7 @@ class List extends PureComponent {
         onScrollEndDrag={() => this.setState({ listScrolled: true })}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
-        removeClippedSubviews
+        removeClippedSubviews={false}
         keyExtractor={this.extractKey}
         {...(itemHeight
           ? {
