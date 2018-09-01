@@ -57,9 +57,10 @@ export default class NotificationDetail extends Component {
   render() {
     const { loading, detail } = this.props;
     const invalid = loading || R.isEmpty(detail);
+    const type = R.pathOr('', ['type'])(detail);
     return (
       <View style={styles.container}>
-        <NavBar back gradient title="上币公告" />
+        <NavBar back gradient title={type} />
         {invalid ? <Loading /> : this.renderContent()}
       </View>
     );
