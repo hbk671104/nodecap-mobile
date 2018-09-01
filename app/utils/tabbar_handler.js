@@ -9,12 +9,13 @@ const isIOS = Platform.OS === 'ios';
 const handleTabBarPress = route => {
   switch (route) {
     case 'NotificationCenter':
-      store.dispatch({
-        type: 'notification/clearBadge',
-      });
       if (isIOS) {
         JPush.setBadge(0, () => null);
       }
+
+      store.dispatch({
+        type: 'notification/clearBadge',
+      });
       break;
     default:
       break;

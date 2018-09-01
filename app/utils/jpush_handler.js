@@ -49,9 +49,7 @@ const handleReceive = extras => {
 
       // show badge ?
       const { router } = store.getState();
-      const isNotificationCenter =
-        getCurrentScreen(router) === 'NotificationCenter';
-      if (isNotificationCenter) {
+      if (getCurrentScreen(router) === 'NotificationCenter') {
         break;
       }
 
