@@ -16,7 +16,15 @@ const selector = ({ symbols, currentSymbol, onSelect }) => {
       <Arrow style={styles.arrow} />
       <ScrollView style={styles.container}>
         {symbols.map((s, i) => {
-          const selected = currentSymbol === s.symbol;
+          const selected = R.equals(currentSymbol, s);
+          const anchorSymbol = R.pipe(
+            R.pathOr('', ['symbol']),
+            R.split('/'),
+            R.last,
+          )(s);
+          const anchorItem = R.pathOr('--', ['current_price', anchorSymbol])(s);
+          const cnyItem = R.pathOr('--', ['current_price', 'CNY'])(s);
+
           return (
             <Touchable key={i} onPress={() => onSelect(s)}>
               <View style={styles.item.container}>
@@ -25,21 +33,23 @@ const selector = ({ symbols, currentSymbol, onSelect }) => {
                   <Text style={styles.item.subtitle}>{s.market}</Text>
                 </View>
                 <View>
-                  {R.keys(s.current_price).map((k, j) => {
-                    const item = s.current_price[k];
-                    return (
-                      <Text
-                        key={j}
-                        style={[
-                          styles.item.content.normal,
-                          selected && styles.item.content.highlight,
-                        ]}
-                      >
-                        {k === 'CNY' && '≈'} <Price symbol={k}>{item}</Price>{' '}
-                        {k}
-                      </Text>
-                    );
-                  })}
+                  <Text
+                    style={[
+                      styles.item.content.normal,
+                      selected && styles.item.content.highlight,
+                    ]}
+                  >
+                    <Price symbol={anchorSymbol}>{anchorItem}</Price>
+                  </Text>
+                  <Text
+                    style={[
+                      styles.item.content.normal,
+                      selected && styles.item.content.highlight,
+                      { marginTop: 4 },
+                    ]}
+                  >
+                    CNY ≈ <Price symbol="CNY">{cnyItem}</Price>
+                  </Text>
                 </View>
               </View>
             </Touchable>
