@@ -96,8 +96,9 @@ export default {
         global.s().logout();
 
         // jpush remove corresponding info
-        JPush.setAlias('', () => null);
+        JPush.deleteAlias(() => null);
         JPush.cleanTags(() => null);
+        JPush.stopPush();
       } finally {
         yield put({
           type: 'logoutSuccess',

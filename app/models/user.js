@@ -98,6 +98,9 @@ export default {
           global.s().profileSet(input);
         }
 
+        // resume push
+        JPush.resumePush();
+
         // jpush user init
         JPush.setAlias(`user_${data.id}`, () => null);
         JPush.setTags([`company_${company.id}`], () => null);
