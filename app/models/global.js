@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as R from 'ramda';
 import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
+import { NavigationActions } from 'react-navigation';
 
 export default {
   namespace: 'global',
@@ -27,6 +28,12 @@ export default {
             type: 'initial',
           }),
         ]);
+
+        yield put(
+          NavigationActions.navigate({
+            routeName: 'Main',
+          }),
+        );
 
         if (callback) {
           yield call(callback);

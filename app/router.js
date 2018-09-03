@@ -16,13 +16,13 @@ import {
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
 
-import RehydrateLoader from 'component/RehydrateLoader';
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
 import { handleTabBarPress } from './utils/tabbar_handler';
 
 // Screen
+import Loader from 'container/loader';
 import Landing from 'container/auth/landing';
 import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
@@ -178,7 +178,7 @@ const AppRouter = createSwitchNavigator(
     Auth: AuthStack,
     Main: MainStack,
     CodePush: CodePushPage,
-    Landing: RehydrateLoader,
+    Landing: Loader,
   },
   {
     initialRouteName: 'Landing',
