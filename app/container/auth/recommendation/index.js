@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
@@ -28,6 +29,10 @@ const mock = [
 
 @connect()
 class Recommendation extends Component {
+  state = {
+    selected: {},
+  };
+
   handleSkip = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -37,6 +42,16 @@ class Recommendation extends Component {
   };
 
   handleSubmit = () => {};
+
+  handleItemPress = id => () => {
+    this.setState(({ selected }) => {
+      const updateSelected = {
+        ...selected,
+        [id]: !R.pathOr(false, [id])(selected),
+      };
+      return { selected: updateSelected };
+    });
+  };
 
   renderHeader = () => (
     <View style={styles.header.container}>
@@ -52,14 +67,20 @@ class Recommendation extends Component {
     </View>
   );
 
-  renderItem = ({ item }) => <RecommendationItem data={item} />;
+  renderItem = ({ item }) => (
+    <RecommendationItem
+      data={item}
+      selected={!!this.state.selected[item.id]}
+      onPress={this.handleItemPress(item.id)}
+    />
+  );
 
   render() {
     return (
       <View style={styles.container}>
         <NavBar hidden barStyle="dark-content" />
         {this.renderHeader()}
-        <List data={mock} renderItem={this.renderItem} />
+        <List data={mock} extraData={this.state} renderItem={this.renderItem} />
         <AuthButton
           style={styles.authButton.container}
           disabled={false}
