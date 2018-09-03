@@ -19,6 +19,7 @@ import codepushModel from './app/models/codepush';
 import resourceModel from './app/models/resource';
 import colleagueModel from './app/models/colleague';
 import notificationModel from './app/models/notification';
+import recommendationModel from './app/models/recommendation';
 
 const app = dva({
   initialState: {},
@@ -34,6 +35,7 @@ const app = dva({
     resourceModel,
     colleagueModel,
     notificationModel,
+    recommendationModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],

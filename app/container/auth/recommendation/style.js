@@ -38,7 +38,7 @@ export default {
   authButton: {
     container: {
       marginHorizontal: 24,
-      marginBottom: 24,
+      marginVertical: 24,
     },
   },
 };

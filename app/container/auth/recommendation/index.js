@@ -12,25 +12,47 @@ import List from 'component/uikit/list';
 import RecommendationItem from './item';
 import styles from './style';
 
-const mock = [
-  {
-    id: 1,
-  },
-  {
-    id: 2,
-  },
-  {
-    id: 3,
-  },
-  {
-    id: 4,
-  },
-];
-
-@connect()
+@connect(({ recommendation, loading }) => ({
+  data: R.pathOr(
+    [
+      {
+        id: 1,
+      },
+      {
+        id: 2,
+      },
+      {
+        id: 3,
+      },
+      {
+        id: 4,
+      },
+      {
+        id: 5,
+      },
+      {
+        id: 6,
+      },
+    ],
+    ['list'],
+  )(recommendation),
+  loading: loading.effects['recommendation/fetch'],
+}))
 class Recommendation extends Component {
   state = {
     selected: {},
+  };
+
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'recommendation/clearList',
+    });
+  }
+
+  requestData = () => {
+    this.props.dispatch({
+      type: 'recommendation/fetch',
+    });
   };
 
   handleSkip = () => {
@@ -76,11 +98,18 @@ class Recommendation extends Component {
   );
 
   render() {
+    const { data, loading } = this.props;
     return (
       <View style={styles.container}>
         <NavBar hidden barStyle="dark-content" />
         {this.renderHeader()}
-        <List data={mock} extraData={this.state} renderItem={this.renderItem} />
+        <List
+          action={this.requestData}
+          loading={loading}
+          data={data}
+          extraData={this.state}
+          renderItem={this.renderItem}
+        />
         <AuthButton
           style={styles.authButton.container}
           disabled={false}

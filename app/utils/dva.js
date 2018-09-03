@@ -32,6 +32,7 @@ export default function (options) {
         'fund/fetchInvestmentReport',
         'notification/fetch',
         'notification/get',
+        'recommendation/fetch',
       ],
     }),
   );
