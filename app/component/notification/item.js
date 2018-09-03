@@ -18,7 +18,7 @@ const notificationItem = ({ data, onPress }) => {
   const project_name = R.pathOr('--', ['project_name'])(trend);
   const type = R.pathOr('--', ['type'])(trend);
   const subtitle = R.pathOr('--', ['subtitle'])(trend);
-  const created_at = R.pathOr('--', ['created_at'])(trend);
+  const push_at = R.pathOr('--', ['push_at'])(trend);
 
   return (
     <Touchable foreground onPress={onPress(trend.id)}>
@@ -39,7 +39,7 @@ const notificationItem = ({ data, onPress }) => {
               </Text>
             </View>
             <Text style={styles.content.top.date}>
-              {moment.unix(created_at).format('MM-DD HH:ss')}
+              {moment.unix(push_at).format('MM-DD HH:ss')}
             </Text>
           </View>
           <View style={styles.content.tag.wrapper}>
