@@ -46,7 +46,7 @@ export default class Loader extends Component {
     return (
       <View style={styles.container}>
         <NavBar barStyle="dark-content" />
-        <Loading title="初始化中..." />
+        <Loading title="Greatness Await..." />
       </View>
     );
   }

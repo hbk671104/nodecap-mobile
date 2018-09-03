@@ -28,6 +28,7 @@ import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
+import Recommendation from 'container/auth/recommendation';
 import Dashboard from 'container/main/dashboard';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
@@ -72,6 +73,7 @@ const AuthStack = createStackNavigator(
     Login,
     SetPassword,
     ResetPwd,
+    Recommendation,
   },
   {
     headerMode: 'none',
@@ -135,6 +137,7 @@ const Tab = createBottomTabNavigator(
     }),
   },
 );
+
 const MainStack = createStackNavigator(
   {
     Tab,

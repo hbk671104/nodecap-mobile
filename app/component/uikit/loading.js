@@ -9,7 +9,7 @@ const loading = props => {
       <ActivityIndicator {...props} />
       {!!title && (
         <View style={styles.title.container}>
-          <Text>{title}</Text>
+          <Text style={styles.title.text}>{title}</Text>
         </View>
       )}
     </View>
@@ -27,7 +27,9 @@ const styles = {
     container: {
       marginTop: 12,
     },
-    text: {},
+    text: {
+      color: 'rgba(0, 0, 0, 0.85)',
+    },
   },
 };
 
