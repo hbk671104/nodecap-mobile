@@ -32,6 +32,21 @@ const investment = ({ overall }) => {
     'total_sold_count',
   ])(overall);
 
+  const validCalcChart = R.reduce(
+    (acc, value) => {
+      return acc || (value !== '--' && value !== 0);
+    },
+    false,
+    [calc_count, uncalc_count],
+  );
+  const validSoldChart = R.reduce(
+    (acc, value) => {
+      return acc || (value !== '--' && value !== 0);
+    },
+    false,
+    [unsold_count, partial_sold_count, total_sold_count],
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.group}>
@@ -48,11 +63,13 @@ const investment = ({ overall }) => {
           })}
         </View>
         <View style={styles.pie.container}>
-          <VictoryPie
-            {...styles.pie.item}
-            colorScale={['#0090FF', '#F88E40']}
-            data={[{ y: calc_count }, { y: uncalc_count }]}
-          />
+          {validCalcChart && (
+            <VictoryPie
+              {...styles.pie.item}
+              colorScale={['#0090FF', '#F88E40']}
+              data={[{ y: calc_count }, { y: uncalc_count }]}
+            />
+          )}
         </View>
       </View>
       <View style={styles.divider} />
@@ -75,15 +92,17 @@ const investment = ({ overall }) => {
           })}
         </View>
         <View style={styles.pie.container}>
-          <VictoryPie
-            {...styles.pie.item}
-            colorScale={['#0090FF', '#F88E40', '#09AC32']}
-            data={[
-              { y: unsold_count },
-              { y: partial_sold_count },
-              { y: total_sold_count },
-            ]}
-          />
+          {validSoldChart && (
+            <VictoryPie
+              {...styles.pie.item}
+              colorScale={['#0090FF', '#F88E40', '#09AC32']}
+              data={[
+                { y: unsold_count },
+                { y: partial_sold_count },
+                { y: total_sold_count },
+              ]}
+            />
+          )}
         </View>
       </View>
     </View>
