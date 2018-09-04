@@ -1,37 +1,52 @@
 import React, { Component } from 'react';
-import { View, InteractionManager } from 'react-native';
+import { View, Text, ScrollView, Animated, Easing } from 'react-native';
 import { connect } from 'react-redux';
-import { TabView, TabBar } from 'react-native-tab-view';
+import { compose, withState, withProps } from 'recompose';
 
 import NavBar from 'component/navBar';
-import Market from './route/market';
-import Investment from './route/investment';
-import Holdings from './route/holdings';
-import styles, { deviceWidth, indicatorWidth } from './style';
 import { hasPermission } from 'component/auth/permission/lock';
+
+import Header, { headerHeight } from './header';
+import styles from './style';
 
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
 })
-@connect(({ global, portfolio }) => ({
+@compose(
+  withState('scrollY', 'setScrollY', new Animated.Value(0)),
+  withProps(({ scrollY }) => ({
+    headerHeightRange: scrollY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [headerHeight, 0],
+      extrapolate: 'clamp',
+    }),
+    headerOpacityRange: scrollY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+      easing: Easing.out(Easing.quad),
+    }),
+    titleOpacityRange: scrollY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+      easing: Easing.in(Easing.quad),
+    }),
+  })),
+)
+@connect(({ global, portfolio, loading }) => ({
   constants: global.constants,
   portfolio: portfolio.current,
+  loading: loading.effects['portfolio/get'],
 }))
 export default class PortfolioDetail extends Component {
   state = {
-    index: this.props.navigation.getParam('landing_index', 0),
-    routes: [
-      { key: 'market', title: '项目行情' },
-      { key: 'investment', title: '投资信息' },
-      // { key: 'holdings', title: '持仓记录' },
-    ],
+    // index: this.props.navigation.getParam('landing_index', 0),
   };
 
   componentWillMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.loadDetail();
-    });
+    this.loadDetail();
   }
 
   componentDidMount() {
@@ -54,73 +69,30 @@ export default class PortfolioDetail extends Component {
     }
   };
 
-  handleIndexChange = index => {
-    const subModuleName = () => {
-      switch (index) {
-        case 0:
-          return '项目行情';
-        case 1:
-          return '投资信息';
-        case 2:
-          return '持仓记录';
-        default:
-          return null;
-      }
-    };
-    this.setState({ index }, () => {
-      this.props.track('Tab切换', { subModuleName: subModuleName() });
-    });
-  };
-
-  renderNavBar = bottom => {
+  renderNavBar = () => {
     const item = this.props.navigation.getParam('item');
-    return (
-      <NavBar gradient back title={item.name} renderBottom={() => bottom} />
-    );
-  };
-
-  renderHeader = displayTab => props => {
-    const item = this.props.navigation.getParam('item');
+    const {
+      portfolio,
+      loading,
+      headerHeightRange,
+      headerOpacityRange,
+      titleOpacityRange,
+    } = this.props;
     return (
       <NavBar
-        gradient
         back
+        gradient
         title={item.name}
-        renderBottom={() => {
-          if (!displayTab) return null;
-          return (
-            <TabBar
-              {...props}
-              style={styles.tabBar.container}
-              labelStyle={styles.tabBar.label}
-              indicatorStyle={[
-                styles.tabBar.indicator,
-                {
-                  left:
-                    (deviceWidth / this.state.routes.length - indicatorWidth) /
-                    2,
-                },
-              ]}
-            />
-          );
-        }}
+        titleContainerStyle={{ opacity: titleOpacityRange }}
+        renderBottom={() => (
+          <Header
+            style={{ height: headerHeightRange, opacity: headerOpacityRange }}
+            loading={loading}
+            data={portfolio}
+          />
+        )}
       />
     );
-  };
-
-  renderScene = ({ route }) => {
-    const { portfolio } = this.props;
-    const { id } = this.props.navigation.getParam('item');
-    switch (route.key) {
-      case 'market':
-        return <Market {...this.props} id={id} item={portfolio} />;
-      case 'investment':
-        return <Investment {...this.props} item={portfolio} />;
-      case 'holdings':
-        return <Holdings {...this.props} item={portfolio} />;
-      default:
-        return null;
-    }
   };
 
   render() {
@@ -129,19 +101,22 @@ export default class PortfolioDetail extends Component {
       item && item.can_calculate && hasPermission('project-statistic');
     return (
       <View style={styles.container}>
-        <TabView
-          initialLayout={styles.initialLayout}
-          navigationState={{
-            index: this.state.index,
-            routes: displayTab
-              ? this.state.routes
-              : [{ key: 'investment', title: '投资信息' }],
-          }}
-          renderScene={this.renderScene}
-          tabBarPosition="top"
-          renderTabBar={this.renderHeader(displayTab)}
-          onIndexChange={this.handleIndexChange}
-        />
+        {this.renderNavBar()}
+        <ScrollView
+          stickyHeaderIndices={[0]}
+          onScroll={Animated.event([
+            {
+              nativeEvent: {
+                contentOffset: {
+                  y: this.props.scrollY,
+                },
+              },
+            },
+          ])}
+        >
+          <Text>哈哈</Text>
+          <Text>哈哈</Text>
+        </ScrollView>
       </View>
     );
   }
