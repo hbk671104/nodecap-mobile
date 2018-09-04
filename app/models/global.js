@@ -1,8 +1,10 @@
 import axios from 'axios';
 import * as R from 'ramda';
+import { NavigationActions } from 'react-navigation';
+
 import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
-import { NavigationActions } from 'react-navigation';
+import { Storage } from '../utils';
 
 export default {
   namespace: 'global',
@@ -29,9 +31,15 @@ export default {
           }),
         ]);
 
+        const recommended = yield call(
+          Storage.get,
+          'project_recommended',
+          false,
+        );
+
         yield put(
           NavigationActions.navigate({
-            routeName: 'Main',
+            routeName: recommended ? 'Main' : 'Recommendation',
           }),
         );
 

@@ -9,6 +9,7 @@ import Touchable from 'component/uikit/touchable';
 import AuthButton from 'component/auth/button';
 import List from 'component/uikit/list';
 
+import { Storage } from '../../../utils';
 import RecommendationItem from './item';
 import styles from './style';
 
@@ -46,12 +47,13 @@ class Recommendation extends Component {
     });
   };
 
-  handleSkip = () => {
+  handleNext = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Main',
       }),
     );
+    Storage.set('project_recommended', true);
   };
 
   handleSubmit = () => {};
@@ -70,7 +72,7 @@ class Recommendation extends Component {
     <View style={styles.header.container}>
       <View style={styles.header.top.container}>
         <Text style={styles.header.top.title}>添加感兴趣的项目</Text>
-        <Touchable borderless onPress={this.handleSkip}>
+        <Touchable borderless onPress={this.handleNext}>
           <Text style={styles.header.top.skip}>跳过</Text>
         </Touchable>
       </View>
