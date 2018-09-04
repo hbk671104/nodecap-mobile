@@ -84,6 +84,7 @@ export default class Colleague extends Component {
     <NavBar
       gradient
       back
+      titleStyle={styles.navBar.title}
       renderTitle={() => (
         <View style={styles.searchBar.container}>
           <SearchBarDisplay

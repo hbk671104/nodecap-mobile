@@ -3,7 +3,11 @@ export default {
     flex: 1,
     backgroundColor: 'white',
   },
-  navBar: {},
+  navBar: {
+    title: {
+      paddingHorizontal: 0,
+    },
+  },
   searchBar: {
     container: {
       flex: 1,

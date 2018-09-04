@@ -67,6 +67,7 @@ class Resources extends Component {
   renderHeader = props => {
     return (
       <NavBar
+        titleStyle={styles.navBar.title}
         gradient
         back
         renderTitle={() => (

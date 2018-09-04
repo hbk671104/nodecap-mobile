@@ -13,7 +13,11 @@ export default {
     height: 0,
     width: Dimensions.get('window').width,
   },
-  navBar: {},
+  navBar: {
+    title: {
+      paddingHorizontal: 0,
+    },
+  },
   searchBar: {
     container: {
       flex: 1,

@@ -24,6 +24,7 @@ class NavBar extends Component {
     gradient: PropTypes.bool,
     back: PropTypes.bool,
     title: PropTypes.string,
+    titleStyle: PropTypes.object,
   };
 
   static defaultProps = {
@@ -62,6 +63,7 @@ class NavBar extends Component {
       gradient,
       back,
       title,
+      titleStyle,
     } = this.props;
     const WrapperComp = gradient ? Gradient : View;
     return (
@@ -81,7 +83,7 @@ class NavBar extends Component {
               renderContent()
             ) : (
               <View style={styles.wrapper.content}>
-                <View style={styles.title.container}>
+                <View style={[styles.title.container, titleStyle]}>
                   {!!title && (
                     <Text style={styles.title.text} numberOfLines={1}>
                       {title}

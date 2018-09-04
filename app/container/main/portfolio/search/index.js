@@ -68,6 +68,7 @@ class Search extends Component {
     return (
       <NavBar
         gradient
+        titleStyle={styles.narBar.title}
         renderTitle={() => (
           <View style={styles.searchBar.container}>
             <SearchBar
