@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView, Animated, Easing } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
+import StatusDisplay from 'component/project/statusDisplay';
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Header, { headerHeight } from './header';
@@ -35,9 +37,8 @@ import styles from './style';
     }),
   })),
 )
-@connect(({ global, portfolio, loading }) => ({
-  constants: global.constants,
-  portfolio: portfolio.current,
+@connect(({ portfolio, loading }) => ({
+  portfolio: R.pathOr({}, ['current'])(portfolio),
   loading: loading.effects['portfolio/get'],
 }))
 export default class PortfolioDetail extends Component {
@@ -70,7 +71,6 @@ export default class PortfolioDetail extends Component {
   };
 
   renderNavBar = () => {
-    const item = this.props.navigation.getParam('item');
     const {
       portfolio,
       loading,
@@ -82,7 +82,7 @@ export default class PortfolioDetail extends Component {
       <NavBar
         back
         gradient
-        title={item.name}
+        title={portfolio.name}
         titleContainerStyle={{ opacity: titleOpacityRange }}
         renderBottom={() => (
           <Header
@@ -92,6 +92,33 @@ export default class PortfolioDetail extends Component {
           />
         )}
       />
+    );
+  };
+
+  renderSwitchButton = () => {
+    const { portfolio } = this.props;
+    const can_calculate = R.pathOr(false, ['can_calculate'])(portfolio);
+    return (
+      <View style={styles.switch.container}>
+        <View style={styles.switch.content.container}>
+          <StatusDisplay
+            status={portfolio.status}
+            titleStyle={styles.switch.status.text}
+          />
+          <Text style={styles.switch.content.text}>切换</Text>
+        </View>
+        <View style={styles.switch.content.container}>
+          <Text
+            style={[
+              styles.switch.status.text,
+              can_calculate && styles.switch.matched.highlight,
+            ]}
+          >
+            {can_calculate ? '项目已匹配' : '项目未匹配'}
+          </Text>
+          <Text style={styles.switch.content.text}>切换</Text>
+        </View>
+      </View>
     );
   };
 
@@ -114,8 +141,7 @@ export default class PortfolioDetail extends Component {
             },
           ])}
         >
-          <Text>哈哈</Text>
-          <Text>哈哈</Text>
+          <View style={{ flex: 1 }}>{this.renderSwitchButton()}</View>
         </ScrollView>
       </View>
     );

@@ -4,6 +4,8 @@ import { View, Text } from 'react-native';
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 import Price from 'component/price';
+import StatusDisplay from '../statusDisplay';
+
 import moment from 'moment';
 import styles from './style';
 
@@ -25,29 +27,7 @@ const unexchangeableItem = ({ item, onPress }) => (
           </View>
         </View>
         <View>
-          <View style={styles.top.status.container}>
-            <View
-              style={[
-                styles.top.status.dot.container,
-                item.status === 0 && { backgroundColor: '#bfbfbf' },
-                item.status === 1 && { backgroundColor: '#FAAD14' },
-                item.status === 2 && { backgroundColor: '#F5222D' },
-                item.status === 3 && { backgroundColor: '#1890FF' },
-                item.status === 4 && { backgroundColor: '#7376F4' },
-                item.status === 5 && { backgroundColor: '#E634CE' },
-                item.status === 6 && { backgroundColor: '#1ECEA7' },
-              ]}
-            />
-            <Text style={styles.top.status.text}>
-              {item.status === 0 && '待初筛'}
-              {item.status === 1 && '待上会'}
-              {item.status === 2 && '已Pass'}
-              {item.status === 3 && '待跟进'}
-              {item.status === 4 && '确定意向'}
-              {item.status === 5 && '待打币'}
-              {item.status === 6 && '已打币'}
-            </Text>
-          </View>
+          <StatusDisplay status={item.status} />
         </View>
       </View>
       <View style={styles.bottom.container}>
