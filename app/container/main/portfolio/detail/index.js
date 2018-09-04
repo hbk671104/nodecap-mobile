@@ -1,15 +1,23 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Animated, Easing } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Animated,
+  Easing,
+  TouchableHighlight,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
+import Touchable from 'component/uikit/touchable';
 import StatusDisplay from 'component/project/statusDisplay';
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Header, { headerHeight } from './header';
-import styles from './style';
+import styles, { deviceWidth, switchHeight } from './style';
 
 @global.bindTrack({
   page: '项目详情',
@@ -34,6 +42,16 @@ import styles from './style';
       outputRange: [0, 1],
       extrapolate: 'clamp',
       easing: Easing.in(Easing.quad),
+    }),
+    statusSwitchTranslateRange: scrollY.interpolate({
+      inputRange: [0, switchHeight],
+      outputRange: [0, -deviceWidth / 2],
+      extrapolate: 'clamp',
+    }),
+    matchSwitchTranslateRange: scrollY.interpolate({
+      inputRange: [0, switchHeight],
+      outputRange: [0, deviceWidth / 2],
+      extrapolate: 'clamp',
     }),
   })),
 )
@@ -70,6 +88,10 @@ export default class PortfolioDetail extends Component {
     }
   };
 
+  handleStatusPress = () => {};
+
+  handleCoinMatchPress = () => {};
+
   renderNavBar = () => {
     const {
       portfolio,
@@ -96,28 +118,68 @@ export default class PortfolioDetail extends Component {
   };
 
   renderSwitchButton = () => {
-    const { portfolio } = this.props;
+    const {
+      portfolio,
+      statusSwitchTranslateRange,
+      matchSwitchTranslateRange,
+    } = this.props;
     const can_calculate = R.pathOr(false, ['can_calculate'])(portfolio);
     return (
       <View style={styles.switch.container}>
-        <View style={styles.switch.content.container}>
-          <StatusDisplay
-            status={portfolio.status}
-            titleStyle={styles.switch.status.text}
-          />
-          <Text style={styles.switch.content.text}>切换</Text>
-        </View>
-        <View style={styles.switch.content.container}>
-          <Text
-            style={[
-              styles.switch.status.text,
-              can_calculate && styles.switch.matched.highlight,
-            ]}
+        <Animated.View
+          style={[
+            styles.switch.content.wrapper,
+            {
+              transform: [
+                {
+                  translateX: statusSwitchTranslateRange,
+                },
+              ],
+            },
+          ]}
+        >
+          <TouchableHighlight
+            underlayColor="white"
+            onPress={this.handleStatusPress}
           >
-            {can_calculate ? '项目已匹配' : '项目未匹配'}
-          </Text>
-          <Text style={styles.switch.content.text}>切换</Text>
-        </View>
+            <View style={styles.switch.content.container}>
+              <StatusDisplay
+                status={portfolio.status}
+                titleStyle={styles.switch.status.text}
+              />
+              <Text style={styles.switch.content.text}>切换</Text>
+            </View>
+          </TouchableHighlight>
+        </Animated.View>
+        <Animated.View
+          style={[
+            styles.switch.content.wrapper,
+            {
+              transform: [
+                {
+                  translateX: matchSwitchTranslateRange,
+                },
+              ],
+            },
+          ]}
+        >
+          <TouchableHighlight
+            underlayColor="white"
+            onPress={this.handleCoinMatchPress}
+          >
+            <View style={styles.switch.content.container}>
+              <Text
+                style={[
+                  styles.switch.status.text,
+                  can_calculate && styles.switch.matched.highlight,
+                ]}
+              >
+                {can_calculate ? '项目已匹配' : '项目未匹配'}
+              </Text>
+              <Text style={styles.switch.content.text}>切换</Text>
+            </View>
+          </TouchableHighlight>
+        </Animated.View>
       </View>
     );
   };
@@ -130,6 +192,7 @@ export default class PortfolioDetail extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView
+          contentContainerStyle={styles.scroll.contentContainer}
           stickyHeaderIndices={[0]}
           onScroll={Animated.event([
             {
@@ -141,8 +204,65 @@ export default class PortfolioDetail extends Component {
             },
           ])}
         >
-          <View style={{ flex: 1 }}>{this.renderSwitchButton()}</View>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
+          <Text>啊哈哈哈哈</Text>
         </ScrollView>
+        <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
       </View>
     );
   }

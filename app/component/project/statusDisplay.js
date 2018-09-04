@@ -56,7 +56,7 @@ const styles = {
 };
 
 statusDisplay.propTypes = {
-  status: PropTypes.number.isRequired,
+  status: PropTypes.number,
   dotStyle: PropTypes.object,
   titleStyle: PropTypes.object,
 };

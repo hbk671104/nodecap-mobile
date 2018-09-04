@@ -65,7 +65,7 @@ const styles = {
     width: 58,
     backgroundColor: 'white',
     marginTop: 12,
-    marginBottom: 18,
+    marginBottom: 12,
   },
   bottom: {
     container: {

@@ -1,29 +1,46 @@
 import { shadow } from '../../../../utils/style';
+import { headerHeight } from './header';
+import { realBarHeight } from 'component/navBar';
+import { Dimensions } from 'react-native';
 
+export const deviceWidth = Dimensions.get('window').width;
+export const switchHeight = 50;
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
   navBar: {},
+  scroll: {
+    contentContainer: { paddingTop: switchHeight },
+  },
   switch: {
+    wrapper: {
+      position: 'absolute',
+      top: realBarHeight + headerHeight - switchHeight / 2,
+      left: 0,
+      right: 0,
+    },
     container: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-around',
-      height: 50,
+      height: switchHeight,
       paddingHorizontal: 7,
     },
     content: {
-      container: {
+      wrapper: {
         flex: 1,
+        marginHorizontal: 5,
+        backgroundColor: 'white',
+        borderRadius: 2,
+        ...shadow,
+      },
+      container: {
         flexDirection: 'row',
         height: 45,
-        backgroundColor: 'white',
-        marginHorizontal: 5,
         justifyContent: 'space-around',
         alignItems: 'center',
-        ...shadow,
       },
       text: {
         fontSize: 12,
