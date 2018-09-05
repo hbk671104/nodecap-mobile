@@ -50,6 +50,7 @@ class Recommendation extends Component {
       payload: R.pipe(
         R.path(['selected']),
         R.keys,
+        R.map(k => parseInt(k, 10)),
       )(this.state),
       callback: success => {
         if (success) {
@@ -93,6 +94,7 @@ class Recommendation extends Component {
 
   render() {
     const { data, fetching, updating } = this.props;
+    const { selected } = this.state;
     return (
       <View style={styles.container}>
         <NavBar hidden barStyle="dark-content" />
@@ -107,7 +109,7 @@ class Recommendation extends Component {
         <AuthButton
           loading={updating}
           style={styles.authButton.container}
-          disabled={false}
+          disabled={R.isEmpty(selected)}
           title="开始体验"
           onPress={this.handleSubmit}
         />
