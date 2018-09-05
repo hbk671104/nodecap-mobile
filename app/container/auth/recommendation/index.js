@@ -14,21 +14,9 @@ import RecommendationItem from './item';
 import styles from './style';
 
 @connect(({ recommendation, loading }) => ({
-  data: R.pathOr(
-    [
-      {
-        id: 1,
-      },
-      {
-        id: 2,
-      },
-      {
-        id: 3,
-      },
-    ],
-    ['list'],
-  )(recommendation),
-  loading: loading.effects['recommendation/fetch'],
+  data: R.pathOr([], ['list'])(recommendation),
+  fetching: loading.effects['recommendation/fetch'],
+  updating: loading.effects['recommendation/update'],
 }))
 class Recommendation extends Component {
   state = {
@@ -56,7 +44,20 @@ class Recommendation extends Component {
     Storage.set('project_recommended', true);
   };
 
-  handleSubmit = () => {};
+  handleSubmit = () => {
+    this.props.dispatch({
+      type: 'recommendation/update',
+      payload: R.pipe(
+        R.path(['selected']),
+        R.keys,
+      )(this.state),
+      callback: success => {
+        if (success) {
+          this.handleNext();
+        }
+      },
+    });
+  };
 
   handleItemPress = id => () => {
     this.setState(({ selected }) => {
@@ -91,19 +92,20 @@ class Recommendation extends Component {
   );
 
   render() {
-    const { data, loading } = this.props;
+    const { data, fetching, updating } = this.props;
     return (
       <View style={styles.container}>
         <NavBar hidden barStyle="dark-content" />
         {this.renderHeader()}
         <List
           action={this.requestData}
-          loading={loading}
+          loading={fetching}
           data={data}
           extraData={this.state}
           renderItem={this.renderItem}
         />
         <AuthButton
+          loading={updating}
           style={styles.authButton.container}
           disabled={false}
           title="开始体验"

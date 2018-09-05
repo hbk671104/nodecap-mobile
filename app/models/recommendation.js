@@ -1,5 +1,4 @@
-import {} from '../services/api';
-import request from '../utils/request';
+import { projectRecommendation, updateRecommendation } from '../services/api';
 
 export default {
   namespace: 'recommendation',
@@ -8,8 +7,22 @@ export default {
   },
   effects: {
     *fetch({ callback }, { call, put }) {
+      const { data } = yield call(projectRecommendation);
+
+      yield put({
+        type: 'list',
+        payload: data,
+      });
+
       if (callback) {
         yield call(callback);
+      }
+    },
+    *update({ callback, payload }, { call }) {
+      const { status } = yield call(updateRecommendation, payload);
+
+      if (callback) {
+        yield call(callback, status === 200);
       }
     },
   },

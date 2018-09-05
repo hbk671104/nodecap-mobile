@@ -8,8 +8,9 @@ import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 
 const item = ({ data, selected, onPress }) => {
-  const logo = R.pathOr('', ['logo_url'])(data);
+  const logo = R.pathOr('', ['icon'])(data);
   const title = R.pathOr('--', ['name'])(data);
+  const focusable = R.pathOr(false, ['is_focusable'])(data);
   return (
     <View style={styles.container}>
       <Avatar size={45} source={{ uri: logo }} />
@@ -20,12 +21,17 @@ const item = ({ data, selected, onPress }) => {
         style={[
           styles.selector.container,
           selected && { backgroundColor: '#1890FF' },
+          focusable && { backgroundColor: '#1890FF', opacity: 0.6 },
         ]}
+        disabled={focusable}
         onPress={onPress}
       >
         <Icon
-          style={[styles.selector.title, selected && { color: 'white' }]}
-          name={selected ? 'checkmark' : 'add'}
+          style={[
+            styles.selector.title,
+            (selected || focusable) && { color: 'white' },
+          ]}
+          name={selected || focusable ? 'checkmark' : 'add'}
         />
       </Touchable>
     </View>

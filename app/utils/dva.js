@@ -33,6 +33,7 @@ export default function (options) {
         'notification/fetch',
         'notification/get',
         'recommendation/fetch',
+        'recommendation/update',
       ],
     }),
   );
