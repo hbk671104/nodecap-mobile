@@ -10,6 +10,10 @@ export default {
     flex: 1,
     backgroundColor: 'white',
   },
+  initialLayout: {
+    height: 0,
+    width: deviceWidth,
+  },
   navBar: {},
   scroll: {
     contentContainer: { paddingTop: switchHeight },

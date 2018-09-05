@@ -7,6 +7,9 @@ import {
   Easing,
   TouchableHighlight,
 } from 'react-native';
+import ScrollableTabView, {
+  DefaultTabBar,
+} from 'react-native-scrollable-tab-view';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -14,8 +17,13 @@ import R from 'ramda';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import StatusDisplay from 'component/project/statusDisplay';
+
 import { hasPermission } from 'component/auth/permission/lock';
 
+import Description from './page/description';
+import Pairs from './page/pairs';
+import Return from './page/return';
+import Trend from './page/trend';
 import Header, { headerHeight } from './header';
 import styles, { deviceWidth, switchHeight } from './style';
 
@@ -60,10 +68,6 @@ import styles, { deviceWidth, switchHeight } from './style';
   loading: loading.effects['portfolio/get'],
 }))
 export default class PortfolioDetail extends Component {
-  state = {
-    // index: this.props.navigation.getParam('landing_index', 0),
-  };
-
   componentWillMount() {
     this.loadDetail();
   }
@@ -184,6 +188,18 @@ export default class PortfolioDetail extends Component {
     );
   };
 
+  renderTabBar = () => (
+    // <DefaultTabBar
+    //   style={styles.tabBar.container}
+    //   tabStyle={styles.tabBar.tab}
+    //   textStyle={styles.tabBar.text}
+    //   activeTextColor="#1890FF"
+    //   inactiveTextColor="rgba(0, 0, 0, 0.65)"
+    //   underlineStyle={styles.tabBar.underline}
+    // />
+    <DefaultTabBar />
+  );
+
   render() {
     const item = this.props.navigation.getParam('item');
     const displayTab =
@@ -193,7 +209,7 @@ export default class PortfolioDetail extends Component {
         {this.renderNavBar()}
         <ScrollView
           contentContainerStyle={styles.scroll.contentContainer}
-          stickyHeaderIndices={[0]}
+          // stickyHeaderIndices={[0]}
           onScroll={Animated.event([
             {
               nativeEvent: {
@@ -204,63 +220,16 @@ export default class PortfolioDetail extends Component {
             },
           ])}
         >
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
-          <Text>啊哈哈哈哈</Text>
+          <ScrollableTabView
+            locked
+            scrollWithoutAnimation
+            renderTabBar={this.renderTabBar}
+          >
+            <Trend {...this.props} tabLabel="动态" />
+            <Pairs {...this.props} tabLabel="交易所" />
+            <Description {...this.props} tabLabel="详情" />
+            <Return {...this.props} tabLabel="回报" />
+          </ScrollableTabView>
         </ScrollView>
         <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
       </View>
