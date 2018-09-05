@@ -52,7 +52,7 @@ const styles = {
       fontWeight: 'bold',
       fontSize: 12,
       color: 'white',
-      marginTop: 8,
+      marginTop: 6,
     },
   },
   divider: {
@@ -82,7 +82,7 @@ const styles = {
       fontWeight: '300',
       fontSize: 10,
       color: 'white',
-      marginTop: 12,
+      marginTop: 6,
     },
   },
 };

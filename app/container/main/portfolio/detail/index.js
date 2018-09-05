@@ -198,7 +198,6 @@ export default class PortfolioDetail extends Component {
             },
           )}
         >
-          {/* <View style={{ height: 250 }} /> */}
           <ScrollableTabView
             style={styles.tabView}
             locked
