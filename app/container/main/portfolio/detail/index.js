@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  Animated,
-  Easing,
-  TouchableHighlight,
-} from 'react-native';
+import { View, Text, Animated, TouchableHighlight } from 'react-native';
 import ScrollableTabView, {
   DefaultTabBar,
 } from 'react-native-scrollable-tab-view';
@@ -15,7 +8,6 @@ import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
-import Touchable from 'component/uikit/touchable';
 import StatusDisplay from 'component/project/statusDisplay';
 
 import { hasPermission } from 'component/auth/permission/lock';
@@ -24,7 +16,7 @@ import Description from './page/description';
 import Pairs from './page/pairs';
 import Return from './page/return';
 import Trend from './page/trend';
-import Header, { headerHeight } from './header';
+import Header from './header';
 import styles, { deviceWidth, switchHeight } from './style';
 
 @global.bindTrack({
@@ -33,24 +25,8 @@ import styles, { deviceWidth, switchHeight } from './style';
 })
 @compose(
   withState('scrollY', 'setScrollY', new Animated.Value(0)),
-  withProps(({ scrollY }) => ({
-    headerHeightRange: scrollY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [headerHeight, 0],
-      extrapolate: 'clamp',
-    }),
-    headerOpacityRange: scrollY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [1, 0],
-      extrapolate: 'clamp',
-      easing: Easing.out(Easing.quad),
-    }),
-    titleOpacityRange: scrollY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-      easing: Easing.in(Easing.quad),
-    }),
+  withState('offsetY', 'setOffsetY', 0),
+  withProps(({ offsetY, scrollY }) => ({
     statusSwitchTranslateRange: scrollY.interpolate({
       inputRange: [0, switchHeight],
       outputRange: [0, -deviceWidth / 2],
@@ -61,12 +37,17 @@ import styles, { deviceWidth, switchHeight } from './style';
       outputRange: [0, deviceWidth / 2],
       extrapolate: 'clamp',
     }),
+    bottomHidden: offsetY > 0,
   })),
 )
-@connect(({ portfolio, loading }) => ({
-  portfolio: R.pathOr({}, ['current'])(portfolio),
-  loading: loading.effects['portfolio/get'],
-}))
+@connect(({ portfolio, loading }, props) => {
+  const item = props.navigation.getParam('item');
+  return {
+    portfolio: R.pathOr({}, ['current'])(portfolio),
+    project_id: R.pathOr(0, ['id'])(item),
+    loading: loading.effects['portfolio/get'],
+  };
+})
 export default class PortfolioDetail extends Component {
   componentWillMount() {
     this.loadDetail();
@@ -83,40 +64,30 @@ export default class PortfolioDetail extends Component {
   }
 
   loadDetail = () => {
-    const item = this.props.navigation.getParam('item');
-    if (item && item.id) {
-      this.props.dispatch({
-        type: 'portfolio/get',
-        payload: item.id,
-      });
-    }
+    this.props.dispatch({
+      type: 'portfolio/get',
+      payload: this.props.project_id,
+    });
   };
 
   handleStatusPress = () => {};
 
   handleCoinMatchPress = () => {};
 
+  handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
+    const { setOffsetY } = this.props;
+    setOffsetY(contentOffset.y);
+  };
+
   renderNavBar = () => {
-    const {
-      portfolio,
-      loading,
-      headerHeightRange,
-      headerOpacityRange,
-      titleOpacityRange,
-    } = this.props;
+    const { bottomHidden, portfolio, loading } = this.props;
     return (
       <NavBar
         back
         gradient
-        title={portfolio.name}
-        titleContainerStyle={{ opacity: titleOpacityRange }}
-        renderBottom={() => (
-          <Header
-            style={{ height: headerHeightRange, opacity: headerOpacityRange }}
-            loading={loading}
-            data={portfolio}
-          />
-        )}
+        bottomHidden={bottomHidden}
+        title={bottomHidden ? portfolio.name : ''}
+        renderBottom={() => <Header loading={loading} data={portfolio} />}
       />
     );
   };
@@ -189,15 +160,14 @@ export default class PortfolioDetail extends Component {
   };
 
   renderTabBar = () => (
-    // <DefaultTabBar
-    //   style={styles.tabBar.container}
-    //   tabStyle={styles.tabBar.tab}
-    //   textStyle={styles.tabBar.text}
-    //   activeTextColor="#1890FF"
-    //   inactiveTextColor="rgba(0, 0, 0, 0.65)"
-    //   underlineStyle={styles.tabBar.underline}
-    // />
-    <DefaultTabBar />
+    <DefaultTabBar
+      style={styles.tabBar.container}
+      tabStyle={styles.tabBar.tab}
+      textStyle={styles.tabBar.text}
+      activeTextColor="rgba(0, 0, 0, 0.85)"
+      inactiveTextColor="rgba(0, 0, 0, 0.65)"
+      underlineStyle={styles.tabBar.underline}
+    />
   );
 
   render() {
@@ -207,22 +177,33 @@ export default class PortfolioDetail extends Component {
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        <ScrollView
+        <Animated.ScrollView
           contentContainerStyle={styles.scroll.contentContainer}
-          // stickyHeaderIndices={[0]}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: {
-                  y: this.props.scrollY,
+          bounces={false}
+          scrollEventThrottle={16}
+          stickyHeaderIndices={[1]}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: {
+                    y: this.props.scrollY,
+                  },
                 },
               },
+            ],
+            {
+              listener: this.handleOnScroll,
+              useNativeDriver: true,
             },
-          ])}
+          )}
         >
+          {/* <View style={{ height: 250 }} /> */}
           <ScrollableTabView
+            style={styles.tabView}
             locked
             scrollWithoutAnimation
+            prerenderingSiblingsNumber={Infinity}
             renderTabBar={this.renderTabBar}
           >
             <Trend {...this.props} tabLabel="动态" />
@@ -230,7 +211,7 @@ export default class PortfolioDetail extends Component {
             <Description {...this.props} tabLabel="详情" />
             <Return {...this.props} tabLabel="回报" />
           </ScrollableTabView>
-        </ScrollView>
+        </Animated.ScrollView>
         <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
       </View>
     );

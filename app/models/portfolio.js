@@ -235,6 +235,24 @@ export default {
         console.log(e);
       }
     },
+    *projectSymbol({ id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getProjectSymbol, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            symbols: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     /**
      * 项目详情
      * @param payload
