@@ -592,6 +592,14 @@ export function trendDetail(id) {
   return request.get(`/user-notifys/${id}/news-info`);
 }
 
+export function projectRecommendation() {
+  return request.get('/coins/recommended');
+}
+
+export function updateRecommendation(payload) {
+  return request.post('/coins/recommended', payload);
+}
+
 /**
  * 注册验证码
  * @param mobile

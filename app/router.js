@@ -16,18 +16,19 @@ import {
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
 
-import RehydrateLoader from 'component/RehydrateLoader';
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
 import { handleTabBarPress } from './utils/tabbar_handler';
 
 // Screen
+import Loader from 'container/loader';
 import Landing from 'container/auth/landing';
 import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
+import Recommendation from 'container/auth/recommendation';
 import Dashboard from 'container/main/dashboard';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
@@ -72,6 +73,7 @@ const AuthStack = createStackNavigator(
     Login,
     SetPassword,
     ResetPwd,
+    Recommendation,
   },
   {
     headerMode: 'none',
@@ -135,6 +137,7 @@ const Tab = createBottomTabNavigator(
     }),
   },
 );
+
 const MainStack = createStackNavigator(
   {
     Tab,
@@ -178,7 +181,7 @@ const AppRouter = createSwitchNavigator(
     Auth: AuthStack,
     Main: MainStack,
     CodePush: CodePushPage,
-    Landing: RehydrateLoader,
+    Landing: Loader,
   },
   {
     initialRouteName: 'Landing',

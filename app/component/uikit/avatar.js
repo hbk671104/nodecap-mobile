@@ -15,6 +15,7 @@ const avatar = props => (
     <Image
       {...props}
       resizeMode={props.resizeMode}
+      defaultSource={require('asset/project/project_logo_default.png')}
       style={{
         height: props.size * props.innerRatio,
         width: props.size * props.innerRatio,

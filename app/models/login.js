@@ -41,12 +41,6 @@ export default {
           yield put.resolve({
             type: 'global/bootstrap',
           });
-
-          yield put(
-            routerRedux.navigate({
-              routeName: 'Fund',
-            }),
-          );
         }
       } catch (e) {
         yield put({
@@ -71,12 +65,6 @@ export default {
         yield put.resolve({
           type: 'global/bootstrap',
         });
-
-        yield put(
-          routerRedux.navigate({
-            routeName: 'Fund',
-          }),
-        );
       } catch (e) {
         yield put({
           type: 'loginFailure',
