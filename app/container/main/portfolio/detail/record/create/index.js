@@ -18,8 +18,8 @@ import PickerSelect from 'component/picker';
 import styles from './style';
 
 @global.bindTrack({
-  page: '项目投资更新',
-  name: 'App_ProjectUpdateInvestmentOperation',
+  page: '项目投资创建',
+  name: 'App_ProjectCreateInvestmentOperation',
 })
 @connect(({ fund, global }) => ({
   funds: R.pathOr([], ['funds'])(fund),
@@ -30,12 +30,12 @@ import styles from './style';
   )(global),
 }))
 @createForm()
-class PortfolioInvestmentUpdate extends Component {
+class PortfolioInvestmentCreate extends Component {
   handleCreate = (investInfo = {}) => {
     const id = this.props.navigation.getParam('id');
-    Toast.loading('更新中...', 0);
+    Toast.loading('添加中...', 0);
     this.props.dispatch({
-      type: 'portfolio/updateInvestInfo',
+      type: 'portfolio/createInvestInfo',
       payload: investInfo,
       id,
       callback: success => {
@@ -65,7 +65,7 @@ class PortfolioInvestmentUpdate extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-        <NavBar gradient back title="更新投资记录" />
+        <NavBar gradient back title="添加投资记录" />
         <EnhancedScroll>
           {!R.isEmpty(funds) &&
             getFieldDecorator('fund', {
@@ -208,4 +208,4 @@ class PortfolioInvestmentUpdate extends Component {
   }
 }
 
-export default PortfolioInvestmentUpdate;
+export default PortfolioInvestmentCreate;

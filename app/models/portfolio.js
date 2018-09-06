@@ -12,6 +12,7 @@ import {
   getMatchedCoin,
   createProject,
   createProjectInvestInfo,
+  updateProjectInvestInfo,
 } from '../services/api';
 import moment from 'moment';
 
@@ -411,6 +412,38 @@ export default {
 
         if (callback) {
           yield call(callback, status === 201);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *updateInvestInfo({ id, callback, payload }, { select, put, call }) {
+      try {
+        const { status } = yield call(updateProjectInvestInfo, {
+          financeInfo: {
+            ...payload,
+            fund: {
+              id: payload.fund,
+            },
+            paid_at: moment(payload.paid_at, 'YYYY-MM-DD').toISOString(),
+            is_paid: true,
+          },
+          type: 'tokens',
+          id,
+        });
+
+        const current = yield select(state =>
+          R.path(['portfolio', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            payload: current.id,
+          });
+        }
+
+        if (callback) {
+          yield call(callback, status === 200);
         }
       } catch (error) {
         console.log(error);

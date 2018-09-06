@@ -2,31 +2,25 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, Image, ViewPropTypes } from 'react-native';
 
-const group = ({
-  style,
-  icon,
-  title,
-  interactionEnabled,
-  onAddPress,
-  onEditPress,
-  children,
-}) => (
+const group = ({ style, icon, title, onAddPress, onEditPress, children }) => (
   <View style={[styles.container, style]}>
     <View style={styles.groupWrapper}>
       <View style={styles.group}>
         {!!icon && <Image style={styles.image} source={icon} />}
         {!!title && <Text style={styles.title}>{title}</Text>}
       </View>
-      {interactionEnabled && (
-        <View style={styles.group}>
+      <View style={styles.group}>
+        {!!onAddPress && (
           <Text style={styles.add} onPress={onAddPress}>
             添加
           </Text>
+        )}
+        {!!onEditPress && (
           <Text style={styles.edit} onPress={onEditPress}>
             编辑
           </Text>
-        </View>
-      )}
+        )}
+      </View>
     </View>
     {children}
   </View>
@@ -39,12 +33,6 @@ group.propTypes = {
   interactionEnabled: PropTypes.bool,
   onAddPress: PropTypes.func,
   onEditPress: PropTypes.func,
-};
-
-group.defaultProps = {
-  interactionEnabled: false,
-  onAddPress: () => null,
-  onEditPress: () => null,
 };
 
 const styles = {

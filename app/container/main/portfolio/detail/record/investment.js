@@ -25,7 +25,16 @@ class Investment extends PureComponent {
     );
   };
 
-  handleEditPress = () => {};
+  handleEditPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioInvestmentUpdate',
+        params: {
+          id: this.props.id,
+        },
+      }),
+    );
+  };
 
   renderItemFields(field) {
     const projectProps = path => R.path([...path])(field);
@@ -172,7 +181,6 @@ class Investment extends PureComponent {
           style={styles.container}
           icon={require('asset/project/detail/investment.png')}
           title="投资信息"
-          interactionEnabled
           onAddPress={this.handleAddPress}
         />
         {afterSort.map((i, idx) => this.renderItem(i, idx))}
