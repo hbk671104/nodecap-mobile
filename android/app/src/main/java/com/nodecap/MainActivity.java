@@ -3,6 +3,7 @@ package com.nodecap;
         import android.os.Bundle;
 
         import com.facebook.react.ReactActivity;
+        import com.facebook.react.bridge.ReactContext;
         import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
         import org.devio.rn.splashscreen.SplashScreen;
@@ -32,7 +33,11 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this, true);  // here
+        ReactContext ctx = getReactInstanceManager().getCurrentReactContext();
+        if (ctx == null) {
+            SplashScreen.show(this, true);  // here
+        }
+
         super.onCreate(savedInstanceState);
 
         // JPush
