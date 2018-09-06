@@ -207,30 +207,22 @@ export default {
         console.log(e);
       }
     },
-    *projectStat({ id, payload = {}, callback }, { call }) {
+    *projectStat({ payload: id, callback }, { call, put }) {
       try {
-        let queryParams = payload;
-        let symbols;
-        if (R.isEmpty(queryParams)) {
-          const { data } = yield call(getProjectSymbol, id);
-          const first = data[0];
-          queryParams = {
-            market: first.market,
-            symbol: first.symbol,
-          };
-          symbols = data;
-        }
-
         // query params
         const { data } = yield call(getProjectChartData, {
           id,
-          payload: queryParams,
         });
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            stats: data,
+          },
+        });
+
         if (callback) {
-          callback({
-            ...(R.isNil(symbols) ? {} : { symbols }),
-            data,
-          });
+          yield call(callback, data);
         }
       } catch (e) {
         console.log(e);
@@ -295,6 +287,10 @@ export default {
           }),
           put({
             type: 'getExitToken',
+            payload,
+          }),
+          put({
+            type: 'projectStat',
             payload,
           }),
         ]);

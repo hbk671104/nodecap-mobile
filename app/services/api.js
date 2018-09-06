@@ -553,7 +553,7 @@ export function getDashboardData(id) {
 }
 
 export function getProjectChartData({ id, payload }) {
-  return request.get(`/projects/${id}/statistic2`, {
+  return request.get(`/projects/${id}/statistic`, {
     params: payload,
   });
 }
