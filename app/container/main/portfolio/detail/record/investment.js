@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
 import moment from 'moment';
 import Group from 'component/project/group';
 import Accounting from 'accounting';
+import { NavigationActions } from 'react-navigation';
 
 import { renderField } from './field';
 import styles from './investmentStyle';
@@ -12,7 +13,20 @@ import styles from './investmentStyle';
 const dateFormat = date =>
   (date ? moment(date).format('YYYY年MM月DD日 HH:mm') : null);
 
-class Investment extends Component {
+class Investment extends PureComponent {
+  handleAddPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioInvestmentCreate',
+        params: {
+          id: this.props.id,
+        },
+      }),
+    );
+  };
+
+  handleEditPress = () => {};
+
   renderItemFields(field) {
     const projectProps = path => R.path([...path])(field);
     const tokens = R.pathOr([], ['constants', 'tokens'])(this.props);
@@ -42,19 +56,13 @@ class Investment extends Component {
                 projectProps(['financeType']) === 'token' ? 'Token' : '股权',
               style: {
                 flex: 1,
-                // alignItems: projectProps(['stage_id']) ? 'flex-start' : 'space-between',
               },
-              // valueStyle: {
-              //   marginLeft: 14,
-              // },
             })}
             {renderField({
               name: '所投阶段',
               value: getStageName(field),
               style: {
                 flex: 1,
-                // marginLeft: projectProps(['financeType']) ? 0 : 22,
-                // paddingLeft: projectProps(['financeType']) ? 10 : 0,
               },
             })}
           </Flex>
@@ -115,6 +123,7 @@ class Investment extends Component {
       </View>
     );
   }
+
   renderItem(item, idx) {
     return (
       <View key={idx} style={styles.item}>
@@ -130,6 +139,7 @@ class Investment extends Component {
       </View>
     );
   }
+
   render() {
     const finance_token = R.pathOr([], ['item', 'invest_tokens', 'data'])(
       this.props,
@@ -162,6 +172,8 @@ class Investment extends Component {
           style={styles.container}
           icon={require('asset/project/detail/investment.png')}
           title="投资信息"
+          interactionEnabled
+          onAddPress={this.handleAddPress}
         />
         {afterSort.map((i, idx) => this.renderItem(i, idx))}
       </View>

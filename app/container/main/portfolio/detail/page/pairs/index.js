@@ -16,10 +16,10 @@ export default class Pairs extends Component {
   }
 
   loadData = () => {
-    const { project_id } = this.props;
+    const { id } = this.props;
     this.props.dispatch({
       type: 'portfolio/projectSymbol',
-      id: project_id,
+      id,
     });
   };
 

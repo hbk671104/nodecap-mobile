@@ -55,7 +55,7 @@ const selectionList = [
   const item = props.navigation.getParam('item');
   return {
     portfolio: R.pathOr({}, ['current'])(portfolio),
-    project_id: R.pathOr(0, ['id'])(item),
+    id: R.pathOr(0, ['id'])(item),
     loading: loading.effects['portfolio/get'],
   };
 })
@@ -77,7 +77,7 @@ export default class PortfolioDetail extends Component {
   loadDetail = () => {
     this.props.dispatch({
       type: 'portfolio/get',
-      payload: this.props.project_id,
+      payload: this.props.id,
     });
   };
 
@@ -89,6 +89,9 @@ export default class PortfolioDetail extends Component {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioRecord',
+        params: {
+          id: this.props.id,
+        },
       }),
     );
   };
@@ -175,6 +178,7 @@ export default class PortfolioDetail extends Component {
           contentContainerStyle={styles.scroll.contentContainer}
           // bounces={false}
           // scrollEventThrottle={16}
+          scrollEventThrottle={500}
           stickyHeaderIndices={[1]}
           onScroll={this.handleOnScroll}
         >

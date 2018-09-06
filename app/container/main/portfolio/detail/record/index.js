@@ -15,17 +15,34 @@ import NavBar from 'component/navBar';
   page: '项目记录详情',
   name: 'App_ProjectRecordDetailOperation',
 })
-@connect(({ loading, portfolio }, props) => {
-  const item = props.navigation.getParam('item');
+@connect(({ loading, global, portfolio, router }, props) => {
+  const id = props.navigation.getParam('id');
   return {
     item: R.pathOr({}, ['current'])(portfolio),
-    project_id: R.pathOr(0, ['id'])(item),
+    id,
+    constants: global.constants,
     loading: loading.effects['portfolio/get'],
+    hasDetailInStack: !R.pipe(
+      R.path(['routes']),
+      R.find(r => r.routeName === 'Main'),
+      R.path(['routes']),
+      R.find(r => r.routeName === 'PortfolioDetail'),
+      R.isNil,
+    )(router),
   };
 })
 class Record extends Component {
   componentWillMount() {
     this.loadData();
+  }
+
+  componentWillUnmount() {
+    if (this.props.hasDetailInStack) {
+      return;
+    }
+    this.props.dispatch({
+      type: 'portfolio/clearDetail',
+    });
   }
 
   loadData = () => {
@@ -34,7 +51,7 @@ class Record extends Component {
     }
     this.props.dispatch({
       type: 'portfolio/get',
-      payload: this.props.project_id,
+      payload: this.props.id,
     });
   };
 
@@ -48,35 +65,40 @@ class Record extends Component {
 
   render() {
     const { loading, item } = this.props;
-    if (loading || R.or(R.isNil(item), R.isEmpty(item))) {
-      return <Loading />;
-    }
+    const invalid = loading || R.isEmpty(item);
     const title = R.pathOr('', ['item', 'name'])(this.props);
     return (
       <View style={styles.container}>
         <NavBar back gradient title={title} />
-        <ScrollView
-          style={styles.scrollView}
-          ref={ref => {
-            this.scroll = ref;
-          }}
-        >
-          <Lock name="invest-view">
-            <InvestmentInfo
-              {...this.props}
-              onLayout={this.handleOnLayout('invest')}
-            />
-          </Lock>
-          <Lock name="return_token-view">
-            <TokenReturn
-              {...this.props}
-              onLayout={this.handleOnLayout('return')}
-            />
-          </Lock>
-          <Lock name="exit_token-view">
-            <TokenExit {...this.props} onLayout={this.handleOnLayout('exit')} />
-          </Lock>
-        </ScrollView>
+        {invalid ? (
+          <Loading />
+        ) : (
+          <ScrollView
+            style={styles.scrollView}
+            ref={ref => {
+              this.scroll = ref;
+            }}
+          >
+            <Lock name="invest-view">
+              <InvestmentInfo
+                {...this.props}
+                onLayout={this.handleOnLayout('invest')}
+              />
+            </Lock>
+            <Lock name="return_token-view">
+              <TokenReturn
+                {...this.props}
+                onLayout={this.handleOnLayout('return')}
+              />
+            </Lock>
+            <Lock name="exit_token-view">
+              <TokenExit
+                {...this.props}
+                onLayout={this.handleOnLayout('exit')}
+              />
+            </Lock>
+          </ScrollView>
+        )}
       </View>
     );
   }

@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import R from 'ramda';
 import {
   portfolioIndex,
   investmentIndex,
@@ -362,18 +362,10 @@ export default {
       try {
         const { data: projectRes } = yield call(createProject, project);
         if (!R.isEmpty(invest)) {
-          const financeInfo = {
-            ...invest,
-            fund: {
-              id: invest.fund,
-            },
-            paid_at: moment(invest.paid_at, 'YYYY-MM-DD').toISOString(),
-            is_paid: true,
-          };
-          yield call(createProjectInvestInfo, {
-            financeInfo,
-            type: 'tokens',
-            projectId: projectRes.id,
+          yield put.resolve({
+            type: 'createInvestInfo',
+            payload: invest,
+            id: projectRes.id,
           });
         }
 
@@ -390,6 +382,38 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *createInvestInfo({ id, callback, payload }, { select, put, call }) {
+      try {
+        const { status } = yield call(createProjectInvestInfo, {
+          financeInfo: {
+            ...payload,
+            fund: {
+              id: payload.fund,
+            },
+            paid_at: moment(payload.paid_at, 'YYYY-MM-DD').toISOString(),
+            is_paid: true,
+          },
+          type: 'tokens',
+          projectId: id,
+        });
+
+        const current = yield select(state =>
+          R.path(['portfolio', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            payload: current.id,
+          });
+        }
+
+        if (callback) {
+          yield call(callback, status === 201);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },
