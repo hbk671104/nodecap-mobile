@@ -20,7 +20,7 @@ const notificationItem = ({ data: trend, onPress }) => {
         <View style={styles.content.container}>
           <View style={styles.content.top.container}>
             <View style={styles.content.top.title.container}>
-              <Text style={styles.content.top.title.text} numberOfLines={2}>
+              <Text style={styles.content.top.title.text} numberOfLines={1}>
                 {title}
               </Text>
             </View>

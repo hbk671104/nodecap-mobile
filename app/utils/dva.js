@@ -23,6 +23,7 @@ export default function (options) {
         'portfolio/search',
         'portfolio/searchMatchedCoin',
         'portfolio/projectSymbol',
+        'portfolio/projectTrend',
         'user/createCompany',
         'resource/get',
         'resource/index',

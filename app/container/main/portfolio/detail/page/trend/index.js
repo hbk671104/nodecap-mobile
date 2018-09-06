@@ -10,7 +10,7 @@ import styles from './style';
 
 @connect(({ loading, portfolio }) => ({
   portfolio: R.pathOr({}, ['current'])(portfolio),
-  loading: loading.effects['portfolio/projectTrend'],
+  loadingTrend: loading.effects['portfolio/projectTrend'],
 }))
 export default class Trend extends Component {
   componentWillMount() {
@@ -52,19 +52,18 @@ export default class Trend extends Component {
   };
 
   render() {
-    const { portfolio, loading } = this.props;
+    const { portfolio, loadingTrend } = this.props;
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
     const empty = R.isEmpty(trends);
 
-    if (loading) {
+    if (loadingTrend) {
       return <ActivityIndicator style={styles.indicator} />;
     }
     return (
       <View style={styles.container}>
         {empty ? (
           <Empty
-            title="项目暂未匹配"
-            subtitle="通过上方立即匹配后即可查看项目动态"
+            title="暂无动态"
           />
         ) : (
           R.addIndex(R.map)((i, index) => (
