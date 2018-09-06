@@ -14,6 +14,7 @@ import {
   createProjectInvestInfo,
   updateProjectInvestInfo,
   getNewsByCoinId,
+  editProject,
 } from '../services/api';
 import moment from 'moment';
 
@@ -148,6 +149,16 @@ export default {
           payload: res.data,
           params: req,
         });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *update({ payload = {}, id, callback }, { call, put }) {
+      try {
+        yield call(editProject, id, payload);
         if (callback) {
           callback();
         }

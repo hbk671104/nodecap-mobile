@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
+import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import StatusDisplay from 'component/project/statusDisplay';
@@ -36,7 +38,7 @@ const selectionList = [
     name: '回报',
   },
 ];
-
+@connectActionSheet
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -51,12 +53,14 @@ const selectionList = [
     transformed: offsetY > 50,
   })),
 )
-@connect(({ portfolio, loading }, props) => {
+
+@connect(({ portfolio, loading, global }, props) => {
   const item = props.navigation.getParam('item');
   return {
     portfolio: R.pathOr({}, ['current'])(portfolio),
     id: R.pathOr(0, ['id'])(item),
     loading: loading.effects['portfolio/get'],
+    status: R.pathOr([], ['constants', 'project_status'])(global),
   };
 })
 export default class PortfolioDetail extends Component {
@@ -81,7 +85,40 @@ export default class PortfolioDetail extends Component {
     });
   };
 
-  handleStatusPress = () => {};
+  handleStatusPress = () => {
+    const { showActionSheetWithOptions, status } = this.props;
+    showActionSheetWithOptions(
+      {
+        options: [...R.map(r => r.name)(status), '取消'],
+        cancelButtonIndex: R.length(status),
+      },
+      buttonIndex => {
+        const newStatus = R.pathOr(null, [buttonIndex, 'value'])(status);
+        if (R.isNil(newStatus)) {
+          return;
+        }
+        Toast.loading('保存中...', 0);
+        this.props.dispatch({
+          type: 'portfolio/update',
+          id: this.props.id,
+          payload: {
+            status: newStatus,
+          },
+          callback: () => {
+            this.loadDetail();
+            Toast.hide();
+          },
+        });
+        // setCurrentRank(newRank, () => {
+        //   Toast.loading('加载中...', 0);
+        //   this.list.scrollToOffset({ offset: 0, animated: false });
+        //   this.requestData(1, 20, () => {
+        //     Toast.hide();
+        //   });
+        // });
+      },
+    );
+  };
 
   handleCoinMatchPress = () => {};
 
