@@ -41,7 +41,6 @@ import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
 import PortfolioRecord from 'container/main/portfolio/detail/record';
 import PortfolioInvestmentCreate from 'container/main/portfolio/detail/record/create';
-import PortfolioInvestmentUpdate from 'container/main/portfolio/detail/record/update';
 import Search from 'container/main/portfolio/search';
 import CreateProject from 'container/main/portfolio/create';
 import ExpressCreate from 'container/main/portfolio/create/express';
@@ -145,7 +144,6 @@ const MainStack = createStackNavigator(
     PortfolioDetail,
     PortfolioRecord,
     PortfolioInvestmentCreate,
-    PortfolioInvestmentUpdate,
     Search,
     CreateProject,
     ExpressCreate,

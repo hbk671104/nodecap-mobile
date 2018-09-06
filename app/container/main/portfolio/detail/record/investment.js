@@ -25,17 +25,6 @@ class Investment extends PureComponent {
     );
   };
 
-  handleEditPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PortfolioInvestmentUpdate',
-        params: {
-          id: this.props.id,
-        },
-      }),
-    );
-  };
-
   renderItemFields(field) {
     const projectProps = path => R.path([...path])(field);
     const tokens = R.pathOr([], ['constants', 'tokens'])(this.props);
