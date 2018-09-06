@@ -176,7 +176,6 @@ export default class PortfolioDetail extends Component {
         {this.renderNavBar()}
         <ScrollView
           contentContainerStyle={styles.scroll.contentContainer}
-          // bounces={false}
           // scrollEventThrottle={16}
           scrollEventThrottle={500}
           stickyHeaderIndices={[1]}

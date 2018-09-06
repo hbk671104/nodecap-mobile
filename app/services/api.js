@@ -608,3 +608,7 @@ export function getSMSCode(mobile) {
 export function createCompany(data) {
   return request.post('/signup', data);
 }
+
+export function getNewsByCoinId(id) {
+  return request.get(`/coins/${id}/news-info`);
+}

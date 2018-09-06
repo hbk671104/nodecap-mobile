@@ -13,6 +13,7 @@ import {
   createProject,
   createProjectInvestInfo,
   updateProjectInvestInfo,
+  getNewsByCoinId,
 } from '../services/api';
 import moment from 'moment';
 
@@ -236,6 +237,24 @@ export default {
           type: 'saveDetail',
           payload: {
             symbols: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *projectTrend({ id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getNewsByCoinId, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            news: data,
           },
         });
 
