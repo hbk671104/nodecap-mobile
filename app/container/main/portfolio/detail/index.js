@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Animated, TouchableHighlight } from 'react-native';
+import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -14,7 +14,7 @@ import Return from './page/return';
 import Trend from './page/trend';
 import Header from './header';
 import Selector from './selector';
-import styles, { deviceWidth, switchHeight } from './style';
+import styles from './style';
 
 const selectionList = [
   {
@@ -40,24 +40,13 @@ const selectionList = [
   name: 'App_ProjectDetailOperation',
 })
 @compose(
-  withState('scrollY', 'setScrollY', new Animated.Value(0)),
   withState('offsetY', 'setOffsetY', 0),
   withState('currentPage', 'setCurrentPage', {
     component: Trend,
     name: '动态',
   }),
-  withProps(({ offsetY, scrollY }) => ({
-    statusSwitchTranslateRange: scrollY.interpolate({
-      inputRange: [0, switchHeight],
-      outputRange: [0, -deviceWidth / 2],
-      extrapolate: 'clamp',
-    }),
-    matchSwitchTranslateRange: scrollY.interpolate({
-      inputRange: [0, switchHeight],
-      outputRange: [0, deviceWidth / 2],
-      extrapolate: 'clamp',
-    }),
-    bottomHidden: offsetY > 0,
+  withProps(({ offsetY }) => ({
+    transformed: offsetY > 50,
   })),
 )
 @connect(({ portfolio, loading }, props) => {
@@ -104,39 +93,26 @@ export default class PortfolioDetail extends Component {
   };
 
   renderNavBar = () => {
-    const { bottomHidden, portfolio, loading } = this.props;
+    const { transformed, portfolio, loading } = this.props;
     return (
       <NavBar
         back
         gradient
-        bottomHidden={bottomHidden}
-        title={bottomHidden ? portfolio.name : ''}
+        bottomHidden={transformed}
+        title={transformed ? portfolio.name : ''}
         renderBottom={() => <Header loading={loading} data={portfolio} />}
       />
     );
   };
 
   renderSwitchButton = () => {
-    const {
-      portfolio,
-      statusSwitchTranslateRange,
-      matchSwitchTranslateRange,
-    } = this.props;
+    const { portfolio, transformed } = this.props;
     const can_calculate = R.pathOr(false, ['can_calculate'])(portfolio);
+
+    if (transformed) return null;
     return (
       <View style={styles.switch.container}>
-        <Animated.View
-          style={[
-            styles.switch.content.wrapper,
-            {
-              transform: [
-                {
-                  translateX: statusSwitchTranslateRange,
-                },
-              ],
-            },
-          ]}
-        >
+        <View style={styles.switch.content.wrapper}>
           <TouchableHighlight
             underlayColor="white"
             onPress={this.handleStatusPress}
@@ -149,19 +125,8 @@ export default class PortfolioDetail extends Component {
               <Text style={styles.switch.content.text}>切换</Text>
             </View>
           </TouchableHighlight>
-        </Animated.View>
-        <Animated.View
-          style={[
-            styles.switch.content.wrapper,
-            {
-              transform: [
-                {
-                  translateX: matchSwitchTranslateRange,
-                },
-              ],
-            },
-          ]}
-        >
+        </View>
+        <View style={styles.switch.content.wrapper}>
           <TouchableHighlight
             underlayColor="white"
             onPress={this.handleCoinMatchPress}
@@ -178,7 +143,7 @@ export default class PortfolioDetail extends Component {
               <Text style={styles.switch.content.text}>切换</Text>
             </View>
           </TouchableHighlight>
-        </Animated.View>
+        </View>
       </View>
     );
   };
@@ -191,26 +156,12 @@ export default class PortfolioDetail extends Component {
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        <Animated.ScrollView
+        <ScrollView
           contentContainerStyle={styles.scroll.contentContainer}
           // bounces={false}
-          scrollEventThrottle={16}
-          stickyHeaderIndices={[1]}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: {
-                    y: this.props.scrollY,
-                  },
-                },
-              },
-            ],
-            {
-              listener: this.handleOnScroll,
-              useNativeDriver: true,
-            },
-          )}
+          // scrollEventThrottle={16}
+          stickyHeaderIndices={[0]}
+          onScroll={this.handleOnScroll}
         >
           <Selector
             list={selectionList}
@@ -218,7 +169,7 @@ export default class PortfolioDetail extends Component {
             onPress={this.handlePageSwitch}
           />
           <Current.component {...this.props} />
-        </Animated.ScrollView>
+        </ScrollView>
         <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
       </View>
     );

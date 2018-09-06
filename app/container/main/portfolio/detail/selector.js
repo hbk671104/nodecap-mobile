@@ -42,6 +42,7 @@ const styles = {
     borderTopColor: '#E9E9E9',
     marginHorizontal: 12,
     flexDirection: 'row',
+    backgroundColor: 'white',
   },
   groupWrapper: {
     flex: 1,
@@ -61,7 +62,7 @@ const styles = {
   },
   underline: {
     position: 'absolute',
-    bottom: 0,
+    bottom: 4,
     left: 0,
     right: 0,
     height: 3,
