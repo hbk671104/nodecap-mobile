@@ -22,12 +22,12 @@ export default class Pairs extends Component {
   renderItem = ({ item }) => <PairItem data={item} />;
 
   render() {
-    const { portfolio, loading, bottomHidden } = this.props;
+    const { portfolio, loading } = this.props;
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     return (
       <View style={styles.container}>
         <List
-          scrollEnabled={bottomHidden}
+          scrollEnabled={false}
           disableRefresh
           loading={loading}
           action={this.requestData}

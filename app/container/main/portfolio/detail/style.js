@@ -1,48 +1,21 @@
 import { shadow } from '../../../../utils/style';
 import { headerHeight } from './header';
-import { realBarHeight, navBarHeight } from 'component/navBar';
+import { realBarHeight } from 'component/navBar';
 import { Dimensions } from 'react-native';
 
 const window = Dimensions.get('window');
 export const deviceHeight = window.height;
 export const deviceWidth = window.width;
 export const switchHeight = 50;
-const tabWidth = 30;
+
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
-  initialLayout: {
-    height: 0,
-    width: deviceWidth,
-  },
   navBar: {},
   scroll: {
     contentContainer: { paddingTop: switchHeight },
-  },
-  tabView: {
-    height: deviceHeight - realBarHeight,
-  },
-  tabBar: {
-    container: {
-      height: navBarHeight,
-      borderBottomWidth: 0,
-    },
-    tab: {
-      paddingBottom: 0,
-    },
-    text: {
-      fontSize: 14,
-    },
-    underline: {
-      height: 3,
-      borderRadius: 2,
-      backgroundColor: '#1890FF',
-      bottom: 5,
-      width: tabWidth,
-      left: (deviceWidth / 4 - tabWidth) / 2,
-    },
   },
   switch: {
     wrapper: {

@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Animated, TouchableHighlight } from 'react-native';
-import ScrollableTabView, {
-  DefaultTabBar,
-} from 'react-native-scrollable-tab-view';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import StatusDisplay from 'component/project/statusDisplay';
-
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Description from './page/description';
@@ -17,7 +13,27 @@ import Pairs from './page/pairs';
 import Return from './page/return';
 import Trend from './page/trend';
 import Header from './header';
+import Selector from './selector';
 import styles, { deviceWidth, switchHeight } from './style';
+
+const selectionList = [
+  {
+    component: Trend,
+    name: '动态',
+  },
+  {
+    component: Pairs,
+    name: '交易所',
+  },
+  {
+    component: Description,
+    name: '详情',
+  },
+  {
+    component: Return,
+    name: '回报',
+  },
+];
 
 @global.bindTrack({
   page: '项目详情',
@@ -26,6 +42,10 @@ import styles, { deviceWidth, switchHeight } from './style';
 @compose(
   withState('scrollY', 'setScrollY', new Animated.Value(0)),
   withState('offsetY', 'setOffsetY', 0),
+  withState('currentPage', 'setCurrentPage', {
+    component: Trend,
+    name: '动态',
+  }),
   withProps(({ offsetY, scrollY }) => ({
     statusSwitchTranslateRange: scrollY.interpolate({
       inputRange: [0, switchHeight],
@@ -77,6 +97,10 @@ export default class PortfolioDetail extends Component {
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     const { setOffsetY } = this.props;
     setOffsetY(contentOffset.y);
+  };
+
+  handlePageSwitch = page => () => {
+    this.props.setCurrentPage(page);
   };
 
   renderNavBar = () => {
@@ -159,27 +183,17 @@ export default class PortfolioDetail extends Component {
     );
   };
 
-  renderTabBar = () => (
-    <DefaultTabBar
-      style={styles.tabBar.container}
-      tabStyle={styles.tabBar.tab}
-      textStyle={styles.tabBar.text}
-      activeTextColor="rgba(0, 0, 0, 0.85)"
-      inactiveTextColor="rgba(0, 0, 0, 0.65)"
-      underlineStyle={styles.tabBar.underline}
-    />
-  );
-
   render() {
     const item = this.props.navigation.getParam('item');
     const displayTab =
       item && item.can_calculate && hasPermission('project-statistic');
+    const { currentPage: Current } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
         <Animated.ScrollView
           contentContainerStyle={styles.scroll.contentContainer}
-          bounces={false}
+          // bounces={false}
           scrollEventThrottle={16}
           stickyHeaderIndices={[1]}
           onScroll={Animated.event(
@@ -198,18 +212,12 @@ export default class PortfolioDetail extends Component {
             },
           )}
         >
-          <ScrollableTabView
-            style={styles.tabView}
-            locked
-            scrollWithoutAnimation
-            prerenderingSiblingsNumber={Infinity}
-            renderTabBar={this.renderTabBar}
-          >
-            <Trend {...this.props} tabLabel="动态" />
-            <Pairs {...this.props} tabLabel="交易所" />
-            <Description {...this.props} tabLabel="详情" />
-            <Return {...this.props} tabLabel="回报" />
-          </ScrollableTabView>
+          <Selector
+            list={selectionList}
+            page={Current}
+            onPress={this.handlePageSwitch}
+          />
+          <Current.component {...this.props} />
         </Animated.ScrollView>
         <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
       </View>
