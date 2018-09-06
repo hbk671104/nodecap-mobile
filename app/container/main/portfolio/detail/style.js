@@ -17,6 +17,21 @@ export default {
   scroll: {
     contentContainer: { paddingTop: switchHeight },
   },
+  record: {
+    container: {
+      height: 43,
+      marginHorizontal: 12,
+      backgroundColor: '#F8F8F8',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 2,
+    },
+    text: {
+      fontSize: 13,
+      color: '#1890FF',
+      fontWeight: 'bold',
+    },
+  },
   switch: {
     wrapper: {
       position: 'absolute',

@@ -6,6 +6,7 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import StatusDisplay from 'component/project/statusDisplay';
+import Touchable from 'component/uikit/touchable';
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Description from './page/description';
@@ -83,6 +84,8 @@ export default class PortfolioDetail extends Component {
 
   handleCoinMatchPress = () => {};
 
+  handleRecordButtonPress = () => {};
+
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     const { setOffsetY } = this.props;
     setOffsetY(contentOffset.y);
@@ -148,6 +151,14 @@ export default class PortfolioDetail extends Component {
     );
   };
 
+  renderRecordButton = () => (
+    <Touchable onPress={this.handleRecordButtonPress}>
+      <View style={styles.record.container}>
+        <Text style={styles.record.text}>查看完整投资、回币、卖出记录</Text>
+      </View>
+    </Touchable>
+  );
+
   render() {
     const item = this.props.navigation.getParam('item');
     const displayTab =
@@ -160,9 +171,10 @@ export default class PortfolioDetail extends Component {
           contentContainerStyle={styles.scroll.contentContainer}
           // bounces={false}
           // scrollEventThrottle={16}
-          stickyHeaderIndices={[0]}
+          stickyHeaderIndices={[1]}
           onScroll={this.handleOnScroll}
         >
+          {this.renderRecordButton()}
           <Selector
             list={selectionList}
             page={Current}
