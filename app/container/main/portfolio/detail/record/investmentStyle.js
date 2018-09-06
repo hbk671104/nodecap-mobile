@@ -1,5 +1,5 @@
 import { mainColor, borderColor } from 'component/uikit/color';
-import { shadow } from '../../../../../../utils/style';
+import { shadow } from '../../../../../utils/style';
 
 export default {
   container: {

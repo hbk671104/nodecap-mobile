@@ -39,6 +39,7 @@ import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
+import PortfolioRecord from 'container/main/portfolio/detail/record';
 import Search from 'container/main/portfolio/search';
 import CreateProject from 'container/main/portfolio/create';
 import ExpressCreate from 'container/main/portfolio/create/express';
@@ -140,6 +141,7 @@ const MainStack = createStackNavigator(
     Tab,
     FundProject,
     PortfolioDetail,
+    PortfolioRecord,
     Search,
     CreateProject,
     ExpressCreate,

@@ -3,6 +3,7 @@ import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import StatusDisplay from 'component/project/statusDisplay';
@@ -84,7 +85,13 @@ export default class PortfolioDetail extends Component {
 
   handleCoinMatchPress = () => {};
 
-  handleRecordButtonPress = () => {};
+  handleRecordButtonPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioRecord',
+      }),
+    );
+  };
 
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     const { setOffsetY } = this.props;
@@ -160,9 +167,6 @@ export default class PortfolioDetail extends Component {
   );
 
   render() {
-    const item = this.props.navigation.getParam('item');
-    const displayTab =
-      item && item.can_calculate && hasPermission('project-statistic');
     const { currentPage: Current } = this.props;
     return (
       <View style={styles.container}>
