@@ -64,8 +64,12 @@ class Recommendation extends Component {
     this.setState(({ selected }) => {
       const updateSelected = {
         ...selected,
-        [id]: !R.pathOr(false, [id])(selected),
       };
+      if (R.path([id])(updateSelected)) {
+        delete updateSelected[id];
+      } else {
+        updateSelected[id] = true;
+      }
       return { selected: updateSelected };
     });
   };
