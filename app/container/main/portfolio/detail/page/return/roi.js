@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, Image, ViewPropTypes } from 'react-native';
 import * as R from 'ramda';
 import Format from 'component/format';
-import { shadow } from '../../../../../../../utils/style';
+import { shadow } from '../../../../../../utils/style';
 
 const icon = k => {
   switch (k) {

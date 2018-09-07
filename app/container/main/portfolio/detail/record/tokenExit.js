@@ -7,6 +7,7 @@ import Group from 'component/project/group';
 import Accounting from 'accounting';
 
 import { renderField } from './field';
+import Empty from './empty';
 import styles from './investmentStyle';
 
 const dateFormat = date => {
@@ -73,22 +74,27 @@ class Investment extends Component {
       this.props,
     );
 
-    if (R.isNil(return_tokens) || R.isEmpty(return_tokens)) {
-      return null;
-    }
-
     const afterSort = R.sort((a, b) => b.created_at - a.created_at)(
       return_tokens,
     );
 
+    const invalid = R.isNil(afterSort) || R.isEmpty(afterSort);
+
     return (
       <View onLayout={this.props.onLayout}>
         <Group
-          style={[styles.container, { marginTop: 0 }]}
+          style={styles.container}
           icon={require('asset/project/detail/sold.png')}
           title="卖出记录"
         />
-        {afterSort.map((i, idx) => this.renderItem(i, idx))}
+        {invalid ? (
+          <Empty
+            image={require('asset/project/add_sold.png')}
+            title="暂无卖出记录"
+          />
+        ) : (
+          afterSort.map((i, idx) => this.renderItem(i, idx))
+        )}
       </View>
     );
   }

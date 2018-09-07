@@ -19,7 +19,8 @@ const percentage = ({ children, colorAware, digit }) => {
 };
 
 percentage.propTypes = {
-  children: PropTypes.number.isRequired,
+  children: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    .isRequired,
   digit: PropTypes.number,
   colorAware: PropTypes.bool,
 };

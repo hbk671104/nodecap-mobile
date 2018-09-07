@@ -4,11 +4,37 @@ import { View, Animated, Text } from 'react-native';
 import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
+import Price from 'component/price';
+import Percentage from 'component/percentage';
+import Amount from 'component/amount';
+import { symbol } from '../../../../utils/icon';
 
-const header = ({ style, titleStyle, data, loading }) => {
+const header = ({
+  style,
+  titleStyle,
+  data,
+  loading,
+  base_symbol,
+  can_calculate,
+}) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pathOr('--', ['token_name'])(data);
   const logo = R.pathOr('', ['logo_url'])(data);
+
+  const current_price = R.pathOr('--', ['stats', 'current_price', base_symbol])(
+    data,
+  );
+  const price_change_percentage_24h = R.pathOr('--', [
+    'stats',
+    'price_change_percentage_24h',
+  ])(data);
+  const total_volume = R.pathOr('--', ['stats', 'total_volume', base_symbol])(
+    data,
+  );
+  const high_24h = R.pathOr('--', ['stats', 'high_24h', base_symbol])(data);
+
+  const desc = R.pathOr('--', ['description'])(data);
+
   return (
     <Animated.View style={[styles.container, style]}>
       <View style={styles.top.container}>
@@ -19,15 +45,32 @@ const header = ({ style, titleStyle, data, loading }) => {
         <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
       </View>
       <View style={styles.divider} />
-      <View>
-        <View style={styles.bottom.container}>
-          <Text style={styles.bottom.title}>¥15.93</Text>
-          <Text style={styles.bottom.subtitle}>+4.42%</Text>
+      {can_calculate ? (
+        <View>
+          <View style={styles.bottom.container}>
+            <Text style={styles.bottom.title}>
+              {symbol(base_symbol, styles.bottom.title)}
+              <Price symbol={base_symbol}>{current_price}</Price>
+            </Text>
+            <Text style={styles.bottom.subtitle}>
+              <Percentage colorAware={false}>
+                {price_change_percentage_24h}
+              </Percentage>
+            </Text>
+          </View>
+          <Text style={styles.bottom.content}>
+            额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
+            最高(24H) {symbol(base_symbol, styles.bottom.content)}{' '}
+            <Price symbol={base_symbol}>{high_24h}</Price>
+          </Text>
         </View>
-        <Text style={styles.bottom.content}>
-          量(24H) 1.3亿SOC | 额(24H) 30.23亿CNY | 最高(24H) ¥14.7CNY
-        </Text>
-      </View>
+      ) : (
+        <View>
+          <Text style={styles.bottom.description} numberOfLines={3}>
+            {desc}
+          </Text>
+        </View>
+      )}
     </Animated.View>
   );
 };
@@ -83,6 +126,11 @@ const styles = {
       fontSize: 10,
       color: 'white',
       marginTop: 6,
+    },
+    description: {
+      fontSize: 12,
+      color: 'white',
+      lineHeight: 17,
     },
   },
 };

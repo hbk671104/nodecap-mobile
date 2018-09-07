@@ -18,6 +18,7 @@ import Return from './page/return';
 import Trend from './page/trend';
 import Header from './header';
 import Selector from './selector';
+import Chart from './chart';
 import styles from './style';
 
 const selectionList = [
@@ -50,10 +51,9 @@ const selectionList = [
     name: '动态',
   }),
   withProps(({ offsetY }) => ({
-    transformed: offsetY > 50,
+    transformed: offsetY > 0,
   })),
 )
-
 @connect(({ portfolio, loading, global }, props) => {
   const item = props.navigation.getParam('item');
   return {
@@ -61,6 +61,8 @@ const selectionList = [
     id: R.pathOr(0, ['id'])(item),
     loading: loading.effects['portfolio/get'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
+    base_symbol: 'BTC',
+    can_calculate: R.pathOr(false, ['can_calculate'])(item),
   };
 })
 export default class PortfolioDetail extends Component {
@@ -143,21 +145,20 @@ export default class PortfolioDetail extends Component {
   };
 
   renderNavBar = () => {
-    const { transformed, portfolio, loading } = this.props;
+    const { transformed, portfolio } = this.props;
     return (
       <NavBar
         back
         gradient
         bottomHidden={transformed}
         title={transformed ? portfolio.name : ''}
-        renderBottom={() => <Header loading={loading} data={portfolio} />}
+        renderBottom={() => <Header {...this.props} data={portfolio} />}
       />
     );
   };
 
   renderSwitchButton = () => {
-    const { portfolio, transformed } = this.props;
-    const can_calculate = R.pathOr(false, ['can_calculate'])(portfolio);
+    const { portfolio, transformed, can_calculate } = this.props;
 
     if (transformed) return null;
     return (
@@ -215,16 +216,19 @@ export default class PortfolioDetail extends Component {
           contentContainerStyle={styles.scroll.contentContainer}
           // scrollEventThrottle={16}
           scrollEventThrottle={500}
-          stickyHeaderIndices={[1]}
+          stickyHeaderIndices={[2]}
           onScroll={this.handleOnScroll}
         >
           {this.renderRecordButton()}
+          <Chart {...this.props} />
           <Selector
             list={selectionList}
             page={Current}
             onPress={this.handlePageSwitch}
           />
-          <Current.component {...this.props} />
+          <View style={styles.page}>
+            <Current.component {...this.props} />
+          </View>
         </ScrollView>
         <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
       </View>

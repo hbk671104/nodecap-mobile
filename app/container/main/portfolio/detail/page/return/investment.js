@@ -5,7 +5,7 @@ import * as R from 'ramda';
 
 import Text from 'component/text';
 import NodeCapIcon from 'component/icon/nodecap';
-import { symbol } from '../../../../../../../utils/icon';
+import { symbol } from '../../../../../../utils/icon';
 
 const investment = ({ style, data }) => {
   const cost = R.pathOr({}, ['total_cost'])(data);

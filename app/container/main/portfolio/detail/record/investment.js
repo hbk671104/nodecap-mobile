@@ -8,6 +8,7 @@ import Accounting from 'accounting';
 import { NavigationActions } from 'react-navigation';
 
 import { renderField } from './field';
+import Empty from './empty';
 import styles from './investmentStyle';
 
 const dateFormat = date =>
@@ -160,9 +161,8 @@ class Investment extends PureComponent {
     const afterSort = R.sort((a, b) => b.created_at - a.created_at)(
       financeData,
     );
-    if (R.isNil(afterSort) || R.isEmpty(afterSort)) {
-      return null;
-    }
+
+    const invalid = R.isNil(afterSort) || R.isEmpty(afterSort);
 
     return (
       <View onLayout={this.props.onLayout}>
@@ -170,9 +170,17 @@ class Investment extends PureComponent {
           style={styles.container}
           icon={require('asset/project/detail/investment.png')}
           title="投资信息"
-          onAddPress={this.handleAddPress}
+          {...(invalid ? {} : { onAddPress: this.handleAddPress })}
         />
-        {afterSort.map((i, idx) => this.renderItem(i, idx))}
+        {invalid ? (
+          <Empty
+            image={require('asset/project/add_investment.png')}
+            title="暂无投资记录"
+            onAddPress={this.handleAddPress}
+          />
+        ) : (
+          afterSort.map((i, idx) => this.renderItem(i, idx))
+        )}
       </View>
     );
   }

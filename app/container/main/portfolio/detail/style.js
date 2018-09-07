@@ -1,6 +1,6 @@
 import { shadow } from '../../../../utils/style';
 import { headerHeight } from './header';
-import { realBarHeight } from 'component/navBar';
+import { realBarHeight, navBarHeight } from 'component/navBar';
 import { Dimensions } from 'react-native';
 
 const window = Dimensions.get('window');
@@ -17,6 +17,9 @@ export default {
   scroll: {
     contentContainer: { paddingTop: switchHeight },
   },
+  page: {
+    minHeight: deviceHeight - realBarHeight - navBarHeight,
+  },
   record: {
     container: {
       height: 43,
@@ -25,6 +28,7 @@ export default {
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 2,
+      marginBottom: 24,
     },
     text: {
       fontSize: 13,

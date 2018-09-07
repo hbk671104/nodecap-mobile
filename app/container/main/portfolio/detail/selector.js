@@ -37,7 +37,7 @@ const selector = ({ list, page, onPress }) => {
 
 const styles = {
   container: {
-    marginTop: 25,
+    // marginTop: 25,
     height: navBarHeight,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#E9E9E9',

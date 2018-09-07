@@ -31,7 +31,7 @@ const styles = {
 empty.propTypes = {
   image: PropTypes.number,
   title: PropTypes.string.isRequired,
-  subtitle: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
 };
 
 empty.defaultProps = {

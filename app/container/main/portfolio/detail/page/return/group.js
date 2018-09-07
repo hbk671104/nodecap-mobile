@@ -20,7 +20,7 @@ group.propTypes = {
 
 const styles = {
   container: {
-    paddingLeft: 22,
+    paddingLeft: 12,
     paddingRight: 12,
     paddingVertical: 12,
   },
