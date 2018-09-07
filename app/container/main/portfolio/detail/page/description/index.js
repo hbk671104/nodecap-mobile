@@ -28,7 +28,8 @@ export default class Description extends PureComponent {
     const description = R.path(['portfolio', 'description'])(this.props);
     const siteUrl =
       R.path(['portfolio', 'site_url'])(this.props) ||
-      R.path(['portfolio', 'coin', 'homepages', 0])(this.props);
+      R.path(['portfolio', 'coin', 'homepage'])(this.props);
+    const rating = R.pathOr([], ['portfolio', 'coin_rating'])(this.props);
     return (
       <View style={styles.container}>
         {!!description && (
@@ -46,26 +47,27 @@ export default class Description extends PureComponent {
         {!!siteUrl && (
           <View>
             <Text style={[styles.title, styles.site]}>官网</Text>
-            <Text onClick={() => Linking.openUrl(siteUrl)}>{siteUrl}</Text>
+            <Text style={styles.link} onPress={() => Linking.openURL(siteUrl)}>{siteUrl}</Text>
           </View>
         )}
-        <View>
-          <Text style={[styles.title, styles.site]}>评级信息</Text>
-          <Flex style={styles.ratingTitle} justify="space-between">
-            <Text style={styles.ratingTitleText}>机构</Text>
-            <Text style={[styles.ratingTitleText, { width: 80 }]}>评级</Text>
-          </Flex>
+        {!!rating.length && (
           <View>
-            <Flex style={styles.ratingItem} justify="space-between">
-              <Text style={styles.ratingTitleText}>TokenInsight</Text>
-              <Text style={[styles.ratingItemText, { width: 80 }]}>AAA+</Text>
+            <Text style={[styles.title, styles.site]}>评级信息</Text>
+            <Flex style={styles.ratingTitle} justify="space-between">
+              <Text style={styles.ratingTitleText}>机构</Text>
+              <Text style={[styles.ratingTitleText, { width: 80 }]}>评级</Text>
             </Flex>
-            <Flex style={styles.ratingItem} justify="space-between">
-              <Text style={styles.ratingTitleText}>标准共识</Text>
-              <Text style={[styles.ratingItemText, { width: 80 }]}>AAA+</Text>
-            </Flex>
+            <View>
+              {rating.map(i => (
+                <Flex key={i.id} style={styles.ratingItem} justify="space-between">
+                  <Text style={styles.ratingTitleText}>{i.rating_name}</Text>
+                  <Text style={[styles.ratingItemText, { width: 80 }]}>{i.grade}</Text>
+                </Flex>
+              ))}
+            </View>
           </View>
-        </View>
+        )}
+
       </View>
     );
   }

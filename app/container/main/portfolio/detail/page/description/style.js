@@ -38,4 +38,7 @@ export default {
   ratingItem: {
     marginTop: 10,
   },
+  link: {
+    color: '#0090FF',
+  },
 };
