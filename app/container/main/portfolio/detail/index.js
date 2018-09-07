@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { Toast } from 'antd-mobile';
 
+import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import StatusDisplay from 'component/project/statusDisplay';
 import Touchable from 'component/uikit/touchable';
@@ -217,7 +218,7 @@ export default class PortfolioDetail extends Component {
   render() {
     const { currentPage: Current } = this.props;
     return (
-      <View style={styles.container}>
+      <SafeArea style={styles.container}>
         {this.renderNavBar()}
         <ScrollView
           contentContainerStyle={styles.scroll.contentContainer}
@@ -247,7 +248,7 @@ export default class PortfolioDetail extends Component {
           </Touchable>
         </View>
         <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
-      </View>
+      </SafeArea>
     );
   }
 }
