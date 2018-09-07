@@ -12,7 +12,7 @@ export const priceFormat = ({ symbol, text }) => {
 };
 
 const price = ({ symbol, children }) => {
-  if (R.isNil(children)) {
+  if (R.isNil(children) || children === '--') {
     return <Text>--</Text>;
   }
   return <Text>{priceFormat({ symbol, text: children })}</Text>;

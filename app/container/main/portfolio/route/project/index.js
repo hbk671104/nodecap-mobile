@@ -37,9 +37,6 @@ export default class Project extends Component {
   };
 
   handleItemPress = item => () => {
-    if (!hasPermission('project-view')) {
-      return;
-    }
     this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({

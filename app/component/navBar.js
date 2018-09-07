@@ -24,7 +24,7 @@ class NavBar extends Component {
     gradient: PropTypes.bool,
     back: PropTypes.bool,
     title: PropTypes.string,
-    titleStyle: PropTypes.object,
+    titleContainerStyle: PropTypes.object,
   };
 
   static defaultProps = {
@@ -40,7 +40,14 @@ class NavBar extends Component {
       nextProps.hidden !== this.props.hidden ||
       nextProps.bottomHidden !== this.props.bottomHidden
     ) {
-      LayoutAnimation.easeInEaseOut();
+      LayoutAnimation.configureNext({
+        duration: 300,
+        create: {
+          type: LayoutAnimation.Types.easeInEaseOut,
+          property: LayoutAnimation.Properties.opacity,
+        },
+        update: { type: LayoutAnimation.Types.easeInEaseOut },
+      });
     }
   }
 
@@ -63,7 +70,7 @@ class NavBar extends Component {
       gradient,
       back,
       title,
-      titleStyle,
+      titleContainerStyle,
     } = this.props;
     const WrapperComp = gradient ? Gradient : View;
     return (
@@ -83,14 +90,16 @@ class NavBar extends Component {
               renderContent()
             ) : (
               <View style={styles.wrapper.content}>
-                <View style={[styles.title.container, titleStyle]}>
+                <Animated.View
+                  style={[styles.title.container, titleContainerStyle]}
+                >
                   {!!title && (
                     <Text style={styles.title.text} numberOfLines={1}>
                       {title}
                     </Text>
                   )}
                   {renderTitle && renderTitle()}
-                </View>
+                </Animated.View>
                 <View style={styles.group.left}>
                   {back && (
                     <Touchable borderless onPress={this.handleBackAction}>
