@@ -11,6 +11,7 @@ import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import StatusDisplay from 'component/project/statusDisplay';
 import Touchable from 'component/uikit/touchable';
+import Empty from 'component/empty';
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Description from './page/description';
@@ -224,6 +225,18 @@ export default class PortfolioDetail extends Component {
   );
 
   render() {
+    if (!hasPermission('project-view')) {
+      return (
+        <View style={styles.container}>
+          <NavBar gradient back />
+          <Empty
+            image={require('asset/empty/permission_denied.png')}
+            title="您尚未解锁此权限"
+          />
+        </View>
+      );
+    }
+
     const { currentPage: Current } = this.props;
     return (
       <SafeArea style={styles.container}>

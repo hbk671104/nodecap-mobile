@@ -157,7 +157,7 @@ class Chart extends PureComponent {
   };
 
   render() {
-    const { can_calculate } = this.props;
+    const { can_calculate, stat_loading } = this.props;
     if (R.not(can_calculate)) {
       return null;
     }
@@ -165,7 +165,7 @@ class Chart extends PureComponent {
     return (
       <PlaceHolder
         style={styles.placeholder}
-        onReady={R.not(R.isNil(trend))}
+        onReady={R.not(R.isNil(trend)) && !stat_loading}
         animate="shine"
       >
         <View style={[styles.container, this.props.style]}>

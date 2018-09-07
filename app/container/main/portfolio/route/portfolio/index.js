@@ -57,9 +57,6 @@ export default class Portfolio extends Component {
   };
 
   handleItemPress = item => () => {
-    if (!hasPermission('project-view')) {
-      return;
-    }
     this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({

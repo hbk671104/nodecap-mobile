@@ -13,7 +13,7 @@ const fund = props => {
   return (
     <PlaceHolder
       style={styles.placeholder}
-      onReady={R.not(R.isEmpty(fund_stats))}
+      onReady={!props.stat_loading && R.not(R.isEmpty(fund_stats))}
       animate="shine"
     >
       <View style={styles.container}>

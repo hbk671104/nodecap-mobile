@@ -14,7 +14,8 @@ const searchItem = ({ item, onPress }) => (
         {item.name}
       </Text>
       <Text style={styles.subtitle}>
-        快速添加{'   '}
+        快速匹配
+        {'   '}
         <Icon name="arrow-forward" size={12} />
       </Text>
     </View>
