@@ -7,6 +7,7 @@ import * as R from 'ramda';
 import EnhancedScroll from 'component/enhancedScroll';
 import AuthButton from 'component/auth/button';
 import AuthInput from 'component/auth/input';
+import NavBar from 'component/navBar';
 import styles from './style';
 
 @connect(({ loading }) => ({
@@ -81,46 +82,49 @@ class SetPassword extends Component {
     )(getFieldsError(['confirm_password', 'password']));
 
     return (
-      <EnhancedScroll style={styles.container}>
-        <View style={styles.titleWrapper}>
-          <Text style={styles.title}>重设您的密码</Text>
-          <Text style={styles.tip}>
-            首次登录需要您设置包含英文和数字的 6 位以上密码
-          </Text>
-        </View>
-        <View style={{ marginTop: 100 }}>
-          {getFieldDecorator('password', {
-            rules: passwordRules,
-          })(
-            <AuthInput
-              style={styles.input}
-              title="新密码"
-              placeholder="请输入包含英文和数字的 6 位以上密码"
-              inputProps={{ secureTextEntry: true }}
-            />,
-          )}
-          {getFieldDecorator('confirm_password', {
-            rules: resetPasswordRules,
-          })(
-            <AuthInput
-              style={[styles.input, { marginTop: 27 }]}
-              title="再次输入密码"
-              placeholder="请再次输入你的密码"
-              inputProps={{ secureTextEntry: true }}
-            />,
-          )}
-        </View>
-        <AuthButton
-          loading={loading}
-          disabled={
-            hasError ||
-            !isFieldTouched('confirm_password') ||
-            !isFieldTouched('password')
-          }
-          style={styles.button}
-          onPress={this.handleOnSubmit}
-        />
-      </EnhancedScroll>
+      <View style={styles.container}>
+        <NavBar barStyle="dark-content" back />
+        <EnhancedScroll>
+          <View style={styles.titleWrapper}>
+            <Text style={styles.title}>重设您的密码</Text>
+            <Text style={styles.tip}>
+              首次登录需要您设置包含英文和数字的 6 位以上密码
+            </Text>
+          </View>
+          <View style={{ marginTop: 100 }}>
+            {getFieldDecorator('password', {
+              rules: passwordRules,
+            })(
+              <AuthInput
+                style={styles.input}
+                title="新密码"
+                placeholder="请输入包含英文和数字的 6 位以上密码"
+                inputProps={{ secureTextEntry: true }}
+              />,
+            )}
+            {getFieldDecorator('confirm_password', {
+              rules: resetPasswordRules,
+            })(
+              <AuthInput
+                style={[styles.input, { marginTop: 27 }]}
+                title="再次输入密码"
+                placeholder="请再次输入你的密码"
+                inputProps={{ secureTextEntry: true }}
+              />,
+            )}
+          </View>
+          <AuthButton
+            loading={loading}
+            disabled={
+              hasError ||
+              !isFieldTouched('confirm_password') ||
+              !isFieldTouched('password')
+            }
+            style={styles.button}
+            onPress={this.handleOnSubmit}
+          />
+        </EnhancedScroll>
+      </View>
     );
   }
 }

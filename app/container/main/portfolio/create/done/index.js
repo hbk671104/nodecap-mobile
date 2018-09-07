@@ -27,12 +27,19 @@ class CreateDone extends Component {
 
   checkDetail = () => {
     const item = this.props.navigation.getParam('data', {});
+    const can_calculate = this.props.navigation.getParam(
+      'can_calculate',
+      false,
+    );
     this.props.track('查看项目');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PortfolioDetail',
         params: {
-          item,
+          item: {
+            ...item,
+            can_calculate,
+          },
         },
       }),
     );

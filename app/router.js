@@ -1,7 +1,10 @@
-import React, { PureComponent } from 'react';
-import { BackHandler, Linking, Alert, Image } from 'react-native';
+import React, { Component } from 'react';
+import { BackHandler, Alert, Platform, Vibration } from 'react-native';
+import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
+import * as WeChat from 'react-native-wechat';
 import {
+  NavigationActions,
   createSwitchNavigator,
   createStackNavigator,
   createBottomTabNavigator,
@@ -11,18 +14,28 @@ import {
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
-import RehydrateLoader from './component/RehydrateLoader';
-import { connect } from './utils/dva';
-import { NavigationActions } from './utils';
+import JPush from 'jpush-react-native';
+
+import Loading from 'component/uikit/loading';
+import BadgeTabIcon from 'component/badgeTabIcon';
+import { handleOpen, handleReceive } from './utils/jpush_handler';
+import { handleTabBarPress } from './utils/tabbar_handler';
 
 // Screen
+import Loader from 'container/loader';
 import Landing from 'container/auth/landing';
 import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
 import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
+import Recommendation from 'container/auth/recommendation';
 import Dashboard from 'container/main/dashboard';
+import Fund from 'container/main/fund';
+import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
+import NotificationCenter from 'container/main/notification_center';
+import NotificationDetail from 'container/main/notification_center/detail';
+import NotificationDetailRaw from 'container/main/notification_center/raw';
 import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
@@ -43,6 +56,10 @@ import Resources from 'container/main/self/resources';
 import ResourceSearch from 'container/main/self/resources/search';
 import ResourceDetail from 'container/main/self/resources/detail';
 import ResourceAdd from 'container/main/self/resources/add';
+import Colleague from 'container/main/self/colleague';
+import ColleagueSearch from 'container/main/self/colleague/search';
+import ColleagueDetail from 'container/main/self/colleague/detail';
+import ColleagueAdd from 'container/main/self/colleague/add';
 import Settings from 'container/main/self/settings';
 import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
@@ -56,6 +73,7 @@ const AuthStack = createStackNavigator(
     Login,
     SetPassword,
     ResetPwd,
+    Recommendation,
   },
   {
     headerMode: 'none',
@@ -64,7 +82,13 @@ const AuthStack = createStackNavigator(
 
 const Tab = createBottomTabNavigator(
   {
-    Dashboard,
+    // Dashboard,
+    Fund: {
+      screen: Fund,
+      navigationOptions: {
+        title: '基金管理',
+      },
+    },
     Portfolio: {
       screen: Portfolio,
       navigationOptions: {
@@ -77,6 +101,18 @@ const Tab = createBottomTabNavigator(
     //     title: '资产管理',
     //   },
     // },
+    NotificationCenter: {
+      screen: NotificationCenter,
+      navigationOptions: {
+        title: '项目动态',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+
+          // some other things
+          handleTabBarPress('NotificationCenter');
+        },
+      },
+    },
     Self: {
       screen: Self,
       navigationOptions: {
@@ -96,57 +132,16 @@ const Tab = createBottomTabNavigator(
     navigationOptions: ({ navigation: { state } }) => ({
       tabBarIcon: ({ focused }) => {
         const { routeName } = state;
-        switch (routeName) {
-          case 'Dashboard':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/dashboard_highlight.png')
-                    : require('asset/tabIcon/dashboard.png')
-                }
-              />
-            );
-          case 'Portfolio':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/portfolio_highlight.png')
-                    : require('asset/tabIcon/portfolio.png')
-                }
-              />
-            );
-          case 'Management':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/asset_highlight.png')
-                    : require('asset/tabIcon/asset.png')
-                }
-              />
-            );
-          case 'Self':
-            return (
-              <Image
-                source={
-                  focused
-                    ? require('asset/tabIcon/me_highlight.png')
-                    : require('asset/tabIcon/me.png')
-                }
-              />
-            );
-          default:
-            return null;
-        }
+        return <BadgeTabIcon route={routeName} focused={focused} />;
       },
     }),
   },
 );
+
 const MainStack = createStackNavigator(
   {
     Tab,
+    FundProject,
     PortfolioDetail,
     Search,
     CreateProject,
@@ -154,6 +149,8 @@ const MainStack = createStackNavigator(
     ManualCreate,
     InvestmentCreate,
     CreateDone,
+    NotificationDetail,
+    NotificationDetailRaw,
     KeyManagement,
     AddHolding,
     AddWallet,
@@ -164,6 +161,10 @@ const MainStack = createStackNavigator(
     ResourceSearch,
     ResourceDetail,
     ResourceAdd,
+    Colleague,
+    ColleagueSearch,
+    ColleagueDetail,
+    ColleagueAdd,
     Settings,
     ChangeLog,
     MyProfile,
@@ -180,7 +181,7 @@ const AppRouter = createSwitchNavigator(
     Auth: AuthStack,
     Main: MainStack,
     CodePush: CodePushPage,
-    Landing: RehydrateLoader,
+    Landing: Loader,
   },
   {
     initialRouteName: 'Landing',
@@ -205,20 +206,29 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 const addListener = createReduxBoundAddListener('root');
 
 @connect(({ app, router }) => ({ app, router }))
-class Router extends PureComponent {
+class Router extends Component {
+  state = {
+    isIOS: Platform.OS === 'ios',
+  };
+
   componentWillMount() {
+    WeChat.registerApp('wx9e13272f60a68c63');
+    if (!this.state.isIOS) {
+      JPush.notifyJSDidLoad(() => null);
+    }
+  }
+
+  componentDidMount() {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
-    Linking.addEventListener('url', this.handleOpenURL);
+    JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.addReceiveNotificationListener(this.handleReceiveNotification);
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
-    Linking.removeEventListener('url', this.handleOpenURL);
+    JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
   }
-
-  handleOpenURL = ({ url }) => {
-    console.log(url);
-  };
 
   backHandle = () => {
     const { dispatch, router } = this.props;
@@ -234,9 +244,20 @@ class Router extends PureComponent {
     return true;
   };
 
+  handleOpenNotification = ({ extras }) => {
+    handleOpen(extras);
+  };
+
+  handleReceiveNotification = ({ appState, extras }) => {
+    if (appState === 'active') {
+      Vibration.vibrate(500);
+    }
+    handleReceive(extras);
+  };
+
   render() {
     const { dispatch, app, router } = this.props;
-    if (app.loading) return null;
+    if (app.loading) return <Loading />;
 
     const navigation = {
       dispatch,

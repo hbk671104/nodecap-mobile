@@ -157,7 +157,7 @@ class Investment extends Component {
     }
 
     return (
-      <View>
+      <View onLayout={this.props.onLayout}>
         <Group
           style={styles.container}
           icon={require('asset/project/detail/investment.png')}

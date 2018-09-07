@@ -1,16 +1,13 @@
 import React from 'react';
-import { AppRegistry, UIManager, Platform, AsyncStorage } from 'react-native';
+import { AppRegistry, UIManager, AsyncStorage } from 'react-native';
 import { autoRehydrate, persistStore } from 'redux-persist';
-import * as WeChat from 'react-native-wechat';
 import { Sentry } from 'react-native-sentry';
-import JPush from 'jpush-react-native';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import './app/utils/sensor';
 import dva from './app/utils/dva';
 import Router, { routerMiddleware } from './app/router';
-import dashboard from './app/models/dashboard';
 import routerModel from './app/models/router';
 import loginModel from './app/models/login';
 import appModel from './app/models/app';
@@ -20,11 +17,13 @@ import portfolioModel from './app/models/portfolio';
 import userModel from './app/models/user';
 import codepushModel from './app/models/codepush';
 import resourceModel from './app/models/resource';
+import colleagueModel from './app/models/colleague';
+import notificationModel from './app/models/notification';
+import recommendationModel from './app/models/recommendation';
 
 const app = dva({
   initialState: {},
   models: [
-    dashboard,
     routerModel,
     loginModel,
     appModel,
@@ -34,25 +33,20 @@ const app = dva({
     userModel,
     codepushModel,
     resourceModel,
+    colleagueModel,
+    notificationModel,
+    recommendationModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
 });
 
-export let persistor;
 export const persist = callback => {
-  persistor = persistStore(
+  persistStore(
     app._store,
     {
       storage: AsyncStorage,
-      blacklist: [
-        'loading',
-        'router',
-        'project',
-        'fund',
-        'portfolio',
-        'resource',
-      ],
+      whitelist: ['login', 'global', 'app', 'fund', 'user'],
     },
     callback,
   );
@@ -67,16 +61,9 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 moment.locale('zh-cn');
 
 if (!global.__DEV__) {
-  WeChat.registerApp('wx9e13272f60a68c63');
   Sentry.config(
     'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
   ).install();
-  if (Platform.OS === 'ios') {
-    JPush.setupPush();
-  } else {
-    JPush.initPush();
-    JPush.notifyJSDidLoad(() => null);
-  }
 }
 
 AppRegistry.registerComponent('nodecap', () => App);

@@ -67,6 +67,7 @@ class Resources extends Component {
   renderHeader = props => {
     return (
       <NavBar
+        titleStyle={styles.navBar.title}
         gradient
         back
         renderTitle={() => (
@@ -91,13 +92,18 @@ class Resources extends Component {
     );
   };
 
-  renderScene = ({ route }) => (
-    <ResourceList
-      type={route.key}
-      onMomentumScrollBegin={this.handleMomentumScrollBegin}
-      onMomentumScrollEnd={this.handleMomentumScrollEnd}
-    />
-  );
+  renderScene = ({ route }) => {
+    // if (Math.abs(this.state.index - this.state.routes.indexOf(route)) > 2) {
+    //   return null;
+    // }
+    return (
+      <ResourceList
+        type={route.key}
+        onMomentumScrollBegin={this.handleMomentumScrollBegin}
+        onMomentumScrollEnd={this.handleMomentumScrollEnd}
+      />
+    );
+  };
 
   render() {
     const { addButtonVisible } = this.props;

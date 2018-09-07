@@ -3,12 +3,15 @@ package com.nodecap;
         import android.os.Bundle;
 
         import com.facebook.react.ReactActivity;
+        import com.facebook.react.bridge.ReactContext;
         import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 
         import org.devio.rn.splashscreen.SplashScreen;
 
         import java.util.ArrayList;
         import java.util.List;
+
+        import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends ReactActivity {
 
@@ -30,9 +33,16 @@ public class MainActivity extends ReactActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SplashScreen.show(this, true);  // here
+        ReactContext ctx = getReactInstanceManager().getCurrentReactContext();
+        if (ctx == null) {
+            SplashScreen.show(this, true);  // here
+        }
+
         super.onCreate(savedInstanceState);
 
+        // JPush
+        JPushInterface.init(this);
+        
         // 初始化 SDK
         SensorsDataAPI.sharedInstance(
                 this,                               // 传入 Context

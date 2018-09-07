@@ -28,6 +28,7 @@ class List extends PureComponent {
     loading: PropTypes.bool,
     onRefresh: PropTypes.func,
     loadOnStart: PropTypes.bool,
+    itemHeight: PropTypes.number,
 
     // styles
     style: ViewPropTypes.style,
@@ -40,17 +41,25 @@ class List extends PureComponent {
     loadOnStart: true,
   };
 
+  state = {
+    listScrolled: false,
+  };
+
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
-      this.props.action();
+      this.handleAction();
     }
   }
 
-  extractKey = (item, index) => (item.id && `${item.id}`) || `${index}`;
+  extractKey = (item, index) => (item.id ? `${item.id}` : `${index}`);
+
+  handleAction = (current = 1, pageSize = 20) => {
+    this.props.action(current, pageSize);
+  };
 
   handleOnRefresh = () => {
     if (this.props.action) {
-      this.props.action();
+      this.handleAction();
     }
   };
 
@@ -58,12 +67,15 @@ class List extends PureComponent {
     if (this.props.action && this.props.pagination) {
       const { current, pageCount, pageSize } = this.props.pagination;
       if (current < pageCount) {
-        this.props.action(current + 1, pageSize);
+        this.handleAction(current + 1, pageSize);
       }
     }
   };
 
   handleOnEndReached = () => {
+    if (!this.state.listScrolled) {
+      return;
+    }
     if (!this.onEndReachedCalledDuringMomentum) {
       this.handlePagination();
       this.onEndReachedCalledDuringMomentum = true;
@@ -82,6 +94,12 @@ class List extends PureComponent {
       this.props.onMomentumScrollEnd();
     }
   };
+
+  handleGetItemLayout = itemHeight => (data, index) => ({
+    length: itemHeight,
+    offset: itemHeight * index,
+    index,
+  });
 
   renderHeader = () => {
     if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
@@ -102,7 +120,7 @@ class List extends PureComponent {
     }
     if (this.props.pagination && this.props.data.length > 0) {
       const { current, pageCount } = this.props.pagination;
-      if (this.props.loading && current >= 1) {
+      if (this.props.loading) {
         return (
           <View style={styles.footerRefresher.container}>
             <ActivityIndicator />
@@ -123,11 +141,7 @@ class List extends PureComponent {
   };
 
   renderEmpty = () => {
-    if (
-      this.props.refreshing ||
-      this.props.loading ||
-      R.isNil(this.props.data)
-    ) {
+    if (R.isNil(this.props.data)) {
       return null;
     }
     if (this.props.renderEmpty) {
@@ -156,13 +170,14 @@ class List extends PureComponent {
       renderItem,
       style,
       contentContainerStyle,
+      itemHeight,
     } = this.props;
     const isRefreshing = () => {
       if (loading) {
         if (!pagination) {
           return true;
         }
-        if (pagination && pagination.current <= 1) {
+        if (pagination && pagination.current === 1) {
           return true;
         }
       }
@@ -186,9 +201,16 @@ class List extends PureComponent {
         onEndReachedThreshold={0.5}
         onMomentumScrollBegin={this.handleOnMomentumScrollBegin}
         onMomentumScrollEnd={this.handleOnMomentumScrollEnd}
+        onScrollEndDrag={() => this.setState({ listScrolled: true })}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
+        removeClippedSubviews={false}
         keyExtractor={this.extractKey}
+        {...(itemHeight
+          ? {
+              getItemLayout: this.handleGetItemLayout(itemHeight),
+            }
+          : {})}
       />
     );
   }
@@ -216,7 +238,7 @@ const styles = {
   },
   footerRefresher: {
     container: {
-      paddingVertical: 10,
+      height: 36,
       justifyContent: 'center',
       flexDirection: 'row',
       alignItems: 'center',

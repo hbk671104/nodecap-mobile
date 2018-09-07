@@ -1,24 +1,55 @@
 import axios from 'axios';
 import * as R from 'ramda';
-import { getConstants, getAllPermissions } from '../services/api';
+import { NavigationActions } from 'react-navigation';
+
+import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
+import { Storage } from '../utils';
 
 export default {
   namespace: 'global',
 
   state: {
-    collapsed: false,
-    title: 'Nodus 管理系统',
-    company: {
-      name: 'Node Capital',
-    },
+    title: 'Hotnode',
     constants: null,
     projectTags: [],
     financeStage: [],
     permissions: [],
+    roles: [],
   },
 
   effects: {
+    *bootstrap({ callback }, { call, put, all }) {
+      try {
+        // put => non-blocking, put.resolve => blocking
+        yield all([
+          put.resolve({
+            type: 'startup',
+          }),
+          put.resolve({
+            type: 'initial',
+          }),
+        ]);
+
+        const recommended = yield call(
+          Storage.get,
+          'project_recommended',
+          false,
+        );
+
+        yield put(
+          NavigationActions.navigate({
+            routeName: recommended ? 'Main' : 'Recommendation',
+          }),
+        );
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     *startup(_, { put, call }) {
       try {
         const res = yield call(getConstants);
@@ -31,7 +62,7 @@ export default {
         console.log(e);
       }
     },
-    *initial({ callback }, { select, put, call, all, take }) {
+    *initial(_, { select, put, call, all }) {
       const token = yield select(state => state.login.token);
       const companies = yield select(state => state.login.companies);
       if (token) {
@@ -48,17 +79,19 @@ export default {
         });
 
         yield all([
-          put({
+          put.resolve({
             type: 'user/fetchCurrent',
           }),
-          put({
+          put.resolve({
             type: 'fund/fetch',
           }),
-          put({
+          put.resolve({
+            type: 'roles',
+          }),
+          put.resolve({
             type: 'initRealm',
           }),
         ]);
-        yield take('fund/fetch/@@end');
       } catch (e) {
         console.log(e);
       }
@@ -73,15 +106,23 @@ export default {
         console.log(error);
       }
     },
+    *roles({ callback }, { call, put }) {
+      try {
+        const res = yield call(getAllRoles);
+        yield put({
+          type: 'getRoles',
+          payload: res.data,
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 
   reducers: {
-    changeLayoutCollapsed(state, { payload }) {
-      return {
-        ...state,
-        collapsed: payload,
-      };
-    },
     getConstants(state, { payload }) {
       return {
         ...state,
@@ -104,6 +145,15 @@ export default {
       return {
         ...state,
         projectTags: payload,
+      };
+    },
+    getRoles(state, { payload }) {
+      return {
+        ...state,
+        constants: {
+          ...state.constants,
+          roles: payload,
+        },
       };
     },
   },

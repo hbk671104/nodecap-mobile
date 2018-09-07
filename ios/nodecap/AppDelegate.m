@@ -59,6 +59,9 @@
   // JPush
   [JPUSHService setupWithOption:launchOptions appKey:@"3d43f5402c9364c5b35f0ab0"
                         channel:nil apsForProduction:nil];
+  JPUSHRegisterEntity * entity = [[JPUSHRegisterEntity alloc] init];
+  entity.types = UNAuthorizationOptionAlert|UNAuthorizationOptionBadge|UNAuthorizationOptionSound;
+  [JPUSHService registerForRemoteNotificationConfig:entity delegate:self];
   
   // Sentry
   [RNSentry installWithRootView:rootView];
@@ -121,7 +124,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kJPFDidReceiveRemoteNotification object:userInfo];
   }
   
-  completionHandler(UNNotificationPresentationOptionAlert);
+  completionHandler(UNNotificationPresentationOptionNone);
 }
 
 - (void)jpushNotificationCenter:(UNUserNotificationCenter *)center didReceiveNotificationResponse:(UNNotificationResponse *)response withCompletionHandler:(void (^)())completionHandler

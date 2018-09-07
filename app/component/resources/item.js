@@ -10,6 +10,12 @@ import { shadow } from '../../utils/style';
 
 const resources = ({ data, onPress }) => {
   const types = R.pathOr([], ['types'])(data);
+
+  const org = R.pathOr('未填写', ['org'])(data);
+  const title = R.pathOr('未填写', ['title'])(data);
+  const mobile = R.pathOr('未填写', ['mobile'])(data);
+  const wechat = R.pathOr('未填写', ['wechat'])(data);
+
   return (
     <Touchable onPress={onPress}>
       <View style={styles.container}>
@@ -33,34 +39,28 @@ const resources = ({ data, onPress }) => {
             <Col>
               <Text style={styles.bottom.group.title}>
                 机构：
-                <Text style={styles.bottom.group.content}>{data.org}</Text>
+                <Text style={styles.bottom.group.content}>{org}</Text>
               </Text>
             </Col>
             <Col>
-              {!!data.title && (
-                <Text style={styles.bottom.group.title}>
-                  职位：
-                  <Text style={styles.bottom.group.content}>{data.title}</Text>
-                </Text>
-              )}
+              <Text style={styles.bottom.group.title}>
+                职位：
+                <Text style={styles.bottom.group.content}>{title}</Text>
+              </Text>
             </Col>
           </Row>
           <Row style={{ marginTop: 8 }}>
             <Col>
-              {!!data.mobile && (
-                <Text style={styles.bottom.group.title}>
-                  手机：
-                  <Text style={styles.bottom.group.content}>{data.mobile}</Text>
-                </Text>
-              )}
+              <Text style={styles.bottom.group.title}>
+                手机：
+                <Text style={styles.bottom.group.content}>{mobile}</Text>
+              </Text>
             </Col>
             <Col>
-              {!!data.wechat && (
-                <Text style={styles.bottom.group.title}>
-                  微信：
-                  <Text style={styles.bottom.group.content}>{data.wechat}</Text>
-                </Text>
-              )}
+              <Text style={styles.bottom.group.title}>
+                微信：
+                <Text style={styles.bottom.group.content}>{wechat}</Text>
+              </Text>
             </Col>
           </Row>
         </Grid>

@@ -5,6 +5,11 @@ export default {
   listContent: {
     paddingVertical: 0,
   },
+  narBar: {
+    title: {
+      paddingHorizontal: 0,
+    },
+  },
   searchBar: {
     container: {
       flex: 1,

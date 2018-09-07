@@ -7,39 +7,30 @@ import { NavigationActions } from 'react-navigation';
 
 import { hasPermission } from 'component/auth/permission/lock';
 import NavBar from 'component/navBar';
-import { setStatusBar } from 'component/uikit/statusBar';
-import SearchBarDisplay from 'component/searchBar/display';
+import Touchable from 'component/uikit/touchable';
+import Icon from 'component/uikit/icon';
 import AddButton from 'component/add';
 
-import UnexchangeableWrapper from './route/unexchangeable/wrapper';
-import ExchangeableWrapper from './route/exchangeable/wrapper';
-import { getCurrentScreen } from '../../../router';
-import styles, { deviceWidth, indicatorWidth } from './style';
+import PortfolioWrapper from './route/portfolio/wrapper';
+import ProjectWrapper from './route/project/wrapper';
+import styles from './style';
 
 @global.bindTrack({
   page: '投资库',
   name: 'App_ProjectOperation',
 })
-@compose(withState('offsetY', 'setOffsetY', 0))
 @compose(withState('addButtonVisible', 'setAddButtonVisible', true))
-@connect(({ global, router }) => ({
+@connect(({ global }) => ({
   constants: global.constants,
-  isCurrent: getCurrentScreen(router) === 'Portfolio',
 }))
 export default class Portfolio extends Component {
   state = {
     index: 0,
     routes: [
-      { key: 'exchangeable', title: '已投项目' },
-      { key: 'unexchangeable', title: '未投项目' },
+      { key: 'portfolio', title: '已投项目' },
+      { key: 'project', title: '待投项目' },
     ],
   };
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isCurrent) {
-      setStatusBar('light-content');
-    }
-  }
 
   handleIndexChange = index => {
     const subModuleName = () => {
@@ -47,7 +38,7 @@ export default class Portfolio extends Component {
         case 0:
           return '已投项目';
         case 1:
-          return '未投项目';
+          return '待投项目';
         default:
           return null;
       }
@@ -55,10 +46,6 @@ export default class Portfolio extends Component {
     this.setState({ index }, () => {
       this.props.track('Tab切换', { subModuleName: subModuleName() });
     });
-  };
-
-  handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
-    this.props.setOffsetY(contentOffset.y);
   };
 
   handleSearchBarPress = () => {
@@ -89,49 +76,38 @@ export default class Portfolio extends Component {
     );
   };
 
-  renderHeader = props => {
-    const { offsetY } = this.props;
-    return (
-      <NavBar
-        hidden={offsetY > 0}
-        gradient
-        renderTitle={() => (
-          <View style={styles.searchBar.container}>
-            <SearchBarDisplay onPress={this.handleSearchBarPress} />
-          </View>
-        )}
-        renderBottom={() => (
-          <TabBar
-            {...props}
-            style={styles.tabBar.container}
-            labelStyle={styles.tabBar.label}
-            indicatorStyle={[
-              styles.tabBar.indicator,
-              {
-                left:
-                  (deviceWidth / this.state.routes.length - indicatorWidth) / 2,
-              },
-            ]}
-          />
-        )}
-      />
-    );
-  };
+  renderHeader = props => (
+    <NavBar
+      gradient
+      renderTitle={() => (
+        <TabBar
+          {...props}
+          style={styles.tabBar.container}
+          tabStyle={styles.tabBar.tab}
+          labelStyle={styles.tabBar.label}
+          indicatorStyle={styles.tabBar.indicator}
+        />
+      )}
+      renderRight={() => (
+        <Touchable onPress={this.handleSearchBarPress}>
+          <Icon name="search" color="white" size={24} />
+        </Touchable>
+      )}
+    />
+  );
 
   renderScene = ({ route }) => {
     switch (route.key) {
-      case 'exchangeable':
+      case 'portfolio':
         return (
-          <ExchangeableWrapper
-            onScroll={this.handleOnScroll}
+          <PortfolioWrapper
             onMomentumScrollBegin={this.handleMomentumScrollBegin}
             onMomentumScrollEnd={this.handleMomentumScrollEnd}
           />
         );
-      case 'unexchangeable':
+      case 'project':
         return (
-          <UnexchangeableWrapper
-            onScroll={this.handleOnScroll}
+          <ProjectWrapper
             onMomentumScrollBegin={this.handleMomentumScrollBegin}
             onMomentumScrollEnd={this.handleMomentumScrollEnd}
           />
@@ -187,7 +163,7 @@ export default class Portfolio extends Component {
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
-        {!!addButtonVisible &&
+        {addButtonVisible &&
           hasPermission('project-create') && (
             <AddButton onPress={this.handleRightPress} />
           )}

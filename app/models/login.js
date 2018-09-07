@@ -1,3 +1,4 @@
+import JPush from 'jpush-react-native';
 import { NavigationActions as routerRedux } from '../utils';
 import { login, setPassword } from '../services/api';
 import request from '../utils/request';
@@ -12,7 +13,7 @@ export default {
   },
 
   effects: {
-    *login({ payload, callback }, { call, put, take }) {
+    *login({ payload }, { call, put, take }) {
       try {
         const { data } = yield call(login, payload);
         yield put({
@@ -36,21 +37,10 @@ export default {
               companies: data.companies,
             },
           });
-          yield put({
-            type: 'global/startup',
-          });
-          yield take('global/startup/@@end');
-          yield put({
-            type: 'global/initial',
-          });
 
-          yield take('global/initial/@@end');
-
-          yield put(
-            routerRedux.navigate({
-              routeName: 'Dashboard',
-            }),
-          );
+          yield put.resolve({
+            type: 'global/bootstrap',
+          });
         }
       } catch (e) {
         yield put({
@@ -61,7 +51,7 @@ export default {
         });
       }
     },
-    *setPassword({ payload }, { call, put, take }) {
+    *setPassword({ payload }, { call, put }) {
       try {
         const { data } = yield call(setPassword, payload);
         yield put({
@@ -71,17 +61,10 @@ export default {
             companies: data.companies,
           },
         });
-        yield put({
-          type: 'global/initial',
+
+        yield put.resolve({
+          type: 'global/bootstrap',
         });
-
-        yield take('global/initial/@@end');
-
-        yield put(
-          routerRedux.navigate({
-            routeName: 'Dashboard',
-          }),
-        );
       } catch (e) {
         yield put({
           type: 'loginFailure',
@@ -99,6 +82,11 @@ export default {
 
         // sensor logout
         global.s().logout();
+
+        // jpush remove corresponding info
+        JPush.deleteAlias(() => null);
+        JPush.cleanTags(() => null);
+        JPush.stopPush();
       } finally {
         yield put({
           type: 'logoutSuccess',

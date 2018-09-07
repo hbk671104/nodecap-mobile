@@ -6,6 +6,7 @@ import Accounting from 'accounting';
 import Touchable from 'component/uikit/touchable';
 import Text from 'component/text';
 import Price from 'component/price';
+import NodeCapIcon from 'component/icon/nodecap';
 
 import { medalMap } from '../../../utils/style';
 import styles from './style';
@@ -13,9 +14,9 @@ import styles from './style';
 const priceChangeItem = ({ item, index, onPress }) => {
   const stat = R.path(['statistics'])(item);
   const investment = R.path(['investment'])(stat);
-  const roi = R.path(['roi', 'CNY', 'value'])(investment);
-  const unitCost = R.path(['unit_cost', 'CNY'])(investment);
-  const price = R.path(['current_price', 'CNY'])(stat);
+  const roi = R.path(['roi', 'ETH', 'value'])(investment);
+  const unitCost = R.path(['unit_cost', 'ETH'])(investment);
+  const price = R.path(['current_price', 'ETH'])(stat);
   const ratio = price / unitCost > 1 ? price / unitCost : -unitCost / price;
 
   const nameLength = item.name.length || 0;
@@ -50,12 +51,12 @@ const priceChangeItem = ({ item, index, onPress }) => {
         </View>
         <View style={styles.middle.container}>
           <Text style={styles.middle.title}>
-            ￥<Price symbol="CNY">{price}</Price>
+            <NodeCapIcon name="ETH" /> <Price symbol="ETH">{price}</Price>
           </Text>
           <Text style={styles.middle.label}>
-            成本{'  '}
+            成本{' '}
             <Text style={styles.middle.content}>
-              ￥<Price symbol="CNY">{unitCost}</Price>
+              <NodeCapIcon name="ETH" /> <Price symbol="ETH">{unitCost}</Price>
             </Text>
           </Text>
           <Text style={[styles.middle.roi, ratio < 0 && { color: '#F5222D' }]}>

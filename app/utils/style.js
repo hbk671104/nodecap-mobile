@@ -47,16 +47,16 @@ export const medalMap = index => {
   }
 };
 
-export const iconMap = name => {
+export const iconMap = (name, props) => {
   switch (name) {
     case 'BTC':
-      return <Image source={require('asset/crypto/BTC.png')} />;
+      return <Image {...props} source={require('asset/crypto/BTC.png')} />;
     case 'ETH':
-      return <Image source={require('asset/crypto/ETH.png')} />;
+      return <Image {...props} source={require('asset/crypto/ETH.png')} />;
     case 'EOS':
-      return <Image source={require('asset/crypto/EOS.png')} />;
+      return <Image {...props} source={require('asset/crypto/EOS.png')} />;
     case 'USDT':
-      return <Image source={require('asset/crypto/USDT.png')} />;
+      return <Image {...props} source={require('asset/crypto/USDT.png')} />;
     default:
       return null;
   }

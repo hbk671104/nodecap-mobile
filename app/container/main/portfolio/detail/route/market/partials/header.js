@@ -76,7 +76,8 @@ const headers = props => {
           </View>
         </View>
         <Text style={styles.price.cost}>
-          成本价：{symbol(currentSym, styles.price.cost)}{' '}
+          成本价：
+          {symbol(currentSym, styles.price.cost)}{' '}
           <Price symbol={currentSym}>{cost}</Price>
         </Text>
       </View>
@@ -120,7 +121,7 @@ const headers = props => {
       </View>
       <View style={styles.bottom.container}>
         <Text style={styles.bottom.title}>已上交易所</Text>
-        <Text style={styles.bottom.content}>{market.join('|')}</Text>
+        <Text style={styles.bottom.content}>{market.join(' | ')}</Text>
       </View>
     </View>
   );
@@ -134,9 +135,9 @@ const styles = {
   top: {
     container: {
       flexDirection: 'row',
-      justifyContent: 'space-between',
     },
     title: {
+      flex: 1,
       color: '#333333',
       fontSize: 20,
       fontWeight: 'bold',

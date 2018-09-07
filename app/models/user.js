@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { Platform } from 'react-native';
+import JPush from 'jpush-react-native';
 import {
   getUser,
   getUsers,
@@ -89,11 +90,20 @@ export default {
           companyName: company.name,
           companyID: company.id,
         };
+
+        // sensor user init
         if (Platform.OS === 'ios') {
           global.s().set(input);
         } else {
           global.s().profileSet(input);
         }
+
+        // resume push
+        JPush.resumePush();
+
+        // jpush user init
+        JPush.setAlias(`user_${data.id}`, () => null);
+        JPush.setTags([`company_${company.id}`], () => null);
 
         yield put({
           type: 'saveCurrentUser',

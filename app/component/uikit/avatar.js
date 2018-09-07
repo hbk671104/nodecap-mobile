@@ -8,12 +8,14 @@ const avatar = props => (
     style={[
       styles.container,
       { height: props.size, width: props.size, borderRadius: props.size / 2 },
+      props.raised && { ...raised },
       props.style,
     ]}
   >
     <Image
       {...props}
       resizeMode={props.resizeMode}
+      defaultSource={require('asset/project/project_logo_default.png')}
       style={{
         height: props.size * props.innerRatio,
         width: props.size * props.innerRatio,
@@ -27,12 +29,14 @@ avatar.defaultProps = {
   size: 42,
   innerRatio: 2 / 3,
   resizeMode: 'contain',
+  raised: true,
 };
 
 avatar.propTypes = {
   size: PropTypes.number,
   innerRatio: PropTypes.number,
   resizeMode: PropTypes.string,
+  raised: PropTypes.bool,
 };
 
 const styles = {
@@ -40,7 +44,6 @@ const styles = {
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    ...raised,
   },
 };
 

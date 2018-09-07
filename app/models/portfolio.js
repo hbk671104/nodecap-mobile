@@ -4,6 +4,8 @@ import {
   investmentIndex,
   projectDetail,
   getProjectInvestTokens,
+  getProjectReturnTokens,
+  getExitToken,
   getProjectInvestEquities,
   getProjectChartData,
   getProjectSymbol,
@@ -18,6 +20,17 @@ const paginate = (state, action, key) => {
   const newData = R.pathOr([], ['payload', 'data'])(action);
   const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
 
+  const oldRank = R.pathOr({}, [key, 'params', 'rank'])(state);
+  const newRank = R.pathOr({}, ['params', 'rank'])(action);
+
+  if (
+    !R.isEmpty(oldRank) &&
+    !R.isEmpty(newRank) &&
+    !R.equals(oldRank, newRank)
+  ) {
+    return action.payload;
+  }
+
   if (R.path(['current'])(pagination) === 1) {
     return action.payload;
   }
@@ -31,37 +44,49 @@ const paginate = (state, action, key) => {
 export default {
   namespace: 'portfolio',
   state: {
-    exchangeable: {
-      profits: {
+    portfolioList: {
+      exchangeable: {
         index: null,
         params: {
-          rank: 'profits',
+          can_calculate: 1,
         },
       },
-      roi: {
+      unexchangeable: {
         index: null,
         params: {
-          rank: 'roi',
-        },
-      },
-      increase: {
-        index: null,
-        params: {
-          rank: 'increase',
-        },
-      },
-      cost: {
-        index: null,
-        params: {
-          rank: 'cost',
+          can_calculate: 0,
         },
       },
     },
-    unexchangeable: {
+    projectList: {
       '0,1,2,3,4,5,6': {
         index: null,
         params: {
           status: '0,1,2,3,4,5,6',
+        },
+      },
+      0: {
+        index: null,
+        params: {
+          status: '0',
+        },
+      },
+      1: {
+        index: null,
+        params: {
+          status: '1',
+        },
+      },
+      2: {
+        index: null,
+        params: {
+          status: '2',
+        },
+      },
+      3: {
+        index: null,
+        params: {
+          status: '3',
         },
       },
       4: {
@@ -89,6 +114,24 @@ export default {
     matchCoinList: {
       index: null,
     },
+    rank: [
+      {
+        id: 'profits',
+        name: '盈余榜',
+      },
+      {
+        id: 'roi',
+        name: '回报率榜',
+      },
+      {
+        id: 'increase',
+        name: '涨跌榜',
+      },
+      {
+        id: 'cost',
+        name: '投资榜',
+      },
+    ],
     current: null,
   },
   effects: {
@@ -99,7 +142,7 @@ export default {
         };
         const res = yield call(portfolioIndex, req);
         yield put({
-          type: 'unexchangeablelist',
+          type: 'projectList',
           payload: res.data,
           params: req,
         });
@@ -114,12 +157,11 @@ export default {
       try {
         const req = {
           ...payload,
-          can_calculate: 1,
-          symbol: 'CNY',
+          symbol: 'ETH',
         };
         const res = yield call(investmentIndex, req);
         yield put({
-          type: 'exchangeablelist',
+          type: 'portfolioList',
           payload: res.data,
           params: req,
         });
@@ -211,12 +253,38 @@ export default {
           type: 'saveDetail',
           payload: res.data,
         });
+
+        // get extra
         yield put({
-          type: 'getInvest',
+          type: 'getExtra',
           payload,
         });
       } catch (e) {
         console.log(e);
+      }
+    },
+    *getExtra({ payload, callback }, { all, put, call }) {
+      try {
+        const result = yield all([
+          put({
+            type: 'getInvest',
+            payload,
+          }),
+          put({
+            type: 'getReturnToken',
+            payload,
+          }),
+          put({
+            type: 'getExitToken',
+            payload,
+          }),
+        ]);
+
+        if (callback) {
+          yield call(callback, result);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     *getInvest({ payload }, { call, put }) {
@@ -237,6 +305,30 @@ export default {
           type: 'saveInvest',
           payload: investEquities.data,
           relatedType: 'invest_equities',
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getReturnToken({ payload }, { call, put }) {
+      try {
+        const returnTokens = yield call(getProjectReturnTokens, payload);
+        yield put({
+          type: 'saveInvest',
+          payload: returnTokens.data,
+          relatedType: 'return_tokens',
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getExitToken({ payload }, { call, put }) {
+      try {
+        const exitTokens = yield call(getExitToken, payload);
+        yield put({
+          type: 'saveInvest',
+          payload: exitTokens.data,
+          relatedType: 'exit_tokens',
         });
       } catch (e) {
         console.log(e);
@@ -284,27 +376,29 @@ export default {
     },
   },
   reducers: {
-    unexchangeablelist(state, action) {
+    projectList(state, action) {
       const { params } = action;
       return {
         ...state,
-        unexchangeable: {
-          ...state.unexchangeable,
+        projectList: {
+          ...state.projectList,
           [params.status]: {
-            index: paginate(state.unexchangeable, action, params.status),
+            index: paginate(state.projectList, action, params.status),
             params,
           },
         },
       };
     },
-    exchangeablelist(state, action) {
+    portfolioList(state, action) {
       const { params } = action;
+      const key =
+        params.can_calculate === 1 ? 'exchangeable' : 'unexchangeable';
       return {
         ...state,
-        exchangeable: {
-          ...state.exchangeable,
-          [params.rank]: {
-            index: paginate(state.exchangeable, action, params.rank),
+        portfolioList: {
+          ...state.portfolioList,
+          [key]: {
+            index: paginate(state.portfolioList, action, key),
             params,
           },
         },

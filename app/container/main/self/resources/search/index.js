@@ -6,6 +6,7 @@ import { NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile';
 import _ from 'lodash';
 
+import { hasPermission } from 'component/auth/permission/lock';
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
@@ -54,6 +55,9 @@ class ResourceSearch extends Component {
   };
 
   handleItemPress = item => () => {
+    if (!hasPermission('resource-view')) {
+      return;
+    }
     this.props.track('项目卡片');
     this.props.dispatch(
       NavigationActions.navigate({

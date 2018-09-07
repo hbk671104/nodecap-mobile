@@ -1,14 +1,9 @@
+import { realBarHeight } from 'component/navBar';
+
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
-  },
-  logo: {
-    width: 187,
-    height: 100,
-    alignSelf: 'center',
-    marginTop: 128,
-    resizeMode: 'contain',
   },
   input: {
     marginHorizontal: 38,
@@ -19,7 +14,7 @@ export default {
     borderWidth: 0,
   },
   titleWrapper: {
-    marginTop: 128,
+    marginTop: 128 - realBarHeight,
     marginHorizontal: 40,
   },
   title: {

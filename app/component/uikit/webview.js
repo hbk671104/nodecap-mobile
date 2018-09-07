@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { ViewPropTypes, WebView } from 'react-native';
 
 const webview = props => (

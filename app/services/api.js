@@ -572,6 +572,34 @@ export function modifyCompany(params) {
   return request.put('/company', params);
 }
 
+export function holdingReport(fid) {
+  return request.get(`/funds/${fid}/position-report`);
+}
+
+export function investmentReport(fid) {
+  return request.get(`/funds/${fid}/investment-report`);
+}
+
+export function generalReport(fid) {
+  return request.get(`/funds/${fid}/general-report`);
+}
+
+export function trendList() {
+  return request.get('/user-notifys/news');
+}
+
+export function trendDetail(id) {
+  return request.get(`/user-notifys/${id}/news-info`);
+}
+
+export function projectRecommendation() {
+  return request.get('/coins/recommended');
+}
+
+export function updateRecommendation(payload) {
+  return request.post('/coins/recommended', payload);
+}
+
 /**
  * 注册验证码
  * @param mobile
