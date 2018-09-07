@@ -24,13 +24,16 @@ import styles from './style';
   constants: global.constants,
 }))
 export default class Portfolio extends Component {
-  state = {
-    index: 0,
-    routes: [
-      { key: 'portfolio', title: '已投项目' },
-      { key: 'project', title: '待投项目' },
-    ],
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: props.navigation.getParam('fromRecommendation') ? 1 : 0,
+      routes: [
+        { key: 'portfolio', title: '已投项目' },
+        { key: 'project', title: '待投项目' },
+      ],
+    };
+  }
 
   handleIndexChange = index => {
     const subModuleName = () => {
