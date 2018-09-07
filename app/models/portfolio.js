@@ -1,4 +1,4 @@
-import * as R from 'ramda';
+import R from 'ramda';
 import {
   portfolioIndex,
   investmentIndex,
@@ -9,9 +9,14 @@ import {
   getProjectInvestEquities,
   getProjectChartData,
   getProjectSymbol,
+  getProjectFundStat,
   getMatchedCoin,
   createProject,
+  updateProjectDetail,
   createProjectInvestInfo,
+  updateProjectInvestInfo,
+  getNewsByCoinId,
+  editProject,
 } from '../services/api';
 import moment from 'moment';
 
@@ -153,6 +158,16 @@ export default {
         console.log(e);
       }
     },
+    *update({ payload = {}, id, callback }, { call, put }) {
+      try {
+        yield call(editProject, id, payload);
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     *investment({ payload = {}, callback }, { call, put }) {
       try {
         const req = {
@@ -206,30 +221,75 @@ export default {
         console.log(e);
       }
     },
-    *projectStat({ id, payload = {}, callback }, { call }) {
+    *projectStat({ payload: id, callback }, { call, put }) {
       try {
-        let queryParams = payload;
-        let symbols;
-        if (R.isEmpty(queryParams)) {
-          const { data } = yield call(getProjectSymbol, id);
-          const first = data[0];
-          queryParams = {
-            market: first.market,
-            symbol: first.symbol,
-          };
-          symbols = data;
-        }
-
-        // query params
         const { data } = yield call(getProjectChartData, {
           id,
-          payload: queryParams,
         });
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            stats: data,
+          },
+        });
+
         if (callback) {
-          callback({
-            ...(R.isNil(symbols) ? {} : { symbols }),
-            data,
-          });
+          yield call(callback, data);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *projectFundStat({ payload: id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getProjectFundStat, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            fund_stats: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback, data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *projectSymbol({ payload: id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getProjectSymbol, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            symbols: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *projectTrend({ id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getNewsByCoinId, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            news: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback);
         }
       } catch (e) {
         console.log(e);
@@ -245,13 +305,28 @@ export default {
      */
     *get({ payload }, { put, call }) {
       try {
-        const res = yield call(projectDetail, {
+        const { data } = yield call(projectDetail, {
           id: payload,
         });
 
         yield put({
           type: 'saveDetail',
-          payload: res.data,
+          payload: data,
+        });
+
+        const coinId = R.path(['coin', 'id'])(data);
+        if (!R.isNil(coinId)) {
+          yield put.resolve({
+            type: 'getSupplement',
+            payload,
+            coinId,
+          });
+        }
+
+        // get stats
+        yield put({
+          type: 'getStat',
+          payload,
         });
 
         // get extra
@@ -263,9 +338,41 @@ export default {
         console.log(e);
       }
     },
-    *getExtra({ payload, callback }, { all, put, call }) {
+    *getSupplement({ payload, coinId }, { all, put }) {
       try {
-        const result = yield all([
+        yield all([
+          put.resolve({
+            type: 'projectTrend',
+            payload: coinId,
+          }),
+          put.resolve({
+            type: 'projectSymbol',
+            payload,
+          }),
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *getStat({ payload }, { all, put }) {
+      try {
+        yield all([
+          put.resolve({
+            type: 'projectStat',
+            payload,
+          }),
+          put.resolve({
+            type: 'projectFundStat',
+            payload,
+          }),
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *getExtra({ payload }, { all, put }) {
+      try {
+        yield all([
           put({
             type: 'getInvest',
             payload,
@@ -279,10 +386,6 @@ export default {
             payload,
           }),
         ]);
-
-        if (callback) {
-          yield call(callback, result);
-        }
       } catch (error) {
         console.log(error);
       }
@@ -344,18 +447,10 @@ export default {
       try {
         const { data: projectRes } = yield call(createProject, project);
         if (!R.isEmpty(invest)) {
-          const financeInfo = {
-            ...invest,
-            fund: {
-              id: invest.fund,
-            },
-            paid_at: moment(invest.paid_at, 'YYYY-MM-DD').toISOString(),
-            is_paid: true,
-          };
-          yield call(createProjectInvestInfo, {
-            financeInfo,
-            type: 'tokens',
-            projectId: projectRes.id,
+          yield put.resolve({
+            type: 'createInvestInfo',
+            payload: invest,
+            id: projectRes.id,
           });
         }
 
@@ -372,6 +467,92 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *updateProject({ id, payload, callback }, { select, call, put }) {
+      try {
+        const { status } = yield call(updateProjectDetail, { id, payload });
+
+        // refresh current
+        const current = yield select(state =>
+          R.path(['portfolio', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            payload: current.id,
+          });
+        }
+
+        if (callback) {
+          yield call(callback, status === 200);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *createInvestInfo({ id, callback, payload }, { select, put, call }) {
+      try {
+        const { status } = yield call(createProjectInvestInfo, {
+          financeInfo: {
+            ...payload,
+            fund: {
+              id: payload.fund,
+            },
+            paid_at: moment(payload.paid_at, 'YYYY-MM-DD').toISOString(),
+            is_paid: true,
+          },
+          type: 'tokens',
+          projectId: id,
+        });
+
+        const current = yield select(state =>
+          R.path(['portfolio', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            payload: current.id,
+          });
+        }
+
+        if (callback) {
+          yield call(callback, status === 201);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *updateInvestInfo({ id, callback, payload }, { select, put, call }) {
+      try {
+        const { status } = yield call(updateProjectInvestInfo, {
+          financeInfo: {
+            ...payload,
+            fund: {
+              id: payload.fund,
+            },
+            paid_at: moment(payload.paid_at, 'YYYY-MM-DD').toISOString(),
+            is_paid: true,
+          },
+          type: 'tokens',
+          id,
+        });
+
+        const current = yield select(state =>
+          R.path(['portfolio', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            payload: current.id,
+          });
+        }
+
+        if (callback) {
+          yield call(callback, status === 200);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },

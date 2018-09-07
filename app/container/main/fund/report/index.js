@@ -41,13 +41,12 @@ export default class Report extends Component {
   handleInvestmentPress = anchor_type => item => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PortfolioDetail',
+        routeName: 'PortfolioRecord',
         params: {
           item: {
             ...item,
             can_calculate: true,
           },
-          landing_index: 1,
           anchor_type,
         },
       }),

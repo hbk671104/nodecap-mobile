@@ -4,7 +4,7 @@ import { Text } from 'react-native';
 import Accounting from 'accounting';
 import R from 'ramda';
 
-const amount = ({ children, disableFormatting }) => {
+const amount = ({ children, disableFormatting, symbol }) => {
   if (R.isNil(children) || isNaN(children)) {
     return <Text>--</Text>;
   }
@@ -17,7 +17,12 @@ const amount = ({ children, disableFormatting }) => {
     const num = children / 10000;
     comp = `${Accounting.formatNumber(num, 1)} 万`;
   }
-  return <Text>{comp}</Text>;
+  return (
+    <Text>
+      {comp}
+      {symbol ? ` ${symbol}` : ''}
+    </Text>
+  );
 };
 
 amount.defaultProps = {
@@ -26,6 +31,7 @@ amount.defaultProps = {
 
 amount.propTypes = {
   disableFormatting: PropTypes.bool,
+  symbol: PropTypes.string,
 };
 
 export default amount;

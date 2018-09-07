@@ -38,7 +38,10 @@ class Recommendation extends Component {
   handleNext = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'Main',
+        routeName: 'Portfolio',
+        params: {
+          fromRecommendation: true,
+        },
       }),
     );
     Storage.set('project_recommended', true);

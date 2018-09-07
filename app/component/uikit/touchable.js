@@ -9,7 +9,7 @@ const touchable = props => {
   return (
     <Touchable
       {...props}
-      activeOpacity={0.8}
+      activeOpacity={props.activeOpacity}
       hitSlop={props.hitSlop}
       {...{
         [props.foreground ? 'foreground' : 'background']: effect,
@@ -32,9 +32,14 @@ touchable.defaultProps = {
 };
 
 touchable.propTypes = {
+  activeOpacity: PropTypes.number,
   hitSlop: PropTypes.object,
   borderless: PropTypes.bool,
   foreground: PropTypes.bool,
+};
+
+touchable.defaultProps = {
+  activeOpacity: 0.8,
 };
 
 export default touchable;

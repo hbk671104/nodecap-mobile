@@ -56,9 +56,16 @@ export function projectIndex(params = {}) {
  * @returns {AxiosPromise<any>}
  */
 export function projectDetail({ id }) {
-  return request.get(
-    `/projects/${id}?expand=post_user,tags,white_papers,members`,
-  );
+  return request.get(`/projects/${id}`);
+}
+
+/**
+ * 更新详情
+ * @param id
+ * @returns {AxiosPromise<any>}
+ */
+export function updateProjectDetail({ id, payload }) {
+  return request.put(`/projects/${id}`, payload);
 }
 
 /**
@@ -553,7 +560,7 @@ export function getDashboardData(id) {
 }
 
 export function getProjectChartData({ id, payload }) {
-  return request.get(`/projects/${id}/statistic2`, {
+  return request.get(`/projects/${id}/statistic`, {
     params: payload,
   });
 }
@@ -600,6 +607,10 @@ export function updateRecommendation(payload) {
   return request.post('/coins/recommended', payload);
 }
 
+export function getProjectFundStat(id) {
+  return request.get(`projects/${id}/funds-statistic`);
+}
+
 /**
  * 注册验证码
  * @param mobile
@@ -615,4 +626,8 @@ export function getSMSCode(mobile) {
  */
 export function createCompany(data) {
   return request.post('/signup', data);
+}
+
+export function getNewsByCoinId(id) {
+  return request.get(`/coins/${id}/news-info`);
 }

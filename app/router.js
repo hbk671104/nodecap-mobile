@@ -40,6 +40,9 @@ import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
+import PortfolioRecord from 'container/main/portfolio/detail/record';
+import PortfolioInvestmentCreate from 'container/main/portfolio/detail/record/create';
+import PortfolioDetailMatchCoinUpdate from 'container/main/portfolio/detail/coin_update';
 import Search from 'container/main/portfolio/search';
 import CreateProject from 'container/main/portfolio/create';
 import ExpressCreate from 'container/main/portfolio/create/express';
@@ -143,6 +146,9 @@ const MainStack = createStackNavigator(
     Tab,
     FundProject,
     PortfolioDetail,
+    PortfolioRecord,
+    PortfolioInvestmentCreate,
+    PortfolioDetailMatchCoinUpdate,
     Search,
     CreateProject,
     ExpressCreate,

@@ -26,9 +26,9 @@ class List extends PureComponent {
     renderSeparator: PropTypes.func,
     refreshing: PropTypes.bool,
     loading: PropTypes.bool,
-    onRefresh: PropTypes.func,
     loadOnStart: PropTypes.bool,
     itemHeight: PropTypes.number,
+    disableRefresh: PropTypes.bool,
 
     // styles
     style: ViewPropTypes.style,
@@ -39,6 +39,7 @@ class List extends PureComponent {
     refreshing: false,
     loading: false,
     loadOnStart: true,
+    disableRefresh: false,
   };
 
   state = {
@@ -171,6 +172,7 @@ class List extends PureComponent {
       style,
       contentContainerStyle,
       itemHeight,
+      disableRefresh,
     } = this.props;
     const isRefreshing = () => {
       if (loading) {
@@ -186,8 +188,12 @@ class List extends PureComponent {
     return (
       <FlatList
         {...this.props}
-        refreshing={isRefreshing()}
-        onRefresh={this.handleOnRefresh}
+        {...(disableRefresh
+          ? {}
+          : {
+              refreshing: isRefreshing(),
+              onRefresh: this.handleOnRefresh,
+            })}
         style={[styles.container, style]}
         contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         ref={listRef}
