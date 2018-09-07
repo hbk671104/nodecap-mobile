@@ -9,6 +9,11 @@ import PlaceHolder from 'component/loading_placeholder';
 import { symbol } from '../../../../utils/icon';
 
 const fund = props => {
+  const { can_calculate } = props;
+  if (R.not(can_calculate)) {
+    return null;
+  }
+
   const fund_stats = R.pathOr([], ['portfolio', 'fund_stats'])(props);
   return (
     <PlaceHolder
