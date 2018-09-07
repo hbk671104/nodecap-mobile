@@ -74,6 +74,7 @@
     "realm": "^2.15.3",
     "recompose": "^0.30.0",
     "redux-persist": "4.10.2",
+    "rn-placeholder": "^1.2.0",
     "victory-native": "^30.3.0"
   },
   "devDependencies": {

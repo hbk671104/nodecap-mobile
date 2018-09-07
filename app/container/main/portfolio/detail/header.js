@@ -7,13 +7,15 @@ import Avatar from 'component/uikit/avatar';
 import Price from 'component/price';
 import Percentage from 'component/percentage';
 import Amount from 'component/amount';
+import Shimmer from 'component/shimmer';
+
 import { symbol } from '../../../../utils/icon';
 
 const header = ({
   style,
   titleStyle,
   data,
-  loading,
+  stat_loading,
   base_symbol,
   can_calculate,
 }) => {
@@ -46,24 +48,26 @@ const header = ({
       </View>
       <View style={styles.divider} />
       {can_calculate ? (
-        <View>
-          <View style={styles.bottom.container}>
-            <Text style={styles.bottom.title}>
-              {symbol(base_symbol, styles.bottom.title)}
-              <Price symbol={base_symbol}>{current_price}</Price>
-            </Text>
-            <Text style={styles.bottom.subtitle}>
-              <Percentage colorAware={false}>
-                {price_change_percentage_24h}
-              </Percentage>
+        <Shimmer animating={stat_loading}>
+          <View>
+            <View style={styles.bottom.container}>
+              <Text style={styles.bottom.title}>
+                {symbol(base_symbol, styles.bottom.title)}
+                <Price symbol={base_symbol}>{current_price}</Price>
+              </Text>
+              <Text style={styles.bottom.subtitle}>
+                <Percentage colorAware={false}>
+                  {price_change_percentage_24h}
+                </Percentage>
+              </Text>
+            </View>
+            <Text style={styles.bottom.content}>
+              额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
+              最高(24H) {symbol(base_symbol, styles.bottom.content)}
+              <Price symbol={base_symbol}>{high_24h}</Price>
             </Text>
           </View>
-          <Text style={styles.bottom.content}>
-            额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
-            最高(24H) {symbol(base_symbol, styles.bottom.content)}{' '}
-            <Price symbol={base_symbol}>{high_24h}</Price>
-          </Text>
-        </View>
+        </Shimmer>
       ) : (
         <View>
           <Text style={styles.bottom.description} numberOfLines={3}>

@@ -20,6 +20,7 @@ import Trend from './page/trend';
 import Header from './header';
 import Selector from './selector';
 import Chart from './chart';
+import Fund from './fund';
 import styles from './style';
 
 const selectionList = [
@@ -57,11 +58,12 @@ const selectionList = [
 )
 @connect(({ portfolio, loading, global }, props) => {
   const item = props.navigation.getParam('item');
-  const coin = R.pathOr({}, ['coin'])(portfolio);
+  const coin = R.pathOr({}, ['current', 'coin'])(portfolio);
   return {
     portfolio: R.pathOr({}, ['current'])(portfolio),
     id: R.pathOr(0, ['id'])(item),
     loading: loading.effects['portfolio/get'],
+    stat_loading: loading.effects['portfolio/getStat'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
     base_symbol: R.pathOr('', ['current', 'stats', 'quote'])(portfolio),
     can_calculate: R.pathOr(false, ['can_calculate'])(item),
@@ -90,6 +92,18 @@ export default class PortfolioDetail extends Component {
     });
   };
 
+  updateDetail = payload => {
+    Toast.loading('更新中...', 0);
+    this.props.dispatch({
+      type: 'portfolio/updateProject',
+      id: this.props.id,
+      payload,
+      callback: () => {
+        Toast.hide();
+      },
+    });
+  };
+
   handleStatusPress = () => {
     const { showActionSheetWithOptions, status } = this.props;
     showActionSheetWithOptions(
@@ -102,30 +116,22 @@ export default class PortfolioDetail extends Component {
         if (R.isNil(newStatus)) {
           return;
         }
-        Toast.loading('保存中...', 0);
-        this.props.dispatch({
-          type: 'portfolio/update',
-          id: this.props.id,
-          payload: {
-            status: newStatus,
-          },
-          callback: () => {
-            this.loadDetail();
-            Toast.hide();
-          },
-        });
-        // setCurrentRank(newRank, () => {
-        //   Toast.loading('加载中...', 0);
-        //   this.list.scrollToOffset({ offset: 0, animated: false });
-        //   this.requestData(1, 20, () => {
-        //     Toast.hide();
-        //   });
-        // });
+        this.updateDetail({ status });
       },
     );
   };
 
-  handleCoinMatchPress = () => {};
+  handleCoinMatchPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioDetailMatchCoinUpdate',
+        params: {
+          id: this.props.id,
+          update: payload => this.updateDetail(payload),
+        },
+      }),
+    );
+  };
 
   handleRecordButtonPress = () => {
     this.props.dispatch(
@@ -226,9 +232,10 @@ export default class PortfolioDetail extends Component {
           contentContainerStyle={styles.scroll.contentContainer}
           // scrollEventThrottle={16}
           scrollEventThrottle={500}
-          stickyHeaderIndices={[2]}
+          stickyHeaderIndices={[3]}
           onScroll={this.handleOnScroll}
         >
+          <Fund {...this.props} />
           {this.renderRecordButton()}
           <Chart {...this.props} />
           <Selector

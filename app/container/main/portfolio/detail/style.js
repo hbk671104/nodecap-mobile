@@ -16,7 +16,7 @@ export default {
   },
   navBar: {},
   scroll: {
-    contentContainer: { paddingTop: switchHeight },
+    contentContainer: { paddingTop: 40 },
   },
   page: {
     minHeight:
@@ -34,7 +34,7 @@ export default {
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: 2,
-      marginBottom: 24,
+      marginBottom: 12,
     },
     text: {
       fontSize: 13,

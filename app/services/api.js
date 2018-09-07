@@ -56,9 +56,16 @@ export function projectIndex(params = {}) {
  * @returns {AxiosPromise<any>}
  */
 export function projectDetail({ id }) {
-  return request.get(
-    `/projects/${id}?expand=post_user,tags,white_papers,members`,
-  );
+  return request.get(`/projects/${id}`);
+}
+
+/**
+ * 更新详情
+ * @param id
+ * @returns {AxiosPromise<any>}
+ */
+export function updateProjectDetail({ id, payload }) {
+  return request.put(`/projects/${id}`, payload);
 }
 
 /**
@@ -590,6 +597,10 @@ export function trendList() {
 
 export function trendDetail(id) {
   return request.get(`/user-notifys/${id}/news-info`);
+}
+
+export function getProjectFundStat(id) {
+  return request.get(`projects/${id}/funds-statistic`);
 }
 
 /**

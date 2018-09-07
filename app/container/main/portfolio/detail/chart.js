@@ -9,8 +9,12 @@ import {
   VictoryArea,
 } from 'victory-native';
 
+import PlaceHolder from 'component/loading_placeholder';
 import Touchable from 'component/uikit/touchable';
 import { priceFormat } from 'component/price';
+
+const chartHeight = 215;
+const barHeight = 20;
 
 class Chart extends PureComponent {
   constructor(props) {
@@ -118,7 +122,11 @@ class Chart extends PureComponent {
     };
     return (
       <View pointerEvents="none">
-        <VictoryChart height={215} padding={chartPadding} allowZoom={false}>
+        <VictoryChart
+          height={chartHeight}
+          padding={chartPadding}
+          allowZoom={false}
+        >
           <VictoryAxis
             crossAxis
             style={styles.axis.cross}
@@ -154,19 +162,27 @@ class Chart extends PureComponent {
       return null;
     }
     const trend = R.path(['portfolio', 'stats', 'trend'])(this.props);
-    if (R.isNil(trend)) {
-      return null;
-    }
     return (
-      <View style={[styles.container, this.props.style]}>
-        {this.renderSwitch()}
-        {this.renderChart(trend)}
-      </View>
+      <PlaceHolder
+        style={styles.placeholder}
+        onReady={R.not(R.isNil(trend))}
+        animate="shine"
+      >
+        <View style={[styles.container, this.props.style]}>
+          {this.renderSwitch()}
+          {this.renderChart(trend)}
+        </View>
+      </PlaceHolder>
     );
   }
 }
 
 const styles = {
+  placeholder: {
+    height: barHeight + chartHeight,
+    marginHorizontal: 12,
+    marginBottom: 24,
+  },
   container: {
     marginBottom: 24,
   },
@@ -201,6 +217,7 @@ const styles = {
   },
   top: {
     container: {
+      height: barHeight,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
@@ -239,7 +256,7 @@ const styles = {
   },
   empty: {
     container: {
-      height: 215,
+      height: chartHeight,
       justifyContent: 'center',
       alignItems: 'center',
     },

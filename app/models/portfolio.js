@@ -9,8 +9,10 @@ import {
   getProjectInvestEquities,
   getProjectChartData,
   getProjectSymbol,
+  getProjectFundStat,
   getMatchedCoin,
   createProject,
+  updateProjectDetail,
   createProjectInvestInfo,
   updateProjectInvestInfo,
   getNewsByCoinId,
@@ -221,7 +223,6 @@ export default {
     },
     *projectStat({ payload: id, callback }, { call, put }) {
       try {
-        // query params
         const { data } = yield call(getProjectChartData, {
           id,
         });
@@ -238,6 +239,24 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *projectFundStat({ payload: id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getProjectFundStat, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            fund_stats: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback, data);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     *projectSymbol({ payload: id, callback }, { call, put }) {
@@ -306,7 +325,7 @@ export default {
 
         // get stats
         yield put({
-          type: 'projectStat',
+          type: 'getStat',
           payload,
         });
 
@@ -328,6 +347,22 @@ export default {
           }),
           put.resolve({
             type: 'projectSymbol',
+            payload,
+          }),
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *getStat({ payload }, { all, put }) {
+      try {
+        yield all([
+          put.resolve({
+            type: 'projectStat',
+            payload,
+          }),
+          put.resolve({
+            type: 'projectFundStat',
             payload,
           }),
         ]);
@@ -429,6 +464,28 @@ export default {
 
         if (callback) {
           callback(projectRes);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *updateProject({ id, payload, callback }, { select, call, put }) {
+      try {
+        const { status } = yield call(updateProjectDetail, { id, payload });
+
+        // refresh current
+        const current = yield select(state =>
+          R.path(['portfolio', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            payload: current.id,
+          });
+        }
+
+        if (callback) {
+          yield call(callback, status === 200);
         }
       } catch (e) {
         console.log(e);
