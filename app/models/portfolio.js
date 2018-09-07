@@ -277,7 +277,7 @@ export default {
         console.log(e);
       }
     },
-    *projectTrend({ id, callback }, { call, put }) {
+    *projectTrend({ payload: id, callback }, { call, put }) {
       try {
         const { data } = yield call(getNewsByCoinId, id);
 

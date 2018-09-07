@@ -13,6 +13,8 @@ import PlaceHolder from 'component/loading_placeholder';
 import Touchable from 'component/uikit/touchable';
 import { priceFormat } from 'component/price';
 
+import Empty from './page/empty';
+
 const chartHeight = 215;
 const barHeight = 20;
 
@@ -101,7 +103,7 @@ class Chart extends PureComponent {
     if (R.length(data) <= 1) {
       return (
         <View style={styles.empty.container}>
-          <Text>点数不够</Text>
+          <Empty title="暂无数据" />
         </View>
       );
     }

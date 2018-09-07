@@ -20,8 +20,10 @@ import styles from './style';
 })
 @connect(({ portfolio, loading }, props) => {
   const update = props.navigation.getParam('update');
+  const coin = props.navigation.getParam('coin');
   return {
     data: R.pathOr(null, ['matchCoinList', 'index', 'data'])(portfolio),
+    coin,
     loading: loading.effects['portfolio/searchMatchedCoin'],
     update,
   };
@@ -100,12 +102,28 @@ export default class UpdateMatchCoin extends Component {
     </View>
   );
 
+  renderFixHeader = () => {
+    const name = R.pathOr('', ['coin', 'name'])(this.props);
+    const symbol = R.pipe(
+      R.pathOr('', ['coin', 'symbol']),
+      R.toUpper,
+    )(this.props);
+    return (
+      <View style={styles.fixHeader.container}>
+        <Text style={styles.fixHeader.text}>
+          当前已匹配： {name} ({symbol})
+        </Text>
+      </View>
+    );
+  };
+
   render() {
     const { data, loading } = this.props;
     return (
       <View style={styles.container}>
         <NavBar gradient back title="匹配币种" />
         {this.renderHeader()}
+        {this.renderFixHeader()}
         <List
           contentContainerStyle={styles.listContent}
           loadOnStart={false}

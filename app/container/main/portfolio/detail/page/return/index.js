@@ -32,7 +32,10 @@ export default class Return extends PureComponent {
     return (
       <View style={styles.container}>
         {R.not(can_calculate) ? (
-          <Empty title="项目暂无投资记录" />
+          <Empty
+            title="项目暂无投资记录"
+            subtitle="继续点击下方添加投资记录即可计算收益"
+          />
         ) : (
           <View>
             <Group title="投资回报率" subtitle="以不同本位币做基准">

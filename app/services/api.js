@@ -566,7 +566,11 @@ export function getProjectChartData({ id, payload }) {
 }
 
 export function getProjectSymbol(id) {
-  return request.get(`/projects/${id}/symbols`);
+  return request.get(`/projects/${id}/symbols`, {
+    params: {
+      all: 1,
+    },
+  });
 }
 
 export function getMatchedCoin(payload) {

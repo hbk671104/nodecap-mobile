@@ -67,7 +67,7 @@ const selectionList = [
     stat_loading: loading.effects['portfolio/getStat'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
     base_symbol: R.pathOr('', ['current', 'stats', 'quote'])(portfolio),
-    can_calculate: R.pathOr(false, ['can_calculate'])(item),
+    can_calculate: R.pathOr(false, ['current', 'can_calculate'])(portfolio),
     unmatched: R.isEmpty(coin),
   };
 })
@@ -117,7 +117,7 @@ export default class PortfolioDetail extends Component {
         if (R.isNil(newStatus)) {
           return;
         }
-        this.updateDetail({ status });
+        this.updateDetail({ status: newStatus });
       },
     );
   };
@@ -128,6 +128,7 @@ export default class PortfolioDetail extends Component {
         routeName: 'PortfolioDetailMatchCoinUpdate',
         params: {
           id: this.props.id,
+          coin: R.pathOr({}, ['portfolio', 'coin'])(this.props),
           update: payload => this.updateDetail(payload),
         },
       }),

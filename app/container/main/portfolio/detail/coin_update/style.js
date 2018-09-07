@@ -71,4 +71,16 @@ export default {
       marginTop: 24,
     },
   },
+  fixHeader: {
+    container: {
+      backgroundColor: 'white',
+      justifyContent: 'center',
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+    },
+    text: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.65)',
+    },
+  },
 };
