@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableHighlight } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -135,6 +135,17 @@ export default class PortfolioDetail extends Component {
     );
   };
 
+  handleAddInvestmentPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PortfolioInvestmentCreate',
+        params: {
+          id: this.props.id,
+        },
+      }),
+    );
+  };
+
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     const { setOffsetY } = this.props;
     setOffsetY(contentOffset.y);
@@ -164,10 +175,7 @@ export default class PortfolioDetail extends Component {
     return (
       <View style={styles.switch.container}>
         <View style={styles.switch.content.wrapper}>
-          <TouchableHighlight
-            underlayColor="white"
-            onPress={this.handleStatusPress}
-          >
+          <Touchable activeOpacity={0.98} onPress={this.handleStatusPress}>
             <View style={styles.switch.content.container}>
               <StatusDisplay
                 status={portfolio.status}
@@ -175,13 +183,10 @@ export default class PortfolioDetail extends Component {
               />
               <Text style={styles.switch.content.text}>切换</Text>
             </View>
-          </TouchableHighlight>
+          </Touchable>
         </View>
         <View style={styles.switch.content.wrapper}>
-          <TouchableHighlight
-            underlayColor="white"
-            onPress={this.handleCoinMatchPress}
-          >
+          <Touchable activeOpacity={0.98} onPress={this.handleCoinMatchPress}>
             <View style={styles.switch.content.container}>
               <Text
                 style={[
@@ -195,7 +200,7 @@ export default class PortfolioDetail extends Component {
                 <Text style={styles.switch.content.text}>切换</Text>
               )}
             </View>
-          </TouchableHighlight>
+          </Touchable>
         </View>
       </View>
     );
@@ -232,6 +237,15 @@ export default class PortfolioDetail extends Component {
             <Current.component {...this.props} />
           </View>
         </ScrollView>
+        <View style={styles.bottomTab.wrapper}>
+          <Touchable
+            style={styles.bottomTab.container}
+            activeOpacity={0.98}
+            onPress={this.handleAddInvestmentPress}
+          >
+            <Text style={styles.bottomTab.title}>+ 添加投资记录</Text>
+          </Touchable>
+        </View>
         <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
       </View>
     );

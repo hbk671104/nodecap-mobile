@@ -295,11 +295,14 @@ export default {
           payload: data,
         });
 
-        yield put.resolve({
-          type: 'getSupplement',
-          payload,
-          coinId: R.path(['coin', 'id'])(data),
-        });
+        const coinId = R.path(['coin', 'id'])(data);
+        if (!R.isNil(coinId)) {
+          yield put.resolve({
+            type: 'getSupplement',
+            payload,
+            coinId,
+          });
+        }
 
         // get stats
         yield put({
@@ -318,22 +321,16 @@ export default {
     },
     *getSupplement({ payload, coinId }, { all, put }) {
       try {
-        const sagas = [
-          ...(R.isNil(coinId)
-            ? []
-            : [
-                put.resolve({
-                  type: 'projectTrend',
-                  payload: coinId,
-                }),
-              ]),
+        yield all([
+          put.resolve({
+            type: 'projectTrend',
+            payload: coinId,
+          }),
           put.resolve({
             type: 'projectSymbol',
             payload,
           }),
-        ];
-
-        yield all(sagas);
+        ]);
       } catch (error) {
         console.log(error);
       }
