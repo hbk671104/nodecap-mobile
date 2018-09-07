@@ -8,15 +8,13 @@ import styles from './style';
 
 export default class Pairs extends PureComponent {
   render() {
-    const { portfolio, loading } = this.props;
+    const { portfolio, loading, unmatched } = this.props;
 
     if (loading) {
       return <ActivityIndicator style={styles.indicator} />;
     }
 
-    const coin = R.pathOr({}, ['coin'])(portfolio);
-
-    if (R.isEmpty(coin)) {
+    if (unmatched) {
       return (
         <Empty title="项目暂未匹配" subtitle="通过上方立即匹配后即可查看" />
       );

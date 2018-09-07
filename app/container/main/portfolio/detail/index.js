@@ -57,6 +57,7 @@ const selectionList = [
 )
 @connect(({ portfolio, loading, global }, props) => {
   const item = props.navigation.getParam('item');
+  const coin = R.pathOr({}, ['coin'])(portfolio);
   return {
     portfolio: R.pathOr({}, ['current'])(portfolio),
     id: R.pathOr(0, ['id'])(item),
@@ -64,6 +65,7 @@ const selectionList = [
     status: R.pathOr([], ['constants', 'project_status'])(global),
     base_symbol: R.pathOr('', ['current', 'stats', 'quote'])(portfolio),
     can_calculate: R.pathOr(false, ['can_calculate'])(item),
+    unmatched: R.isEmpty(coin),
   };
 })
 export default class PortfolioDetail extends Component {
@@ -170,7 +172,7 @@ export default class PortfolioDetail extends Component {
   };
 
   renderSwitchButton = () => {
-    const { portfolio, transformed, can_calculate } = this.props;
+    const { portfolio, transformed, unmatched } = this.props;
 
     if (transformed) return null;
     return (
@@ -195,9 +197,9 @@ export default class PortfolioDetail extends Component {
                   styles.switch.matched.highlight,
                 ]}
               >
-                {can_calculate ? '项目已匹配' : '立即匹配'}
+                {unmatched ? '立即匹配' : '项目已匹配'}
               </Text>
-              {can_calculate && (
+              {!unmatched && (
                 <Text style={styles.switch.content.text}>切换</Text>
               )}
             </View>
