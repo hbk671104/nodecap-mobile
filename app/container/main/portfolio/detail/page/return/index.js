@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
@@ -13,7 +13,7 @@ import styles from './style';
 @connect(({ loading }) => ({
   loadingStat: loading.effects['portfolio/projectStat'],
 }))
-export default class Return extends Component {
+export default class Return extends PureComponent {
   render() {
     const { portfolio, loadingStat, can_calculate } = this.props;
     const investment = R.pathOr({}, ['stats', 'investment'])(portfolio);

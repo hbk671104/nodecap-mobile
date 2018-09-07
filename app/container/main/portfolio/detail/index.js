@@ -61,7 +61,7 @@ const selectionList = [
     id: R.pathOr(0, ['id'])(item),
     loading: loading.effects['portfolio/get'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
-    base_symbol: 'BTC',
+    base_symbol: R.pathOr('', ['current', 'stats', 'quote'])(portfolio),
     can_calculate: R.pathOr(false, ['can_calculate'])(item),
   };
 })
@@ -186,12 +186,14 @@ export default class PortfolioDetail extends Component {
               <Text
                 style={[
                   styles.switch.status.text,
-                  can_calculate && styles.switch.matched.highlight,
+                  styles.switch.matched.highlight,
                 ]}
               >
-                {can_calculate ? '项目已匹配' : '项目未匹配'}
+                {can_calculate ? '项目已匹配' : '立即匹配'}
               </Text>
-              <Text style={styles.switch.content.text}>切换</Text>
+              {can_calculate && (
+                <Text style={styles.switch.content.text}>切换</Text>
+              )}
             </View>
           </TouchableHighlight>
         </View>

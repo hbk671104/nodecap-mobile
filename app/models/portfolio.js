@@ -240,7 +240,7 @@ export default {
         console.log(e);
       }
     },
-    *projectSymbol({ id, callback }, { call, put }) {
+    *projectSymbol({ payload: id, callback }, { call, put }) {
       try {
         const { data } = yield call(getProjectSymbol, id);
 
@@ -286,13 +286,25 @@ export default {
      */
     *get({ payload }, { put, call }) {
       try {
-        const res = yield call(projectDetail, {
+        const { data } = yield call(projectDetail, {
           id: payload,
         });
 
         yield put({
           type: 'saveDetail',
-          payload: res.data,
+          payload: data,
+        });
+
+        yield put.resolve({
+          type: 'getSupplement',
+          payload,
+          coinId: R.path(['coin', 'id'])(data),
+        });
+
+        // get stats
+        yield put({
+          type: 'projectStat',
+          payload,
         });
 
         // get extra
@@ -304,9 +316,31 @@ export default {
         console.log(e);
       }
     },
-    *getExtra({ payload, callback }, { all, put, call }) {
+    *getSupplement({ payload, coinId }, { all, put }) {
       try {
-        const result = yield all([
+        const sagas = [
+          ...(R.isNil(coinId)
+            ? []
+            : [
+                put.resolve({
+                  type: 'projectTrend',
+                  payload: coinId,
+                }),
+              ]),
+          put.resolve({
+            type: 'projectSymbol',
+            payload,
+          }),
+        ];
+
+        yield all(sagas);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *getExtra({ payload }, { all, put }) {
+      try {
+        yield all([
           put({
             type: 'getInvest',
             payload,
@@ -319,15 +353,7 @@ export default {
             type: 'getExitToken',
             payload,
           }),
-          put({
-            type: 'projectStat',
-            payload,
-          }),
         ]);
-
-        if (callback) {
-          yield call(callback, result);
-        }
       } catch (error) {
         console.log(error);
       }
