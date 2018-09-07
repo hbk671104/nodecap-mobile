@@ -81,4 +81,21 @@ export default {
       },
     },
   },
+  bottomTab: {
+    wrapper: {
+      height: 50,
+      backgroundColor: 'white',
+      ...shadow,
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    title: {
+      fontWeight: 'bold',
+      fontSize: 13,
+      color: 'rgba(0, 0, 0, 0.65)',
+    },
+  },
 };

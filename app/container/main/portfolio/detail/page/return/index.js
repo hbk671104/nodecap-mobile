@@ -16,11 +16,21 @@ import styles from './style';
 export default class Return extends PureComponent {
   render() {
     const { portfolio, loadingStat, can_calculate } = this.props;
-    const investment = R.pathOr({}, ['stats', 'investment'])(portfolio);
 
     if (loadingStat) {
       return <ActivityIndicator style={styles.indicator} />;
     }
+
+    const coin = R.pathOr({}, ['coin'])(portfolio);
+
+    if (R.isEmpty(coin)) {
+      return (
+        <Empty title="项目暂未匹配" subtitle="通过上方立即匹配后即可查看" />
+      );
+    }
+
+    const investment = R.pathOr({}, ['stats', 'investment'])(portfolio);
+
     return (
       <View style={styles.container}>
         {R.not(can_calculate) ? (

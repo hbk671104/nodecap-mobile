@@ -24,12 +24,25 @@ export default class Trend extends PureComponent {
 
   render() {
     const { portfolio, loading } = this.props;
-    const trends = R.pathOr([], ['news', 'data'])(portfolio);
-    const empty = R.isEmpty(trends);
 
     if (loading) {
       return <ActivityIndicator style={styles.indicator} />;
     }
+
+    const coin = R.pathOr({}, ['coin'])(portfolio);
+
+    if (R.isEmpty(coin)) {
+      return (
+        <Empty
+          title="项目暂未匹配"
+          subtitle="通过上方立即匹配后即可查看项目动态"
+        />
+      );
+    }
+
+    const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    const empty = R.isEmpty(trends);
+
     return (
       <View style={styles.container}>
         {empty ? (
