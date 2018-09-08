@@ -125,6 +125,7 @@ class Chart extends PureComponent {
     return (
       <View pointerEvents="none">
         <VictoryChart
+          animate
           height={chartHeight}
           padding={chartPadding}
           allowZoom={false}

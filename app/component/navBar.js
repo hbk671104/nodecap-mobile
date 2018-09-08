@@ -168,7 +168,7 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingHorizontal: 36,
+      paddingHorizontal: 0,
     },
     text: {
       fontSize: 17,

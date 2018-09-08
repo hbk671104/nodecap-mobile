@@ -41,7 +41,15 @@ const header = ({
     <Animated.View style={[styles.container, style]}>
       <View style={styles.top.container}>
         <View style={{ flex: 1 }}>
-          <Text style={[styles.top.title, titleStyle]}>{name}</Text>
+          <Text
+            style={[
+              styles.top.title,
+              R.length(name) > 13 && { fontSize: 18 },
+              titleStyle,
+            ]}
+          >
+            {name}
+          </Text>
           <Text style={styles.top.subtitle}>{token}</Text>
         </View>
         <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />

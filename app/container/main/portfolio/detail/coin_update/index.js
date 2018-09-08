@@ -108,6 +108,11 @@ export default class UpdateMatchCoin extends Component {
       R.pathOr('', ['coin', 'symbol']),
       R.toUpper,
     )(this.props);
+
+    if (R.or(R.isEmpty(name)) || R.isEmpty(symbol)) {
+      return null;
+    }
+
     return (
       <View style={styles.fixHeader.container}>
         <Text style={styles.fixHeader.text}>

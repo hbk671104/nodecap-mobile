@@ -11,11 +11,16 @@ import styles from './style';
 })
 export default class NotificationDetailRaw extends Component {
   render() {
-    const uri = this.props.navigation.getParam('uri', 'https://www.baidu.com/');
+    const uri = this.props.navigation.getParam('uri', 'https://www.hotnode.cn');
     const title = this.props.navigation.getParam('title', '');
     return (
       <View style={styles.container}>
-        <NavBar back gradient title={title} />
+        <NavBar
+          back
+          gradient
+          title={title}
+          titleContainerStyle={{ paddingHorizontal: 42 }}
+        />
         <WebView startInLoadingState source={{ uri }} />
       </View>
     );
