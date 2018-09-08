@@ -12,7 +12,7 @@ import styles from './style';
 @global.bindTrack({
   page: '投资库',
   name: 'App_ProjectOperation',
-  subModuleName: '待投项目',
+  subModuleName: '工作流',
 })
 @connect(({ portfolio, loading }, { status }) => ({
   data: R.pathOr(null, ['projectList', status, 'index', 'data'])(portfolio),
