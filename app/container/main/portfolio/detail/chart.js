@@ -125,7 +125,6 @@ class Chart extends PureComponent {
     return (
       <View pointerEvents="none">
         <VictoryChart
-          animate
           height={chartHeight}
           padding={chartPadding}
           allowZoom={false}
@@ -141,6 +140,7 @@ class Chart extends PureComponent {
             tickFormat={y => priceFormat({ symbol: currentSym, text: y })}
           />
           <VictoryLine
+            animate
             style={styles.line}
             interpolation="natural"
             data={data}
@@ -148,6 +148,7 @@ class Chart extends PureComponent {
             y="price"
           />
           <VictoryArea
+            animate
             style={styles.bar}
             interpolation="natural"
             data={data}
