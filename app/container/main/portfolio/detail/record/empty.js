@@ -29,6 +29,7 @@ const styles = {
     alignItems: 'center',
     backgroundColor: 'white',
     marginHorizontal: 12,
+    borderRadius: 2,
     ...shadow,
   },
   wrapper: {
