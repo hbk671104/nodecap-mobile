@@ -103,13 +103,14 @@ export default class UpdateMatchCoin extends Component {
   );
 
   renderFixHeader = () => {
+    const coin = R.pathOr({}, ['coin'])(this.props);
     const name = R.pathOr('', ['coin', 'name'])(this.props);
     const symbol = R.pipe(
       R.pathOr('', ['coin', 'symbol']),
       R.toUpper,
     )(this.props);
 
-    if (R.or(R.isEmpty(name)) || R.isEmpty(symbol)) {
+    if (R.isEmpty(coin)) {
       return null;
     }
 
