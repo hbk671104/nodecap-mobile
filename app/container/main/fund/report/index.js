@@ -43,10 +43,7 @@ export default class Report extends Component {
       NavigationActions.navigate({
         routeName: 'PortfolioRecord',
         params: {
-          item: {
-            ...item,
-            can_calculate: true,
-          },
+          id: item.id,
           anchor_type,
         },
       }),

@@ -373,15 +373,15 @@ export default {
     *getExtra({ payload }, { all, put }) {
       try {
         yield all([
-          put({
+          put.resolve({
             type: 'getInvest',
             payload,
           }),
-          put({
+          put.resolve({
             type: 'getReturnToken',
             payload,
           }),
-          put({
+          put.resolve({
             type: 'getExitToken',
             payload,
           }),

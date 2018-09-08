@@ -48,26 +48,30 @@ const header = ({
       </View>
       <View style={styles.divider} />
       {can_calculate ? (
-        <Shimmer animating={stat_loading}>
-          <View>
-            <View style={styles.bottom.container}>
+        <View>
+          <View style={styles.bottom.container}>
+            <Shimmer animating={stat_loading}>
               <Text style={styles.bottom.title}>
                 {symbol(base_symbol, styles.bottom.title)}
                 <Price symbol={base_symbol}>{current_price}</Price>
               </Text>
+            </Shimmer>
+            <Shimmer style={{ marginLeft: 15 }} animating={stat_loading}>
               <Text style={styles.bottom.subtitle}>
                 <Percentage colorAware={false}>
                   {price_change_percentage_24h}
                 </Percentage>
               </Text>
-            </View>
+            </Shimmer>
+          </View>
+          <Shimmer style={{ marginTop: 6 }} animating={stat_loading}>
             <Text style={styles.bottom.content}>
               额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
               最高(24H) {symbol(base_symbol, styles.bottom.content)}
               <Price symbol={base_symbol}>{high_24h}</Price>
             </Text>
-          </View>
-        </Shimmer>
+          </Shimmer>
+        </View>
       ) : (
         <View>
           <Text style={styles.bottom.description} numberOfLines={3}>
@@ -123,13 +127,11 @@ const styles = {
       fontWeight: 'bold',
       fontSize: 14,
       color: 'white',
-      marginLeft: 15,
     },
     content: {
       fontWeight: '300',
       fontSize: 10,
       color: 'white',
-      marginTop: 6,
     },
     description: {
       fontSize: 12,

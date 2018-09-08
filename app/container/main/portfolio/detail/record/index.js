@@ -22,6 +22,7 @@ import NavBar from 'component/navBar';
     id,
     constants: global.constants,
     loading: loading.effects['portfolio/get'],
+    record_loading: loading.effects['portfolio/getExtra'],
     hasDetailInStack: !R.pipe(
       R.path(['routes']),
       R.find(r => r.routeName === 'Main'),
@@ -32,10 +33,24 @@ import NavBar from 'component/navBar';
   };
 })
 class Record extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.layoutInstance = {};
+  }
   componentWillMount() {
     this.loadData();
   }
 
+  componentWillReceiveProps(nextprops) {
+    if (this.props.record_loading && !nextprops.record_loading) {
+      const anchor_type = this.props.navigation.getParam('anchor_type');
+      this.scroll.scrollTo({
+        y: this.layoutInstance[anchor_type],
+        animated: true,
+      });
+    }
+  }
   componentWillUnmount() {
     if (this.props.hasDetailInStack) {
       return;
@@ -60,7 +75,7 @@ class Record extends Component {
     if (R.isNil(anchor_type) || !R.equals(type, anchor_type)) {
       return;
     }
-    this.scroll.scrollTo({ y: layout.y, animated: true });
+    this.layoutInstance[anchor_type] = layout.y;
   };
 
   render() {

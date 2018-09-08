@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  InteractionManager,
-  Alert,
-  Clipboard,
-} from 'react-native';
+import { View, Text, ScrollView, Alert, Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -30,9 +23,7 @@ import styles from './style';
 }))
 class ResourceDetail extends Component {
   componentWillMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.loadData();
-    });
+    this.loadData();
   }
 
   componentWillUnmount() {

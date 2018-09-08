@@ -20,6 +20,7 @@ export default function (options) {
         'portfolio/investment',
         'portfolio/get',
         'portfolio/getStat',
+        'portfolio/getExtra',
         'portfolio/search',
         'portfolio/searchMatchedCoin',
         'user/createCompany',

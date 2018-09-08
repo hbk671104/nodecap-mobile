@@ -6,6 +6,8 @@ import { Bar } from 'react-native-progress';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
+
+import appInfo from '../../../package.json';
 import styles from './styles';
 
 @connect(({ codePush }) => ({
@@ -44,7 +46,7 @@ class CodePushPage extends Component {
             <View style={styles.bar.wrapper}>
               <Text style={styles.bar.title}>
                 {!!version && (
-                  <Text style={styles.bar.highlight}>v{version}</Text>
+                  <Text style={styles.bar.highlight}>v{appInfo.version}</Text>
                 )}{' '}
                 正在更新中...
               </Text>
