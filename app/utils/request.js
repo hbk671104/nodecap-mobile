@@ -25,7 +25,7 @@ const codeMessage = {
 };
 
 const instance = axios.create({
-  baseURL: 'https://api.hotnode.cn/v1',
+  baseURL: Config.API_URL,
   timeout: 60000,
 });
 
