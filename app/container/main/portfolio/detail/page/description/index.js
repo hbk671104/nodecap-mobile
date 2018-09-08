@@ -25,14 +25,14 @@ export default class Description extends PureComponent {
     );
   };
   render() {
-    const description = R.path(['portfolio', 'description'])(this.props);
+    const description = R.pathOr('', ['portfolio', 'description'])(this.props);
     const siteUrl =
       R.path(['portfolio', 'site_url'])(this.props) ||
       R.path(['portfolio', 'coin', 'homepage'])(this.props);
     const rating = R.pathOr([], ['portfolio', 'coin_rating'])(this.props);
     return (
       <View style={styles.container}>
-        {!!description && (
+        {R.not(R.isEmpty(description)) && (
           <View>
             <Text style={styles.title}>项目简介</Text>
             <ReadMore
@@ -44,13 +44,15 @@ export default class Description extends PureComponent {
             </ReadMore>
           </View>
         )}
-        {!!siteUrl && (
+        {R.not(R.isNil(siteUrl)) && (
           <View>
             <Text style={[styles.title, styles.site]}>官网</Text>
-            <Text style={styles.link} onPress={() => Linking.openURL(siteUrl)}>{siteUrl}</Text>
+            <Text style={styles.link} onPress={() => Linking.openURL(siteUrl)}>
+              {siteUrl}
+            </Text>
           </View>
         )}
-        {!!rating.length && (
+        {R.not(R.isEmpty(rating)) && (
           <View>
             <Text style={[styles.title, styles.site]}>评级信息</Text>
             <Flex style={styles.ratingTitle} justify="space-between">
@@ -59,15 +61,20 @@ export default class Description extends PureComponent {
             </Flex>
             <View>
               {rating.map(i => (
-                <Flex key={i.id} style={styles.ratingItem} justify="space-between">
+                <Flex
+                  key={i.id}
+                  style={styles.ratingItem}
+                  justify="space-between"
+                >
                   <Text style={styles.ratingTitleText}>{i.rating_name}</Text>
-                  <Text style={[styles.ratingItemText, { width: 80 }]}>{i.grade}</Text>
+                  <Text style={[styles.ratingItemText, { width: 80 }]}>
+                    {i.grade}
+                  </Text>
                 </Flex>
               ))}
             </View>
           </View>
         )}
-
       </View>
     );
   }
