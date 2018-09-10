@@ -6,16 +6,20 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
-import NotificationItem from 'component/notification/item';
+import PublicProjectItem from 'component/public_project/item';
 
+import Header from './header';
 import styles from './style';
 
 @global.bindTrack({
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ notification, loading }) => ({
+@connect(({ public_project, notification, loading }) => ({
   data: R.pathOr([], ['list'])(notification),
+  institution: R.pathOr([{ id: 0 }, { id: 1 }, { id: 2 }], ['institution'])(
+    public_project,
+  ),
   loading: loading.effects['notification/fetch'],
 }))
 export default class PublicProject extends Component {
@@ -27,32 +31,43 @@ export default class PublicProject extends Component {
 
   handleItemPress = id => () => {
     this.props.track('点击进入详情');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'NotificationDetail',
-        params: {
-          id,
-        },
-      }),
-    );
+    // this.props.dispatch(
+    //   NavigationActions.navigate({
+    //     routeName: 'NotificationDetail',
+    //     params: {
+    //       id,
+    //     },
+    //   }),
+    // );
   };
 
   renderItem = ({ item }) => (
-    <NotificationItem data={item} onPress={this.handleItemPress} />
+    <PublicProjectItem
+      style={styles.item}
+      data={item}
+      onPress={this.handleItemPress}
+    />
+  );
+
+  renderHeader = () => (
+    <Header style={styles.header} data={this.props.institution} />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { loading, data } = this.props;
+    const { data, loading } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient title="项目动态" />
+        <NavBar gradient title="项目公海" />
         <List
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
           data={data}
           renderItem={this.renderItem}
+          renderHeader={this.renderHeader}
           renderSeparator={this.renderSeparator}
         />
       </View>

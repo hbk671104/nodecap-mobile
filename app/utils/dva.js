@@ -5,7 +5,7 @@ import createLoading from 'dva-loading';
 
 export { connect };
 
-export default function (options) {
+export default options => {
   const app = create(options);
   // HMR workaround
   if (!global.registered) options.models.forEach(model => app.model(model));
@@ -46,4 +46,4 @@ export default function (options) {
   app.getStore = () => store;
 
   return app;
-}
+};

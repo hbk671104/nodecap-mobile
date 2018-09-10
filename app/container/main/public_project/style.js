@@ -1,13 +1,21 @@
-import { StyleSheet } from 'react-native';
-
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
+  header: {
+    marginBottom: 10,
+  },
+  list: {
+    backgroundColor: '#F9F9F9',
+  },
+  listContent: {
+    paddingVertical: 0,
+  },
+  item: {
+    backgroundColor: 'white',
+  },
   separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#E9E9E9',
-    marginLeft: 12,
+    height: 5,
   },
 };
