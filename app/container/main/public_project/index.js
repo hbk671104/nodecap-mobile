@@ -41,6 +41,14 @@ export default class PublicProject extends Component {
     // );
   };
 
+  handleInstitutionItemPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionReport',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
     <PublicProjectItem
       style={styles.item}
@@ -50,7 +58,11 @@ export default class PublicProject extends Component {
   );
 
   renderHeader = () => (
-    <Header style={styles.header} data={this.props.institution} />
+    <Header
+      style={styles.header}
+      data={this.props.institution}
+      onItemPress={this.handleInstitutionItemPress}
+    />
   );
 
   renderSeparator = () => <View style={styles.separator} />;

@@ -5,6 +5,7 @@ export default {
   state: {
     list: null,
     institution: null,
+    report: null,
     current: null,
   },
   effects: {
@@ -25,10 +26,28 @@ export default {
         institution: action.payload,
       };
     },
+    report(state, action) {
+      return {
+        ...state,
+        report: action.payload,
+      };
+    },
+    clearReport(state, action) {
+      return {
+        ...state,
+        report: null,
+      };
+    },
     current(state, action) {
       return {
         ...state,
         current: action.payload,
+      };
+    },
+    clearCurrent(state, action) {
+      return {
+        ...state,
+        current: null,
       };
     },
   },
