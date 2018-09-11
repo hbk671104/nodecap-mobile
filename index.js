@@ -2,6 +2,7 @@ import React from 'react';
 import { AppRegistry, UIManager, AsyncStorage } from 'react-native';
 import { autoRehydrate, persistStore } from 'redux-persist';
 import { Sentry } from 'react-native-sentry';
+import Orientation from 'react-native-orientation';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -62,11 +63,11 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
 
 moment.locale('zh-cn');
 
-if (!global.__DEV__) {
-  Sentry.config(
-    'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
-  ).install();
-}
+Sentry.config(
+  'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
+).install();
+
+Orientation.lockToPortrait();
 
 AppRegistry.registerComponent('nodecap', () => App);
 

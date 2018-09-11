@@ -3,6 +3,7 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import PDF from 'react-native-pdf';
+import Orientation from 'react-native-orientation';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
@@ -18,6 +19,14 @@ import styles from './style';
   // loading: loading.effects['notification/fetch'],
 }))
 export default class InstitutionReportDetail extends Component {
+  componentDidMount() {
+    Orientation.unlockAllOrientations();
+  }
+
+  componentWillUnmount() {
+    Orientation.lockToPortrait();
+  }
+
   render() {
     const { data, loading } = this.props;
     return (
