@@ -54,6 +54,7 @@
     "react-native-modal": "^6.5.0",
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-parallax-scroll-view": "^0.21.3",
+    "react-native-pdf": "^5.0.4",
     "react-native-picker-select": "^4.3.0",
     "react-native-platform-touchable": "^1.1.1",
     "react-native-progress": "^3.5.0",
@@ -74,6 +75,7 @@
     "realm": "^2.15.3",
     "recompose": "^0.30.0",
     "redux-persist": "4.10.2",
+    "rn-fetch-blob": "^0.10.13",
     "rn-placeholder": "^1.2.0",
     "victory-native": "^30.3.0"
   },
