@@ -13,9 +13,9 @@ const header = ({ style, data, onItemPress }) => (
     contentContainerStyle={styles.content}
     horizontal
   >
-    {R.map(i => {
+    {R.addIndex(R.map)((i, index) => {
       return (
-        <Touchable foreground onPress={onItemPress}>
+        <Touchable key={index} foreground onPress={onItemPress}>
           <View style={styles.item.container}>
             <Avatar size={28} raised={false} innerRatio={1} />
             <Text style={styles.item.title}>标准共识</Text>
@@ -33,6 +33,7 @@ const styles = {
   },
   content: {
     alignItems: 'center',
+    paddingHorizontal: 7,
   },
   item: {
     container: {
@@ -41,7 +42,7 @@ const styles = {
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'white',
-      marginLeft: 12,
+      margin: 5,
       ...shadow,
     },
     title: {

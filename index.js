@@ -61,13 +61,15 @@ if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
+Orientation.lockToPortrait();
+
 moment.locale('zh-cn');
 
-Sentry.config(
-  'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
-).install();
-
-Orientation.lockToPortrait();
+if (!global.__DEV__) {
+  Sentry.config(
+    'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
+  ).install();
+}
 
 AppRegistry.registerComponent('nodecap', () => App);
 
