@@ -32,6 +32,7 @@ import Recommendation from 'container/auth/recommendation';
 import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
 import InstitutionReport from 'container/main/public_project/institution_report';
+import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
@@ -153,6 +154,7 @@ const MainStack = createStackNavigator(
   {
     Tab,
     InstitutionReport,
+    InstitutionReportDetail,
     FundProject,
     PortfolioDetail,
     PortfolioRecord,
