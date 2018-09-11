@@ -53,6 +53,7 @@
 		400752582111627800A72161 /* RNSensorsAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 400752182111627800A72161 /* RNSensorsAnalyticsModule.m */; };
 		402B017320DA0F26004AE4F8 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017120DA0F26004AE4F8 /* logo@2x.png */; };
 		402B017420DA0F26004AE4F8 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017220DA0F26004AE4F8 /* logo@3x.png */; };
+		403204ED21479D1C00144544 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 403204BF21479D0E00144544 /* libRCTOrientation.a */; };
 		4063783F21198C5100CA7CA3 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4063783121198C3200CA7CA3 /* libRNDeviceInfo.a */; };
 		406A742221477C310019141B /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 406A741121477BED0019141B /* libRNFetchBlob.a */; };
 		406A742321477C360019141B /* libRCTPdf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 406A742121477C170019141B /* libRCTPdf.a */; };
@@ -362,6 +363,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSentry;
 		};
+		403204BE21479D0E00144544 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 403204A721479D0E00144544 /* RCTOrientation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTOrientation;
+		};
 		4038026B2101D6D9001EF5C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8752CCB230994EA68E6F210A /* RNCamera.xcodeproj */;
@@ -607,6 +615,7 @@
 		400752572111627800A72161 /* RNSensorsAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSensorsAnalyticsModule.h; sourceTree = "<group>"; };
 		402B017120DA0F26004AE4F8 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		402B017220DA0F26004AE4F8 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
+		403204A721479D0E00144544 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 		406377F821198C3100CA7CA3 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		406A73D821477BED0019141B /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		406A741C21477C170019141B /* RCTPdf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPdf.xcodeproj; path = "../node_modules/react-native-pdf/ios/RCTPdf.xcodeproj"; sourceTree = "<group>"; };
@@ -683,6 +692,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				403204ED21479D1C00144544 /* libRCTOrientation.a in Frameworks */,
 				406A742321477C360019141B /* libRCTPdf.a in Frameworks */,
 				406A742221477C310019141B /* libRNFetchBlob.a in Frameworks */,
 				4063783F21198C5100CA7CA3 /* libRNDeviceInfo.a in Frameworks */,
@@ -939,6 +949,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		403204A821479D0E00144544 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				403204BF21479D0E00144544 /* libRCTOrientation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		403802682101D6D9001EF5C1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1144,6 +1162,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				403204A721479D0E00144544 /* RCTOrientation.xcodeproj */,
 				406A741C21477C170019141B /* RCTPdf.xcodeproj */,
 				406A73D821477BED0019141B /* RNFetchBlob.xcodeproj */,
 				406377F821198C3100CA7CA3 /* RNDeviceInfo.xcodeproj */,
@@ -1444,6 +1463,10 @@
 				{
 					ProductGroup = 00C302D41ABCB9D200DB3ED1 /* Products */;
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
+				},
+				{
+					ProductGroup = 403204A821479D0E00144544 /* Products */;
+					ProjectRef = 403204A721479D0E00144544 /* RCTOrientation.xcodeproj */;
 				},
 				{
 					ProductGroup = 406A741D21477C170019141B /* Products */;
@@ -1791,6 +1814,13 @@
 			fileType = archive.ar;
 			path = libRNSentry.a;
 			remoteRef = 402CAEA220E6454E009454D9 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		403204BF21479D0E00144544 /* libRCTOrientation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOrientation.a;
+			remoteRef = 403204BE21479D0E00144544 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4038026C2101D6D9001EF5C1 /* libRNCamera.a */ = {
