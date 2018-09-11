@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
+import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import PDF from 'react-native-pdf';
 import Orientation from 'react-native-orientation';
@@ -14,6 +15,7 @@ import styles from './style';
   page: '项目公海机构报告详情',
   name: 'App_PublicProjectInstitutionReportDetailOperation',
 })
+@compose(withState('navBarHidden', 'setNavBarHidden', false))
 @connect(({ public_project, loading }) => ({
   // data: R.pathOr([{ id: 0 }, { id: 1 }, { id: 2 }], ['report'])(public_project),
   // loading: loading.effects['notification/fetch'],
@@ -21,22 +23,28 @@ import styles from './style';
 export default class InstitutionReportDetail extends Component {
   componentDidMount() {
     Orientation.unlockAllOrientations();
+    Orientation.addOrientationListener(this.orientationDidChange);
   }
 
   componentWillUnmount() {
     Orientation.lockToPortrait();
+    Orientation.removeOrientationListener(this.orientationDidChange);
   }
 
+  orientationDidChange = orientation => {
+    this.props.setNavBarHidden(orientation === 'LANDSCAPE');
+  };
+
   render() {
-    const { data, loading } = this.props;
+    const { data, loading, navBarHidden } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient back title="研报详情" />
+        {R.not(navBarHidden) && <NavBar gradient back title="研报详情" />}
         <PDF
           style={styles.pdf}
           source={{
             uri:
-              'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/whitepaper/100204861530783804000-Secc_CN.pdf',
+              'http://p1.i.img9.top/ipfs/QmRRtGs1jS3GUjPdwGbpA9JdyQX6jQMpXcjfew2PGkrx8M?1.pdf',
             cache: true,
           }}
           // onLoadComplete={(numberOfPages, filePath) => {
