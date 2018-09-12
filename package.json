@@ -1,6 +1,6 @@
 {
   "name": "nodecap",
-  "version": "5.4.0",
+  "version": "5.4.1",
   "private": true,
   "scripts": {
     "precommit": "npm run lint-staged",

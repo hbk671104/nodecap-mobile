@@ -97,6 +97,7 @@ const header = ({
 export const headerHeight = 144;
 const styles = {
   container: {
+    flex: 1,
     height: headerHeight,
     paddingHorizontal: 12,
   },

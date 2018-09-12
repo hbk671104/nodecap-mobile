@@ -25,6 +25,7 @@ class NavBar extends Component {
     back: PropTypes.bool,
     title: PropTypes.string,
     titleContainerStyle: PropTypes.object,
+    iconStyle: PropTypes.object,
   };
 
   static defaultProps = {
@@ -71,6 +72,7 @@ class NavBar extends Component {
       back,
       title,
       titleContainerStyle,
+      iconStyle,
     } = this.props;
     const WrapperComp = gradient ? Gradient : View;
     return (
@@ -104,9 +106,14 @@ class NavBar extends Component {
                   {back && (
                     <Touchable borderless onPress={this.handleBackAction}>
                       <Icon
+                        style={[
+                          {
+                            fontSize: 26,
+                            color: gradient ? 'white' : '#333333',
+                          },
+                          iconStyle,
+                        ]}
                         name="arrow-back"
-                        size={26}
-                        color={gradient ? 'white' : '#333333'}
                       />
                     </Touchable>
                   )}

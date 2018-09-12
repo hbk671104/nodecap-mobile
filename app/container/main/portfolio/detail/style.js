@@ -12,7 +12,22 @@ export default {
     flex: 1,
     backgroundColor: 'white',
   },
+  navBar: {
+    wrapper: {
+      position: 'absolute',
+      left: 0,
+      right: 0,
+      top: 0,
+    },
+    container: {
+      backgroundColor: 'transparent',
+    },
+    icon: {
+      color: 'white',
+    },
+  },
   page: {
+    backgroundColor: 'white',
     minHeight:
       deviceHeight -
       realBarHeight -

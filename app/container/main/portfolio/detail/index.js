@@ -8,8 +8,9 @@ import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
-import NavBar from 'component/navBar';
+import NavBar, { realBarHeight } from 'component/navBar';
 import Empty from 'component/empty';
+import Gradient from 'component/uikit/gradient';
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Description from './page/description';
@@ -67,17 +68,12 @@ const selectionList = [
   }),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withProps(({ animateY, can_calculate }) => ({
-    headerHeightRange: animateY.interpolate({
+    headerWrapperYRange: animateY.interpolate({
       inputRange: [0, headerHeight],
-      outputRange: [headerHeight, can_calculate ? 0 : headerHeight],
+      outputRange: [0, can_calculate ? -headerHeight : 0],
       extrapolate: 'clamp',
     }),
     headerOpacityRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [1, can_calculate ? 0 : 1],
-      extrapolate: 'clamp',
-    }),
-    avatarScaleRange: animateY.interpolate({
       inputRange: [0, headerHeight],
       outputRange: [1, can_calculate ? 0 : 1],
       extrapolate: 'clamp',
@@ -168,35 +164,30 @@ export default class PortfolioDetail extends Component {
     this.props.setCurrentPage(page);
   };
 
-  renderNavBar = () => {
-    const {
-      portfolio,
-      headerHeightRange,
-      headerOpacityRange,
-      avatarScaleRange,
-      titleOpacityRange,
-    } = this.props;
+  renderNavBarBackground = () => {
+    const { portfolio, headerWrapperYRange, headerOpacityRange } = this.props;
     return (
-      <NavBar
-        back
-        gradient
-        title={R.pathOr('', ['name'])(portfolio)}
-        titleContainerStyle={{ opacity: titleOpacityRange }}
-        renderBottom={() => (
+      <Animated.View
+        style={[
+          styles.navBar.wrapper,
+          { height: realBarHeight + headerHeight },
+          {
+            transform: [
+              {
+                translateY: headerWrapperYRange,
+              },
+            ],
+          },
+        ]}
+      >
+        <Gradient style={{ flex: 1 }}>
           <Header
             {...this.props}
-            style={{ height: headerHeightRange, opacity: headerOpacityRange }}
-            avatarWrapperStyle={{
-              transform: [
-                {
-                  scale: avatarScaleRange,
-                },
-              ],
-            }}
+            style={{ opacity: headerOpacityRange, paddingTop: realBarHeight }}
             data={portfolio}
           />
-        )}
-      />
+        </Gradient>
+      </Animated.View>
     );
   };
 
@@ -213,20 +204,40 @@ export default class PortfolioDetail extends Component {
       );
     }
 
-    const { currentPage: Current, can_calculate } = this.props;
+    const {
+      currentPage: Current,
+      portfolio,
+      can_calculate,
+      titleOpacityRange,
+    } = this.props;
     return (
       <SafeArea style={styles.container}>
-        {this.renderNavBar()}
-        <ScrollView
+        {this.renderNavBarBackground()}
+        <NavBar
+          back
+          iconStyle={styles.navBar.icon}
+          style={styles.navBar.container}
+          title={R.pathOr('', ['name'])(portfolio)}
+          titleContainerStyle={{ opacity: titleOpacityRange }}
+        />
+        <Animated.ScrollView
+          contentContainerStyle={{
+            paddingTop: headerHeight,
+          }}
           scrollEventThrottle={1}
           stickyHeaderIndices={[2]}
-          onScroll={Animated.event([
-            {
-              nativeEvent: {
-                contentOffset: { y: this.props.animateY },
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: { y: this.props.animateY },
+                },
               },
+            ],
+            {
+              useNativeDriver: true,
             },
-          ])}
+          )}
         >
           <Fund {...this.props} />
           <Chart {...this.props} />
@@ -238,7 +249,7 @@ export default class PortfolioDetail extends Component {
           <View style={[styles.page, R.not(can_calculate) && { minHeight: 0 }]}>
             <Current.component {...this.props} />
           </View>
-        </ScrollView>
+        </Animated.ScrollView>
         <Bottom
           {...this.props}
           onRecordPress={this.handleRecordButtonPress}
