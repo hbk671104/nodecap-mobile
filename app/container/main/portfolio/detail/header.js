@@ -18,6 +18,7 @@ const header = ({
   stat_loading,
   base_symbol,
   can_calculate,
+  avatarWrapperStyle,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pathOr('--', ['token_name'])(data);
@@ -52,7 +53,9 @@ const header = ({
           </Text>
           <Text style={styles.top.subtitle}>{token}</Text>
         </View>
-        <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+        <Animated.View style={avatarWrapperStyle}>
+          <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+        </Animated.View>
       </View>
       <View style={styles.divider} />
       {can_calculate ? (
@@ -154,6 +157,7 @@ header.propTypes = {
   loading: PropTypes.bool,
   style: PropTypes.object,
   titleStyle: PropTypes.object,
+  avatarWrapperStyle: PropTypes.object,
 };
 
 header.defaultProps = {

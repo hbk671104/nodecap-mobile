@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import R from 'ramda';
 import moment from 'moment';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import {
   VictoryAxis,
   VictoryChart,
@@ -112,7 +112,7 @@ class Chart extends PureComponent {
     const chartPadding = {
       ...styles.chart,
       ...(currentSym === 'USD' || currentSym === 'USDT' || currentSym === 'CNY'
-        ? { left: 60 }
+        ? { left: 48 }
         : {}),
     };
 
@@ -185,18 +185,20 @@ const styles = {
   placeholder: {
     height: barHeight + chartHeight,
     marginHorizontal: 12,
-    marginBottom: 24,
     marginTop: 20,
   },
   container: {
-    marginBottom: 24,
+    paddingBottom: 12,
     marginTop: 20,
+    marginHorizontal: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E9E9E9',
   },
   chart: {
-    left: 84,
-    right: 24,
-    bottom: 36,
-    top: 24,
+    left: 72,
+    right: 36,
+    bottom: 30,
+    top: 36,
   },
   axis: {
     cross: {
@@ -227,7 +229,7 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingHorizontal: 12,
+      // paddingHorizontal: 12,
     },
     title: {
       color: '#999999',

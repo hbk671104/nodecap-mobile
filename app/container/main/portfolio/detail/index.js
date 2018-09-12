@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -9,7 +9,6 @@ import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
-import Touchable from 'component/uikit/touchable';
 import Empty from 'component/empty';
 import { hasPermission } from 'component/auth/permission/lock';
 
@@ -17,7 +16,7 @@ import Description from './page/description';
 import Pairs from './page/pairs';
 import Return from './page/return';
 import Trend from './page/trend';
-import Header from './header';
+import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Chart from './chart';
 import Fund from './fund';
@@ -47,16 +46,6 @@ const selectionList = [
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
 })
-@compose(
-  withState('offsetY', 'setOffsetY', 0),
-  withState('currentPage', 'setCurrentPage', {
-    component: Trend,
-    name: '动态',
-  }),
-  withProps(({ offsetY }) => ({
-    transformed: offsetY > 0,
-  })),
-)
 @connect(({ portfolio, loading, global }, props) => {
   const item = props.navigation.getParam('item');
   const coin = R.pathOr({}, ['current', 'coin'])(portfolio);
@@ -71,6 +60,25 @@ const selectionList = [
     unmatched: R.isEmpty(coin),
   };
 })
+@compose(
+  withState('currentPage', 'setCurrentPage', {
+    component: Trend,
+    name: '动态',
+  }),
+  withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withProps(({ animateY, can_calculate }) => ({
+    headerHeightRange: animateY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [headerHeight, can_calculate ? 0 : headerHeight],
+      extrapolate: 'clamp',
+    }),
+    avatarScaleRange: animateY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [1, 0],
+      extrapolate: 'clamp',
+    }),
+  })),
+)
 export default class PortfolioDetail extends Component {
   componentWillMount() {
     this.loadDetail();
@@ -146,24 +154,30 @@ export default class PortfolioDetail extends Component {
     );
   };
 
-  handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
-    const { setOffsetY } = this.props;
-    setOffsetY(contentOffset.y);
-  };
-
   handlePageSwitch = page => () => {
     this.props.setCurrentPage(page);
   };
 
   renderNavBar = () => {
-    const { transformed, portfolio } = this.props;
+    const { portfolio, headerHeightRange, avatarScaleRange } = this.props;
     return (
       <NavBar
         back
         gradient
-        bottomHidden={transformed}
-        title={transformed ? portfolio.name : ''}
-        renderBottom={() => <Header {...this.props} data={portfolio} />}
+        renderBottom={() => (
+          <Header
+            {...this.props}
+            style={{ height: headerHeightRange }}
+            avatarWrapperStyle={{
+              transform: [
+                {
+                  scale: avatarScaleRange,
+                },
+              ],
+            }}
+            data={portfolio}
+          />
+        )}
       />
     );
   };
@@ -181,27 +195,29 @@ export default class PortfolioDetail extends Component {
       );
     }
 
-    const { currentPage: Current } = this.props;
+    const { currentPage: Current, can_calculate } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
         <ScrollView
-          contentContainerStyle={styles.scroll.contentContainer}
-          // scrollEventThrottle={16}
-          scrollEventThrottle={500}
-          stickyHeaderIndices={[4]}
-          onScroll={this.handleOnScroll}
+          scrollEventThrottle={1}
+          stickyHeaderIndices={[2]}
+          onScroll={Animated.event([
+            {
+              nativeEvent: {
+                contentOffset: { y: this.props.animateY },
+              },
+            },
+          ])}
         >
           <Fund {...this.props} />
-          <View style={styles.divider} />
           <Chart {...this.props} />
-          <View style={styles.divider} />
           <Selector
             list={selectionList}
             page={Current}
             onPress={this.handlePageSwitch}
           />
-          <View style={styles.page}>
+          <View style={[styles.page, R.not(can_calculate) && { minHeight: 0 }]}>
             <Current.component {...this.props} />
           </View>
         </ScrollView>

@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image } from 'react-native';
+import { View, Image, Animated } from 'react-native';
 import { raised } from '../../utils/style';
 
 const avatar = props => (
-  <View
+  <Animated.View
     style={[
       styles.container,
       { height: props.size, width: props.size, borderRadius: props.size / 2 },
@@ -12,7 +12,7 @@ const avatar = props => (
       props.style,
     ]}
   >
-    <Image
+    <Animated.Image
       {...props}
       resizeMode={props.resizeMode}
       defaultSource={require('asset/project/project_logo_default.png')}
@@ -22,7 +22,7 @@ const avatar = props => (
         borderRadius: (props.size * props.innerRatio) / 2,
       }}
     />
-  </View>
+  </Animated.View>
 );
 
 avatar.defaultProps = {
