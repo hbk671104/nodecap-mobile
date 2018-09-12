@@ -72,6 +72,11 @@ const selectionList = [
       outputRange: [headerHeight, can_calculate ? 0 : headerHeight],
       extrapolate: 'clamp',
     }),
+    headerOpacityRange: animateY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [1, can_calculate ? 0 : 1],
+      extrapolate: 'clamp',
+    }),
     avatarScaleRange: animateY.interpolate({
       inputRange: [0, headerHeight],
       outputRange: [1, can_calculate ? 0 : 1],
@@ -167,6 +172,7 @@ export default class PortfolioDetail extends Component {
     const {
       portfolio,
       headerHeightRange,
+      headerOpacityRange,
       avatarScaleRange,
       titleOpacityRange,
     } = this.props;
@@ -179,7 +185,7 @@ export default class PortfolioDetail extends Component {
         renderBottom={() => (
           <Header
             {...this.props}
-            style={{ height: headerHeightRange }}
+            style={{ height: headerHeightRange, opacity: headerOpacityRange }}
             avatarWrapperStyle={{
               transform: [
                 {

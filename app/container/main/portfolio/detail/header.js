@@ -121,8 +121,8 @@ const styles = {
     height: 1,
     width: 58,
     backgroundColor: 'white',
-    marginTop: 12,
-    marginBottom: 12,
+    marginTop: 8,
+    marginBottom: 8,
   },
   bottom: {
     container: {
