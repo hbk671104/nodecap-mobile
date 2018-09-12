@@ -186,12 +186,14 @@ const styles = {
     height: barHeight + chartHeight,
     marginHorizontal: 12,
     marginBottom: 24,
+    marginTop: 20,
   },
   container: {
     marginBottom: 24,
+    marginTop: 20,
   },
   chart: {
-    left: 92,
+    left: 84,
     right: 24,
     bottom: 36,
     top: 24,
@@ -225,12 +227,12 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingLeft: 22,
-      paddingRight: 12,
+      paddingHorizontal: 12,
     },
     title: {
       color: '#999999',
       fontSize: 14,
+      fontWeight: '200',
     },
   },
   periods: {

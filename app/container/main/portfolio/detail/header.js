@@ -91,7 +91,7 @@ const header = ({
   );
 };
 
-export const headerHeight = 174;
+export const headerHeight = 144;
 const styles = {
   container: {
     height: headerHeight,

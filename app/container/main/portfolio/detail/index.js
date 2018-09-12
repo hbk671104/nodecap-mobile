@@ -9,7 +9,6 @@ import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
-import StatusDisplay from 'component/project/statusDisplay';
 import Touchable from 'component/uikit/touchable';
 import Empty from 'component/empty';
 import { hasPermission } from 'component/auth/permission/lock';
@@ -22,6 +21,7 @@ import Header from './header';
 import Selector from './selector';
 import Chart from './chart';
 import Fund from './fund';
+import Bottom from './bottom';
 import styles from './style';
 
 const selectionList = [
@@ -146,17 +146,6 @@ export default class PortfolioDetail extends Component {
     );
   };
 
-  handleAddInvestmentPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PortfolioInvestmentCreate',
-        params: {
-          id: this.props.id,
-        },
-      }),
-    );
-  };
-
   handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
     const { setOffsetY } = this.props;
     setOffsetY(contentOffset.y);
@@ -179,52 +168,6 @@ export default class PortfolioDetail extends Component {
     );
   };
 
-  renderSwitchButton = () => {
-    const { portfolio, transformed, unmatched } = this.props;
-
-    if (transformed) return null;
-    return (
-      <View style={styles.switch.container}>
-        <View style={styles.switch.content.wrapper}>
-          <Touchable activeOpacity={0.98} onPress={this.handleStatusPress}>
-            <View style={styles.switch.content.container}>
-              <StatusDisplay
-                status={portfolio.status}
-                titleStyle={styles.switch.status.text}
-              />
-              <Text style={styles.switch.content.text}>切换</Text>
-            </View>
-          </Touchable>
-        </View>
-        <View style={styles.switch.content.wrapper}>
-          <Touchable activeOpacity={0.98} onPress={this.handleCoinMatchPress}>
-            <View style={styles.switch.content.container}>
-              <Text
-                style={[
-                  styles.switch.status.text,
-                  styles.switch.matched.highlight,
-                ]}
-              >
-                {unmatched ? '立即匹配' : '项目已匹配'}
-              </Text>
-              {!unmatched && (
-                <Text style={styles.switch.content.text}>切换</Text>
-              )}
-            </View>
-          </Touchable>
-        </View>
-      </View>
-    );
-  };
-
-  renderRecordButton = () => (
-    <Touchable onPress={this.handleRecordButtonPress}>
-      <View style={styles.record.container}>
-        <Text style={styles.record.text}>查看完整投资、回币、卖出记录</Text>
-      </View>
-    </Touchable>
-  );
-
   render() {
     if (!hasPermission('project-view')) {
       return (
@@ -246,12 +189,13 @@ export default class PortfolioDetail extends Component {
           contentContainerStyle={styles.scroll.contentContainer}
           // scrollEventThrottle={16}
           scrollEventThrottle={500}
-          stickyHeaderIndices={[3]}
+          stickyHeaderIndices={[4]}
           onScroll={this.handleOnScroll}
         >
           <Fund {...this.props} />
-          {this.renderRecordButton()}
+          <View style={styles.divider} />
           <Chart {...this.props} />
+          <View style={styles.divider} />
           <Selector
             list={selectionList}
             page={Current}
@@ -261,16 +205,12 @@ export default class PortfolioDetail extends Component {
             <Current.component {...this.props} />
           </View>
         </ScrollView>
-        <View style={styles.bottomTab.wrapper}>
-          <Touchable
-            style={styles.bottomTab.container}
-            activeOpacity={0.98}
-            onPress={this.handleAddInvestmentPress}
-          >
-            <Text style={styles.bottomTab.title}>+ 添加投资记录</Text>
-          </Touchable>
-        </View>
-        <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
+        <Bottom
+          {...this.props}
+          onRecordPress={this.handleRecordButtonPress}
+          onStatusPress={this.handleStatusPress}
+          onMatchPress={this.handleCoinMatchPress}
+        />
       </SafeArea>
     );
   }
