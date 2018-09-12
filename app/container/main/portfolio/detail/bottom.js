@@ -23,7 +23,11 @@ const bottom = ({
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
-        <Touchable style={styles.group.wrapper} onPress={() => onMatchPress()}>
+        <Touchable
+          style={styles.group.wrapper}
+          borderless
+          onPress={() => onMatchPress()}
+        >
           <View style={styles.group.container}>
             <Image source={match_source} />
             <Text
@@ -33,7 +37,11 @@ const bottom = ({
             </Text>
           </View>
         </Touchable>
-        <Touchable style={styles.group.wrapper} onPress={() => onRecordPress()}>
+        <Touchable
+          style={styles.group.wrapper}
+          borderless
+          onPress={() => onRecordPress()}
+        >
           <View style={styles.group.container}>
             <Image
               source={require('asset/project/detail/investment_record.png')}
