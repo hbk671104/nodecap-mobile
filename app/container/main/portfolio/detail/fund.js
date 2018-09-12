@@ -23,7 +23,7 @@ const fund = props => {
     >
       <View style={styles.container}>
         {R.map(f => {
-          const quote = R.path(['quote'])(f);
+          const quote = 'CNY' || R.path(['quote'])(f);
           const name = R.pathOr('--', ['name'])(f);
           const unit_cost = R.pathOr('--', ['unit_cost', quote])(f);
           const roi = R.pathOr('--', ['roi', quote, 'value'])(f);

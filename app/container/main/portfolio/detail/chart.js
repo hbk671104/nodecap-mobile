@@ -112,7 +112,7 @@ class Chart extends PureComponent {
     const chartPadding = {
       ...styles.chart,
       ...(currentSym === 'USD' || currentSym === 'USDT' || currentSym === 'CNY'
-        ? { left: 48 }
+        ? { left: 66 }
         : {}),
     };
 
@@ -140,7 +140,7 @@ class Chart extends PureComponent {
             tickFormat={y => priceFormat({ symbol: currentSym, text: y })}
           />
           <VictoryLine
-            animate
+            // animate
             style={styles.line}
             interpolation="natural"
             data={data}
@@ -148,7 +148,7 @@ class Chart extends PureComponent {
             y="price"
           />
           <VictoryArea
-            animate
+            // animate
             style={styles.bar}
             interpolation="natural"
             data={data}
