@@ -1,8 +1,8 @@
 // import { projectRecommendation, updateRecommendation } from '../services/api';
-import { getIndustries, getPublicProjects } from '../services/api';
+import { getIndustries, getReportsByIndustryId } from '../services/api';
 
 export default {
-  namespace: 'public_project',
+  namespace: 'institution',
   state: {
     list: null,
     institution: null,
@@ -10,11 +10,9 @@ export default {
     current: null,
   },
   effects: {
-    *fetch({ payload, callback }, { call, put }) {
+    *fetch({ callback }, { call, put }) {
       try {
-        const { data } = yield call(getPublicProjects, {
-          ...payload,
-        });
+        const { data } = yield call(getIndustries);
         yield put({
           type: 'list',
           payload: data,
@@ -23,11 +21,11 @@ export default {
         console.log(e);
       }
     },
-    *fetchInstitution({ callback }, { call, put }) {
+    *fetchReports({ callback, payload, id }, { call, put }) {
       try {
-        const { data } = yield call(getIndustries);
+        const { data } = yield call(getReportsByIndustryId, id, payload);
         yield put({
-          type: 'institution',
+          type: 'list',
           payload: data,
         });
       } catch (e) {

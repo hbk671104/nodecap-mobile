@@ -15,10 +15,10 @@ import styles from './style';
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, notification, loading }) => ({
-  data: R.pathOr([], ['list'])(notification),
-  institution: R.pathOr([{ id: 0 }, { id: 1 }, { id: 2 }], ['institution'])(
-    public_project,
+@connect(({ public_project, institution, notification, loading }) => ({
+  data: R.pathOr([], ['list'])(public_project),
+  institution: R.pathOr([], ['list', 'data'])(
+    institution,
   ),
   loading: loading.effects['notification/fetch'],
 }))
@@ -41,10 +41,13 @@ export default class PublicProject extends Component {
     // );
   };
 
-  handleInstitutionItemPress = () => {
+  handleInstitutionItemPress = (item) => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionReport',
+        params: {
+          item,
+        },
       }),
     );
   };

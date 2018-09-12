@@ -15,10 +15,15 @@ const header = ({ style, data, onItemPress }) => (
   >
     {R.addIndex(R.map)((i, index) => {
       return (
-        <Touchable key={index} foreground onPress={onItemPress}>
+        <Touchable key={index} foreground onPress={() => onItemPress(i)}>
           <View style={styles.item.container}>
-            <Avatar size={28} raised={false} innerRatio={1} />
-            <Text style={styles.item.title}>标准共识</Text>
+            <Avatar
+              size={28}
+              raised={false}
+              innerRatio={1}
+              source={i.logo_url ? { uri: i.logo_url } : null}
+            />
+            <Text style={styles.item.title}>{i.name}</Text>
           </View>
         </Touchable>
       );

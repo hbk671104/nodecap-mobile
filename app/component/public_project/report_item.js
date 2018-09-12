@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
+import moment from 'moment';
 
 import Touchable from 'component/uikit/touchable';
 
-const reportItem = ({ data, onPress }) => (
-  <Touchable onPress={onPress}>
+const reportItem = ({ data, onPress, institution }) => (
+  <Touchable onPress={() => onPress(data)}>
     <View style={styles.container}>
-      <Text style={styles.title}>多重机制仍难保证DAG的稳定性</Text>
+      <Text style={styles.title}>{data.title}</Text>
       <View style={styles.content.container}>
-        <Text style={styles.content.text}>#火币研究院</Text>
-        <Text style={styles.content.text}>08-10</Text>
+        <Text style={styles.content.text}>#{institution.name}</Text>
+        <Text style={styles.content.text}>{data.published_at ? moment(data.published_at).format('MM-DD') : ''}</Text>
       </View>
     </View>
   </Touchable>

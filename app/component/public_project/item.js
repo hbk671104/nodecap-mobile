@@ -26,37 +26,31 @@ const colorMap = [
 ];
 
 const publicProjectItem = ({ style, data, onPress }) => {
-  const trend = R.pathOr({}, ['coin_news'])(data);
-  if (R.isEmpty(trend)) {
-    return null;
-  }
-
-  const logo_url = R.pathOr('', ['logo_url'])(trend);
-  const title = R.pathOr('--', ['title'])(trend);
-  const project_name = R.pathOr('--', ['project_name'])(trend);
-  const type = R.pathOr([], ['type'])(trend);
-  const subtitle = R.pathOr('--', ['subtitle'])(trend);
-  const push_at = R.pathOr('--', ['push_at'])(trend);
+  const icon = R.pathOr('', ['icon'])(data);
+  const project_name = R.pathOr('--', ['name'])(data);
+  const status = R.pathOr([], ['finance_status'])(data);
+  const category = R.pathOr([], ['category'])(data);
+  const description = R.pathOr('--', ['description'])(data);
 
   return (
-    <Touchable foreground onPress={onPress(trend.id)}>
+    <Touchable foreground onPress={onPress(data.id)}>
       <View style={[styles.container, style]}>
         <Avatar
           size={50}
           source={
-            R.isEmpty(logo_url)
+            R.isEmpty(icon)
               ? require('asset/project/project_logo_default.png')
-              : { uri: logo_url }
+              : { uri: icon }
           }
         />
         <View style={styles.content.container}>
           <View style={styles.content.top.container}>
             <View style={styles.content.top.title.container}>
               <Text style={styles.content.top.title.text} numberOfLines={2}>
-                Zilliqa
+                {project_name}
               </Text>
             </View>
-            <Text style={styles.content.top.status}>即将开始</Text>
+            <Text style={styles.content.top.status}>{status}</Text>
           </View>
           <View style={styles.content.tag.wrapper}>
             {R.addIndex(R.map)((t, i) => {
@@ -65,7 +59,7 @@ const publicProjectItem = ({ style, data, onPress }) => {
                 i,
                 'backgroundColor',
               ])(colorMap);
-              const tag_name = R.pathOr('--', ['name'])(t);
+              const tag_name = t || '--';
               return (
                 <View
                   key={`${i}`}
@@ -78,11 +72,11 @@ const publicProjectItem = ({ style, data, onPress }) => {
                   </Text>
                 </View>
               );
-            })(type)}
+            })(category)}
           </View>
           <View style={styles.content.subtitle.container}>
             <Text numberOfLines={2} style={styles.content.subtitle.text}>
-              {subtitle}
+              {description}
             </Text>
           </View>
         </View>

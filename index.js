@@ -22,6 +22,7 @@ import colleagueModel from './app/models/colleague';
 import notificationModel from './app/models/notification';
 import recommendationModel from './app/models/recommendation';
 import publicProjectModel from './app/models/public_project';
+import institutionModel from './app/models/institution';
 
 const app = dva({
   initialState: {},
@@ -39,6 +40,7 @@ const app = dva({
     notificationModel,
     recommendationModel,
     publicProjectModel,
+    institutionModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],

@@ -635,3 +635,39 @@ export function createCompany(data) {
 export function getNewsByCoinId(id) {
   return request.get(`/coins/${id}/news-info`);
 }
+
+/**
+ * 评级机构列表
+ * @returns {AxiosPromise<any>}
+ */
+export function getIndustries() {
+  return request.get('/industries');
+}
+/**
+ * 评级机构列表
+ * @returns {AxiosPromise<any>}
+ */
+export function getPublicProjects(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/coins/public', {
+    params: paramsTransform(params),
+  });
+}
+/**
+ * 评级机构列表
+ * @returns {AxiosPromise<any>}
+ */
+export function getReportsByIndustryId(id, params = {}) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get(`/industry/${id}/items`, {
+    params: paramsTransform(params),
+  });
+}

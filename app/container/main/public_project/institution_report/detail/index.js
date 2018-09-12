@@ -36,15 +36,17 @@ export default class InstitutionReportDetail extends Component {
   };
 
   render() {
-    const { data, loading, navBarHidden } = this.props;
+    const { data, loading, navigation, navBarHidden } = this.props;
+    const pdf_url = navigation.getParam('pdf_url');
+    const title = navigation.getParam('title');
+
     return (
       <View style={styles.container}>
-        {R.not(navBarHidden) && <NavBar gradient back title="研报详情" />}
+        {R.not(navBarHidden) && <NavBar gradient back title={title} />}
         <PDF
           style={styles.pdf}
           source={{
-            uri:
-              'http://p1.i.img9.top/ipfs/QmRRtGs1jS3GUjPdwGbpA9JdyQX6jQMpXcjfew2PGkrx8M?1.pdf',
+            uri: pdf_url,
             cache: true,
           }}
           // onLoadComplete={(numberOfPages, filePath) => {
