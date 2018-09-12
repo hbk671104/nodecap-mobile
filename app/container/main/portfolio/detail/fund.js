@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
 import Price from 'component/price';
@@ -23,7 +23,7 @@ const fund = props => {
     >
       <View style={styles.container}>
         {R.map(f => {
-          const quote = R.path(['quote'])(f);
+          const quote = 'CNY' || R.path(['quote'])(f);
           const name = R.pathOr('--', ['name'])(f);
           const unit_cost = R.pathOr('--', ['unit_cost', quote])(f);
           const roi = R.pathOr('--', ['roi', quote, 'value'])(f);
@@ -60,17 +60,20 @@ const styles = {
   placeholder: {
     height: 100,
     marginHorizontal: 12,
-    marginBottom: 12,
+    marginTop: 12,
   },
   container: {
-    marginBottom: 12,
+    marginTop: 12,
+    paddingBottom: 12,
+    marginHorizontal: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E9E9E9',
   },
   item: {
     container: {
       height: 50,
       justifyContent: 'center',
       paddingVertical: 5,
-      paddingHorizontal: 12,
     },
     title: {
       fontSize: 14,

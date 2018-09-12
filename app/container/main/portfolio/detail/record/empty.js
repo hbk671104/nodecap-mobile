@@ -30,6 +30,7 @@ const styles = {
     backgroundColor: 'white',
     marginHorizontal: 12,
     marginBottom: 6,
+    borderRadius: 2,
     ...shadow,
   },
   wrapper: {
