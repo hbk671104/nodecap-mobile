@@ -74,7 +74,12 @@ const selectionList = [
     }),
     avatarScaleRange: animateY.interpolate({
       inputRange: [0, headerHeight],
-      outputRange: [1, 0],
+      outputRange: [1, can_calculate ? 0 : 1],
+      extrapolate: 'clamp',
+    }),
+    titleOpacityRange: animateY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [0, can_calculate ? 1 : 0],
       extrapolate: 'clamp',
     }),
   })),
@@ -159,11 +164,18 @@ export default class PortfolioDetail extends Component {
   };
 
   renderNavBar = () => {
-    const { portfolio, headerHeightRange, avatarScaleRange } = this.props;
+    const {
+      portfolio,
+      headerHeightRange,
+      avatarScaleRange,
+      titleOpacityRange,
+    } = this.props;
     return (
       <NavBar
         back
         gradient
+        title={R.pathOr('', ['name'])(portfolio)}
+        titleContainerStyle={{ opacity: titleOpacityRange }}
         renderBottom={() => (
           <Header
             {...this.props}
