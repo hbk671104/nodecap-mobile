@@ -7,6 +7,7 @@ import { compose, withState } from 'recompose';
 import JPush from 'jpush-react-native';
 
 import NavBar from 'component/navBar';
+import Empty from 'component/empty';
 import FundWrapper from './wrapper';
 import styles from './style';
 import { handleOpen } from '../../../utils/jpush_handler';
@@ -108,6 +109,16 @@ class Fund extends Component {
 
   render() {
     const { index, routes } = this.props;
+
+    if (R.isEmpty(routes)) {
+      return (
+        <View style={styles.container}>
+          <NavBar gradient />
+          <Empty title="暂无基金查看权限" />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <TabView

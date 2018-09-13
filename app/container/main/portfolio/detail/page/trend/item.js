@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 import moment from 'moment';
 
@@ -59,7 +59,7 @@ const styles = {
     marginLeft: 22,
     flexDirection: 'row',
     borderBottomColor: '#E9E9E9',
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   content: {
     container: {

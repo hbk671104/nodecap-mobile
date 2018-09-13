@@ -72,7 +72,6 @@ public class MainApplication extends Application implements ReactApplication {
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
             new RNSentryPackage(),
             new RNExitAppPackage(),
-            new WeChatPackage(),
             new RNViewShotPackage(),
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),

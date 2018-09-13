@@ -118,8 +118,8 @@ android {
         applicationId "com.nodecap.hotnode"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 180906
-        versionName "5.1.6"
+        versionCode 180912
+        versionName "5.4.1"
         manifestPlaceholders = [
                 JPUSH_APPKEY: "3d43f5402c9364c5b35f0ab0",
                 APP_CHANNEL : "default"
@@ -187,7 +187,6 @@ dependencies {
     compile project(':jpush-react-native')
     compile project(':react-native-sentry')
     compile project(':react-native-exit-app')
-    compile project(':RCTWeChat')
     compile project(':react-native-view-shot')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-splash-screen')

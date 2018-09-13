@@ -3,7 +3,7 @@ import { shadow } from '../../../../../utils/style';
 
 export default {
   container: {
-    marginTop: 18,
+    marginTop: 12,
   },
   verticalField: {
     height: 'auto',

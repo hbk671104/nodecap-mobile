@@ -4,8 +4,8 @@ import { View, Image, Text } from 'react-native';
 
 const empty = ({ image, title }) => (
   <View style={styles.container}>
-    {!!image && <Image source={image} style={styles.image} />}
-    {!!title && <Text style={styles.title}>{title}</Text>}
+    <Image source={image} style={styles.image} />
+    <Text style={styles.title}>{title}</Text>
   </View>
 );
 
@@ -28,6 +28,11 @@ const styles = {
 empty.propTypes = {
   image: PropTypes.number,
   title: PropTypes.string,
+};
+
+empty.defaultProps = {
+  image: require('asset/empty/permission_denied.png'),
+  title: '暂无权限',
 };
 
 export default empty;
