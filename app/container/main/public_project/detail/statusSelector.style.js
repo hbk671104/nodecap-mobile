@@ -1,5 +1,4 @@
-import { realBarHeight, navBarHeight } from 'component/navBar';
-import { Dimensions } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 const window = Dimensions.get('window');
@@ -20,7 +19,8 @@ export default {
     shadowRadius: 4,
   },
   toolbar: {
-    padding: 10,
+    height: 40,
+    paddingHorizontal: 12,
   },
   toolbarButtonText: {
     fontSize: 15,
@@ -33,6 +33,7 @@ export default {
   submit: {
     fontSize: 15,
     color: '#1890FF',
+    fontWeight: 'bold',
     letterSpacing: 0.36,
   },
   statusItem: {
@@ -46,7 +47,7 @@ export default {
   statusItemTouch: {
     width: 50,
     height: 50,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#DEDEDE',
     borderRadius: 25,
     alignItems: 'center',

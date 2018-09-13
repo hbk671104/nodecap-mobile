@@ -37,6 +37,7 @@ export default options => {
         'recommendation/update',
         'public_project/fetch',
         'public_project/get',
+        'public_project/favor',
         'institution/fetchReports',
       ],
     }),

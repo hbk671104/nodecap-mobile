@@ -623,6 +623,10 @@ export function getCoinInfo(cid) {
   return request.get(`/coins/${cid}`);
 }
 
+export function favorCoin(payload) {
+  return request.post('/coins/public', payload);
+}
+
 /**
  * 注册验证码
  * @param mobile

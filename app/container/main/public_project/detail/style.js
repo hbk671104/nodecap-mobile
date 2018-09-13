@@ -32,7 +32,7 @@ export default {
       deviceHeight -
       realBarHeight -
       navBarHeight -
-      // bottomTabHeight -
+      bottomTabHeight -
       getBottomSpace(),
   },
 };

@@ -1,6 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { View, ScrollView, TouchableWithoutFeedback, TouchableOpacity, Text, Image } from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+  Text,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import { Flex } from 'antd-mobile';
 import Modal from 'react-native-modal';
 import { withState } from 'recompose';
@@ -18,22 +26,26 @@ const status = [
     status: '1',
     icon: require('../../../../asset/projectStatus/1.png'),
     icon_active: require('../../../../asset/projectStatus/1_active.png'),
-  }, {
+  },
+  {
     text: '待跟进',
     status: '2',
     icon: require('../../../../asset/projectStatus/2.png'),
     icon_active: require('../../../../asset/projectStatus/2_active.png'),
-  }, {
+  },
+  {
     text: '确定意向',
     status: '3',
     icon: require('../../../../asset/projectStatus/3.png'),
     icon_active: require('../../../../asset/projectStatus/3_active.png'),
-  }, {
+  },
+  {
     text: '待打币',
     status: '4',
     icon: require('../../../../asset/projectStatus/4.png'),
     icon_active: require('../../../../asset/projectStatus/4_active.png'),
-  }, {
+  },
+  {
     text: '已打币',
     status: '5',
     icon: require('../../../../asset/projectStatus/5.png'),
@@ -41,9 +53,14 @@ const status = [
   },
 ];
 
-@withState('currentSelect', 'setCurrent', (props) => (props.value ? String(props.value) : '0'))
+@withState(
+  'currentSelect',
+  'setCurrent',
+  props => (props.value ? String(props.value) : '0'),
+)
 class StatusSelector extends Component {
-  renderToolBar() {
+  renderToolBar = () => {
+    const { loading } = this.props;
     return (
       <Flex style={styles.toolbar} justifyContent="space-between">
         <TouchableWithoutFeedback onPress={this.props.onCancel}>
@@ -51,22 +68,33 @@ class StatusSelector extends Component {
             <Text style={[styles.toolbarButtonText, styles.cancel]}>取消</Text>
           </View>
         </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback onPress={() => {
-          this.props.onSubmit(this.props.currentSelect);
-        }}
-        >
-          <View>
-            <Text style={[styles.toolbarButtonText, styles.submit]}>确定</Text>
-          </View>
-        </TouchableWithoutFeedback>
+        {loading ? (
+          <ActivityIndicator />
+        ) : (
+          <TouchableWithoutFeedback
+            onPress={() => {
+              this.props.onSubmit(this.props.currentSelect);
+            }}
+          >
+            <View>
+              <Text style={[styles.toolbarButtonText, styles.submit]}>
+                确定
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
+        )}
       </Flex>
     );
-  }
+  };
+
   render() {
     return (
       <Modal
         {...this.props}
+        useNativeDriver
+        hideModalContentWhileAnimating
         backdropOpacity={0}
+        onBackdropPress={this.props.onCancel}
         style={{
           justifyContent: 'flex-end',
           margin: 0,
@@ -78,8 +106,9 @@ class StatusSelector extends Component {
             horizontal
             style={{
               paddingHorizontal: 10,
-              marginTop: 20,
+              marginTop: 10,
             }}
+            showsHorizontalScrollIndicator={false}
           >
             <Flex alignItems="flex-start">
               {status.map((i, idx) => (
@@ -87,10 +116,19 @@ class StatusSelector extends Component {
                   activeOpacity={0.9}
                   onPress={() => this.props.setCurrent(i.status)}
                 >
-                  <Flex direction="column" justifyContent="center" alignItems="center" style={styles.statusItem}>
+                  <Flex
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                    style={styles.statusItem}
+                  >
                     <View style={styles.statusItemTouch}>
                       <Image
-                        source={this.props.currentSelect === i.status ? i.icon_active : i.icon}
+                        source={
+                          this.props.currentSelect === i.status
+                            ? i.icon_active
+                            : i.icon
+                        }
                         style={styles.statusItemImage}
                       />
                     </View>

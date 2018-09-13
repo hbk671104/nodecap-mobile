@@ -3,7 +3,6 @@ import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
-import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
@@ -35,7 +34,6 @@ const selectionList = [
     name: '动态',
   },
 ];
-@connectActionSheet
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -46,6 +44,7 @@ const selectionList = [
     id: R.pathOr(0, ['id'])(item),
     portfolio: R.pathOr({}, ['current'])(public_project),
     loading: loading.effects['public_project/get'],
+    favor_loading: loading.effects['public_project/favor'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
   };
 })
@@ -107,20 +106,7 @@ export default class PublicProjectDetail extends Component {
   // };
 
   handleStatusPress = () => {
-    const { showActionSheetWithOptions, status } = this.props;
-    showActionSheetWithOptions(
-      {
-        options: [...R.map(r => r.name)(status), '取消'],
-        cancelButtonIndex: R.length(status),
-      },
-      buttonIndex => {
-        const newStatus = R.pathOr(null, [buttonIndex, 'value'])(status);
-        if (R.isNil(newStatus)) {
-          return;
-        }
-        this.updateDetail({ status: newStatus });
-      },
-    );
+    this.props.toggleStatusSelector(true);
   };
 
   handlePageSwitch = page => () => {
@@ -133,6 +119,19 @@ export default class PublicProjectDetail extends Component {
 
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
     this.props.setSelectorY(layout.y);
+  };
+
+  handleSubmit = status => {
+    this.props.dispatch({
+      type: 'public_project/favor',
+      payload: [this.props.id],
+      status,
+      callback: success => {
+        if (success) {
+          this.props.toggleStatusSelector();
+        }
+      },
+    });
   };
 
   renderNavBarBackground = () => {
@@ -175,7 +174,12 @@ export default class PublicProjectDetail extends Component {
       );
     }
 
-    const { currentPage: Current, portfolio, titleOpacityRange } = this.props;
+    const {
+      currentPage: Current,
+      portfolio,
+      titleOpacityRange,
+      favor_loading,
+    } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBarBackground()}
@@ -218,18 +222,12 @@ export default class PublicProjectDetail extends Component {
             <Current.component {...this.props} />
           </View>
         </Animated.ScrollView>
-        {/* <Bottom
-          {...this.props}
-          onRecordPress={this.handleRecordButtonPress}
-          onStatusPress={this.handleStatusPress}
-          onMatchPress={this.handleCoinMatchPress}
-        /> */}
+        <Bottom {...this.props} onStatusPress={this.handleStatusPress} />
         <StatusSelector
+          loading={favor_loading}
           isVisible={this.props.showStatusSelector}
           onCancel={() => this.props.toggleStatusSelector(false)}
-          onSubmit={() => {
-            this.props.toggleStatusSelector(false);
-          }}
+          onSubmit={this.handleSubmit}
         />
       </SafeArea>
     );

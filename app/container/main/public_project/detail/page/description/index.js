@@ -6,6 +6,7 @@ import { Flex } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
+import MemberItem from './member';
 import styles from './style';
 
 @connect()
@@ -45,6 +46,7 @@ export default class Description extends PureComponent {
       this.props,
     );
     const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
+    const members = R.pathOr([], ['portfolio', 'members'])(this.props);
 
     return (
       <View style={styles.container}>
@@ -104,6 +106,14 @@ export default class Description extends PureComponent {
                   </Text>
                 </Flex>
               ))}
+            </View>
+          </View>
+        )}
+        {R.not(R.isEmpty(members)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>团队成员</Text>
+            <View>
+              {R.map(m => <MemberItem key={m.id} data={m} />)(members)}
             </View>
           </View>
         )}

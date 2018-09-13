@@ -3,6 +3,7 @@ import {
   getCoinInfo,
   getNewsByCoinId,
   getCoinFinanceInfo,
+  favorCoin,
 } from '../services/api';
 
 export default {
@@ -92,6 +93,20 @@ export default {
 
         if (callback) {
           yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *favor({ payload, status, callback }, { call, put }) {
+      try {
+        const { data, status: response_status } = yield call(
+          favorCoin,
+          payload,
+        );
+
+        if (callback) {
+          yield call(callback, response_status === 200);
         }
       } catch (e) {
         console.log(e);
