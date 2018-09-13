@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import R from 'ramda';
 
 import { navBarHeight } from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 
-const selector = ({ list, page, onPress }) => {
+const selector = ({ list, page, onPress, onLayout }) => {
   if (R.isNil(list) || R.isEmpty(list)) {
     return null;
   }
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onLayout={onLayout}>
       {R.map(i => {
         const selected = page.name === i.name;
         return (

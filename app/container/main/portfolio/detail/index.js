@@ -69,6 +69,7 @@ const selectionList = [
 @compose(
   withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('selectorY', 'setSelectorY', 0),
   withProps(({ animateY, can_calculate }) => ({
     headerWrapperYRange: animateY.interpolate({
       inputRange: [0, headerHeight],
@@ -163,7 +164,15 @@ export default class PortfolioDetail extends Component {
   };
 
   handlePageSwitch = page => () => {
-    this.props.setCurrentPage(page);
+    this.props.setCurrentPage(page, () => {
+      this.scroll
+        .getNode()
+        .scrollTo({ y: this.props.selectorY, animated: true });
+    });
+  };
+
+  handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
+    this.props.setSelectorY(layout.y);
   };
 
   renderNavBarBackground = () => {
@@ -223,6 +232,9 @@ export default class PortfolioDetail extends Component {
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView
+          ref={ref => {
+            this.scroll = ref;
+          }}
           contentContainerStyle={{
             paddingTop: headerHeight,
           }}
@@ -244,6 +256,7 @@ export default class PortfolioDetail extends Component {
           <Fund {...this.props} />
           <Chart {...this.props} />
           <Selector
+            onLayout={this.handleSelectorOnLayout}
             list={selectionList}
             page={Current}
             onPress={this.handlePageSwitch}
