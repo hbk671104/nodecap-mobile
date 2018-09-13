@@ -1,13 +1,122 @@
 import React, { PureComponent } from 'react';
-import { View, ActivityIndicator } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import R from 'ramda';
-// import NewsItem from './item';
+import moment from 'moment';
 
 import Empty from '../empty';
+import Group from './component/group';
+import { renderField as Field } from '../../record/field';
 import styles from './style';
 
 export default class Financing extends PureComponent {
-  renderContent = () => null;
+  renderSalesInfo = info => {
+    const start_at = R.pathOr('--', ['start_at'])(info);
+    const end_at = R.pathOr('--', ['end_at'])(info);
+    const token_supply = R.pathOr('--', ['token_supply'])(info);
+    const soft_cap = R.pathOr('--', ['soft_cap'])(info);
+    const hard_cap = R.pathOr('--', ['hard_cap'])(info);
+    return (
+      <Group title="发售信息">
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="开始时间"
+          value={`${moment.unix(start_at).format('YYYY-MM-DD')}`}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="结束时间"
+          value={`${moment.unix(end_at).format('YYYY-MM-DD')}`}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="发售总量"
+          value={token_supply}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="软顶"
+          value={soft_cap}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="硬顶"
+          value={hard_cap}
+        />
+      </Group>
+    );
+  };
+
+  renderTokenInfo = info => {
+    const token_type = R.pathOr('--', ['token_type'])(info);
+    const token_accepted = R.pathOr('--', ['token_accepted'])(info);
+    const conversion_ratio = R.pathOr('--', ['conversion_ratio'])(info);
+    const token_distribution = R.pathOr('--', ['token_distribution'])(info);
+    const country_limitation = R.pathOr('--', ['country_limitation'])(info);
+    const discount = R.pathOr('--', ['discount'])(info);
+    return (
+      <Group title="Token 详情">
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="Token 类型"
+          value={token_type}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="接受币种"
+          value={token_accepted}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="兑换比例"
+          value={conversion_ratio}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="Token 分配"
+          value={token_distribution}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="受限国家"
+          value={country_limitation}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="折扣"
+          value={discount}
+        />
+      </Group>
+    );
+  };
+
+  renderContent = info => (
+    <View>
+      {this.renderSalesInfo(info)}
+      {this.renderTokenInfo(info)}
+    </View>
+  );
 
   render() {
     const { portfolio, loading, unmatched } = this.props;
@@ -28,10 +137,12 @@ export default class Financing extends PureComponent {
     const finance_info = R.pathOr({}, ['finance_info'])(portfolio);
     const empty = R.isEmpty(finance_info);
 
+    if (empty) {
+      return <Empty title="暂无募资信息" />;
+    }
+
     return (
-      <View style={styles.container}>
-        {empty ? <Empty title="暂无募资信息" /> : this.renderContent()}
-      </View>
+      <View style={styles.container}>{this.renderContent(finance_info)}</View>
     );
   }
 }

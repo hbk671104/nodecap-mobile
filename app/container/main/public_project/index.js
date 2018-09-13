@@ -16,7 +16,8 @@ import styles from './style';
   name: 'App_PublicProjectOperation',
 })
 @connect(({ public_project, institution, loading }) => ({
-  data: R.pathOr([], ['list'])(public_project),
+  data: R.pathOr([], ['list', 'data'])(public_project),
+  pagination: R.pathOr({}, ['list', 'pagination'])(public_project),
   institution: R.pathOr([], ['list', 'data'])(institution),
   loading: loading.effects['public_project/fetch'],
 }))
@@ -73,7 +74,7 @@ export default class PublicProject extends Component {
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data, loading } = this.props;
+    const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
         <NavBar gradient title="项目公海" />
@@ -82,6 +83,7 @@ export default class PublicProject extends Component {
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
+          pagination={pagination}
           data={data}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}

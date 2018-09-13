@@ -23,14 +23,14 @@ export default class Pairs extends PureComponent {
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const empty = R.isEmpty(symbols);
 
+    if (empty) {
+      return <Empty title="项目暂未上所" />;
+    }
+
     return (
       <View style={styles.container}>
-        {empty ? (
-          <Empty title="项目暂未上所" />
-        ) : (
-          R.addIndex(R.map)((i, index) => <PairItem key={index} data={i} />)(
-            symbols,
-          )
+        {R.addIndex(R.map)((i, index) => <PairItem key={index} data={i} />)(
+          symbols,
         )}
       </View>
     );

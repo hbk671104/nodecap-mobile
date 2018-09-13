@@ -41,15 +41,14 @@ export default class Trend extends PureComponent {
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
     const empty = R.isEmpty(trends);
 
+    if (empty) {
+      return <Empty title="暂无动态" />;
+    }
     return (
       <View style={styles.container}>
-        {empty ? (
-          <Empty title="暂无动态" />
-        ) : (
-          R.addIndex(R.map)((i, index) => (
-            <NewsItem key={index} data={i} onPress={this.handleItemPress} />
-          ))(trends)
-        )}
+        {R.addIndex(R.map)((i, index) => (
+          <NewsItem key={index} data={i} onPress={this.handleItemPress} />
+        ))(trends)}
       </View>
     );
   }
