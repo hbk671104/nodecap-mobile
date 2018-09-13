@@ -18,7 +18,7 @@ import styles from './style';
 @connect(({ public_project, institution, loading }) => ({
   data: R.pathOr([], ['list', 'data'])(public_project),
   pagination: R.pathOr({}, ['list', 'pagination'])(public_project),
-  institution: R.pathOr([], ['list', 'data'])(institution),
+  institution: R.pathOr([], ['list'])(institution),
   loading: loading.effects['public_project/fetch'],
 }))
 export default class PublicProject extends Component {

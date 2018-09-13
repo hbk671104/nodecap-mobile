@@ -1,5 +1,4 @@
-// import { projectRecommendation, updateRecommendation } from '../services/api';
-import { getIndustries, getPublicProjects } from '../services/api';
+import { getPublicProjects } from '../services/api';
 
 export default {
   namespace: 'public_project',
@@ -8,7 +7,7 @@ export default {
     current: null,
   },
   effects: {
-    *fetch({ payload, callback }, { call, put }) {
+    *fetch({ payload }, { call, put }) {
       try {
         const { data } = yield call(getPublicProjects, {
           ...payload,

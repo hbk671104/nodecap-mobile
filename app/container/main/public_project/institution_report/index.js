@@ -24,6 +24,12 @@ import styles from './style';
   };
 })
 export default class InstitutionReport extends Component {
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'institution/clearReport',
+    });
+  }
+
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'institution/fetchReports',

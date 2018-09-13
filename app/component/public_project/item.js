@@ -28,7 +28,7 @@ const colorMap = [
 const publicProjectItem = ({ style, data, onPress }) => {
   const icon = R.pathOr('', ['icon'])(data);
   const project_name = R.pathOr('--', ['name'])(data);
-  const status = R.pathOr([], ['finance_status'])(data);
+  const status = R.pathOr('--', ['finance_status'])(data);
   const category = R.pathOr([], ['category'])(data);
   const description = R.pathOr('--', ['description'])(data);
 
@@ -50,7 +50,15 @@ const publicProjectItem = ({ style, data, onPress }) => {
                 {project_name}
               </Text>
             </View>
-            <Text style={styles.content.top.status}>{status}</Text>
+            <Text
+              style={[
+                styles.content.top.status,
+                status === '进行中' && { color: '#09AC32' },
+                status === '已结束' && { color: 'rgba(0, 0, 0, 0.45)' },
+              ]}
+            >
+              {status}
+            </Text>
           </View>
           <View style={styles.content.tag.wrapper}>
             {R.addIndex(R.map)((t, i) => {
@@ -59,7 +67,6 @@ const publicProjectItem = ({ style, data, onPress }) => {
                 i,
                 'backgroundColor',
               ])(colorMap);
-              const tag_name = t || '--';
               return (
                 <View
                   key={`${i}`}
@@ -68,7 +75,7 @@ const publicProjectItem = ({ style, data, onPress }) => {
                   <Text
                     style={[styles.content.tag.title, { color: textColor }]}
                   >
-                    {tag_name}
+                    {t || '--'}
                   </Text>
                 </View>
               );

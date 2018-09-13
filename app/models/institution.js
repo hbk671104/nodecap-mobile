@@ -19,7 +19,7 @@ export default {
         console.log(e);
       }
     },
-    *fetchReports({ callback, payload, id }, { call, put }) {
+    *fetchReports({ payload, id }, { call, put }) {
       try {
         const { data } = yield call(getReportsByIndustryId, id, payload);
         yield put({
