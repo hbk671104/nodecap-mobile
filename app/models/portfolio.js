@@ -16,6 +16,7 @@ import {
   createProjectInvestInfo,
   updateProjectInvestInfo,
   getNewsByCoinId,
+  getCoinFinanceInfo,
   editProject,
 } from '../services/api';
 import moment from 'moment';
@@ -295,6 +296,24 @@ export default {
         console.log(e);
       }
     },
+    *projectFinanceInfo({ payload: id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getCoinFinanceInfo, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            finance_info: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     /**
      * 项目详情
      * @param payload
@@ -348,6 +367,10 @@ export default {
           put.resolve({
             type: 'projectSymbol',
             payload,
+          }),
+          put.resolve({
+            type: 'projectFinanceInfo',
+            payload: coinId,
           }),
         ]);
       } catch (error) {

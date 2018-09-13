@@ -17,6 +17,7 @@ import Description from './page/description';
 import Pairs from './page/pairs';
 import Return from './page/return';
 import Trend from './page/trend';
+import Financing from './page/financing';
 import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Chart from './chart';
@@ -28,6 +29,10 @@ const selectionList = [
   {
     component: Trend,
     name: '动态',
+  },
+  {
+    component: Financing,
+    name: '募资信息',
   },
   {
     component: Pairs,

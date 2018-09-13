@@ -39,7 +39,7 @@ const styles = {
   container: {
     // marginTop: 25,
     height: navBarHeight,
-    paddingHorizontal: 12,
+    // paddingHorizontal: 12,
     flexDirection: 'row',
     backgroundColor: 'white',
   },

@@ -612,7 +612,11 @@ export function updateRecommendation(payload) {
 }
 
 export function getProjectFundStat(id) {
-  return request.get(`projects/${id}/funds-statistic`);
+  return request.get(`/projects/${id}/funds-statistic`);
+}
+
+export function getCoinFinanceInfo(cid) {
+  return request.get(`/coins/${cid}/finance-info`);
 }
 
 /**
