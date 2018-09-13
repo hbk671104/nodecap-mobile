@@ -32,13 +32,13 @@ export default class PublicProject extends Component {
     });
   };
 
-  handleItemPress = id => () => {
+  handleItemPress = item => () => {
     this.props.track('点击进入详情');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
         params: {
-          id,
+          item,
         },
       }),
     );
@@ -59,7 +59,7 @@ export default class PublicProject extends Component {
     <PublicProjectItem
       style={styles.item}
       data={item}
-      onPress={this.handleItemPress(item.id)}
+      onPress={this.handleItemPress(item)}
     />
   );
 

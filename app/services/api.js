@@ -619,6 +619,10 @@ export function getCoinFinanceInfo(cid) {
   return request.get(`/coins/${cid}/finance-info`);
 }
 
+export function getCoinInfo(cid) {
+  return request.get(`/coins/${cid}`);
+}
+
 /**
  * 注册验证码
  * @param mobile
