@@ -24,6 +24,7 @@ import Chart from './chart';
 import Fund from './fund';
 import Bottom from './bottom';
 import styles from './style';
+import StatusSelector from './statusSelector';
 
 const selectionList = [
   {
@@ -70,6 +71,7 @@ const selectionList = [
   withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
+  withState('showStatusSelector', 'toggleStatusSelector', false),
   withProps(({ animateY, can_calculate }) => ({
     headerWrapperYRange: animateY.interpolate({
       inputRange: [0, headerHeight],
@@ -140,16 +142,7 @@ export default class PortfolioDetail extends Component {
   };
 
   handleCoinMatchPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PortfolioDetailMatchCoinUpdate',
-        params: {
-          id: this.props.id,
-          coin: R.pathOr({}, ['portfolio', 'coin'])(this.props),
-          update: payload => this.updateDetail(payload),
-        },
-      }),
-    );
+    this.props.toggleStatusSelector(true);
   };
 
   handleRecordButtonPress = () => {
@@ -270,6 +263,13 @@ export default class PortfolioDetail extends Component {
           onRecordPress={this.handleRecordButtonPress}
           onStatusPress={this.handleStatusPress}
           onMatchPress={this.handleCoinMatchPress}
+        />
+        <StatusSelector
+          isVisible={this.props.showStatusSelector}
+          onCancel={() => this.props.toggleStatusSelector(false)}
+          onSubmit={() => {
+            this.props.toggleStatusSelector(false);
+          }}
         />
       </SafeArea>
     );
