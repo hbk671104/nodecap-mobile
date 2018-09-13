@@ -111,13 +111,6 @@ export default class Financing extends PureComponent {
     );
   };
 
-  renderContent = info => (
-    <View>
-      {this.renderSalesInfo(info)}
-      {this.renderTokenInfo(info)}
-    </View>
-  );
-
   render() {
     const { portfolio, loading, unmatched } = this.props;
 
@@ -142,7 +135,10 @@ export default class Financing extends PureComponent {
     }
 
     return (
-      <View style={styles.container}>{this.renderContent(finance_info)}</View>
+      <View style={styles.container}>
+        {this.renderSalesInfo(finance_info)}
+        {this.renderTokenInfo(finance_info)}
+      </View>
     );
   }
 }
