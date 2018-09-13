@@ -27,20 +27,20 @@ import styles from './style';
 
 const selectionList = [
   {
-    component: Trend,
-    name: '动态',
+    component: Description,
+    name: '详情',
   },
   {
     component: Financing,
     name: '募资信息',
   },
   {
-    component: Pairs,
-    name: '交易所',
+    component: Trend,
+    name: '动态',
   },
   {
-    component: Description,
-    name: '详情',
+    component: Pairs,
+    name: '交易所',
   },
   {
     component: Return,
@@ -67,10 +67,7 @@ const selectionList = [
   };
 })
 @compose(
-  withState('currentPage', 'setCurrentPage', {
-    component: Trend,
-    name: '动态',
-  }),
+  withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withProps(({ animateY, can_calculate }) => ({
     headerWrapperYRange: animateY.interpolate({
