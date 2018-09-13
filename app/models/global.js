@@ -91,12 +91,6 @@ export default {
           put.resolve({
             type: 'initRealm',
           }),
-          put.resolve({
-            type: 'institution/fetch',
-          }),
-          put.resolve({
-            type: 'public_project/fetch',
-          }),
         ]);
       } catch (e) {
         console.log(e);

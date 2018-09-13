@@ -15,17 +15,19 @@ import styles from './style';
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, institution, notification, loading }) => ({
+@connect(({ public_project, institution, loading }) => ({
   data: R.pathOr([], ['list'])(public_project),
-  institution: R.pathOr([], ['list', 'data'])(
-    institution,
-  ),
-  loading: loading.effects['notification/fetch'],
+  institution: R.pathOr([], ['list', 'data'])(institution),
+  loading: loading.effects['public_project/fetch'],
 }))
 export default class PublicProject extends Component {
-  requestData = (page, size, callback) => {
+  requestData = (page, size) => {
     this.props.dispatch({
-      type: 'notification/fetch',
+      type: 'public_project/fetch',
+      payload: {
+        currentPage: page,
+        pageSize: size,
+      },
     });
   };
 
@@ -41,7 +43,7 @@ export default class PublicProject extends Component {
     // );
   };
 
-  handleInstitutionItemPress = (item) => {
+  handleInstitutionItemPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionReport',

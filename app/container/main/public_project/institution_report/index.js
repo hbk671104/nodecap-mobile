@@ -17,26 +17,25 @@ import styles from './style';
 @connect(({ institution, loading }, props) => {
   const item = props.navigation.getParam('item');
   return {
-    data: R.pathOr([], ['list', 'data'])(institution),
-    pagination: R.pathOr([], ['list', 'pagination'])(institution),
-    loading: loading.effects['notification/fetch'],
-    id: item.id,
+    data: R.pathOr([], ['report', 'data'])(institution),
+    pagination: R.pathOr({}, ['report', 'pagination'])(institution),
+    loading: loading.effects['institution/fetchReports'],
     institution: item,
   };
 })
 export default class InstitutionReport extends Component {
-  requestData = (page, size, callback) => {
+  requestData = (page, size) => {
     this.props.dispatch({
       type: 'institution/fetchReports',
       payload: {
         currentPage: page,
         pageSize: size,
       },
-      id: this.props.id,
+      id: this.props.institution.id,
     });
   };
 
-  handleItemPress = (item) => {
+  handleItemPress = item => {
     this.props.track('点击进入详情');
     this.props.dispatch(
       NavigationActions.navigate({

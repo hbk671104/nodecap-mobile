@@ -35,8 +35,8 @@ export default options => {
         'notification/get',
         'recommendation/fetch',
         'recommendation/update',
-        'institution/fetch',
         'public_project/fetch',
+        'institution/fetchReports',
       ],
     }),
   );
