@@ -33,7 +33,7 @@ const publicProjectItem = ({ style, data, onPress }) => {
   const description = R.pathOr('--', ['description'])(data);
 
   return (
-    <Touchable foreground onPress={onPress(data.id)}>
+    <Touchable foreground onPress={onPress}>
       <View style={[styles.container, style]}>
         <Avatar
           size={50}
