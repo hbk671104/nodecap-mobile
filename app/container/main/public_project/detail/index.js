@@ -93,18 +93,6 @@ export default class PublicProjectDetail extends Component {
     });
   };
 
-  // updateDetail = payload => {
-  //   Toast.loading('更新中...', 0);
-  //   this.props.dispatch({
-  //     type: 'portfolio/updateProject',
-  //     id: this.props.id,
-  //     payload,
-  //     callback: () => {
-  //       Toast.hide();
-  //     },
-  //   });
-  // };
-
   handleStatusPress = () => {
     this.props.toggleStatusSelector(true);
   };

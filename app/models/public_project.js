@@ -99,12 +99,22 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, status, callback }, { all, call, put }) {
+    *favor({ payload, status, callback }, { all, call, put, select }) {
       try {
         const { data, status: response_status } = yield call(
           favorCoin,
           payload,
         );
+
+        const current = yield select(state =>
+          R.path(['public_project', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            id: R.path([0])(payload),
+          });
+        }
 
         if (!R.isNil(data) && !R.isEmpty(data)) {
           yield all(

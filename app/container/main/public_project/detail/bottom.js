@@ -8,16 +8,24 @@ import { shadow } from '../../../../utils/style';
 import { bottomTabHeight } from './style';
 
 const bottom = ({ onStatusPress, portfolio }) => {
-  const status = R.pathOr(0, ['status'])(portfolio);
+  const matched = R.pathOr(false, ['matched'])(portfolio);
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <Touchable
+          disabled={matched}
           style={styles.status.wrapper}
           onPress={() => onStatusPress()}
         >
-          <View style={styles.status.container}>
-            <Text style={styles.status.title}>添加至工作流</Text>
+          <View
+            style={[
+              styles.status.container,
+              matched && { backgroundColor: 'rgba(24, 144, 255, 0.6)' },
+            ]}
+          >
+            <Text style={styles.status.title}>
+              {matched ? '已添加至工作流' : '添加至工作流'}
+            </Text>
             <Image
               style={styles.status.triangle}
               source={require('asset/project/detail/triangle.png')}
@@ -50,7 +58,6 @@ const styles = {
       flex: 1,
       height: 39,
       borderRadius: 2,
-      backgroundColor: '#1890FF',
       marginHorizontal: 12,
     },
     container: {
