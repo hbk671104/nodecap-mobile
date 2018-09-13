@@ -6,11 +6,17 @@ import R from 'ramda';
 import Avatar from 'component/uikit/avatar';
 
 const memberItem = ({ data }) => {
+  const profile_pic = R.pathOr('', ['profile_pic'])(data);
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
   return (
     <View style={styles.container}>
-      <Avatar raised={false} size={40} innerRatio={1} />
+      <Avatar
+        source={{ uri: profile_pic }}
+        raised={false}
+        size={40}
+        innerRatio={1}
+      />
       <View style={styles.content.container}>
         <Text style={styles.content.title}>{name}</Text>
         <Text style={styles.content.subtitle}>{title}</Text>
