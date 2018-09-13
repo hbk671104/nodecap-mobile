@@ -510,7 +510,7 @@ export function createExternalProjectMembers({ projectId, member }) {
 }
 
 /**
- * 项目方提交募资信息
+ * 项目方提交募集信息
  * @param id
  * @param financing
  * @returns {AxiosPromise<any>}

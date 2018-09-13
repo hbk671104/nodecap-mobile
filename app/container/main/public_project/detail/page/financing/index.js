@@ -123,7 +123,7 @@ export default class Financing extends PureComponent {
       return (
         <Empty
           title="项目暂未匹配"
-          subtitle="通过上方立即匹配后即可查看募资信息"
+          subtitle="通过上方立即匹配后即可查看募集信息"
         />
       );
     }
@@ -132,7 +132,7 @@ export default class Financing extends PureComponent {
     const empty = R.isEmpty(finance_info);
 
     if (empty) {
-      return <Empty title="暂无募资信息" />;
+      return <Empty title="暂无募集信息" />;
     }
 
     return (

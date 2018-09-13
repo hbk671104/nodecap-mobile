@@ -32,7 +32,7 @@ const selectionList = [
   },
   {
     component: Financing,
-    name: '募资信息',
+    name: '募集信息',
   },
   {
     component: Trend,
