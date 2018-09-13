@@ -5,6 +5,7 @@ import {
   getCoinFinanceInfo,
   favorCoin,
 } from '../services/api';
+import R from 'ramda';
 
 export default {
   namespace: 'public_project',
@@ -98,12 +99,41 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, status, callback }, { call, put }) {
+    *favor({ payload, status, callback }, { all, call, put }) {
       try {
         const { data, status: response_status } = yield call(
           favorCoin,
           payload,
         );
+
+        if (!R.isNil(data) && !R.isEmpty(data)) {
+          yield all(
+            R.map(id =>
+              put.resolve({
+                type: 'portfolio/updateProject',
+                id,
+                payload: {
+                  status,
+                },
+              }),
+            )(data),
+          );
+
+          yield all([
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: '0,1,2,3,4,5,6',
+              },
+            }),
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: `${status}`,
+              },
+            }),
+          ]);
+        }
 
         if (callback) {
           yield call(callback, response_status === 200);

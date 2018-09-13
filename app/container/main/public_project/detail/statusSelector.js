@@ -113,6 +113,7 @@ class StatusSelector extends Component {
             <Flex alignItems="flex-start">
               {status.map((i, idx) => (
                 <TouchableOpacity
+                  key={idx}
                   activeOpacity={0.9}
                   onPress={() => this.props.setCurrent(i.status)}
                 >
