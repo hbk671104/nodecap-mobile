@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {
     flex: 1,
@@ -21,12 +23,12 @@ export default {
     color: '#0090FF',
   },
   site: {
-    marginTop: 15,
+    marginTop: 20,
   },
   ratingTitle: {
     marginTop: 5,
     paddingBottom: 10,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
   },
   ratingTitleText: {

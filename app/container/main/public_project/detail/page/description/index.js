@@ -1,14 +1,27 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Linking } from 'react-native';
+import { connect } from 'react-redux';
 import ReadMore from 'react-native-read-more-text';
 import { Flex } from 'antd-mobile';
+import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
-import { withState } from 'recompose';
 
 import styles from './style';
 
-@withState('textReady', 'setTextReady', false)
+@connect()
 export default class Description extends PureComponent {
+  handleDocPress = item => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionReportDetail',
+        params: {
+          pdf_url: item.path_url,
+          title: item.filename,
+        },
+      }),
+    );
+  };
+
   _renderTruncatedFooter = handlePress => {
     return (
       <Text style={styles.more} onPress={handlePress}>
@@ -24,12 +37,15 @@ export default class Description extends PureComponent {
       </Text>
     );
   };
+
   render() {
     const description = R.pathOr('', ['portfolio', 'description'])(this.props);
-    const siteUrl =
-      R.path(['portfolio', 'site_url'])(this.props) ||
-      R.path(['portfolio', 'coin', 'homepage'])(this.props);
-    const rating = R.pathOr([], ['portfolio', 'coin_rating'])(this.props);
+    const siteUrl = R.pathOr('', ['portfolio', 'homepage'])(this.props);
+    const white_papers = R.pathOr([], ['portfolio', 'white_papers'])(
+      this.props,
+    );
+    const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
+
     return (
       <View style={styles.container}>
         {R.not(R.isEmpty(description)) && (
@@ -44,7 +60,23 @@ export default class Description extends PureComponent {
             </ReadMore>
           </View>
         )}
-        {R.not(R.isNil(siteUrl)) && (
+        {R.not(R.isEmpty(white_papers)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>白皮书</Text>
+            <View>
+              {R.map(w => (
+                <Text
+                  key={w.id}
+                  style={styles.link}
+                  onPress={() => this.handleDocPress(w)}
+                >
+                  查看 {w.filename}
+                </Text>
+              ))(white_papers)}
+            </View>
+          </View>
+        )}
+        {R.not(R.isEmpty(siteUrl)) && (
           <View>
             <Text style={[styles.title, styles.site]}>官网</Text>
             <Text style={styles.link} onPress={() => Linking.openURL(siteUrl)}>

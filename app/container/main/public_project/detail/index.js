@@ -3,7 +3,6 @@ import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
-import { NavigationActions } from 'react-navigation';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { Toast } from 'antd-mobile';
 
