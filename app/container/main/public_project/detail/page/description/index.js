@@ -6,7 +6,7 @@ import { Flex } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
-import MemberItem from './member';
+import MemberItem from 'component/project/description/member';
 import styles from './style';
 
 @connect()

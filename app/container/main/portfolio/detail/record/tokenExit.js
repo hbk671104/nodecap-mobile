@@ -6,7 +6,7 @@ import moment from 'moment';
 import Group from 'component/project/group';
 import Accounting from 'accounting';
 
-import { renderField } from './field';
+import { renderField } from 'component/project/field';
 import Empty from './empty';
 import styles from './investmentStyle';
 

@@ -5,7 +5,7 @@ import moment from 'moment';
 
 import Empty from '../empty';
 import Group from './component/group';
-import { renderField as Field } from '../../record/field';
+import { renderField as Field } from 'component/project/field';
 import styles from './style';
 
 export default class Financing extends PureComponent {
