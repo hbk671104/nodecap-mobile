@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
-import { shadow } from '../../../utils/style';
+
+const deviceWidth = Dimensions.get('window').width;
 
 const header = ({ style, data, onItemPress }) => (
-  <ScrollView
-    style={[styles.container, style]}
-    contentContainerStyle={styles.content}
-    horizontal
-    showsHorizontalScrollIndicator={false}
-  >
+  <View style={[styles.container, style]}>
     {R.addIndex(R.map)((i, index) => {
       return (
         <Touchable key={index} foreground onPress={() => onItemPress(i)}>
@@ -29,13 +25,14 @@ const header = ({ style, data, onItemPress }) => (
         </Touchable>
       );
     })(data)}
-  </ScrollView>
+  </View>
 );
 
 const styles = {
   container: {
-    height: 98,
     backgroundColor: 'white',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   },
   content: {
     alignItems: 'center',
@@ -43,13 +40,11 @@ const styles = {
   },
   item: {
     container: {
-      width: 110,
+      width: deviceWidth / 4,
       height: 68,
       justifyContent: 'center',
       alignItems: 'center',
       backgroundColor: 'white',
-      margin: 5,
-      ...shadow,
     },
     title: {
       fontSize: 12,

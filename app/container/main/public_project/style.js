@@ -4,7 +4,7 @@ export default {
     backgroundColor: 'white',
   },
   header: {
-    marginBottom: 10,
+    marginBottom: 5,
   },
   list: {
     backgroundColor: '#F9F9F9',
