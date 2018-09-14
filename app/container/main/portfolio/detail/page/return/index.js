@@ -23,7 +23,7 @@ export default class Return extends PureComponent {
 
     if (unmatched) {
       return (
-        <Empty title="项目暂未匹配" subtitle="通过上方立即匹配后即可查看" />
+        <Empty title="项目暂未匹配" subtitle="通过下方立即匹配后即可查看" />
       );
     }
 

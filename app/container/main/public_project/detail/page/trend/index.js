@@ -33,7 +33,7 @@ export default class Trend extends PureComponent {
       return (
         <Empty
           title="项目暂未匹配"
-          subtitle="通过上方立即匹配后即可查看项目动态"
+          subtitle="通过下方立即匹配后即可查看项目动态"
         />
       );
     }

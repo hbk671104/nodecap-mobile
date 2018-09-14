@@ -123,7 +123,7 @@ export default class Financing extends PureComponent {
       return (
         <Empty
           title="项目暂未匹配"
-          subtitle="通过上方立即匹配后即可查看募集信息"
+          subtitle="通过下方立即匹配后即可查看募集信息"
         />
       );
     }
