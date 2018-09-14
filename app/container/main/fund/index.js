@@ -6,6 +6,8 @@ import R from 'ramda';
 import { compose, withState } from 'recompose';
 import JPush from 'jpush-react-native';
 
+import Modal from 'component/modal';
+import Update from 'component/update';
 import NavBar from 'component/navBar';
 import FundWrapper from './wrapper';
 import styles from './style';
@@ -15,7 +17,7 @@ import { handleOpen } from '../../../utils/jpush_handler';
   page: '基金管理',
   name: 'App_FundManagementOperation',
 })
-@connect(({ fund }) => ({
+@connect(({ fund, update }) => ({
   routes: R.pipe(
     R.pathOr([], ['funds']),
     R.map(f => ({
@@ -23,6 +25,7 @@ import { handleOpen } from '../../../utils/jpush_handler';
       title: f.name,
     })),
   )(fund),
+  modal_visible: R.path(['modal_visible'])(update),
 }))
 @compose(withState('index', 'setIndex', 0))
 class Fund extends Component {
@@ -34,6 +37,7 @@ class Fund extends Component {
     if (this.state.isIOS) {
       JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
     }
+    this.toggleModal();
   }
 
   handleOpenLaunchNotification = result => {
@@ -50,6 +54,12 @@ class Fund extends Component {
   handleIndexChange = index => {
     this.props.setIndex(index, () => {
       this.props.track('Tab切换', { subModuleName: index });
+    });
+  };
+
+  toggleModal = () => {
+    this.props.dispatch({
+      type: 'update/toggle',
     });
   };
 
@@ -107,7 +117,7 @@ class Fund extends Component {
   };
 
   render() {
-    const { index, routes } = this.props;
+    const { index, routes, modal_visible } = this.props;
     return (
       <View style={styles.container}>
         <TabView
@@ -120,6 +130,15 @@ class Fund extends Component {
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
+        <Modal
+          style={{ alignItems: 'center' }}
+          isVisible={modal_visible}
+          useNativeDriver
+          hideModalContentWhileAnimating
+          onBackdropPress={this.toggleModal}
+        >
+          <Update />
+        </Modal>
       </View>
     );
   }
