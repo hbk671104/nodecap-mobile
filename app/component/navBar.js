@@ -104,7 +104,11 @@ class NavBar extends Component {
                 </Animated.View>
                 <View style={styles.group.left}>
                   {back && (
-                    <Touchable borderless onPress={this.handleBackAction}>
+                    <Touchable
+                      hitSlop={styles.back.hitSlop}
+                      borderless
+                      onPress={this.handleBackAction}
+                    >
                       <Icon
                         style={[
                           {
@@ -190,6 +194,14 @@ const styles = {
     wrapper: {
       height: 0,
       opacity: 0,
+    },
+  },
+  back: {
+    hitSlop: {
+      top: 20,
+      right: 20,
+      bottom: 20,
+      left: 20,
     },
   },
 };

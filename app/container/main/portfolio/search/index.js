@@ -13,6 +13,10 @@ import Touchable from 'component/uikit/touchable';
 import UnexchangeableItem from 'component/project/unexchangeable';
 import styles from './style';
 
+@global.bindTrack({
+  page: '项目搜索',
+  name: 'App_PortfolioSearchOperation',
+})
 @connect(({ portfolio }) => ({
   data: R.pathOr(null, ['searchList', 'index', 'data'])(portfolio),
 }))

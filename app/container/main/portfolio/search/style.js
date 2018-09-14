@@ -18,8 +18,8 @@ export default {
       marginRight: 40,
     },
     bar: {
-      paddingLeft: 12,
-      paddingRight: 32,
+      // paddingLeft: 12,
+      // paddingRight: 32,
     },
     cancel: {
       container: {

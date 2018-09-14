@@ -13,16 +13,10 @@ const bottom = ({ onStatusPress, portfolio }) => {
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <Touchable
-          disabled={matched}
           style={styles.status.wrapper}
           onPress={() => onStatusPress()}
         >
-          <View
-            style={[
-              styles.status.container,
-              matched && { backgroundColor: 'rgba(24, 144, 255, 0.6)' },
-            ]}
-          >
+          <View style={[styles.status.container]}>
             <Text style={styles.status.title}>
               {matched ? '已添加至工作流' : '添加至工作流'}
             </Text>

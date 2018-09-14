@@ -93,8 +93,17 @@ export default class PublicProjectDetail extends Component {
     });
   };
 
+  showToast = () => {
+    Toast.info('可在投资库中管理该项目');
+  };
+
   handleStatusPress = () => {
-    this.props.toggleStatusSelector(true);
+    const matched = R.pathOr(false, ['matched'])(this.props.portfolio);
+    if (matched) {
+      this.showToast();
+    } else {
+      this.props.toggleStatusSelector(true);
+    }
   };
 
   handlePageSwitch = page => () => {
@@ -117,6 +126,7 @@ export default class PublicProjectDetail extends Component {
       callback: success => {
         if (success) {
           this.props.toggleStatusSelector();
+          this.showToast();
         }
       },
     });

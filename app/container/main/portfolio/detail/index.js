@@ -165,6 +165,9 @@ export default class PortfolioDetail extends Component {
 
   handlePageSwitch = page => () => {
     this.props.setCurrentPage(page, () => {
+      if (!this.props.can_calculate) {
+        return;
+      }
       this.scroll
         .getNode()
         .scrollTo({ y: this.props.selectorY, animated: true });
