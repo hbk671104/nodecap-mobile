@@ -12,6 +12,7 @@ const header = ({ style, data, onItemPress }) => (
     style={[styles.container, style]}
     contentContainerStyle={styles.content}
     horizontal
+    showsHorizontalScrollIndicator={false}
   >
     {R.addIndex(R.map)((i, index) => {
       return (

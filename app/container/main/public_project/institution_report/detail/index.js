@@ -31,12 +31,22 @@ export default class InstitutionReportDetail extends Component {
 
   render() {
     const { navigation, navBarHidden } = this.props;
-    const pdf_url = navigation.getParam('pdf_url');
+    let pdf_url = navigation.getParam('pdf_url');
+    pdf_url = decodeURI(pdf_url);
+    pdf_url = encodeURI(pdf_url);
+
     const title = navigation.getParam('title');
 
     return (
       <View style={styles.container}>
-        {R.not(navBarHidden) && <NavBar gradient back title={title} />}
+        {R.not(navBarHidden) && (
+          <NavBar
+            gradient
+            back
+            title={title}
+            titleContainerStyle={{ paddingHorizontal: 30 }}
+          />
+        )}
         <PDF
           style={styles.pdf}
           source={{

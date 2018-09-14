@@ -51,7 +51,16 @@ export const persist = callback => {
     app._store,
     {
       storage: AsyncStorage,
-      whitelist: ['login', 'global', 'app', 'fund', 'user'],
+      whitelist: [
+        'login',
+        'global',
+        'app',
+        'fund',
+        'user',
+        'institution',
+        'public_project',
+        'notification',
+      ],
     },
     callback,
   );
