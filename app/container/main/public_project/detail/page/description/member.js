@@ -18,8 +18,8 @@ const memberItem = ({ data }) => {
         innerRatio={1}
       />
       <View style={styles.content.container}>
-        <Text style={styles.content.title}>{name}</Text>
-        <Text style={styles.content.subtitle}>{title}</Text>
+        <Text style={styles.content.title}>{R.trim(name)}</Text>
+        <Text style={styles.content.subtitle}>{R.trim(title)}</Text>
       </View>
     </View>
   );

@@ -32,10 +32,11 @@ export default {
     borderBottomColor: '#E9E9E9',
   },
   ratingTitleText: {
-    color: '#4A4A4A',
+    color: 'rgba(0, 0, 0, 0.85)',
   },
   ratingItemText: {
-    color: '#0090FF',
+    color: '#1890FF',
+    fontWeight: 'bold',
   },
   ratingItem: {
     marginTop: 10,

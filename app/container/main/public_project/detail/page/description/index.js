@@ -47,6 +47,8 @@ export default class Description extends PureComponent {
     );
     const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
+    const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
 
     return (
       <View style={styles.container}>
@@ -86,27 +88,29 @@ export default class Description extends PureComponent {
             </Text>
           </View>
         )}
-        {R.not(R.isEmpty(rating)) && (
+        {R.not(R.isEmpty(invest_score) && R.isEmpty(risk_score)) && (
           <View>
             <Text style={[styles.title, styles.site]}>评级信息</Text>
-            <Flex style={styles.ratingTitle} justify="space-between">
-              <Text style={styles.ratingTitleText}>机构</Text>
-              <Text style={[styles.ratingTitleText, { width: 80 }]}>评级</Text>
-            </Flex>
-            <View>
-              {rating.map(i => (
-                <Flex
-                  key={i.id}
-                  style={styles.ratingItem}
-                  justify="space-between"
-                >
-                  <Text style={styles.ratingTitleText}>{i.rating_name}</Text>
-                  <Text style={[styles.ratingItemText, { width: 80 }]}>
-                    {i.grade}
+            <Flex style={styles.ratingItem}>
+              {R.not(R.isEmpty(invest_score)) && (
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.ratingTitleText}>
+                    投资评分
+                    {'   '}
+                    <Text style={styles.ratingItemText}>{invest_score}</Text>
                   </Text>
-                </Flex>
-              ))}
-            </View>
+                </View>
+              )}
+              {R.not(R.isEmpty(risk_score)) && (
+                <View style={{ flex: 1 }}>
+                  <Text style={styles.ratingTitleText}>
+                    风险评估
+                    {'   '}
+                    <Text style={styles.ratingItemText}>{risk_score}</Text>
+                  </Text>
+                </View>
+              )}
+            </Flex>
           </View>
         )}
         {R.not(R.isEmpty(members)) && (

@@ -13,7 +13,9 @@ export const renderField = ({ name, value, style, titleStyle, valueStyle }) => {
     <View style={[styles.field, style]}>
       <Flex align="center">
         <Text style={[styles.fieldName, titleStyle]}>{name}</Text>
-        <Text style={[styles.fieldValue, valueStyle]}>{value}</Text>
+        <View style={{ flex: 1, marginLeft: 12, alignItems: 'flex-end' }}>
+          <Text style={[styles.fieldValue, valueStyle]}>{value}</Text>
+        </View>
       </Flex>
     </View>
   );
@@ -32,9 +34,6 @@ const styles = {
     color: '#999999',
   },
   fieldValue: {
-    flex: 1,
     color: '#333333',
-    marginLeft: 15,
-    textAlign: 'right',
   },
 };
