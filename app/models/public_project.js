@@ -7,6 +7,27 @@ import {
 } from '../services/api';
 import R from 'ramda';
 
+const paginate = (state, action) => {
+  const oldData = R.pathOr([], ['list', 'data'])(state);
+  const newData = R.pathOr([], ['payload', 'data'])(action);
+  const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
+  const oldPagination = R.pathOr({}, ['list', 'pagination'])(state);
+  if (R.path(['current'])(pagination) === 1) {
+    return action.payload;
+  }
+
+  if (R.path(['current'])(pagination) === R.path(['current'])(oldPagination)) {
+    return {
+      ...state.list,
+    };
+  }
+
+  return {
+    ...action.payload,
+    data: R.concat(oldData, newData),
+  };
+};
+
 export default {
   namespace: 'public_project',
   state: {
@@ -157,7 +178,7 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: action.payload,
+        list: paginate(state, action),
       };
     },
     current(state, action) {
