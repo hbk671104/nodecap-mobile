@@ -107,11 +107,7 @@ export default class PublicProjectDetail extends Component {
   };
 
   handlePageSwitch = page => () => {
-    this.props.setCurrentPage(page, () => {
-      this.scroll
-        .getNode()
-        .scrollTo({ y: this.props.selectorY, animated: true });
-    });
+    this.props.setCurrentPage(page);
   };
 
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
@@ -189,9 +185,6 @@ export default class PublicProjectDetail extends Component {
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView
-          ref={ref => {
-            this.scroll = ref;
-          }}
           contentContainerStyle={{
             paddingTop: headerHeight,
           }}

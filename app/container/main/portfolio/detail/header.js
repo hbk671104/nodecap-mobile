@@ -24,9 +24,7 @@ const header = ({
   const token = R.pathOr('--', ['token_name'])(data);
   const logo = R.pathOr('', ['logo_url'])(data);
 
-  const current_price = R.pathOr('--', ['stats', 'current_price', base_symbol])(
-    data,
-  );
+  const current_price = R.pathOr('--', ['stats', 'current_price', 'CNY'])(data);
   const price_change_percentage_24h = R.pathOr('--', [
     'stats',
     'price_change_percentage_24h',
@@ -34,7 +32,7 @@ const header = ({
   const total_volume = R.pathOr('--', ['stats', 'total_volume', base_symbol])(
     data,
   );
-  const high_24h = R.pathOr('--', ['stats', 'high_24h', base_symbol])(data);
+  const high_24h = R.pathOr('--', ['stats', 'high_24h', 'CNY'])(data);
 
   const desc = R.pathOr('--', ['description'])(data);
 
@@ -63,8 +61,8 @@ const header = ({
           <View style={styles.bottom.container}>
             <Shimmer animating={stat_loading}>
               <Text style={styles.bottom.title}>
-                {symbol(base_symbol, styles.bottom.title)}
-                <Price symbol={base_symbol}>{current_price}</Price>
+                {symbol('CNY', styles.bottom.title)}
+                <Price symbol="CNY">{current_price}</Price>
               </Text>
             </Shimmer>
             <Shimmer style={{ marginLeft: 15 }} animating={stat_loading}>

@@ -18,7 +18,7 @@ import styles from './style';
   const item = props.navigation.getParam('item');
   return {
     data: R.pathOr([], ['report', 'data'])(institution),
-    pagination: R.pathOr({}, ['report', 'pagination'])(institution),
+    pagination: R.pathOr(null, ['report', 'pagination'])(institution),
     loading: loading.effects['institution/fetchReports'],
     institution: item,
   };
