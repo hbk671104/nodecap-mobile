@@ -22,9 +22,15 @@ import {
 import moment from 'moment';
 
 const paginate = (state, action, key) => {
-  const oldData = R.pathOr([], [key, 'index', 'data'])(state);
-  const newData = R.pathOr([], ['payload', 'data'])(action);
-  const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
+  const old = R.path([key, 'index'])(state);
+  const oldData = R.pathOr([], ['data'])(old);
+  const oldPagination = R.pathOr({}, ['pagination'])(old);
+  const oldCurrent = R.path(['current'])(oldPagination);
+
+  const payload = R.path(['payload'])(action);
+  const newData = R.pathOr([], ['data'])(payload);
+  const pagination = R.pathOr({}, ['pagination'])(payload);
+  const current = R.path(['current'])(pagination);
 
   const oldRank = R.pathOr({}, [key, 'params', 'rank'])(state);
   const newRank = R.pathOr({}, ['params', 'rank'])(action);
@@ -34,17 +40,21 @@ const paginate = (state, action, key) => {
     !R.isEmpty(newRank) &&
     !R.equals(oldRank, newRank)
   ) {
-    return action.payload;
+    return payload;
   }
 
-  if (R.path(['current'])(pagination) === 1) {
-    return action.payload;
+  if (current === 1) {
+    return payload;
   }
 
-  return {
-    ...action.payload,
-    data: R.concat(oldData, newData),
-  };
+  if (current - oldCurrent === 1) {
+    return {
+      ...payload,
+      data: R.concat(oldData, newData),
+    };
+  }
+
+  return old;
 };
 
 export default {

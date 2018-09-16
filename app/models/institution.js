@@ -1,5 +1,5 @@
-// import { projectRecommendation, updateRecommendation } from '../services/api';
 import { getIndustries, getReportsByIndustryId } from '../services/api';
+import { paginate } from '../utils/pagination';
 
 export default {
   namespace: 'institution',
@@ -35,7 +35,7 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: action.payload,
+        list: paginate(state.list, action.payload),
       };
     },
     report(state, action) {

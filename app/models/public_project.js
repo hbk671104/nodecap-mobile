@@ -21,7 +21,6 @@ export default {
           ...payload,
         });
 
-        console.log(data);
         yield put({
           type: 'list',
           payload: data,

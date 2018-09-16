@@ -1,5 +1,6 @@
 import { trendList, trendDetail } from '../services/api';
 import R from 'ramda';
+import { paginate } from '../utils/pagination';
 
 export default {
   namespace: 'notification',
