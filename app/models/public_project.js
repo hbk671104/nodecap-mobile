@@ -6,27 +6,7 @@ import {
   favorCoin,
 } from '../services/api';
 import R from 'ramda';
-
-const paginate = (state, action) => {
-  const oldData = R.pathOr([], ['list', 'data'])(state);
-  const newData = R.pathOr([], ['payload', 'data'])(action);
-  const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
-  const oldPagination = R.pathOr({}, ['list', 'pagination'])(state);
-  if (R.path(['current'])(pagination) === 1) {
-    return action.payload;
-  }
-
-  if (R.path(['current'])(pagination) === R.path(['current'])(oldPagination)) {
-    return {
-      ...state.list,
-    };
-  }
-
-  return {
-    ...action.payload,
-    data: R.concat(oldData, newData),
-  };
-};
+import { paginate } from '../utils/pagination';
 
 export default {
   namespace: 'public_project',
@@ -41,6 +21,7 @@ export default {
           ...payload,
         });
 
+        console.log(data);
         yield put({
           type: 'list',
           payload: data,
@@ -178,7 +159,7 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: paginate(state, action),
+        list: paginate(state.list, action.payload),
       };
     },
     current(state, action) {
