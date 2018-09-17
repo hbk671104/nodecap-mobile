@@ -11,7 +11,7 @@ export default {
 
   state: {
     status: undefined,
-    in_individual: false,
+    in_individual: true,
   },
 
   effects: {
