@@ -38,7 +38,7 @@ class Recommendation extends Component {
   handleNext = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'Portfolio',
+        routeName: 'Portfolio', // 这里路由到个人版的关注
         params: {
           fromRecommendation: true,
         },

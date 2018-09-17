@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, Alert, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
@@ -62,7 +62,21 @@ class Self extends Component {
   };
 
   handleSwitchEndPress = () => {
-    this.props.dispatch({ type: 'login/switch' });
+    const { in_individual } = this.props;
+    Alert.alert(
+      '提示',
+      `是否切换至「${in_individual ? '机构版' : '个人版'}」`,
+      [
+        {
+          text: '切换',
+          onPress: () => this.props.dispatch({ type: 'login/switch' }),
+        },
+        {
+          text: '取消',
+          style: 'cancel',
+        },
+      ],
+    );
   };
 
   renderNavBar = () => (
@@ -103,6 +117,11 @@ class Self extends Component {
           <Item
             icon={require('asset/mine/switch_end.png')}
             title={`切换至${in_individual ? '机构版' : '个人版'}`}
+            subtitle={
+              in_individual
+                ? '若您是机构投资人，可管理机构项目及工作流协作'
+                : '可进行个人投资项目管理和资讯获取'
+            }
             onPress={this.handleSwitchEndPress}
           />
         </ScrollView>

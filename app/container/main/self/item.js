@@ -5,28 +5,42 @@ import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 import Badge from 'component/uikit/badge';
 
-const item = ({ icon, title, badge, onPress }) => (
+const item = ({ icon, title, subtitle, badge, onPress }) => (
   <Touchable foreground onPress={onPress}>
     <View style={styles.container}>
-      <Image resizeMode="contain" style={styles.icon} source={icon} />
-      <View style={styles.group}>
-        <Text style={styles.title}>{title}</Text>
+      <View style={styles.top}>
+        <Image resizeMode="contain" style={styles.icon} source={icon} />
+        <View style={styles.group}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={styles.badge.container}>
+          <Badge value={badge} />
+        </View>
+        <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
       </View>
-      <View style={styles.badge.container}>
-        <Badge value={badge} />
-      </View>
-      <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
+      {!!subtitle && (
+        <View style={styles.bottom}>
+          <Text style={styles.subtitle}>{subtitle}</Text>
+        </View>
+      )}
     </View>
   </Touchable>
 );
 
 const styles = {
   container: {
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
+    minHeight: 50,
     paddingLeft: 12,
     paddingRight: 24,
+    justifyContent: 'center',
+  },
+  top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  bottom: {
+    paddingLeft: 18 + 15,
+    marginTop: 4,
   },
   icon: {
     height: 18,
@@ -35,6 +49,10 @@ const styles = {
   title: {
     fontSize: 14,
     color: 'rgba(0, 0, 0, 0.85)',
+  },
+  subtitle: {
+    fontSize: 11,
+    color: 'rgba(0, 0, 0, 0.45)',
   },
   group: {
     flex: 1,
@@ -54,6 +72,7 @@ item.defaultProps = {
 item.propTypes = {
   icon: PropTypes.number,
   title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
   badge: PropTypes.number,
   onPress: PropTypes.func,
 };

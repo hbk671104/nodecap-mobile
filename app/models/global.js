@@ -19,7 +19,7 @@ export default {
   },
 
   effects: {
-    *bootstrap({ callback }, { call, put, all }) {
+    *bootstrap({ callback }, { call, put, all, select }) {
       try {
         // put => non-blocking, put.resolve => blocking
         yield all([
@@ -31,15 +31,19 @@ export default {
           }),
         ]);
 
-        const recommended = yield call(
-          Storage.get,
-          'project_recommended',
-          false,
+        // const recommended = yield call(
+        //   Storage.get,
+        //   'project_recommended',
+        //   false,
+        // );
+
+        const in_individual = yield select(state =>
+          R.path(['login', 'in_individual'])(state),
         );
 
         yield put(
           NavigationActions.navigate({
-            routeName: recommended ? 'Main' : 'Recommendation',
+            routeName: in_individual ? 'Individual' : 'Main',
           }),
         );
 
