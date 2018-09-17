@@ -23,6 +23,7 @@ import notificationModel from './app/models/notification';
 import recommendationModel from './app/models/recommendation';
 import publicProjectModel from './app/models/public_project';
 import institutionModel from './app/models/institution';
+import newsModel from './app/models/news';
 
 export const app = dva({
   initialState: {},
@@ -41,6 +42,7 @@ export const app = dva({
     recommendationModel,
     publicProjectModel,
     institutionModel,
+    newsModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -60,6 +62,7 @@ export const persist = callback => {
         'institution',
         'public_project',
         'notification',
+        'news',
       ],
     },
     callback,

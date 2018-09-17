@@ -683,3 +683,15 @@ export function getReportsByIndustryId(id, params = {}) {
     params: paramsTransform(params),
   });
 }
+
+export function getLiveList(lastId) {
+  return request.get('http://api.coindog.com/live/list', {
+    params: {
+      limit: 25,
+      ...lastId ? {
+        id: lastId,
+        flag: 'down',
+      } : {},
+    },
+  });
+}
