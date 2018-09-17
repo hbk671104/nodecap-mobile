@@ -20,6 +20,7 @@ import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
 import { handleTabBarPress } from './utils/tabbar_handler';
+import { shadow } from './utils/style';
 
 // Screen
 import Loader from 'container/loader';
@@ -138,6 +139,8 @@ const Tab = createBottomTabNavigator(
     tabBarOptions: {
       style: {
         backgroundColor: 'white',
+        borderTopWidth: 0,
+        ...shadow,
       },
       activeTintColor: '#1890FF',
       inactiveTintColor: '#999999',
@@ -195,10 +198,68 @@ const MainStack = createStackNavigator(
   },
 );
 
+const IndividualTab = createBottomTabNavigator(
+  {
+    // Dashboard,
+    Onboard: {
+      screen: PublicProject,
+      navigationOptions: {
+        title: '首页',
+      },
+    },
+    Trending: {
+      screen: NotificationCenter,
+      navigationOptions: {
+        title: '动态',
+      },
+    },
+    // Following: {
+    //   screen: Portfolio,
+    //   navigationOptions: {
+    //     title: '投资库',
+    //   },
+    // },
+    Self: {
+      screen: Self,
+      navigationOptions: {
+        title: '我的',
+      },
+    },
+  },
+  {
+    backBehavior: 'none',
+    tabBarOptions: {
+      style: {
+        backgroundColor: 'white',
+        borderTopWidth: 0,
+        ...shadow,
+      },
+      activeTintColor: '#1890FF',
+      inactiveTintColor: '#999999',
+    },
+    navigationOptions: ({ navigation: { state } }) => ({
+      tabBarIcon: ({ focused }) => {
+        const { routeName } = state;
+        return <BadgeTabIcon route={routeName} focused={focused} />;
+      },
+    }),
+  },
+);
+
+const IndividualStack = createStackNavigator(
+  {
+    IndividualTab,
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
 const AppRouter = createSwitchNavigator(
   {
     Auth: AuthStack,
     Main: MainStack,
+    Individual: IndividualStack,
     CodePush: CodePushPage,
     Landing: Loader,
   },

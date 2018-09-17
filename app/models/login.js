@@ -4,12 +4,14 @@ import { login, setPassword } from '../services/api';
 import request from '../utils/request';
 import { NavigationActions } from 'react-navigation';
 import { clearKeychain } from '../utils/keychain';
+import R from 'ramda';
 
 export default {
   namespace: 'login',
 
   state: {
     status: undefined,
+    in_individual: false,
   },
 
   effects: {
@@ -98,9 +100,63 @@ export default {
         );
       }
     },
+    *switch(_, { put, select }) {
+      const in_individual = yield select(state =>
+        R.path(['login', 'in_individual'])(state),
+      );
+      const companies = yield select(state =>
+        R.path(['login', 'companies'])(state),
+      );
+      const user = yield select(state =>
+        R.path(['user', 'currentUser'])(state),
+      );
+      const realname = R.path(['realname'])(user);
+      const companyName = R.path([0, 'name'])(companies);
+      const companyID = R.path([0, 'id'])(companies);
+      const input = {
+        realname,
+        companyName,
+        companyID,
+      };
+      try {
+        if (in_individual) {
+          request.defaults.headers.common['X-Company-ID'] = companyID;
+          JPush.setTags([`company_${companyID}`], () => null);
+          global.setProfile({
+            ...input,
+            client_type: '企业版',
+          });
+        } else {
+          request.defaults.headers.common['X-Company-ID'] = null;
+          JPush.cleanTags(() => null);
+          global.setProfile({
+            ...input,
+            client_type: '个人版',
+          });
+        }
+
+        yield put(
+          routerRedux.navigate({
+            routeName: in_individual ? 'Main' : 'Individual',
+          }),
+        );
+
+        yield put({
+          type: 'switchVersion',
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 
   reducers: {
+    switchVersion(state) {
+      return {
+        ...state,
+        in_individual: R.not(state.in_individual),
+      };
+    },
     changeLoginStatus(state, { payload }) {
       return {
         ...state,

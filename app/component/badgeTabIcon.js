@@ -11,6 +11,7 @@ const source = ({ route, focused }) => {
         ? require('asset/tabIcon/fund-sel.png')
         : require('asset/tabIcon/fund.png');
     case 'PublicProject':
+    case 'Onboard':
       return focused
         ? require('asset/tabIcon/portfolio_highlight.png')
         : require('asset/tabIcon/portfolio.png');
@@ -20,6 +21,7 @@ const source = ({ route, focused }) => {
         ? require('asset/tabIcon/asset_highlight.png')
         : require('asset/tabIcon/asset.png');
     case 'NotificationCenter':
+    case 'Trending':
       return focused
         ? require('asset/tabIcon/notification_center_selected.png')
         : require('asset/tabIcon/notification_center.png');

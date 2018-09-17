@@ -92,11 +92,7 @@ export default {
         };
 
         // sensor user init
-        if (Platform.OS === 'ios') {
-          global.s().set(input);
-        } else {
-          global.s().profileSet(input);
-        }
+        global.setProfile(input);
 
         // resume push
         JPush.resumePush();
