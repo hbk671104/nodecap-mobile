@@ -26,6 +26,7 @@ export default {
         marginLeft: 10,
         flexDirection: 'row',
         alignItems: 'center',
+        flex: 1,
       },
       text: {
         color: '#333333',

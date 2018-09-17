@@ -30,6 +30,10 @@ import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
 import Recommendation from 'container/auth/recommendation';
 import Dashboard from 'container/main/dashboard';
+import PublicProject from 'container/main/public_project';
+import PublicProjectDetail from 'container/main/public_project/detail';
+import InstitutionReport from 'container/main/public_project/institution_report';
+import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
@@ -86,16 +90,22 @@ const AuthStack = createStackNavigator(
 const Tab = createBottomTabNavigator(
   {
     // Dashboard,
-    Fund: {
-      screen: Fund,
+    PublicProject: {
+      screen: PublicProject,
       navigationOptions: {
-        title: '基金管理',
+        title: '项目公海',
       },
     },
     Portfolio: {
       screen: Portfolio,
       navigationOptions: {
         title: '投资库',
+      },
+    },
+    Fund: {
+      screen: Fund,
+      navigationOptions: {
+        title: '基金管理',
       },
     },
     // Management: {
@@ -144,6 +154,9 @@ const Tab = createBottomTabNavigator(
 const MainStack = createStackNavigator(
   {
     Tab,
+    PublicProjectDetail,
+    InstitutionReport,
+    InstitutionReportDetail,
     FundProject,
     PortfolioDetail,
     PortfolioRecord,

@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import R from 'ramda';
 import moment from 'moment';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import {
   VictoryAxis,
   VictoryChart,
@@ -12,6 +12,8 @@ import {
 import PlaceHolder from 'component/loading_placeholder';
 import Touchable from 'component/uikit/touchable';
 import { priceFormat } from 'component/price';
+
+import Empty from './page/empty';
 
 const chartHeight = 215;
 const barHeight = 20;
@@ -101,7 +103,7 @@ class Chart extends PureComponent {
     if (R.length(data) <= 1) {
       return (
         <View style={styles.empty.container}>
-          <Text>点数不够</Text>
+          <Empty title="暂无数据" />
         </View>
       );
     }
@@ -110,7 +112,7 @@ class Chart extends PureComponent {
     const chartPadding = {
       ...styles.chart,
       ...(currentSym === 'USD' || currentSym === 'USDT' || currentSym === 'CNY'
-        ? { left: 60 }
+        ? { left: 66 }
         : {}),
     };
 
@@ -138,6 +140,7 @@ class Chart extends PureComponent {
             tickFormat={y => priceFormat({ symbol: currentSym, text: y })}
           />
           <VictoryLine
+            // animate
             style={styles.line}
             interpolation="natural"
             data={data}
@@ -145,6 +148,7 @@ class Chart extends PureComponent {
             y="price"
           />
           <VictoryArea
+            // animate
             style={styles.bar}
             interpolation="natural"
             data={data}
@@ -181,16 +185,20 @@ const styles = {
   placeholder: {
     height: barHeight + chartHeight,
     marginHorizontal: 12,
-    marginBottom: 24,
+    marginTop: 20,
   },
   container: {
-    marginBottom: 24,
+    paddingBottom: 12,
+    marginTop: 20,
+    marginHorizontal: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E9E9E9',
   },
   chart: {
-    left: 92,
-    right: 24,
-    bottom: 36,
-    top: 24,
+    left: 72,
+    right: 36,
+    bottom: 30,
+    top: 36,
   },
   axis: {
     cross: {
@@ -221,12 +229,12 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'space-between',
-      paddingLeft: 22,
-      paddingRight: 12,
+      // paddingHorizontal: 12,
     },
     title: {
       color: '#999999',
       fontSize: 14,
+      fontWeight: '200',
     },
   },
   periods: {

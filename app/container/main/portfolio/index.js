@@ -30,7 +30,7 @@ export default class Portfolio extends Component {
       index: props.navigation.getParam('fromRecommendation') ? 1 : 0,
       routes: [
         { key: 'portfolio', title: '已投项目' },
-        { key: 'project', title: '待投项目' },
+        { key: 'project', title: '工作流' },
       ],
     };
   }
@@ -41,7 +41,7 @@ export default class Portfolio extends Component {
         case 0:
           return '已投项目';
         case 1:
-          return '待投项目';
+          return '工作流';
         default:
           return null;
       }

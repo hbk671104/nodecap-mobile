@@ -16,14 +16,13 @@ const unexchangeableItem = ({ item, onPress }) => (
         <View style={styles.top.group}>
           <Avatar source={{ uri: item.logo_url }} />
           <View style={styles.top.title.container}>
-            <Text style={styles.top.title.text}>{item.name}</Text>
-            {!!item.token_name && (
-              <Text
-                style={[styles.top.title.text, { fontSize: 13, marginLeft: 5 }]}
-              >
-                ({item.token_name})
-              </Text>
-            )}
+            <Text style={styles.top.title.text}>
+              {item.name}
+              {'  '}
+              {!!item.token_name && (
+                <Text style={{ fontSize: 13 }}>({item.token_name})</Text>
+              )}
+            </Text>
           </View>
         </View>
         <View>

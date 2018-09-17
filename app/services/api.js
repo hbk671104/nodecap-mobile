@@ -510,7 +510,7 @@ export function createExternalProjectMembers({ projectId, member }) {
 }
 
 /**
- * 项目方提交募资信息
+ * 项目方提交募集信息
  * @param id
  * @param financing
  * @returns {AxiosPromise<any>}
@@ -566,7 +566,11 @@ export function getProjectChartData({ id, payload }) {
 }
 
 export function getProjectSymbol(id) {
-  return request.get(`/projects/${id}/symbols`);
+  return request.get(`/projects/${id}/symbols`, {
+    params: {
+      all: 1,
+    },
+  });
 }
 
 export function getMatchedCoin(payload) {
@@ -608,7 +612,19 @@ export function updateRecommendation(payload) {
 }
 
 export function getProjectFundStat(id) {
-  return request.get(`projects/${id}/funds-statistic`);
+  return request.get(`/projects/${id}/funds-statistic`);
+}
+
+export function getCoinFinanceInfo(cid) {
+  return request.get(`/coins/${cid}/finance-info`);
+}
+
+export function getCoinInfo(cid) {
+  return request.get(`/coins/${cid}`);
+}
+
+export function favorCoin(payload) {
+  return request.post('/coins/public', payload);
 }
 
 /**
@@ -630,4 +646,40 @@ export function createCompany(data) {
 
 export function getNewsByCoinId(id) {
   return request.get(`/coins/${id}/news-info`);
+}
+
+/**
+ * 评级机构列表
+ * @returns {AxiosPromise<any>}
+ */
+export function getIndustries() {
+  return request.get('/industries');
+}
+/**
+ * 评级机构列表
+ * @returns {AxiosPromise<any>}
+ */
+export function getPublicProjects(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/coins/public', {
+    params: paramsTransform(params),
+  });
+}
+/**
+ * 评级机构列表
+ * @returns {AxiosPromise<any>}
+ */
+export function getReportsByIndustryId(id, params = {}) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get(`/industry/${id}/items`, {
+    params: paramsTransform(params),
+  });
 }

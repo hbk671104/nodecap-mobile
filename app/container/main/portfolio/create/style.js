@@ -21,8 +21,6 @@ export default {
     },
     wrapper: {
       height: 38,
-      paddingLeft: 10,
-      paddingRight: 32,
       backgroundColor: 'white',
     },
     input: {

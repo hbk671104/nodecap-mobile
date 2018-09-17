@@ -5,7 +5,7 @@ import createLoading from 'dva-loading';
 
 export { connect };
 
-export default function (options) {
+export default options => {
   const app = create(options);
   // HMR workaround
   if (!global.registered) options.models.forEach(model => app.model(model));
@@ -20,6 +20,7 @@ export default function (options) {
         'portfolio/investment',
         'portfolio/get',
         'portfolio/getStat',
+        'portfolio/getExtra',
         'portfolio/search',
         'portfolio/searchMatchedCoin',
         'user/createCompany',
@@ -34,6 +35,10 @@ export default function (options) {
         'notification/get',
         'recommendation/fetch',
         'recommendation/update',
+        'public_project/fetch',
+        'public_project/get',
+        'public_project/favor',
+        'institution/fetchReports',
       ],
     }),
   );
@@ -45,4 +50,4 @@ export default function (options) {
   app.getStore = () => store;
 
   return app;
-}
+};

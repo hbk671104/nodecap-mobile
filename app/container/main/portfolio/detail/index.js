@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -8,23 +8,32 @@ import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
-import NavBar from 'component/navBar';
-import StatusDisplay from 'component/project/statusDisplay';
-import Touchable from 'component/uikit/touchable';
+import NavBar, { realBarHeight } from 'component/navBar';
 import Empty from 'component/empty';
+import Gradient from 'component/uikit/gradient';
 import { hasPermission } from 'component/auth/permission/lock';
 
 import Description from './page/description';
 import Pairs from './page/pairs';
 import Return from './page/return';
 import Trend from './page/trend';
-import Header from './header';
+import Financing from './page/financing';
+import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Chart from './chart';
 import Fund from './fund';
+import Bottom from './bottom';
 import styles from './style';
 
 const selectionList = [
+  {
+    component: Description,
+    name: '详情',
+  },
+  {
+    component: Financing,
+    name: '募集信息',
+  },
   {
     component: Trend,
     name: '动态',
@@ -32,10 +41,6 @@ const selectionList = [
   {
     component: Pairs,
     name: '交易所',
-  },
-  {
-    component: Description,
-    name: '详情',
   },
   {
     component: Return,
@@ -47,16 +52,6 @@ const selectionList = [
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
 })
-@compose(
-  withState('offsetY', 'setOffsetY', 0),
-  withState('currentPage', 'setCurrentPage', {
-    component: Trend,
-    name: '动态',
-  }),
-  withProps(({ offsetY }) => ({
-    transformed: offsetY > 0,
-  })),
-)
 @connect(({ portfolio, loading, global }, props) => {
   const item = props.navigation.getParam('item');
   const coin = R.pathOr({}, ['current', 'coin'])(portfolio);
@@ -66,11 +61,33 @@ const selectionList = [
     loading: loading.effects['portfolio/get'],
     stat_loading: loading.effects['portfolio/getStat'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
-    base_symbol: R.pathOr('', ['current', 'stats', 'quote'])(portfolio),
-    can_calculate: R.pathOr(false, ['can_calculate'])(item),
+    base_symbol: R.path(['current', 'stats', 'quote'])(portfolio),
+    can_calculate: R.pathOr(false, ['current', 'can_calculate'])(portfolio),
     unmatched: R.isEmpty(coin),
   };
 })
+@compose(
+  withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
+  withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('selectorY', 'setSelectorY', 0),
+  withProps(({ animateY, can_calculate }) => ({
+    headerWrapperYRange: animateY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [0, can_calculate ? -headerHeight : 0],
+      extrapolate: 'clamp',
+    }),
+    headerOpacityRange: animateY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [1, can_calculate ? 0 : 1],
+      extrapolate: 'clamp',
+    }),
+    titleOpacityRange: animateY.interpolate({
+      inputRange: [0, headerHeight],
+      outputRange: [0, can_calculate ? 1 : 0],
+      extrapolate: 'clamp',
+    }),
+  })),
+)
 export default class PortfolioDetail extends Component {
   componentWillMount() {
     this.loadDetail();
@@ -117,7 +134,7 @@ export default class PortfolioDetail extends Component {
         if (R.isNil(newStatus)) {
           return;
         }
-        this.updateDetail({ status });
+        this.updateDetail({ status: newStatus });
       },
     );
   };
@@ -128,6 +145,7 @@ export default class PortfolioDetail extends Component {
         routeName: 'PortfolioDetailMatchCoinUpdate',
         params: {
           id: this.props.id,
+          coin: R.pathOr({}, ['portfolio', 'coin'])(this.props),
           update: payload => this.updateDetail(payload),
         },
       }),
@@ -145,84 +163,47 @@ export default class PortfolioDetail extends Component {
     );
   };
 
-  handleAddInvestmentPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PortfolioInvestmentCreate',
-        params: {
-          id: this.props.id,
-        },
-      }),
-    );
-  };
-
-  handleOnScroll = ({ nativeEvent: { contentOffset } }) => {
-    const { setOffsetY } = this.props;
-    setOffsetY(contentOffset.y);
-  };
-
   handlePageSwitch = page => () => {
-    this.props.setCurrentPage(page);
+    this.props.setCurrentPage(page, () => {
+      if (!this.props.can_calculate) {
+        return;
+      }
+      this.scroll
+        .getNode()
+        .scrollTo({ y: this.props.selectorY, animated: true });
+    });
   };
 
-  renderNavBar = () => {
-    const { transformed, portfolio } = this.props;
+  handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
+    this.props.setSelectorY(layout.y);
+  };
+
+  renderNavBarBackground = () => {
+    const { portfolio, headerWrapperYRange, headerOpacityRange } = this.props;
     return (
-      <NavBar
-        back
-        gradient
-        bottomHidden={transformed}
-        title={transformed ? portfolio.name : ''}
-        renderBottom={() => <Header {...this.props} data={portfolio} />}
-      />
+      <Animated.View
+        style={[
+          styles.navBar.wrapper,
+          { height: realBarHeight + headerHeight },
+          {
+            transform: [
+              {
+                translateY: headerWrapperYRange,
+              },
+            ],
+          },
+        ]}
+      >
+        <Gradient style={{ flex: 1 }}>
+          <Header
+            {...this.props}
+            style={{ opacity: headerOpacityRange, paddingTop: realBarHeight }}
+            data={portfolio}
+          />
+        </Gradient>
+      </Animated.View>
     );
   };
-
-  renderSwitchButton = () => {
-    const { portfolio, transformed, unmatched } = this.props;
-
-    if (transformed) return null;
-    return (
-      <View style={styles.switch.container}>
-        <View style={styles.switch.content.wrapper}>
-          <Touchable activeOpacity={0.98} onPress={this.handleStatusPress}>
-            <View style={styles.switch.content.container}>
-              <StatusDisplay
-                status={portfolio.status}
-                titleStyle={styles.switch.status.text}
-              />
-              <Text style={styles.switch.content.text}>切换</Text>
-            </View>
-          </Touchable>
-        </View>
-        <View style={styles.switch.content.wrapper}>
-          <Touchable activeOpacity={0.98} onPress={this.handleCoinMatchPress}>
-            <View style={styles.switch.content.container}>
-              <Text
-                style={[
-                  styles.switch.status.text,
-                  styles.switch.matched.highlight,
-                ]}
-              >
-                {unmatched ? '立即匹配' : '项目已匹配'}
-              </Text>
-              {!unmatched && (
-                <Text style={styles.switch.content.text}>切换</Text>
-              )}
-            </View>
-          </Touchable>
-        </View>
-      </View>
-    );
-  };
-
-  renderRecordButton = () => (
-    <Touchable onPress={this.handleRecordButtonPress}>
-      <View style={styles.record.container}>
-        <Text style={styles.record.text}>查看完整投资、回币、卖出记录</Text>
-      </View>
-    </Touchable>
-  );
 
   render() {
     if (!hasPermission('project-view')) {
@@ -237,39 +218,62 @@ export default class PortfolioDetail extends Component {
       );
     }
 
-    const { currentPage: Current } = this.props;
+    const {
+      currentPage: Current,
+      portfolio,
+      can_calculate,
+      titleOpacityRange,
+    } = this.props;
     return (
       <SafeArea style={styles.container}>
-        {this.renderNavBar()}
-        <ScrollView
-          contentContainerStyle={styles.scroll.contentContainer}
-          // scrollEventThrottle={16}
-          scrollEventThrottle={500}
-          stickyHeaderIndices={[3]}
-          onScroll={this.handleOnScroll}
+        {this.renderNavBarBackground()}
+        <NavBar
+          back
+          iconStyle={styles.navBar.icon}
+          style={styles.navBar.container}
+          title={R.pathOr('', ['name'])(portfolio)}
+          titleContainerStyle={{ opacity: titleOpacityRange }}
+        />
+        <Animated.ScrollView
+          ref={ref => {
+            this.scroll = ref;
+          }}
+          contentContainerStyle={{
+            paddingTop: headerHeight,
+          }}
+          scrollEventThrottle={1}
+          stickyHeaderIndices={[2]}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: { y: this.props.animateY },
+                },
+              },
+            ],
+            {
+              useNativeDriver: true,
+            },
+          )}
         >
           <Fund {...this.props} />
-          {this.renderRecordButton()}
           <Chart {...this.props} />
           <Selector
+            onLayout={this.handleSelectorOnLayout}
             list={selectionList}
             page={Current}
             onPress={this.handlePageSwitch}
           />
-          <View style={styles.page}>
+          <View style={[styles.page, R.not(can_calculate) && { minHeight: 0 }]}>
             <Current.component {...this.props} />
           </View>
-        </ScrollView>
-        <View style={styles.bottomTab.wrapper}>
-          <Touchable
-            style={styles.bottomTab.container}
-            activeOpacity={0.98}
-            onPress={this.handleAddInvestmentPress}
-          >
-            <Text style={styles.bottomTab.title}>+ 添加投资记录</Text>
-          </Touchable>
-        </View>
-        <View style={styles.switch.wrapper}>{this.renderSwitchButton()}</View>
+        </Animated.ScrollView>
+        <Bottom
+          {...this.props}
+          onRecordPress={this.handleRecordButtonPress}
+          onStatusPress={this.handleStatusPress}
+          onMatchPress={this.handleCoinMatchPress}
+        />
       </SafeArea>
     );
   }

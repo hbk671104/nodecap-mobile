@@ -1,5 +1,7 @@
 package com.nodecap;
 
+        import android.content.Intent;
+        import android.content.res.Configuration;
         import android.os.Bundle;
 
         import com.facebook.react.ReactActivity;
@@ -60,5 +62,13 @@ public class MainActivity extends ReactActivity {
         // $AppClick
         eventTypeList.add(SensorsDataAPI.AutoTrackEventType.APP_CLICK);
         SensorsDataAPI.sharedInstance().enableAutoTrack(eventTypeList);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Intent intent = new Intent("onConfigurationChanged");
+        intent.putExtra("newConfig", newConfig);
+        this.sendBroadcast(intent);
     }
 }

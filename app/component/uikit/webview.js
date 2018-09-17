@@ -1,8 +1,10 @@
 import React from 'react';
-import { ViewPropTypes, WebView } from 'react-native';
+import { View, ViewPropTypes, WebView } from 'react-native';
 
 const webview = props => (
-  <WebView {...props} style={[styles.container, props.style]} />
+  <View style={[styles.container, props.style]}>
+    <WebView {...props} />
+  </View>
 );
 
 const styles = {

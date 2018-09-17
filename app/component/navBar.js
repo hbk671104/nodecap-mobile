@@ -25,6 +25,7 @@ class NavBar extends Component {
     back: PropTypes.bool,
     title: PropTypes.string,
     titleContainerStyle: PropTypes.object,
+    iconStyle: PropTypes.object,
   };
 
   static defaultProps = {
@@ -71,6 +72,7 @@ class NavBar extends Component {
       back,
       title,
       titleContainerStyle,
+      iconStyle,
     } = this.props;
     const WrapperComp = gradient ? Gradient : View;
     return (
@@ -102,11 +104,20 @@ class NavBar extends Component {
                 </Animated.View>
                 <View style={styles.group.left}>
                   {back && (
-                    <Touchable borderless onPress={this.handleBackAction}>
+                    <Touchable
+                      hitSlop={styles.back.hitSlop}
+                      borderless
+                      onPress={this.handleBackAction}
+                    >
                       <Icon
+                        style={[
+                          {
+                            fontSize: 26,
+                            color: gradient ? 'white' : '#333333',
+                          },
+                          iconStyle,
+                        ]}
                         name="arrow-back"
-                        size={26}
-                        color={gradient ? 'white' : '#333333'}
                       />
                     </Touchable>
                   )}
@@ -168,7 +179,7 @@ const styles = {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      paddingHorizontal: 36,
+      paddingHorizontal: 0,
     },
     text: {
       fontSize: 17,
@@ -183,6 +194,14 @@ const styles = {
     wrapper: {
       height: 0,
       opacity: 0,
+    },
+  },
+  back: {
+    hitSlop: {
+      top: 20,
+      right: 20,
+      bottom: 20,
+      left: 20,
     },
   },
 };

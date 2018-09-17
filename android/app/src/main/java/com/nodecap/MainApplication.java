@@ -3,6 +3,9 @@ package com.nodecap;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.github.yamill.orientation.OrientationPackage;
+import org.wonday.pdf.RCTPdfView;
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.theweflex.react.WeChatPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import org.reactnative.camera.RNCameraPackage;
@@ -55,6 +58,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new OrientationPackage(),
+            new RCTPdfView(),
+            new RNFetchBlobPackage(),
             new WeChatPackage(),
             new RNDeviceInfo(),
             new RNSensorsAnalyticsPackage(),
@@ -66,7 +72,6 @@ public class MainApplication extends Application implements ReactApplication {
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
             new RNSentryPackage(),
             new RNExitAppPackage(),
-            new WeChatPackage(),
             new RNViewShotPackage(),
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),

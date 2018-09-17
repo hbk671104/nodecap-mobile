@@ -16,14 +16,21 @@ import {
   createProjectInvestInfo,
   updateProjectInvestInfo,
   getNewsByCoinId,
+  getCoinFinanceInfo,
   editProject,
 } from '../services/api';
 import moment from 'moment';
 
 const paginate = (state, action, key) => {
-  const oldData = R.pathOr([], [key, 'index', 'data'])(state);
-  const newData = R.pathOr([], ['payload', 'data'])(action);
-  const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
+  const old = R.path([key, 'index'])(state);
+  const oldData = R.pathOr([], ['data'])(old);
+  const oldPagination = R.pathOr({}, ['pagination'])(old);
+  const oldCurrent = R.path(['current'])(oldPagination);
+
+  const payload = R.path(['payload'])(action);
+  const newData = R.pathOr([], ['data'])(payload);
+  const pagination = R.pathOr({}, ['pagination'])(payload);
+  const current = R.path(['current'])(pagination);
 
   const oldRank = R.pathOr({}, [key, 'params', 'rank'])(state);
   const newRank = R.pathOr({}, ['params', 'rank'])(action);
@@ -33,17 +40,21 @@ const paginate = (state, action, key) => {
     !R.isEmpty(newRank) &&
     !R.equals(oldRank, newRank)
   ) {
-    return action.payload;
+    return payload;
   }
 
-  if (R.path(['current'])(pagination) === 1) {
-    return action.payload;
+  if (current === 1) {
+    return payload;
   }
 
-  return {
-    ...action.payload,
-    data: R.concat(oldData, newData),
-  };
+  if (current - oldCurrent === 1) {
+    return {
+      ...payload,
+      data: R.concat(oldData, newData),
+    };
+  }
+
+  return old;
 };
 
 export default {
@@ -277,7 +288,7 @@ export default {
         console.log(e);
       }
     },
-    *projectTrend({ id, callback }, { call, put }) {
+    *projectTrend({ payload: id, callback }, { call, put }) {
       try {
         const { data } = yield call(getNewsByCoinId, id);
 
@@ -285,6 +296,24 @@ export default {
           type: 'saveDetail',
           payload: {
             news: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *projectFinanceInfo({ payload: id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getCoinFinanceInfo, id);
+
+        yield put({
+          type: 'saveDetail',
+          payload: {
+            finance_info: data,
           },
         });
 
@@ -349,6 +378,10 @@ export default {
             type: 'projectSymbol',
             payload,
           }),
+          put.resolve({
+            type: 'projectFinanceInfo',
+            payload: coinId,
+          }),
         ]);
       } catch (error) {
         console.log(error);
@@ -373,15 +406,15 @@ export default {
     *getExtra({ payload }, { all, put }) {
       try {
         yield all([
-          put({
+          put.resolve({
             type: 'getInvest',
             payload,
           }),
-          put({
+          put.resolve({
             type: 'getReturnToken',
             payload,
           }),
-          put({
+          put.resolve({
             type: 'getExitToken',
             payload,
           }),

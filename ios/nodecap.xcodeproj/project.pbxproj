@@ -52,7 +52,10 @@
 		400752582111627800A72161 /* RNSensorsAnalyticsModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 400752182111627800A72161 /* RNSensorsAnalyticsModule.m */; };
 		402B017320DA0F26004AE4F8 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017120DA0F26004AE4F8 /* logo@2x.png */; };
 		402B017420DA0F26004AE4F8 /* logo@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 402B017220DA0F26004AE4F8 /* logo@3x.png */; };
+		403204ED21479D1C00144544 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 403204BF21479D0E00144544 /* libRCTOrientation.a */; };
 		4063783F21198C5100CA7CA3 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4063783121198C3200CA7CA3 /* libRNDeviceInfo.a */; };
+		406A742221477C310019141B /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 406A741121477BED0019141B /* libRNFetchBlob.a */; };
+		406A742321477C360019141B /* libRCTPdf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 406A742121477C170019141B /* libRCTPdf.a */; };
 		40838CCB2100703400D30474 /* HotnodeManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40838CCA2100703400D30474 /* HotnodeManager.m */; };
 		40C1B94320C66C8300B0E87B /* NodeCapIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */; };
 		4DD671B3E5EB4744B4CD2195 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C08F30F43034D7B8C8648C3 /* UIKit.framework */; };
@@ -362,6 +365,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNSentry;
 		};
+		403204BE21479D0E00144544 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 403204A721479D0E00144544 /* RCTOrientation.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTOrientation;
+		};
 		4038026B2101D6D9001EF5C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 8752CCB230994EA68E6F210A /* RNCamera.xcodeproj */;
@@ -396,6 +406,20 @@
 			proxyType = 2;
 			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
 			remoteInfo = "RNDeviceInfo-tvOS";
+		};
+		406A741021477BED0019141B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 406A73D821477BED0019141B /* RNFetchBlob.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A15C300E1CD25C330074CB35;
+			remoteInfo = RNFetchBlob;
+		};
+		406A742021477C170019141B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 406A741C21477C170019141B /* RCTPdf.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 20D8E03F1C8E946C00039823;
+			remoteInfo = RCTPdf;
 		};
 		4088FCED20BED9A700753F7C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -593,7 +617,10 @@
 		400752572111627800A72161 /* RNSensorsAnalyticsModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSensorsAnalyticsModule.h; sourceTree = "<group>"; };
 		402B017120DA0F26004AE4F8 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		402B017220DA0F26004AE4F8 /* logo@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@3x.png"; sourceTree = "<group>"; };
+		403204A721479D0E00144544 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 		406377F821198C3100CA7CA3 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		406A73D821477BED0019141B /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		406A741C21477C170019141B /* RCTPdf.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPdf.xcodeproj; path = "../node_modules/react-native-pdf/ios/RCTPdf.xcodeproj"; sourceTree = "<group>"; };
 		40838CC92100703400D30474 /* HotnodeManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = HotnodeManager.h; path = nodecap/HotnodeManager.h; sourceTree = "<group>"; };
 		40838CCA2100703400D30474 /* HotnodeManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = HotnodeManager.m; path = nodecap/HotnodeManager.m; sourceTree = "<group>"; };
 		40C1B94220C66C8300B0E87B /* NodeCapIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = NodeCapIcon.ttf; sourceTree = "<group>"; };
@@ -670,6 +697,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				403204ED21479D1C00144544 /* libRCTOrientation.a in Frameworks */,
+				406A742321477C360019141B /* libRCTPdf.a in Frameworks */,
+				406A742221477C310019141B /* libRNFetchBlob.a in Frameworks */,
 				4063783F21198C5100CA7CA3 /* libRNDeviceInfo.a in Frameworks */,
 				DD41DFFF20E5118A007696F1 /* libRCTCameraRoll.a in Frameworks */,
 				71DD65C556E6432AA1DC8346 /* libz.tbd in Frameworks */,
@@ -924,6 +954,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		403204A821479D0E00144544 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				403204BF21479D0E00144544 /* libRCTOrientation.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		403802682101D6D9001EF5C1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -962,6 +1000,22 @@
 			children = (
 				4063783121198C3200CA7CA3 /* libRNDeviceInfo.a */,
 				4063783321198C3200CA7CA3 /* libRNDeviceInfo-tvOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		406A73D921477BED0019141B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				406A741121477BED0019141B /* libRNFetchBlob.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		406A741D21477C170019141B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				406A742121477C170019141B /* libRCTPdf.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1119,6 +1173,9 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				403204A721479D0E00144544 /* RCTOrientation.xcodeproj */,
+				406A741C21477C170019141B /* RCTPdf.xcodeproj */,
+				406A73D821477BED0019141B /* RNFetchBlob.xcodeproj */,
 				406377F821198C3100CA7CA3 /* RNDeviceInfo.xcodeproj */,
 				DD41DFF920E5116C007696F1 /* RCTCameraRoll.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -1264,7 +1321,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				012498814B1C4974B7131846 /* Upload Debug Symbols to Sentry */,
-				807C196E793F69CE38E30FB6 /* [CP] Copy Pods Resources */,
+				25443AFDC90AF081B40B827D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1419,6 +1476,14 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = 403204A821479D0E00144544 /* Products */;
+					ProjectRef = 403204A721479D0E00144544 /* RCTOrientation.xcodeproj */;
+				},
+				{
+					ProductGroup = 406A741D21477C170019141B /* Products */;
+					ProjectRef = 406A741C21477C170019141B /* RCTPdf.xcodeproj */;
+				},
+				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
@@ -1461,6 +1526,10 @@
 				{
 					ProductGroup = 40D0EB2D20E384FB005A2B46 /* Products */;
 					ProjectRef = 85D4DCB8AEF14FF0B77C4361 /* RNExitApp.xcodeproj */;
+				},
+				{
+					ProductGroup = 406A73D921477BED0019141B /* Products */;
+					ProjectRef = 406A73D821477BED0019141B /* RNFetchBlob.xcodeproj */;
 				},
 				{
 					ProductGroup = 409A6B5A20F78BBE00CB60A1 /* Products */;
@@ -1758,6 +1827,13 @@
 			remoteRef = 402CAEA220E6454E009454D9 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		403204BF21479D0E00144544 /* libRCTOrientation.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTOrientation.a;
+			remoteRef = 403204BE21479D0E00144544 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		4038026C2101D6D9001EF5C1 /* libRNCamera.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1791,6 +1867,20 @@
 			fileType = archive.ar;
 			path = "libRNDeviceInfo-tvOS.a";
 			remoteRef = 4063783221198C3200CA7CA3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		406A741121477BED0019141B /* libRNFetchBlob.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFetchBlob.a;
+			remoteRef = 406A741021477BED0019141B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		406A742121477C170019141B /* libRCTPdf.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPdf.a;
+			remoteRef = 406A742021477C170019141B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		4088FCEE20BED9A700753F7C /* libRNShimmer.a */ = {
@@ -2046,21 +2136,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundle React Native Code And Images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
-		};
-		807C196E793F69CE38E30FB6 /* [CP] Copy Pods Resources */ = {
+		25443AFDC90AF081B40B827D /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2077,6 +2153,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-nodecap/Pods-nodecap-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Bundle React Native Code And Images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2251,6 +2341,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = nodecap/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";
@@ -2295,6 +2386,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/realm/src/**",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-orientation/iOS/RCTOrientation/**",
 				);
 				INFOPLIST_FILE = nodecap/Info.plist;
 				INFOPLIST_OTHER_PREPROCESSOR_FLAGS = "-traditional";

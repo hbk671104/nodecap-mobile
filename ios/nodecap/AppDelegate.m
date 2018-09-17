@@ -24,6 +24,7 @@
 #import "RNSplashScreen.h"  // here
 #import "SensorsAnalyticsSDK.h"
 #import "ReactNativeConfig.h"
+#import "Orientation.h"
 
 // Debug 模式选项
 //   SensorsAnalyticsDebugOff - 关闭 Debug 模式
@@ -136,6 +137,10 @@
   }
   
   completionHandler();
+}
+
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
+  return [Orientation getOrientation];
 }
 
 @end

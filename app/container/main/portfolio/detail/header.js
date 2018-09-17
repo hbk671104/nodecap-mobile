@@ -18,14 +18,13 @@ const header = ({
   stat_loading,
   base_symbol,
   can_calculate,
+  avatarWrapperStyle,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pathOr('--', ['token_name'])(data);
   const logo = R.pathOr('', ['logo_url'])(data);
 
-  const current_price = R.pathOr('--', ['stats', 'current_price', base_symbol])(
-    data,
-  );
+  const current_price = R.pathOr('--', ['stats', 'current_price', 'CNY'])(data);
   const price_change_percentage_24h = R.pathOr('--', [
     'stats',
     'price_change_percentage_24h',
@@ -33,7 +32,7 @@ const header = ({
   const total_volume = R.pathOr('--', ['stats', 'total_volume', base_symbol])(
     data,
   );
-  const high_24h = R.pathOr('--', ['stats', 'high_24h', base_symbol])(data);
+  const high_24h = R.pathOr('--', ['stats', 'high_24h', 'CNY'])(data);
 
   const desc = R.pathOr('--', ['description'])(data);
 
@@ -41,33 +40,47 @@ const header = ({
     <Animated.View style={[styles.container, style]}>
       <View style={styles.top.container}>
         <View style={{ flex: 1 }}>
-          <Text style={[styles.top.title, titleStyle]}>{name}</Text>
+          <Text
+            style={[
+              styles.top.title,
+              R.length(name) > 13 && { fontSize: 18 },
+              titleStyle,
+            ]}
+          >
+            {name}
+          </Text>
           <Text style={styles.top.subtitle}>{token}</Text>
         </View>
-        <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+        <Animated.View style={avatarWrapperStyle}>
+          <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+        </Animated.View>
       </View>
       <View style={styles.divider} />
       {can_calculate ? (
-        <Shimmer animating={stat_loading}>
-          <View>
-            <View style={styles.bottom.container}>
+        <View>
+          <View style={styles.bottom.container}>
+            <Shimmer animating={stat_loading}>
               <Text style={styles.bottom.title}>
-                {symbol(base_symbol, styles.bottom.title)}
-                <Price symbol={base_symbol}>{current_price}</Price>
+                {symbol('CNY', styles.bottom.title)}
+                <Price symbol="CNY">{current_price}</Price>
               </Text>
+            </Shimmer>
+            <Shimmer style={{ marginLeft: 15 }} animating={stat_loading}>
               <Text style={styles.bottom.subtitle}>
                 <Percentage colorAware={false}>
                   {price_change_percentage_24h}
                 </Percentage>
               </Text>
-            </View>
+            </Shimmer>
+          </View>
+          <Shimmer style={{ marginTop: 6 }} animating={stat_loading}>
             <Text style={styles.bottom.content}>
               额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
               最高(24H) {symbol(base_symbol, styles.bottom.content)}
               <Price symbol={base_symbol}>{high_24h}</Price>
             </Text>
-          </View>
-        </Shimmer>
+          </Shimmer>
+        </View>
       ) : (
         <View>
           <Text style={styles.bottom.description} numberOfLines={3}>
@@ -79,9 +92,10 @@ const header = ({
   );
 };
 
-export const headerHeight = 174;
+export const headerHeight = 144;
 const styles = {
   container: {
+    flex: 1,
     height: headerHeight,
     paddingHorizontal: 12,
   },
@@ -106,8 +120,8 @@ const styles = {
     height: 1,
     width: 58,
     backgroundColor: 'white',
-    marginTop: 12,
-    marginBottom: 12,
+    marginTop: 8,
+    marginBottom: 8,
   },
   bottom: {
     container: {
@@ -123,13 +137,11 @@ const styles = {
       fontWeight: 'bold',
       fontSize: 14,
       color: 'white',
-      marginLeft: 15,
     },
     content: {
       fontWeight: '300',
       fontSize: 10,
       color: 'white',
-      marginTop: 6,
     },
     description: {
       fontSize: 12,
@@ -144,6 +156,7 @@ header.propTypes = {
   loading: PropTypes.bool,
   style: PropTypes.object,
   titleStyle: PropTypes.object,
+  avatarWrapperStyle: PropTypes.object,
 };
 
 header.defaultProps = {

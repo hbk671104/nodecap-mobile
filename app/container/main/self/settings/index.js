@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
-import DeviceInfo from 'react-native-device-info';
 import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
 import AuthButton from 'component/auth/button';
+
+import appInfo from '../../../../../package.json';
+
 import styles from './style';
 
 @global.bindTrack({
@@ -44,7 +46,7 @@ class Settings extends Component {
           <ListItem
             disablePress
             title="当前版本"
-            content={`v${DeviceInfo.getVersion()}`}
+            content={`v${appInfo.version}`}
           />
           <ListItem title="版本更新" onPress={this.handleChangelogPress} />
           {/* <ListItem title="评价 Hotnode" /> */}

@@ -21,8 +21,6 @@ export default {
     },
     wrapper: {
       height: 38,
-      paddingLeft: 10,
-      paddingRight: 32,
       backgroundColor: 'white',
     },
     input: {
@@ -69,6 +67,18 @@ export default {
     button: {
       marginHorizontal: 24,
       marginTop: 24,
+    },
+  },
+  fixHeader: {
+    container: {
+      backgroundColor: 'white',
+      justifyContent: 'center',
+      paddingVertical: 6,
+      paddingHorizontal: 12,
+    },
+    text: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.65)',
     },
   },
 };

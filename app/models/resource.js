@@ -6,21 +6,7 @@ import {
   editResource,
   deleteResource,
 } from '../services/api';
-
-const paginate = (state, action, key) => {
-  const oldData = R.pathOr([], [key, 'index', 'data'])(state);
-  const newData = R.pathOr([], ['payload', 'data'])(action);
-  const pagination = R.pathOr({}, ['payload', 'pagination'])(action);
-
-  if (R.path(['current'])(pagination) === 1) {
-    return action.payload;
-  }
-
-  return {
-    ...action.payload,
-    data: R.concat(oldData, newData),
-  };
-};
+import { paginate } from '../utils/pagination';
 
 export default {
   namespace: 'resource',
@@ -250,7 +236,10 @@ export default {
         list: {
           ...state.list,
           [type]: {
-            index: paginate(state.list, action, type),
+            index: paginate(
+              R.pathOr({}, ['list', type, 'index'])(state),
+              action.payload,
+            ),
             params: action.params,
           },
         },

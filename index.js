@@ -2,6 +2,7 @@ import React from 'react';
 import { AppRegistry, UIManager, AsyncStorage } from 'react-native';
 import { autoRehydrate, persistStore } from 'redux-persist';
 import { Sentry } from 'react-native-sentry';
+import Orientation from 'react-native-orientation';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -20,6 +21,8 @@ import resourceModel from './app/models/resource';
 import colleagueModel from './app/models/colleague';
 import notificationModel from './app/models/notification';
 import recommendationModel from './app/models/recommendation';
+import publicProjectModel from './app/models/public_project';
+import institutionModel from './app/models/institution';
 
 const app = dva({
   initialState: {},
@@ -36,6 +39,8 @@ const app = dva({
     colleagueModel,
     notificationModel,
     recommendationModel,
+    publicProjectModel,
+    institutionModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -46,7 +51,16 @@ export const persist = callback => {
     app._store,
     {
       storage: AsyncStorage,
-      whitelist: ['login', 'global', 'app', 'fund', 'user'],
+      whitelist: [
+        'login',
+        'global',
+        'app',
+        'fund',
+        'user',
+        'institution',
+        'public_project',
+        'notification',
+      ],
     },
     callback,
   );
@@ -57,6 +71,8 @@ const App = app.start(<Router store={app._store} />);
 if (UIManager.setLayoutAnimationEnabledExperimental) {
   UIManager.setLayoutAnimationEnabledExperimental(true);
 }
+
+Orientation.lockToPortrait();
 
 moment.locale('zh-cn');
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, InteractionManager } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -20,9 +20,7 @@ import styles from './style';
 }))
 export default class NotificationDetail extends Component {
   componentWillMount() {
-    InteractionManager.runAfterInteractions(() => {
-      this.loadDetail();
-    });
+    this.loadDetail();
   }
 
   componentWillUnmount() {
