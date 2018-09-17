@@ -24,7 +24,7 @@ import recommendationModel from './app/models/recommendation';
 import publicProjectModel from './app/models/public_project';
 import institutionModel from './app/models/institution';
 
-const app = dva({
+export const app = dva({
   initialState: {},
   models: [
     routerModel,
