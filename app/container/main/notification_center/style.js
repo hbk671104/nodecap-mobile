@@ -55,18 +55,31 @@ export default {
   },
   item: {
     container: {
-      marginLeft: 10,
-      borderBottomWidth: 1,
-      borderBottomColor: '#f4f4f4',
-      paddingVertical: 10,
+      marginLeft: 20,
+      paddingBottom: 15,
+      paddingLeft: 15,
+      paddingRight: 22,
+      borderLeftWidth: 0.5,
+      borderLeftColor: '#E9E9E9',
+      marginBottom: 10,
+      position: 'relative',
+    },
+    point: {
+      backgroundColor: '#1890FF',
+      width: 8,
+      height: 8,
+      borderRadius: 4,
+      position: 'absolute',
+      left: -4,
+      top: 0,
     },
     title: {
       marginBottom: 10,
-      flexDirection: 'row',
+      marginTop: -4,
     },
     time: {
-      color: 'red',
-      fontWeight: 'bold',
+      color: 'rgba(0,0,0,.45)',
+      marginBottom: 10,
     },
     titleText: {
       color: '#343434',

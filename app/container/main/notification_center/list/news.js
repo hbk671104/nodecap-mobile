@@ -14,9 +14,11 @@ class News extends Component {
   };
 
   renderItem = ({ item }) => {
-    const time = moment(item.created_at * 1000).format('HH:mm');
-
-    const regex = item.content.match(/【(.*)】(.*)/);
+    const isToday = !moment().diff(item.created_at * 1000, 'days');
+    const time = isToday ?
+      moment(item.created_at * 1000).format('HH:mm') :
+      moment(item.created_at * 1000).format('MM:DD HH:mm');
+const regex = item.content.match(/【(.*)】(.*)/);
     const title = R.pathOr('', [1])(regex);
     const content = R.pathOr('', [2])(regex);
 
@@ -26,6 +28,7 @@ class News extends Component {
 
     return (
       <View style={styles.item.container}>
+        <View style={styles.item.point} />
         <View style={styles.item.title}>
           <Text style={styles.item.time}>{time} </Text>
           <Text style={styles.item.titleText}>{title}</Text>
