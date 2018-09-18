@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, Platform, Vibration } from 'react-native';
+import { BackHandler, Alert, Platform, Vibration, Easing, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -27,6 +27,7 @@ import Loader from 'container/loader';
 import Landing from 'container/auth/landing';
 import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
+import LoginModal from 'container/auth/login/modal';
 import SetPassword from 'container/auth/setPassword';
 import ResetPwd from 'container/auth/resetPwd';
 import Recommendation from 'container/auth/recommendation';
@@ -261,6 +262,10 @@ const IndividualStack = createStackNavigator(
     },
     NotificationDetail,
     NotificationDetailRaw,
+    LoginModal: {
+      screen: LoginModal,
+      mode: 'modal',
+    },
   },
   {
     headerMode: 'none',

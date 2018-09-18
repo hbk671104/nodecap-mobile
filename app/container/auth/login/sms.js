@@ -70,12 +70,13 @@ class SMSLogin extends Component {
     const { countdown } = this.state;
     const account = getFieldValue('mobile');
     const password = getFieldValue('password');
-    console.log('this.props', this.props);
+    const renderLeft = R.path(['screenProps', 'renderLeft'])(this.props);
     return (
       <View style={styles.container}>
         <NavBar
           barStyle="dark-content"
           back={false}
+          renderLeft={renderLeft}
           renderRight={() => (
             <TouchableWithoutFeedback onPress={() => {
               this.props.navigation.dispatch(

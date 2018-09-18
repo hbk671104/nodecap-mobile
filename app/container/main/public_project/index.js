@@ -59,7 +59,7 @@ export default class PublicProject extends Component {
   handleSearchPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PublicProjectSearch',
+        routeName: 'LoginModal',
       }),
     );
   };
