@@ -77,6 +77,7 @@ import EditProfile from 'container/main/self/profile/edit';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
+import IndividualPublicProjectDetail from 'container/individual/public_project/detail';
 
 const AuthStack = createStackNavigator(
   {
@@ -255,6 +256,9 @@ const IndividualStack = createStackNavigator(
   {
     IndividualTab,
     PublicProjectSearch,
+    PublicProjectDetail: {
+      screen: IndividualPublicProjectDetail,
+    },
     NotificationDetail,
     NotificationDetailRaw,
   },
