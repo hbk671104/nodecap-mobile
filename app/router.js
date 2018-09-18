@@ -74,6 +74,9 @@ import MyProfile from 'container/main/self/profile/mine';
 import MyCompany from 'container/main/self/profile/company';
 import EditProfile from 'container/main/self/profile/edit';
 
+// Individual exclusive
+import Favored from 'container/individual/favored';
+
 const AuthStack = createStackNavigator(
   {
     Landing,
@@ -213,12 +216,12 @@ const IndividualTab = createBottomTabNavigator(
         title: '动态',
       },
     },
-    // Following: {
-    //   screen: Portfolio,
-    //   navigationOptions: {
-    //     title: '投资库',
-    //   },
-    // },
+    Favored: {
+      screen: Favored,
+      navigationOptions: {
+        title: '关注',
+      },
+    },
     Self: {
       screen: Self,
       navigationOptions: {
