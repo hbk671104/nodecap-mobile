@@ -6,7 +6,7 @@ import R from 'ramda';
 import moment from 'moment';
 
 class News extends Component {
-  requestData = (isRefresh) => {
+  requestData = isRefresh => {
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
@@ -15,10 +15,10 @@ class News extends Component {
 
   renderItem = ({ item }) => {
     const isToday = !moment().diff(item.created_at * 1000, 'days');
-    const time = isToday ?
-      moment(item.created_at * 1000).format('HH:mm') :
-      moment(item.created_at * 1000).format('MM:DD HH:mm');
-const regex = item.content.match(/【(.*)】(.*)/);
+    const time = isToday
+      ? moment(item.created_at * 1000).format('HH:mm')
+      : moment(item.created_at * 1000).format('MM:DD HH:mm');
+    const regex = item.content.match(/【(.*)】(.*)/);
     const title = R.pathOr('', [1])(regex);
     const content = R.pathOr('', [2])(regex);
 
@@ -45,6 +45,7 @@ const regex = item.content.match(/【(.*)】(.*)/);
     return (
       <View style={styles.container}>
         <List
+          contentContainerStyle={styles.listContainer}
           action={this.requestData}
           loading={newsLoading}
           data={news}

@@ -106,4 +106,7 @@ export default {
       color: '#9acf5d',
     },
   },
+  listContainer: {
+    paddingVertical: 20,
+  },
 };

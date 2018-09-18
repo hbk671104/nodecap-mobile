@@ -29,6 +29,10 @@ const source = ({ route, focused }) => {
       return focused
         ? require('asset/tabIcon/me_highlight.png')
         : require('asset/tabIcon/me.png');
+    case 'Favored':
+      return focused
+        ? require('asset/tabIcon/favor_highlight.png')
+        : require('asset/tabIcon/favor.png');
     default:
       return null;
   }

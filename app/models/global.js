@@ -69,11 +69,15 @@ export default {
     *initial(_, { select, put, call, all }) {
       const token = yield select(state => state.login.token);
       const companies = yield select(state => state.login.companies);
+      const in_individual = yield select(state =>
+        R.path(['login', 'in_individual'])(state),
+      );
+
       if (token) {
         axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        axios.defaults.headers.common['X-Company-ID'] = R.path([0, 'id'])(
-          companies,
-        );
+        axios.defaults.headers.common['X-Company-ID'] = in_individual
+          ? null
+          : R.path([0, 'id'])(companies);
       }
       try {
         const res = yield call(getAllPermissions);
@@ -92,9 +96,9 @@ export default {
           put.resolve({
             type: 'roles',
           }),
-          put.resolve({
-            type: 'initRealm',
-          }),
+          // put.resolve({
+          //   type: 'initRealm',
+          // }),
         ]);
       } catch (e) {
         console.log(e);

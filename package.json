@@ -6,6 +6,8 @@
     "precommit": "npm run lint-staged",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "start-ios": "react-native run-ios",
+    "start-ios:xs": "react-native run-ios --simulator=\"iPhone XS\"",
+    "start-ios:xs-max": "react-native run-ios --simulator=\"iPhone XS Max\"",
     "start-android": "react-native run-android",
     "build-android": "cd android && ./gradlew assembleRelease && cp ./app/build/outputs/apk/release/app-release.apk $HOME/Desktop",
     "build-android:staging": "cd android && ENVFILE=.env.staging ./gradlew assembleRelease && cp ./app/build/outputs/apk/release/app-release.apk $HOME/Desktop",
