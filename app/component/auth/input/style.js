@@ -8,7 +8,7 @@ export default {
     fontWeight: '300',
   },
   input: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#333333',
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: 'rgba(0, 0, 0, 0.25)',

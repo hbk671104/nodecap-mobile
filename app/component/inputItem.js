@@ -46,7 +46,7 @@ class InputItem extends PureComponent {
     return (
       <View style={styles.container}>
         <View style={[styles.wrapper, vertical && styles.vertical]}>
-          <Text style={[styles.title, titleStyle]}>{title}</Text>
+          {!!title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
           <View
             style={
               vertical
@@ -87,7 +87,7 @@ const styles = {
   container: {
     marginLeft: 12,
     paddingRight: 12,
-    paddingVertical: 20,
+    paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
   },
