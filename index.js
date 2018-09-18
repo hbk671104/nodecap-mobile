@@ -24,6 +24,7 @@ import recommendationModel from './app/models/recommendation';
 import publicProjectModel from './app/models/public_project';
 import institutionModel from './app/models/institution';
 import newsModel from './app/models/news';
+import favoredModel from './app/models/favored';
 
 export const app = dva({
   initialState: {},
@@ -43,6 +44,7 @@ export const app = dva({
     publicProjectModel,
     institutionModel,
     newsModel,
+    favoredModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],

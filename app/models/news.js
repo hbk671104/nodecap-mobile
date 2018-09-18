@@ -1,7 +1,6 @@
 import R from 'ramda';
 import { getLiveList } from '../services/api';
 
-
 export default {
   namespace: 'news',
   state: {
@@ -16,7 +15,7 @@ export default {
         const newsList = R.pipe(
           R.path(['data', 'list']),
           R.map(i => i.lives),
-          R.flatten
+          R.flatten,
         )(res);
         if (payload) {
           yield put({
@@ -49,14 +48,10 @@ export default {
       };
     },
     concat(state, action) {
-      console.log('action.payload.data', action.payload.data);
       return {
         ...state,
         payload: action.payload.id,
-        news: [
-          ...state.news,
-          ...action.payload.data,
-        ],
+        news: [...state.news, ...action.payload.data],
       };
     },
   },
