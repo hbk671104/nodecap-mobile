@@ -77,12 +77,19 @@ export default {
         console.log(e);
       }
     },
-    *fetchCurrent(_, { call, put }) {
+    *fetchCurrent(_, { call, put, select }) {
       try {
         const { data } = yield call(getUser);
+        const in_individual = yield select(state =>
+          R.path(['login', 'in_individual'])(state),
+        );
 
-        // sensor login and set profile
+        // Sensor
         global.s().login(`${data.id}`);
+
+        // JPush
+        JPush.resumePush();
+        JPush.setAlias(`user_${data.id}`, () => null);
 
         const company = R.path(['companies', 0])(data);
         const input = {
@@ -91,15 +98,18 @@ export default {
           companyID: company.id,
         };
 
-        // sensor user init
-        global.setProfile(input);
-
-        // resume push
-        JPush.resumePush();
-
-        // jpush user init
-        JPush.setAlias(`user_${data.id}`, () => null);
-        JPush.setTags([`company_${company.id}`], () => null);
+        if (in_individual) {
+          global.setProfile({
+            ...input,
+            client_type: '个人版',
+          });
+        } else {
+          global.setProfile({
+            ...input,
+            client_type: '企业版',
+          });
+          JPush.setTags([`company_${company.id}`], () => null);
+        }
 
         yield put({
           type: 'saveCurrentUser',

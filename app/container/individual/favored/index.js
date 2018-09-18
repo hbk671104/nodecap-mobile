@@ -6,8 +6,8 @@ import R from 'ramda';
 import NavBar from 'component/navBar';
 import Empty from 'component/empty';
 import List from 'component/uikit/list';
+import FavoredItem from 'component/favored/item';
 
-import FavoredItem from './item';
 import styles from './style';
 
 @connect(({ login, favored }) => ({

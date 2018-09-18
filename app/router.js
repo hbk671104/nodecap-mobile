@@ -252,6 +252,8 @@ const IndividualTab = createBottomTabNavigator(
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
+    NotificationDetail,
+    NotificationDetailRaw,
   },
   {
     headerMode: 'none',

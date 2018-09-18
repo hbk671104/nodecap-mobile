@@ -80,7 +80,7 @@ export default {
       try {
         request.defaults.headers.common.Authorization = null;
         request.defaults.headers.common['X-Company-ID'] = null;
-        clearKeychain();
+        // clearKeychain();
 
         // sensor logout
         global.s().logout();
