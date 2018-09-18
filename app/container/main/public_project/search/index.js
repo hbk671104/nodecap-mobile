@@ -5,22 +5,21 @@ import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 
-import { hasPermission } from 'component/auth/permission/lock';
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
 import Touchable from 'component/uikit/touchable';
-import ResourceItem from 'component/resources/item';
+import FavorItem from 'component/favored/item';
 import styles from './style';
 
 @global.bindTrack({
-  page: '人脉资源库搜索',
-  name: 'App_HumanResourceSearchOperation',
+  page: '项目搜索',
+  name: 'App_PublicProjectSearchOperation',
 })
-@connect(({ resource }) => ({
-  data: R.pathOr(null, ['search', 'index', 'data'])(resource),
+@connect(({ public_project }) => ({
+  data: R.pathOr(null, ['search'])(public_project),
 }))
-class ResourceSearch extends Component {
+class PublicProjectSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +29,7 @@ class ResourceSearch extends Component {
   }
 
   componentWillUnmount() {
-    this.props.dispatch({ type: 'resource/clearSearch' });
+    this.props.dispatch({ type: 'public_project/clearSearch' });
   }
 
   onSearchTextChange = text => {
@@ -42,7 +41,7 @@ class ResourceSearch extends Component {
     if (R.isEmpty(searchText)) return;
 
     this.props.dispatch({
-      type: 'resource/search',
+      type: 'public_project/search',
       payload: {
         q: searchText,
       },
@@ -50,18 +49,14 @@ class ResourceSearch extends Component {
   };
 
   handleItemPress = item => () => {
-    if (!hasPermission('resource-view')) {
-      return;
-    }
-    this.props.track('项目卡片');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'ResourceDetail',
-        params: {
-          item,
-        },
-      }),
-    );
+    // this.props.dispatch(
+    //   NavigationActions.navigate({
+    //     routeName: 'PortfolioDetail',
+    //     params: {
+    //       item,
+    //     },
+    //   }),
+    // );
   };
 
   handleBackPress = () => {
@@ -72,12 +67,13 @@ class ResourceSearch extends Component {
     return (
       <NavBar
         gradient
+        titleStyle={styles.narBar.title}
         renderTitle={() => (
           <View style={styles.searchBar.container}>
             <SearchBar
+              placeholder="搜索项目名、Token"
               style={styles.searchBar.bar}
               autoFocus
-              placeholder="输入人脉关键字搜索"
               onChange={this.onSearchTextChange}
             />
           </View>
@@ -96,7 +92,7 @@ class ResourceSearch extends Component {
   };
 
   renderItem = ({ item }) => (
-    <ResourceItem data={item} onPress={this.handleItemPress(item)} />
+    <FavorItem item={item} onPress={this.handleItemPress(item)} />
   );
 
   render() {
@@ -116,4 +112,4 @@ class ResourceSearch extends Component {
   }
 }
 
-export default ResourceSearch;
+export default PublicProjectSearch;

@@ -12,6 +12,7 @@ export default {
   namespace: 'public_project',
   state: {
     list: null,
+    search: null,
     current: null,
   },
   effects: {
@@ -28,6 +29,24 @@ export default {
 
         yield put.resolve({
           type: 'institution/fetch',
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *search({ payload, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getPublicProjects, {
+          ...payload,
+        });
+
+        yield put({
+          type: 'list',
+          payload: data,
         });
 
         if (callback) {
@@ -159,6 +178,12 @@ export default {
       return {
         ...state,
         list: paginate(state.list, action.payload),
+      };
+    },
+    clearSearch(state) {
+      return {
+        ...state,
+        search: null,
       };
     },
     current(state, action) {

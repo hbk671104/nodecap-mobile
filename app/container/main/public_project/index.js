@@ -56,7 +56,13 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleSearchPress = () => {};
+  handleSearchPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PublicProjectSearch',
+      }),
+    );
+  };
 
   renderItem = ({ item }) => (
     <FavorItem data={item} onPress={this.handleItemPress(item)} />

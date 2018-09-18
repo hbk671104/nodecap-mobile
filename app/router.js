@@ -32,6 +32,7 @@ import ResetPwd from 'container/auth/resetPwd';
 import Recommendation from 'container/auth/recommendation';
 import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
+import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
 import InstitutionReport from 'container/main/public_project/institution_report';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
@@ -160,6 +161,7 @@ const Tab = createBottomTabNavigator(
 const MainStack = createStackNavigator(
   {
     Tab,
+    PublicProjectSearch,
     PublicProjectDetail,
     InstitutionReport,
     InstitutionReportDetail,
@@ -252,6 +254,7 @@ const IndividualTab = createBottomTabNavigator(
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
+    PublicProjectSearch,
     NotificationDetail,
     NotificationDetailRaw,
   },
