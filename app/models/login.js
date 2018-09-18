@@ -1,6 +1,6 @@
 import JPush from 'jpush-react-native';
 import { NavigationActions as routerRedux } from '../utils';
-import { login, setPassword } from '../services/api';
+import { login, setPassword, getLoginSMSCode } from '../services/api';
 import request from '../utils/request';
 import { NavigationActions } from 'react-navigation';
 import { clearKeychain } from '../utils/keychain';
@@ -144,6 +144,16 @@ export default {
         yield put({
           type: 'switchVersion',
         });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *sendSMS({ payload, callback }, { call }) {
+      try {
+        yield call(getLoginSMSCode, payload);
+        if (callback) {
+          callback();
+        }
       } catch (error) {
         console.log(error);
       }

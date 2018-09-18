@@ -8,6 +8,7 @@ import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
 import Item from './item';
 import styles from './style';
+import Login from '../../auth/login';
 
 @global.bindTrack({
   page: '我的模块',
@@ -15,6 +16,7 @@ import styles from './style';
 })
 @connect(({ user, login }) => ({
   user: user.currentUser,
+  isLogin: !!login.token,
   in_individual: login.in_individual,
 }))
 class Self extends Component {
@@ -88,7 +90,10 @@ class Self extends Component {
   );
 
   render() {
-    const { user, in_individual } = this.props;
+    const { user, in_individual, isLogin } = this.props;
+    if (!isLogin) {
+      return <Login />;
+    }
     return (
       <View style={styles.container}>
         {this.renderNavBar()}

@@ -1,7 +1,7 @@
 export default {
   container: {
     normal: {
-      height: 55,
+      height: 50,
       backgroundColor: 'rgba(24, 144, 255, 0.6)',
       justifyContent: 'center',
       alignItems: 'center',

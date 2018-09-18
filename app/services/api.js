@@ -635,6 +635,14 @@ export function favorCoin(payload) {
 export function getSMSCode(mobile) {
   return request.post('/signup/code', { mobile });
 }
+/**
+ * 注册验证码
+ * @param mobile
+ * @returns {AxiosPromise<any>}
+ */
+export function getLoginSMSCode(mobile) {
+  return request.post('/login/code', { mobile });
+}
 
 /**
  * 创建公司

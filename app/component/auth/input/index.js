@@ -25,7 +25,6 @@ class AuthInput extends PureComponent {
     } = this.props;
     return (
       <View style={[style]}>
-        <Text style={styles.title}>{title}</Text>
         <TextInput
           {...inputProps}
           style={styles.input}
