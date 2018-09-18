@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import Empty from 'component/empty';
 import List from 'component/uikit/list';
-import FavoredItem from 'component/favored/item';
+import FavoredItem, { itemHeight } from 'component/favored/item';
 
 import styles from './style';
 
@@ -44,7 +44,7 @@ class Favored extends Component {
     const { data, pagination } = this.props;
     return (
       <List
-        itemHeight={70}
+        itemHeight={itemHeight}
         contentContainerStyle={styles.listContent}
         action={this.requestData}
         // loading={loading}

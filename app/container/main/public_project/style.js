@@ -1,21 +1,22 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
   },
-  header: {
-    marginBottom: 5,
-  },
-  list: {
-    backgroundColor: '#F9F9F9',
-  },
   listContent: {
     paddingVertical: 0,
   },
-  item: {
-    backgroundColor: 'white',
-  },
   separator: {
-    height: 5,
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#E9E9E9',
+    marginLeft: 78,
+  },
+  searchBar: {
+    container: {
+      flex: 1,
+      paddingHorizontal: 12,
+    },
   },
 };

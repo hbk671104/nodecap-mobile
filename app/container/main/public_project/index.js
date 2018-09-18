@@ -6,7 +6,8 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
-import PublicProjectItem from 'component/public_project/item';
+import SearchBarDisplay from 'component/searchBar/display';
+import FavorItem, { itemHeight } from 'component/favored/item';
 
 import Header from './header';
 import styles from './style';
@@ -55,17 +56,14 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleSearchPress = () => {};
+
   renderItem = ({ item }) => (
-    <PublicProjectItem
-      style={styles.item}
-      data={item}
-      onPress={this.handleItemPress(item)}
-    />
+    <FavorItem data={item} onPress={this.handleItemPress(item)} />
   );
 
   renderHeader = () => (
     <Header
-      style={styles.header}
       data={this.props.institution}
       onItemPress={this.handleInstitutionItemPress}
     />
@@ -73,13 +71,27 @@ export default class PublicProject extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderNavBar = () => (
+    <NavBar
+      gradient
+      renderTitle={() => (
+        <View style={styles.searchBar.container}>
+          <SearchBarDisplay
+            title="搜索项目名、Token"
+            onPress={this.handleSearchPress}
+          />
+        </View>
+      )}
+    />
+  );
+
   render() {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient title="项目公海" />
+        {this.renderNavBar()}
         <List
-          style={styles.list}
+          itemHeight={itemHeight}
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
