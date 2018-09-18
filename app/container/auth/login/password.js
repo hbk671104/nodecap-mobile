@@ -3,6 +3,7 @@ import { View, Image, Text } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import AuthButton from 'component/auth/button';
@@ -26,6 +27,7 @@ class Login extends Component {
           type: 'login/login',
           payload: {
             ...value,
+            callback: R.path(['screenProps', 'callback'])(this.props),
           },
         });
       }

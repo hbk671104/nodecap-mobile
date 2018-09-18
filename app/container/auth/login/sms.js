@@ -31,6 +31,7 @@ class SMSLogin extends Component {
           type: 'login/login',
           payload: {
             ...value,
+            callback: R.path(['screenProps', 'callback'])(this.props),
           },
         });
       }

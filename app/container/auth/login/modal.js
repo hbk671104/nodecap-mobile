@@ -14,6 +14,7 @@ class LoginModal extends Component {
       }}
       >
         <Login screenProps={{
+          callback: this.props.navigation.getParam('callback'),
           renderLeft: () => (
             <TouchableWithoutFeedback onPress={() => {
               this.props.navigation.dispatch(NavigationActions.back());
