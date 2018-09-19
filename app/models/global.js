@@ -1,9 +1,11 @@
 import axios from 'axios';
 import * as R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import JPush from 'jpush-react-native';
 
 import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
+import request from '../utils/request';
 import { Storage } from '../utils';
 
 export default {
@@ -31,12 +33,6 @@ export default {
           }),
         ]);
 
-        // const recommended = yield call(
-        //   Storage.get,
-        //   'project_recommended',
-        //   false,
-        // );
-
         if (fromLogin) {
           yield put(NavigationActions.back());
         } else {
@@ -58,7 +54,51 @@ export default {
         console.log(e);
       }
     },
-    *startup(_, { put, call }) {
+    *startup(_, { put }) {
+      try {
+        yield put({
+          type: 'getConstant',
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *initial(_, { select, put }) {
+      const token = yield select(state => state.login.token);
+      const in_individual = yield select(state =>
+        R.path(['login', 'in_individual'])(state),
+      );
+
+      if (token) {
+        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+      }
+      try {
+        if (in_individual) {
+          yield put.resolve({
+            type: 'initIndividualEnd',
+          });
+        } else {
+          yield put.resolve({
+            type: 'initInstitutionEnd',
+          });
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getPermission(_, { call, put }) {
+      try {
+        const res = yield call(getAllPermissions);
+
+        yield put({
+          type: 'getPermissions',
+          payload: res.data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *getConstant(_, { call, put }) {
       try {
         const res = yield call(getConstants);
 
@@ -66,28 +106,74 @@ export default {
           type: 'getConstants',
           payload: res.data,
         });
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.log(error);
       }
     },
-    *initial(_, { select, put, call, all }) {
-      const token = yield select(state => state.login.token);
-      const companies = yield select(state => state.login.companies);
-      const in_individual = yield select(state =>
-        R.path(['login', 'in_individual'])(state),
-      );
-
-      if (token) {
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-        axios.defaults.headers.common['X-Company-ID'] = in_individual
-          ? null
-          : R.path([0, 'id'])(companies);
-      }
+    *initRealm({ callback }, { call }) {
       try {
-        const res = yield call(getAllPermissions);
+        yield call(initKeychain);
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *initIndividualEnd({ callback }, { call, put, select }) {
+      try {
+        // remove http header
+        request.defaults.headers.common['X-Company-ID'] = null;
+
+        yield put.resolve({
+          type: 'user/fetchCurrent',
+        });
+
+        const companies = yield select(state =>
+          R.path(['login', 'companies'])(state),
+        );
+        const user = yield select(state =>
+          R.path(['user', 'currentUser'])(state),
+        );
+
+        // sensor input
+        const realname = R.path(['realname'])(user);
+        const user_id = R.path(['id'])(user);
+        const companyName = R.pathOr('void', [0, 'name'])(companies);
+        const companyID = R.pathOr(0, [0, 'id'])(companies);
+        const input = {
+          realname,
+          companyName,
+          companyID,
+        };
+        global.s().login(`${user_id}`);
+        global.setProfile({
+          ...input,
+          client_type: '个人版',
+        });
+
+        // JPush
+        JPush.setAlias(`user_${user_id}`, () => null);
+        JPush.cleanTags(() => null);
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *initInstitutionEnd({ callback }, { call, put, all, select }) {
+      try {
+        // http headers
+        const companies = yield select(state =>
+          R.path(['login', 'companies'])(state),
+        );
+        const companyID = R.pathOr(0, [0, 'id'])(companies);
+        request.defaults.headers.common['X-Company-ID'] = companyID;
+
         yield put({
-          type: 'getPermissions',
-          payload: res.data,
+          type: 'getPermission',
         });
 
         yield all([
@@ -104,15 +190,32 @@ export default {
           //   type: 'initRealm',
           // }),
         ]);
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    *initRealm({ callback }, { call }) {
-      try {
-        yield call(initKeychain);
+
+        const user = yield select(state =>
+          R.path(['user', 'currentUser'])(state),
+        );
+
+        // sensor input
+        const realname = R.path(['realname'])(user);
+        const user_id = R.path(['id'])(user);
+        const companyName = R.pathOr('void', [0, 'name'])(companies);
+        const input = {
+          realname,
+          companyName,
+          companyID,
+        };
+        global.s().login(`${user_id}`);
+        global.setProfile({
+          ...input,
+          client_type: '企业版',
+        });
+
+        // JPush
+        JPush.setAlias(`user_${user_id}`, () => null);
+        JPush.setTags([`company_${companyID}`], () => null);
+
         if (callback) {
-          callback();
+          yield call(callback);
         }
       } catch (error) {
         console.log(error);

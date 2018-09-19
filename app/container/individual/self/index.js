@@ -7,7 +7,6 @@ import NavBar from 'component/navBar';
 import Item from 'component/self/item';
 import Header from './header';
 import styles from './style';
-import Login from '../../auth/login';
 
 @global.bindTrack({
   page: '我的模块',
@@ -85,7 +84,7 @@ class Self extends Component {
   );
 
   render() {
-    const { user } = this.props;
+    const { isLogin } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -101,13 +100,17 @@ class Self extends Component {
             title="设置"
             onPress={this.handleSettingsPress}
           />
-          <View style={styles.scroll.divider} />
-          <Item
-            icon={require('asset/mine/switch_end.png')}
-            title="切换至机构版"
-            subtitle="若您是机构投资人，可管理机构项目及工作流协作"
-            onPress={this.handleSwitchEndPress}
-          />
+          {isLogin && (
+            <View>
+              <View style={styles.scroll.divider} />
+              <Item
+                icon={require('asset/mine/switch_end.png')}
+                title="切换至机构版"
+                subtitle="若您是机构投资人，可管理机构项目及工作流协作"
+                onPress={this.handleSwitchEndPress}
+              />
+            </View>
+          )}
         </ScrollView>
         <Header
           {...this.props}

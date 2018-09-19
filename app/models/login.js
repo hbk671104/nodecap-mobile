@@ -104,37 +104,13 @@ export default {
       const in_individual = yield select(state =>
         R.path(['login', 'in_individual'])(state),
       );
-      const companies = yield select(state =>
-        R.path(['login', 'companies'])(state),
-      );
-      const user = yield select(state =>
-        R.path(['user', 'currentUser'])(state),
-      );
-      const realname = R.path(['realname'])(user);
-      const companyName = R.path([0, 'name'])(companies);
-      const companyID = R.path([0, 'id'])(companies);
-      const input = {
-        realname,
-        companyName,
-        companyID,
-      };
-      try {
-        if (in_individual) {
-          request.defaults.headers.common['X-Company-ID'] = companyID;
-          JPush.setTags([`company_${companyID}`], () => null);
-          global.setProfile({
-            ...input,
-            client_type: '企业版',
-          });
-        } else {
-          request.defaults.headers.common['X-Company-ID'] = null;
-          JPush.cleanTags(() => null);
-          global.setProfile({
-            ...input,
-            client_type: '个人版',
-          });
-        }
 
+      try {
+        yield put.resolve({
+          type: in_individual
+            ? 'global/initInstitutionEnd'
+            : 'global/initIndividualEnd',
+        });
         yield put(
           routerRedux.navigate({
             routeName: in_individual ? 'Main' : 'Individual',

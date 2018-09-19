@@ -15,7 +15,9 @@ import styles from './style';
   page: '设置',
   name: 'App_SettingsOperation',
 })
-@connect()
+@connect(({ login }) => ({
+  isLogin: !!login.token,
+}))
 class Settings extends Component {
   logout = () => {
     this.props.track('退出登录');
@@ -47,6 +49,7 @@ class Settings extends Component {
   };
 
   render() {
+    const { isLogin } = this.props;
     return (
       <View style={styles.container}>
         <NavBar gradient back title="设置" />
@@ -60,12 +63,14 @@ class Settings extends Component {
           <ListItem title="版本更新" onPress={this.handleChangelogPress} />
           {/* <ListItem title="评价 Hotnode" /> */}
         </ScrollView>
-        <AuthButton
-          style={styles.bottom.container}
-          disabled={false}
-          title="退出登录"
-          onPress={this.handleLogoutPress}
-        />
+        {isLogin && (
+          <AuthButton
+            style={styles.bottom.container}
+            disabled={false}
+            title="退出登录"
+            onPress={this.handleLogoutPress}
+          />
+        )}
       </View>
     );
   }

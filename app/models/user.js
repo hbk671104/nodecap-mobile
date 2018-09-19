@@ -77,38 +77,9 @@ export default {
         console.log(e);
       }
     },
-    *fetchCurrent(_, { call, put, select }) {
+    *fetchCurrent(_, { call, put }) {
       try {
         const { data } = yield call(getUser);
-        const in_individual = yield select(state =>
-          R.path(['login', 'in_individual'])(state),
-        );
-
-        // Sensor
-        global.s().login(`${data.id}`);
-
-        // JPush
-        JPush.setAlias(`user_${data.id}`, () => null);
-
-        const company = R.path(['companies', 0])(data);
-        const input = {
-          realname: data.realname,
-          companyName: company.name,
-          companyID: company.id,
-        };
-
-        if (in_individual) {
-          global.setProfile({
-            ...input,
-            client_type: '个人版',
-          });
-        } else {
-          global.setProfile({
-            ...input,
-            client_type: '企业版',
-          });
-          JPush.setTags([`company_${company.id}`], () => null);
-        }
 
         yield put({
           type: 'saveCurrentUser',
