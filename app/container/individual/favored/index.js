@@ -30,7 +30,7 @@ class Favored extends Component {
   handleLoginPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'Auth',
+        routeName: 'Login',
       }),
     );
   };

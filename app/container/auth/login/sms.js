@@ -3,11 +3,10 @@ import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { NavigationActions, StackActions } from 'react-navigation';
+import { NavigationActions } from 'react-navigation';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import AuthButton from 'component/auth/button';
-import AuthInput from 'component/auth/input';
 import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
 import NavBar from 'component/navBar';
@@ -21,6 +20,7 @@ class SMSLogin extends Component {
   state = {
     countdown: 60,
   };
+
   handleOnSubmit = () => {
     if (this.props.loading) {
       return;
@@ -31,12 +31,12 @@ class SMSLogin extends Component {
           type: 'login/login',
           payload: {
             ...value,
-            callback: R.path(['screenProps', 'callback'])(this.props),
           },
         });
       }
     });
   };
+
   handleSendSMSCode = () => {
     const mobile = this.props.form.getFieldValue('mobile');
     if (R.isNil(mobile) || R.isEmpty(mobile)) {
@@ -71,21 +71,21 @@ class SMSLogin extends Component {
     const { countdown } = this.state;
     const account = getFieldValue('mobile');
     const password = getFieldValue('password');
-    const renderLeft = R.path(['screenProps', 'renderLeft'])(this.props);
+
     return (
       <View style={styles.container}>
         <NavBar
+          back
           barStyle="dark-content"
-          back={false}
-          renderLeft={renderLeft}
           renderRight={() => (
-            <TouchableWithoutFeedback onPress={() => {
-              this.props.navigation.dispatch(
-                StackActions.push({
-                  routeName: 'PasswordLogin',
-                }),
-              );
-            }}
+            <TouchableWithoutFeedback
+              onPress={() => {
+                this.props.dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'Password',
+                  }),
+                );
+              }}
             >
               <View>
                 <Text style={styles.rightButton}>密码登录</Text>
@@ -94,34 +94,32 @@ class SMSLogin extends Component {
           )}
         />
         <EnhancedScroll>
-          <Image style={styles.logo} source={require('asset/logo_horizontal.png')} />
+          <Image
+            style={styles.logo}
+            source={require('asset/logo_horizontal.png')}
+          />
           <View style={{ marginTop: 25 }}>
             {getFieldDecorator('mobile', {
               rules: [{ required: true, message: '输入手机号/邮箱登录' }],
-            })(
-              <InputItem
-                style={styles.input}
-                placeholder="请输入手机号"
-              />,
-            )}
+            })(<InputItem style={styles.input} placeholder="请输入手机号" />)}
             <View style={{ marginTop: 20 }}>
               {getFieldDecorator('captcha', {
-              rules: [{ required: true, message: '请输入验证码' }],
-            })(
-              <InputItem
-                titleStyle={styles.item.title}
-                placeholder="请输入您的验证码"
-                inputProps={{ keyboardType: 'number-pad' }}
-                renderRight={() => (
-                  <Touchable onPress={this.handleSendSMSCode}>
-                    <Text style={styles.smscode}>
-                      {countdown === 60 ? '获取验证码' : `${countdown}s`}
-                    </Text>
-                  </Touchable>
-                )}
-                error={getFieldError('message_code')}
-              />,
-            )}
+                rules: [{ required: true, message: '请输入验证码' }],
+              })(
+                <InputItem
+                  titleStyle={styles.item.title}
+                  placeholder="请输入您的验证码"
+                  inputProps={{ keyboardType: 'number-pad' }}
+                  renderRight={() => (
+                    <Touchable onPress={this.handleSendSMSCode}>
+                      <Text style={styles.smscode}>
+                        {countdown === 60 ? '获取验证码' : `${countdown}s`}
+                      </Text>
+                    </Touchable>
+                  )}
+                  error={getFieldError('message_code')}
+                />,
+              )}
             </View>
           </View>
           <AuthButton

@@ -25,7 +25,7 @@ export default {
     container: {
       marginTop: 12,
       alignSelf: 'flex-end',
-      marginRight: 32,
+      marginRight: 20,
     },
     text: {
       fontSize: 14,

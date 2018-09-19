@@ -24,14 +24,14 @@ import { shadow } from './utils/style';
 
 // Screen
 import Loader from 'container/loader';
-import Landing from 'container/auth/landing';
-import CreateCompany from 'container/auth/createCompany';
+// import Landing from 'container/auth/landing';
+// import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
-import LoginModal from 'container/auth/login/modal';
-import SetPassword from 'container/auth/setPassword';
-import ResetPwd from 'container/auth/resetPwd';
-import Recommendation from 'container/auth/recommendation';
-import Dashboard from 'container/main/dashboard';
+// import LoginModal from 'container/auth/login/modal';
+// import SetPassword from 'container/auth/setPassword';
+// import ResetPwd from 'container/auth/resetPwd';
+// import Recommendation from 'container/auth/recommendation';
+// import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
@@ -43,7 +43,7 @@ import Portfolio from 'container/main/portfolio';
 import NotificationCenter from 'container/main/notification_center';
 import NotificationDetail from 'container/main/notification_center/detail';
 import NotificationDetailRaw from 'container/main/notification_center/raw';
-import Management from 'container/main/management';
+// import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
@@ -82,18 +82,6 @@ import IndividualProfile from 'container/individual/self/profile/mine';
 import IndividualEditProfile from 'container/individual/self/profile/edit';
 import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
-
-const AuthStack = createStackNavigator(
-  {
-    Login: {
-      screen: LoginModal,
-    },
-  },
-  {
-    headerMode: 'none',
-    mode: 'modal',
-  },
-);
 
 const Tab = createBottomTabNavigator(
   {
@@ -269,9 +257,7 @@ const IndividualStack = createStackNavigator(
     },
     Settings,
     ChangeLog,
-    Auth: {
-      screen: LoginModal,
-    },
+    Login,
   },
   {
     headerMode: 'none',
@@ -280,7 +266,6 @@ const IndividualStack = createStackNavigator(
 
 const AppRouter = createSwitchNavigator(
   {
-    // Auth: AuthStack,
     Main: MainStack,
     Individual: IndividualStack,
     CodePush: CodePushPage,

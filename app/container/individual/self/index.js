@@ -39,7 +39,7 @@ class Self extends Component {
       this.props.track('登录');
       this.props.dispatch(
         NavigationActions.navigate({
-          routeName: 'Auth',
+          routeName: 'Login',
         }),
       );
     }

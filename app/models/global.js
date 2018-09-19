@@ -19,7 +19,7 @@ export default {
   },
 
   effects: {
-    *bootstrap({ callback }, { call, put, all, select }) {
+    *bootstrap({ callback, fromLogin = false }, { call, put, all, select }) {
       try {
         // put => non-blocking, put.resolve => blocking
         yield all([
@@ -37,15 +37,19 @@ export default {
         //   false,
         // );
 
-        const in_individual = yield select(state =>
-          R.path(['login', 'in_individual'])(state),
-        );
+        if (fromLogin) {
+          yield put(NavigationActions.back());
+        } else {
+          const in_individual = yield select(state =>
+            R.path(['login', 'in_individual'])(state),
+          );
 
-        yield put(
-          NavigationActions.navigate({
-            routeName: in_individual ? 'Individual' : 'Main',
-          }),
-        );
+          yield put(
+            NavigationActions.navigate({
+              routeName: in_individual ? 'Individual' : 'Main',
+            }),
+          );
+        }
 
         if (callback) {
           yield call(callback);

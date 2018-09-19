@@ -19,7 +19,16 @@ import styles from './style';
 class Settings extends Component {
   logout = () => {
     this.props.track('退出登录');
-    this.props.dispatch({ type: 'login/logout' });
+    this.props.dispatch({
+      type: 'login/logout',
+      callback: () => {
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'Self',
+          }),
+        );
+      },
+    });
   };
 
   handleLogoutPress = () => {

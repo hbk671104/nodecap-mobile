@@ -15,7 +15,7 @@ export default {
   },
 
   effects: {
-    *login({ payload }, { call, put, take }) {
+    *login({ payload }, { call, put }) {
       try {
         const { data } = yield call(login, payload);
         yield put({
@@ -42,6 +42,7 @@ export default {
 
           yield put.resolve({
             type: 'global/bootstrap',
+            fromLogin: true,
           });
         }
       } catch (e) {
@@ -66,6 +67,7 @@ export default {
 
         yield put.resolve({
           type: 'global/bootstrap',
+          fromLogin: true,
         });
       } catch (e) {
         yield put({
@@ -76,7 +78,7 @@ export default {
         });
       }
     },
-    *logout(_, { put }) {
+    *logout({ callback }, { call, put }) {
       try {
         request.defaults.headers.common.Authorization = null;
         request.defaults.headers.common['X-Company-ID'] = null;
@@ -88,15 +90,14 @@ export default {
         // jpush remove corresponding info
         JPush.deleteAlias(() => null);
         JPush.cleanTags(() => null);
+
+        if (callback) {
+          yield call(callback);
+        }
       } finally {
         yield put({
           type: 'logoutSuccess',
         });
-        yield put(
-          NavigationActions.navigate({
-            routeName: 'Self',
-          }),
-        );
       }
     },
     *switch(_, { put, select }) {
