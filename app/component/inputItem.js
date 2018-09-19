@@ -39,7 +39,7 @@ class InputItem extends PureComponent {
       renderRight,
       placeholder,
       onChange,
-      inputProps,
+      inputProps = {},
       value,
       error,
     } = this.props;
@@ -63,6 +63,7 @@ class InputItem extends PureComponent {
                   style={[
                     styles.content.horizontal.input,
                     vertical && styles.content.vertical.input,
+                    inputProps.style,
                   ]}
                   multiline={vertical}
                   placeholder={placeholder}

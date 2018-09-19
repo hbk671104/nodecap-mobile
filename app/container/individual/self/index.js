@@ -60,7 +60,13 @@ class Self extends Component {
     );
   };
 
-  handleFeedbackPress = () => {};
+  handleFeedbackPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Feedback',
+      }),
+    );
+  };
 
   handleSwitchEndPress = () => {
     Alert.alert('提示', '是否切换至「机构版」？', [
