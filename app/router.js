@@ -15,6 +15,8 @@ import {
 } from 'react-navigation-redux-helpers';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
+import { withNetworkConnectivity } from 'react-native-offline';
+import { Toast } from 'antd-mobile';
 
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
@@ -222,8 +224,12 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
   'root',
   state => state.router,
 );
+
 const addListener = createReduxBoundAddListener('root');
 
+@withNetworkConnectivity({
+  pingServerUrl: 'https://www.baidu.com/',
+})
 @connect(({ app, router }) => ({ app, router }))
 class Router extends Component {
   state = {
@@ -241,6 +247,12 @@ class Router extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
     JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.isConnected && !nextProps.isConnected) {
+      Toast.fail('失去网络连接');
+    }
   }
 
   componentWillUnmount() {
