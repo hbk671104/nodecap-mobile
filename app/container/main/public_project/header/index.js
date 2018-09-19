@@ -34,7 +34,7 @@ const header = ({ style, data, onItemPress, onFilterPress }) => (
     <View style={styles.divider} />
     <Group title="精选项目">
       <View style={styles.bottom.container}>
-        <Text style={styles.bottom.subtitle}>为您找到 2343个项目</Text>
+        <Text style={styles.bottom.subtitle}>为您找到 2343 个项目</Text>
         <Touchable borderless onPress={onFilterPress}>
           <Text style={styles.bottom.filter}>
             全部{' '}
