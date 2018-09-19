@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
@@ -22,6 +23,7 @@ import styles from './style';
   institution: R.pathOr([], ['list'])(institution),
   loading: loading.effects['public_project/fetch'],
 }))
+@connectActionSheet
 export default class PublicProject extends Component {
   requestData = (page, size) => {
     this.props.dispatch({
@@ -57,11 +59,21 @@ export default class PublicProject extends Component {
   };
 
   handleSearchPress = () => {
-    // this.props.dispatch(
-    //   NavigationActions.navigate({
-    //     routeName: 'LoginModal',
-    //   }),
-    // );
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PublicProjectSearch',
+      }),
+    );
+  };
+
+  handleFilterPress = () => {
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['全部', '即将开始', '进行中', '已结束', '取消'],
+        cancelButtonIndex: 4,
+      },
+      buttonIndex => {},
+    );
   };
 
   renderItem = ({ item }) => (
@@ -72,6 +84,7 @@ export default class PublicProject extends Component {
     <Header
       data={this.props.institution}
       onItemPress={this.handleInstitutionItemPress}
+      onFilterPress={this.handleFilterPress}
     />
   );
 
