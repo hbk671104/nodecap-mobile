@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Empty from 'component/empty';
@@ -26,7 +27,13 @@ class Favored extends Component {
     // });
   };
 
-  handleLoginPress = () => {};
+  handleLoginPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Auth',
+      }),
+    );
+  };
 
   renderLogin = () => (
     <Empty

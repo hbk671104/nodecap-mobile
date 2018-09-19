@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, Platform, Vibration, Easing, Animated } from 'react-native';
+import { BackHandler, Alert, Platform, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -70,8 +70,6 @@ import Colleague from 'container/main/self/colleague';
 import ColleagueSearch from 'container/main/self/colleague/search';
 import ColleagueDetail from 'container/main/self/colleague/detail';
 import ColleagueAdd from 'container/main/self/colleague/add';
-import Settings from 'container/main/self/settings';
-import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
 import MyCompany from 'container/main/self/profile/company';
 import EditProfile from 'container/main/self/profile/edit';
@@ -79,18 +77,21 @@ import EditProfile from 'container/main/self/profile/edit';
 // Individual exclusive
 import Favored from 'container/individual/favored';
 import IndividualPublicProjectDetail from 'container/individual/public_project/detail';
+import IndividualSelf from 'container/individual/self';
+import IndividualProfile from 'container/individual/self/profile/mine';
+import IndividualEditProfile from 'container/individual/self/profile/edit';
+import Settings from 'container/individual/self/settings';
+import ChangeLog from 'container/individual/self/settings/changelog';
 
 const AuthStack = createStackNavigator(
   {
-    Landing,
-    CreateCompany,
-    Login,
-    SetPassword,
-    ResetPwd,
-    Recommendation,
+    Login: {
+      screen: LoginModal,
+    },
   },
   {
     headerMode: 'none',
+    mode: 'modal',
   },
 );
 
@@ -194,8 +195,6 @@ const MainStack = createStackNavigator(
     ColleagueSearch,
     ColleagueDetail,
     ColleagueAdd,
-    Settings,
-    ChangeLog,
     MyProfile,
     MyCompany,
     EditProfile,
@@ -227,7 +226,7 @@ const IndividualTab = createBottomTabNavigator(
       },
     },
     Self: {
-      screen: Self,
+      screen: IndividualSelf,
       navigationOptions: {
         title: '我的',
       },
@@ -262,9 +261,16 @@ const IndividualStack = createStackNavigator(
     },
     NotificationDetail,
     NotificationDetailRaw,
-    LoginModal: {
+    MyProfile: {
+      screen: IndividualProfile,
+    },
+    EditProfile: {
+      screen: IndividualEditProfile,
+    },
+    Settings,
+    ChangeLog,
+    Auth: {
       screen: LoginModal,
-      mode: 'modal',
     },
   },
   {
@@ -274,7 +280,7 @@ const IndividualStack = createStackNavigator(
 
 const AppRouter = createSwitchNavigator(
   {
-    Auth: AuthStack,
+    // Auth: AuthStack,
     Main: MainStack,
     Individual: IndividualStack,
     CodePush: CodePushPage,

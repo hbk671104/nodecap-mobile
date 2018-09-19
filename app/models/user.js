@@ -88,7 +88,6 @@ export default {
         global.s().login(`${data.id}`);
 
         // JPush
-        JPush.resumePush();
         JPush.setAlias(`user_${data.id}`, () => null);
 
         const company = R.path(['companies', 0])(data);

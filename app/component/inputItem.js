@@ -7,7 +7,7 @@ import Input from 'component/uikit/textInput';
 
 class InputItem extends PureComponent {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     titleStyle: PropTypes.object,
     placeholder: PropTypes.string,
     vertical: PropTypes.bool,

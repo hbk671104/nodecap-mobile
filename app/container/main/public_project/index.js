@@ -57,11 +57,11 @@ export default class PublicProject extends Component {
   };
 
   handleSearchPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'LoginModal',
-      }),
-    );
+    // this.props.dispatch(
+    //   NavigationActions.navigate({
+    //     routeName: 'LoginModal',
+    //   }),
+    // );
   };
 
   renderItem = ({ item }) => (

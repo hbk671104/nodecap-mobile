@@ -88,14 +88,13 @@ export default {
         // jpush remove corresponding info
         JPush.deleteAlias(() => null);
         JPush.cleanTags(() => null);
-        JPush.stopPush();
       } finally {
         yield put({
           type: 'logoutSuccess',
         });
         yield put(
           NavigationActions.navigate({
-            routeName: 'Auth',
+            routeName: 'Self',
           }),
         );
       }
