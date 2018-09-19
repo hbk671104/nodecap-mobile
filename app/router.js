@@ -73,6 +73,7 @@ import ColleagueAdd from 'container/main/self/colleague/add';
 import MyProfile from 'container/main/self/profile/mine';
 import MyCompany from 'container/main/self/profile/company';
 import EditProfile from 'container/main/self/profile/edit';
+import Feedback from 'container/main/self/feedback';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -258,6 +259,7 @@ const IndividualStack = createStackNavigator(
     Settings,
     ChangeLog,
     Login,
+    Feedback,
   },
   {
     headerMode: 'none',
