@@ -35,13 +35,13 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: paginate(state.list, action.payload),
+        list: action.payload,
       };
     },
     report(state, action) {
       return {
         ...state,
-        report: action.payload,
+        report: paginate(state.report, action.payload),
       };
     },
     clearReport(state) {

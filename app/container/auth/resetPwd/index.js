@@ -26,7 +26,7 @@ class ResetPwd extends Component {
         <NavBar barStyle="dark-content" back />
         <WebView
           startInLoadingState
-          source={{ uri: `${Config.WEB_URL}/user/forget?v=1` }}
+          source={{ uri: 'https://www.hotnode.cn/user/forget?v=1' }}
           onMessage={this.handleOnMessage}
         />
       </View>
