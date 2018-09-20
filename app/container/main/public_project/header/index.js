@@ -10,45 +10,60 @@ import Group from './group';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const header = ({ style, data, onItemPress, onFilterPress }) => (
-  <View style={style}>
-    <Group title="优质报告">
-      <View style={styles.container}>
-        {R.addIndex(R.map)((i, index) => {
-          return (
-            <Touchable key={index} foreground onPress={() => onItemPress(i)}>
-              <View style={styles.item.container}>
-                <Avatar
-                  size={28}
-                  raised={false}
-                  innerRatio={1}
-                  source={i.logo_url ? { uri: i.logo_url } : null}
-                />
-                <Text style={styles.item.title}>{i.name}</Text>
-              </View>
-            </Touchable>
-          );
-        })(data)}
-      </View>
-    </Group>
-    <View style={styles.divider} />
-    <Group title="精选项目">
-      <View style={styles.bottom.container}>
-        <Text style={styles.bottom.subtitle}>为您找到 2343 个项目</Text>
-        <Touchable borderless onPress={onFilterPress}>
-          <Text style={styles.bottom.filter}>
-            全部{' '}
-            <Icon
-              color="rgba(0, 0, 0, 0.25)"
-              name="md-arrow-dropdown"
-              override
-            />
+const header = ({
+  style,
+  institution,
+  pagination,
+  progress,
+  params,
+  onItemPress,
+  onFilterPress,
+}) => {
+  const total_count = R.pathOr(0, ['total'])(pagination);
+  const progress_index = R.pathOr({}, ['progress'])(params);
+  const progress_title = R.pathOr('全部', [progress_index])(progress);
+  return (
+    <View style={style}>
+      <Group title="优质报告">
+        <View style={styles.container}>
+          {R.addIndex(R.map)((i, index) => {
+            return (
+              <Touchable key={index} foreground onPress={() => onItemPress(i)}>
+                <View style={styles.item.container}>
+                  <Avatar
+                    size={28}
+                    raised={false}
+                    innerRatio={1}
+                    source={i.logo_url ? { uri: i.logo_url } : null}
+                  />
+                  <Text style={styles.item.title}>{i.name}</Text>
+                </View>
+              </Touchable>
+            );
+          })(institution)}
+        </View>
+      </Group>
+      <View style={styles.divider} />
+      <Group title="精选项目">
+        <View style={styles.bottom.container}>
+          <Text style={styles.bottom.subtitle}>
+            为您找到 {total_count} 个项目
           </Text>
-        </Touchable>
-      </View>
-    </Group>
-  </View>
-);
+          <Touchable borderless onPress={onFilterPress}>
+            <Text style={styles.bottom.filter}>
+              {progress_title}{' '}
+              <Icon
+                color="rgba(0, 0, 0, 0.25)"
+                name="md-arrow-dropdown"
+                override
+              />
+            </Text>
+          </Touchable>
+        </View>
+      </Group>
+    </View>
+  );
+};
 
 const styles = {
   container: {
@@ -100,7 +115,6 @@ const styles = {
 
 header.propTypes = {
   style: PropTypes.object,
-  data: PropTypes.array.isRequired,
   onItemPress: PropTypes.func,
   onFilterPress: PropTypes.func,
 };

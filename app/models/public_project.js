@@ -11,20 +11,26 @@ import { paginate } from '../utils/pagination';
 export default {
   namespace: 'public_project',
   state: {
-    list: null,
+    list: {
+      index: null,
+      params: {},
+      progress: ['未设定', '即将开始', '进行中', '已结束'],
+    },
     search: null,
     current: null,
   },
   effects: {
-    *fetch({ payload, callback }, { call, put }) {
+    *fetch({ payload, params, callback }, { call, put }) {
       try {
         const { data } = yield call(getPublicProjects, {
           ...payload,
+          ...params,
         });
 
         yield put({
           type: 'list',
           payload: data,
+          params,
         });
 
         yield put.resolve({
@@ -175,9 +181,18 @@ export default {
   },
   reducers: {
     list(state, action) {
+      const progress_changed =
+        R.pathOr('', ['list', 'params', 'progress'])(state) !==
+        R.pathOr('', ['params', 'progress'])(action);
       return {
         ...state,
-        list: paginate(state.list, action.payload),
+        list: {
+          ...state.list,
+          index: progress_changed
+            ? action.payload
+            : paginate(state.list.index, action.payload),
+          params: action.params,
+        },
       };
     },
     searchList(state, action) {
