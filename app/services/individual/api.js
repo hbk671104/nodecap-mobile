@@ -28,7 +28,7 @@ export const getFavoredCoin = params => {
 };
 
 export const favorCoin = payload => {
-  return request.post('/coins/public', payload);
+  return request.post('/user/coins', payload);
 };
 
 export const unfavorCoin = cid => {

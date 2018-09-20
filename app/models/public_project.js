@@ -3,8 +3,13 @@ import {
   getCoinInfo,
   getNewsByCoinId,
   getCoinFinanceInfo,
-  favorCoin,
+  getCoinSymbol,
+
 } from '../services/api';
+import {
+  favorCoin,
+  unfavorCoin,
+} from '../services/individual/api';
 import R from 'ramda';
 import { paginate } from '../utils/pagination';
 
@@ -74,6 +79,10 @@ export default {
             type: 'financeInfo',
             id,
           }),
+          put.resolve({
+            type: 'symbol',
+            id,
+          }),
         ]);
 
         if (callback) {
@@ -81,6 +90,68 @@ export default {
         }
       } catch (error) {
         console.log(error);
+      }
+    },
+    *refresh({ res: data, payload, status }, { all, call, put, select }) {
+      try {
+        const current = yield select(state =>
+          R.path(['public_project', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            id: R.path([0])(payload),
+          });
+        }
+
+        if (!R.isNil(data) && !R.isEmpty(data)) {
+          yield all(
+            R.map(id =>
+              put.resolve({
+                type: 'portfolio/updateProject',
+                id,
+                payload: {
+                  status,
+                },
+              }),
+            )(data),
+          );
+
+          yield all([
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: '0,1,2,3,4,5,6',
+              },
+            }),
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: `${status}`,
+              },
+            }),
+          ]);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *symbol({ id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getCoinSymbol, id);
+
+        yield put({
+          type: 'saveCurrent',
+          payload: {
+            symbols: data,
+          },
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
       }
     },
     *trend({ id, callback }, { call, put }) {
@@ -125,46 +196,29 @@ export default {
           favorCoin,
           payload,
         );
-
-        const current = yield select(state =>
-          R.path(['public_project', 'current'])(state),
+        yield put({
+          type: 'refresh',
+          payload,
+          res: data,
+        });
+        if (callback) {
+          yield call(callback, response_status === 200);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *unfavor({ payload, status, callback }, { all, call, put, select }) {
+      try {
+        const { data, status: response_status } = yield call(
+          unfavorCoin,
+          payload,
         );
-        if (!R.isNil(current)) {
-          yield put.resolve({
-            type: 'get',
-            id: R.path([0])(payload),
-          });
-        }
-
-        if (!R.isNil(data) && !R.isEmpty(data)) {
-          yield all(
-            R.map(id =>
-              put.resolve({
-                type: 'portfolio/updateProject',
-                id,
-                payload: {
-                  status,
-                },
-              }),
-            )(data),
-          );
-
-          yield all([
-            put({
-              type: 'portfolio/index',
-              payload: {
-                status: '0,1,2,3,4,5,6',
-              },
-            }),
-            put({
-              type: 'portfolio/index',
-              payload: {
-                status: `${status}`,
-              },
-            }),
-          ]);
-        }
-
+        yield put({
+          type: 'refresh',
+          payload,
+          res: data,
+        });
         if (callback) {
           yield call(callback, response_status === 200);
         }

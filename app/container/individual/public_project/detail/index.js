@@ -14,6 +14,10 @@ import { hasPermission } from 'component/auth/permission/lock';
 import Description from './page/description';
 import Trend from './page/trend';
 import Financing from './page/financing';
+import Return from './page/return';
+import Pairs from './page/pairs';
+import Chart from './chart';
+import Fund from './fund';
 import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
@@ -32,6 +36,14 @@ const selectionList = [
   {
     component: Trend,
     name: '动态',
+  },
+  {
+    component: Pairs,
+    name: '交易所',
+  },
+  {
+    component: Return,
+    name: '回报',
   },
 ];
 @global.bindTrack({
@@ -98,11 +110,17 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleStatusPress = () => {
-    const matched = R.pathOr(false, ['matched'])(this.props.portfolio);
-    if (matched) {
-      this.showToast();
+    const is_focused = R.pathOr(false, ['is_focused'])(this.props.portfolio);
+    if (is_focused) {
+      this.props.dispatch({
+        type: 'public_project/favor',
+        payload: [this.props.id],
+      });
     } else {
-      this.props.toggleStatusSelector(true);
+      this.props.dispatch({
+        type: 'public_project/unfavor',
+        payload: [this.props.id],
+      });
     }
   };
 
@@ -156,18 +174,6 @@ export default class PublicProjectDetail extends Component {
   };
 
   render() {
-    if (!hasPermission('project-view')) {
-      return (
-        <View style={styles.container}>
-          <NavBar gradient back />
-          <Empty
-            image={require('asset/empty/permission_denied.png')}
-            title="您尚未解锁此权限"
-          />
-        </View>
-      );
-    }
-
     const {
       currentPage: Current,
       portfolio,
@@ -203,6 +209,8 @@ export default class PublicProjectDetail extends Component {
             },
           )}
         >
+          <Fund {...this.props} />
+          <Chart {...this.props} />
           <Selector
             onLayout={this.handleSelectorOnLayout}
             list={selectionList}
@@ -213,7 +221,7 @@ export default class PublicProjectDetail extends Component {
             <Current.component {...this.props} />
           </View>
         </Animated.ScrollView>
-        <Bottom {...this.props} onStatusPress={this.handleStatusPress} />
+        <Bottom {...this.props} onPress={this.handleStatusPress} />
         <StatusSelector
           loading={favor_loading}
           isVisible={this.props.showStatusSelector}

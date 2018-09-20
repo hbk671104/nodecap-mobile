@@ -7,14 +7,14 @@ import Touchable from 'component/uikit/touchable';
 import { shadow } from '../../../../utils/style';
 import { bottomTabHeight } from './style';
 
-const bottom = ({ onStatusPress, portfolio }) => {
-  const favored = R.pathOr(false, ['matched'])(portfolio);
+const bottom = ({ onPress, portfolio }) => {
+  const favored = R.pathOr(false, ['is_focused'])(portfolio);
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <Touchable
           style={styles.status.wrapper}
-          onPress={() => onStatusPress()}
+          onPress={() => onPress()}
         >
           <View style={styles.status.container}>
             <Image source={require('asset/project/favored/favored.png')} />

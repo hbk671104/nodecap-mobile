@@ -3,6 +3,7 @@ import { TextInput, Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
+import { withState } from 'recompose';
 import { View, TouchableWithoutFeedback, Text } from 'react-native';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
@@ -18,16 +19,22 @@ const styles = {
   },
 };
 
+@withState('submitting', 'setSubmitting', false)
 @connect()
 @createForm()
 class Feedback extends Component {
   submit = () => {
+    if (this.props.submitting) {
+      return;
+    }
     this.props.form.validateFields((err, value) => {
       if (!err) {
+        this.props.setSubmitting(true);
         request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
           ...value,
         }).then(() => {
           Toast.success('您的反馈已提交');
+          this.props.setSubmitting(false);
           this.props.dispatch(
             NavigationActions.back()
           );
@@ -50,7 +57,7 @@ class Feedback extends Component {
           renderRight={() => (
             <TouchableWithoutFeedback onPress={this.submit}>
               <View>
-                <Text style={styles.button}>提交</Text>
+                <Text style={styles.button}>{this.props.submitting ? '提交中...' : '提交'}</Text>
               </View>
             </TouchableWithoutFeedback>
           )}
