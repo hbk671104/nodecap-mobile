@@ -7,20 +7,35 @@ import Touchable from 'component/uikit/touchable';
 import { shadow } from '../../../../utils/style';
 import { bottomTabHeight } from './style';
 
-const bottom = ({ onPress, portfolio }) => {
+const bottom = ({ onFavorPress, onInvestmentPress, portfolio }) => {
   const favored = R.pathOr(false, ['is_focused'])(portfolio);
   return (
     <View style={styles.wrapper}>
       <View style={styles.container}>
         <Touchable
-          style={styles.status.wrapper}
-          onPress={() => onPress()}
+          style={styles.group.wrapper}
+          borderless
+          onPress={() => onFavorPress()}
         >
-          <View style={styles.status.container}>
-            <Image source={require('asset/project/favored/favored.png')} />
-            <Text style={styles.status.title}>
+          <View style={styles.group.container}>
+            <Image
+              source={
+                favored
+                  ? require('asset/project/detail/gold_star.png')
+                  : require('asset/project/detail/grey_star.png')
+              }
+            />
+            <Text style={styles.group.title}>
               {favored ? '已关注' : '未关注'}
             </Text>
+          </View>
+        </Touchable>
+        <Touchable
+          style={styles.investment.wrapper}
+          onPress={() => onInvestmentPress()}
+        >
+          <View style={styles.investment.container}>
+            <Text style={styles.investment.title}>投资记录</Text>
           </View>
         </Touchable>
       </View>
@@ -44,9 +59,24 @@ const styles = {
     alignItems: 'center',
     // paddingHorizontal: 12,
   },
-  status: {
+  group: {
     wrapper: {
       flex: 1,
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    title: {
+      marginTop: 6,
+      color: 'rgba(0, 0, 0, 0.65)',
+      fontSize: 11,
+    },
+  },
+  investment: {
+    wrapper: {
+      flex: 2,
       height: 39,
       borderRadius: 2,
       marginHorizontal: 12,
@@ -63,7 +93,6 @@ const styles = {
       fontSize: 13,
       color: 'white',
       fontWeight: 'bold',
-      marginLeft: 12,
     },
     triangle: {
       position: 'absolute',

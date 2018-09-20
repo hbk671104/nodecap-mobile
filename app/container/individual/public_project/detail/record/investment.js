@@ -12,13 +12,13 @@ import Empty from './empty';
 import styles from './investmentStyle';
 
 const dateFormat = date =>
-  (date ? moment(date).format('YYYY年MM月DD日 HH:mm') : null);
+  (date ? moment(date).format('YYYY年MM月DD日') : null);
 
 class Investment extends PureComponent {
   handleAddPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PortfolioInvestmentCreate',
+        routeName: 'PublicProjectInvestmentCreate',
         params: {
           id: this.props.id,
         },
@@ -34,7 +34,7 @@ class Investment extends PureComponent {
       R.prop('name')(R.find(R.propEq('id', item.stage_id))(stages));
     const getTokenName = item =>
       R.prop('name')(R.find(R.propEq('id', item.invest_token))(tokens));
-    const tokenName = R.path(['portfolio', 'token_name'])(this.props);
+    const tokenName = R.path(['public_project', 'token_name'])(this.props);
 
     const investCount = projectProps(['invest_count'])
       ? Accounting.formatNumber(projectProps(['invest_count']))
@@ -90,13 +90,6 @@ class Investment extends PureComponent {
                 flex: 1,
               },
             })}
-            {renderField({
-              name: '打币状态',
-              value: projectProps(['is_paid']) ? '已打币' : '未打币',
-              style: {
-                flex: 1,
-              },
-            })}
           </Flex>
           {renderField({
             name: '折扣/Bonus',
@@ -140,10 +133,7 @@ class Investment extends PureComponent {
   }
 
   render() {
-    const finance_token = R.pathOr([], ['item', 'invest_tokens', 'data'])(
-      this.props,
-    );
-    const finance_equities = R.pathOr([], ['item', 'invest_equities', 'data'])(
+    const finance_token = R.pathOr([], ['item', 'investments', 'data'])(
       this.props,
     );
 
@@ -151,13 +141,7 @@ class Investment extends PureComponent {
       .map(i => ({
         ...i,
         financeType: 'token',
-      }))
-      .concat(
-        finance_equities.map(i => ({
-          ...i,
-          financeType: 'equities',
-        })),
-      );
+      }));
     const afterSort = R.sort((a, b) => b.created_at - a.created_at)(
       financeData,
     );

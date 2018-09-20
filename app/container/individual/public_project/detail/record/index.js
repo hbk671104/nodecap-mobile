@@ -12,19 +12,19 @@ import NavBar from 'component/navBar';
   page: '项目记录详情',
   name: 'App_ProjectRecordDetailOperation',
 })
-@connect(({ loading, global, portfolio, router }, props) => {
+@connect(({ loading, global, public_project, router }, props) => {
   const id = props.navigation.getParam('id');
   return {
-    item: R.pathOr({}, ['current'])(portfolio),
+    item: R.pathOr({}, ['current'])(public_project),
     id,
     constants: global.constants,
-    loading: loading.effects['portfolio/get'],
-    record_loading: loading.effects['portfolio/getExtra'],
+    loading: loading.effects['public_project/get'],
+    record_loading: loading.effects['public_project/getExtra'],
     hasDetailInStack: !R.pipe(
       R.path(['routes']),
-      R.find(r => r.routeName === 'Main'),
+      R.find(r => r.routeName === 'Individual'),
       R.path(['routes']),
-      R.find(r => r.routeName === 'PortfolioDetail'),
+      R.find(r => r.routeName === 'PublicProjectDetail'),
       R.isNil,
     )(router),
   };
@@ -53,7 +53,7 @@ class Record extends Component {
       return;
     }
     this.props.dispatch({
-      type: 'portfolio/clearDetail',
+      type: 'public_project/clearDetail',
     });
   }
 
@@ -62,7 +62,7 @@ class Record extends Component {
       return;
     }
     this.props.dispatch({
-      type: 'portfolio/get',
+      type: 'public_project/get',
       payload: this.props.id,
     });
   };

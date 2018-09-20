@@ -4,32 +4,41 @@ import {
   getNewsByCoinId,
   getCoinFinanceInfo,
   getCoinSymbol,
-
 } from '../services/api';
 import {
   favorCoin,
   unfavorCoin,
+  getInvestmentsByCoinID,
+  createInvestment,
+  createInvestInfo,
 } from '../services/individual/api';
+import moment from 'moment';
 import R from 'ramda';
 import { paginate } from '../utils/pagination';
 
 export default {
   namespace: 'public_project',
   state: {
-    list: null,
+    list: {
+      index: null,
+      params: {},
+      progress: ['未设定', '即将开始', '进行中', '已结束'],
+    },
     search: null,
     current: null,
   },
   effects: {
-    *fetch({ payload, callback }, { call, put }) {
+    *fetch({ payload, params, callback }, { call, put }) {
       try {
         const { data } = yield call(getPublicProjects, {
           ...payload,
+          ...params,
         });
 
         yield put({
           type: 'list',
           payload: data,
+          params,
         });
 
         yield put.resolve({
@@ -84,7 +93,10 @@ export default {
             id,
           }),
         ]);
-
+        yield put({
+          type: 'getExtra',
+          payload: id,
+        });
         if (callback) {
           yield call(callback);
         }
@@ -134,6 +146,55 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *getExtra({ payload }, { all, put }) {
+      try {
+        yield all([
+          put.resolve({
+            type: 'getInvest',
+            payload,
+          }),
+        ]);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *getInvest({ payload }, { call, put }) {
+      try {
+        const investTokens = yield call(getInvestmentsByCoinID, payload);
+        yield put({
+          type: 'saveInvest',
+          payload: investTokens.data,
+          relatedType: 'investments',
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *createInvestInfo({ id, callback, payload }, { select, put, call }) {
+      try {
+        const { status } = yield call(createInvestInfo, {
+          coin_id: id,
+          ...payload,
+          paid_at: moment(payload.paid_at, 'YYYY-MM-DD').toISOString(),
+        });
+
+        const current = yield select(state =>
+          R.path(['public_project', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'get',
+            id: current.id,
+          });
+        }
+
+        if (callback) {
+          yield call(callback, status === 201);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     *symbol({ id, callback }, { call, put }) {
@@ -229,9 +290,18 @@ export default {
   },
   reducers: {
     list(state, action) {
+      const progress_changed =
+        R.pathOr('', ['list', 'params', 'progress'])(state) !==
+        R.pathOr('', ['params', 'progress'])(action);
       return {
         ...state,
-        list: paginate(state.list, action.payload),
+        list: {
+          ...state.list,
+          index: progress_changed
+            ? action.payload
+            : paginate(state.list.index, action.payload),
+          params: action.params,
+        },
       };
     },
     searchList(state, action) {
@@ -265,6 +335,15 @@ export default {
       return {
         ...state,
         current: null,
+      };
+    },
+    saveInvest(state, action) {
+      return {
+        ...state,
+        current: {
+          ...(state.current || {}),
+          [action.relatedType]: action.payload,
+        },
       };
     },
   },

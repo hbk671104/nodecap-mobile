@@ -19,8 +19,10 @@ import styles from './style';
   name: 'App_PublicProjectOperation',
 })
 @connect(({ public_project, institution, loading, login }) => ({
-  data: R.pathOr([], ['list', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', 'pagination'])(public_project),
+  data: R.pathOr([], ['list', 'index', 'data'])(public_project),
+  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  progress: R.pathOr([], ['list', 'progress'])(public_project),
+  params: R.pathOr({}, ['list', 'params'])(public_project),
   institution: R.pathOr([], ['list'])(institution),
   loading: loading.effects['public_project/fetch'],
   in_individual: login.in_individual,
@@ -34,6 +36,16 @@ export default class PublicProject extends Component {
         currentPage: page,
         pageSize: size,
       },
+      params: {
+        ...this.props.params,
+      },
+    });
+  };
+
+  loadData = params => {
+    this.props.dispatch({
+      type: 'public_project/fetch',
+      params,
     });
   };
 
@@ -69,12 +81,21 @@ export default class PublicProject extends Component {
   };
 
   handleFilterPress = () => {
+    const { progress } = this.props;
+    const cancelButtonIndex = R.length(progress) + 1;
     this.props.showActionSheetWithOptions(
       {
-        options: ['全部', '未设定', '即将开始', '进行中', '已结束', '取消'],
-        cancelButtonIndex: 5,
+        options: ['全部', ...progress, '取消'],
+        cancelButtonIndex,
       },
-      buttonIndex => {},
+      buttonIndex => {
+        if (buttonIndex === cancelButtonIndex) {
+          return;
+        }
+        this.loadData({
+          progress: buttonIndex === 0 ? undefined : buttonIndex - 1,
+        });
+      },
     );
   };
 
@@ -88,7 +109,7 @@ export default class PublicProject extends Component {
 
   renderHeader = () => (
     <Header
-      data={this.props.institution}
+      {...this.props}
       onItemPress={this.handleInstitutionItemPress}
       onFilterPress={this.handleFilterPress}
     />

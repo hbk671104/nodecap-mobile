@@ -34,3 +34,18 @@ export const favorCoin = payload => {
 export const unfavorCoin = cid => {
   return request.delete(`/user/coins/${cid}`);
 };
+
+/**
+ * 项目 Token 投资记录
+ */
+export function getInvestmentsByCoinID(coin_id) {
+  return request.get('/investments', {
+    params: {
+      coin_id,
+    },
+  });
+}
+
+export function createInvestInfo(payload) {
+  return request.post('/investments', payload);
+}

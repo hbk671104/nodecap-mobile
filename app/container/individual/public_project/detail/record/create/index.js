@@ -35,7 +35,7 @@ class PortfolioInvestmentCreate extends Component {
     const id = this.props.navigation.getParam('id');
     Toast.loading('添加中...', 0);
     this.props.dispatch({
-      type: 'portfolio/createInvestInfo',
+      type: 'public_project/createInvestInfo',
       payload: investInfo,
       id,
       callback: success => {
@@ -67,33 +67,7 @@ class PortfolioInvestmentCreate extends Component {
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="添加投资记录" />
         <EnhancedScroll>
-          {!R.isEmpty(funds) &&
-            getFieldDecorator('fund', {
-              initialValue: R.path([0, 'id'])(funds),
-              rules: [
-                {
-                  required: true,
-                  message: '请选择投资主体',
-                },
-              ],
-            })(
-              <InputItem
-                title="投资主体"
-                placeholder="请选择投资主体"
-                renderContent={({ onChange, value }) => (
-                  <PickerSelect
-                    hideIcon
-                    placeholder={{
-                      label: '请选择投资主体',
-                      value: null,
-                    }}
-                    data={funds.map(f => ({ label: f.name, value: f.id }))}
-                    onChange={onChange}
-                    value={value}
-                  />
-                )}
-              />,
-            )}
+
           {!R.isEmpty(stages) &&
             getFieldDecorator('stage_id', {
               initialValue: R.path([0, 'id'])(stages),

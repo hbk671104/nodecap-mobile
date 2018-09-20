@@ -9,7 +9,7 @@ import SafeArea from 'component/uikit/safeArea';
 import NavBar, { realBarHeight } from 'component/navBar';
 import Empty from 'component/empty';
 import Gradient from 'component/uikit/gradient';
-import { hasPermission } from 'component/auth/permission/lock';
+import { NavigationActions } from 'react-navigation';
 
 import Description from './page/description';
 import Trend from './page/trend';
@@ -109,19 +109,28 @@ export default class PublicProjectDetail extends Component {
     Toast.info('可在投资库中管理该项目');
   };
 
-  handleStatusPress = () => {
+  handleFavorPress = () => {
     const is_focused = R.pathOr(false, ['is_focused'])(this.props.portfolio);
     if (is_focused) {
-      this.props.dispatch({
-        type: 'public_project/favor',
-        payload: [this.props.id],
-      });
-    } else {
       this.props.dispatch({
         type: 'public_project/unfavor',
         payload: [this.props.id],
       });
+    } else {
+      this.props.dispatch({
+        type: 'public_project/favor',
+        payload: [this.props.id],
+      });
     }
+  };
+
+  handleInvestmentPress = () => {
+    this.props.dispatch(NavigationActions.navigate({
+      routeName: 'PublicProjectRecord',
+      params: {
+        id: this.props.id,
+      },
+    }));
   };
 
   handlePageSwitch = page => () => {
@@ -221,7 +230,11 @@ export default class PublicProjectDetail extends Component {
             <Current.component {...this.props} />
           </View>
         </Animated.ScrollView>
-        <Bottom {...this.props} onPress={this.handleStatusPress} />
+        <Bottom
+          {...this.props}
+          onFavorPress={this.handleFavorPress}
+          onInvestmentPress={this.handleInvestmentPress}
+        />
         <StatusSelector
           loading={favor_loading}
           isVisible={this.props.showStatusSelector}

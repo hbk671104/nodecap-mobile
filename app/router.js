@@ -77,6 +77,8 @@ import Feedback from 'container/main/self/feedback';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
+import CoinRecord from 'container/individual/public_project/detail/record';
+import CoinRecordCreate from 'container/individual/public_project/detail/record/create';
 import IndividualPublicProjectDetail from 'container/individual/public_project/detail';
 import IndividualSelf from 'container/individual/self';
 import IndividualProfile from 'container/individual/self/profile/mine';
@@ -247,6 +249,8 @@ const IndividualStack = createStackNavigator(
     PublicProjectDetail: {
       screen: IndividualPublicProjectDetail,
     },
+    PublicProjectRecord: CoinRecord,
+    PublicProjectInvestmentCreate: CoinRecordCreate,
     NotificationDetail,
     NotificationDetailRaw,
     MyProfile: {
