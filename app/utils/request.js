@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as R from 'ramda';
 import store from '../../index';
-import Config from 'react-native-config';
+import Config from '../runtime';
 import { Toast } from 'antd-mobile';
 
 const codeMessage = {
@@ -28,6 +28,10 @@ const instance = axios.create({
   baseURL: Config.API_URL,
   timeout: 60000,
 });
+
+if (Config.ENV === 'development') {
+  axios.defaults.headers.common['X-NODECAP-DEV-USER'] = Config.DEV_USER;
+}
 
 instance.interceptors.response.use(res => {
   const hasPagination = R.allPass([
