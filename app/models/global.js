@@ -67,6 +67,11 @@ export default {
         R.path(['login', 'in_individual'])(state),
       );
 
+      if (R.isNil(request.defaults.headers.common.Authorization)) {
+        const token = yield select(state => R.path(['login', 'token'])(state));
+        request.defaults.headers.common.Authorization = `Bearer ${token}`;
+      }
+
       try {
         yield put.resolve({
           type: in_individual ? 'initIndividualEnd' : 'initInstitutionEnd',
