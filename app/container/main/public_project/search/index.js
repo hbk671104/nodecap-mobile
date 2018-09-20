@@ -10,15 +10,18 @@ import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
 import Touchable from 'component/uikit/touchable';
 import FavorItem from 'component/favored/item';
+import PublicProjectItem from 'component/public_project/item';
+
 import styles from './style';
 
 @global.bindTrack({
   page: '项目搜索',
   name: 'App_PublicProjectSearchOperation',
 })
-@connect(({ public_project }) => ({
+@connect(({ public_project, login }) => ({
   data: R.pathOr([], ['search', 'data'])(public_project),
   pagination: R.pathOr(null, ['search', 'pagination'])(public_project),
+  in_individual: login.in_individual,
 }))
 class PublicProjectSearch extends Component {
   constructor(props) {
@@ -92,9 +95,13 @@ class PublicProjectSearch extends Component {
     );
   };
 
-  renderItem = ({ item }) => (
-    <FavorItem data={item} onPress={this.handleItemPress(item)} />
-  );
+  renderItem = ({ item }) => {
+    return this.props.in_individual ? (
+      <FavorItem data={item} onPress={this.handleItemPress(item)} />
+    ) : (
+      <PublicProjectItem data={item} onPress={this.handleItemPress(item)} />
+    );
+  };
 
   render() {
     const { data, pagination } = this.props;

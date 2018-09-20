@@ -3,6 +3,7 @@ import * as R from 'ramda';
 import store from '../../index';
 import Config from '../runtime';
 import { Toast } from 'antd-mobile';
+import { NavigationActions } from 'react-navigation';
 
 const codeMessage = {
   1001: '您的账号有误。',
@@ -68,9 +69,16 @@ function checkStatus({ response = {} }) {
     return Promise.reject(response);
   }
   if (response.status === 401) {
-    store.dispatch({
-      type: 'login/logout',
-    });
+    // store.dispatch({
+    //   type: 'login/logout',
+    //   callback: () => {
+    //     store.dispatch(
+    //       NavigationActions.navigate({
+    //         routeName: 'Login',
+    //       }),
+    //     );
+    //   },
+    // });
     return;
   }
   const errortext =

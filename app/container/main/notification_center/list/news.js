@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import styles from '../style';
-import List from '../components/list';
+import List from 'component/uikit/list';
 import R from 'ramda';
 import moment from 'moment';
 

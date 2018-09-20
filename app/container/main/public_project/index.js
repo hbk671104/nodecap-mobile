@@ -8,7 +8,8 @@ import R from 'ramda';
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import SearchBarDisplay from 'component/searchBar/display';
-import FavorItem, { itemHeight } from 'component/favored/item';
+import FavorItem from 'component/favored/item';
+import PublicProjectItem from 'component/public_project/item';
 
 import Header from './header';
 import styles from './style';
@@ -17,11 +18,12 @@ import styles from './style';
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, institution, loading }) => ({
+@connect(({ public_project, institution, loading, login }) => ({
   data: R.pathOr([], ['list', 'data'])(public_project),
   pagination: R.pathOr(null, ['list', 'pagination'])(public_project),
   institution: R.pathOr([], ['list'])(institution),
   loading: loading.effects['public_project/fetch'],
+  in_individual: login.in_individual,
 }))
 @connectActionSheet
 export default class PublicProject extends Component {
@@ -69,16 +71,20 @@ export default class PublicProject extends Component {
   handleFilterPress = () => {
     this.props.showActionSheetWithOptions(
       {
-        options: ['全部', '即将开始', '进行中', '已结束', '取消'],
-        cancelButtonIndex: 4,
+        options: ['全部', '未设定', '即将开始', '进行中', '已结束', '取消'],
+        cancelButtonIndex: 5,
       },
       buttonIndex => {},
     );
   };
 
-  renderItem = ({ item }) => (
-    <FavorItem data={item} onPress={this.handleItemPress(item)} />
-  );
+  renderItem = ({ item }) => {
+    return this.props.in_individual ? (
+      <FavorItem data={item} onPress={this.handleItemPress(item)} />
+    ) : (
+      <PublicProjectItem data={item} onPress={this.handleItemPress(item)} />
+    );
+  };
 
   renderHeader = () => (
     <Header
@@ -110,7 +116,6 @@ export default class PublicProject extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <List
-          itemHeight={itemHeight}
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
