@@ -1,7 +1,7 @@
-import axios from 'axios';
 import * as R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import JPush from 'jpush-react-native';
+import Config from 'react-native-config';
 
 import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
@@ -21,17 +21,16 @@ export default {
   },
 
   effects: {
-    *bootstrap({ callback, fromLogin = false }, { call, put, all, select }) {
+    *bootstrap({ callback, fromLogin = false }, { call, put, select }) {
       try {
         // put => non-blocking, put.resolve => blocking
-        yield all([
-          put.resolve({
-            type: 'startup',
-          }),
-          put.resolve({
-            type: 'initial',
-          }),
-        ]);
+        yield put.resolve({
+          type: 'startup',
+        });
+
+        yield put.resolve({
+          type: 'initial',
+        });
 
         if (fromLogin) {
           yield put(NavigationActions.back());
@@ -56,7 +55,7 @@ export default {
     },
     *startup(_, { put }) {
       try {
-        yield put({
+        yield put.resolve({
           type: 'getConstant',
         });
       } catch (e) {
@@ -64,24 +63,14 @@ export default {
       }
     },
     *initial(_, { select, put }) {
-      const token = yield select(state => state.login.token);
       const in_individual = yield select(state =>
         R.path(['login', 'in_individual'])(state),
       );
 
-      if (token) {
-        axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-      }
       try {
-        if (in_individual) {
-          yield put.resolve({
-            type: 'initIndividualEnd',
-          });
-        } else {
-          yield put.resolve({
-            type: 'initInstitutionEnd',
-          });
-        }
+        yield put.resolve({
+          type: in_individual ? 'initIndividualEnd' : 'initInstitutionEnd',
+        });
       } catch (e) {
         console.log(e);
       }
@@ -122,12 +111,9 @@ export default {
     },
     *initIndividualEnd({ callback }, { call, put, select }) {
       try {
-        // remove http header
+        // http header config
+        request.defaults.baseURL = Config.API_INDIVIDUAL_URL;
         request.defaults.headers.common['X-Company-ID'] = null;
-
-        yield put.resolve({
-          type: 'user/fetchCurrent',
-        });
 
         const companies = yield select(state =>
           R.path(['login', 'companies'])(state),
@@ -156,6 +142,10 @@ export default {
         JPush.setAlias(`user_${user_id}`, () => null);
         JPush.cleanTags(() => null);
 
+        yield put.resolve({
+          type: 'user/fetchIndividualCurrent',
+        });
+
         if (callback) {
           yield call(callback);
         }
@@ -166,30 +156,12 @@ export default {
     *initInstitutionEnd({ callback }, { call, put, all, select }) {
       try {
         // http headers
+        request.defaults.baseURL = Config.API_URL;
         const companies = yield select(state =>
           R.path(['login', 'companies'])(state),
         );
         const companyID = R.pathOr(0, [0, 'id'])(companies);
         request.defaults.headers.common['X-Company-ID'] = companyID;
-
-        yield put({
-          type: 'getPermission',
-        });
-
-        yield all([
-          put.resolve({
-            type: 'user/fetchCurrent',
-          }),
-          put.resolve({
-            type: 'fund/fetch',
-          }),
-          put.resolve({
-            type: 'roles',
-          }),
-          // put.resolve({
-          //   type: 'initRealm',
-          // }),
-        ]);
 
         const user = yield select(state =>
           R.path(['user', 'currentUser'])(state),
@@ -213,6 +185,21 @@ export default {
         // JPush
         JPush.setAlias(`user_${user_id}`, () => null);
         JPush.setTags([`company_${companyID}`], () => null);
+
+        yield all([
+          put.resolve({
+            type: 'getPermission',
+          }),
+          put.resolve({
+            type: 'user/fetchCurrent',
+          }),
+          put.resolve({
+            type: 'fund/fetch',
+          }),
+          put.resolve({
+            type: 'roles',
+          }),
+        ]);
 
         if (callback) {
           yield call(callback);

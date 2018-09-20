@@ -1,6 +1,7 @@
 import JPush from 'jpush-react-native';
 import { NavigationActions as routerRedux } from '../utils';
 import { login, setPassword, getLoginSMSCode } from '../services/api';
+import * as IndividualAPI from '../services/individual/api';
 import request from '../utils/request';
 import { NavigationActions } from 'react-navigation';
 import { clearKeychain } from '../utils/keychain';
@@ -17,11 +18,7 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       try {
-        const { data } = yield call(login, payload);
-        yield put({
-          type: 'changeLoginStatus',
-          payload: data,
-        });
+        const { data } = yield call(IndividualAPI.login, payload);
         if (data.password_reset_token) {
           yield put(
             routerRedux.navigate({
@@ -33,7 +30,7 @@ export default {
           );
         } else {
           yield put({
-            type: 'loginSuccess',
+            type: 'loginConfig',
             payload: {
               token: data.access_token,
               companies: data.companies,
@@ -54,11 +51,12 @@ export default {
         });
       }
     },
-    *setPassword({ payload }, { call, put }) {
+    *smsLogin({ payload }, { call, put }) {
       try {
-        const { data } = yield call(setPassword, payload);
+        const { data } = yield call(IndividualAPI.smsLogin, payload);
+
         yield put({
-          type: 'loginSuccess',
+          type: 'loginConfig',
           payload: {
             token: data.access_token,
             companies: data.companies,
@@ -76,6 +74,45 @@ export default {
             error: e.status,
           },
         });
+      }
+    },
+    *setPassword({ payload }, { call, put }) {
+      try {
+        const { data } = yield call(setPassword, payload);
+
+        yield put({
+          type: 'loginConfig',
+          payload: {
+            token: data.access_token,
+            companies: data.companies,
+          },
+        });
+
+        yield put.resolve({
+          type: 'global/bootstrap',
+          fromLogin: true,
+        });
+      } catch (e) {
+        yield put({
+          type: 'loginFailure',
+          payload: {
+            error: e.status,
+          },
+        });
+      }
+    },
+    *loginConfig({ payload }, { put }) {
+      try {
+        request.defaults.headers.common.Authorization = `Bearer ${
+          payload.token
+        }`;
+
+        yield put({
+          type: 'loginSuccess',
+          payload,
+        });
+      } catch (error) {
+        console.log(error);
       }
     },
     *logout({ callback }, { call, put }) {
@@ -141,13 +178,6 @@ export default {
       return {
         ...state,
         in_individual: R.not(state.in_individual),
-      };
-    },
-    changeLoginStatus(state, { payload }) {
-      return {
-        ...state,
-        status: payload.status,
-        type: payload.type,
       };
     },
     loginSuccess(state, { payload }) {

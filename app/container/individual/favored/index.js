@@ -11,20 +11,21 @@ import FavoredItem, { itemHeight } from 'component/favored/item';
 
 import styles from './style';
 
-@connect(({ login, favored }) => ({
+@connect(({ login, favored, loading }) => ({
   logged_in: !!login.token,
-  data: R.pathOr([{ id: 1 }, { id: 2 }, { id: 3 }], ['list', 'data'])(favored),
+  data: R.pathOr([], ['list', 'data'])(favored),
   pagination: R.pathOr(null, ['list', 'pagination'])(favored),
+  loading: loading.effects['favored/fetch'],
 }))
 class Favored extends Component {
   requestData = (page, size) => {
-    // this.props.dispatch({
-    //   type: 'portfolio/index',
-    //   payload: {
-    //     currentPage: page,
-    //     pageSize: size,
-    //   },
-    // });
+    this.props.dispatch({
+      type: 'favored/fetch',
+      payload: {
+        currentPage: page,
+        pageSize: size,
+      },
+    });
   };
 
   handleLoginPress = () => {
@@ -48,13 +49,13 @@ class Favored extends Component {
   renderSeparator = () => <View style={styles.separator} />;
 
   renderList = () => {
-    const { data, pagination } = this.props;
+    const { data, pagination, loading } = this.props;
     return (
       <List
         itemHeight={itemHeight}
         contentContainerStyle={styles.listContent}
         action={this.requestData}
-        // loading={loading}
+        loading={loading}
         pagination={pagination}
         data={data}
         renderItem={this.renderItem}

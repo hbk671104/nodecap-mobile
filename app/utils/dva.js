@@ -40,6 +40,7 @@ export default options => {
         'public_project/favor',
         'institution/fetchReports',
         'news/index',
+        'favored/fetch',
       ],
     }),
   );

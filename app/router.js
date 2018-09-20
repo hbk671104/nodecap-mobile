@@ -195,7 +195,6 @@ const MainStack = createStackNavigator(
 
 const IndividualTab = createBottomTabNavigator(
   {
-    // Dashboard,
     Onboard: {
       screen: PublicProject,
       navigationOptions: {

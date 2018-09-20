@@ -15,6 +15,7 @@ import {
   createCompany,
   getSMSCode,
 } from '../services/api';
+import { getCurrentUser } from '../services/individual/api';
 import { transformSorter } from '../utils/';
 import { uploadImage } from '../services/upload';
 
@@ -80,6 +81,18 @@ export default {
     *fetchCurrent(_, { call, put }) {
       try {
         const { data } = yield call(getUser);
+
+        yield put({
+          type: 'saveCurrentUser',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchIndividualCurrent(_, { call, put }) {
+      try {
+        const { data } = yield call(getCurrentUser);
 
         yield put({
           type: 'saveCurrentUser',
