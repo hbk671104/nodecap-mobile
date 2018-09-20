@@ -45,7 +45,7 @@ export default {
         });
 
         yield put({
-          type: 'list',
+          type: 'searchList',
           payload: data,
         });
 
@@ -178,6 +178,12 @@ export default {
       return {
         ...state,
         list: paginate(state.list, action.payload),
+      };
+    },
+    searchList(state, action) {
+      return {
+        ...state,
+        search: paginate(state.search, action.payload),
       };
     },
     clearSearch(state) {

@@ -171,6 +171,16 @@ export default {
         console.log(error);
       }
     },
+    *sendLoginSMS({ payload, callback }, { call }) {
+      try {
+        yield call(IndividualAPI.getVerificationCode, payload);
+        if (callback) {
+          callback();
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 
   reducers: {

@@ -143,7 +143,7 @@ export default {
         JPush.cleanTags(() => null);
 
         yield put.resolve({
-          type: 'user/fetchIndividualCurrent',
+          type: 'user/fetchCurrent',
         });
 
         if (callback) {

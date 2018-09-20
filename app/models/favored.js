@@ -8,9 +8,9 @@ export default {
     list: null,
   },
   effects: {
-    *fetch({ callback }, { call, put }) {
+    *fetch({ callback, payload }, { call, put }) {
       try {
-        const { data } = yield call(IndividualAPI.getFavoredCoin);
+        const { data } = yield call(IndividualAPI.getFavoredCoin, payload);
 
         yield put({
           type: 'save',

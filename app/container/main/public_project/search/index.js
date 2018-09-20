@@ -17,7 +17,8 @@ import styles from './style';
   name: 'App_PublicProjectSearchOperation',
 })
 @connect(({ public_project }) => ({
-  data: R.pathOr(null, ['search'])(public_project),
+  data: R.pathOr([], ['search', 'data'])(public_project),
+  pagination: R.pathOr(null, ['search', 'pagination'])(public_project),
 }))
 class PublicProjectSearch extends Component {
   constructor(props) {
@@ -92,11 +93,11 @@ class PublicProjectSearch extends Component {
   };
 
   renderItem = ({ item }) => (
-    <FavorItem item={item} onPress={this.handleItemPress(item)} />
+    <FavorItem data={item} onPress={this.handleItemPress(item)} />
   );
 
   render() {
-    const { data } = this.props;
+    const { data, pagination } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -105,6 +106,7 @@ class PublicProjectSearch extends Component {
           loadOnStart={false}
           action={this.requestData}
           data={data}
+          pagination={pagination}
           renderItem={this.renderItem}
         />
       </View>

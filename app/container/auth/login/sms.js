@@ -13,7 +13,7 @@ import NavBar from 'component/navBar';
 import styles from './style';
 
 @connect(({ loading }) => ({
-  loading: loading.effects['login/login'],
+  loading: loading.effects['login/smsLogin'],
 }))
 @createForm()
 class SMSLogin extends Component {
@@ -28,7 +28,7 @@ class SMSLogin extends Component {
     this.props.form.validateFields((err, value) => {
       if (!err) {
         this.props.dispatch({
-          type: 'login/login',
+          type: 'login/smsLogin',
           payload: {
             ...value,
           },
@@ -43,7 +43,7 @@ class SMSLogin extends Component {
       return;
     }
     this.props.dispatch({
-      type: 'login/sendSMS',
+      type: 'login/sendLoginSMS',
       payload: mobile,
       callback: () => {
         this.countdown = setInterval(() => {
@@ -70,7 +70,7 @@ class SMSLogin extends Component {
     const { loading } = this.props;
     const { countdown } = this.state;
     const account = getFieldValue('mobile');
-    const password = getFieldValue('password');
+    const verification_code = getFieldValue('verification_code');
 
     return (
       <View style={styles.container}>
@@ -100,10 +100,10 @@ class SMSLogin extends Component {
           />
           <View style={{ marginTop: 25 }}>
             {getFieldDecorator('mobile', {
-              rules: [{ required: true, message: '输入手机号/邮箱登录' }],
+              rules: [{ required: true, message: '请输入手机号' }],
             })(<InputItem style={styles.input} placeholder="请输入手机号" />)}
             <View style={{ marginTop: 20 }}>
-              {getFieldDecorator('captcha', {
+              {getFieldDecorator('verification_code', {
                 rules: [{ required: true, message: '请输入验证码' }],
               })(
                 <InputItem
@@ -124,7 +124,7 @@ class SMSLogin extends Component {
           </View>
           <AuthButton
             loading={loading}
-            disabled={!account || !password}
+            disabled={!account || !verification_code}
             style={styles.button}
             onPress={this.handleOnSubmit}
           />

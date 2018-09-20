@@ -90,18 +90,6 @@ export default {
         console.log(e);
       }
     },
-    *fetchIndividualCurrent(_, { call, put }) {
-      try {
-        const { data } = yield call(getCurrentUser);
-
-        yield put({
-          type: 'saveCurrentUser',
-          payload: data,
-        });
-      } catch (e) {
-        console.log(e);
-      }
-    },
     /**
      * 更改自己的用户信息
      * @param payload
