@@ -25,7 +25,7 @@ const codeMessage = {
 };
 
 const instance = axios.create({
-  baseURL: Config.API_URL,
+  baseURL: Config.API_INDIVIDUAL_URL,
   timeout: 60000,
 });
 
