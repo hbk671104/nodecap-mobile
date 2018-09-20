@@ -11,6 +11,9 @@ import {
   getInvestmentsByCoinID,
   createInvestment,
   createInvestInfo,
+  getCoinMarket,
+  getCoinROI,
+  getCoinTrend,
 } from '../services/individual/api';
 import moment from 'moment';
 import R from 'ramda';
@@ -155,9 +158,57 @@ export default {
             type: 'getInvest',
             payload,
           }),
+          put({
+            type: 'getCoinMarket',
+            payload,
+          }),
+          put({
+            type: 'getCoinROI',
+            payload,
+          }),
+          put({
+            type: 'getCoinTrend',
+            payload,
+          }),
         ]);
       } catch (error) {
         console.log(error);
+      }
+    },
+    *getCoinMarket({ payload }, { all, put, call }) {
+      try {
+        const { data } = yield call(getCoinMarket, payload);
+        yield put({
+          type: 'saveInvest',
+          relatedType: 'market',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getCoinROI({ payload }, { all, put, call }) {
+      try {
+        const { data } = yield call(getCoinROI, payload);
+        yield put({
+          type: 'saveInvest',
+          relatedType: 'roi',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getCoinTrend({ payload }, { all, put, call }) {
+      try {
+        const { data } = yield call(getCoinTrend, payload);
+        yield put({
+          type: 'saveInvest',
+          relatedType: 'trend',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
       }
     },
     *getInvest({ payload }, { call, put }) {

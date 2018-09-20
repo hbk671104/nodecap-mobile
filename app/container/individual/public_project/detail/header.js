@@ -11,14 +11,15 @@ import Shimmer from 'component/shimmer';
 import { symbol } from '../../../../utils/icon';
 
 export const headerHeight = 64;
+export const fullHeaderHeight = 144;
 
 const header = ({
                   style,
                   titleStyle,
                   data,
+                  portfolio,
                   loading,
                   avatarWrapperStyle,
-                  can_calculate,
                   stat_loading,
                   base_symbol,
 }) => {
@@ -29,17 +30,18 @@ const header = ({
     R.pathOr([], ['category']),
     R.join(' | '),
   )(data);
-  const current_price = R.pathOr('--', ['stats', 'current_price', 'CNY'])(data);
+  const market = R.pathOr({}, ['market'])(portfolio);
+  const can_calculate = !!market;
+  const current_price = R.pathOr('--', ['current_price', 'CNY'])(market);
   const price_change_percentage_24h = R.pathOr('--', [
-    'stats',
     'price_change_percentage_24h',
-  ])(data);
-  const total_volume = R.pathOr('--', ['stats', 'total_volume', base_symbol])(
-    data,
+  ])(market);
+  const total_volume = R.pathOr('--', ['total_volume', base_symbol])(
+    market,
   );
-  const high_24h = R.pathOr('--', ['stats', 'high_24h', 'CNY'])(data);
+  const high_24h = R.pathOr('--', ['high_24h', 'CNY'])(market);
 
-  const desc = R.pathOr('--', ['description'])(data);
+  const desc = R.pathOr('--', ['description'])(market);
 
   return (
     <Animated.View style={[styles.container, style, {
@@ -75,13 +77,13 @@ const header = ({
         <View>
           <View style={styles.divider} />
           <View style={styles.bottom.container}>
-            <Shimmer animating={stat_loading}>
+            <Shimmer animating={loading}>
               <Text style={styles.bottom.title}>
                 {symbol('CNY', styles.bottom.title)}
                 <Price symbol="CNY">{current_price}</Price>
               </Text>
             </Shimmer>
-            <Shimmer style={{ marginLeft: 15 }} animating={stat_loading}>
+            <Shimmer style={{ marginLeft: 15 }} animating={loading}>
               <Text style={styles.bottom.subtitle}>
                 <Percentage colorAware={false}>
                   {price_change_percentage_24h}
@@ -89,7 +91,7 @@ const header = ({
               </Text>
             </Shimmer>
           </View>
-          <Shimmer style={{ marginTop: 6 }} animating={stat_loading}>
+          <Shimmer style={{ marginTop: 6 }} animating={loading}>
             <Text style={styles.bottom.content}>
               额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
               最高(24H) {symbol(base_symbol, styles.bottom.content)}

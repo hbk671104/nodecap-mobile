@@ -49,3 +49,15 @@ export function getInvestmentsByCoinID(coin_id) {
 export function createInvestInfo(payload) {
   return request.post('/investments', payload);
 }
+
+export function getCoinMarket(id) {
+  return request.get(`/coins/${id}/market`);
+}
+
+export function getCoinROI(id) {
+  return request.get(`/coins/${id}/roi`);
+}
+
+export function getCoinTrend(id) {
+  return request.get(`/coins/${id}/trend`);
+}

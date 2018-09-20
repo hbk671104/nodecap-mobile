@@ -7,7 +7,6 @@ import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
 import NavBar, { realBarHeight } from 'component/navBar';
-import Empty from 'component/empty';
 import Gradient from 'component/uikit/gradient';
 import { NavigationActions } from 'react-navigation';
 
@@ -18,7 +17,7 @@ import Return from './page/return';
 import Pairs from './page/pairs';
 import Chart from './chart';
 import Fund from './fund';
-import Header, { headerHeight } from './header';
+import Header, { headerHeight, fullHeaderHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
 import styles from './style';
@@ -58,6 +57,7 @@ const selectionList = [
     loading: loading.effects['public_project/get'],
     favor_loading: loading.effects['public_project/favor'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
+    can_calculate: R.pathOr({}, ['current', 'market'])(public_project),
   };
 })
 @compose(
@@ -65,19 +65,19 @@ const selectionList = [
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
   withState('showStatusSelector', 'toggleStatusSelector', false),
-  withProps(({ animateY }) => ({
+  withProps(({ animateY, can_calculate }) => ({
     headerWrapperYRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [0, -headerHeight],
+      inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+      outputRange: [0, -(can_calculate ? fullHeaderHeight : headerHeight)],
       extrapolate: 'clamp',
     }),
     headerOpacityRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
+      inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
       outputRange: [1, 0],
       extrapolate: 'clamp',
     }),
     titleOpacityRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
+      inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
       outputRange: [0, 1],
       extrapolate: 'clamp',
     }),
@@ -156,12 +156,12 @@ export default class PublicProjectDetail extends Component {
   };
 
   renderNavBarBackground = () => {
-    const { portfolio, headerWrapperYRange, headerOpacityRange } = this.props;
+    const { portfolio, headerWrapperYRange, headerOpacityRange, can_calculate } = this.props;
     return (
       <Animated.View
         style={[
           styles.navBar.wrapper,
-          { height: realBarHeight + headerHeight },
+          { height: realBarHeight + (can_calculate ? fullHeaderHeight : headerHeight) },
           {
             transform: [
               {
@@ -188,6 +188,7 @@ export default class PublicProjectDetail extends Component {
       portfolio,
       titleOpacityRange,
       favor_loading,
+      can_calculate,
     } = this.props;
     return (
       <SafeArea style={styles.container}>
@@ -201,7 +202,7 @@ export default class PublicProjectDetail extends Component {
         />
         <Animated.ScrollView
           contentContainerStyle={{
-            paddingTop: headerHeight,
+            paddingTop: can_calculate ? fullHeaderHeight : headerHeight,
           }}
           scrollEventThrottle={1}
           stickyHeaderIndices={[0]}

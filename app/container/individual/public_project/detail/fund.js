@@ -9,48 +9,42 @@ import PlaceHolder from 'component/loading_placeholder';
 import { symbol } from '../../../../utils/icon';
 
 const fund = props => {
-  const { can_calculate } = props;
-  if (R.not(can_calculate)) {
+  const roi = R.pathOr([], ['portfolio', 'roi'])(props);
+  if (R.not(roi)) {
     return null;
   }
 
-  const fund_stats = R.pathOr([], ['portfolio', 'fund_stats'])(props);
+  const quote = 'CNY' || R.path(['quote'])(roi);
+  const name = R.pathOr('--', ['name'])(roi);
+  const unit_cost = R.pathOr('--', ['unit_cost', quote])(roi);
+  const roiValue = R.pathOr('--', ['roi', quote, 'value'])(roi);
+
   return (
     <PlaceHolder
       style={styles.placeholder}
-      onReady={!props.stat_loading && R.not(R.isEmpty(fund_stats))}
+      onReady={!props.stat_loading && R.not(R.isEmpty(roi))}
       animate="shine"
     >
       <View style={styles.container}>
-        {R.map(f => {
-          const quote = 'CNY' || R.path(['quote'])(f);
-          const name = R.pathOr('--', ['name'])(f);
-          const unit_cost = R.pathOr('--', ['unit_cost', quote])(f);
-          const roi = R.pathOr('--', ['roi', quote, 'value'])(f);
-
-          return (
-            <View key={f.id} style={styles.item.container}>
-              <Text style={styles.item.title}>{name}</Text>
-              <View style={styles.item.bottom.container}>
-                <View style={{ flex: 3 }}>
-                  <Text style={styles.item.bottom.label}>
-                    成本价
-                    {'   '}
-                    {symbol(quote, styles.item.bottom.label)}
-                    <Price symbol={quote}>{unit_cost}</Price>
-                  </Text>
-                </View>
-                <View style={{ flex: 2 }}>
-                  <Text style={styles.item.bottom.label}>
-                    回报率
-                    {'   '}
-                    <Percentage>{roi}</Percentage>
-                  </Text>
-                </View>
-              </View>
+        <View style={styles.item.container}>
+          <View style={styles.item.bottom.container}>
+            <View style={{ flex: 3 }}>
+              <Text style={styles.item.bottom.label}>
+                成本价
+                {'   '}
+                {symbol(quote, styles.item.bottom.label)}
+                <Price symbol={quote}>{unit_cost}</Price>
+              </Text>
             </View>
-          );
-        })(fund_stats)}
+            <View style={{ flex: 2 }}>
+              <Text style={styles.item.bottom.label}>
+                回报率
+                {'   '}
+                <Percentage>{roiValue}</Percentage>
+              </Text>
+            </View>
+          </View>
+        </View>
       </View>
     </PlaceHolder>
   );
@@ -63,7 +57,6 @@ const styles = {
     marginTop: 12,
   },
   container: {
-    marginTop: 12,
     paddingBottom: 12,
     marginHorizontal: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -71,7 +64,7 @@ const styles = {
   },
   item: {
     container: {
-      height: 50,
+      height: 30,
       justifyContent: 'center',
       paddingVertical: 5,
     },

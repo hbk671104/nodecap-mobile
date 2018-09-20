@@ -161,11 +161,12 @@ class Chart extends PureComponent {
   };
 
   render() {
-    const { can_calculate, stat_loading } = this.props;
-    if (R.not(can_calculate)) {
+    const { stat_loading } = this.props;
+
+    const trend = R.path(['portfolio', 'trend', 'trend'])(this.props);
+    if (R.not(trend)) {
       return null;
     }
-    const trend = R.path(['portfolio', 'stats', 'trend'])(this.props);
     return (
       <PlaceHolder
         style={styles.placeholder}
