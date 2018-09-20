@@ -61,7 +61,7 @@ class FavorItem extends PureComponent {
     const category = R.pathOr([], ['category'])(data);
     const description = R.pathOr('--', ['description'])(data);
     const stars = R.pathOr(0, ['stars'])(data);
-
+    const favored = R.pathOr(false, ['is_focused'])(data);
     return (
       <Touchable foreground onPress={onPress}>
         <View style={[styles.container, style]}>
@@ -119,7 +119,13 @@ class FavorItem extends PureComponent {
               onPress={this.handleFavorPress}
             >
               <Text style={styles.end.favor.number}>
-                <Image source={require('asset/favored/favored_star.png')} />{' '}
+                <Image
+                  source={
+                    favored
+                      ? require('asset/favored/favored_star.png')
+                      : require('asset/favored/unfavored_star.png')
+                  }
+                />{' '}
                 {stars}
               </Text>
             </Touchable>

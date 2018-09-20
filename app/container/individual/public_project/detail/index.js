@@ -97,14 +97,16 @@ export default class PublicProjectDetail extends Component {
     Toast.info('可在投资库中管理该项目');
   };
 
-  handleStatusPress = () => {
-    const matched = R.pathOr(false, ['matched'])(this.props.portfolio);
-    if (matched) {
-      this.showToast();
-    } else {
-      this.props.toggleStatusSelector(true);
-    }
+  handleFavorPress = () => {
+    // const matched = R.pathOr(false, ['matched'])(this.props.portfolio);
+    // if (matched) {
+    //   this.showToast();
+    // } else {
+    //   this.props.toggleStatusSelector(true);
+    // }
   };
+
+  handleInvestmentPress = () => {};
 
   handlePageSwitch = page => () => {
     this.props.setCurrentPage(page);
@@ -213,7 +215,11 @@ export default class PublicProjectDetail extends Component {
             <Current.component {...this.props} />
           </View>
         </Animated.ScrollView>
-        <Bottom {...this.props} onStatusPress={this.handleStatusPress} />
+        <Bottom
+          {...this.props}
+          onFavorPress={this.handleFavorPress}
+          onInvestmentPress={this.handleInvestmentPress}
+        />
         <StatusSelector
           loading={favor_loading}
           isVisible={this.props.showStatusSelector}
