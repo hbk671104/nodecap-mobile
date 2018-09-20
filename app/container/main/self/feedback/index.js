@@ -1,22 +1,38 @@
 import React, { Component } from 'react';
-import { TextInput } from 'antd-mobile';
+import { TextInput, Toast } from 'antd-mobile';
 import { createForm } from 'rc-form';
+import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 import { View, TouchableWithoutFeedback, Text } from 'react-native';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
-import api from 'services/api';
+import request from 'utils/request';
+import runtimeConfig from 'runtime/index';
 
 const styles = {
   content: {
     minHeight: 140,
   },
+  button: {
+    color: 'white',
+  },
 };
 
+@connect()
 @createForm()
 class Feedback extends Component {
   submit = () => {
     this.props.form.validateFields((err, value) => {
-
+      if (!err) {
+        request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
+          ...value,
+        }).then(() => {
+          Toast.success('您的反馈已提交');
+          this.props.dispatch(
+            NavigationActions.back()
+          );
+        });
+      }
     });
   }
   render() {
@@ -34,7 +50,7 @@ class Feedback extends Component {
           renderRight={() => (
             <TouchableWithoutFeedback onPress={this.submit}>
               <View>
-                <Text>提交</Text>
+                <Text style={styles.button}>提交</Text>
               </View>
             </TouchableWithoutFeedback>
           )}
