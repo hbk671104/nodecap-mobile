@@ -33,11 +33,18 @@ const colorMap = [
 class FavorItem extends PureComponent {
   static propType = {
     data: PropTypes.object.isRequired,
-    onPress: PropTypes.func,
   };
 
-  static defaultProps = {
-    onPress: () => null,
+  handlePress = () => {
+    // this.props.track('点击进入详情');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PublicProjectDetail',
+        params: {
+          item: this.props.data,
+        },
+      }),
+    );
   };
 
   handleFavorPress = () => {
@@ -50,7 +57,12 @@ class FavorItem extends PureComponent {
       return;
     }
 
-    console.log('hehe');
+    const is_focused = R.pathOr(true, ['is_focused'])(this.props.data);
+    const id = R.pathOr(0, ['id'])(this.props.data);
+    this.props.dispatch({
+      type: is_focused ? 'public_project/unfavor' : 'public_project/favor',
+      payload: [id],
+    });
   };
 
   render() {
@@ -63,7 +75,7 @@ class FavorItem extends PureComponent {
     const stars = R.pathOr(0, ['stars'])(data);
     const favored = R.pathOr(false, ['is_focused'])(data);
     return (
-      <Touchable foreground onPress={onPress}>
+      <Touchable foreground onPress={this.handlePress}>
         <View style={[styles.container, style]}>
           <Avatar
             size={45}

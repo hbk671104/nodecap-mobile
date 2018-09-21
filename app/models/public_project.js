@@ -285,7 +285,7 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, status, callback }, { all, call, put, select }) {
+    *favor({ payload, callback }, { call, put }) {
       try {
         const { data, status: response_status } = yield call(
           favorCoin,
@@ -313,7 +313,7 @@ export default {
         console.log(e);
       }
     },
-    *unfavor({ payload, status, callback }, { all, call, put, select }) {
+    *unfavor({ payload, callback }, { call, put }) {
       try {
         const { data, status: response_status } = yield call(
           unfavorCoin,
