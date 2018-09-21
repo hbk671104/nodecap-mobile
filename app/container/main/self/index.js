@@ -13,8 +13,9 @@ import styles from './style';
   page: '我的模块',
   name: 'App_MineOperation',
 })
-@connect(({ user }) => ({
+@connect(({ user, loading }) => ({
   user: user.currentUser,
+  loading: loading.effects['login/switch'],
 }))
 class Self extends Component {
   handleHeaderPress = () => {
@@ -73,7 +74,7 @@ class Self extends Component {
   );
 
   render() {
-    const { user } = this.props;
+    const { user, loading } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -100,6 +101,7 @@ class Self extends Component {
           /> */}
           <View style={styles.scroll.divider} />
           <Item
+            loading={loading}
             icon={require('asset/mine/switch_end.png')}
             title="切换至个人版"
             subtitle="可进行个人投资项目管理和资讯获取"

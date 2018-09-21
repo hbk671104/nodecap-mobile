@@ -14,9 +14,10 @@ import styles from './style';
   page: '我的模块',
   name: 'App_MineOperation',
 })
-@connect(({ user, login }) => ({
+@connect(({ user, login, loading }) => ({
   user: user.currentUser,
   isLogin: !!login.token,
+  loading: loading.effects['login/switch'],
 }))
 class Self extends Component {
   handleSettingsPress = () => {
@@ -111,7 +112,7 @@ class Self extends Component {
   );
 
   render() {
-    const { isLogin } = this.props;
+    const { isLogin, loading } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -131,6 +132,7 @@ class Self extends Component {
             <View>
               <View style={styles.scroll.divider} />
               <Item
+                loading={loading}
                 icon={require('asset/mine/switch_end.png')}
                 title="切换至机构版"
                 subtitle="若您是机构投资人，可管理机构项目及工作流协作"

@@ -17,6 +17,7 @@ export default options => {
         'login/login',
         'login/smsLogin',
         'login/setPassword',
+        'login/switch',
         'portfolio/index',
         'portfolio/investment',
         'portfolio/get',
