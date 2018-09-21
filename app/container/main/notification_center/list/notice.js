@@ -19,9 +19,13 @@ class Notice extends Component {
     );
   };
 
-  requestData = (page, size, callback) => {
+  requestData = (page, size) => {
     this.props.dispatch({
       type: 'notification/fetch',
+      payload: {
+        currentPage: page,
+        pageSize: size,
+      },
     });
   };
 
@@ -32,12 +36,13 @@ class Notice extends Component {
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { loading, data } = this.props;
+    const { loading, data, pagination } = this.props;
     return (
       <View style={styles.container}>
         <List
           action={this.requestData}
           loading={loading}
+          pagination={pagination}
           data={data}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}

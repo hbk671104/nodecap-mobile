@@ -17,7 +17,8 @@ import styles from './style';
 })
 @connect(({ notification, loading, news }) => ({
   news: news.news,
-  data: R.pathOr([], ['list'])(notification),
+  data: R.pathOr([], ['list', 'data'])(notification),
+  pagination: R.pathOr(null, ['list', 'pagination'])(notification),
   lastNewsID: R.pathOr(null, ['payload'])(news),
   loading: loading.effects['notification/fetch'],
   newsLoading: loading.effects['news/index'],
@@ -56,21 +57,9 @@ export default class NotificationCenter extends Component {
   renderScene = ({ route }) => {
     switch (route.key) {
       case 'notice':
-        return (
-          <Notice
-            {...this.props}
-            onMomentumScrollBegin={this.handleMomentumScrollBegin}
-            onMomentumScrollEnd={this.handleMomentumScrollEnd}
-          />
-        );
+        return <Notice {...this.props} />;
       case 'news':
-        return (
-          <News
-            {...this.props}
-            onMomentumScrollBegin={this.handleMomentumScrollBegin}
-            onMomentumScrollEnd={this.handleMomentumScrollEnd}
-          />
-        );
+        return <News {...this.props} />;
       default:
         return null;
     }
@@ -90,7 +79,6 @@ export default class NotificationCenter extends Component {
           renderTabBar={this.renderHeader}
           onIndexChange={this.handleIndexChange}
         />
-
       </View>
     );
   }

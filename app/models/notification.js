@@ -10,9 +10,9 @@ export default {
     badgeVisible: false,
   },
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch({ payload }, { call, put }) {
       try {
-        const { data } = yield call(trendList);
+        const { data } = yield call(trendList, payload);
         yield put({
           type: 'list',
           payload: data,

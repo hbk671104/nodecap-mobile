@@ -595,8 +595,15 @@ export function generalReport(fid) {
   return request.get(`/funds/${fid}/general-report`);
 }
 
-export function trendList() {
-  return request.get('/user-notifys/news');
+export function trendList(payload) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/user-notifys/news', {
+    params: paramsTransform(payload),
+  });
 }
 
 export function trendDetail(id) {
@@ -696,10 +703,12 @@ export function getLiveList(lastId) {
   return request.get('http://api.coindog.com/live/list', {
     params: {
       limit: 25,
-      ...lastId ? {
-        id: lastId,
-        flag: 'down',
-      } : {},
+      ...(lastId
+        ? {
+            id: lastId,
+            flag: 'down',
+          }
+        : {}),
     },
   });
 }
