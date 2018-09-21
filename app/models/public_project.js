@@ -137,7 +137,7 @@ export default {
     *getExtra({ payload }, { all, put }) {
       try {
         yield all([
-          put.resolve({
+          put({
             type: 'getInvest',
             payload,
           }),

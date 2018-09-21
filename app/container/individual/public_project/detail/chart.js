@@ -161,16 +161,16 @@ class Chart extends PureComponent {
   };
 
   render() {
-    const { stat_loading } = this.props;
+    const { loading } = this.props;
 
-    const trend = R.path(['portfolio', 'trend', 'trend'])(this.props);
-    if (R.not(trend)) {
+    const trend = R.pathOr({}, ['portfolio', 'trend', 'trend'])(this.props);
+    if (R.isEmpty(trend)) {
       return null;
     }
     return (
       <PlaceHolder
         style={styles.placeholder}
-        onReady={R.not(R.isNil(trend)) && !stat_loading}
+        onReady={!loading}
         animate="shine"
       >
         <View style={[styles.container, this.props.style]}>
