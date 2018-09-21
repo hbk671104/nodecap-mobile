@@ -125,12 +125,14 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleInvestmentPress = () => {
-    this.props.dispatch(NavigationActions.navigate({
-      routeName: 'PublicProjectRecord',
-      params: {
-        id: this.props.id,
-      },
-    }));
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PublicProjectRecord',
+        params: {
+          id: this.props.id,
+        },
+      }),
+    );
   };
 
   handlePageSwitch = page => () => {
@@ -156,12 +158,20 @@ export default class PublicProjectDetail extends Component {
   };
 
   renderNavBarBackground = () => {
-    const { portfolio, headerWrapperYRange, headerOpacityRange, can_calculate } = this.props;
+    const {
+      portfolio,
+      headerWrapperYRange,
+      headerOpacityRange,
+      can_calculate,
+    } = this.props;
     return (
       <Animated.View
         style={[
           styles.navBar.wrapper,
-          { height: realBarHeight + (can_calculate ? fullHeaderHeight : headerHeight) },
+          {
+            height:
+              realBarHeight + (can_calculate ? fullHeaderHeight : headerHeight),
+          },
           {
             transform: [
               {
@@ -205,7 +215,7 @@ export default class PublicProjectDetail extends Component {
             paddingTop: can_calculate ? fullHeaderHeight : headerHeight,
           }}
           scrollEventThrottle={1}
-          stickyHeaderIndices={[0]}
+          stickyHeaderIndices={[2]}
           onScroll={Animated.event(
             [
               {

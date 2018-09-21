@@ -10,7 +10,7 @@ import { symbol } from '../../../../utils/icon';
 
 const fund = props => {
   const roi = R.pathOr([], ['portfolio', 'roi'])(props);
-  if (R.not(roi)) {
+  if (R.isEmpty(roi)) {
     return null;
   }
 
@@ -22,7 +22,7 @@ const fund = props => {
   return (
     <PlaceHolder
       style={styles.placeholder}
-      onReady={!props.stat_loading && R.not(R.isEmpty(roi))}
+      onReady={!props.loading}
       animate="shine"
     >
       <View style={styles.container}>

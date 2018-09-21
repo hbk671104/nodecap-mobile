@@ -14,14 +14,13 @@ export const headerHeight = 64;
 export const fullHeaderHeight = 144;
 
 const header = ({
-                  style,
-                  titleStyle,
-                  data,
-                  portfolio,
-                  loading,
-                  avatarWrapperStyle,
-                  stat_loading,
-                  base_symbol,
+  style,
+  titleStyle,
+  data,
+  portfolio,
+  loading,
+  avatarWrapperStyle,
+  base_symbol,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pathOr('--', ['symbol'])(data);
@@ -36,17 +35,20 @@ const header = ({
   const price_change_percentage_24h = R.pathOr('--', [
     'price_change_percentage_24h',
   ])(market);
-  const total_volume = R.pathOr('--', ['total_volume', base_symbol])(
-    market,
-  );
+  const total_volume = R.pathOr('--', ['total_volume', base_symbol])(market);
   const high_24h = R.pathOr('--', ['high_24h', 'CNY'])(market);
 
   const desc = R.pathOr('--', ['description'])(market);
 
   return (
-    <Animated.View style={[styles.container, style, {
-      height: can_calculate ? 144 : headerHeight,
-    }]}
+    <Animated.View
+      style={[
+        styles.container,
+        style,
+        {
+          height: can_calculate ? 144 : headerHeight,
+        },
+      ]}
     >
       <View style={styles.top.container}>
         <View style={{ flex: 1 }}>
