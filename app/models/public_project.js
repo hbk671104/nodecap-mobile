@@ -27,7 +27,10 @@ export default {
       params: {},
       progress: ['全部', '未设定', '即将开始', '进行中', '已结束'],
     },
-    search: null,
+    search: {
+      index: null,
+      params: {},
+    },
     current: null,
   },
   effects: {
@@ -63,6 +66,7 @@ export default {
         yield put({
           type: 'searchList',
           payload: data,
+          params: payload,
         });
 
         if (callback) {
@@ -123,10 +127,19 @@ export default {
         const current = yield select(state =>
           R.path(['public_project', 'current'])(state),
         );
+        const search = yield select(state =>
+          R.path(['public_project', 'search'])(state),
+        );
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
             id: R.path(['id'])(current),
+          });
+        }
+        if (!R.isNil(search)) {
+          yield put.resolve({
+            type: 'search',
+            payload: R.path(['params'])(search),
           });
         }
 
@@ -368,13 +381,19 @@ export default {
     searchList(state, action) {
       return {
         ...state,
-        search: paginate(state.search, action.payload),
+        search: {
+          index: paginate(state.search.index, action.payload),
+          params: action.params,
+        },
       };
     },
     clearSearch(state) {
       return {
         ...state,
-        search: null,
+        search: {
+          index: null,
+          params: {},
+        },
       };
     },
     current(state, action) {

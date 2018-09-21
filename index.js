@@ -62,7 +62,7 @@ export const persist = callback => {
         'fund',
         'user',
         'institution',
-        'public_project',
+        // 'public_project',
         'notification',
         'news',
       ],

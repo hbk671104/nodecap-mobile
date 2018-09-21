@@ -19,8 +19,8 @@ import styles from './style';
   name: 'App_PublicProjectSearchOperation',
 })
 @connect(({ public_project, login }) => ({
-  data: R.pathOr([], ['search', 'data'])(public_project),
-  pagination: R.pathOr(null, ['search', 'pagination'])(public_project),
+  data: R.pathOr([], ['search', 'index', 'data'])(public_project),
+  pagination: R.pathOr(null, ['search', 'index', 'pagination'])(public_project),
   in_individual: login.in_individual,
 }))
 class PublicProjectSearch extends Component {
