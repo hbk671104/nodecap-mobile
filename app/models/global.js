@@ -1,12 +1,13 @@
 import * as R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import JPush from 'jpush-react-native';
-import Config from 'react-native-config';
+// import Config from 'react-native-config';
+import Config from '../runtime';
 
 import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
 import request from '../utils/request';
-import { Storage } from '../utils';
+// import { Storage } from '../utils';
 
 export default {
   namespace: 'global',
