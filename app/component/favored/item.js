@@ -61,7 +61,7 @@ class FavorItem extends PureComponent {
     const id = R.pathOr(0, ['id'])(this.props.data);
     this.props.dispatch({
       type: is_focused ? 'public_project/unfavor' : 'public_project/favor',
-      payload: [id],
+      payload: id,
     });
   };
 

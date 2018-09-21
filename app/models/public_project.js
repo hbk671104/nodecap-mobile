@@ -25,16 +25,15 @@ export default {
     list: {
       index: null,
       params: {},
-      progress: ['未设定', '即将开始', '进行中', '已结束'],
+      progress: ['全部', '未设定', '即将开始', '进行中', '已结束'],
     },
     search: null,
     current: null,
   },
   effects: {
-    *fetch({ payload, params, callback }, { call, put }) {
+    *fetch({ params, callback }, { call, put }) {
       try {
         const { data } = yield call(getPublicProjects, {
-          ...payload,
           ...params,
         });
 
@@ -119,7 +118,7 @@ export default {
         console.log(error);
       }
     },
-    *refresh({ res: data, payload, status }, { all, call, put, select }) {
+    *refresh(_, { put, select }) {
       try {
         const current = yield select(state =>
           R.path(['public_project', 'current'])(state),
@@ -127,7 +126,26 @@ export default {
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
-            id: R.path('id')(current),
+            id: R.path(['id'])(current),
+          });
+        }
+
+        yield put({
+          type: 'favored/fetch',
+          payload: {
+            currentPage: 1,
+            pageSize: 20,
+          },
+        });
+
+        // 选择性刷新首页列表
+        const params = yield select(state =>
+          R.path(['public_project', 'list', 'params'])(state),
+        );
+        if (params.currentPage === 1) {
+          yield put({
+            type: 'fetch',
+            params,
           });
         }
       } catch (e) {
@@ -285,27 +303,20 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, callback }, { call, put }) {
+    *favor({ payload, callback }, { call, put, all, select }) {
       try {
-        const { data, status: response_status } = yield call(
-          favorCoin,
-          payload,
-        );
+        const { status: response_status } = yield call(favorCoin, [payload]);
         yield put({
           type: 'setFavorStatus',
-          payload: payload[0],
+          payload,
           status: true,
         });
+
+        // 刷新
         yield put({
           type: 'refresh',
-          // payload: payload[0],
-          // res: data,
         });
-        yield put({
-          type: 'favored/fetch',
-          // payload: payload[0],
-          // res: data,
-        });
+
         if (callback) {
           yield call(callback, response_status === 200);
         }
@@ -313,36 +324,23 @@ export default {
         console.log(e);
       }
     },
-    *unfavor({ payload, callback }, { call, put }) {
+    *unfavor({ payload, callback }, { call, put, all, select }) {
       try {
-        const { data, status: response_status } = yield call(
-          unfavorCoin,
-          payload,
-        );
+        const { status: response_status } = yield call(unfavorCoin, payload);
         /**
          * 乐观处理请求，直接在列表和详情里将 is_focused 设置为 false
          */
         yield put({
           type: 'setFavorStatus',
-          payload: payload[0],
+          payload,
           status: false,
         });
-        /**
-         * 静默刷新详情页
-         */
+
+        // 刷新
         yield put({
           type: 'refresh',
-          // payload: payload[0],
-          // res: data,
         });
-        /**
-         * 刷新关注列表
-         */
-        yield put({
-          type: 'favored/fetch',
-          // payload: payload[0],
-          // res: data,
-        });
+
         if (callback) {
           yield call(callback, response_status === 200);
         }
@@ -424,14 +422,16 @@ export default {
       return {
         ...state,
         list: {
+          ...state.list,
           index: {
+            ...state.list.index,
             data: list,
           },
         },
-        current: {
-          ...(state.current || {}),
-          is_focused: action.status,
-        },
+        // current: {
+        //   ...(state.current || {}),
+        //   is_focused: action.status,
+        // },
       };
     },
   },

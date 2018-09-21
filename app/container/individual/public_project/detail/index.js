@@ -21,7 +21,6 @@ import Header, { headerHeight, fullHeaderHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
 import styles from './style';
-import StatusSelector from './statusSelector';
 
 const selectionList = [
   {
@@ -124,17 +123,10 @@ export default class PublicProjectDetail extends Component {
     }
 
     const is_focused = R.pathOr(false, ['is_focused'])(this.props.portfolio);
-    if (is_focused) {
-      this.props.dispatch({
-        type: 'public_project/unfavor',
-        payload: [this.props.id],
-      });
-    } else {
-      this.props.dispatch({
-        type: 'public_project/favor',
-        payload: [this.props.id],
-      });
-    }
+    this.props.dispatch({
+      type: is_focused ? 'public_project/unfavor' : 'public_project/favor',
+      payload: this.props.id,
+    });
   };
 
   handleInvestmentPress = () => {
@@ -163,20 +155,6 @@ export default class PublicProjectDetail extends Component {
 
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
     this.props.setSelectorY(layout.y);
-  };
-
-  handleSubmit = status => {
-    this.props.dispatch({
-      type: 'public_project/favor',
-      payload: [this.props.id],
-      status,
-      callback: success => {
-        if (success) {
-          this.props.toggleStatusSelector();
-          this.showToast();
-        }
-      },
-    });
   };
 
   renderNavBarBackground = () => {
@@ -267,12 +245,6 @@ export default class PublicProjectDetail extends Component {
           {...this.props}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
-        />
-        <StatusSelector
-          loading={favor_loading}
-          isVisible={this.props.showStatusSelector}
-          onCancel={() => this.props.toggleStatusSelector(false)}
-          onSubmit={this.handleSubmit}
         />
       </SafeArea>
     );

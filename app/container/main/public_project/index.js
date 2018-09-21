@@ -32,12 +32,10 @@ export default class PublicProject extends Component {
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'public_project/fetch',
-      payload: {
-        currentPage: page,
-        pageSize: size,
-      },
       params: {
         ...this.props.params,
+        currentPage: page,
+        pageSize: size,
       },
     });
   };
@@ -45,7 +43,11 @@ export default class PublicProject extends Component {
   loadData = params => {
     this.props.dispatch({
       type: 'public_project/fetch',
-      params,
+      params: {
+        ...params,
+        currentPage: 1,
+        pageSize: 20,
+      },
     });
   };
 
@@ -82,10 +84,10 @@ export default class PublicProject extends Component {
 
   handleFilterPress = () => {
     const { progress } = this.props;
-    const cancelButtonIndex = R.length(progress) + 1;
+    const cancelButtonIndex = R.length(progress);
     this.props.showActionSheetWithOptions(
       {
-        options: ['全部', ...progress, '取消'],
+        options: [...progress, '取消'],
         cancelButtonIndex,
       },
       buttonIndex => {
@@ -93,7 +95,7 @@ export default class PublicProject extends Component {
           return;
         }
         this.loadData({
-          progress: buttonIndex === 0 ? undefined : buttonIndex - 1,
+          progress: buttonIndex,
         });
       },
     );

@@ -694,7 +694,7 @@ export function getReportsByIndustryId(id, params = {}) {
     page: p.currentPage,
     'per-page': p.pageSize,
   });
-  return request.get(`/industry/${id}/items`, {
+  return request.get(`/industries/${id}/items`, {
     params: paramsTransform(params),
   });
 }
