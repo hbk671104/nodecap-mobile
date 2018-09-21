@@ -607,7 +607,7 @@ export function trendList(payload) {
 }
 
 export function trendDetail(id) {
-  return request.get(`/user-notifys/${id}/news-info`);
+  return request.get(`/news/${id}/news-info`);
 }
 
 export function projectRecommendation() {

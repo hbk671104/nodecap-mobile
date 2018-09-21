@@ -61,3 +61,14 @@ export function getCoinROI(id) {
 export function getCoinTrend(id) {
   return request.get(`/coins/${id}/trend`);
 }
+
+export function trendList(payload) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/news', {
+    params: paramsTransform(payload),
+  });
+}

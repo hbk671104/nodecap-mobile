@@ -4,6 +4,7 @@ import styles from '../style';
 
 import List from 'component/uikit/list';
 import NotificationItem from 'component/notification/item';
+import IndividualNotificationItem from 'component/notification/individual_item';
 import { NavigationActions } from 'react-navigation';
 
 class Notice extends Component {
@@ -29,9 +30,13 @@ class Notice extends Component {
     });
   };
 
-  renderItem = ({ item }) => (
-    <NotificationItem data={item} onPress={this.handleItemPress} />
-  );
+  renderItem = ({ item }) => {
+    return this.props.in_individual ? (
+      <IndividualNotificationItem data={item} onPress={this.handleItemPress} />
+    ) : (
+      <NotificationItem data={item} onPress={this.handleItemPress} />
+    );
+  };
 
   renderSeparator = () => <View style={styles.separator} />;
 

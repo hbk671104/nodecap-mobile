@@ -15,13 +15,14 @@ import styles from './style';
   page: '通知中心',
   name: 'App_NotificationCenterOperation',
 })
-@connect(({ notification, loading, news }) => ({
+@connect(({ notification, loading, news, login }) => ({
   news: news.news,
   data: R.pathOr([], ['list', 'data'])(notification),
   pagination: R.pathOr(null, ['list', 'pagination'])(notification),
   lastNewsID: R.pathOr(null, ['payload'])(news),
   loading: loading.effects['notification/fetch'],
   newsLoading: loading.effects['news/index'],
+  in_individual: login.in_individual,
 }))
 export default class NotificationCenter extends Component {
   constructor(props) {

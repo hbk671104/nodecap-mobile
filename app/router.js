@@ -245,6 +245,8 @@ const IndividualTab = createBottomTabNavigator(
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
+    InstitutionReport,
+    InstitutionReportDetail,
     PublicProjectSearch,
     PublicProjectDetail: {
       screen: IndividualPublicProjectDetail,

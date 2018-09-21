@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { View, Alert, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
+import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
 import Item from 'component/self/item';
@@ -69,6 +71,25 @@ class Self extends Component {
   };
 
   handleSwitchEndPress = () => {
+    if (
+      R.pipe(
+        R.pathOr({}, ['user', 'companies']),
+        R.isEmpty,
+      )(this.props)
+    ) {
+      Alert.alert('您尚未加入任何机构', '入驻请联系 18500193244', [
+        {
+          text: '拨打',
+          onPress: () => Communications.phonecall(18500193244, false),
+        },
+        {
+          text: '取消',
+          style: 'cancel',
+        },
+      ]);
+      return;
+    }
+
     Alert.alert('提示', '是否切换至「机构版」？', [
       {
         text: '切换',
