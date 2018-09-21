@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, ActivityIndicator } from 'react-native';
 import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 import Badge from 'component/uikit/badge';
 
-const item = ({ icon, title, subtitle, badge, onPress }) => (
+const item = ({ icon, title, subtitle, badge, onPress, loading }) => (
   <Touchable foreground onPress={onPress}>
     <View style={styles.container}>
       <View style={styles.top}>
@@ -14,7 +14,7 @@ const item = ({ icon, title, subtitle, badge, onPress }) => (
           <Text style={styles.title}>{title}</Text>
         </View>
         <View style={styles.badge.container}>
-          <Badge value={badge} />
+          {loading ? <ActivityIndicator /> : <Badge value={badge} />}
         </View>
         <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
       </View>
