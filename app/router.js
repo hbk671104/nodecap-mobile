@@ -22,17 +22,20 @@ import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
 import { handleTabBarPress } from './utils/tabbar_handler';
+import { shadow } from './utils/style';
 
 // Screen
 import Loader from 'container/loader';
-import Landing from 'container/auth/landing';
-import CreateCompany from 'container/auth/createCompany';
+// import Landing from 'container/auth/landing';
+// import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
-import SetPassword from 'container/auth/setPassword';
-import ResetPwd from 'container/auth/resetPwd';
-import Recommendation from 'container/auth/recommendation';
-import Dashboard from 'container/main/dashboard';
+// import LoginModal from 'container/auth/login/modal';
+// import SetPassword from 'container/auth/setPassword';
+// import ResetPwd from 'container/auth/resetPwd';
+// import Recommendation from 'container/auth/recommendation';
+// import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
+import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
 import InstitutionReport from 'container/main/public_project/institution_report';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
@@ -42,7 +45,7 @@ import Portfolio from 'container/main/portfolio';
 import NotificationCenter from 'container/main/notification_center';
 import NotificationDetail from 'container/main/notification_center/detail';
 import NotificationDetailRaw from 'container/main/notification_center/raw';
-import Management from 'container/main/management';
+// import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
@@ -69,25 +72,21 @@ import Colleague from 'container/main/self/colleague';
 import ColleagueSearch from 'container/main/self/colleague/search';
 import ColleagueDetail from 'container/main/self/colleague/detail';
 import ColleagueAdd from 'container/main/self/colleague/add';
-import Settings from 'container/main/self/settings';
-import ChangeLog from 'container/main/self/settings/changelog';
 import MyProfile from 'container/main/self/profile/mine';
 import MyCompany from 'container/main/self/profile/company';
 import EditProfile from 'container/main/self/profile/edit';
+import Feedback from 'container/main/self/feedback';
 
-const AuthStack = createStackNavigator(
-  {
-    Landing,
-    CreateCompany,
-    Login,
-    SetPassword,
-    ResetPwd,
-    Recommendation,
-  },
-  {
-    headerMode: 'none',
-  },
-);
+// Individual exclusive
+import Favored from 'container/individual/favored';
+import CoinRecord from 'container/individual/public_project/detail/record';
+import CoinRecordCreate from 'container/individual/public_project/detail/record/create';
+import IndividualPublicProjectDetail from 'container/individual/public_project/detail';
+import IndividualSelf from 'container/individual/self';
+import IndividualProfile from 'container/individual/self/profile/mine';
+import IndividualEditProfile from 'container/individual/self/profile/edit';
+import Settings from 'container/individual/self/settings';
+import ChangeLog from 'container/individual/self/settings/changelog';
 
 const Tab = createBottomTabNavigator(
   {
@@ -140,6 +139,8 @@ const Tab = createBottomTabNavigator(
     tabBarOptions: {
       style: {
         backgroundColor: 'white',
+        borderTopWidth: 0,
+        ...shadow,
       },
       activeTintColor: '#1890FF',
       inactiveTintColor: '#999999',
@@ -156,6 +157,7 @@ const Tab = createBottomTabNavigator(
 const MainStack = createStackNavigator(
   {
     Tab,
+    PublicProjectSearch,
     PublicProjectDetail,
     InstitutionReport,
     InstitutionReportDetail,
@@ -186,8 +188,6 @@ const MainStack = createStackNavigator(
     ColleagueSearch,
     ColleagueDetail,
     ColleagueAdd,
-    Settings,
-    ChangeLog,
     MyProfile,
     MyCompany,
     EditProfile,
@@ -197,10 +197,86 @@ const MainStack = createStackNavigator(
   },
 );
 
+const IndividualTab = createBottomTabNavigator(
+  {
+    Onboard: {
+      screen: PublicProject,
+      navigationOptions: {
+        title: '首页',
+      },
+    },
+    Trending: {
+      screen: NotificationCenter,
+      navigationOptions: {
+        title: '动态',
+      },
+    },
+    Favored: {
+      screen: Favored,
+      navigationOptions: {
+        title: '关注',
+      },
+    },
+    Self: {
+      screen: IndividualSelf,
+      navigationOptions: {
+        title: '我的',
+      },
+    },
+  },
+  {
+    backBehavior: 'none',
+    tabBarOptions: {
+      style: {
+        backgroundColor: 'white',
+        borderTopWidth: 0,
+        ...shadow,
+      },
+      activeTintColor: '#1890FF',
+      inactiveTintColor: '#999999',
+    },
+    navigationOptions: ({ navigation: { state } }) => ({
+      tabBarIcon: ({ focused }) => {
+        const { routeName } = state;
+        return <BadgeTabIcon route={routeName} focused={focused} />;
+      },
+    }),
+  },
+);
+
+const IndividualStack = createStackNavigator(
+  {
+    IndividualTab,
+    InstitutionReport,
+    InstitutionReportDetail,
+    PublicProjectSearch,
+    PublicProjectDetail: {
+      screen: IndividualPublicProjectDetail,
+    },
+    PublicProjectRecord: CoinRecord,
+    PublicProjectInvestmentCreate: CoinRecordCreate,
+    NotificationDetail,
+    NotificationDetailRaw,
+    MyProfile: {
+      screen: IndividualProfile,
+    },
+    EditProfile: {
+      screen: IndividualEditProfile,
+    },
+    Settings,
+    ChangeLog,
+    Login,
+    Feedback,
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
 const AppRouter = createSwitchNavigator(
   {
-    Auth: AuthStack,
     Main: MainStack,
+    Individual: IndividualStack,
     CodePush: CodePushPage,
     Landing: Loader,
   },

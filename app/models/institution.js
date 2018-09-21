@@ -8,7 +8,7 @@ export default {
     report: null,
   },
   effects: {
-    *fetch({ callback }, { call, put }) {
+    *fetch(_, { call, put }) {
       try {
         const { data } = yield call(getIndustries);
         yield put({
@@ -35,13 +35,13 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: paginate(state.list, action.payload),
+        list: action.payload,
       };
     },
     report(state, action) {
       return {
         ...state,
-        report: action.payload,
+        report: paginate(state.report, action.payload),
       };
     },
     clearReport(state) {

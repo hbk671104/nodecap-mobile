@@ -103,9 +103,9 @@ class List extends PureComponent {
   });
 
   renderHeader = () => {
-    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
-      return null;
-    }
+    // if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+    //   return null;
+    // }
     if (this.props.renderHeader) {
       return this.props.renderHeader();
     }
@@ -113,9 +113,9 @@ class List extends PureComponent {
   };
 
   renderFooter = () => {
-    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
-      return null;
-    }
+    // if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+    //   return null;
+    // }
     if (this.props.renderFooter) {
       return this.props.renderFooter();
     }
@@ -142,9 +142,9 @@ class List extends PureComponent {
   };
 
   renderEmpty = () => {
-    if (R.isNil(this.props.data)) {
-      return null;
-    }
+    // if (R.isNil(this.props.data)) {
+    //   return null;
+    // }
     if (this.props.renderEmpty) {
       return this.props.renderEmpty();
     }

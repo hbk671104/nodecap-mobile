@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
-import { Toast } from 'antd-mobile';
 import _ from 'lodash';
 
 import { hasPermission } from 'component/auth/permission/lock';
@@ -42,14 +41,10 @@ class ColleagueSearch extends Component {
     const { searchText } = this.state;
     if (R.isEmpty(searchText)) return;
 
-    Toast.loading('loading...', 0);
     this.props.dispatch({
       type: 'colleague/search',
       payload: {
         q: searchText,
-      },
-      callback: () => {
-        Toast.hide();
       },
     });
   };

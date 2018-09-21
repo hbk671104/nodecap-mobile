@@ -15,6 +15,7 @@ export default options => {
     createLoading({
       only: [
         'login/login',
+        'login/smsLogin',
         'login/setPassword',
         'portfolio/index',
         'portfolio/investment',
@@ -39,6 +40,8 @@ export default options => {
         'public_project/get',
         'public_project/favor',
         'institution/fetchReports',
+        'news/index',
+        'favored/fetch',
       ],
     }),
   );

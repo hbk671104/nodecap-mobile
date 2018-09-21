@@ -1,59 +1,84 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { TabView, TabBar } from 'react-native-tab-view';
+import Touchable from 'component/uikit/touchable';
 
 import NavBar from 'component/navBar';
-import List from 'component/uikit/list';
-import NotificationItem from 'component/notification/item';
-
+import Notice from './list/notice';
+import News from './list/news';
+import Icon from 'component/uikit/icon';
 import styles from './style';
 
 @global.bindTrack({
   page: '通知中心',
   name: 'App_NotificationCenterOperation',
 })
-@connect(({ notification, loading }) => ({
-  data: R.pathOr([], ['list'])(notification),
+@connect(({ notification, loading, news, login }) => ({
+  news: news.news,
+  data: R.pathOr([], ['list', 'data'])(notification),
+  pagination: R.pathOr(null, ['list', 'pagination'])(notification),
+  lastNewsID: R.pathOr(null, ['payload'])(news),
   loading: loading.effects['notification/fetch'],
+  newsLoading: loading.effects['news/index'],
+  in_individual: login.in_individual,
 }))
 export default class NotificationCenter extends Component {
-  requestData = (page, size, callback) => {
-    this.props.dispatch({
-      type: 'notification/fetch',
-    });
+  constructor(props) {
+    super(props);
+    this.state = {
+      index: props.navigation.getParam('fromRecommendation') ? 1 : 0,
+      routes: [
+        { key: 'news', title: '快讯' },
+        { key: 'notice', title: '上所公告' },
+      ],
+    };
+  }
+
+  handleIndexChange = index => {
+    this.setState({ index });
   };
 
-  handleItemPress = id => () => {
-    this.props.track('点击进入详情');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'NotificationDetail',
-        params: {
-          id,
-        },
-      }),
-    );
-  };
-
-  renderItem = ({ item }) => (
-    <NotificationItem data={item} onPress={this.handleItemPress} />
+  renderHeader = props => (
+    <NavBar
+      gradient
+      renderTitle={() => (
+        <TabBar
+          {...props}
+          style={styles.tabBar.container}
+          tabStyle={styles.tabBar.tab}
+          labelStyle={styles.tabBar.label}
+          indicatorStyle={styles.tabBar.indicator}
+        />
+      )}
+    />
   );
 
-  renderSeparator = () => <View style={styles.separator} />;
+  renderScene = ({ route }) => {
+    switch (route.key) {
+      case 'notice':
+        return <Notice {...this.props} />;
+      case 'news':
+        return <News {...this.props} />;
+      default:
+        return null;
+    }
+  };
 
   render() {
-    const { loading, data } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient title="项目动态" />
-        <List
-          action={this.requestData}
-          loading={loading}
-          data={data}
-          renderItem={this.renderItem}
-          renderSeparator={this.renderSeparator}
+        <TabView
+          initialLayout={styles.initialLayout}
+          navigationState={{
+            index: this.state.index,
+            routes: this.state.routes,
+          }}
+          renderScene={this.renderScene}
+          tabBarPosition="top"
+          renderTabBar={this.renderHeader}
+          onIndexChange={this.handleIndexChange}
         />
       </View>
     );
