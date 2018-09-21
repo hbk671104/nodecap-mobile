@@ -155,7 +155,7 @@ export default {
           R.path(['public_project', 'current'])(state),
         );
         const search = yield select(state =>
-          R.path(['public_project', 'search'])(state),
+          R.path(['public_project', 'search', 'index'])(state),
         );
         if (!R.isNil(current)) {
           yield put.resolve({
@@ -164,6 +164,7 @@ export default {
           });
         }
         if (!R.isNil(search)) {
+          console.log(search);
           yield put.resolve({
             type: 'search',
             payload: R.path(['params'])(search),
