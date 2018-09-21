@@ -125,21 +125,20 @@ class FavorItem extends PureComponent {
             >
               {status}
             </Text>
-            <Touchable
-              foreground
-              style={styles.end.favor.container}
-              onPress={this.handleFavorPress}
-            >
-              <Text style={styles.end.favor.number}>
+            <Touchable foreground onPress={this.handleFavorPress}>
+              <View style={styles.end.favor.container}>
                 <Image
                   source={
                     favored
                       ? require('asset/favored/favored_star.png')
                       : require('asset/favored/unfavored_star.png')
                   }
-                />{' '}
-                {stars}
-              </Text>
+                />
+                <Text style={styles.end.favor.number}>
+                  {'  '}
+                  {stars}
+                </Text>
+              </View>
             </Touchable>
           </View>
         </View>
@@ -211,6 +210,7 @@ const styles = {
         borderRadius: 2,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#DDDDDD',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
       },

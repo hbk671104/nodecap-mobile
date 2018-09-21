@@ -21,6 +21,7 @@ const header = ({
   loading,
   avatarWrapperStyle,
   base_symbol,
+  can_calculate,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pathOr('--', ['symbol'])(data);
@@ -30,7 +31,6 @@ const header = ({
     R.join(' | '),
   )(data);
   const market = R.pathOr({}, ['market'])(portfolio);
-  const can_calculate = !!market;
   const current_price = R.pathOr('--', ['current_price', 'CNY'])(market);
   const price_change_percentage_24h = R.pathOr('--', [
     'price_change_percentage_24h',
@@ -38,7 +38,7 @@ const header = ({
   const total_volume = R.pathOr('--', ['total_volume', base_symbol])(market);
   const high_24h = R.pathOr('--', ['high_24h', base_symbol])(market);
 
-  const desc = R.pathOr('--', ['description'])(market);
+  // const desc = R.pathOr('--', ['description'])(market);
 
   return (
     <Animated.View
@@ -46,7 +46,7 @@ const header = ({
         styles.container,
         style,
         {
-          height: can_calculate ? 144 : headerHeight,
+          height: headerHeight,
         },
       ]}
     >
