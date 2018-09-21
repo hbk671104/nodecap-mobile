@@ -37,7 +37,7 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: action.payload,
+        list: paginate(state.list, action.payload),
       };
     },
     detail(state, action) {
