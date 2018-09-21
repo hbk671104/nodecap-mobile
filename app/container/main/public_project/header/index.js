@@ -18,6 +18,7 @@ const header = ({
   params,
   onItemPress,
   onFilterPress,
+  in_individual,
 }) => {
   const total_count = R.pathOr(0, ['total'])(pagination);
   const progress_index = R.pathOr({}, ['progress'])(params);
@@ -49,16 +50,18 @@ const header = ({
           <Text style={styles.bottom.subtitle}>
             为您找到 {total_count} 个项目
           </Text>
-          <Touchable borderless onPress={onFilterPress}>
-            <Text style={styles.bottom.filter}>
-              {progress_title}{' '}
-              <Icon
-                color="rgba(0, 0, 0, 0.25)"
-                name="md-arrow-dropdown"
-                override
-              />
-            </Text>
-          </Touchable>
+          {in_individual && (
+            <Touchable borderless onPress={onFilterPress}>
+              <Text style={styles.bottom.filter}>
+                {progress_title}{' '}
+                <Icon
+                  color="rgba(0, 0, 0, 0.25)"
+                  name="md-arrow-dropdown"
+                  override
+                />
+              </Text>
+            </Touchable>
+          )}
         </View>
       </Group>
     </View>
