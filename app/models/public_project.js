@@ -127,7 +127,7 @@ export default {
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
-            id: R.path([0])(payload),
+            id: R.path('id')(current),
           });
         }
       } catch (e) {
@@ -298,13 +298,13 @@ export default {
         });
         yield put({
           type: 'refresh',
-          payload: payload[0],
-          res: data,
+          // payload: payload[0],
+          // res: data,
         });
         yield put({
           type: 'favored/fetch',
-          payload: payload[0],
-          res: data,
+          // payload: payload[0],
+          // res: data,
         });
         if (callback) {
           yield call(callback, response_status === 200);
@@ -332,16 +332,16 @@ export default {
          */
         yield put({
           type: 'refresh',
-          payload: payload[0],
-          res: data,
+          // payload: payload[0],
+          // res: data,
         });
         /**
          * 刷新关注列表
          */
         yield put({
           type: 'favored/fetch',
-          payload: payload[0],
-          res: data,
+          // payload: payload[0],
+          // res: data,
         });
         if (callback) {
           yield call(callback, response_status === 200);

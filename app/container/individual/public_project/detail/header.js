@@ -36,7 +36,7 @@ const header = ({
     'price_change_percentage_24h',
   ])(market);
   const total_volume = R.pathOr('--', ['total_volume', base_symbol])(market);
-  const high_24h = R.pathOr('--', ['high_24h', 'CNY'])(market);
+  const high_24h = R.pathOr('--', ['high_24h', base_symbol])(market);
 
   const desc = R.pathOr('--', ['description'])(market);
 

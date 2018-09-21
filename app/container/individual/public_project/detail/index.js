@@ -49,7 +49,7 @@ const selectionList = [
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
 })
-@connect(({ public_project, loading, global }, props) => {
+@connect(({ public_project, loading, global, login }, props) => {
   const item = props.navigation.getParam('item');
   return {
     id: R.pathOr(0, ['id'])(item),
@@ -58,6 +58,10 @@ const selectionList = [
     favor_loading: loading.effects['public_project/favor'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
     can_calculate: R.pathOr({}, ['current', 'market'])(public_project),
+    logged_in: !!login.token,
+    base_symbol: R.pathOr('CNY', ['current', 'market', 'quote'])(
+      public_project,
+    ),
   };
 })
 @compose(
@@ -110,6 +114,15 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleFavorPress = () => {
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+
     const is_focused = R.pathOr(false, ['is_focused'])(this.props.portfolio);
     if (is_focused) {
       this.props.dispatch({
@@ -125,6 +138,15 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleInvestmentPress = () => {
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PublicProjectRecord',

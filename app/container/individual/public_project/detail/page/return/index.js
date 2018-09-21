@@ -29,7 +29,7 @@ export default class Return extends PureComponent {
 
     const investment = R.pathOr({}, ['roi'])(portfolio);
 
-    if (R.not(investment)) {
+    if (R.isEmpty(investment)) {
       return (
         <Empty
           title="项目暂无投资记录"
