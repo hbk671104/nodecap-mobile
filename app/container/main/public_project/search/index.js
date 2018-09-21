@@ -53,14 +53,15 @@ class PublicProjectSearch extends Component {
   };
 
   handleItemPress = item => () => {
-    // this.props.dispatch(
-    //   NavigationActions.navigate({
-    //     routeName: 'PortfolioDetail',
-    //     params: {
-    //       item,
-    //     },
-    //   }),
-    // );
+    this.props.track('点击进入详情');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PublicProjectDetail',
+        params: {
+          item,
+        },
+      }),
+    );
   };
 
   handleBackPress = () => {
