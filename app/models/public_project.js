@@ -110,6 +110,33 @@ export default {
         console.log(error);
       }
     },
+    *getOrganization({ id, callback }, { call, put, all }) {
+      try {
+        const { data } = yield call(getCoinInfo, id);
+
+        yield put({
+          type: 'current',
+          payload: data,
+        });
+
+        yield all([
+          put.resolve({
+            type: 'trend',
+            id,
+          }),
+          put.resolve({
+            type: 'financeInfo',
+            id,
+          }),
+        ]);
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     *getBase({ id }, { call, put }) {
       try {
         const { data } = yield call(getCoinInfo, id);
