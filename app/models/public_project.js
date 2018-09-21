@@ -163,7 +163,7 @@ export default {
             id: R.path(['id'])(current),
           });
         }
-        if (!R.isNil(search)) {
+        if (!R.isNil(R.path(['index'])(search))) {
           yield put.resolve({
             type: 'search',
             payload: R.path(['params'])(search),
