@@ -14,10 +14,10 @@ const fund = props => {
     return null;
   }
 
-  const quote = 'CNY' || R.path(['quote'])(roi);
+  const quote = R.path(['quote'])(roi) || 'CNY';
   const name = R.pathOr('--', ['name'])(roi);
-  const unit_cost = R.pathOr('--', ['unit_cost', quote])(roi);
-  const roiValue = R.pathOr('--', ['roi', quote, 'value'])(roi);
+  const unit_cost = R.pathOr('--', ['investment', 'unit_cost', quote])(roi);
+  const roiValue = R.pathOr('--', ['investment', 'roi', quote, 'value'])(roi);
 
   return (
     <PlaceHolder
