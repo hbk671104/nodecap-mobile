@@ -43,7 +43,7 @@ const selectionList = [
   return {
     id: R.pathOr(0, ['id'])(item),
     portfolio: R.pathOr({}, ['current'])(public_project),
-    loading: loading.effects['public_project/get'],
+    loading: loading.effects['public_project/getOrganization'],
     favor_loading: loading.effects['public_project/favor'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
   };
@@ -88,7 +88,7 @@ export default class PublicProjectDetail extends Component {
 
   loadDetail = () => {
     this.props.dispatch({
-      type: 'public_project/get',
+      type: 'public_project/getOrganization',
       id: this.props.id,
     });
   };

@@ -26,7 +26,7 @@ const bottom = ({ onFavorPress, onInvestmentPress, portfolio }) => {
               }
             />
             <Text style={styles.group.title}>
-              {favored ? '已关注' : '未关注'}
+              {favored ? '已关注' : '关注'}
             </Text>
           </View>
         </Touchable>

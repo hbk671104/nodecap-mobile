@@ -95,7 +95,7 @@ export default class PublicProject extends Component {
           return;
         }
         this.loadData({
-          progress: buttonIndex,
+          progress: buttonIndex === 0 ? buttonIndex : buttonIndex + 1,
         });
       },
     );

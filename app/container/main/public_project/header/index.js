@@ -22,7 +22,9 @@ const header = ({
 }) => {
   const total_count = R.pathOr(0, ['total'])(pagination);
   const progress_index = R.pathOr({}, ['progress'])(params);
-  const progress_title = R.pathOr('全部', [progress_index])(progress);
+  const progress_title = R.pathOr('全部', [
+    progress_index === 0 ? progress_index : progress_index - 1,
+  ])(progress);
   return (
     <View style={style}>
       <Group title="优质报告">

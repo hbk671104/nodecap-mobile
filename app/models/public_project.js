@@ -25,7 +25,7 @@ export default {
     list: {
       index: null,
       params: {},
-      progress: ['全部', '未设定', '即将开始', '进行中', '已结束'],
+      progress: ['全部', '即将开始', '进行中', '已结束'],
     },
     search: {
       index: null,
@@ -103,6 +103,33 @@ export default {
           type: 'getExtra',
           payload: id,
         });
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *getOrganization({ id, callback }, { call, put, all }) {
+      try {
+        const { data } = yield call(getCoinInfo, id);
+
+        yield put({
+          type: 'current',
+          payload: data,
+        });
+
+        yield all([
+          put.resolve({
+            type: 'trend',
+            id,
+          }),
+          put.resolve({
+            type: 'financeInfo',
+            id,
+          }),
+        ]);
+
         if (callback) {
           yield call(callback);
         }
