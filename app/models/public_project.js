@@ -107,6 +107,18 @@ export default {
         console.log(error);
       }
     },
+    *getBase({ id }, { call, put }) {
+      try {
+        const { data } = yield call(getCoinInfo, id);
+
+        yield put({
+          type: 'saveCurrent',
+          payload: data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
     *refresh({ res: data, payload, status }, { all, call, put, select }) {
       try {
         const current = yield select(state =>
@@ -114,38 +126,9 @@ export default {
         );
         if (!R.isNil(current)) {
           yield put.resolve({
-            type: 'get',
+            type: 'getBase',
             id: R.path([0])(payload),
           });
-        }
-
-        if (!R.isNil(data) && !R.isEmpty(data)) {
-          yield all(
-            R.map(id =>
-              put.resolve({
-                type: 'portfolio/updateProject',
-                id,
-                payload: {
-                  status,
-                },
-              }),
-            )(data),
-          );
-
-          yield all([
-            put({
-              type: 'portfolio/index',
-              payload: {
-                status: '0,1,2,3,4,5,6',
-              },
-            }),
-            put({
-              type: 'portfolio/index',
-              payload: {
-                status: `${status}`,
-              },
-            }),
-          ]);
         }
       } catch (e) {
         console.log(e);
@@ -309,8 +292,18 @@ export default {
           payload,
         );
         yield put({
+          type: 'setFavorStatus',
+          payload: payload[0],
+          status: true,
+        });
+        yield put({
           type: 'refresh',
-          payload,
+          payload: payload[0],
+          res: data,
+        });
+        yield put({
+          type: 'favored/fetch',
+          payload: payload[0],
           res: data,
         });
         if (callback) {
@@ -326,9 +319,28 @@ export default {
           unfavorCoin,
           payload,
         );
+        /**
+         * 乐观处理请求，直接在列表和详情里将 is_focused 设置为 false
+         */
+        yield put({
+          type: 'setFavorStatus',
+          payload: payload[0],
+          status: false,
+        });
+        /**
+         * 静默刷新详情页
+         */
         yield put({
           type: 'refresh',
-          payload,
+          payload: payload[0],
+          res: data,
+        });
+        /**
+         * 刷新关注列表
+         */
+        yield put({
+          type: 'favored/fetch',
+          payload: payload[0],
           res: data,
         });
         if (callback) {
@@ -394,6 +406,31 @@ export default {
         current: {
           ...(state.current || {}),
           [action.relatedType]: action.payload,
+        },
+      };
+    },
+    setFavorStatus(state, action) {
+      const targetIndex = R.pipe(
+        R.path(['list', 'index', 'data']),
+        R.findIndex(R.propEq('id', action.payload)),
+      )(state);
+      const list = R.pipe(
+        R.path(['list', 'index', 'data']),
+        R.update(targetIndex, {
+          ...R.path(['list', 'index', 'data', targetIndex])(state),
+          is_focused: action.status,
+        }),
+      )(state);
+      return {
+        ...state,
+        list: {
+          index: {
+            data: list,
+          },
+        },
+        current: {
+          ...(state.current || {}),
+          is_focused: action.status,
         },
       };
     },

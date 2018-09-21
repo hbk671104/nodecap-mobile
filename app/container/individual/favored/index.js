@@ -44,7 +44,13 @@ class Favored extends Component {
     />
   );
 
-  renderItem = ({ item }) => <FavoredItem data={item} />;
+  renderItem = ({ item }) => (
+    <FavoredItem data={{
+    ...item,
+    is_focused: true,
+  }}
+    />
+);
 
   renderSeparator = () => <View style={styles.separator} />;
 
