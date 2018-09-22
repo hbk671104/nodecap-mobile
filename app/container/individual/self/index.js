@@ -81,7 +81,7 @@ class Self extends Component {
       Alert.alert('您尚未加入任何机构', '入驻请联系 18500193244', [
         {
           text: '拨打',
-          onPress: () => Communications.phonecall(18500193244, false),
+          onPress: () => Communications.phonecall('185-0019-3244', false),
         },
         {
           text: '取消',
