@@ -151,7 +151,11 @@ export default class PublicProjectDetail extends Component {
   };
 
   handlePageSwitch = page => () => {
-    this.props.setCurrentPage(page);
+    this.props.setCurrentPage(page, () => {
+      this.scroll
+        .getNode()
+        .scrollTo({ y: this.props.selectorY, animated: true });
+    });
   };
 
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
@@ -198,7 +202,6 @@ export default class PublicProjectDetail extends Component {
       currentPage: Current,
       portfolio,
       titleOpacityRange,
-      favor_loading,
       can_calculate,
     } = this.props;
     return (
@@ -212,6 +215,9 @@ export default class PublicProjectDetail extends Component {
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView
+          ref={ref => {
+            this.scroll = ref;
+          }}
           contentContainerStyle={{
             paddingTop: can_calculate ? fullHeaderHeight : headerHeight,
           }}
