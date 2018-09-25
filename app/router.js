@@ -205,12 +205,12 @@ const IndividualTab = createBottomTabNavigator(
         title: '首页',
       },
     },
-    Trending: {
-      screen: NotificationCenter,
-      navigationOptions: {
-        title: '动态',
-      },
-    },
+    // Trending: {
+    //   screen: NotificationCenter,
+    //   navigationOptions: {
+    //     title: '动态',
+    //   },
+    // },
     Favored: {
       screen: Favored,
       navigationOptions: {

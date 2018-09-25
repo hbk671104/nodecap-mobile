@@ -11,7 +11,7 @@ export default {
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#E9E9E9',
-    marginLeft: 78,
+    marginHorizontal: 12,
   },
   searchBar: {
     container: {
