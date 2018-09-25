@@ -630,7 +630,7 @@ export function getCoinInfo(cid) {
   return request.get(`/coins/${cid}`);
 }
 
-export function favorCoin(payload) {
+export function addToWorkflow(payload) {
   return request.post('/coins/public', payload);
 }
 

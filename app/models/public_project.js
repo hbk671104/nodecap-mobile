@@ -4,6 +4,7 @@ import {
   getNewsByCoinId,
   getCoinFinanceInfo,
   getCoinSymbol,
+  addToWorkflow,
 } from '../services/api';
 import {
   favorCoin,
@@ -380,6 +381,59 @@ export default {
         yield put({
           type: 'refresh',
         });
+
+        if (callback) {
+          yield call(callback, response_status === 200);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *addToWorkflow({ payload, status, callback }, { all, call, put, select }) {
+      try {
+        const { data, status: response_status } = yield call(
+          addToWorkflow,
+          payload,
+        );
+
+        const current = yield select(state =>
+          R.path(['public_project', 'current'])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'getBase',
+            id: R.path([0])(payload),
+          });
+        }
+
+        if (!R.isNil(data) && !R.isEmpty(data)) {
+          yield all(
+            R.map(id =>
+              put.resolve({
+                type: 'portfolio/updateProject',
+                id,
+                payload: {
+                  status,
+                },
+              }),
+            )(data),
+          );
+
+          yield all([
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: '0,1,2,3,4,5,6',
+              },
+            }),
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: `${status}`,
+              },
+            }),
+          ]);
+        }
 
         if (callback) {
           yield call(callback, response_status === 200);

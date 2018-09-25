@@ -84,8 +84,7 @@ function checkStatus({ response = {} }) {
   let errortext =
     codeMessage[R.path(['data', 'code'])(response)] ||
     R.path(['data', 'message'])(response) ||
-    R.path(['data', 0, 'message'])(response) ||
-    '您的网络出现问题，请确认已经连接至互联网';
+    R.path(['data', 0, 'message'])(response);
 
   if (!response.status) {
     errortext = '您的网络出现问题，请确认已经连接至互联网';
