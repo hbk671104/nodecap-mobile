@@ -26,6 +26,15 @@ const base64StringToInt8Array = data => {
   return Int8Array.from(Base64.decode(data), c => c.charCodeAt(0));
 };
 
+export const saveToKeychain = async ({ username, password }) => {
+  await Keychain.setGenericPassword(username, password);
+};
+
+export const retrieveFromKeychain = async () => {
+  const credential = await Keychain.getGenericPassword();
+  return credential;
+};
+
 export const initKeychain = async () => {
   let encryptionKey;
   const credential = await Keychain.getGenericPassword();

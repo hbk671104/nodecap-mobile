@@ -7,7 +7,7 @@ import Input from 'component/uikit/textInput';
 
 class InputItem extends PureComponent {
   static propTypes = {
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     titleStyle: PropTypes.object,
     placeholder: PropTypes.string,
     vertical: PropTypes.bool,
@@ -39,14 +39,14 @@ class InputItem extends PureComponent {
       renderRight,
       placeholder,
       onChange,
-      inputProps,
+      inputProps = {},
       value,
       error,
     } = this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.wrapper, vertical && styles.vertical]}>
-          <Text style={[styles.title, titleStyle]}>{title}</Text>
+          {!!title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
           <View
             style={
               vertical
@@ -63,6 +63,7 @@ class InputItem extends PureComponent {
                   style={[
                     styles.content.horizontal.input,
                     vertical && styles.content.vertical.input,
+                    inputProps.style,
                   ]}
                   multiline={vertical}
                   placeholder={placeholder}
@@ -87,7 +88,7 @@ const styles = {
   container: {
     marginLeft: 12,
     paddingRight: 12,
-    paddingVertical: 20,
+    paddingVertical: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
   },

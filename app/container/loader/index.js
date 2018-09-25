@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
@@ -13,7 +14,7 @@ import styles from './style';
 
 @connect(({ global, login }) => ({
   constants: global.constants,
-  isLogin: !!login.token,
+  isLogin: R.not(R.isNil(login.token)),
 }))
 export default class Loader extends Component {
   constructor() {
@@ -33,7 +34,7 @@ export default class Loader extends Component {
       } else {
         this.props.dispatch(
           NavigationActions.navigate({
-            routeName: 'Auth',
+            routeName: 'Individual',
           }),
         );
         SplashScreen.hide();

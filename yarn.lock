@@ -3688,6 +3688,10 @@ has@^1.0.2:
   dependencies:
     function-bind "^1.1.1"
 
+hoist-non-react-statics@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
+
 hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
@@ -4310,9 +4314,9 @@ istanbul-reports@^1.3.0:
   dependencies:
     handlebars "^4.0.3"
 
-jcore-react-native@^1.2.9:
-  version "1.2.9"
-  resolved "https://registry.yarnpkg.com/jcore-react-native/-/jcore-react-native-1.2.9.tgz#eacd99a4e0d09dde5da8c78bf050c1a7bbd235b4"
+jcore-react-native@^1.2.10:
+  version "1.2.10"
+  resolved "https://registry.yarnpkg.com/jcore-react-native/-/jcore-react-native-1.2.10.tgz#ffb383103f6a8d9f5b36b0b37dac139a3b22503f"
 
 jest-changed-files@^22.2.0:
   version "22.4.3"
@@ -6430,6 +6434,14 @@ react-native-modal@^6.5.0:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
+react-native-offline@^3.12.0:
+  version "3.12.0"
+  resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-3.12.0.tgz#44d7c3b393357f0b0111ad1e8370fe8a7114e169"
+  dependencies:
+    hoist-non-react-statics "^1.2.0"
+    lodash "^4.17.4"
+    redux-saga "^0.16.0"
+
 react-native-orientation@^3.1.3:
   version "3.1.3"
   resolved "https://registry.yarnpkg.com/react-native-orientation/-/react-native-orientation-3.1.3.tgz#d45803841fe94b6cce9acbe904fd5ca191a3711e"
@@ -6440,9 +6452,9 @@ react-native-parallax-scroll-view@^0.21.3:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-pdf@^5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-5.0.4.tgz#5a37dccac3a511408bb14a5c3a6176ef8af3f3c1"
+react-native-pdf@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-5.0.5.tgz#4a60624055ab2b4a2514638af45aaae305ac6e2d"
   dependencies:
     crypto-js "^3.1.9-1"
     prop-types "^15.5.10"
@@ -6504,7 +6516,7 @@ react-native-splash-screen@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.1.1.tgz#1a4e46c9fdce53ff52af2a2cb4181788c4e30b30"
 
-react-native-svg@^6.5.2:
+react-native-svg@6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/react-native-svg/-/react-native-svg-6.5.2.tgz#1105896b8873b0856821b18daa0c6898cea6c00c"
   dependencies:
@@ -8337,9 +8349,9 @@ victory-line@^30.3.0:
     prop-types "^15.5.8"
     victory-core "^30.3.0"
 
-victory-native@^30.3.0:
-  version "30.3.0"
-  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-30.3.0.tgz#8ef32e2dec89a231d45ad909ebdc15856e458b9b"
+victory-native@^30.4.0:
+  version "30.4.0"
+  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-30.4.0.tgz#372761a00ed67b60772971080e5ffc80148ce8c6"
   dependencies:
     lodash "^4.17.5"
     prop-types "^15.5.10"

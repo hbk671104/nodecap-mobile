@@ -15,6 +15,7 @@ import {
   createCompany,
   getSMSCode,
 } from '../services/api';
+import { getCurrentUser } from '../services/individual/api';
 import { transformSorter } from '../utils/';
 import { uploadImage } from '../services/upload';
 
@@ -80,30 +81,6 @@ export default {
     *fetchCurrent(_, { call, put }) {
       try {
         const { data } = yield call(getUser);
-
-        // sensor login and set profile
-        global.s().login(`${data.id}`);
-
-        const company = R.path(['companies', 0])(data);
-        const input = {
-          realname: data.realname,
-          companyName: company.name,
-          companyID: company.id,
-        };
-
-        // sensor user init
-        if (Platform.OS === 'ios') {
-          global.s().set(input);
-        } else {
-          global.s().profileSet(input);
-        }
-
-        // resume push
-        JPush.resumePush();
-
-        // jpush user init
-        JPush.setAlias(`user_${data.id}`, () => null);
-        JPush.setTags([`company_${company.id}`], () => null);
 
         yield put({
           type: 'saveCurrentUser',

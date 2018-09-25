@@ -595,12 +595,19 @@ export function generalReport(fid) {
   return request.get(`/funds/${fid}/general-report`);
 }
 
-export function trendList() {
-  return request.get('/user-notifys/news');
+export function trendList(payload) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/user-notifys/news', {
+    params: paramsTransform(payload),
+  });
 }
 
 export function trendDetail(id) {
-  return request.get(`/user-notifys/${id}/news-info`);
+  return request.get(`/news/${id}/news-info`);
 }
 
 export function projectRecommendation() {
@@ -623,7 +630,7 @@ export function getCoinInfo(cid) {
   return request.get(`/coins/${cid}`);
 }
 
-export function favorCoin(payload) {
+export function addToWorkflow(payload) {
   return request.post('/coins/public', payload);
 }
 
@@ -634,6 +641,14 @@ export function favorCoin(payload) {
  */
 export function getSMSCode(mobile) {
   return request.post('/signup/code', { mobile });
+}
+/**
+ * 注册验证码
+ * @param mobile
+ * @returns {AxiosPromise<any>}
+ */
+export function getLoginSMSCode(mobile) {
+  return request.post('/login/code', { mobile });
 }
 
 /**
@@ -679,7 +694,25 @@ export function getReportsByIndustryId(id, params = {}) {
     page: p.currentPage,
     'per-page': p.pageSize,
   });
-  return request.get(`/industry/${id}/items`, {
+  return request.get(`/industries/${id}/items`, {
     params: paramsTransform(params),
   });
+}
+
+export function getLiveList(lastId) {
+  return request.get('http://api.coindog.com/live/list', {
+    params: {
+      limit: 25,
+      ...(lastId
+        ? {
+            id: lastId,
+            flag: 'down',
+          }
+        : {}),
+    },
+  });
+}
+
+export function getCoinSymbol(coin_id) {
+  return request.get(`/coins/${coin_id}/symbols`);
 }

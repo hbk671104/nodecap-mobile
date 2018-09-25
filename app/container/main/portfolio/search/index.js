@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
-import { Toast } from 'antd-mobile';
 import _ from 'lodash';
 
 import List from 'component/uikit/list';
@@ -41,14 +40,10 @@ class Search extends Component {
     const { searchText } = this.state;
     if (R.isEmpty(searchText)) return;
 
-    Toast.loading('loading...', 0);
     this.props.dispatch({
       type: 'portfolio/search',
       payload: {
         q: searchText,
-      },
-      callback: () => {
-        Toast.hide();
       },
     });
   };

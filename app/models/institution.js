@@ -8,7 +8,7 @@ export default {
     report: null,
   },
   effects: {
-    *fetch({ callback }, { call, put }) {
+    *fetch(_, { call, put }) {
       try {
         const { data } = yield call(getIndustries);
         yield put({

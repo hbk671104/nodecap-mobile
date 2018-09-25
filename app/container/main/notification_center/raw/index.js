@@ -21,7 +21,7 @@ export default class NotificationDetailRaw extends Component {
           title={title}
           titleContainerStyle={{ paddingHorizontal: 42 }}
         />
-        <WebView source={{ uri }} />
+        <WebView startInLoadingState source={{ uri }} />
       </View>
     );
   }

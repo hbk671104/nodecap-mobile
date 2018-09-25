@@ -24,6 +24,7 @@ class NavBar extends Component {
     gradient: PropTypes.bool,
     back: PropTypes.bool,
     title: PropTypes.string,
+    titleStyle: PropTypes.object,
     titleContainerStyle: PropTypes.object,
     iconStyle: PropTypes.object,
   };
@@ -71,6 +72,7 @@ class NavBar extends Component {
       gradient,
       back,
       title,
+      titleStyle,
       titleContainerStyle,
       iconStyle,
     } = this.props;
@@ -96,7 +98,10 @@ class NavBar extends Component {
                   style={[styles.title.container, titleContainerStyle]}
                 >
                   {!!title && (
-                    <Text style={styles.title.text} numberOfLines={1}>
+                    <Text
+                      style={[styles.title.text, titleStyle]}
+                      numberOfLines={1}
+                    >
                       {title}
                     </Text>
                   )}

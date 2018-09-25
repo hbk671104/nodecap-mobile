@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
+import SearchBarDisplay from 'component/searchBar/display';
+import FavorItem from 'component/favored/item';
 import PublicProjectItem from 'component/public_project/item';
 
 import Header from './header';
@@ -15,19 +18,35 @@ import styles from './style';
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, institution, loading }) => ({
-  data: R.pathOr([], ['list', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', 'pagination'])(public_project),
+@connect(({ public_project, institution, loading, login }) => ({
+  data: R.pathOr([], ['list', 'index', 'data'])(public_project),
+  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  progress: R.pathOr([], ['list', 'progress'])(public_project),
+  params: R.pathOr({}, ['list', 'params'])(public_project),
   institution: R.pathOr([], ['list'])(institution),
   loading: loading.effects['public_project/fetch'],
+  in_individual: login.in_individual,
 }))
+@connectActionSheet
 export default class PublicProject extends Component {
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'public_project/fetch',
-      payload: {
+      params: {
+        ...this.props.params,
         currentPage: page,
         pageSize: size,
+      },
+    });
+  };
+
+  loadData = params => {
+    this.props.dispatch({
+      type: 'public_project/fetch',
+      params: {
+        ...params,
+        currentPage: 1,
+        pageSize: 20,
       },
     });
   };
@@ -55,31 +74,71 @@ export default class PublicProject extends Component {
     );
   };
 
-  renderItem = ({ item }) => (
-    <PublicProjectItem
-      style={styles.item}
-      data={item}
-      onPress={this.handleItemPress(item)}
-    />
-  );
+  handleSearchPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PublicProjectSearch',
+      }),
+    );
+  };
+
+  handleFilterPress = () => {
+    const { progress } = this.props;
+    const cancelButtonIndex = R.length(progress);
+    this.props.showActionSheetWithOptions(
+      {
+        options: [...progress, '取消'],
+        cancelButtonIndex,
+      },
+      buttonIndex => {
+        if (buttonIndex === cancelButtonIndex) {
+          return;
+        }
+        this.loadData({
+          progress: buttonIndex === 0 ? buttonIndex : buttonIndex + 1,
+        });
+      },
+    );
+  };
+
+  renderItem = ({ item }) => {
+    return this.props.in_individual ? (
+      <FavorItem data={item} onPress={this.handleItemPress(item)} />
+    ) : (
+      <PublicProjectItem data={item} onPress={this.handleItemPress(item)} />
+    );
+  };
 
   renderHeader = () => (
     <Header
-      style={styles.header}
-      data={this.props.institution}
+      {...this.props}
       onItemPress={this.handleInstitutionItemPress}
+      onFilterPress={this.handleFilterPress}
     />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderNavBar = () => (
+    <NavBar
+      gradient
+      renderTitle={() => (
+        <View style={styles.searchBar.container}>
+          <SearchBarDisplay
+            title="搜索项目名、Token"
+            onPress={this.handleSearchPress}
+          />
+        </View>
+      )}
+    />
+  );
+
   render() {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient title="项目公海" />
+        {this.renderNavBar()}
         <List
-          style={styles.list}
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
