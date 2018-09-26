@@ -18,8 +18,7 @@ global.s = () => {
   return sFunction;
 };
 
-global.setProfile = input => {
-  const profile = { ...input, client_type: '企业版' };
+global.setProfile = profile => {
   if (Platform.OS === 'ios') {
     RNSensorsAnalyticsModule.set(profile);
   } else {
