@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
+import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
@@ -10,6 +11,8 @@ import NewsItem from 'component/news';
 import List from './components/list';
 import Header from './header';
 import styles from './style';
+
+const AnimatedList = Animated.createAnimatedComponent(List);
 
 @global.bindTrack({
   page: '项目公海',
@@ -22,6 +25,16 @@ import styles from './style';
   pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
   loading: loading.effects['news/index'],
 }))
+@compose(
+  withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withProps(({ animateY }) => ({
+    navBarOpacityRange: animateY.interpolate({
+      inputRange: [0, 200],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+  })),
+)
 export default class PublicProject extends Component {
   requestData = isRefresh => {
     this.props.dispatch({
@@ -54,14 +67,25 @@ export default class PublicProject extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
-  renderNavBar = () => <NavBar gradient />;
+  renderNavBar = () => (
+    <Animated.View
+      style={{
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        opacity: this.props.navBarOpacityRange,
+      }}
+    >
+      <NavBar gradient title="首页" />
+    </Animated.View>
+  );
 
   render() {
     const { news, loading } = this.props;
     return (
       <View style={styles.container}>
-        {/* {this.renderNavBar()} */}
-        <List
+        <AnimatedList
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
@@ -69,7 +93,20 @@ export default class PublicProject extends Component {
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           renderSeparator={this.renderSeparator}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: { y: this.props.animateY },
+                },
+              },
+            ],
+            {
+              useNativeDriver: true,
+            },
+          )}
         />
+        {this.renderNavBar()}
       </View>
     );
   }

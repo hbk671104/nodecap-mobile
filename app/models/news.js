@@ -41,10 +41,11 @@ export default {
   },
   reducers: {
     save(state, action) {
+      const { payload } = action;
       return {
         ...state,
-        payload: action.payload.id,
-        news: action.payload.data,
+        payload: payload.id,
+        news: R.insert(9, { type: 'report' }, payload.data),
       };
     },
     concat(state, action) {
