@@ -10,6 +10,12 @@ export default {
   effects: {
     *index({ payload }, { call, put, select }) {
       try {
+        // insite news
+        yield put({
+          type: 'notification/fetchInSite',
+        });
+
+        // index
         const lastID = yield select(({ news }) => news.payload);
         const res = yield call(getLiveList, payload ? lastID : null);
         const newsList = R.pipe(

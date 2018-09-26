@@ -1,12 +1,18 @@
 import React from 'react';
 import { View, Image, Text, Dimensions, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
+import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const top = ({ onMeetingPress, onAnnouncementPress, onProjectRepoPress }) => (
+const top = ({
+  insite_news,
+  onMeetingPress,
+  onAnnouncementPress,
+  onProjectRepoPress,
+}) => (
   <View style={styles.container}>
     <Image
       style={styles.banner}
@@ -21,19 +27,13 @@ const top = ({ onMeetingPress, onAnnouncementPress, onProjectRepoPress }) => (
         showsPagination={false}
         autoplay
       >
-        <View style={styles.verticalBanner.group.container}>
-          <Text style={styles.verticalBanner.group.title}>
-            5.7版本成功上线，新增 482个项目
-          </Text>
-        </View>
-        <View style={styles.verticalBanner.group.container}>
-          <Text style={styles.verticalBanner.group.title}>
-            Hotnode v6.0.0 上线 app store
-          </Text>
-        </View>
-        <View style={styles.verticalBanner.group.container}>
-          <Text style={styles.verticalBanner.group.title}>徐明星被抓</Text>
-        </View>
+        {R.map(n => (
+          <View key={n.id} style={styles.verticalBanner.group.container}>
+            <Text style={styles.verticalBanner.group.title}>
+              {R.pathOr('--', ['title'])(n)}
+            </Text>
+          </View>
+        ))(insite_news)}
       </Swiper>
     </View>
     <View style={styles.tab.container}>

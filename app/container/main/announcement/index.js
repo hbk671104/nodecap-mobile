@@ -37,7 +37,6 @@ export default class Announcement extends Component {
     this.props.dispatch({
       type: 'notification/fetch',
       payload: {
-        type: 1,
         currentPage: page,
         pageSize: size,
       },

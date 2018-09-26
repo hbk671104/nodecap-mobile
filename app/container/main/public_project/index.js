@@ -18,12 +18,13 @@ const AnimatedList = Animated.createAnimatedComponent(List);
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, news, loading }) => ({
+@connect(({ public_project, news, loading, notification }) => ({
   news: R.pathOr([], ['news'])(news),
   lastNewsID: R.pathOr(null, ['payload'])(news),
   data: R.pathOr([], ['list', 'index', 'data'])(public_project),
   pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
   loading: loading.effects['news/index'],
+  insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
 }))
 @compose(
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),

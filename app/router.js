@@ -98,7 +98,13 @@ const Tab = createBottomTabNavigator(
     PublicProject: {
       screen: PublicProject,
       navigationOptions: {
-        title: '项目公海',
+        title: '首页',
+      },
+    },
+    ProjectRepo: {
+      screen: ProjectRepo,
+      navigationOptions: {
+        title: '项目大全',
       },
     },
     Portfolio: {
@@ -119,18 +125,18 @@ const Tab = createBottomTabNavigator(
     //     title: '资产管理',
     //   },
     // },
-    NotificationCenter: {
-      screen: NotificationCenter,
-      navigationOptions: {
-        title: '项目动态',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+    // NotificationCenter: {
+    //   screen: NotificationCenter,
+    //   navigationOptions: {
+    //     title: '项目动态',
+    //     tabBarOnPress: ({ defaultHandler }) => {
+    //       defaultHandler();
 
-          // some other things
-          handleTabBarPress('NotificationCenter');
-        },
-      },
-    },
+    //       // some other things
+    //       handleTabBarPress('NotificationCenter');
+    //     },
+    //   },
+    // },
     Self: {
       screen: Self,
       navigationOptions: {
