@@ -36,4 +36,14 @@ export default {
       lineHeight: 19,
     },
   },
+  date: {
+    container: {
+      flexDirection: 'row',
+      marginTop: 8,
+    },
+    text: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.45)',
+    },
+  },
 };
