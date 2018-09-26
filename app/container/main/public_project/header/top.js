@@ -6,7 +6,7 @@ import Touchable from 'component/uikit/touchable';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const top = ({ onMeetingPress, onAnnouncementPress }) => (
+const top = ({ onMeetingPress, onAnnouncementPress, onProjectRepoPress }) => (
   <View style={styles.container}>
     <Image
       style={styles.banner}
@@ -37,7 +37,7 @@ const top = ({ onMeetingPress, onAnnouncementPress }) => (
       </Swiper>
     </View>
     <View style={styles.tab.container}>
-      <Touchable style={styles.tab.group.wrapper}>
+      <Touchable style={styles.tab.group.wrapper} onPress={onProjectRepoPress}>
         <View style={styles.tab.group.container}>
           <Image source={require('asset/public_project/project_hunt.png')} />
           <Text style={styles.tab.group.title}>找项目</Text>

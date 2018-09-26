@@ -71,6 +71,14 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleProjectRepoPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ProjectRepo',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => <NewsItem data={item} />;
 
   renderHeader = () => (
@@ -78,6 +86,7 @@ export default class PublicProject extends Component {
       {...this.props}
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
+      onProjectRepoPress={this.handleProjectRepoPress}
     />
   );
 
