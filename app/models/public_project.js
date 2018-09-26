@@ -26,7 +26,7 @@ export default {
     list: [
       {
         id: 0,
-        title: '全部',
+        title: '最热',
         index: null,
         params: {},
       },
@@ -173,6 +173,7 @@ export default {
     },
     *refresh(_, { put, select }) {
       try {
+        // 选择性刷新详情与搜索页
         const current = yield select(state =>
           R.path(['public_project', 'current'])(state),
         );
@@ -192,6 +193,7 @@ export default {
           });
         }
 
+        // 刷新关注页
         yield put({
           type: 'favored/fetch',
           payload: {
