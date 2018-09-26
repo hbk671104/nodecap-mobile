@@ -534,17 +534,6 @@ export default {
       };
     },
     setFavorStatus(state, action) {
-      // const targetIndex = R.pipe(
-      //   R.path(['list', 'index', 'data']),
-      //   R.findIndex(R.propEq('id', action.payload)),
-      // )(state);
-      // const list = R.pipe(
-      //   R.path(['list', 'index', 'data']),
-      //   R.update(targetIndex, {
-      //     ...R.path(['list', 'index', 'data', targetIndex])(state),
-      //     is_focused: action.status,
-      //   }),
-      // )(state);
       return {
         ...state,
         list: R.map(t => {
