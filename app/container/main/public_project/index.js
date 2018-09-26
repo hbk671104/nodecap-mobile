@@ -69,13 +69,7 @@ export default class PublicProject extends Component {
 
   renderNavBar = () => (
     <Animated.View
-      style={{
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        top: 0,
-        opacity: this.props.navBarOpacityRange,
-      }}
+      style={[styles.navBar, { opacity: this.props.navBarOpacityRange }]}
     >
       <NavBar gradient title="首页" />
     </Animated.View>
