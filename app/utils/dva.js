@@ -44,6 +44,7 @@ export default options => {
         'institution/fetchReports',
         'news/index',
         'favored/fetch',
+        'activity/fetch',
       ],
     }),
   );

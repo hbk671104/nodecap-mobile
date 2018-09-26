@@ -6,7 +6,7 @@ import Touchable from 'component/uikit/touchable';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const top = props => (
+const top = ({ onMeetingPress }) => (
   <View style={styles.container}>
     <Image
       style={styles.banner}
@@ -55,7 +55,7 @@ const top = props => (
           <Text style={styles.tab.group.title}>找机构</Text>
         </View>
       </Touchable>
-      <Touchable style={styles.tab.group.wrapper}>
+      <Touchable style={styles.tab.group.wrapper} onPress={onMeetingPress}>
         <View style={styles.tab.group.container}>
           <Image source={require('asset/public_project/meeting.png')} />
           <Text style={styles.tab.group.title}>找会议</Text>

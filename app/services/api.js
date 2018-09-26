@@ -716,3 +716,12 @@ export function getLiveList(lastId) {
 export function getCoinSymbol(coin_id) {
   return request.get(`/coins/${coin_id}/symbols`);
 }
+
+export function meetingList(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/activities', { params: paramsTransform(params) });
+}
