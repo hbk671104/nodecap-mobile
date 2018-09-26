@@ -79,6 +79,7 @@ import Feedback from 'container/main/self/feedback';
 import MeetingList from 'container/main/activity';
 import MeetingListRaw from 'container/main/activity/raw';
 import Announcement from 'container/main/announcement/index';
+import ProjectRepo from 'container/main/project_repo';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -217,6 +218,12 @@ const IndividualTab = createBottomTabNavigator(
     //     title: '动态',
     //   },
     // },
+    ProjectRepo: {
+      screen: ProjectRepo,
+      navigationOptions: {
+        title: '项目大全',
+      },
+    },
     Favored: {
       screen: Favored,
       navigationOptions: {
