@@ -78,6 +78,7 @@ import EditProfile from 'container/main/self/profile/edit';
 import Feedback from 'container/main/self/feedback';
 import MeetingList from 'container/main/activity';
 import MeetingListRaw from 'container/main/activity/raw';
+import Announcement from 'container/main/announcement/index';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -195,6 +196,7 @@ const MainStack = createStackNavigator(
     EditProfile,
     MeetingList,
     MeetingListRaw,
+    Announcement,
   },
   {
     headerMode: 'none',
@@ -273,6 +275,7 @@ const IndividualStack = createStackNavigator(
     Feedback,
     MeetingList,
     MeetingListRaw,
+    Announcement,
   },
   {
     headerMode: 'none',

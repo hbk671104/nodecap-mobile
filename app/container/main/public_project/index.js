@@ -63,10 +63,22 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleAnnouncementPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Announcement',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => <NewsItem data={item} />;
 
   renderHeader = () => (
-    <Header {...this.props} onMeetingPress={this.handleMeetingPress} />
+    <Header
+      {...this.props}
+      onMeetingPress={this.handleMeetingPress}
+      onAnnouncementPress={this.handleAnnouncementPress}
+    />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
