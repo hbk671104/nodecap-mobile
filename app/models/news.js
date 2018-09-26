@@ -1,5 +1,6 @@
 import R from 'ramda';
 import { getLiveList } from '../services/api';
+import Toast from 'react-native-root-toast';
 
 export default {
   namespace: 'news',
@@ -33,6 +34,15 @@ export default {
           });
           return;
         }
+
+        const topId = yield select(({ news }) =>
+          R.path(['news', 0, 'id'])(news),
+        );
+        const batchTopId = R.path([0, 'id'])(newsList);
+        if (batchTopId > topId) {
+          Toast.show(`新增 ${batchTopId - topId} 条内容`);
+        }
+
         yield put({
           type: 'save',
           payload: {
