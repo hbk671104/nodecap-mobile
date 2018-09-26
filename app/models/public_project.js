@@ -23,11 +23,32 @@ import { paginate } from '../utils/pagination';
 export default {
   namespace: 'public_project',
   state: {
-    list: {
-      index: null,
-      params: {},
-      progress: ['全部', '即将开始', '进行中', '已结束'],
-    },
+    list: [
+      {
+        id: 0,
+        title: '全部',
+        index: null,
+        params: {},
+      },
+      {
+        id: 2,
+        title: '即将开始',
+        index: null,
+        params: {},
+      },
+      {
+        id: 3,
+        title: '进行中',
+        index: null,
+        params: {},
+      },
+      {
+        id: 4,
+        title: '已结束',
+        index: null,
+        params: {},
+      },
+    ],
     search: {
       index: null,
       params: {},
@@ -47,9 +68,9 @@ export default {
           params,
         });
 
-        yield put.resolve({
-          type: 'institution/fetch',
-        });
+        // yield put.resolve({
+        //   type: 'institution/fetch',
+        // });
 
         if (callback) {
           yield call(callback);
@@ -445,18 +466,19 @@ export default {
   },
   reducers: {
     list(state, action) {
-      const progress_changed =
-        R.pathOr('', ['list', 'params', 'progress'])(state) !==
-        R.pathOr('', ['params', 'progress'])(action);
+      const { progress } = action.params;
       return {
         ...state,
-        list: {
-          ...state.list,
-          index: progress_changed
-            ? action.payload
-            : paginate(state.list.index, action.payload),
-          params: action.params,
-        },
+        list: R.map(t => {
+          if (t.id === progress) {
+            return {
+              ...t,
+              index: paginate(t.index, action.payload),
+              params: action.params,
+            };
+          }
+          return t;
+        })(state.list),
       };
     },
     searchList(state, action) {

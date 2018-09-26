@@ -3,37 +3,24 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
-import ScrollableTabView from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {
+  DefaultTabBar,
+} from 'react-native-scrollable-tab-view';
 
 import NavBar from 'component/navBar';
 import SearchBarDisplay from 'component/searchBar/display';
-import List from 'component/uikit/list';
 
+import ProjectList from './list';
 import styles from './style';
 
 @global.bindTrack({
   page: '项目大全',
   name: 'App_ProjectRepoOperation',
 })
-@connect(({ public_project, loading }) => ({
-  data: R.pathOr([], ['list', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', 'pagination'])(public_project),
-  //   loading: loading.effects['notification/fetch'],
-  //   in_individual: login.in_individual,
+@connect(({ public_project }) => ({
+  tab: R.pathOr([], ['list'])(public_project),
 }))
 export default class ProjectRepo extends Component {
-  handleItemPress = id => () => {
-    this.props.track('点击进入详情');
-    // this.props.dispatch(
-    //   NavigationActions.navigate({
-    //     routeName: 'NotificationDetail',
-    //     params: {
-    //       id,
-    //     },
-    //   }),
-    // );
-  };
-
   handleSearchPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -42,8 +29,19 @@ export default class ProjectRepo extends Component {
     );
   };
 
+  renderTabBar = () => (
+    <DefaultTabBar
+      style={styles.tabBar.container}
+      tabStyle={styles.tabBar.tab}
+      textStyle={styles.tabBar.text}
+      activeTextColor="#1890FF"
+      inactiveTextColor="rgba(0, 0, 0, 0.65)"
+      underlineStyle={styles.tabBar.underline}
+    />
+  );
+
   render() {
-    const { loading, data, pagination } = this.props;
+    const { tab } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -57,7 +55,19 @@ export default class ProjectRepo extends Component {
             </View>
           )}
         />
-        {/* <ScrollableTabView /> */}
+        <ScrollableTabView
+          renderTabBar={this.renderTabBar}
+          prerenderingSiblingsNumber={Infinity}
+        >
+          {R.addIndex(R.map)((t, index) => (
+            <ProjectList
+              key={index}
+              index={index}
+              progress={t.id}
+              tabLabel={t.title}
+            />
+          ))(tab)}
+        </ScrollableTabView>
       </View>
     );
   }
