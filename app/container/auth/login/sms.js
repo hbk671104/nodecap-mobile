@@ -101,7 +101,13 @@ class SMSLogin extends Component {
           <View style={{ marginTop: 25 }}>
             {getFieldDecorator('mobile', {
               rules: [{ required: true, message: '请输入手机号' }],
-            })(<InputItem style={styles.input} placeholder="请输入手机号" />)}
+            })(
+              <InputItem
+                style={styles.input}
+                placeholder="请输入手机号"
+                inputProps={{ keyboardType: 'number-pad' }}
+              />,
+            )}
             <View style={{ marginTop: 20 }}>
               {getFieldDecorator('verification_code', {
                 rules: [{ required: true, message: '请输入验证码' }],
