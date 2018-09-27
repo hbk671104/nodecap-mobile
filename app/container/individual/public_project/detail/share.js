@@ -170,12 +170,12 @@ class ShareCoin extends Component {
           </Flex>
         </Touchable>
         <Flex>
-          <TouchableOpacity onPress={() => this.shareTo('wechat')}>
+          <TouchableOpacity onPress={this.shareTo('wechat')}>
             <Image source={require('asset/wechat_icon.png')} />
           </TouchableOpacity>
           <TouchableOpacity
             style={{ marginLeft: 24 }}
-            onPress={() => this.shareTo('moment')}
+            onPress={this.shareTo('moment')}
           >
             <Image source={require('asset/wechat_moment_icon.png')} />
           </TouchableOpacity>
@@ -207,7 +207,7 @@ class ShareCoin extends Component {
               <View style={[styles.container]}>
                 <Image
                   source={require('asset/coin_share/header.png')}
-                  style={[styles.backgroundImage, { height: 28, marginTop: 25 }]}
+                  style={[styles.backgroundImage, { height: 28 }]}
                 />
                 <ImageBackground
                   style={[styles.backgroundImage]}
@@ -249,6 +249,8 @@ class ShareCoin extends Component {
 const styles = {
   container: {
     alignItems: 'center',
+    justifyContent: 'center',
+    height: window.height,
   },
   backgroundImage: {
     width: 350,
