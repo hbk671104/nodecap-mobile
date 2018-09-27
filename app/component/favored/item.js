@@ -66,17 +66,19 @@ class FavorItem extends PureComponent {
   };
 
   render() {
-    const { style, data, onPress } = this.props;
+    const { style, data, showTopBorder } = this.props;
     const icon = R.pathOr('', ['icon'])(data);
     const project_name = R.pathOr('--', ['name'])(data);
-    const status = R.pathOr('--', ['finance_status'])(data);
+    const status = R.pathOr('', ['finance_status'])(data);
     const category = R.pathOr([], ['category'])(data);
     const description = R.pathOr('--', ['description'])(data);
     const stars = R.pathOr(0, ['stars'])(data);
     const favored = R.pathOr(false, ['is_focused'])(data);
     return (
       <Touchable foreground onPress={this.handlePress}>
-        <View style={[styles.container, style]}>
+        <View
+          style={[styles.container, showTopBorder && styles.topBorder, style]}
+        >
           <Avatar
             size={45}
             source={
@@ -121,18 +123,25 @@ class FavorItem extends PureComponent {
             </Text>
           </View>
           <View style={styles.end.container}>
-            <Text
-              style={[
-                styles.end.status,
-                status === '未设定' && { color: 'rgba(0, 0, 0, 0.45)' },
-                status === '进行中' && { color: '#09AC32' },
-                status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
-              ]}
-            >
-              {status}
-            </Text>
+            {!R.isEmpty(status) && (
+              <Text
+                style={[
+                  styles.end.status,
+                  status === '未设定' && { color: 'rgba(0, 0, 0, 0.45)' },
+                  status === '进行中' && { color: '#09AC32' },
+                  status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
+                ]}
+              >
+                {status}
+              </Text>
+            )}
             <Touchable foreground onPress={this.handleFavorPress}>
-              <View style={styles.end.favor.container}>
+              <View
+                style={[
+                  styles.end.favor.container,
+                  R.isEmpty(status) && { marginTop: 0 },
+                ]}
+              >
                 <Image
                   source={
                     favored
@@ -225,6 +234,10 @@ const styles = {
         color: 'rgba(0, 0, 0, 0.65)',
       },
     },
+  },
+  topBorder: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#E9E9E9',
   },
 };
 

@@ -32,17 +32,16 @@ export default class InstitutionReport extends Component {
     });
   };
 
-  handleItemPress = item => {
+  handleItemPress = item => () => {
     this.props.track('点击进入详情');
-    // this.props.dispatch(
-    //   NavigationActions.navigate({
-    //     routeName: 'InstitutionReportDetail',
-    //     params: {
-    //       pdf_url: item.pdf_url,
-    //       title: item.title,
-    //     },
-    //   }),
-    // );
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionDetail',
+        params: {
+          id: item.id,
+        },
+      }),
+    );
   };
 
   renderItem = ({ item }) => (

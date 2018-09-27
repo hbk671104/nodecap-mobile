@@ -180,6 +180,9 @@ export default {
         const search = yield select(state =>
           R.path(['public_project', 'search'])(state),
         );
+        const institution = yield select(state =>
+          R.path(['institution', 'current'])(state),
+        );
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
@@ -190,6 +193,12 @@ export default {
           yield put.resolve({
             type: 'search',
             payload: R.path(['params'])(search),
+          });
+        }
+        if (!R.isNil(institution)) {
+          yield put.resolve({
+            type: 'institution/get',
+            payload: R.path(['id'])(institution),
           });
         }
 
