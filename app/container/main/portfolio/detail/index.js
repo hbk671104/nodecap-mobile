@@ -61,7 +61,7 @@ const selectionList = [
     loading: loading.effects['portfolio/get'],
     stat_loading: loading.effects['portfolio/getStat'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
-    base_symbol: R.path(['current', 'stats', 'quote'])(portfolio),
+    base_symbol: R.pathOr('CNY', ['current', 'stats', 'quote'])(portfolio),
     can_calculate: R.pathOr(false, ['current', 'can_calculate'])(portfolio),
     unmatched: R.isEmpty(coin),
   };

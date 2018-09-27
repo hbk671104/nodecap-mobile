@@ -1,4 +1,5 @@
 import { trendList, trendDetail } from '../services/api';
+import { trendList as individualTrendList } from '../services/individual/api';
 import R from 'ramda';
 import { paginate } from '../utils/pagination';
 
@@ -10,12 +11,23 @@ export default {
     badgeVisible: false,
   },
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch({ payload }, { call, put, select }) {
       try {
-        const { data } = yield call(trendList);
+        const in_individual = yield select(state =>
+          R.path(['login', 'in_individual'])(state),
+        );
+
+        let response_data;
+        if (in_individual) {
+          const { data } = yield call(individualTrendList, payload);
+          response_data = data;
+        } else {
+          const { data } = yield call(trendList, payload);
+          response_data = data;
+        }
         yield put({
           type: 'list',
-          payload: data,
+          payload: response_data,
         });
       } catch (e) {
         console.log(e);
@@ -37,7 +49,7 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: action.payload,
+        list: paginate(state.list, action.payload),
       };
     },
     detail(state, action) {

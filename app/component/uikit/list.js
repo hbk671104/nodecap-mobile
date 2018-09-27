@@ -48,7 +48,8 @@ class List extends PureComponent {
 
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
-      this.handleAction();
+      this.pageCount = 1;
+      this.handleAction(this.pageCount);
     }
   }
 
@@ -60,7 +61,8 @@ class List extends PureComponent {
 
   handleOnRefresh = () => {
     if (this.props.action) {
-      this.handleAction();
+      this.pageCount = 1;
+      this.handleAction(this.pageCount);
     }
   };
 
@@ -68,7 +70,8 @@ class List extends PureComponent {
     if (this.props.action && this.props.pagination) {
       const { current, pageCount, pageSize } = this.props.pagination;
       if (current < pageCount) {
-        this.handleAction(current + 1, pageSize);
+        this.pageCount += 1;
+        this.handleAction(this.pageCount, pageSize);
       }
     }
   };
@@ -103,9 +106,9 @@ class List extends PureComponent {
   });
 
   renderHeader = () => {
-    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
-      return null;
-    }
+    // if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+    //   return null;
+    // }
     if (this.props.renderHeader) {
       return this.props.renderHeader();
     }
@@ -113,9 +116,9 @@ class List extends PureComponent {
   };
 
   renderFooter = () => {
-    if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
-      return null;
-    }
+    // if (R.isNil(this.props.data) || R.isEmpty(this.props.data)) {
+    //   return null;
+    // }
     if (this.props.renderFooter) {
       return this.props.renderFooter();
     }
@@ -142,9 +145,9 @@ class List extends PureComponent {
   };
 
   renderEmpty = () => {
-    if (R.isNil(this.props.data)) {
-      return null;
-    }
+    // if (R.isNil(this.props.data)) {
+    //   return null;
+    // }
     if (this.props.renderEmpty) {
       return this.props.renderEmpty();
     }
@@ -179,10 +182,11 @@ class List extends PureComponent {
         if (!pagination) {
           return true;
         }
-        if (pagination && pagination.current === 1) {
+        if (pagination && this.pageCount === 1) {
           return true;
         }
       }
+
       return false;
     };
     return (

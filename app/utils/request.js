@@ -1,8 +1,9 @@
 import axios from 'axios';
 import * as R from 'ramda';
 import store from '../../index';
-import Config from 'react-native-config';
+import Config from '../runtime';
 import { Toast } from 'antd-mobile';
+import { NavigationActions } from 'react-navigation';
 
 const codeMessage = {
   1001: '您的账号有误。',
@@ -25,9 +26,13 @@ const codeMessage = {
 };
 
 const instance = axios.create({
-  baseURL: Config.API_URL,
+  baseURL: Config.API_INDIVIDUAL_URL,
   timeout: 60000,
 });
+
+if (Config.ENV === 'development') {
+  axios.defaults.headers.common['X-NODECAP-DEV-USER'] = Config.DEV_USER;
+}
 
 instance.interceptors.response.use(res => {
   const hasPagination = R.allPass([
@@ -64,15 +69,26 @@ function checkStatus({ response = {} }) {
     return Promise.reject(response);
   }
   if (response.status === 401) {
-    store.dispatch({
-      type: 'login/logout',
-    });
+    // store.dispatch({
+    //   type: 'login/logout',
+    //   callback: () => {
+    //     store.dispatch(
+    //       NavigationActions.navigate({
+    //         routeName: 'Login',
+    //       }),
+    //     );
+    //   },
+    // });
     return;
   }
-  const errortext =
+  let errortext =
     codeMessage[R.path(['data', 'code'])(response)] ||
     R.path(['data', 'message'])(response) ||
     R.path(['data', 0, 'message'])(response);
+
+  if (!response.status) {
+    errortext = '您的网络出现问题，请确认已经连接至互联网';
+  }
 
   Toast.fail(errortext, 1);
 

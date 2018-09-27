@@ -14,10 +14,16 @@ global.s = () => {
       registerSuperProperties: EMPTY_FUNCTION,
       login: EMPTY_FUNCTION,
       logout: EMPTY_FUNCTION,
-      profileSet: EMPTY_FUNCTION,
-      set: EMPTY_FUNCTION,
     }));
   return sFunction;
+};
+
+global.setProfile = profile => {
+  if (Platform.OS === 'ios') {
+    RNSensorsAnalyticsModule.set(profile);
+  } else {
+    RNSensorsAnalyticsModule.profileSet(profile);
+  }
 };
 
 global.st = function(operationID, rest = {}) {
