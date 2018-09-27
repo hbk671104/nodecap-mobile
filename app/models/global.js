@@ -26,10 +26,6 @@ export default {
       try {
         // put => non-blocking, put.resolve => blocking
         yield put.resolve({
-          type: 'startup',
-        });
-
-        yield put.resolve({
           type: 'initial',
         });
 
@@ -50,15 +46,6 @@ export default {
         if (callback) {
           yield call(callback);
         }
-      } catch (e) {
-        console.log(e);
-      }
-    },
-    *startup(_, { put }) {
-      try {
-        yield put.resolve({
-          type: 'getConstant',
-        });
       } catch (e) {
         console.log(e);
       }
@@ -115,7 +102,7 @@ export default {
         console.log(error);
       }
     },
-    *initIndividualEnd({ callback }, { call, put, select }) {
+    *initIndividualEnd({ callback }, { call, put, select, all }) {
       try {
         // http header config
         request.defaults.baseURL = Config.API_INDIVIDUAL_URL;
@@ -148,9 +135,15 @@ export default {
         JPush.setAlias(`user_${user_id}`, () => null);
         JPush.cleanTags(() => null);
 
-        yield put.resolve({
-          type: 'user/fetchCurrent',
-        });
+        // constant
+        yield all([
+          put.resolve({
+            type: 'getConstant',
+          }),
+          put.resolve({
+            type: 'user/fetchCurrent',
+          }),
+        ]);
 
         if (callback) {
           yield call(callback);
@@ -193,6 +186,9 @@ export default {
         JPush.setTags([`company_${companyID}`], () => null);
 
         yield all([
+          put.resolve({
+            type: 'getConstant',
+          }),
           put.resolve({
             type: 'getPermission',
           }),
