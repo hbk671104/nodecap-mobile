@@ -23,6 +23,10 @@ export default {
               progress: 0,
             },
           }),
+          // fetch report
+          put.resolve({
+            type: 'institution/fetchReports',
+          }),
         ]);
 
         // index

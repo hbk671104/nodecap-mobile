@@ -5,9 +5,9 @@ import Report from './report';
 import Trending from './trending';
 import styles from './style';
 
-const newsItem = ({ data }) => {
+const newsItem = props => {
   let combo;
-
+  const { data } = props;
   const { type } = data;
   switch (type) {
     case 'report':
@@ -32,7 +32,7 @@ const newsItem = ({ data }) => {
           <Text style={styles.label.text}># {combo.title}</Text>
         </View>
       </View>
-      <combo.component data={data} />
+      <combo.component {...props} />
     </View>
   );
 };

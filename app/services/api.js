@@ -688,13 +688,13 @@ export function getPublicProjects(params) {
  * 评级机构列表
  * @returns {AxiosPromise<any>}
  */
-export function getReportsByIndustryId(id, params = {}) {
+export function getReportsByIndustry(params = {}) {
   const paramsTransform = p => ({
     ...params,
     page: p.currentPage,
     'per-page': p.pageSize,
   });
-  return request.get(`/industries/${id}/items`, {
+  return request.get('/industries/items', {
     params: paramsTransform(params),
   });
 }

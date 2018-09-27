@@ -1,4 +1,4 @@
-import { getIndustries, getReportsByIndustryId } from '../services/api';
+import { getIndustries, getReportsByIndustry } from '../services/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -19,9 +19,9 @@ export default {
         console.log(e);
       }
     },
-    *fetchReports({ payload, id }, { call, put }) {
+    *fetchReports({ payload }, { call, put }) {
       try {
-        const { data } = yield call(getReportsByIndustryId, id, payload);
+        const { data } = yield call(getReportsByIndustry, payload);
         yield put({
           type: 'report',
           payload: data,

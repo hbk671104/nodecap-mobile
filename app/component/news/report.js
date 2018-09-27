@@ -6,40 +6,45 @@ import moment from 'moment';
 import Touchable from 'component/uikit/touchable';
 import common_styles from './style';
 
-const item = data => (
-  <View style={styles.container}>
-    <View>
-      <Text style={styles.title}>「节点研究中心」2018年Q2报告合集</Text>
-    </View>
-    <View style={styles.bottom.container}>
-      <Text style={styles.bottom.subtitle}>
-        节点研究中心
-        {'  '}
-        01-25
-        {'  '}
-        <Text style={{ color: '#1890FF' }} onPress={() => null}>
-          查看研报
+const item = ({ data, onInstitutionItemPress }) => {
+  const title = R.pathOr('--', ['title'])(data);
+  const date = R.pathOr('--', ['published_at'])(data);
+  return (
+    <View key={data.id} style={styles.container}>
+      <View>
+        <Text style={styles.title}>{title}</Text>
+      </View>
+      <View style={styles.bottom.container}>
+        <Text style={styles.bottom.subtitle}>
+          节点研究中心
+          {'  '}
+          {moment(date).format('MM-DD')}
+          {'  '}
+          <Text
+            style={{ color: '#1890FF' }}
+            onPress={() => onInstitutionItemPress(data)}
+          >
+            查看研报
+          </Text>
         </Text>
-      </Text>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
-const report = ({ data }) => {
-  //   const regex = R.pipe(
-  //     R.path(['content']),
-  //     R.match(/【(.*)】(.*)/),
-  //   )(data);
-
-  //   const title = R.pathOr('', [1])(regex);
-  //   const content = R.pathOr('', [2])(regex);
-  //   const created_at = R.path(['created_at'])(data);
+const report = ({
+  reports,
+  onInstitutionReportPress,
+  onInstitutionItemPress,
+}) => {
   return (
     <View>
-      {item()}
-      {item()}
-      {item()}
-      <Touchable>
+      {!R.isEmpty(reports) &&
+        R.pipe(
+          R.take(3),
+          R.map(r => item({ data: r, onInstitutionItemPress })),
+        )(reports)}
+      <Touchable onPress={onInstitutionReportPress}>
         <View style={styles.button.container}>
           <Text style={styles.button.title}>查看全部研究报告</Text>
         </View>

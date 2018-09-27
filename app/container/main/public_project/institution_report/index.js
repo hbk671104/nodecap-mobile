@@ -14,22 +14,14 @@ import styles from './style';
   page: '项目公海机构报告',
   name: 'App_PublicProjectInstitutionReportOperation',
 })
-@connect(({ institution, loading }, props) => {
-  const item = props.navigation.getParam('item');
+@connect(({ institution, loading }) => {
   return {
     data: R.pathOr([], ['report', 'data'])(institution),
     pagination: R.pathOr(null, ['report', 'pagination'])(institution),
     loading: loading.effects['institution/fetchReports'],
-    institution: item,
   };
 })
 export default class InstitutionReport extends Component {
-  componentWillUnmount() {
-    this.props.dispatch({
-      type: 'institution/clearReport',
-    });
-  }
-
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'institution/fetchReports',
@@ -37,7 +29,6 @@ export default class InstitutionReport extends Component {
         currentPage: page,
         pageSize: size,
       },
-      id: this.props.institution.id,
     });
   };
 
@@ -55,20 +46,16 @@ export default class InstitutionReport extends Component {
   };
 
   renderItem = ({ item }) => (
-    <InstitutionReportItem
-      data={item}
-      institution={this.props.institution}
-      onPress={this.handleItemPress}
-    />
+    <InstitutionReportItem data={item} onPress={this.handleItemPress} />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data, loading, pagination, institution } = this.props;
+    const { data, loading, pagination } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient back title={institution.name} />
+        <NavBar gradient back title="研报" />
         <List
           contentContainerStyle={styles.list.content}
           action={this.requestData}

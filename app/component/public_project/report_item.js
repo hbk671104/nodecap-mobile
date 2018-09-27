@@ -13,7 +13,7 @@ const reportItem = ({ data, onPress, institution }) => (
         <Text style={styles.title}>{data.title}</Text>
       </View>
       <View style={styles.content.container}>
-        <Text style={styles.content.text}>#{institution.name}</Text>
+        <Text style={styles.content.text}>#ahha1</Text>
         <Text style={styles.content.text}>
           {data.published_at ? moment(data.published_at).format('MM-DD') : ''}
         </Text>

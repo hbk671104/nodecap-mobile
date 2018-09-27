@@ -19,12 +19,13 @@ const AnimatedList = Animated.createAnimatedComponent(List);
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, news, loading, notification }) => ({
+@connect(({ public_project, news, loading, notification, institution }) => ({
   news: R.pathOr([], ['news'])(news),
   lastNewsID: R.pathOr(null, ['payload'])(news),
   data: R.pathOr([], ['list', 0, 'index', 'data'])(public_project),
   loading: loading.effects['news/index'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
+  reports: R.pathOr([], ['report', 'data'])(institution),
   updateCount: R.path(['updated_count'])(news),
 }))
 @compose(
@@ -95,11 +96,38 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleInstitutionReportPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionReport',
+      }),
+    );
+  };
+
+  handleReportItemPress = item => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionReportDetail',
+        params: {
+          pdf_url: item.pdf_url,
+          title: item.title,
+        },
+      }),
+    );
+  };
+
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
     this.props.setNewsY(layout.y - 60);
   };
 
-  renderItem = ({ item }) => <NewsItem data={item} />;
+  renderItem = ({ item }) => (
+    <NewsItem
+      {...this.props}
+      data={item}
+      onInstitutionReportPress={this.handleInstitutionReportPress}
+      onInstitutionItemPress={this.handleReportItemPress}
+    />
+  );
 
   renderHeader = () => (
     <Header
@@ -107,6 +135,7 @@ export default class PublicProject extends Component {
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
       onProjectRepoPress={this.handleProjectRepoPress}
+      onInstitutionReportPress={this.handleInstitutionReportPress}
       onBottomLayout={this.handleSelectorOnLayout}
     />
   );
