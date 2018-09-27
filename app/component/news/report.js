@@ -10,25 +10,22 @@ const item = ({ data, onInstitutionItemPress }) => {
   const title = R.pathOr('--', ['title'])(data);
   const date = R.pathOr('--', ['published_at'])(data);
   return (
-    <View key={data.id} style={styles.container}>
-      <View>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-      <View style={styles.bottom.container}>
-        <Text style={styles.bottom.subtitle}>
-          节点研究中心
-          {'  '}
-          {moment(date).format('MM-DD')}
-          {'  '}
-          <Text
-            style={{ color: '#1890FF' }}
-            onPress={() => onInstitutionItemPress(data)}
-          >
-            查看研报
+    <Touchable key={data.id} onPress={() => onInstitutionItemPress(data)}>
+      <View style={styles.container}>
+        <View>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={styles.bottom.container}>
+          <Text style={styles.bottom.subtitle}>
+            节点研究中心
+            {'  '}
+            {moment(date).format('MM-DD')}
+            {'  '}
+            <Text style={{ color: '#1890FF' }}>查看研报</Text>
           </Text>
-        </Text>
+        </View>
       </View>
-    </View>
+    </Touchable>
   );
 };
 
