@@ -5,8 +5,9 @@ import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
-import NavBar from 'component/navBar';
+import NavBar, { realBarHeight } from 'component/navBar';
 import NewsItem from 'component/news';
+import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 
 import List from './components/list';
 import Header from './header';
@@ -24,9 +25,11 @@ const AnimatedList = Animated.createAnimatedComponent(List);
   data: R.pathOr([], ['list', 0, 'index', 'data'])(public_project),
   loading: loading.effects['news/index'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
+  updateCount: R.path(['updated_count'])(news),
 }))
 @compose(
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('newsY', 'setNewsY', 0),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 200],
@@ -36,6 +39,19 @@ const AnimatedList = Animated.createAnimatedComponent(List);
   })),
 )
 export default class PublicProject extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.updateCount > this.props.updateCount) {
+      const count = nextProps.updateCount - this.props.updateCount;
+      if (this.scroll) {
+        this.scroll.scrollToOffset({
+          offset: this.props.newsY,
+          animated: true,
+        });
+        this.alert.show(`新增 ${count} 条更新`);
+      }
+    }
+  }
+
   requestData = isRefresh => {
     this.props.dispatch({
       type: 'news/index',
@@ -79,6 +95,10 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
+    this.props.setNewsY(layout.y - 60);
+  };
+
   renderItem = ({ item }) => <NewsItem data={item} />;
 
   renderHeader = () => (
@@ -87,6 +107,7 @@ export default class PublicProject extends Component {
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
       onProjectRepoPress={this.handleProjectRepoPress}
+      onBottomLayout={this.handleSelectorOnLayout}
     />
   );
 
@@ -96,6 +117,18 @@ export default class PublicProject extends Component {
     <Animated.View
       style={[styles.navBar, { opacity: this.props.navBarOpacityRange }]}
     >
+      <DropdownAlert
+        ref={ref => {
+          this.alert = ref;
+        }}
+        style={[
+          styles.dropdown,
+          {
+            top: realBarHeight - alertHeight,
+          },
+        ]}
+        title="新增好多条更新"
+      />
       <NavBar gradient title="首页" />
     </Animated.View>
   );
@@ -105,6 +138,9 @@ export default class PublicProject extends Component {
     return (
       <View style={styles.container}>
         <AnimatedList
+          listRef={ref => {
+            this.scroll = ref;
+          }}
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}

@@ -1,23 +1,23 @@
 import R from 'ramda';
 import { getLiveList } from '../services/api';
-import Toast from 'react-native-root-toast';
 
 export default {
   namespace: 'news',
   state: {
     news: null,
     payload: null,
+    updated_count: 0,
   },
   effects: {
     *index({ payload }, { call, put, select, all }) {
       try {
         yield all([
           // insite news
-          put({
+          put.resolve({
             type: 'notification/fetchInSite',
           }),
           // fetch public project
-          put({
+          put.resolve({
             type: 'public_project/fetch',
             params: {
               progress: 0,
@@ -44,13 +44,15 @@ export default {
           return;
         }
 
+        // save update count
         const topId = yield select(({ news }) =>
           R.path(['news', 0, 'id'])(news),
         );
         const batchTopId = R.path([0, 'id'])(newsList);
-        if (batchTopId > topId) {
-          Toast.show(`新增 ${batchTopId - topId} 条内容`);
-        }
+        yield put({
+          type: 'saveUpdateCount',
+          payload: batchTopId - topId,
+        });
 
         yield put({
           type: 'save',
@@ -78,6 +80,12 @@ export default {
         ...state,
         payload: action.payload.id,
         news: [...state.news, ...action.payload.data],
+      };
+    },
+    saveUpdateCount(state, action) {
+      return {
+        ...state,
+        updated_count: action.payload,
       };
     },
   },

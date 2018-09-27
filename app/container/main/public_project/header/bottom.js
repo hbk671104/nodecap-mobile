@@ -7,7 +7,7 @@ import Icon from 'component/uikit/icon';
 import FavorItem from 'component/favored/item';
 import Group from './group';
 
-const bottom = ({ data }) => (
+const bottom = props => (
   <Group
     title="资讯"
     renderRight={() => (

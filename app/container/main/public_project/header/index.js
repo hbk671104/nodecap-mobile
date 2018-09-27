@@ -17,7 +17,9 @@ const header = props => (
     <View style={styles.divider} />
     <Middle {...props} />
     <View style={styles.divider} />
-    <Bottom {...props} />
+    <View onLayout={props.onBottomLayout}>
+      <Bottom {...props} />
+    </View>
   </View>
 );
 

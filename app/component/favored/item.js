@@ -110,7 +110,13 @@ class FavorItem extends PureComponent {
                 );
               })(category)}
             </View>
-            <Text style={styles.content.subtitle} numberOfLines={1}>
+            <Text
+              style={[
+                styles.content.subtitle,
+                R.isEmpty(category) && { marginTop: 0 },
+              ]}
+              numberOfLines={1}
+            >
               {description}
             </Text>
           </View>

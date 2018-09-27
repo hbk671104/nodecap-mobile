@@ -25,4 +25,9 @@ export default {
     right: 0,
     top: 0,
   },
+  dropdown: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+  },
 };
