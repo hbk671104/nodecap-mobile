@@ -80,6 +80,7 @@ import MeetingList from 'container/main/activity';
 import MeetingListRaw from 'container/main/activity/raw';
 import Announcement from 'container/main/announcement/index';
 import ProjectRepo from 'container/main/project_repo';
+import Institution from 'container/main/institution';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -204,6 +205,7 @@ const MainStack = createStackNavigator(
     MeetingList,
     MeetingListRaw,
     Announcement,
+    Institution,
   },
   {
     headerMode: 'none',
@@ -289,6 +291,7 @@ const IndividualStack = createStackNavigator(
     MeetingList,
     MeetingListRaw,
     Announcement,
+    Institution,
   },
   {
     headerMode: 'none',

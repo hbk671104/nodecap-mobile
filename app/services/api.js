@@ -668,7 +668,7 @@ export function getNewsByCoinId(id) {
  * @returns {AxiosPromise<any>}
  */
 export function getIndustries() {
-  return request.get('/industries');
+  return request.get('/industry-investments');
 }
 /**
  * 评级机构列表
@@ -724,4 +724,8 @@ export function meetingList(params) {
     'per-page': p.pageSize,
   });
   return request.get('/activities', { params: paramsTransform(params) });
+}
+
+export function getIndustryDetail(id) {
+  return request.get(`industry-investments/${id}`);
 }

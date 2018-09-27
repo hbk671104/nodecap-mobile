@@ -104,6 +104,14 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleInstitutionPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Institution',
+      }),
+    );
+  };
+
   handleReportItemPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -136,6 +144,7 @@ export default class PublicProject extends Component {
       onAnnouncementPress={this.handleAnnouncementPress}
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
+      onInstitutionPress={this.handleInstitutionPress}
       onBottomLayout={this.handleSelectorOnLayout}
     />
   );

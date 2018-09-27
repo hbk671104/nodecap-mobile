@@ -1,4 +1,8 @@
-import { getIndustries, getReportsByIndustry } from '../services/api';
+import {
+  getIndustries,
+  getIndustryDetail,
+  getReportsByIndustry,
+} from '../services/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -6,6 +10,7 @@ export default {
   state: {
     list: null,
     report: null,
+    current: null,
   },
   effects: {
     *fetch(_, { call, put }) {
@@ -30,6 +35,17 @@ export default {
         console.log(e);
       }
     },
+    *get({ payload }, { call, put }) {
+      try {
+        const { data } = yield call(getIndustryDetail, payload);
+        yield put({
+          type: 'save',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   reducers: {
     list(state, action) {
@@ -44,10 +60,16 @@ export default {
         report: paginate(state.report, action.payload),
       };
     },
-    clearReport(state) {
+    save(state, action) {
       return {
         ...state,
-        report: null,
+        current: action.payload,
+      };
+    },
+    clearCurrent(state) {
+      return {
+        ...state,
+        current: null,
       };
     },
   },

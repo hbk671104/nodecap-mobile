@@ -12,6 +12,7 @@ const top = ({
   onMeetingPress,
   onAnnouncementPress,
   onProjectRepoPress,
+  onInstitutionPress,
   onInstitutionReportPress,
 }) => (
   <View style={styles.container}>
@@ -53,7 +54,7 @@ const top = ({
           <Text style={styles.tab.group.title}>研报</Text>
         </View>
       </Touchable>
-      <Touchable style={styles.tab.group.wrapper}>
+      <Touchable style={styles.tab.group.wrapper} onPress={onInstitutionPress}>
         <View style={styles.tab.group.container}>
           <Image source={require('asset/public_project/institution.png')} />
           <Text style={styles.tab.group.title}>找机构</Text>

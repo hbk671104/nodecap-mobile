@@ -41,6 +41,8 @@ export default options => {
         'public_project/get',
         'public_project/favor',
         'public_project/addToWorkflow',
+        'institution/fetch',
+        'institution/get',
         'institution/fetchReports',
         'news/index',
         'favored/fetch',
