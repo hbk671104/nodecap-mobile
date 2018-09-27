@@ -1,8 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Linking } from 'react-native';
-import { Flex } from 'antd-mobile';
 import * as R from 'ramda';
-import ReadMore from 'react-native-read-more-text';
 import StatusBadge from 'component/project/statusBadge';
 import Avatar from 'component/uikit/avatar';
 import Touchable from 'component/uikit/touchable';
@@ -11,20 +9,6 @@ import styles from './style';
 
 class header extends PureComponent {
   linkTo = url => () => Linking.openURL(url);
-  renderViewMore(onPress) {
-    return (
-      <Text onPress={onPress} style={styles.header.moreText}>
-        [更多]
-      </Text>
-    );
-  }
-  renderViewLess(onPress) {
-    return (
-      <Text onPress={onPress} style={styles.header.moreText}>
-        [收起]
-      </Text>
-    );
-  }
 
   renderLinks({ white_papers, site_url }) {
     if (R.or(R.isNil(white_papers), R.isNil(site_url))) {
@@ -95,15 +79,9 @@ class header extends PureComponent {
             </View>
           </View>
           <View style={styles.header.descContainer}>
-            <ReadMore
-              renderTruncatedFooter={this.renderViewMore}
-              renderRevealedFooter={this.renderViewLess}
-              numberOfLines={2}
-            >
-              <Text style={styles.header.desc}>
-                {projectProps(['description'])}
-              </Text>
-            </ReadMore>
+            <Text style={styles.header.desc}>
+              {projectProps(['description'])}
+            </Text>
           </View>
           <Avatar
             style={styles.header.avatar}
