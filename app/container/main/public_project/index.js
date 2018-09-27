@@ -1,53 +1,62 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
+import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
-import { connectActionSheet } from '@expo/react-native-action-sheet';
 import R from 'ramda';
 
-import NavBar from 'component/navBar';
-import List from 'component/uikit/list';
-import SearchBarDisplay from 'component/searchBar/display';
-import FavorItem from 'component/favored/item';
-import PublicProjectItem from 'component/public_project/item';
+import NavBar, { realBarHeight } from 'component/navBar';
+import NewsItem from 'component/news';
+import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 
+import List from './components/list';
 import Header from './header';
 import styles from './style';
+
+const AnimatedList = Animated.createAnimatedComponent(List);
 
 @global.bindTrack({
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, institution, loading, login }) => ({
-  data: R.pathOr([], ['list', 'index', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
-  progress: R.pathOr([], ['list', 'progress'])(public_project),
-  params: R.pathOr({}, ['list', 'params'])(public_project),
-  institution: R.pathOr([], ['list'])(institution),
-  loading: loading.effects['public_project/fetch'],
-  in_individual: login.in_individual,
+@connect(({ public_project, news, loading, notification, institution }) => ({
+  news: R.pathOr([], ['news'])(news),
+  lastNewsID: R.pathOr(null, ['payload'])(news),
+  data: R.pathOr([], ['list', 0, 'index', 'data'])(public_project),
+  loading: loading.effects['news/index'],
+  insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
+  reports: R.pathOr([], ['report', 'data'])(institution),
+  updateCount: R.path(['updated_count'])(news),
 }))
-@connectActionSheet
+@compose(
+  withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('newsY', 'setNewsY', 0),
+  withProps(({ animateY }) => ({
+    navBarOpacityRange: animateY.interpolate({
+      inputRange: [0, 200],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+  })),
+)
 export default class PublicProject extends Component {
-  requestData = (page, size) => {
-    this.props.dispatch({
-      type: 'public_project/fetch',
-      params: {
-        ...this.props.params,
-        currentPage: page,
-        pageSize: size,
-      },
-    });
-  };
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.updateCount > this.props.updateCount) {
+      const count = nextProps.updateCount - this.props.updateCount;
+      if (this.scroll) {
+        this.scroll.scrollToOffset({
+          offset: this.props.newsY,
+          animated: true,
+        });
+        this.alert.show(`新增 ${count} 条更新`);
+      }
+    }
+  }
 
-  loadData = params => {
+  requestData = isRefresh => {
     this.props.dispatch({
-      type: 'public_project/fetch',
-      params: {
-        ...params,
-        currentPage: 1,
-        pageSize: 20,
-      },
+      type: 'news/index',
+      payload: isRefresh ? null : this.props.lastNewsID,
     });
   };
 
@@ -63,91 +72,134 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleInstitutionItemPress = item => {
+  handleMeetingPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'MeetingList',
+      }),
+    );
+  };
+
+  handleAnnouncementPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Announcement',
+      }),
+    );
+  };
+
+  handleProjectRepoPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ProjectRepo',
+      }),
+    );
+  };
+
+  handleInstitutionReportPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionReport',
+      }),
+    );
+  };
+
+  handleInstitutionPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Institution',
+      }),
+    );
+  };
+
+  handleReportItemPress = item => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionReportDetail',
         params: {
-          item,
+          pdf_url: item.pdf_url,
+          title: item.title,
         },
       }),
     );
   };
 
-  handleSearchPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PublicProjectSearch',
-      }),
-    );
+  handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
+    this.props.setNewsY(layout.y - 60);
   };
 
-  handleFilterPress = () => {
-    const { progress } = this.props;
-    const cancelButtonIndex = R.length(progress);
-    this.props.showActionSheetWithOptions(
-      {
-        options: [...progress, '取消'],
-        cancelButtonIndex,
-      },
-      buttonIndex => {
-        if (buttonIndex === cancelButtonIndex) {
-          return;
-        }
-        this.loadData({
-          progress: buttonIndex === 0 ? buttonIndex : buttonIndex + 1,
-        });
-      },
-    );
-  };
-
-  renderItem = ({ item }) => {
-    return this.props.in_individual ? (
-      <FavorItem data={item} onPress={this.handleItemPress(item)} />
-    ) : (
-      <PublicProjectItem data={item} onPress={this.handleItemPress(item)} />
-    );
-  };
+  renderItem = ({ item }) => (
+    <NewsItem
+      {...this.props}
+      data={item}
+      onInstitutionReportPress={this.handleInstitutionReportPress}
+      onInstitutionItemPress={this.handleReportItemPress}
+    />
+  );
 
   renderHeader = () => (
     <Header
       {...this.props}
-      onItemPress={this.handleInstitutionItemPress}
-      onFilterPress={this.handleFilterPress}
+      onMeetingPress={this.handleMeetingPress}
+      onAnnouncementPress={this.handleAnnouncementPress}
+      onProjectRepoPress={this.handleProjectRepoPress}
+      onInstitutionReportPress={this.handleInstitutionReportPress}
+      onInstitutionPress={this.handleInstitutionPress}
+      onBottomLayout={this.handleSelectorOnLayout}
     />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
 
   renderNavBar = () => (
-    <NavBar
-      gradient
-      renderTitle={() => (
-        <View style={styles.searchBar.container}>
-          <SearchBarDisplay
-            title="搜索项目名、Token"
-            onPress={this.handleSearchPress}
-          />
-        </View>
-      )}
-    />
+    <Animated.View
+      style={[styles.navBar, { opacity: this.props.navBarOpacityRange }]}
+    >
+      <DropdownAlert
+        ref={ref => {
+          this.alert = ref;
+        }}
+        style={[
+          styles.dropdown,
+          {
+            top: realBarHeight - alertHeight,
+          },
+        ]}
+        title="新增好多条更新"
+      />
+      <NavBar gradient title="首页" />
+    </Animated.View>
   );
 
   render() {
-    const { data, pagination, loading } = this.props;
+    const { news, loading } = this.props;
     return (
       <View style={styles.container}>
-        {this.renderNavBar()}
-        <List
+        <AnimatedList
+          listRef={ref => {
+            this.scroll = ref;
+          }}
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
-          pagination={pagination}
-          data={data}
+          data={news}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           renderSeparator={this.renderSeparator}
+          onScroll={Animated.event(
+            [
+              {
+                nativeEvent: {
+                  contentOffset: { y: this.props.animateY },
+                },
+              },
+            ],
+            {
+              useNativeDriver: true,
+            },
+          )}
         />
+        {this.renderNavBar()}
       </View>
     );
   }

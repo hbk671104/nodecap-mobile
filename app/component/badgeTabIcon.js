@@ -10,11 +10,15 @@ const source = ({ route, focused }) => {
       return focused
         ? require('asset/tabIcon/fund-sel.png')
         : require('asset/tabIcon/fund.png');
+    case 'ProjectRepo':
+      return focused
+        ? require('asset/tabIcon/project_repo_highlight.png')
+        : require('asset/tabIcon/project_repo.png');
     case 'PublicProject':
     case 'Onboard':
       return focused
-        ? require('asset/tabIcon/portfolio_highlight.png')
-        : require('asset/tabIcon/portfolio.png');
+        ? require('asset/tabIcon/homepage_highlight.png')
+        : require('asset/tabIcon/homepage.png');
     case 'Portfolio':
     case 'Management':
       return focused

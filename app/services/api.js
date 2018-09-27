@@ -668,7 +668,7 @@ export function getNewsByCoinId(id) {
  * @returns {AxiosPromise<any>}
  */
 export function getIndustries() {
-  return request.get('/industries');
+  return request.get('/industry-investments');
 }
 /**
  * 评级机构列表
@@ -688,13 +688,13 @@ export function getPublicProjects(params) {
  * 评级机构列表
  * @returns {AxiosPromise<any>}
  */
-export function getReportsByIndustryId(id, params = {}) {
+export function getReportsByIndustry(params = {}) {
   const paramsTransform = p => ({
     ...params,
     page: p.currentPage,
     'per-page': p.pageSize,
   });
-  return request.get(`/industries/${id}/items`, {
+  return request.get('/industries/items', {
     params: paramsTransform(params),
   });
 }
@@ -715,4 +715,17 @@ export function getLiveList(lastId) {
 
 export function getCoinSymbol(coin_id) {
   return request.get(`/coins/${coin_id}/symbols`);
+}
+
+export function meetingList(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/activities', { params: paramsTransform(params) });
+}
+
+export function getIndustryDetail(id) {
+  return request.get(`industry-investments/${id}`);
 }
