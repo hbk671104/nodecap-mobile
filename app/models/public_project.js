@@ -210,22 +210,6 @@ export default {
             pageSize: 20,
           },
         });
-
-        // 选择性刷新首页列表
-        // const tab = yield select(state =>
-        //   R.path(['public_project', 'list'])(state),
-        // );
-        // yield all(
-        //   R.pipe(
-        //     R.filter(t => t.params.currentPage === 1),
-        //     R.map(t => {
-        //       return put({
-        //         type: 'fetch',
-        //         params: t.params,
-        //       });
-        //     }),
-        //   )(tab),
-        // );
       } catch (e) {
         console.log(e);
       }
@@ -551,7 +535,7 @@ export default {
             index: {
               ...t.index,
               data: R.pipe(
-                R.path(['index', 'data']),
+                R.pathOr([], ['index', 'data']),
                 R.map(i => {
                   if (i.id === action.payload) {
                     const star_number = parseInt(i.stars, 10);
