@@ -9,12 +9,21 @@ export default {
     payload: null,
   },
   effects: {
-    *index({ payload }, { call, put, select }) {
+    *index({ payload }, { call, put, select, all }) {
       try {
-        // insite news
-        yield put({
-          type: 'notification/fetchInSite',
-        });
+        yield all([
+          // insite news
+          put({
+            type: 'notification/fetchInSite',
+          }),
+          // fetch public project
+          put({
+            type: 'public_project/fetch',
+            params: {
+              progress: 0,
+            },
+          }),
+        ]);
 
         // index
         const lastID = yield select(({ news }) => news.payload);

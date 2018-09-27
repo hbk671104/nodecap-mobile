@@ -21,8 +21,7 @@ const AnimatedList = Animated.createAnimatedComponent(List);
 @connect(({ public_project, news, loading, notification }) => ({
   news: R.pathOr([], ['news'])(news),
   lastNewsID: R.pathOr(null, ['payload'])(news),
-  data: R.pathOr([], ['list', 'index', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  data: R.pathOr([], ['list', 0, 'index', 'data'])(public_project),
   loading: loading.effects['news/index'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
 }))
