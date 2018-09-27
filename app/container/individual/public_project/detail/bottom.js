@@ -7,7 +7,7 @@ import Touchable from 'component/uikit/touchable';
 import { shadow } from '../../../../utils/style';
 import { bottomTabHeight } from './style';
 
-const bottom = ({ onFavorPress, onInvestmentPress, portfolio }) => {
+const bottom = ({ onFavorPress, onInvestmentPress, portfolio, openShareModal }) => {
   const favored = R.pathOr(false, ['is_focused'])(portfolio);
   return (
     <View style={styles.wrapper}>
@@ -19,6 +19,10 @@ const bottom = ({ onFavorPress, onInvestmentPress, portfolio }) => {
         >
           <View style={styles.group.container}>
             <Image
+              style={{
+                width: 19,
+                height: 19,
+              }}
               source={
                 favored
                   ? require('asset/project/detail/gold_star.png')
@@ -27,6 +31,25 @@ const bottom = ({ onFavorPress, onInvestmentPress, portfolio }) => {
             />
             <Text style={styles.group.title}>
               {favored ? '已关注' : '关注'}
+            </Text>
+          </View>
+        </Touchable>
+        <Touchable
+          style={styles.group.wrapper}
+          borderless
+          onPress={openShareModal}
+        >
+          <View style={styles.group.container}>
+            <Image
+              style={{
+                width: 19,
+                height: 19,
+                marginTop: 2,
+              }}
+              source={require('asset/project/detail/share.png')}
+            />
+            <Text style={styles.group.title}>
+              分享
             </Text>
           </View>
         </Touchable>
@@ -76,7 +99,7 @@ const styles = {
   },
   investment: {
     wrapper: {
-      flex: 2,
+      flex: 3,
       height: 39,
       borderRadius: 2,
       marginHorizontal: 12,

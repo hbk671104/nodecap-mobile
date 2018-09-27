@@ -17,6 +17,7 @@ import Return from './page/return';
 import Pairs from './page/pairs';
 import Chart from './chart';
 import Fund from './fund';
+import Share from './share';
 import Header, { headerHeight, fullHeaderHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
@@ -65,6 +66,7 @@ const selectionList = [
   };
 })
 @compose(
+  withState('showShareModal', 'toggleShareModal', false),
   withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
@@ -250,8 +252,14 @@ export default class PublicProjectDetail extends Component {
         </Animated.ScrollView>
         <Bottom
           {...this.props}
+          openShareModal={() => this.props.toggleShareModal(true)}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
+        />
+        <Share
+          onClose={() => this.props.toggleShareModal(false)}
+          coin={this.props.portfolio}
+          visible={this.props.showShareModal}
         />
       </SafeArea>
     );
