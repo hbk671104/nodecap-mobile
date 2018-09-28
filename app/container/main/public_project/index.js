@@ -8,6 +8,7 @@ import R from 'ramda';
 import NavBar, { realBarHeight } from 'component/navBar';
 import NewsItem from 'component/news';
 import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
+import { handleBadgeAction } from 'utils/badge_handler';
 
 import List from './components/list';
 import Header from './header';
@@ -27,6 +28,7 @@ const AnimatedList = Animated.createAnimatedComponent(List);
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
   reports: R.pathOr([], ['report', 'data'])(institution),
   updateCount: R.path(['updated_count'])(news),
+  notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
 }))
 @compose(
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
@@ -86,6 +88,7 @@ export default class PublicProject extends Component {
         routeName: 'Announcement',
       }),
     );
+    handleBadgeAction();
   };
 
   handleProjectRepoPress = () => {

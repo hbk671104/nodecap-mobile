@@ -21,7 +21,6 @@ import { Toast } from 'antd-mobile';
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
-import { handleTabBarPress } from './utils/tabbar_handler';
 import { shadow } from './utils/style';
 
 // Screen

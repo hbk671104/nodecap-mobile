@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
 import R from 'ramda';
 
+import Badge from 'component/badge';
+
 const source = ({ route, focused }) => {
   switch (route) {
     case 'Fund':
@@ -45,11 +47,7 @@ const source = ({ route, focused }) => {
 const badgeTabIcon = ({ focused, route, badgeVisible }) => (
   <View>
     <Image source={source({ focused, route })} />
-    {badgeVisible && (
-      <View style={styles.badge.wrapper}>
-        <View style={styles.badge.container} />
-      </View>
-    )}
+    {badgeVisible && <Badge />}
   </View>
 );
 
@@ -60,19 +58,6 @@ badgeTabIcon.propTypes = {
 
 const styles = {
   container: {},
-  badge: {
-    wrapper: {
-      position: 'absolute',
-      top: -3,
-      right: -6,
-    },
-    container: {
-      height: 10,
-      width: 10,
-      borderRadius: 5,
-      backgroundColor: '#F5222D',
-    },
-  },
 };
 
 export default connect(({ notification }, { route }) => {

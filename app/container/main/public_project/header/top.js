@@ -3,6 +3,7 @@ import { View, Image, Text, Dimensions, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 import R from 'ramda';
 
+import Badge from 'component/badge';
 import Touchable from 'component/uikit/touchable';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -14,6 +15,7 @@ const top = ({
   onProjectRepoPress,
   onInstitutionPress,
   onInstitutionReportPress,
+  notification_badge_visible,
 }) => (
   <View style={styles.container}>
     <Image
@@ -70,6 +72,7 @@ const top = ({
         <View style={styles.tab.group.container}>
           <Image source={require('asset/public_project/announcement.png')} />
           <Text style={styles.tab.group.title}>上所公告</Text>
+          {notification_badge_visible && <Badge size={8} />}
         </View>
       </Touchable>
     </View>
