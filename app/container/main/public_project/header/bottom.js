@@ -10,14 +10,14 @@ import Group from './group';
 const bottom = props => (
   <Group
     title="资讯"
-    renderRight={() => (
-      <Touchable borderless>
-        <View style={styles.rightContainer}>
-          <Image source={require('asset/public_project/refreshing.png')} />
-          <Text style={styles.rightText}>刷新</Text>
-        </View>
-      </Touchable>
-    )}
+    // renderRight={() => (
+    //   <Touchable borderless>
+    //     <View style={styles.rightContainer}>
+    //       <Image source={require('asset/public_project/refreshing.png')} />
+    //       <Text style={styles.rightText}>刷新</Text>
+    //     </View>
+    //   </Touchable>
+    // )}
   >
     {/* <View style={styles.info.container}>
       <Text style={styles.info.text}>

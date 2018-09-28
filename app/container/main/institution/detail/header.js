@@ -4,7 +4,6 @@ import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
 import Shimmer from 'component/shimmer';
-import { realBarHeight } from 'component/navBar';
 
 const header = ({ style, data, loading }) => {
   const name = R.pathOr('--', ['name'])(data);
@@ -28,9 +27,10 @@ const header = ({ style, data, loading }) => {
 
 const styles = {
   container: {
-    height: 129 - realBarHeight,
+    height: 64,
     paddingHorizontal: 12,
     flexDirection: 'row',
+    alignItems: 'center',
   },
   content: {
     container: {

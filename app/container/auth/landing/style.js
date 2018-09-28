@@ -11,7 +11,7 @@ export default {
   },
   top: {
     container: {
-      marginTop: 100 - realBarHeight,
+      marginTop: 140 - realBarHeight,
       alignSelf: 'center',
       alignItems: 'center',
     },
