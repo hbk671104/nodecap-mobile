@@ -428,7 +428,7 @@ export default {
         const investTokens = yield call(getProjectInvestTokens, payload);
         yield put({
           type: 'saveInvest',
-          payload: investTokens.data,
+          payload: investTokens ? investTokens.data : null,
           relatedType: 'invest_tokens',
         });
       } catch (e) {
@@ -439,7 +439,7 @@ export default {
         const investEquities = yield call(getProjectInvestEquities, payload);
         yield put({
           type: 'saveInvest',
-          payload: investEquities.data,
+          payload: investEquities ? investEquities.data : null,
           relatedType: 'invest_equities',
         });
       } catch (e) {
