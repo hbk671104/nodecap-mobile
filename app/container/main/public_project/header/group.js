@@ -2,10 +2,11 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
-const group = ({ style, title, children }) => (
+const group = ({ style, title, renderRight, children }) => (
   <View style={[styles.container, style]}>
     <View style={styles.top.container}>
       <Text style={styles.top.title}>{title}</Text>
+      {renderRight && renderRight()}
     </View>
     {children}
   </View>
@@ -19,6 +20,8 @@ const styles = {
   top: {
     container: {
       paddingHorizontal: 12,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
     },
     title: {
       fontSize: 16,

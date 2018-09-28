@@ -7,27 +7,36 @@ export default {
   namespace: 'notification',
   state: {
     list: [],
+    insite_list: [],
     current: null,
     badgeVisible: false,
   },
   effects: {
-    *fetch({ payload }, { call, put, select }) {
+    *fetch({ payload }, { call, put }) {
       try {
-        const in_individual = yield select(state =>
-          R.path(['login', 'in_individual'])(state),
-        );
+        const { data } = yield call(individualTrendList, {
+          type: 1,
+          ...payload,
+        });
 
-        let response_data;
-        if (in_individual) {
-          const { data } = yield call(individualTrendList, payload);
-          response_data = data;
-        } else {
-          const { data } = yield call(trendList, payload);
-          response_data = data;
-        }
         yield put({
           type: 'list',
-          payload: response_data,
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchInSite({ payload }, { call, put }) {
+      try {
+        const { data } = yield call(individualTrendList, {
+          type: 4,
+          ...payload,
+        });
+
+        yield put({
+          type: 'insiteList',
+          payload: data,
         });
       } catch (e) {
         console.log(e);
@@ -50,6 +59,12 @@ export default {
       return {
         ...state,
         list: paginate(state.list, action.payload),
+      };
+    },
+    insiteList(state, action) {
+      return {
+        ...state,
+        insite_list: paginate(state.insite_list, action.payload),
       };
     },
     detail(state, action) {

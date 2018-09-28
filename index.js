@@ -25,6 +25,7 @@ import publicProjectModel from './app/models/public_project';
 import institutionModel from './app/models/institution';
 import newsModel from './app/models/news';
 import favoredModel from './app/models/favored';
+import activityModel from './app/models/activity';
 
 export const app = dva({
   initialState: {},
@@ -45,6 +46,7 @@ export const app = dva({
     institutionModel,
     newsModel,
     favoredModel,
+    activityModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -62,7 +64,6 @@ export const persist = callback => {
         'fund',
         'user',
         'institution',
-        // 'public_project',
         'notification',
         'news',
       ],

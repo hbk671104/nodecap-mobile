@@ -11,12 +11,23 @@ export default {
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#E9E9E9',
-    marginLeft: 78,
+    marginHorizontal: 12,
   },
   searchBar: {
     container: {
       flex: 1,
       paddingHorizontal: 12,
     },
+  },
+  navBar: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+  },
+  dropdown: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
   },
 };

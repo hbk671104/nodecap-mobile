@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { View, Text, Linking } from 'react-native';
 import { connect } from 'react-redux';
-import ReadMore from 'react-native-read-more-text';
 import { Flex } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
@@ -23,22 +22,6 @@ export default class Description extends PureComponent {
     );
   };
 
-  _renderTruncatedFooter = handlePress => {
-    return (
-      <Text style={styles.more} onPress={handlePress}>
-        [更多]
-      </Text>
-    );
-  };
-
-  _renderRevealedFooter = handlePress => {
-    return (
-      <Text style={styles.more} onPress={handlePress}>
-        [收起]
-      </Text>
-    );
-  };
-
   render() {
     const description = R.pathOr('', ['portfolio', 'description'])(this.props);
     const siteUrl = R.pathOr('', ['portfolio', 'homepage'])(this.props);
@@ -55,13 +38,7 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(description)) && (
           <View>
             <Text style={styles.title}>项目简介</Text>
-            <ReadMore
-              numberOfLines={3}
-              renderTruncatedFooter={this._renderTruncatedFooter}
-              renderRevealedFooter={this._renderRevealedFooter}
-            >
-              <Text style={styles.desc}>{description}</Text>
-            </ReadMore>
+            <Text style={styles.desc}>{description}</Text>
           </View>
         )}
         {R.not(R.isEmpty(white_papers)) && (

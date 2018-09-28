@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, Image, Text, TouchableWithoutFeedback } from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TouchableWithoutFeedback,
+  ActivityIndicator,
+} from 'react-native';
 import { createForm } from 'rc-form';
 import { connect } from 'react-redux';
 import R from 'ramda';
@@ -14,6 +20,7 @@ import styles from './style';
 
 @connect(({ loading }) => ({
   loading: loading.effects['login/smsLogin'],
+  sendingSMS: loading.effects['login/sendLoginSMS'],
 }))
 @createForm()
 class SMSLogin extends Component {
@@ -67,7 +74,7 @@ class SMSLogin extends Component {
 
   render() {
     const { getFieldDecorator, getFieldValue, getFieldError } = this.props.form;
-    const { loading } = this.props;
+    const { loading, sendingSMS } = this.props;
     const { countdown } = this.state;
     const account = getFieldValue('mobile');
     const verification_code = getFieldValue('verification_code');
@@ -113,16 +120,22 @@ class SMSLogin extends Component {
                 rules: [{ required: true, message: '请输入验证码' }],
               })(
                 <InputItem
+                  style={styles.input}
                   titleStyle={styles.item.title}
                   placeholder="请输入您的验证码"
                   inputProps={{ keyboardType: 'number-pad' }}
-                  renderRight={() => (
-                    <Touchable onPress={this.handleSendSMSCode}>
-                      <Text style={styles.smscode}>
-                        {countdown === 60 ? '获取验证码' : `${countdown}s`}
-                      </Text>
-                    </Touchable>
-                  )}
+                  renderRight={() => {
+                    if (sendingSMS) {
+                      return <ActivityIndicator />;
+                    }
+                    return (
+                      <Touchable onPress={this.handleSendSMSCode}>
+                        <Text style={styles.smscode}>
+                          {countdown === 60 ? '获取验证码' : `${countdown}s`}
+                        </Text>
+                      </Touchable>
+                    );
+                  }}
                   error={getFieldError('message_code')}
                 />,
               )}
