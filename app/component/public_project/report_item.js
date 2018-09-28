@@ -2,25 +2,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Text } from 'react-native';
 import moment from 'moment';
+import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const reportItem = ({ data, onPress, institution }) => (
-  <Touchable onPress={() => onPress(data)}>
-    <View style={styles.container}>
-      <View style={{ flexDirection: 'row' }}>
-        <Image source={require('asset/institution/pdf.png')} />
-        <Text style={styles.title}>{data.title}</Text>
+const reportItem = ({ data, onPress }) => {
+  const title = R.pathOr('--', ['title'])(data);
+  const date = R.pathOr('--', ['published_at'])(data);
+  const institution = R.pathOr('--', ['industry', 'name'])(data);
+  return (
+    <Touchable onPress={() => onPress(data)}>
+      <View style={styles.container}>
+        <View style={{ flexDirection: 'row' }}>
+          <Image source={require('asset/institution/pdf.png')} />
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        <View style={styles.content.container}>
+          <Text style={styles.content.text}>{institution}</Text>
+          <Text style={styles.content.text}>
+            {moment(date).format('MM-DD')}
+          </Text>
+        </View>
       </View>
-      <View style={styles.content.container}>
-        <Text style={styles.content.text}>#ahha1</Text>
-        <Text style={styles.content.text}>
-          {data.published_at ? moment(data.published_at).format('MM-DD') : ''}
-        </Text>
-      </View>
-    </View>
-  </Touchable>
-);
+    </Touchable>
+  );
+};
 
 const styles = {
   container: {

@@ -9,6 +9,7 @@ import common_styles from './style';
 const item = ({ data, onInstitutionItemPress }) => {
   const title = R.pathOr('--', ['title'])(data);
   const date = R.pathOr('--', ['published_at'])(data);
+  const institution = R.pathOr('--', ['industry', 'name'])(data);
   return (
     <Touchable key={data.id} onPress={() => onInstitutionItemPress(data)}>
       <View style={styles.container}>
@@ -17,10 +18,10 @@ const item = ({ data, onInstitutionItemPress }) => {
         </View>
         <View style={styles.bottom.container}>
           <Text style={styles.bottom.subtitle}>
-            节点研究中心
-            {'  '}
+            {institution}
+            {'   '}
             {moment(date).format('MM-DD')}
-            {'  '}
+            {'   '}
             <Text style={{ color: '#1890FF' }}>查看研报</Text>
           </Text>
         </View>
