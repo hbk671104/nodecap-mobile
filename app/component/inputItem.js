@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
 import R from 'ramda';
 
 import Input from 'component/uikit/textInput';
 
 class InputItem extends PureComponent {
   static propTypes = {
+    style: ViewPropTypes.style,
     title: PropTypes.string,
     titleStyle: PropTypes.object,
     placeholder: PropTypes.string,
@@ -32,6 +33,7 @@ class InputItem extends PureComponent {
 
   render() {
     const {
+      style,
       title,
       titleStyle,
       vertical,
@@ -44,7 +46,7 @@ class InputItem extends PureComponent {
       error,
     } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, style]}>
         <View style={[styles.wrapper, vertical && styles.vertical]}>
           {!!title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
           <View
