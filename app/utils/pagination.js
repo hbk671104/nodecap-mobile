@@ -8,8 +8,7 @@ export const paginate = (old, payload) => {
   const newData = R.path(['data'])(payload);
   const newPagination = R.path(['pagination'])(payload);
   const newCurrent = R.path(['current'])(newPagination);
-
-  if (newCurrent === 1) {
+  if (newCurrent === 1 || !newCurrent) {
     return payload;
   }
 
