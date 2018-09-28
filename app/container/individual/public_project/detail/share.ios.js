@@ -138,9 +138,12 @@ class ShareCoin extends Component {
         <Flex justify="between">
           <View>
             <ImageBackground
-              style={{ width: '100%', height: 30 }}
+              style={{ width: '100%', height: 20 }}
               source={require('asset/coin_share/title_back.png')}
               resizeMode="repeat"
+              imageStyle={{
+                resizeMode: 'stretch',
+              }}
             >
               <Text numberOfLines={1} style={styles.title}>
                 {coin.name}
@@ -269,7 +272,7 @@ const styles = {
     paddingHorizontal: 5,
     lineHeight: 22,
   },
-  symbol: { fontFamily: 'PingFangSC-Medium', fontSize: 12, color: 'rgba(0,0,0,0.65)', marginLeft: 5 },
+  symbol: { fontFamily: 'PingFangSC-Medium', fontSize: 12, color: 'rgba(0,0,0,0.65)', marginLeft: 5, marginTop: 10 },
   actionsBar: {
     ...ifIphoneX(
       {
