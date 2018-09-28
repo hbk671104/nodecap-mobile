@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import R from 'ramda';
@@ -51,9 +51,13 @@ export default class Loader extends Component {
         <View style={styles.wrapper}>
           <View style={styles.top.container}>
             <Animatable.Image
+              iterationCount={Infinity}
               animation="pulse"
               source={require('asset/big_logo.png')}
             />
+            <Text style={styles.top.intro}>
+              专业的 Token Fund 资产项目管理终端
+            </Text>
           </View>
           <Loading />
         </View>

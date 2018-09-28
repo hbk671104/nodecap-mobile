@@ -9,9 +9,15 @@ export default {
   },
   top: {
     container: {
-      marginTop: 100 - realBarHeight,
+      marginTop: 140 - realBarHeight,
       alignSelf: 'center',
       alignItems: 'center',
+    },
+    intro: {
+      fontSize: 11,
+      fontWeight: '100',
+      color: 'rgba(0, 0, 0, 0.45)',
+      marginTop: 13,
     },
   },
 };

@@ -33,7 +33,7 @@ const top = ({
       >
         {R.map(n => (
           <View key={n.id} style={styles.verticalBanner.group.container}>
-            <Text style={styles.verticalBanner.group.title}>
+            <Text style={styles.verticalBanner.group.title} numberOfLines={1}>
               {R.pathOr('--', ['title'])(n)}
             </Text>
           </View>
