@@ -8,8 +8,8 @@ const source = ({ route, focused }) => {
   switch (route) {
     case 'Fund':
       return focused
-        ? require('asset/tabIcon/fund-sel.png')
-        : require('asset/tabIcon/fund.png');
+        ? require('asset/tabIcon/latest/fund-sel.png')
+        : require('asset/tabIcon/latest/fund.png');
     case 'ProjectRepo':
       return focused
         ? require('asset/tabIcon/latest/project_sel.png')
@@ -22,8 +22,8 @@ const source = ({ route, focused }) => {
     case 'Portfolio':
     case 'Management':
       return focused
-        ? require('asset/tabIcon/asset_highlight.png')
-        : require('asset/tabIcon/asset.png');
+        ? require('asset/tabIcon/latest/investment_sel.png')
+        : require('asset/tabIcon/latest/investment.png');
     // case 'NotificationCenter':
     // case 'Trending':
     //   return focused
