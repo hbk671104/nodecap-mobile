@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View } from 'react-native';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import R from 'ramda';
+import * as Animatable from 'react-native-animatable';
 
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
@@ -49,9 +50,8 @@ export default class Loader extends Component {
         <NavBar barStyle="dark-content" />
         <View style={styles.wrapper}>
           <View style={styles.top.container}>
-            <Image
-              animation="fadeInDownBig"
-              delay={250}
+            <Animatable.Image
+              animation="pulse"
               source={require('asset/big_logo.png')}
             />
           </View>
