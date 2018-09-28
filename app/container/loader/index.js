@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import R from 'ramda';
@@ -47,7 +47,16 @@ export default class Loader extends Component {
     return (
       <View style={styles.container}>
         <NavBar barStyle="dark-content" />
-        <Loading title="Greatness Await..." />
+        <View style={styles.wrapper}>
+          <View style={styles.top.container}>
+            <Image
+              animation="fadeInDownBig"
+              delay={250}
+              source={require('asset/big_logo.png')}
+            />
+          </View>
+          <Loading />
+        </View>
       </View>
     );
   }
