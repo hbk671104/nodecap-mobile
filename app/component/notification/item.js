@@ -8,20 +8,19 @@ import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
 const notificationItem = ({ data, onPress }) => {
-  const trend = R.pathOr({}, ['coin_news'])(data);
-  if (R.isEmpty(trend)) {
+  if (R.isEmpty(data) || R.isNil(data)) {
     return null;
   }
 
-  const logo_url = R.pathOr('', ['logo_url'])(trend);
-  const title = R.pathOr('--', ['title'])(trend);
-  const project_name = R.pathOr('--', ['project_name'])(trend);
-  const type = R.pathOr('--', ['type'])(trend);
-  const subtitle = R.pathOr('--', ['subtitle'])(trend);
-  const push_at = R.pathOr('--', ['push_at'])(trend);
+  const logo_url = R.pathOr('', ['logo_url'])(data);
+  const title = R.pathOr('--', ['title'])(data);
+  const project_name = R.pathOr('--', ['project_name'])(data);
+  const type = R.pathOr('--', ['type'])(data);
+  const subtitle = R.pathOr('--', ['subtitle'])(data);
+  const push_at = R.pathOr(null, ['push_at'])(data);
 
   return (
-    <Touchable foreground onPress={onPress(trend.id)}>
+    <Touchable foreground onPress={onPress(data.id)}>
       <View style={styles.container}>
         <Avatar
           size={50}
@@ -39,7 +38,7 @@ const notificationItem = ({ data, onPress }) => {
               </Text>
             </View>
             <Text style={styles.content.top.date}>
-              {moment.unix(push_at).format('MM-DD HH:ss')}
+              {push_at ? moment.unix(push_at).format('MM-DD HH:ss') : '--'}
             </Text>
           </View>
           <View style={styles.content.tag.wrapper}>

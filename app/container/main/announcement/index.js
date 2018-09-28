@@ -6,7 +6,6 @@ import R from 'ramda';
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import NotificationItem from 'component/notification/item';
-import IndividualNotificationItem from 'component/notification/individual_item';
 import { NavigationActions } from 'react-navigation';
 import styles from './style';
 
@@ -14,11 +13,10 @@ import styles from './style';
   page: '上所公告',
   name: 'App_ExchangeAnnoucementOperation',
 })
-@connect(({ notification, loading, login }) => ({
+@connect(({ notification, loading }) => ({
   data: R.pathOr([], ['list', 'data'])(notification),
   pagination: R.pathOr(null, ['list', 'pagination'])(notification),
   loading: loading.effects['notification/fetch'],
-  in_individual: login.in_individual,
 }))
 export default class Announcement extends Component {
   handleItemPress = id => () => {
@@ -43,13 +41,9 @@ export default class Announcement extends Component {
     });
   };
 
-  renderItem = ({ item }) => {
-    return this.props.in_individual ? (
-      <IndividualNotificationItem data={item} onPress={this.handleItemPress} />
-    ) : (
-      <NotificationItem data={item} onPress={this.handleItemPress} />
-    );
-  };
+  renderItem = ({ item }) => (
+    <NotificationItem data={item} onPress={this.handleItemPress} />
+  );
 
   renderSeparator = () => <View style={styles.separator} />;
 
