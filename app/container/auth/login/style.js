@@ -15,6 +15,7 @@ export default {
   },
   input: {
     marginHorizontal: 20,
+    height: 40,
   },
   button: {
     marginTop: 25,
