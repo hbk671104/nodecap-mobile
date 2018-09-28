@@ -72,7 +72,7 @@ class ShareCoin extends Component {
     const end_at = R.pathOr(null, ['end_at'])(info);
     const token_supply = R.pathOr('--', ['token_supply'])(info);
     const conversion_ratio = R.pathOr('--', ['conversion_ratio'])(info);
-    const industryInvestments = [{ name: '节点资本' }, { name: '分布式资本' }];
+    const industryInvestments = R.pathOr([], ['industry_investments'])(info);
     const renderTitle = (title) => (
       <Flex>
         <View style={styles.dot} />
@@ -120,12 +120,12 @@ class ShareCoin extends Component {
         <View style={styles.group}>
           {renderTitle('投资机构')}
           <Flex style={styles.groupContent} align="center">
-            {industryInvestments.length ? industryInvestments.map((i, idx) => (
+            {industryInvestments.length ? (industryInvestments.map((i, idx) => (
               <Flex align="center">
                 <Text style={{ color: 'rgba(0,0,0,.85)' }}>{i.name}</Text>
                 {idx !== (industryInvestments.length - 1) && <View style={styles.orgDivision} />}
               </Flex>
-          )) : '无'}
+          ))) : <Text style={styles.groupContentText}>暂无</Text>}
           </Flex>
         </View>
       </View>
@@ -210,9 +210,12 @@ class ShareCoin extends Component {
                   style={[styles.backgroundImage, { height: 28 }]}
                 />
                 <ImageBackground
-                  style={[styles.backgroundImage]}
+                  style={{ width: 350 }}
                   source={require('asset/coin_share/back.png')}
                   resizeMode="repeat"
+                  imageStyle={{
+                    resizeMode: 'stretch',
+                  }}
                 >
                   <View style={{ paddingLeft: 23, paddingRight: 28 }}>
                     {this.renderHeader()}
@@ -223,9 +226,12 @@ class ShareCoin extends Component {
                   style={[styles.backgroundImage, { height: 28 }]}
                 />
                 <ImageBackground
-                  style={[styles.backgroundImage]}
+                  style={{ width: 350 }}
                   source={require('asset/coin_share/back.png')}
                   resizeMode="repeat"
+                  imageStyle={{
+                    resizeMode: 'stretch',
+                  }}
                 >
                   <View style={{ paddingHorizontal: 28 }}>
                     {this.renderContent()}
