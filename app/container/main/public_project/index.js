@@ -125,7 +125,7 @@ export default class PublicProject extends Component {
   };
 
   handleOnHeaderLayout = ({ nativeEvent: { layout } }) => {
-    this.props.setNewsY(layout.height - realBarHeight);
+    this.props.setNewsY(layout.height - 2 * realBarHeight);
   };
 
   renderItem = ({ item }) => (
