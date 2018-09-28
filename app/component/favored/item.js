@@ -90,27 +90,33 @@ class FavorItem extends PureComponent {
           <View style={styles.content.container}>
             <Text style={styles.content.title}>{project_name}</Text>
             <View style={styles.content.tag.wrapper}>
-              {R.addIndex(R.map)((t, i) => {
-                const textColor = R.pathOr('#939393', [i, 'textColor'])(
-                  colorMap,
-                );
-                const backgroundColor = R.pathOr('#E2E2E2', [
-                  i,
-                  'backgroundColor',
-                ])(colorMap);
-                return (
-                  <View
-                    key={`${i}`}
-                    style={[styles.content.tag.container, { backgroundColor }]}
-                  >
-                    <Text
-                      style={[styles.content.tag.title, { color: textColor }]}
+              {R.pipe(
+                R.take(2),
+                R.addIndex(R.map)((t, i) => {
+                  const textColor = R.pathOr('#939393', [i, 'textColor'])(
+                    colorMap,
+                  );
+                  const backgroundColor = R.pathOr('#E2E2E2', [
+                    i,
+                    'backgroundColor',
+                  ])(colorMap);
+                  return (
+                    <View
+                      key={`${i}`}
+                      style={[
+                        styles.content.tag.container,
+                        { backgroundColor },
+                      ]}
                     >
-                      {t || '--'}
-                    </Text>
-                  </View>
-                );
-              })(category)}
+                      <Text
+                        style={[styles.content.tag.title, { color: textColor }]}
+                      >
+                        {t || '--'}
+                      </Text>
+                    </View>
+                  );
+                }),
+              )(category)}
             </View>
             <Text
               style={[
