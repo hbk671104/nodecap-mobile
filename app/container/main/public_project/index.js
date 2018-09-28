@@ -124,8 +124,8 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
-    this.props.setNewsY(layout.y - 60);
+  handleOnHeaderLayout = ({ nativeEvent: { layout } }) => {
+    this.props.setNewsY(layout.height - realBarHeight);
   };
 
   renderItem = ({ item }) => (
@@ -145,7 +145,7 @@ export default class PublicProject extends Component {
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onInstitutionPress={this.handleInstitutionPress}
-      onBottomLayout={this.handleSelectorOnLayout}
+      onLayout={this.handleOnHeaderLayout}
     />
   );
 

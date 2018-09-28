@@ -12,14 +12,12 @@ import Bottom from './bottom';
 import Top from './top';
 
 const header = props => (
-  <View>
+  <View onLayout={props.onLayout}>
     <Top {...props} />
     <View style={styles.divider} />
     <Middle {...props} />
     <View style={styles.divider} />
-    <View onLayout={props.onBottomLayout}>
-      <Bottom {...props} />
-    </View>
+    <Bottom {...props} />
   </View>
 );
 
