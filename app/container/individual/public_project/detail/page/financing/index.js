@@ -16,6 +16,18 @@ export default class Financing extends PureComponent {
     const token_supply = R.pathOr('--', ['token_supply'])(info);
     const soft_cap = R.pathOr('--', ['soft_cap'])(info);
     const hard_cap = R.pathOr('--', ['hard_cap'])(info);
+    const isEmpty = (v) => {
+      return v === '--' || v === '';
+    };
+    if (
+      isEmpty(start_at) &&
+      isEmpty(end_at) &&
+      isEmpty(token_supply) &&
+      isEmpty(soft_cap) &&
+      isEmpty(hard_cap)
+    ) {
+      return null;
+    }
     return (
       <Group title="发售信息">
         <Field
@@ -64,6 +76,19 @@ export default class Financing extends PureComponent {
     const token_distribution = R.pathOr('--', ['token_distribution'])(info);
     const country_limitation = R.pathOr('--', ['country_limitation'])(info);
     const discount = R.pathOr('--', ['discount'])(info);
+    const isEmpty = (v) => {
+      return v === '--' || v === '';
+    };
+    if (
+      isEmpty(token_type) &&
+      isEmpty(token_accepted) &&
+      isEmpty(conversion_ratio) &&
+      isEmpty(token_distribution) &&
+      isEmpty(country_limitation) &&
+      isEmpty(discount)
+    ) {
+      return null;
+    }
     return (
       <Group title="Token 详情">
         <Field
