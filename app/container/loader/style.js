@@ -3,6 +3,7 @@ import { realBarHeight } from 'component/navBar';
 export default {
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   wrapper: {
     flex: 1,

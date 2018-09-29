@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^1.1.2",
+    "@nart/react-native-swiper": "^1.5.13",
     "accounting": "^0.4.1",
     "antd-mobile": "2.1.11",
     "axios": "^0.18.0",

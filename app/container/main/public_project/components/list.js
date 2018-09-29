@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import {
   View,
-  Text,
+  Animated,
   Image,
   FlatList,
   ActivityIndicator,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import R from 'ramda';
 
-import * as Color from 'component/uikit/color';
+const AnimatedList = Animated.createAnimatedComponent(FlatList);
 
 class List extends PureComponent {
   static propTypes = {
@@ -54,7 +54,7 @@ class List extends PureComponent {
 
   extractKey = (item, index) => (item.id ? `${item.id}` : `${index}`);
 
-  handleAction = (isRefresh) => {
+  handleAction = isRefresh => {
     if (this.props.loading) {
       return;
     }
@@ -172,14 +172,14 @@ class List extends PureComponent {
       return false;
     };
     return (
-      <FlatList
+      <AnimatedList
         {...this.props}
         {...(disableRefresh
           ? {}
           : {
-            refreshing: isRefreshing(),
-            onRefresh: this.handleOnRefresh,
-          })}
+              refreshing: isRefreshing(),
+              onRefresh: this.handleOnRefresh,
+            })}
         style={[styles.container, style]}
         contentContainerStyle={[styles.contentContainer, contentContainerStyle]}
         ref={listRef}
@@ -200,8 +200,8 @@ class List extends PureComponent {
         keyExtractor={this.extractKey}
         {...(itemHeight
           ? {
-            getItemLayout: this.handleGetItemLayout(itemHeight),
-          }
+              getItemLayout: this.handleGetItemLayout(itemHeight),
+            }
           : {})}
       />
     );
@@ -222,7 +222,7 @@ const styles = {
     },
     text: {
       fontSize: 16,
-      color: Color.titleColor,
+      color: 'rgba(0, 0, 0, 0.65)',
     },
   },
   separator: {

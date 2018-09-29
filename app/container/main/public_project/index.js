@@ -14,8 +14,6 @@ import List from './components/list';
 import Header from './header';
 import styles from './style';
 
-const AnimatedList = Animated.createAnimatedComponent(List);
-
 @global.bindTrack({
   page: '项目公海',
   name: 'App_PublicProjectOperation',
@@ -46,7 +44,7 @@ export default class PublicProject extends Component {
     if (nextProps.updateCount > this.props.updateCount) {
       const count = nextProps.updateCount - this.props.updateCount;
       if (this.scroll) {
-        this.scroll.scrollToOffset({
+        this.scroll.getNode().scrollToOffset({
           offset: this.props.newsY,
           animated: true,
         });
@@ -178,7 +176,7 @@ export default class PublicProject extends Component {
     const { news, loading } = this.props;
     return (
       <View style={styles.container}>
-        <AnimatedList
+        <List
           listRef={ref => {
             this.scroll = ref;
           }}
@@ -189,6 +187,7 @@ export default class PublicProject extends Component {
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           renderSeparator={this.renderSeparator}
+          scrollEventThrottle={1}
           onScroll={Animated.event(
             [
               {

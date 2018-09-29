@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, Text, Dimensions, StyleSheet } from 'react-native';
-import Swiper from 'react-native-swiper';
+import Swiper from '@nart/react-native-swiper';
 import R from 'ramda';
 
 import Badge from 'component/badge';
@@ -82,7 +82,7 @@ const top = ({
 const styles = {
   container: {},
   banner: {
-    height: 160,
+    // height: 160,
     width: deviceWidth,
   },
   verticalBanner: {
