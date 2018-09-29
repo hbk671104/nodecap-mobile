@@ -28,6 +28,7 @@ export default {
   },
   page: {
     backgroundColor: 'white',
+    paddingBottom: 20,
     minHeight:
       deviceHeight -
       realBarHeight -

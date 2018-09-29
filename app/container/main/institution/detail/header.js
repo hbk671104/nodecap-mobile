@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import R from 'ramda';
+import Communication from 'react-native-communications';
 
 import Avatar from 'component/uikit/avatar';
 import Shimmer from 'component/shimmer';
@@ -18,7 +19,12 @@ const header = ({ style, data, loading }) => {
             <Text style={styles.content.title}>{name}</Text>
           </Shimmer>
           {!R.isEmpty(site_url) && (
-            <Text style={styles.content.subtitle}>{site_url}</Text>
+            <Text
+              style={styles.content.subtitle}
+              onPress={() => Communication.web(site_url)}
+            >
+              {site_url}
+            </Text>
           )}
         </View>
         <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
@@ -50,6 +56,8 @@ const styles = {
     subtitle: {
       fontSize: 12,
       color: 'white',
+      marginLeft: 2,
+      marginTop: 8,
     },
   },
 };

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, InteractionManager } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -63,6 +63,7 @@ const selectionList = [
 @compose(
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
+  withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
   withState('showStatusSelector', 'toggleStatusSelector', false),
@@ -148,9 +149,12 @@ export default class PublicProjectDetail extends Component {
 
   handlePageSwitch = page => () => {
     this.props.setCurrentPage(page, () => {
+      if (this.props.currentScrollY < this.props.selectorY) {
+        return;
+      }
       this.scroll
         .getNode()
-        .scrollTo({ y: this.props.selectorY, animated: true });
+        .scrollTo({ y: this.props.selectorY, animated: false });
     });
   };
 
@@ -229,6 +233,10 @@ export default class PublicProjectDetail extends Component {
             ],
             {
               useNativeDriver: true,
+              listener: event => {
+                const offsetY = event.nativeEvent.contentOffset.y;
+                this.props.setCurrentScrollY(offsetY);
+              },
             },
           )}
         >
