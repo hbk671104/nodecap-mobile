@@ -55,7 +55,7 @@ class DropdownAlert extends PureComponent {
   }
 }
 
-export const alertHeight = 25;
+export const alertHeight = 32;
 const styles = {
   container: {
     height: alertHeight,
@@ -65,7 +65,7 @@ const styles = {
   },
   title: {
     color: '#1890FF',
-    fontSize: 11,
+    fontSize: 13,
   },
 };
 

@@ -133,7 +133,7 @@ export default {
         request.defaults.headers.common['X-Company-ID'] = null;
 
         const companies = yield select(state =>
-          R.path(['login', 'companies'])(state),
+          R.path(['user', 'currentUser', 'companies'])(state),
         );
         const user = yield select(state =>
           R.path(['user', 'currentUser'])(state),
@@ -181,7 +181,7 @@ export default {
         // http headers
         request.defaults.baseURL = Config.API_URL;
         const companies = yield select(state =>
-          R.path(['login', 'companies'])(state),
+          R.path(['user', 'currentUser', 'companies'])(state),
         );
         const companyID = R.pathOr(0, [0, 'id'])(companies);
         request.defaults.headers.common['X-Company-ID'] = companyID;
