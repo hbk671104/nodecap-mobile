@@ -34,5 +34,6 @@ export default {
       navBarHeight -
       bottomTabHeight -
       getBottomSpace(),
+    paddingBottom: 20,
   },
 };

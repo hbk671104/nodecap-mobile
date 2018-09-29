@@ -38,7 +38,7 @@ import styles from './style';
       extrapolate: 'clamp',
     }),
     refreshButtonOpacityRange: animateY.interpolate({
-      inputRange: [576, 768],
+      inputRange: [672, 768],
       outputRange: [0, 1],
       extrapolate: 'clamp',
     }),

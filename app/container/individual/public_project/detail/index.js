@@ -44,7 +44,7 @@ const selectionList = [
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
 })
-@connect(({ public_project, loading, global, login }, props) => {
+@connect(({ public_project, loading, login }, props) => {
   const item = props.navigation.getParam('item');
   const market = R.pathOr({}, ['current', 'market'])(public_project);
   return {
@@ -52,7 +52,6 @@ const selectionList = [
     portfolio: R.pathOr({}, ['current'])(public_project),
     loading: loading.effects['public_project/get'],
     favor_loading: loading.effects['public_project/favor'],
-    status: R.pathOr([], ['constants', 'project_status'])(global),
     can_calculate: R.not(R.isEmpty(market)),
     logged_in: !!login.token,
     base_symbol: R.pathOr('CNY', ['current', 'market', 'quote'])(
@@ -66,7 +65,6 @@ const selectionList = [
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
-  withState('showStatusSelector', 'toggleStatusSelector', false),
   withProps(({ animateY, can_calculate }) => ({
     headerWrapperYRange: animateY.interpolate({
       inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],

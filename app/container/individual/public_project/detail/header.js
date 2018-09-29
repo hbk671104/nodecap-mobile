@@ -24,7 +24,10 @@ const header = ({
   can_calculate,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
-  const token = R.pathOr('--', ['symbol'])(data);
+  const token = R.pipe(
+    R.pathOr('--', ['symbol']),
+    R.toUpper,
+  )(data);
   const logo = R.pathOr('', ['icon'])(data);
   const category = R.pipe(
     R.pathOr([], ['category']),
