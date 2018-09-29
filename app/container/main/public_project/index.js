@@ -41,7 +41,7 @@ import styles from './style';
 )
 export default class PublicProject extends Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.updateCount > this.props.updateCount) {
+    if (nextProps.updateCount > this.props.updateCount && this.fromRefresh) {
       const count = nextProps.updateCount - this.props.updateCount;
       if (this.scroll) {
         this.scroll.getNode().scrollToIndex({
@@ -51,6 +51,8 @@ export default class PublicProject extends Component {
         });
         this.alert.show(`新增 ${count} 条更新`);
       }
+    } else {
+      this.alert.show('暂无新快讯');
     }
   }
 
@@ -173,7 +175,13 @@ export default class PublicProject extends Component {
         gradient
         title="首页"
         renderRight={() => (
-          <Refresh {...this.props} onPress={() => this.requestData(true)} />
+          <Refresh
+            {...this.props}
+            onPress={() => {
+              this.fromRefresh = true;
+              this.requestData(true);
+            }}
+          />
         )}
       />
     </Animated.View>

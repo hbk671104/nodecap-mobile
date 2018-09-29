@@ -10,7 +10,7 @@ class DropdownAlert extends PureComponent {
   };
 
   static defaultProps = {
-    duration: 1500,
+    duration: 2000,
   };
 
   state = {

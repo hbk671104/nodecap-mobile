@@ -19,7 +19,7 @@ class Refresh extends PureComponent {
   render() {
     const { loading, onPress } = this.props;
     return (
-      <Touchable disabled={loading} onPress={onPress}>
+      <Touchable disabled={loading} hitSlop={styles.hitSlop} onPress={onPress}>
         <Animatable.View
           animation={loading ? 'rotate' : undefined}
           easing="linear"
@@ -37,6 +37,12 @@ const styles = {
   icon: {
     fontSize: 20,
     color: 'white',
+  },
+  hitSlop: {
+    top: 20,
+    right: 20,
+    bottom: 20,
+    left: 20,
   },
 };
 
