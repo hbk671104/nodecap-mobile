@@ -12,7 +12,6 @@ import { NavigationActions } from 'react-navigation';
 
 import Description from './page/description';
 import Trend from './page/trend';
-import Financing from './page/financing';
 import Return from './page/return';
 import Pairs from './page/pairs';
 import Chart from './chart';
@@ -27,10 +26,6 @@ const selectionList = [
   {
     component: Description,
     name: '详情',
-  },
-  {
-    component: Financing,
-    name: '募集信息',
   },
   {
     component: Trend,

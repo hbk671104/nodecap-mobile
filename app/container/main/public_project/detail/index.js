@@ -13,7 +13,6 @@ import { hasPermission } from 'component/auth/permission/lock';
 
 import Description from './page/description';
 import Trend from './page/trend';
-import Financing from './page/financing';
 import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
@@ -24,10 +23,6 @@ const selectionList = [
   {
     component: Description,
     name: '详情',
-  },
-  {
-    component: Financing,
-    name: '募集信息',
   },
   {
     component: Trend,

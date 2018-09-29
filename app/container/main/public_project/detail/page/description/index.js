@@ -5,6 +5,7 @@ import { Flex } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
+import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
 import styles from './style';
 
@@ -90,6 +91,7 @@ export default class Description extends PureComponent {
             </Flex>
           </View>
         )}
+        <Financing {...this.props} />
         {R.not(R.isEmpty(members)) && (
           <View>
             <Text style={[styles.title, styles.site]}>团队成员</Text>
