@@ -106,11 +106,8 @@ export default class PublicProjectDetail extends Component {
     });
   };
 
-  showToast = () => {
-    Toast.info('可在投资库中管理该项目');
-  };
-
   handleFavorPress = () => {
+    this.props.track('点击关注按钮');
     if (!this.props.logged_in) {
       this.props.dispatch(
         NavigationActions.navigate({
@@ -128,6 +125,8 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleInvestmentPress = () => {
+    this.props.track('点击投资记录按钮');
+
     if (!this.props.logged_in) {
       this.props.dispatch(
         NavigationActions.navigate({
@@ -247,7 +246,9 @@ export default class PublicProjectDetail extends Component {
         </Animated.ScrollView>
         <Bottom
           {...this.props}
-          openShareModal={() => this.props.toggleShareModal(true)}
+          openShareModal={() => {
+            this.props.toggleShareModal(true);
+          }}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
         />

@@ -17,6 +17,10 @@ import styles from './style';
   pagination: R.pathOr(null, ['list', 'pagination'])(favored),
   loading: loading.effects['favored/fetch'],
 }))
+@global.bindTrack({
+  page: '已关注列表',
+  name: 'App_FavoredOperation',
+})
 class Favored extends Component {
   requestData = (page, size) => {
     this.props.dispatch({
@@ -29,6 +33,7 @@ class Favored extends Component {
   };
 
   handleLoginPress = () => {
+    this.props.track('点击登录按钮');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Login',
