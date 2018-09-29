@@ -7,10 +7,12 @@ import Icon from 'component/uikit/icon';
 import FavorItem from 'component/favored/item';
 import Group from './group';
 
-const middle = ({ data, onProjectRepoPress }) => (
+const middle = ({ data, pagination, onProjectRepoPress }) => (
   <Group title="精选项目">
     <View style={styles.bottom.container}>
-      <Text style={styles.bottom.subtitle}>为您找到 1111 个项目</Text>
+      <Text style={styles.bottom.subtitle}>
+        为您找到 {R.pathOr(0, ['total'])(pagination)} 个项目
+      </Text>
       <Touchable borderless onPress={onProjectRepoPress}>
         <Text style={styles.bottom.filter}>
           查看全部 <Icon name="ios-arrow-forward" override />

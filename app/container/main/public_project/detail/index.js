@@ -45,6 +45,7 @@ const selectionList = [
 })
 @compose(
   withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
+  withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
   withState('showStatusSelector', 'toggleStatusSelector', false),
@@ -103,7 +104,14 @@ export default class PublicProjectDetail extends Component {
   };
 
   handlePageSwitch = page => () => {
-    this.props.setCurrentPage(page);
+    this.props.setCurrentPage(page, () => {
+      if (this.props.currentScrollY < this.props.selectorY) {
+        return;
+      }
+      this.scroll
+        .getNode()
+        .scrollTo({ y: this.props.selectorY, animated: false });
+    });
   };
 
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
@@ -182,6 +190,9 @@ export default class PublicProjectDetail extends Component {
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView
+          ref={ref => {
+            this.scroll = ref;
+          }}
           contentContainerStyle={{
             paddingTop: headerHeight,
           }}
@@ -197,6 +208,10 @@ export default class PublicProjectDetail extends Component {
             ],
             {
               useNativeDriver: true,
+              listener: event => {
+                const offsetY = event.nativeEvent.contentOffset.y;
+                this.props.setCurrentScrollY(offsetY);
+              },
             },
           )}
         >

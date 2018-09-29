@@ -85,8 +85,8 @@ class ShareCoin extends Component {
     const info = R.pathOr({}, ['finance_info'])(coin);
     const start_at = R.pathOr(null, ['start_at'])(info);
     const end_at = R.pathOr(null, ['end_at'])(info);
-    const token_supply = R.pathOr('--', ['token_supply'])(info);
-    const conversion_ratio = R.pathOr('--', ['conversion_ratio'])(info);
+    const token_supply = R.pathOr(null, ['token_supply'])(info);
+    const conversion_ratio = R.pathOr(null, ['conversion_ratio'])(info);
     const industryInvestments = R.pathOr([], ['industry_investments'])(info);
     const renderTitle = title => (
       <Flex>
@@ -151,7 +151,7 @@ class ShareCoin extends Component {
             </Text>
           </Flex>
           <Flex style={styles.groupContent} align="center">
-            <Text style={styles.groupContentText}>发售总量</Text>
+            <Text style={styles.groupContentText}>兑换比例</Text>
             <Text
               style={[
                 styles.groupContentText,

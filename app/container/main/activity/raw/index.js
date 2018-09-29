@@ -21,7 +21,14 @@ export default class MeetingDetailRaw extends Component {
           title={title}
           titleContainerStyle={{ paddingHorizontal: 42 }}
         />
-        <WebView startInLoadingState source={{ uri }} />
+        <WebView
+          source={{ uri }}
+          renderError={e => {
+            if (e === 'WebKitErrorDomain') {
+              return null;
+            }
+          }}
+        />
       </View>
     );
   }

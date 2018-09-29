@@ -23,6 +23,9 @@ import styles from './style';
   news: R.pathOr([], ['news'])(news),
   lastNewsID: R.pathOr(null, ['payload'])(news),
   data: R.pathOr([], ['list', 0, 'index', 'data'])(public_project),
+  pagination: R.pathOr(null, ['list', 0, 'index', 'pagination'])(
+    public_project,
+  ),
   loading: loading.effects['news/index'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
   reports: R.pathOr([], ['report', 'data'])(institution),

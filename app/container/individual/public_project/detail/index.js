@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { View, Animated, InteractionManager } from 'react-native';
+import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
-import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
 import NavBar, { realBarHeight } from 'component/navBar';
