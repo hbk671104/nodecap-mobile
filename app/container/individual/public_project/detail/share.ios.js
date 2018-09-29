@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Dimensions, ScrollView, View, ImageBackground, Image, Text, TouchableOpacity, Platform } from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  View,
+  ImageBackground,
+  Image,
+  Text,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { Flex } from 'antd-mobile';
 import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
@@ -52,11 +61,17 @@ class ShareCoin extends Component {
     return (
       <Flex style={styles.ad.container} justify="between">
         <View>
-          <Image style={styles.ad.logo} source={require('asset/logo_horizontal.png')} />
+          <Image
+            style={styles.ad.logo}
+            source={require('asset/logo_horizontal.png')}
+          />
           <Text style={styles.ad.text}>找项目，上 Hotnode</Text>
         </View>
         <View>
-          <Image style={styles.ad.qr} source={require('asset/coin_share/qr_code.png')} />
+          <Image
+            style={styles.ad.qr}
+            source={require('asset/coin_share/qr_code.png')}
+          />
         </View>
       </Flex>
     );
@@ -73,7 +88,7 @@ class ShareCoin extends Component {
     const token_supply = R.pathOr('--', ['token_supply'])(info);
     const conversion_ratio = R.pathOr('--', ['conversion_ratio'])(info);
     const industryInvestments = R.pathOr([], ['industry_investments'])(info);
-    const renderTitle = (title) => (
+    const renderTitle = title => (
       <Flex>
         <View style={styles.dot} />
         <Text style={styles.contentTitle}>{title}</Text>
@@ -83,7 +98,9 @@ class ShareCoin extends Component {
       <View style={{ marginTop: 10 }}>
         <View style={styles.group}>
           {renderTitle('官网')}
-          <Text style={[styles.groupContent, styles.groupContentText]}>{siteUrl || '无'}</Text>
+          <Text style={[styles.groupContent, styles.groupContentText]}>
+            {siteUrl || '无'}
+          </Text>
         </View>
         <View style={styles.group}>
           {renderTitle('评级信息')}
@@ -102,30 +119,64 @@ class ShareCoin extends Component {
           {renderTitle('募集信息')}
           <Flex style={styles.groupContent} align="center">
             <Text style={styles.groupContentText}>开始时间</Text>
-            <Text style={[styles.groupContentText, { marginLeft: 10, color: 'rgba(0,0,0,.85)' }]}>{start_at ? moment.unix(start_at).format('YYYY.MM.DD') : '无'}</Text>
+            <Text
+              style={[
+                styles.groupContentText,
+                { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+              ]}
+            >
+              {start_at ? moment.unix(start_at).format('YYYY.MM.DD') : '无'}
+            </Text>
           </Flex>
           <Flex style={styles.groupContent} align="center">
             <Text style={styles.groupContentText}>结束时间</Text>
-            <Text style={[styles.groupContentText, { marginLeft: 10, color: 'rgba(0,0,0,.85)' }]}>{end_at ? moment.unix(end_at).format('YYYY.MM.DD') : '无'}</Text>
+            <Text
+              style={[
+                styles.groupContentText,
+                { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+              ]}
+            >
+              {end_at ? moment.unix(end_at).format('YYYY.MM.DD') : '无'}
+            </Text>
           </Flex>
           <Flex style={styles.groupContent} align="center">
             <Text style={styles.groupContentText}>发售总量</Text>
-            <Text style={[styles.groupContentText, { marginLeft: 10, color: 'rgba(0,0,0,.85)' }]}>{token_supply ? Accounting.formatNumber(token_supply) : '无'}</Text>
+            <Text
+              style={[
+                styles.groupContentText,
+                { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+              ]}
+            >
+              {token_supply ? Accounting.formatNumber(token_supply) : '无'}
+            </Text>
           </Flex>
           <Flex style={styles.groupContent} align="center">
             <Text style={styles.groupContentText}>发售总量</Text>
-            <Text style={[styles.groupContentText, { marginLeft: 10, color: 'rgba(0,0,0,.85)' }]}>{conversion_ratio || '无'}</Text>
+            <Text
+              style={[
+                styles.groupContentText,
+                { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+              ]}
+            >
+              {conversion_ratio || '无'}
+            </Text>
           </Flex>
         </View>
         <View style={styles.group}>
           {renderTitle('投资机构')}
           <Flex style={styles.groupContent} align="center">
-            {industryInvestments.length ? (industryInvestments.map((i, idx) => (
-              <Flex align="center">
-                <Text style={{ color: 'rgba(0,0,0,.85)' }}>{i.name}</Text>
-                {idx !== (industryInvestments.length - 1) && <View style={styles.orgDivision} />}
-              </Flex>
-          ))) : <Text style={styles.groupContentText}>暂无</Text>}
+            {industryInvestments.length ? (
+              industryInvestments.map((i, idx) => (
+                <Flex align="center">
+                  <Text style={{ color: 'rgba(0,0,0,.85)' }}>{i.name}</Text>
+                  {idx !== industryInvestments.length - 1 && (
+                    <View style={styles.orgDivision} />
+                  )}
+                </Flex>
+              ))
+            ) : (
+              <Text style={styles.groupContentText}>暂无</Text>
+            )}
           </Flex>
         </View>
       </View>
@@ -149,13 +200,17 @@ class ShareCoin extends Component {
                 {coin.name}
               </Text>
             </ImageBackground>
-            <Text numberOfLines={1} style={styles.symbol}>{coin.symbol ? coin.symbol.toUpperCase() : '--'}</Text>
+            <Text numberOfLines={1} style={styles.symbol}>
+              {coin.symbol ? coin.symbol.toUpperCase() : '--'}
+            </Text>
           </View>
           <View>
             <Avatar url={coin.icon} />
           </View>
         </Flex>
-        <Text numberOfLines={4} style={styles.desc}>{coin.description}</Text>
+        <Text numberOfLines={4} style={styles.desc}>
+          {coin.description}
+        </Text>
       </View>
     );
   }
@@ -190,6 +245,8 @@ class ShareCoin extends Component {
     const { coin } = this.props;
     return (
       <Modal
+        useNativeDriver
+        hideModalContentWhileAnimating
         isVisible={this.props.visible}
         style={{
           margin: 0,
@@ -272,13 +329,19 @@ const styles = {
     paddingHorizontal: 5,
     lineHeight: 22,
   },
-  symbol: { fontFamily: 'PingFangSC-Medium', fontSize: 12, color: 'rgba(0,0,0,0.65)', marginLeft: 5, marginTop: 10 },
+  symbol: {
+    fontFamily: 'PingFangSC-Medium',
+    fontSize: 12,
+    color: 'rgba(0,0,0,0.65)',
+    marginLeft: 5,
+    marginTop: 10,
+  },
   actionsBar: {
     ...ifIphoneX(
       {
         paddingBottom: 22,
       },
-      {}
+      {},
     ),
     height: 60,
     backgroundColor: 'white',
@@ -306,7 +369,13 @@ const styles = {
     resizeMode: 'contain',
     marginLeft: 30,
   },
-  desc: { fontFamily: 'PingFangSC-Regular', fontSize: 11, color: 'rgba(0,0,0,0.45)', marginTop: 14, marginLeft: 5 },
+  desc: {
+    fontFamily: 'PingFangSC-Regular',
+    fontSize: 11,
+    color: 'rgba(0,0,0,0.45)',
+    marginTop: 14,
+    marginLeft: 5,
+  },
   dot: {
     width: 5,
     height: 5,
@@ -314,7 +383,11 @@ const styles = {
     borderRadius: 2.5,
     marginRight: 5,
   },
-  contentTitle: { fontFamily: 'PingFangSC-Medium', fontSize: 14, color: 'rgba(0,0,0,0.85)' },
+  contentTitle: {
+    fontFamily: 'PingFangSC-Medium',
+    fontSize: 14,
+    color: 'rgba(0,0,0,0.85)',
+  },
   group: {
     marginBottom: 17,
   },
@@ -322,8 +395,17 @@ const styles = {
     marginLeft: 10,
     marginTop: 8,
   },
-  groupContentText: { fontFamily: 'PingFangSC-Regular', fontSize: 13, color: 'rgba(0,0,0,0.65)' },
-  highLight: { fontFamily: 'PingFangSC-Medium', fontSize: 13, color: '#0090FF', marginLeft: 17 },
+  groupContentText: {
+    fontFamily: 'PingFangSC-Regular',
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.65)',
+  },
+  highLight: {
+    fontFamily: 'PingFangSC-Medium',
+    fontSize: 13,
+    color: '#0090FF',
+    marginLeft: 17,
+  },
   orgDivision: {
     height: 15,
     width: 1,
@@ -343,7 +425,12 @@ const styles = {
       width: 95,
       height: 14.5,
     },
-    text: { fontFamily: 'PingFangSC-Regular', fontSize: 13, color: 'rgba(0,0,0,0.45)', marginTop: 10 },
+    text: {
+      fontFamily: 'PingFangSC-Regular',
+      fontSize: 13,
+      color: 'rgba(0,0,0,0.45)',
+      marginTop: 10,
+    },
     qr: {
       width: 60,
       height: 60,
