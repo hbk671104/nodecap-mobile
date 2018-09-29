@@ -71,8 +71,8 @@ const header = ({
             </Text>
           </Shimmer>
         </View>
-        <Animated.View style={avatarWrapperStyle}>
-          <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+        <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
+          <Avatar size={50} source={{ uri: logo }} />
         </Animated.View>
       </View>
       {can_calculate ? (

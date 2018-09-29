@@ -557,6 +557,13 @@
     hoist-non-react-statics "^2.2.2"
     prop-types "^15.5.10"
 
+"@nart/react-native-swiper@^1.5.13":
+  version "1.5.13"
+  resolved "https://registry.yarnpkg.com/@nart/react-native-swiper/-/react-native-swiper-1.5.13.tgz#293ac58edcb57afb37221a1f69dcfaf1251306de"
+  dependencies:
+    prop-types "^15.5.10"
+    react-native-vertical-view-pager "^0.1.1"
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.0.tgz#ecdf48d532c58ea477acfcab80348424f8d0662f"
@@ -6557,6 +6564,10 @@ react-native-vector-icons@^5.0.0:
     lodash "^4.0.0"
     prop-types "^15.5.10"
     yargs "^8.0.2"
+
+react-native-vertical-view-pager@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-vertical-view-pager/-/react-native-vertical-view-pager-0.1.1.tgz#c9ad2f3eb936219ff21cabd6d5842468a5ddbee3"
 
 react-native-view-shot@^2.4.0:
   version "2.4.0"

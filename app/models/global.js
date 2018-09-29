@@ -50,6 +50,30 @@ export default {
         console.log(e);
       }
     },
+    *startup({ callback }, { call, put }) {
+      try {
+        // sensor set profile
+        global.setProfile({
+          client_type: '个人版',
+        });
+
+        yield put.resolve({
+          type: 'getConstant',
+        });
+
+        yield put(
+          NavigationActions.navigate({
+            routeName: 'Individual',
+          }),
+        );
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     *initial(_, { select, put }) {
       const in_individual = yield select(state =>
         R.path(['login', 'in_individual'])(state),

@@ -11,10 +11,9 @@ import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 import { handleBadgeAction } from 'utils/badge_handler';
 
 import List from './components/list';
+import Refresh from './components/refresh';
 import Header from './header';
 import styles from './style';
-
-const AnimatedList = Animated.createAnimatedComponent(List);
 
 @global.bindTrack({
   page: '项目公海',
@@ -32,10 +31,14 @@ const AnimatedList = Animated.createAnimatedComponent(List);
 }))
 @compose(
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
-  withState('newsY', 'setNewsY', 0),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
-      inputRange: [0, 200],
+      inputRange: [0, 192],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+    refreshButtonOpacityRange: animateY.interpolate({
+      inputRange: [576, 768],
       outputRange: [0, 1],
       extrapolate: 'clamp',
     }),
@@ -43,19 +46,25 @@ const AnimatedList = Animated.createAnimatedComponent(List);
 )
 export default class PublicProject extends Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.updateCount > this.props.updateCount) {
-      const count = nextProps.updateCount - this.props.updateCount;
-      if (this.scroll) {
-        this.scroll.scrollToOffset({
-          offset: this.props.newsY,
-          animated: true,
-        });
-        this.alert.show(`新增 ${count} 条更新`);
+    if (this.shouldAnimate) {
+      if (nextProps.updateCount > this.props.updateCount) {
+        const count = nextProps.updateCount - this.props.updateCount;
+        if (this.scroll) {
+          this.scroll.getNode().scrollToIndex({
+            index: 0,
+            // animated: true,
+            viewOffset: realBarHeight,
+          });
+          this.alert.show(`新增 ${count} 条更新`);
+        }
+      } else {
+        this.alert.show('暂无新快讯');
       }
     }
   }
 
   requestData = isRefresh => {
+    this.shouldAnimate = this.shouldAnimate && isRefresh;
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
@@ -133,10 +142,6 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleOnHeaderLayout = ({ nativeEvent: { layout } }) => {
-    this.props.setNewsY(layout.height - 2 * realBarHeight);
-  };
-
   renderItem = ({ item }) => (
     <NewsItem
       {...this.props}
@@ -154,7 +159,6 @@ export default class PublicProject extends Component {
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onInstitutionPress={this.handleInstitutionPress}
-      onLayout={this.handleOnHeaderLayout}
     />
   );
 
@@ -174,17 +178,17 @@ export default class PublicProject extends Component {
             top: realBarHeight - alertHeight,
           },
         ]}
-        title="新增好多条更新"
       />
       <NavBar gradient title="首页" />
     </Animated.View>
   );
 
   render() {
-    const { news, loading } = this.props;
+    const { news, loading, refreshButtonOpacityRange } = this.props;
     return (
       <View style={styles.container}>
-        <AnimatedList
+        <List
+          disableRefresh
           listRef={ref => {
             this.scroll = ref;
           }}
@@ -195,6 +199,7 @@ export default class PublicProject extends Component {
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           renderSeparator={this.renderSeparator}
+          scrollEventThrottle={1}
           onScroll={Animated.event(
             [
               {
@@ -209,6 +214,15 @@ export default class PublicProject extends Component {
           )}
         />
         {this.renderNavBar()}
+        <Refresh
+          {...this.props}
+          loading={this.props.loading && this.shouldAnimate}
+          style={{ opacity: refreshButtonOpacityRange }}
+          onPress={() => {
+            this.shouldAnimate = true;
+            this.requestData(true);
+          }}
+        />
       </View>
     );
   }

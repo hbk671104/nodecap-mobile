@@ -25,21 +25,13 @@ export default class Loader extends Component {
 
   componentWillMount() {
     persist(() => {
-      if (this.props.isLogin) {
-        this.props.dispatch({
-          type: 'global/bootstrap',
-          callback: () => {
-            SplashScreen.hide();
-          },
-        });
-      } else {
-        this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: 'Individual',
-          }),
-        );
-        SplashScreen.hide();
-      }
+      this.props.dispatch({
+        type: this.props.isLogin ? 'global/bootstrap' : 'global/startup',
+        callback: () => {
+          SplashScreen.hide();
+        },
+      });
+
       initializeListeners('root', this.props.router);
     });
   }
@@ -51,7 +43,7 @@ export default class Loader extends Component {
         <View style={styles.wrapper}>
           <View style={styles.top.container}>
             <Animatable.Image
-              iterationCount={Infinity}
+              iterationCount="infinite"
               animation="pulse"
               source={require('asset/big_logo.png')}
             />
