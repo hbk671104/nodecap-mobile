@@ -75,6 +75,7 @@ export default class PublicProject extends Component {
   };
 
   handleMeetingPress = () => {
+    this.props.track('点击找会议');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'MeetingList',
@@ -83,6 +84,7 @@ export default class PublicProject extends Component {
   };
 
   handleAnnouncementPress = () => {
+    this.props.track('点击上所公告');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Announcement',
@@ -92,6 +94,7 @@ export default class PublicProject extends Component {
   };
 
   handleProjectRepoPress = () => {
+    this.props.track('点击找项目');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ProjectRepo',
@@ -100,6 +103,7 @@ export default class PublicProject extends Component {
   };
 
   handleInstitutionReportPress = () => {
+    this.props.track('点击进入研报列表');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionReport',
@@ -108,6 +112,7 @@ export default class PublicProject extends Component {
   };
 
   handleInstitutionPress = () => {
+    this.props.track('点击找机构');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Institution',
@@ -116,6 +121,7 @@ export default class PublicProject extends Component {
   };
 
   handleReportItemPress = item => {
+    this.props.track('点击进入研报详情');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',

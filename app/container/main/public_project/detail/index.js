@@ -93,6 +93,7 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleStatusPress = () => {
+    this.props.track('点击添加至工作流按钮');
     const matched = R.pathOr(false, ['matched'])(this.props.portfolio);
     if (matched) {
       this.showToast();
@@ -110,6 +111,7 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleSubmit = status => {
+    this.props.track('提交项目初始状态');
     this.props.dispatch({
       type: 'public_project/addToWorkflow',
       payload: [this.props.id],
