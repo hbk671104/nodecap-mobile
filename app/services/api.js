@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import Config from '../runtime';
 
 /**
  * 登录
@@ -25,7 +26,7 @@ export function setPassword({
   confirm_password,
   password,
 }) {
-  return request.post('/users/reset-password', {
+  return request.post(`${Config.API_URL}/users/reset-password`, {
     password_reset_token,
     confirm_password,
     password,
