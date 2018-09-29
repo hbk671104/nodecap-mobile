@@ -52,13 +52,13 @@ export default {
     },
     *startup({ callback }, { call, put }) {
       try {
-        yield put.resolve({
-          type: 'getConstant',
-        });
-
         // sensor set profile
         global.setProfile({
           client_type: '个人版',
+        });
+
+        yield put.resolve({
+          type: 'getConstant',
         });
 
         yield put(

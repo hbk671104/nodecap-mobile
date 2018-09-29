@@ -11,6 +11,7 @@ import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 import { handleBadgeAction } from 'utils/badge_handler';
 
 import List from './components/list';
+import Refresh from './components/refresh';
 import Header from './header';
 import styles from './style';
 
@@ -30,7 +31,6 @@ import styles from './style';
 }))
 @compose(
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
-  withState('newsY', 'setNewsY', 0),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 200],
@@ -44,9 +44,10 @@ export default class PublicProject extends Component {
     if (nextProps.updateCount > this.props.updateCount) {
       const count = nextProps.updateCount - this.props.updateCount;
       if (this.scroll) {
-        this.scroll.getNode().scrollToOffset({
-          offset: this.props.newsY,
-          animated: true,
+        this.scroll.getNode().scrollToIndex({
+          index: 0,
+          // animated: true,
+          viewOffset: -realBarHeight,
         });
         this.alert.show(`新增 ${count} 条更新`);
       }
@@ -125,10 +126,6 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleOnHeaderLayout = ({ nativeEvent: { layout } }) => {
-    this.props.setNewsY(layout.height - 2 * realBarHeight);
-  };
-
   renderItem = ({ item }) => (
     <NewsItem
       {...this.props}
@@ -146,7 +143,6 @@ export default class PublicProject extends Component {
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onInstitutionPress={this.handleInstitutionPress}
-      onLayout={this.handleOnHeaderLayout}
     />
   );
 
@@ -166,9 +162,14 @@ export default class PublicProject extends Component {
             top: realBarHeight - alertHeight,
           },
         ]}
-        title="新增好多条更新"
       />
-      <NavBar gradient title="首页" />
+      <NavBar
+        gradient
+        title="首页"
+        renderRight={() => (
+          <Refresh {...this.props} onPress={() => this.requestData(true)} />
+        )}
+      />
     </Animated.View>
   );
 
@@ -177,6 +178,7 @@ export default class PublicProject extends Component {
     return (
       <View style={styles.container}>
         <List
+          disableRefresh
           listRef={ref => {
             this.scroll = ref;
           }}
