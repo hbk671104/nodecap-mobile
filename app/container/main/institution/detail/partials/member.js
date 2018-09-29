@@ -41,15 +41,15 @@ const styles = {
       color: 'rgba(0, 0, 0, 0.85)',
     },
     subtitle: {
-      marginTop: 6,
-      fontSize: 12,
+      marginTop: 8,
+      fontSize: 13,
       color: 'rgba(0, 0, 0, 0.65)',
     },
     content: {
-      marginTop: 6,
+      marginTop: 8,
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.65)',
-      lineHeight: 17,
+      lineHeight: 18,
     },
   },
 };

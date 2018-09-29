@@ -44,6 +44,8 @@ export default class ProjectList extends Component {
     <FavorItem data={item} onPress={this.handleItemPress(item)} />
   );
 
+  renderSeparator = () => <View style={styles.separator} />;
+
   render() {
     const { data, pagination, loading } = this.props;
     return (
@@ -55,6 +57,7 @@ export default class ProjectList extends Component {
           pagination={pagination}
           loading={loading}
           renderItem={this.renderItem}
+          renderSeparator={this.renderSeparator}
         />
       </View>
     );

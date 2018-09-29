@@ -50,31 +50,33 @@ export default class InstitutionDetail extends Component {
   );
 
   render() {
-    const { data, loading } = this.props;
-    const desc = R.pathOr('---', ['description'])(data);
+    const { data } = this.props;
+    const desc = R.pathOr('', ['description'])(data);
+    const members = R.pathOr([], ['members'])(data);
+    const coins = R.pathOr([], ['coins'])(data);
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView>
-          <Group title="机构简介">
-            <View style={styles.desc.container}>
-              <Text style={styles.desc.text}>{desc}</Text>
-            </View>
-          </Group>
-          <Group title="机构成员">
-            {R.pipe(
-              R.pathOr([], ['members']),
-              R.map(m => <Member key={m.id} data={m} />),
-            )(data)}
-          </Group>
-          <Group title="已投项目">
-            {R.pipe(
-              R.pathOr([], ['coins']),
-              R.addIndex(R.map)((m, index) => (
+          {R.not(R.isEmpty(desc)) && (
+            <Group title="机构简介">
+              <View style={styles.desc.container}>
+                <Text style={styles.desc.text}>{desc}</Text>
+              </View>
+            </Group>
+          )}
+          {R.not(R.isEmpty(members)) && (
+            <Group title="机构成员">
+              {R.map(m => <Member key={m.id} data={m} />)(members)}
+            </Group>
+          )}
+          {R.not(R.isEmpty(coins)) && (
+            <Group title="已投项目">
+              {R.addIndex(R.map)((m, index) => (
                 <FavorItem key={m.id} data={m} showTopBorder={index !== 0} />
-              )),
-            )(data)}
-          </Group>
+              ))(coins)}
+            </Group>
+          )}
         </ScrollView>
       </View>
     );

@@ -9,8 +9,8 @@ export default {
     },
     text: {
       color: '#4A4A4A',
-      fontSize: 13,
-      lineHeight: 19,
+      fontSize: 14,
+      lineHeight: 21,
     },
   },
 };

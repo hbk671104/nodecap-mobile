@@ -94,13 +94,15 @@ class MyProfile extends Component {
               default: user.mobile,
             })}
           />
-          <ListItem
-            disablePress
-            title="登录账号"
-            content={user.email}
-            titleStyle={styles.listItem.title}
-            contentStyle={styles.listItem.content}
-          />
+          {!!user.email && (
+            <ListItem
+              disablePress
+              title="登录账号"
+              content={user.email}
+              titleStyle={styles.listItem.title}
+              contentStyle={styles.listItem.content}
+            />
+          )}
         </ScrollView>
       </View>
     );

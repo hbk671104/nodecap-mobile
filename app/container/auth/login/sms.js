@@ -112,7 +112,7 @@ class SMSLogin extends Component {
               <InputItem
                 style={styles.input}
                 placeholder="请输入手机号"
-                inputProps={{ keyboardType: 'number-pad' }}
+                inputProps={{ keyboardType: 'number-pad', autoFocus: true }}
               />,
             )}
             <View style={{ marginTop: 20 }}>
@@ -129,7 +129,11 @@ class SMSLogin extends Component {
                       return <ActivityIndicator />;
                     }
                     return (
-                      <Touchable onPress={this.handleSendSMSCode}>
+                      <Touchable
+                        disabled={R.isEmpty(account) || R.isNil(account)}
+                        hitSlop={styles.hitSlop}
+                        onPress={this.handleSendSMSCode}
+                      >
                         <Text style={styles.smscode}>
                           {countdown === 60 ? '获取验证码' : `${countdown}s`}
                         </Text>

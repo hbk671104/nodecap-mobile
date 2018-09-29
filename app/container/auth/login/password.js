@@ -79,6 +79,7 @@ class Login extends Component {
               <InputItem
                 style={styles.input}
                 placeholder="请输入手机号/邮箱登录"
+                inputProps={{ autoFocus: true }}
               />,
             )}
             <View style={{ marginTop: 20 }}>

@@ -19,7 +19,7 @@ import styles from './style';
   name: 'App_PublicProjectSearchOperation',
 })
 @connect(({ public_project, login }) => ({
-  data: R.pathOr([], ['search', 'index', 'data'])(public_project),
+  data: R.pathOr(null, ['search', 'index', 'data'])(public_project),
   pagination: R.pathOr(null, ['search', 'index', 'pagination'])(public_project),
   in_individual: login.in_individual,
 }))
@@ -76,6 +76,7 @@ class PublicProjectSearch extends Component {
         renderTitle={() => (
           <View style={styles.searchBar.container}>
             <SearchBar
+              showMagnifier={R.isEmpty(this.state.searchText)}
               placeholder="搜索项目名、Token"
               style={styles.searchBar.bar}
               autoFocus

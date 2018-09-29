@@ -87,16 +87,17 @@ const styles = {
     top: {
       container: {
         flexDirection: 'row',
-        alignItems: 'center',
       },
       title: {
         container: {
           flex: 1,
+          marginRight: 8,
         },
         text: {
           color: 'rgba(0, 0, 0, 0.85)',
           fontWeight: 'bold',
           fontSize: 14,
+          lineHeight: 19,
         },
       },
       date: {

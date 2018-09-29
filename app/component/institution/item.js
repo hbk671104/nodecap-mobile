@@ -7,7 +7,7 @@ import Avatar from 'component/uikit/avatar';
 
 const item = ({ data, onPress }) => {
   const title = R.pathOr('--', ['name'])(data);
-  const des = R.pathOr('--', ['description'])(data);
+  const des = R.pathOr('', ['description'])(data);
   const logo_url = R.pathOr('', ['logo_url'])(data);
   return (
     <Touchable foreground onPress={onPress}>
@@ -15,9 +15,11 @@ const item = ({ data, onPress }) => {
         <Avatar source={{ uri: logo_url }} />
         <View style={styles.content.container}>
           <Text style={styles.content.title}>{title}</Text>
-          <Text style={styles.content.subtitle} numberOfLines={1}>
-            {des}
-          </Text>
+          {!R.isEmpty(des) && (
+            <Text style={styles.content.subtitle} numberOfLines={1}>
+              {des}
+            </Text>
+          )}
         </View>
       </View>
     </Touchable>

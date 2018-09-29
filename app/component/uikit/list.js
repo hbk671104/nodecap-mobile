@@ -145,9 +145,9 @@ class List extends PureComponent {
   };
 
   renderEmpty = () => {
-    // if (R.isNil(this.props.data)) {
-    //   return null;
-    // }
+    if (R.isNil(this.props.data)) {
+      return null;
+    }
     if (this.props.renderEmpty) {
       return this.props.renderEmpty();
     }
