@@ -33,7 +33,12 @@ import styles from './style';
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
-      inputRange: [0, 200],
+      inputRange: [0, 192],
+      outputRange: [0, 1],
+      extrapolate: 'clamp',
+    }),
+    refreshButtonOpacityRange: animateY.interpolate({
+      inputRange: [576, 768],
       outputRange: [0, 1],
       extrapolate: 'clamp',
     }),
@@ -41,22 +46,25 @@ import styles from './style';
 )
 export default class PublicProject extends Component {
   componentWillReceiveProps(nextProps) {
-    if (nextProps.updateCount > this.props.updateCount && this.fromRefresh) {
-      const count = nextProps.updateCount - this.props.updateCount;
-      if (this.scroll) {
-        this.scroll.getNode().scrollToIndex({
-          index: 0,
-          // animated: true,
-          viewOffset: realBarHeight,
-        });
-        this.alert.show(`新增 ${count} 条更新`);
+    if (this.shouldAnimate) {
+      if (nextProps.updateCount > this.props.updateCount) {
+        const count = nextProps.updateCount - this.props.updateCount;
+        if (this.scroll) {
+          this.scroll.getNode().scrollToIndex({
+            index: 0,
+            // animated: true,
+            viewOffset: realBarHeight,
+          });
+          this.alert.show(`新增 ${count} 条更新`);
+        }
+      } else {
+        this.alert.show('暂无新快讯');
       }
-    } else {
-      this.alert.show('暂无新快讯');
     }
   }
 
   requestData = isRefresh => {
+    this.shouldAnimate = this.shouldAnimate && isRefresh;
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
@@ -171,24 +179,12 @@ export default class PublicProject extends Component {
           },
         ]}
       />
-      <NavBar
-        gradient
-        title="首页"
-        renderRight={() => (
-          <Refresh
-            {...this.props}
-            onPress={() => {
-              this.fromRefresh = true;
-              this.requestData(true);
-            }}
-          />
-        )}
-      />
+      <NavBar gradient title="首页" />
     </Animated.View>
   );
 
   render() {
-    const { news, loading } = this.props;
+    const { news, loading, refreshButtonOpacityRange } = this.props;
     return (
       <View style={styles.container}>
         <List
@@ -218,6 +214,15 @@ export default class PublicProject extends Component {
           )}
         />
         {this.renderNavBar()}
+        <Refresh
+          {...this.props}
+          loading={this.props.loading && this.shouldAnimate}
+          style={{ opacity: refreshButtonOpacityRange }}
+          onPress={() => {
+            this.shouldAnimate = true;
+            this.requestData(true);
+          }}
+        />
       </View>
     );
   }
