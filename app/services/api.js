@@ -667,8 +667,15 @@ export function getNewsByCoinId(id) {
  * 评级机构列表
  * @returns {AxiosPromise<any>}
  */
-export function getIndustries() {
-  return request.get('/industry-investments');
+export function getIndustries(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/industry-investments', {
+    params: paramsTransform(params),
+  });
 }
 /**
  * 评级机构列表

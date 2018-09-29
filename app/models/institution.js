@@ -13,9 +13,9 @@ export default {
     current: null,
   },
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch({ payload }, { call, put }) {
       try {
-        const { data } = yield call(getIndustries);
+        const { data } = yield call(getIndustries, payload);
         yield put({
           type: 'list',
           payload: data,
