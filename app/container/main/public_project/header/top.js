@@ -43,7 +43,9 @@ const top = ({
     <View style={styles.tab.container}>
       <Touchable style={styles.tab.group.wrapper} onPress={onProjectRepoPress}>
         <View style={styles.tab.group.container}>
-          <Image source={require('asset/public_project/project_hunt.png')} />
+          <View style={styles.tab.group.imageWrapper}>
+            <Image source={require('asset/public_project/project_hunt.png')} />
+          </View>
           <Text style={styles.tab.group.title}>找项目</Text>
         </View>
       </Touchable>
@@ -52,25 +54,33 @@ const top = ({
         onPress={onInstitutionReportPress}
       >
         <View style={styles.tab.group.container}>
-          <Image source={require('asset/public_project/report.png')} />
+          <View style={styles.tab.group.imageWrapper}>
+            <Image source={require('asset/public_project/report.png')} />
+          </View>
           <Text style={styles.tab.group.title}>研报</Text>
         </View>
       </Touchable>
       <Touchable style={styles.tab.group.wrapper} onPress={onInstitutionPress}>
         <View style={styles.tab.group.container}>
-          <Image source={require('asset/public_project/institution.png')} />
+          <View style={styles.tab.group.imageWrapper}>
+            <Image source={require('asset/public_project/institution.png')} />
+          </View>
           <Text style={styles.tab.group.title}>找机构</Text>
         </View>
       </Touchable>
       <Touchable style={styles.tab.group.wrapper} onPress={onMeetingPress}>
         <View style={styles.tab.group.container}>
-          <Image source={require('asset/public_project/meeting.png')} />
+          <View style={styles.tab.group.imageWrapper}>
+            <Image source={require('asset/public_project/meeting.png')} />
+          </View>
           <Text style={styles.tab.group.title}>找会议</Text>
         </View>
       </Touchable>
       <Touchable style={styles.tab.group.wrapper} onPress={onAnnouncementPress}>
         <View style={styles.tab.group.container}>
-          <Image source={require('asset/public_project/announcement.png')} />
+          <View style={styles.tab.group.imageWrapper}>
+            <Image source={require('asset/public_project/announcement.png')} />
+          </View>
           <Text style={styles.tab.group.title}>上所公告</Text>
           {notification_badge_visible && <Badge size={8} />}
         </View>
@@ -117,6 +127,12 @@ const styles = {
     group: {
       wrapper: {
         flex: 1,
+      },
+      imageWrapper: {
+        height: 30,
+        width: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
       container: {
         flex: 1,
