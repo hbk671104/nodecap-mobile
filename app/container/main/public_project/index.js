@@ -47,7 +47,7 @@ export default class PublicProject extends Component {
         this.scroll.getNode().scrollToIndex({
           index: 0,
           // animated: true,
-          viewOffset: -realBarHeight,
+          viewOffset: realBarHeight,
         });
         this.alert.show(`新增 ${count} 条更新`);
       }
