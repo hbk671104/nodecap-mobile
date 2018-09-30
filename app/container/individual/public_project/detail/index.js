@@ -159,6 +159,18 @@ export default class PublicProjectDetail extends Component {
     this.props.setSelectorY(layout.y);
   };
 
+  handleInstitutionItemPress = item => {
+    this.props.track('点击进入机构详情');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionDetail',
+        params: {
+          id: item.id,
+        },
+      }),
+    );
+  };
+
   renderNavBarBackground = () => {
     const {
       portfolio,
@@ -246,7 +258,10 @@ export default class PublicProjectDetail extends Component {
             onPress={this.handlePageSwitch}
           />
           <View style={styles.page}>
-            <Current.component {...this.props} />
+            <Current.component
+              {...this.props}
+              onInstitutionItemPress={this.handleInstitutionItemPress}
+            />
           </View>
         </Animated.ScrollView>
         <Bottom

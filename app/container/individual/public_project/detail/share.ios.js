@@ -87,7 +87,7 @@ class ShareCoin extends Component {
     const end_at = R.pathOr(null, ['end_at'])(info);
     const token_supply = R.pathOr(null, ['token_supply'])(info);
     const conversion_ratio = R.pathOr(null, ['conversion_ratio'])(info);
-    const industryInvestments = R.pathOr([], ['industry_investments'])(info);
+    const industryInvestments = R.pathOr([], ['industry_investments'])(coin);
     const renderTitle = title => (
       <Flex>
         <View style={styles.dot} />

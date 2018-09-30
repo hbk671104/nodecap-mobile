@@ -7,6 +7,7 @@ import R from 'ramda';
 
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
+import InstitutionItem from 'component/institution/item';
 import styles from './style';
 
 @connect()
@@ -33,6 +34,10 @@ export default class Description extends PureComponent {
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
     const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
     const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
+    const industry_investments = R.pathOr('', [
+      'portfolio',
+      'industry_investments',
+    ])(this.props);
 
     return (
       <View style={styles.container}>
@@ -97,6 +102,22 @@ export default class Description extends PureComponent {
             <Text style={[styles.title, styles.site]}>团队成员</Text>
             <View>
               {R.map(m => <MemberItem key={m.id} data={m} />)(members)}
+            </View>
+          </View>
+        )}
+        {R.not(R.isEmpty(industry_investments)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>投资机构</Text>
+            <View>
+              {R.map(m => (
+                <InstitutionItem
+                  disableSubtitle
+                  style={{ paddingHorizontal: 0 }}
+                  key={m.id}
+                  data={m}
+                  onPress={() => this.props.onInstitutionItemPress(m)}
+                />
+              ))(industry_investments)}
             </View>
           </View>
         )}

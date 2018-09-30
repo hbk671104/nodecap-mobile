@@ -10,6 +10,7 @@ import NavBar, { realBarHeight } from 'component/navBar';
 import Empty from 'component/empty';
 import Gradient from 'component/uikit/gradient';
 import { hasPermission } from 'component/auth/permission/lock';
+import { NavigationActions } from 'react-navigation';
 
 import Description from './page/description';
 import Trend from './page/trend';
@@ -118,6 +119,18 @@ export default class PublicProjectDetail extends Component {
     this.props.setSelectorY(layout.y);
   };
 
+  handleInstitutionItemPress = item => {
+    this.props.track('点击进入机构详情');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionDetail',
+        params: {
+          id: item.id,
+        },
+      }),
+    );
+  };
+
   handleSubmit = status => {
     this.props.track('提交项目初始状态');
     this.props.dispatch({
@@ -222,7 +235,10 @@ export default class PublicProjectDetail extends Component {
             onPress={this.handlePageSwitch}
           />
           <View style={styles.page}>
-            <Current.component {...this.props} />
+            <Current.component
+              {...this.props}
+              onInstitutionItemPress={this.handleInstitutionItemPress}
+            />
           </View>
         </Animated.ScrollView>
         <Bottom {...this.props} onStatusPress={this.handleStatusPress} />
