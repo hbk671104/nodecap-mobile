@@ -60,6 +60,7 @@ class PublicProjectSearch extends Component {
         params: {
           item,
         },
+        key: `PublicProjectDetail_${this.props.data.id}`,
       }),
     );
   };

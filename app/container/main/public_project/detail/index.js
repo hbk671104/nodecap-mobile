@@ -36,9 +36,10 @@ const selectionList = [
 })
 @connect(({ public_project, loading, global }, props) => {
   const item = props.navigation.getParam('item');
+  const id = R.pathOr(0, ['id'])(item);
   return {
-    id: R.pathOr(0, ['id'])(item),
-    portfolio: R.pathOr({}, ['current'])(public_project),
+    id,
+    portfolio: R.pathOr({}, ['current', id])(public_project),
     loading: loading.effects['public_project/getOrganization'],
     favor_loading: loading.effects['public_project/addToWorkflow'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
@@ -80,6 +81,7 @@ export default class PublicProjectDetail extends Component {
   componentWillUnmount() {
     this.props.dispatch({
       type: 'public_project/clearCurrent',
+      id: this.props.id,
     });
   }
 
@@ -127,6 +129,7 @@ export default class PublicProjectDetail extends Component {
         params: {
           id: item.id,
         },
+        key: `InstitutionDetail_${item.id}`,
       }),
     );
   };

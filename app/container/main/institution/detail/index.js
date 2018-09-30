@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
@@ -19,7 +20,7 @@ import styles from './style';
   const id = props.navigation.getParam('id');
   return {
     id,
-    data: R.pathOr({}, ['current'])(institution),
+    data: R.pathOr({}, ['current', id])(institution),
     loading: loading.effects['institution/get'],
   };
 })
@@ -35,6 +36,7 @@ export default class InstitutionDetail extends Component {
   componentWillUnmount() {
     this.props.dispatch({
       type: 'institution/clearCurrent',
+      id: this.props.id,
     });
   }
 
@@ -45,8 +47,26 @@ export default class InstitutionDetail extends Component {
     });
   };
 
+  handleLinkPress = uri => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'WebPage',
+        params: {
+          title: R.pathOr('机构主页', ['data', 'name'])(this.props),
+          uri,
+        },
+      }),
+    );
+  };
+
   renderNavBar = () => (
-    <NavBar back gradient renderBottom={() => <Header {...this.props} />} />
+    <NavBar
+      back
+      gradient
+      renderBottom={() => (
+        <Header {...this.props} onLinkPress={this.handleLinkPress} />
+      )}
+    />
   );
 
   render() {
@@ -73,7 +93,12 @@ export default class InstitutionDetail extends Component {
           {R.not(R.isEmpty(coins)) && (
             <Group title="已投项目">
               {R.addIndex(R.map)((m, index) => (
-                <FavorItem key={m.id} data={m} showTopBorder={index !== 0} />
+                <FavorItem
+                  institutionId={this.props.id}
+                  key={m.id}
+                  data={m}
+                  showTopBorder={index !== 0}
+                />
               ))(coins)}
             </Group>
           )}

@@ -66,7 +66,7 @@ const header = ({
               {name}
             </Text>
           </Shimmer>
-          <Shimmer style={{ marginTop: 4 }} animating={loading}>
+          <View style={{ marginTop: 4 }}>
             <View style={styles.tag.wrapper}>
               <Text style={styles.top.subtitle}>{token}</Text>
               <View
@@ -88,7 +88,7 @@ const header = ({
                 )(category)}
               </View>
             </View>
-          </Shimmer>
+          </View>
         </View>
         <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
           <Avatar size={50} source={{ uri: logo }} />

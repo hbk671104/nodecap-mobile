@@ -45,6 +45,7 @@ class FavorItem extends PureComponent {
         params: {
           item: this.props.data,
         },
+        key: `PublicProjectDetail_${this.props.data.id}`,
       }),
     );
   };
@@ -64,6 +65,7 @@ class FavorItem extends PureComponent {
     this.props.dispatch({
       type: is_focused ? 'public_project/unfavor' : 'public_project/favor',
       payload: id,
+      institutionId: this.props.institutionId,
     });
   };
 

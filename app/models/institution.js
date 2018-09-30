@@ -61,15 +61,23 @@ export default {
       };
     },
     save(state, action) {
+      const { payload } = action;
       return {
         ...state,
-        current: action.payload,
+        current: {
+          ...state.current,
+          [payload.id]: payload,
+        },
       };
     },
-    clearCurrent(state) {
+    clearCurrent(state, action) {
+      const { id } = action;
       return {
         ...state,
-        current: null,
+        current: {
+          ...state.current,
+          [id]: null,
+        },
       };
     },
   },

@@ -22,6 +22,18 @@ export default class Description extends PureComponent {
     );
   };
 
+  handleUrlPress = uri => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'WebPage',
+        params: {
+          title: R.pathOr('', ['portfolio', 'name'])(this.props),
+          uri,
+        },
+      }),
+    );
+  };
+
   render() {
     const description = R.pathOr('', ['portfolio', 'description'])(this.props);
     const siteUrl =
@@ -63,7 +75,10 @@ export default class Description extends PureComponent {
         {R.not(R.isNil(siteUrl)) && (
           <View>
             <Text style={[styles.title, styles.site]}>官网</Text>
-            <Text style={styles.link} onPress={() => Linking.openURL(siteUrl)}>
+            <Text
+              style={styles.link}
+              onPress={() => this.handleUrlPress(siteUrl)}
+            >
               {siteUrl}
             </Text>
           </View>

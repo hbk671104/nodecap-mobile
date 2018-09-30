@@ -82,6 +82,7 @@ export default class PublicProject extends Component {
         params: {
           item,
         },
+        key: `PublicProjectDetail_${this.props.data.id}`,
       }),
     );
   };

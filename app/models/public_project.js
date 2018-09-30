@@ -171,18 +171,19 @@ export default {
         console.log(error);
       }
     },
-    *refresh(_, { put, select }) {
+    *refresh({ id, institutionId }, { put, select }) {
       try {
         // 选择性刷新详情与搜索页
         const current = yield select(state =>
-          R.path(['public_project', 'current'])(state),
+          R.path(['public_project', 'current', id])(state),
         );
         const search = yield select(state =>
           R.path(['public_project', 'search'])(state),
         );
-        const institution = yield select(state =>
-          R.path(['institution', 'current'])(state),
-        );
+        // 需要 institution id
+        // const institution = yield select(state =>
+        //   R.path(['institution', 'current'])(state),
+        // );
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
@@ -195,10 +196,10 @@ export default {
             payload: R.path(['params'])(search),
           });
         }
-        if (!R.isNil(institution)) {
+        if (institutionId) {
           yield put.resolve({
             type: 'institution/get',
-            payload: R.path(['id'])(institution),
+            payload: institutionId,
           });
         }
 
@@ -295,7 +296,7 @@ export default {
         });
 
         const current = yield select(state =>
-          R.path(['public_project', 'current'])(state),
+          R.path(['public_project', 'current', id])(state),
         );
         if (!R.isNil(current)) {
           yield put.resolve({
@@ -365,7 +366,7 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, callback }, { call, put }) {
+    *favor({ payload, institutionId, callback }, { call, put }) {
       try {
         const { status: response_status } = yield call(favorCoin, [payload]);
         yield put({
@@ -377,6 +378,8 @@ export default {
         // 刷新
         yield put({
           type: 'refresh',
+          id: payload,
+          institutionId,
         });
 
         if (callback) {
@@ -386,7 +389,7 @@ export default {
         console.log(e);
       }
     },
-    *unfavor({ payload, callback }, { call, put }) {
+    *unfavor({ payload, institutionId, callback }, { call, put }) {
       try {
         const { status: response_status } = yield call(unfavorCoin, payload);
         yield put({
@@ -398,6 +401,8 @@ export default {
         // 刷新
         yield put({
           type: 'refresh',
+          id: payload,
+          institutionId,
         });
 
         if (callback) {
@@ -415,7 +420,7 @@ export default {
         );
 
         const current = yield select(state =>
-          R.path(['public_project', 'current'])(state),
+          R.path(['public_project', 'current', R.path([0])(payload)])(state),
         );
         if (!R.isNil(current)) {
           yield put.resolve({
@@ -497,24 +502,36 @@ export default {
       };
     },
     current(state, action) {
-      return {
-        ...state,
-        current: action.payload,
-      };
-    },
-    saveCurrent(state, action) {
+      const { payload } = action;
       return {
         ...state,
         current: {
-          ...(state.current || {}),
-          ...action.payload,
+          ...state.current,
+          [payload.id]: payload,
         },
       };
     },
-    clearCurrent(state) {
+    saveCurrent(state, action) {
+      const { payload } = action;
       return {
         ...state,
-        current: null,
+        current: {
+          ...state.current,
+          [payload.id]: {
+            ...(state.current[payload.id] || {}),
+            ...payload,
+          },
+        },
+      };
+    },
+    clearCurrent(state, action) {
+      const { id } = action;
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          [id]: null,
+        },
       };
     },
     saveInvest(state, action) {

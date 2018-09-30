@@ -40,6 +40,7 @@ export default class InstitutionReport extends Component {
         params: {
           id: item.id,
         },
+        key: `InstitutionDetail_${item.id}`,
       }),
     );
   };

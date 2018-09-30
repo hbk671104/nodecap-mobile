@@ -81,6 +81,7 @@ import Announcement from 'container/main/announcement/index';
 import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
+import WebPage from 'container/webview';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -207,6 +208,7 @@ const MainStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WebPage,
   },
   {
     headerMode: 'none',
@@ -294,6 +296,7 @@ const IndividualStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WebPage,
   },
   {
     headerMode: 'none',
