@@ -11,12 +11,12 @@ import styles from './style';
 
 export default class Financing extends PureComponent {
   renderSalesInfo = info => {
-    const start_at = R.pathOr('--', ['start_at'])(info);
-    const end_at = R.pathOr('--', ['end_at'])(info);
+    const start_at = R.pathOr('', ['start_at'])(info);
+    const end_at = R.pathOr('', ['end_at'])(info);
     const token_supply = R.pathOr('--', ['token_supply'])(info);
     const soft_cap = R.pathOr('--', ['soft_cap'])(info);
     const hard_cap = R.pathOr('--', ['hard_cap'])(info);
-    const isEmpty = (v) => {
+    const isEmpty = v => {
       return v === '--' || v === '';
     };
     if (
@@ -35,14 +35,14 @@ export default class Financing extends PureComponent {
           titleStyle={styles.item.title}
           valueStyle={styles.item.value}
           name="开始时间"
-          value={`${moment.unix(start_at).format('YYYY-MM-DD')}`}
+          value={start_at ? moment.unix(start_at).format('YYYY-MM-DD') : null}
         />
         <Field
           style={styles.item.container}
           titleStyle={styles.item.title}
           valueStyle={styles.item.value}
           name="结束时间"
-          value={`${moment.unix(end_at).format('YYYY-MM-DD')}`}
+          value={end_at ? moment.unix(end_at).format('YYYY-MM-DD') : null}
         />
         <Field
           style={styles.item.container}
@@ -76,7 +76,7 @@ export default class Financing extends PureComponent {
     const token_distribution = R.pathOr('--', ['token_distribution'])(info);
     const country_limitation = R.pathOr('--', ['country_limitation'])(info);
     const discount = R.pathOr('--', ['discount'])(info);
-    const isEmpty = (v) => {
+    const isEmpty = v => {
       return v === '--' || v === '';
     };
     if (

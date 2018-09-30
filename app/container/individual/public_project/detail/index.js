@@ -45,18 +45,17 @@ const selectionList = [
 })
 @connect(({ public_project, loading, login }, props) => {
   const item = props.navigation.getParam('item');
-  const market = R.pathOr({}, ['current', 'market'])(public_project);
   const id = R.pathOr(0, ['id'])(item);
+  const portfolio = R.pathOr({}, ['current', id])(public_project);
+  const market = R.pathOr({}, ['market'])(portfolio);
   return {
     id,
-    portfolio: R.pathOr({}, ['current', id])(public_project),
+    portfolio,
     loading: loading.effects['public_project/get'],
     favor_loading: loading.effects['public_project/favor'],
     can_calculate: R.not(R.isEmpty(market)),
     logged_in: !!login.token,
-    base_symbol: R.pathOr('CNY', ['current', 'market', 'quote'])(
-      public_project,
-    ),
+    base_symbol: R.pathOr('CNY', ['market', 'quote'])(portfolio),
   };
 })
 @compose(

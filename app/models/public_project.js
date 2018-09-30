@@ -245,6 +245,7 @@ export default {
         yield put({
           type: 'saveInvest',
           relatedType: 'market',
+          id: payload,
           payload: data,
         });
       } catch (e) {
@@ -257,6 +258,7 @@ export default {
         yield put({
           type: 'saveInvest',
           relatedType: 'roi',
+          id: payload,
           payload: data,
         });
       } catch (e) {
@@ -269,6 +271,7 @@ export default {
         yield put({
           type: 'saveInvest',
           relatedType: 'trend',
+          id: payload,
           payload: data,
         });
       } catch (e) {
@@ -280,6 +283,7 @@ export default {
         const investTokens = yield call(getInvestmentsByCoinID, payload);
         yield put({
           type: 'saveInvest',
+          id: payload,
           payload: investTokens.data,
           relatedType: 'investments',
         });
@@ -319,6 +323,7 @@ export default {
         yield put({
           type: 'saveCurrent',
           payload: {
+            id,
             symbols: data,
           },
         });
@@ -337,6 +342,7 @@ export default {
         yield put({
           type: 'saveCurrent',
           payload: {
+            id,
             news: data,
           },
         });
@@ -355,6 +361,7 @@ export default {
         yield put({
           type: 'saveCurrent',
           payload: {
+            id,
             finance_info: data,
           },
         });
@@ -535,11 +542,16 @@ export default {
       };
     },
     saveInvest(state, action) {
+      const { payload, id } = action;
+
       return {
         ...state,
         current: {
           ...(state.current || {}),
-          [action.relatedType]: action.payload,
+          [id]: {
+            ...(state.current[id] || {}),
+            [action.relatedType]: action.payload,
+          },
         },
       };
     },
