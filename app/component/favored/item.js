@@ -97,6 +97,7 @@ class FavorItem extends PureComponent {
             <View style={styles.content.tag.wrapper}>
               {R.pipe(
                 R.take(2),
+                R.filter(t => !R.isEmpty(R.trim(t))),
                 R.addIndex(R.map)((t, i) => {
                   const textColor = R.pathOr('#939393', [i, 'textColor'])(
                     colorMap,
@@ -116,7 +117,7 @@ class FavorItem extends PureComponent {
                       <Text
                         style={[styles.content.tag.title, { color: textColor }]}
                       >
-                        {t || '--'}
+                        {R.trim(t)}
                       </Text>
                     </View>
                   );

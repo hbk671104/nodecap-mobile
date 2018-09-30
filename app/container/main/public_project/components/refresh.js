@@ -22,6 +22,7 @@ class Refresh extends PureComponent {
     return (
       <Animated.View style={[styles.container, style]}>
         <Touchable
+          borderless
           style={styles.content}
           disabled={loading}
           hitSlop={styles.hitSlop}

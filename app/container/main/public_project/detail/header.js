@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, Text } from 'react-native';
+import { View, Animated, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
@@ -15,7 +15,7 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
   const logo = R.pathOr('', ['icon'])(data);
   const category = R.pipe(
     R.pathOr([], ['category']),
-    R.join(' | '),
+    R.take(2),
   )(data);
 
   return (
@@ -33,12 +33,28 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
               {name}
             </Text>
           </Shimmer>
-          <Shimmer style={{ marginTop: 8 }} animating={loading}>
-            <Text style={styles.top.subtitle}>
-              {token}
-              {'    '}
-              {category}
-            </Text>
+          <Shimmer style={{ marginTop: 4 }} animating={loading}>
+            <View style={styles.tag.wrapper}>
+              <Text style={styles.top.subtitle}>{token}</Text>
+              <View
+                style={[
+                  {
+                    flex: 1,
+                    marginLeft: 8,
+                  },
+                  styles.tag.wrapper,
+                ]}
+              >
+                {R.pipe(
+                  R.filter(t => !R.isEmpty(R.trim(t))),
+                  R.map(k => (
+                    <View key={k} style={styles.tag.container}>
+                      <Text style={styles.tag.title}>{R.trim(k)}</Text>
+                    </View>
+                  )),
+                )(category)}
+              </View>
+            </View>
           </Shimmer>
         </View>
         <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
@@ -103,6 +119,25 @@ const styles = {
       fontSize: 12,
       color: 'white',
       lineHeight: 17,
+    },
+  },
+  tag: {
+    wrapper: {
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    container: {
+      height: 19,
+      paddingHorizontal: 3,
+      borderRadius: 2,
+      marginLeft: 8,
+      justifyContent: 'center',
+      borderColor: 'white',
+      borderWidth: StyleSheet.hairlineWidth,
+    },
+    title: {
+      fontSize: 11,
+      color: 'white',
     },
   },
 };
