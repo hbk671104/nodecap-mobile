@@ -1,6 +1,6 @@
 {
   "name": "nodecap",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "private": true,
   "scripts": {
     "precommit": "npm run lint-staged",
@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^1.1.2",
+    "@nart/react-native-swiper": "^1.5.13",
     "accounting": "^0.4.1",
     "antd-mobile": "2.1.11",
     "axios": "^0.18.0",
@@ -48,6 +49,7 @@
     "react-native-easy-grid": "^0.2.0",
     "react-native-elements": "^0.19.1",
     "react-native-exit-app": "^1.0.0",
+    "react-native-global-props": "^1.1.3",
     "react-native-image-picker": "^0.26.10",
     "react-native-iphone-x-helper": "^1.1.0",
     "react-native-keyboard-aware-scroll-view": "^0.7.2",
@@ -67,7 +69,7 @@
     "react-native-sentry": "^0.39.0",
     "react-native-shimmer": "^0.3.2",
     "react-native-splash-screen": "^3.1.1",
-    "react-native-svg": "^7.0.2",
+    "react-native-svg": "6.5.2",
     "react-native-swiper": "^1.5.13",
     "react-native-tab-view": "^1.0.2",
     "react-native-vector-icons": "^5.0.0",

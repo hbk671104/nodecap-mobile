@@ -1,8 +1,9 @@
 import React from 'react';
-import { AppRegistry, UIManager, AsyncStorage } from 'react-native';
+import { AppRegistry, UIManager, AsyncStorage, Platform } from 'react-native';
 import { autoRehydrate, persistStore } from 'redux-persist';
 import { Sentry } from 'react-native-sentry';
 import Orientation from 'react-native-orientation';
+import { setCustomText } from 'react-native-global-props';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -25,6 +26,7 @@ import publicProjectModel from './app/models/public_project';
 import institutionModel from './app/models/institution';
 import newsModel from './app/models/news';
 import favoredModel from './app/models/favored';
+import activityModel from './app/models/activity';
 
 export const app = dva({
   initialState: {},
@@ -45,6 +47,7 @@ export const app = dva({
     institutionModel,
     newsModel,
     favoredModel,
+    activityModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -62,7 +65,6 @@ export const persist = callback => {
         'fund',
         'user',
         'institution',
-        // 'public_project',
         'notification',
         'news',
       ],
@@ -86,6 +88,13 @@ if (!global.__DEV__) {
     'https://ddb97cb8b57843c5bb330456bd6e8353@sentry.io/1234872',
   ).install();
 }
+
+setCustomText({
+  style: {
+    fontFamily: Platform.OS === 'ios' ? 'PingFangSC-Regular' : 'Roboto',
+  },
+  allowFontScaling: false,
+});
 
 AppRegistry.registerComponent('nodecap', () => App);
 

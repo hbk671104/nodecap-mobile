@@ -21,7 +21,6 @@ import { Toast } from 'antd-mobile';
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
-import { handleTabBarPress } from './utils/tabbar_handler';
 import { shadow } from './utils/style';
 
 // Screen
@@ -76,6 +75,13 @@ import MyProfile from 'container/main/self/profile/mine';
 import MyCompany from 'container/main/self/profile/company';
 import EditProfile from 'container/main/self/profile/edit';
 import Feedback from 'container/main/self/feedback';
+import MeetingList from 'container/main/activity';
+import MeetingListRaw from 'container/main/activity/raw';
+import Announcement from 'container/main/announcement/index';
+import ProjectRepo from 'container/main/project_repo';
+import Institution from 'container/main/institution';
+import InstitutionDetail from 'container/main/institution/detail';
+import WebPage from 'container/webview';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -94,7 +100,13 @@ const Tab = createBottomTabNavigator(
     PublicProject: {
       screen: PublicProject,
       navigationOptions: {
-        title: '项目公海',
+        title: '首页',
+      },
+    },
+    ProjectRepo: {
+      screen: ProjectRepo,
+      navigationOptions: {
+        title: '项目大全',
       },
     },
     Portfolio: {
@@ -115,18 +127,18 @@ const Tab = createBottomTabNavigator(
     //     title: '资产管理',
     //   },
     // },
-    NotificationCenter: {
-      screen: NotificationCenter,
-      navigationOptions: {
-        title: '项目动态',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+    // NotificationCenter: {
+    //   screen: NotificationCenter,
+    //   navigationOptions: {
+    //     title: '项目动态',
+    //     tabBarOnPress: ({ defaultHandler }) => {
+    //       defaultHandler();
 
-          // some other things
-          handleTabBarPress('NotificationCenter');
-        },
-      },
-    },
+    //       // some other things
+    //       handleTabBarPress('NotificationCenter');
+    //     },
+    //   },
+    // },
     Self: {
       screen: Self,
       navigationOptions: {
@@ -191,6 +203,12 @@ const MainStack = createStackNavigator(
     MyProfile,
     MyCompany,
     EditProfile,
+    MeetingList,
+    MeetingListRaw,
+    Announcement,
+    Institution,
+    InstitutionDetail,
+    WebPage,
   },
   {
     headerMode: 'none',
@@ -205,10 +223,16 @@ const IndividualTab = createBottomTabNavigator(
         title: '首页',
       },
     },
-    Trending: {
-      screen: NotificationCenter,
+    // Trending: {
+    //   screen: NotificationCenter,
+    //   navigationOptions: {
+    //     title: '动态',
+    //   },
+    // },
+    ProjectRepo: {
+      screen: ProjectRepo,
       navigationOptions: {
-        title: '动态',
+        title: '项目大全',
       },
     },
     Favored: {
@@ -267,6 +291,12 @@ const IndividualStack = createStackNavigator(
     ChangeLog,
     Login,
     Feedback,
+    MeetingList,
+    MeetingListRaw,
+    Announcement,
+    Institution,
+    InstitutionDetail,
+    WebPage,
   },
   {
     headerMode: 'none',

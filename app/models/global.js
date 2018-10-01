@@ -26,10 +26,6 @@ export default {
       try {
         // put => non-blocking, put.resolve => blocking
         yield put.resolve({
-          type: 'startup',
-        });
-
-        yield put.resolve({
           type: 'initial',
         });
 
@@ -54,13 +50,28 @@ export default {
         console.log(e);
       }
     },
-    *startup(_, { put }) {
+    *startup({ callback }, { call, put }) {
       try {
+        // sensor set profile
+        global.setProfile({
+          client_type: '个人版',
+        });
+
         yield put.resolve({
           type: 'getConstant',
         });
-      } catch (e) {
-        console.log(e);
+
+        yield put(
+          NavigationActions.navigate({
+            routeName: 'Individual',
+          }),
+        );
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
     *initial(_, { select, put }) {
@@ -115,14 +126,14 @@ export default {
         console.log(error);
       }
     },
-    *initIndividualEnd({ callback }, { call, put, select }) {
+    *initIndividualEnd({ callback }, { call, put, select, all }) {
       try {
         // http header config
         request.defaults.baseURL = Config.API_INDIVIDUAL_URL;
         request.defaults.headers.common['X-Company-ID'] = null;
 
         const companies = yield select(state =>
-          R.path(['login', 'companies'])(state),
+          R.path(['user', 'currentUser', 'companies'])(state),
         );
         const user = yield select(state =>
           R.path(['user', 'currentUser'])(state),
@@ -148,9 +159,15 @@ export default {
         JPush.setAlias(`user_${user_id}`, () => null);
         JPush.cleanTags(() => null);
 
-        yield put.resolve({
-          type: 'user/fetchCurrent',
-        });
+        // constant
+        yield all([
+          put.resolve({
+            type: 'getConstant',
+          }),
+          put.resolve({
+            type: 'user/fetchCurrent',
+          }),
+        ]);
 
         if (callback) {
           yield call(callback);
@@ -164,7 +181,7 @@ export default {
         // http headers
         request.defaults.baseURL = Config.API_URL;
         const companies = yield select(state =>
-          R.path(['login', 'companies'])(state),
+          R.path(['user', 'currentUser', 'companies'])(state),
         );
         const companyID = R.pathOr(0, [0, 'id'])(companies);
         request.defaults.headers.common['X-Company-ID'] = companyID;
@@ -193,6 +210,9 @@ export default {
         JPush.setTags([`company_${companyID}`], () => null);
 
         yield all([
+          put.resolve({
+            type: 'getConstant',
+          }),
           put.resolve({
             type: 'getPermission',
           }),

@@ -5,6 +5,7 @@ import R from 'ramda';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 
+import PublicProjectItem from 'component/public_project/item';
 import Avatar from 'component/uikit/avatar';
 import Touchable from 'component/uikit/touchable';
 
@@ -29,6 +30,7 @@ const colorMap = [
 
 @connect(({ login }) => ({
   logged_in: !!login.token,
+  in_individual: login.in_individual,
 }))
 class FavorItem extends PureComponent {
   static propType = {
@@ -43,6 +45,7 @@ class FavorItem extends PureComponent {
         params: {
           item: this.props.data,
         },
+        key: `PublicProjectDetail_${this.props.data.id}`,
       }),
     );
   };
@@ -62,21 +65,27 @@ class FavorItem extends PureComponent {
     this.props.dispatch({
       type: is_focused ? 'public_project/unfavor' : 'public_project/favor',
       payload: id,
+      institutionId: this.props.institutionId,
     });
   };
 
   render() {
-    const { style, data, onPress } = this.props;
+    const { style, data, showTopBorder, in_individual } = this.props;
+    if (!in_individual) {
+      return <PublicProjectItem data={data} onPress={this.handlePress} />;
+    }
     const icon = R.pathOr('', ['icon'])(data);
     const project_name = R.pathOr('--', ['name'])(data);
-    const status = R.pathOr('--', ['finance_status'])(data);
+    const status = R.pathOr('', ['finance_status'])(data);
     const category = R.pathOr([], ['category'])(data);
     const description = R.pathOr('--', ['description'])(data);
     const stars = R.pathOr(0, ['stars'])(data);
     const favored = R.pathOr(false, ['is_focused'])(data);
     return (
       <Touchable foreground onPress={this.handlePress}>
-        <View style={[styles.container, style]}>
+        <View
+          style={[styles.container, showTopBorder && styles.topBorder, style]}
+        >
           <Avatar
             size={45}
             source={
@@ -88,45 +97,65 @@ class FavorItem extends PureComponent {
           <View style={styles.content.container}>
             <Text style={styles.content.title}>{project_name}</Text>
             <View style={styles.content.tag.wrapper}>
-              {R.addIndex(R.map)((t, i) => {
-                const textColor = R.pathOr('#939393', [i, 'textColor'])(
-                  colorMap,
-                );
-                const backgroundColor = R.pathOr('#E2E2E2', [
-                  i,
-                  'backgroundColor',
-                ])(colorMap);
-                return (
-                  <View
-                    key={`${i}`}
-                    style={[styles.content.tag.container, { backgroundColor }]}
-                  >
-                    <Text
-                      style={[styles.content.tag.title, { color: textColor }]}
+              {R.pipe(
+                R.take(2),
+                R.filter(t => !R.isEmpty(R.trim(t))),
+                R.addIndex(R.map)((t, i) => {
+                  const textColor = R.pathOr('#939393', [i, 'textColor'])(
+                    colorMap,
+                  );
+                  const backgroundColor = R.pathOr('#E2E2E2', [
+                    i,
+                    'backgroundColor',
+                  ])(colorMap);
+                  return (
+                    <View
+                      key={`${i}`}
+                      style={[
+                        styles.content.tag.container,
+                        { backgroundColor },
+                      ]}
                     >
-                      {t || '--'}
-                    </Text>
-                  </View>
-                );
-              })(category)}
+                      <Text
+                        style={[styles.content.tag.title, { color: textColor }]}
+                      >
+                        {R.trim(t)}
+                      </Text>
+                    </View>
+                  );
+                }),
+              )(category)}
             </View>
-            <Text style={styles.content.subtitle} numberOfLines={1}>
+            <Text
+              style={[
+                styles.content.subtitle,
+                R.isEmpty(category) && { marginTop: 0 },
+              ]}
+              numberOfLines={1}
+            >
               {description}
             </Text>
           </View>
           <View style={styles.end.container}>
-            <Text
-              style={[
-                styles.end.status,
-                status === '未设定' && { color: 'rgba(0, 0, 0, 0.45)' },
-                status === '进行中' && { color: '#09AC32' },
-                status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
-              ]}
-            >
-              {status}
-            </Text>
+            {!R.isEmpty(status) && (
+              <Text
+                style={[
+                  styles.end.status,
+                  status === '未设定' && { color: 'rgba(0, 0, 0, 0.45)' },
+                  status === '进行中' && { color: '#09AC32' },
+                  status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
+                ]}
+              >
+                {status}
+              </Text>
+            )}
             <Touchable foreground onPress={this.handleFavorPress}>
-              <View style={styles.end.favor.container}>
+              <View
+                style={[
+                  styles.end.favor.container,
+                  R.isEmpty(status) && { marginTop: 0 },
+                ]}
+              >
                 <Image
                   source={
                     favored
@@ -219,6 +248,10 @@ const styles = {
         color: 'rgba(0, 0, 0, 0.65)',
       },
     },
+  },
+  topBorder: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: '#E9E9E9',
   },
 };
 

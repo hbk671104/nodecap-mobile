@@ -3,7 +3,7 @@ export default {
     height: 30,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
+    paddingLeft: 12,
     borderRadius: 4,
     backgroundColor: '#0A9FF7',
   },
@@ -14,7 +14,9 @@ export default {
     alignSelf: 'center',
   },
   icon: {
-    container: {},
+    container: {
+      marginRight: 12,
+    },
   },
   input: {
     flex: 1,

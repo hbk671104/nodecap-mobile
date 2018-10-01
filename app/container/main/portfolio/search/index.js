@@ -71,6 +71,7 @@ class Search extends Component {
         renderTitle={() => (
           <View style={styles.searchBar.container}>
             <SearchBar
+              showMagnifier={R.isEmpty(this.state.searchText)}
               style={styles.searchBar.bar}
               autoFocus
               onChange={this.onSearchTextChange}

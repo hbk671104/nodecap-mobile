@@ -1,4 +1,8 @@
-import { getIndustries, getReportsByIndustryId } from '../services/api';
+import {
+  getIndustries,
+  getIndustryDetail,
+  getReportsByIndustry,
+} from '../services/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -6,11 +10,12 @@ export default {
   state: {
     list: null,
     report: null,
+    current: null,
   },
   effects: {
-    *fetch(_, { call, put }) {
+    *fetch({ payload }, { call, put }) {
       try {
-        const { data } = yield call(getIndustries);
+        const { data } = yield call(getIndustries, payload);
         yield put({
           type: 'list',
           payload: data,
@@ -19,11 +24,22 @@ export default {
         console.log(e);
       }
     },
-    *fetchReports({ payload, id }, { call, put }) {
+    *fetchReports({ payload }, { call, put }) {
       try {
-        const { data } = yield call(getReportsByIndustryId, id, payload);
+        const { data } = yield call(getReportsByIndustry, payload);
         yield put({
           type: 'report',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *get({ payload }, { call, put }) {
+      try {
+        const { data } = yield call(getIndustryDetail, payload);
+        yield put({
+          type: 'save',
           payload: data,
         });
       } catch (e) {
@@ -35,7 +51,7 @@ export default {
     list(state, action) {
       return {
         ...state,
-        list: action.payload,
+        list: paginate(state.list, action.payload),
       };
     },
     report(state, action) {
@@ -44,10 +60,24 @@ export default {
         report: paginate(state.report, action.payload),
       };
     },
-    clearReport(state) {
+    save(state, action) {
+      const { payload } = action;
       return {
         ...state,
-        report: null,
+        current: {
+          ...state.current,
+          [payload.id]: payload,
+        },
+      };
+    },
+    clearCurrent(state, action) {
+      const { id } = action;
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          [id]: null,
+        },
       };
     },
   },

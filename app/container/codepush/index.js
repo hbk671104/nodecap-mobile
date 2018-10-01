@@ -29,7 +29,6 @@ class CodePushPage extends Component {
 
   render() {
     const { remoteInfo } = this.state;
-    const version = R.pathOr('', ['appVersion'])(remoteInfo);
     const description = R.pathOr('', ['description'])(remoteInfo);
     return (
       <View style={styles.container}>
@@ -45,12 +44,10 @@ class CodePushPage extends Component {
             <Bar color="#108EE9" width={255} progress={this.props.codepush} />
             <View style={styles.bar.wrapper}>
               <Text style={styles.bar.title}>
-                {!!version && (
-                  <Text style={styles.bar.highlight}>v{appInfo.version}</Text>
-                )}{' '}
+                <Text style={styles.bar.highlight}>v{appInfo.version}</Text>
                 正在更新中...
               </Text>
-              {!!description && (
+              {!R.isEmpty(description) && (
                 <Text style={styles.bar.content}>{description}</Text>
               )}
             </View>

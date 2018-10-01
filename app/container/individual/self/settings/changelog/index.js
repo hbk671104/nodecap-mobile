@@ -12,6 +12,37 @@ class ChangeLog extends Component {
         <NavBar gradient back title="版本更新" />
         <ScrollView>
           <ChangeLogItem
+            version="v6.1.0"
+            date="2018-09-29"
+            changelog={[
+              '首页全面改版，更丰富的内容入口',
+              '增加找会议',
+              '增加机构信息',
+              '增加快讯信息流',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
+            version="v6.0.0"
+            date="2018-09-22"
+            changelog={[
+              '开放个人版6000+项目库',
+              '新增项目搜索',
+              'bug修复及交互优化',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
+            version="v5.5.0"
+            date="2018-09-08"
+            changelog={[
+              '新增项目公海，优质项目供您挑选',
+              '新增评级、研报，深度观点一手掌握',
+              '新增机构成员的默认角色',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
             version="v5.1.4"
             date="2018-08-28"
             changelog={[

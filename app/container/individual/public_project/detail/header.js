@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, Text } from 'react-native';
+import { View, Animated, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
 import Price from 'component/price';
@@ -24,11 +24,14 @@ const header = ({
   can_calculate,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
-  const token = R.pathOr('--', ['symbol'])(data);
+  const token = R.pipe(
+    R.pathOr('--', ['symbol']),
+    R.toUpper,
+  )(data);
   const logo = R.pathOr('', ['icon'])(data);
   const category = R.pipe(
     R.pathOr([], ['category']),
-    R.join(' | '),
+    R.take(2),
   )(data);
   const market = R.pathOr({}, ['market'])(portfolio);
   const current_price = R.pathOr('--', ['current_price', 'CNY'])(market);
@@ -63,16 +66,32 @@ const header = ({
               {name}
             </Text>
           </Shimmer>
-          <Shimmer style={{ marginTop: 8 }} animating={loading}>
-            <Text style={styles.top.subtitle}>
-              {token}
-              {'    '}
-              {category}
-            </Text>
-          </Shimmer>
+          <View style={{ marginTop: 4 }}>
+            <View style={styles.tag.wrapper}>
+              <Text style={styles.top.subtitle}>{token}</Text>
+              <View
+                style={[
+                  {
+                    flex: 1,
+                    marginLeft: 8,
+                  },
+                  styles.tag.wrapper,
+                ]}
+              >
+                {R.pipe(
+                  R.filter(t => !R.isEmpty(R.trim(t))),
+                  R.map(k => (
+                    <View key={k} style={styles.tag.container}>
+                      <Text style={styles.tag.title}>{R.trim(k)}</Text>
+                    </View>
+                  )),
+                )(category)}
+              </View>
+            </View>
+          </View>
         </View>
-        <Animated.View style={avatarWrapperStyle}>
-          <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+        <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
+          <Avatar size={50} source={{ uri: logo }} />
         </Animated.View>
       </View>
       {can_calculate ? (
@@ -159,6 +178,25 @@ const styles = {
       fontSize: 12,
       color: 'white',
       lineHeight: 17,
+    },
+  },
+  tag: {
+    wrapper: {
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    container: {
+      height: 19,
+      paddingHorizontal: 3,
+      borderRadius: 2,
+      marginLeft: 8,
+      justifyContent: 'center',
+      borderColor: 'white',
+      borderWidth: StyleSheet.hairlineWidth,
+    },
+    title: {
+      fontSize: 11,
+      color: 'white',
     },
   },
 };

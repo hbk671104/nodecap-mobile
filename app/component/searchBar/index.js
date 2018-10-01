@@ -15,9 +15,11 @@ const searchBar = props => (
       placeholderTextColor={props.placeholderTextColor}
       returnKeyType={props.returnKeyType}
     />
-    <View style={styles.icon.container}>
-      <NodeCapIcon name="sousuo" size={16} color={props.iconColor} />
-    </View>
+    {props.showMagnifier && (
+      <View style={styles.icon.container}>
+        <NodeCapIcon name="sousuo" size={16} color={props.iconColor} />
+      </View>
+    )}
   </View>
 );
 
@@ -26,6 +28,7 @@ searchBar.defaultProps = {
   placeholderTextColor: 'white',
   returnKeyType: 'done',
   iconColor: 'white',
+  showMagnifier: true,
 };
 
 searchBar.propTypes = {
@@ -34,6 +37,7 @@ searchBar.propTypes = {
   placeholderTextColor: PropTypes.string,
   returnKeyType: PropTypes.string,
   iconColor: PropTypes.string,
+  showMagnifier: PropTypes.bool,
 };
 
 export default searchBar;

@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import Config from '../runtime';
 
 /**
  * 登录
@@ -25,7 +26,7 @@ export function setPassword({
   confirm_password,
   password,
 }) {
-  return request.post('/users/reset-password', {
+  return request.post(`${Config.API_URL}/users/reset-password`, {
     password_reset_token,
     confirm_password,
     password,
@@ -630,7 +631,7 @@ export function getCoinInfo(cid) {
   return request.get(`/coins/${cid}`);
 }
 
-export function favorCoin(payload) {
+export function addToWorkflow(payload) {
   return request.post('/coins/public', payload);
 }
 
@@ -667,8 +668,15 @@ export function getNewsByCoinId(id) {
  * 评级机构列表
  * @returns {AxiosPromise<any>}
  */
-export function getIndustries() {
-  return request.get('/industries');
+export function getIndustries(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/industry-investments', {
+    params: paramsTransform(params),
+  });
 }
 /**
  * 评级机构列表
@@ -688,13 +696,13 @@ export function getPublicProjects(params) {
  * 评级机构列表
  * @returns {AxiosPromise<any>}
  */
-export function getReportsByIndustryId(id, params = {}) {
+export function getReportsByIndustry(params = {}) {
   const paramsTransform = p => ({
     ...params,
     page: p.currentPage,
     'per-page': p.pageSize,
   });
-  return request.get(`/industries/${id}/items`, {
+  return request.get('/industries/items', {
     params: paramsTransform(params),
   });
 }
@@ -715,4 +723,17 @@ export function getLiveList(lastId) {
 
 export function getCoinSymbol(coin_id) {
   return request.get(`/coins/${coin_id}/symbols`);
+}
+
+export function meetingList(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/activities', { params: paramsTransform(params) });
+}
+
+export function getIndustryDetail(id) {
+  return request.get(`industry-investments/${id}`);
 }

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import R from 'ramda';
+import * as Animatable from 'react-native-animatable';
 
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
@@ -24,21 +25,13 @@ export default class Loader extends Component {
 
   componentWillMount() {
     persist(() => {
-      if (this.props.isLogin) {
-        this.props.dispatch({
-          type: 'global/bootstrap',
-          callback: () => {
-            SplashScreen.hide();
-          },
-        });
-      } else {
-        this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: 'Individual',
-          }),
-        );
-        SplashScreen.hide();
-      }
+      this.props.dispatch({
+        type: this.props.isLogin ? 'global/bootstrap' : 'global/startup',
+        callback: () => {
+          SplashScreen.hide();
+        },
+      });
+
       initializeListeners('root', this.props.router);
     });
   }
@@ -47,7 +40,19 @@ export default class Loader extends Component {
     return (
       <View style={styles.container}>
         <NavBar barStyle="dark-content" />
-        <Loading title="Greatness Await..." />
+        <View style={styles.wrapper}>
+          <View style={styles.top.container}>
+            <Animatable.Image
+              iterationCount="infinite"
+              animation="pulse"
+              source={require('asset/big_logo.png')}
+            />
+            <Text style={styles.top.intro}>
+              专业的 Token Fund 资产项目管理终端
+            </Text>
+          </View>
+          <Loading />
+        </View>
       </View>
     );
   }

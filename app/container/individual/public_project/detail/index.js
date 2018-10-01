@@ -3,7 +3,6 @@ import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
-import { Toast } from 'antd-mobile';
 
 import SafeArea from 'component/uikit/safeArea';
 import NavBar, { realBarHeight } from 'component/navBar';
@@ -12,11 +11,11 @@ import { NavigationActions } from 'react-navigation';
 
 import Description from './page/description';
 import Trend from './page/trend';
-import Financing from './page/financing';
 import Return from './page/return';
 import Pairs from './page/pairs';
 import Chart from './chart';
 import Fund from './fund';
+import Share from './share';
 import Header, { headerHeight, fullHeaderHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
@@ -26,10 +25,6 @@ const selectionList = [
   {
     component: Description,
     name: '详情',
-  },
-  {
-    component: Financing,
-    name: '募集信息',
   },
   {
     component: Trend,
@@ -48,27 +43,27 @@ const selectionList = [
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
 })
-@connect(({ public_project, loading, global, login }, props) => {
+@connect(({ public_project, loading, login }, props) => {
   const item = props.navigation.getParam('item');
-  const market = R.pathOr({}, ['current', 'market'])(public_project);
+  const id = R.pathOr(0, ['id'])(item);
+  const portfolio = R.pathOr({}, ['current', id])(public_project);
+  const market = R.pathOr({}, ['market'])(portfolio);
   return {
-    id: R.pathOr(0, ['id'])(item),
-    portfolio: R.pathOr({}, ['current'])(public_project),
+    id,
+    portfolio,
     loading: loading.effects['public_project/get'],
     favor_loading: loading.effects['public_project/favor'],
-    status: R.pathOr([], ['constants', 'project_status'])(global),
     can_calculate: R.not(R.isEmpty(market)),
     logged_in: !!login.token,
-    base_symbol: R.pathOr('CNY', ['current', 'market', 'quote'])(
-      public_project,
-    ),
+    base_symbol: R.pathOr('CNY', ['market', 'quote'])(portfolio),
   };
 })
 @compose(
+  withState('showShareModal', 'toggleShareModal', false),
   withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
+  withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
-  withState('showStatusSelector', 'toggleStatusSelector', false),
   withProps(({ animateY, can_calculate }) => ({
     headerWrapperYRange: animateY.interpolate({
       inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
@@ -99,6 +94,7 @@ export default class PublicProjectDetail extends Component {
   componentWillUnmount() {
     this.props.dispatch({
       type: 'public_project/clearCurrent',
+      id: this.props.id,
     });
   }
 
@@ -109,11 +105,8 @@ export default class PublicProjectDetail extends Component {
     });
   };
 
-  showToast = () => {
-    Toast.info('可在投资库中管理该项目');
-  };
-
   handleFavorPress = () => {
+    this.props.track('点击关注按钮');
     if (!this.props.logged_in) {
       this.props.dispatch(
         NavigationActions.navigate({
@@ -131,6 +124,8 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleInvestmentPress = () => {
+    this.props.track('点击投资记录按钮');
+
     if (!this.props.logged_in) {
       this.props.dispatch(
         NavigationActions.navigate({
@@ -151,11 +146,31 @@ export default class PublicProjectDetail extends Component {
   };
 
   handlePageSwitch = page => () => {
-    this.props.setCurrentPage(page);
+    this.props.setCurrentPage(page, () => {
+      if (this.props.currentScrollY < this.props.selectorY) {
+        return;
+      }
+      this.scroll
+        .getNode()
+        .scrollTo({ y: this.props.selectorY, animated: false });
+    });
   };
 
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
     this.props.setSelectorY(layout.y);
+  };
+
+  handleInstitutionItemPress = item => {
+    this.props.track('点击进入机构详情');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionDetail',
+        params: {
+          id: item.id,
+        },
+        key: `InstitutionDetail_${item.id}`,
+      }),
+    );
   };
 
   renderNavBarBackground = () => {
@@ -198,7 +213,6 @@ export default class PublicProjectDetail extends Component {
       currentPage: Current,
       portfolio,
       titleOpacityRange,
-      favor_loading,
       can_calculate,
     } = this.props;
     return (
@@ -212,6 +226,9 @@ export default class PublicProjectDetail extends Component {
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView
+          ref={ref => {
+            this.scroll = ref;
+          }}
           contentContainerStyle={{
             paddingTop: can_calculate ? fullHeaderHeight : headerHeight,
           }}
@@ -227,6 +244,10 @@ export default class PublicProjectDetail extends Component {
             ],
             {
               useNativeDriver: true,
+              listener: event => {
+                const offsetY = event.nativeEvent.contentOffset.y;
+                this.props.setCurrentScrollY(offsetY);
+              },
             },
           )}
         >
@@ -239,13 +260,24 @@ export default class PublicProjectDetail extends Component {
             onPress={this.handlePageSwitch}
           />
           <View style={styles.page}>
-            <Current.component {...this.props} />
+            <Current.component
+              {...this.props}
+              onInstitutionItemPress={this.handleInstitutionItemPress}
+            />
           </View>
         </Animated.ScrollView>
         <Bottom
           {...this.props}
+          openShareModal={() => {
+            this.props.toggleShareModal(true);
+          }}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
+        />
+        <Share
+          onClose={() => this.props.toggleShareModal(false)}
+          coin={this.props.portfolio}
+          visible={this.props.showShareModal}
         />
       </SafeArea>
     );

@@ -75,6 +75,7 @@ class ColleagueSearch extends Component {
         renderTitle={() => (
           <View style={styles.searchBar.container}>
             <SearchBar
+              showMagnifier={R.isEmpty(this.state.searchText)}
               style={styles.searchBar.bar}
               autoFocus
               placeholder="输入姓名关键字搜索"

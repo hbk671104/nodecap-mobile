@@ -10,10 +10,10 @@ import NavBar, { realBarHeight } from 'component/navBar';
 import Empty from 'component/empty';
 import Gradient from 'component/uikit/gradient';
 import { hasPermission } from 'component/auth/permission/lock';
+import { NavigationActions } from 'react-navigation';
 
 import Description from './page/description';
 import Trend from './page/trend';
-import Financing from './page/financing';
 import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
@@ -26,10 +26,6 @@ const selectionList = [
     name: '详情',
   },
   {
-    component: Financing,
-    name: '募集信息',
-  },
-  {
     component: Trend,
     name: '动态',
   },
@@ -40,16 +36,18 @@ const selectionList = [
 })
 @connect(({ public_project, loading, global }, props) => {
   const item = props.navigation.getParam('item');
+  const id = R.pathOr(0, ['id'])(item);
   return {
-    id: R.pathOr(0, ['id'])(item),
-    portfolio: R.pathOr({}, ['current'])(public_project),
+    id,
+    portfolio: R.pathOr({}, ['current', id])(public_project),
     loading: loading.effects['public_project/getOrganization'],
-    favor_loading: loading.effects['public_project/favor'],
+    favor_loading: loading.effects['public_project/addToWorkflow'],
     status: R.pathOr([], ['constants', 'project_status'])(global),
   };
 })
 @compose(
   withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
+  withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
   withState('showStatusSelector', 'toggleStatusSelector', false),
@@ -83,6 +81,7 @@ export default class PublicProjectDetail extends Component {
   componentWillUnmount() {
     this.props.dispatch({
       type: 'public_project/clearCurrent',
+      id: this.props.id,
     });
   }
 
@@ -98,6 +97,7 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleStatusPress = () => {
+    this.props.track('点击添加至工作流按钮');
     const matched = R.pathOr(false, ['matched'])(this.props.portfolio);
     if (matched) {
       this.showToast();
@@ -107,16 +107,37 @@ export default class PublicProjectDetail extends Component {
   };
 
   handlePageSwitch = page => () => {
-    this.props.setCurrentPage(page);
+    this.props.setCurrentPage(page, () => {
+      if (this.props.currentScrollY < this.props.selectorY) {
+        return;
+      }
+      this.scroll
+        .getNode()
+        .scrollTo({ y: this.props.selectorY, animated: false });
+    });
   };
 
   handleSelectorOnLayout = ({ nativeEvent: { layout } }) => {
     this.props.setSelectorY(layout.y);
   };
 
+  handleInstitutionItemPress = item => {
+    this.props.track('点击进入机构详情');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionDetail',
+        params: {
+          id: item.id,
+        },
+        key: `InstitutionDetail_${item.id}`,
+      }),
+    );
+  };
+
   handleSubmit = status => {
+    this.props.track('提交项目初始状态');
     this.props.dispatch({
-      type: 'public_project/favor',
+      type: 'public_project/addToWorkflow',
       payload: [this.props.id],
       status,
       callback: success => {
@@ -185,6 +206,9 @@ export default class PublicProjectDetail extends Component {
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView
+          ref={ref => {
+            this.scroll = ref;
+          }}
           contentContainerStyle={{
             paddingTop: headerHeight,
           }}
@@ -200,6 +224,10 @@ export default class PublicProjectDetail extends Component {
             ],
             {
               useNativeDriver: true,
+              listener: event => {
+                const offsetY = event.nativeEvent.contentOffset.y;
+                this.props.setCurrentScrollY(offsetY);
+              },
             },
           )}
         >
@@ -210,7 +238,10 @@ export default class PublicProjectDetail extends Component {
             onPress={this.handlePageSwitch}
           />
           <View style={styles.page}>
-            <Current.component {...this.props} />
+            <Current.component
+              {...this.props}
+              onInstitutionItemPress={this.handleInstitutionItemPress}
+            />
           </View>
         </Animated.ScrollView>
         <Bottom {...this.props} onStatusPress={this.handleStatusPress} />

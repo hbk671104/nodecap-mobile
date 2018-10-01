@@ -4,6 +4,7 @@ import {
   getNewsByCoinId,
   getCoinFinanceInfo,
   getCoinSymbol,
+  addToWorkflow,
 } from '../services/api';
 import {
   favorCoin,
@@ -22,11 +23,32 @@ import { paginate } from '../utils/pagination';
 export default {
   namespace: 'public_project',
   state: {
-    list: {
-      index: null,
-      params: {},
-      progress: ['全部', '即将开始', '进行中', '已结束'],
-    },
+    list: [
+      {
+        id: 0,
+        title: '最热',
+        index: null,
+        params: {},
+      },
+      {
+        id: 2,
+        title: '即将开始',
+        index: null,
+        params: {},
+      },
+      {
+        id: 3,
+        title: '进行中',
+        index: null,
+        params: {},
+      },
+      {
+        id: 4,
+        title: '已结束',
+        index: null,
+        params: {},
+      },
+    ],
     search: {
       index: null,
       params: {},
@@ -46,9 +68,9 @@ export default {
           params,
         });
 
-        yield put.resolve({
-          type: 'institution/fetch',
-        });
+        // yield put.resolve({
+        //   type: 'institution/fetch',
+        // });
 
         if (callback) {
           yield call(callback);
@@ -149,14 +171,19 @@ export default {
         console.log(error);
       }
     },
-    *refresh(_, { put, select }) {
+    *refresh({ id, institutionId }, { put, select }) {
       try {
+        // 选择性刷新详情与搜索页
         const current = yield select(state =>
-          R.path(['public_project', 'current'])(state),
+          R.path(['public_project', 'current', id])(state),
         );
         const search = yield select(state =>
           R.path(['public_project', 'search'])(state),
         );
+        // 需要 institution id
+        // const institution = yield select(state =>
+        //   R.path(['institution', 'current'])(state),
+        // );
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
@@ -169,7 +196,14 @@ export default {
             payload: R.path(['params'])(search),
           });
         }
+        if (institutionId) {
+          yield put.resolve({
+            type: 'institution/get',
+            payload: institutionId,
+          });
+        }
 
+        // 刷新关注页
         yield put({
           type: 'favored/fetch',
           payload: {
@@ -177,17 +211,6 @@ export default {
             pageSize: 20,
           },
         });
-
-        // 选择性刷新首页列表
-        const params = yield select(state =>
-          R.path(['public_project', 'list', 'params'])(state),
-        );
-        if (params.currentPage === 1) {
-          yield put({
-            type: 'fetch',
-            params,
-          });
-        }
       } catch (e) {
         console.log(e);
       }
@@ -222,6 +245,7 @@ export default {
         yield put({
           type: 'saveInvest',
           relatedType: 'market',
+          id: payload,
           payload: data,
         });
       } catch (e) {
@@ -234,6 +258,7 @@ export default {
         yield put({
           type: 'saveInvest',
           relatedType: 'roi',
+          id: payload,
           payload: data,
         });
       } catch (e) {
@@ -246,6 +271,7 @@ export default {
         yield put({
           type: 'saveInvest',
           relatedType: 'trend',
+          id: payload,
           payload: data,
         });
       } catch (e) {
@@ -257,6 +283,7 @@ export default {
         const investTokens = yield call(getInvestmentsByCoinID, payload);
         yield put({
           type: 'saveInvest',
+          id: payload,
           payload: investTokens.data,
           relatedType: 'investments',
         });
@@ -273,7 +300,7 @@ export default {
         });
 
         const current = yield select(state =>
-          R.path(['public_project', 'current'])(state),
+          R.path(['public_project', 'current', id])(state),
         );
         if (!R.isNil(current)) {
           yield put.resolve({
@@ -296,6 +323,7 @@ export default {
         yield put({
           type: 'saveCurrent',
           payload: {
+            id,
             symbols: data,
           },
         });
@@ -314,6 +342,7 @@ export default {
         yield put({
           type: 'saveCurrent',
           payload: {
+            id,
             news: data,
           },
         });
@@ -332,6 +361,7 @@ export default {
         yield put({
           type: 'saveCurrent',
           payload: {
+            id,
             finance_info: data,
           },
         });
@@ -343,7 +373,7 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, callback }, { call, put, all, select }) {
+    *favor({ payload, institutionId, callback }, { call, put }) {
       try {
         const { status: response_status } = yield call(favorCoin, [payload]);
         yield put({
@@ -355,6 +385,8 @@ export default {
         // 刷新
         yield put({
           type: 'refresh',
+          id: payload,
+          institutionId,
         });
 
         if (callback) {
@@ -364,12 +396,9 @@ export default {
         console.log(e);
       }
     },
-    *unfavor({ payload, callback }, { call, put, all, select }) {
+    *unfavor({ payload, institutionId, callback }, { call, put }) {
       try {
         const { status: response_status } = yield call(unfavorCoin, payload);
-        /**
-         * 乐观处理请求，直接在列表和详情里将 is_focused 设置为 false
-         */
         yield put({
           type: 'setFavorStatus',
           payload,
@@ -379,7 +408,62 @@ export default {
         // 刷新
         yield put({
           type: 'refresh',
+          id: payload,
+          institutionId,
         });
+
+        if (callback) {
+          yield call(callback, response_status === 200);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *addToWorkflow({ payload, status, callback }, { all, call, put, select }) {
+      try {
+        const { data, status: response_status } = yield call(
+          addToWorkflow,
+          payload,
+        );
+
+        const current = yield select(state =>
+          R.path(['public_project', 'current', R.path([0])(payload)])(state),
+        );
+        if (!R.isNil(current)) {
+          yield put.resolve({
+            type: 'getBase',
+            id: R.path([0])(payload),
+          });
+        }
+
+        if (!R.isNil(data) && !R.isEmpty(data)) {
+          yield all(
+            R.map(id =>
+              put.resolve({
+                type: 'portfolio/updateProject',
+                id,
+                payload: {
+                  status,
+                },
+              }),
+            )(data),
+          );
+
+          yield all([
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: '0,1,2,3,4,5,6',
+              },
+            }),
+            put({
+              type: 'portfolio/index',
+              payload: {
+                status: `${status}`,
+              },
+            }),
+          ]);
+        }
 
         if (callback) {
           yield call(callback, response_status === 200);
@@ -391,18 +475,19 @@ export default {
   },
   reducers: {
     list(state, action) {
-      const progress_changed =
-        R.pathOr('', ['list', 'params', 'progress'])(state) !==
-        R.pathOr('', ['params', 'progress'])(action);
+      const { progress } = action.params;
       return {
         ...state,
-        list: {
-          ...state.list,
-          index: progress_changed
-            ? action.payload
-            : paginate(state.list.index, action.payload),
-          params: action.params,
-        },
+        list: R.map(t => {
+          if (t.id === progress) {
+            return {
+              ...t,
+              index: paginate(t.index, action.payload),
+              params: action.params,
+            };
+          }
+          return t;
+        })(state.list),
       };
     },
     searchList(state, action) {
@@ -424,60 +509,79 @@ export default {
       };
     },
     current(state, action) {
-      return {
-        ...state,
-        current: action.payload,
-      };
-    },
-    saveCurrent(state, action) {
+      const { payload } = action;
       return {
         ...state,
         current: {
-          ...(state.current || {}),
-          ...action.payload,
+          ...state.current,
+          [payload.id]: payload,
         },
       };
     },
-    clearCurrent(state) {
+    saveCurrent(state, action) {
+      const { payload } = action;
       return {
         ...state,
-        current: null,
+        current: {
+          ...state.current,
+          [payload.id]: {
+            ...(state.current[payload.id] || {}),
+            ...payload,
+          },
+        },
+      };
+    },
+    clearCurrent(state, action) {
+      const { id } = action;
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          [id]: null,
+        },
       };
     },
     saveInvest(state, action) {
+      const { payload, id } = action;
+
       return {
         ...state,
         current: {
           ...(state.current || {}),
-          [action.relatedType]: action.payload,
+          [id]: {
+            ...(state.current[id] || {}),
+            [action.relatedType]: action.payload,
+          },
         },
       };
     },
     setFavorStatus(state, action) {
-      const targetIndex = R.pipe(
-        R.path(['list', 'index', 'data']),
-        R.findIndex(R.propEq('id', action.payload)),
-      )(state);
-      const list = R.pipe(
-        R.path(['list', 'index', 'data']),
-        R.update(targetIndex, {
-          ...R.path(['list', 'index', 'data', targetIndex])(state),
-          is_focused: action.status,
-        }),
-      )(state);
       return {
         ...state,
-        list: {
-          ...state.list,
-          index: {
-            ...state.list.index,
-            data: list,
-          },
-        },
-        // current: {
-        //   ...(state.current || {}),
-        //   is_focused: action.status,
-        // },
+        list: R.map(t => {
+          return {
+            ...t,
+            index: {
+              ...t.index,
+              data: R.pipe(
+                R.pathOr([], ['index', 'data']),
+                R.map(i => {
+                  if (i.id === action.payload) {
+                    const star_number = parseInt(i.stars, 10);
+                    return {
+                      ...i,
+                      is_focused: action.status,
+                      stars: action.status
+                        ? `${star_number + 1}`
+                        : `${star_number - 1}`,
+                    };
+                  }
+                  return i;
+                }),
+              )(t),
+            },
+          };
+        })(state.list),
       };
     },
   },

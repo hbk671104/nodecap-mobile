@@ -15,6 +15,7 @@ export default {
   },
   input: {
     marginHorizontal: 20,
+    height: 40,
   },
   button: {
     marginTop: 25,
@@ -43,5 +44,11 @@ export default {
   },
   rightButton: {
     color: '#1890FF',
+  },
+  hitSlop: {
+    top: 20,
+    right: 20,
+    bottom: 20,
+    left: 20,
   },
 };

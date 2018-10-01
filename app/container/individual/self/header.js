@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableHighlight } from 'react-native';
+import { View, Image, Text, TouchableHighlight } from 'react-native';
 import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
@@ -8,9 +8,6 @@ import Icon from 'component/uikit/icon';
 import { shadow } from '../../../utils/style';
 
 const header = ({ user, isLogin, style, onPress }) => {
-  const source = isLogin
-    ? { uri: user.avatar_url }
-    : require('asset/mine/nobody.png');
   const title = isLogin ? user.realname : '立即登录';
   return (
     <TouchableHighlight
@@ -20,7 +17,19 @@ const header = ({ user, isLogin, style, onPress }) => {
     >
       <View style={styles.container}>
         <View style={styles.group}>
-          <Avatar size={50} innerRatio={1} source={source} resizeMode="cover" />
+          {isLogin ? (
+            <Avatar
+              size={50}
+              innerRatio={1}
+              source={{ uri: user.avatar_url }}
+              resizeMode="cover"
+            />
+          ) : (
+            <Image
+              style={{ height: 50, width: 50 }}
+              source={require('asset/default_avatar.png')}
+            />
+          )}
           <View style={styles.content.container}>
             <Text style={styles.content.title}>{title}</Text>
           </View>
