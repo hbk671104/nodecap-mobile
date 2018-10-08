@@ -44,4 +44,9 @@ export default {
   link: {
     color: '#0090FF',
   },
+  tip: {
+    width: 12,
+    height: 12,
+    marginLeft: 10,
+  },
 };

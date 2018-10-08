@@ -1,0 +1,50 @@
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+import styles from './roadmap.style';
+import R from 'ramda';
+import moment from 'moment';
+
+
+class Roadmap extends Component {
+  renderItem = ({ item }) => {
+    const date = R.pathOr('', ['date'])(item);
+    const content = R.pathOr('', ['content'])(item);
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.point} />
+        <View style={styles.title}>
+          <Text style={styles.time}>{date} </Text>
+        </View>
+        <View>
+          <Text style={styles.content}>{content}</Text>
+        </View>
+      </View>
+    );
+  };
+
+  render() {
+    const roadmap = R.pathOr([{
+      date: '2019-02-30',
+      content: 'xxxx',
+    }, {
+      date: '2018-12-30',
+      content: 'xcsdf',
+    }, {
+      date: '2018-12-23',
+      content: 'xcsdf',
+    }], ['portfolio', 'roadmap'])(this.props);
+    return (
+      <View>
+        {roadmap.map(i => {
+          return this.renderItem({ item: i });
+        })}
+      </View>
+    );
+  }
+}
+
+Roadmap.propTypes = {};
+Roadmap.defaultProps = {};
+
+export default Roadmap;

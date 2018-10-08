@@ -1,17 +1,22 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Linking } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
 import { connect } from 'react-redux';
-import { Flex } from 'antd-mobile';
+import { Flex, Modal } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
-import InstitutionItem from 'component/institution/item';
+import InstitutionItem from './institutionItem';
+import SocialNetworkItem from './socialNetworkItem';
+import Roadmap from './roadmap';
 import styles from './style';
 
 @connect()
 export default class Description extends PureComponent {
+  showRatingTip = (content) => {
+    Modal.alert('评级说明', content);
+  }
   handleDocPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -43,9 +48,33 @@ export default class Description extends PureComponent {
       this.props,
     );
     const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
+    const social_network = R.pathOr([{
+      name: 'telegram',
+    }, {
+      name: 'twitter',
+    }, {
+      name: 'reddit',
+    }, {
+      name: 'github',
+    }, {
+      name: 'medium',
+    }, {
+      name: 'youtube',
+    }], ['portfolio', 'social_network'])(this.props);
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    const roadmap = R.pathOr([{
+      date: '2019-02-30',
+      content: 'xxxx',
+    }, {
+      date: '2018-12-30',
+      content: 'xcsdf',
+    }, {
+      date: '2018-12-23',
+      content: 'xcsdf',
+    }], ['portfolio', 'roadmap'])(this.props);
     const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
     const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
+    const grading_result = R.pathOr('', [0, 'grading_result'])(rating);
     const industry_investments = R.pathOr('', [
       'portfolio',
       'industry_investments',
@@ -88,7 +117,20 @@ export default class Description extends PureComponent {
         )}
         {R.not(R.isEmpty(invest_score) && R.isEmpty(risk_score)) && (
           <View>
-            <Text style={[styles.title, styles.site]}>评级信息</Text>
+            <Flex style={[styles.title, styles.site]} align="center">
+              <Text style={{
+                fontSize: 14,
+                color: 'rgba(0,0,0,0.85)',
+                fontWeight: 'bold',
+              }}
+              >评级信息
+              </Text>
+              {!R.isEmpty(grading_result) && (
+              <TouchableWithoutFeedback onPress={() => this.showRatingTip(grading_result)}>
+                <Image style={styles.tip} source={require('asset/public_project/tip_icon.png')} />
+              </TouchableWithoutFeedback>
+              )}
+            </Flex>
             <Flex style={styles.ratingItem}>
               {R.not(R.isEmpty(invest_score)) && (
                 <View style={{ flex: 1 }}>
@@ -111,6 +153,22 @@ export default class Description extends PureComponent {
             </Flex>
           </View>
         )}
+        {R.not(R.isEmpty(social_network)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>媒体信息</Text>
+            <Flex wrap="wrap">
+              {R.map((m) => (
+                <SocialNetworkItem
+                  style={{ paddingHorizontal: 0 }}
+                  key={m.name}
+                  name={m.name}
+                  data={m.link_url}
+                  onPress={() => this.props.onSocialNetworkItemPress(m)}
+                />
+              ))(social_network)}
+            </Flex>
+          </View>
+        )}
         <Financing {...this.props} />
         {R.not(R.isEmpty(members)) && (
           <View>
@@ -123,17 +181,22 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(industry_investments)) && (
           <View>
             <Text style={[styles.title, styles.site]}>投资机构</Text>
-            <View>
+            <Flex wrap="wrap">
               {R.map(m => (
                 <InstitutionItem
-                  disableSubtitle
                   style={{ paddingHorizontal: 0 }}
                   key={m.id}
                   data={m}
                   onPress={() => this.props.onInstitutionItemPress(m)}
                 />
               ))(industry_investments)}
-            </View>
+            </Flex>
+          </View>
+        )}
+        {R.not(R.isEmpty(roadmap)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>路线图</Text>
+            <Roadmap {...this.props} />
           </View>
         )}
       </View>

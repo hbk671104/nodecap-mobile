@@ -1,15 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Animated } from 'react-native';
-import { raised } from '../../utils/style';
-import SolidAvatar from './avatar.solid';
 
 const avatar = props => (
   <Animated.View
     style={[
       styles.container,
       { height: props.size, width: props.size, borderRadius: props.size / 2 },
-      props.raised && { ...raised },
       props.style,
     ]}
   >
@@ -20,7 +17,6 @@ const avatar = props => (
       style={{
         height: props.size * props.innerRatio,
         width: props.size * props.innerRatio,
-        borderRadius: (props.size * props.innerRatio) / 2,
       }}
     />
   </Animated.View>
@@ -45,10 +41,9 @@ const styles = {
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: '#E9E9E9',
   },
 };
 
-export {
-  SolidAvatar,
-};
 export default avatar;
