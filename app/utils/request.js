@@ -90,7 +90,9 @@ function checkStatus({ response = {} }) {
     errortext = '您的网络出现问题，请确认已经连接至互联网';
   }
 
-  Toast.fail(errortext, 1);
+  if (errortext) {
+    Toast.fail(errortext, 1);
+  }
 
   const error = new Error(errortext);
   error.name = response.status;
