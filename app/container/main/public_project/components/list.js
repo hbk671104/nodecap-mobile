@@ -8,7 +8,9 @@ import {
   ActivityIndicator,
   ViewPropTypes,
   StyleSheet,
+  Text,
 } from 'react-native';
+import { Button } from 'antd-mobile';
 import R from 'ramda';
 
 const AnimatedList = Animated.createAnimatedComponent(FlatList);
@@ -137,6 +139,17 @@ class List extends PureComponent {
     return (
       <View style={styles.empty.container}>
         <Image source={require('asset/none.png')} />
+        <View style={{ marginTop: 50 }}>
+
+          <Button type="ghost" size="large" onClick={() => this.props.action(true)} loading={this.props.loading}>点击刷新数据</Button>
+          <Text style={{
+            fontSize: 12,
+            color: 'rgba(0,0,0, .65)',
+            marginTop: 10,
+          }}
+          >请确认您的网络状况良好，且已允许 Hotnode 访问网络
+          </Text>
+        </View>
       </View>
     );
   };

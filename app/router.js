@@ -209,6 +209,7 @@ const MainStack = createStackNavigator(
     Institution,
     InstitutionDetail,
     WebPage,
+    Settings,
   },
   {
     headerMode: 'none',

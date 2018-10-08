@@ -15,6 +15,7 @@ export default options => {
     createLoading({
       only: [
         'login/login',
+        'login/logout',
         'login/smsLogin',
         'login/setPassword',
         'login/sendLoginSMS',

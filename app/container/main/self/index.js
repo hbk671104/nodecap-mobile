@@ -18,6 +18,15 @@ import styles from './style';
   loading: loading.effects['login/switch'],
 }))
 class Self extends Component {
+  handleSettingsPress = () => {
+    this.props.track('设置');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Settings',
+      }),
+    );
+  };
+
   handleHeaderPress = () => {
     this.props.track('个人信息卡片');
     this.props.dispatch(
@@ -94,11 +103,11 @@ class Self extends Component {
             />
           )}
           {/* <View style={styles.scroll.divider} /> */}
-          {/* <Item
+          <Item
             icon={require('asset/mine/settings.png')}
             title="设置"
             onPress={this.handleSettingsPress}
-          /> */}
+          />
           <View style={styles.scroll.divider} />
           <Item
             loading={loading}

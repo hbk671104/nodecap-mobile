@@ -15,8 +15,9 @@ import styles from './style';
   page: '设置',
   name: 'App_SettingsOperation',
 })
-@connect(({ login }) => ({
+@connect(({ login, loading }) => ({
   isLogin: !!login.token,
+  loading: loading.effects['login/logout'],
 }))
 class Settings extends Component {
   logout = () => {
@@ -68,6 +69,7 @@ class Settings extends Component {
             style={styles.bottom.container}
             disabled={false}
             title="退出登录"
+            loading={this.props.loading}
             onPress={this.handleLogoutPress}
           />
         )}
