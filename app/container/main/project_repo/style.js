@@ -13,13 +13,38 @@ export default {
       backgroundColor: 'white',
     },
     tab: {
+      height: 40,
       paddingBottom: 0,
+      alignItems: 'center',
+      paddingHorizontal: 20,
+      flexDirection: 'row',
+      position: 'relative',
+    },
+    hot: {
+      width: 10,
+      height: 15,
+      marginRight: 5,
+      marginBottom: 2,
     },
     text: {
       fontSize: 14,
     },
     underline: {
       height: 0,
+    },
+    under: {
+      height: 3,
+      position: 'absolute',
+      bottom: 4,
+      left: 0,
+      right: 0,
+      alignItems: 'center',
+    },
+    underInner: {
+      width: 25,
+      height: 3,
+      borderRadius: 3,
+      backgroundColor: '#1890FF',
     },
   },
   searchBar: {

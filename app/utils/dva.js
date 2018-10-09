@@ -49,6 +49,8 @@ export default options => {
         'news/index',
         'favored/fetch',
         'activity/fetch',
+        'coinSets/fetch',
+        'coinSets/fetchCoins',
       ],
     }),
   );

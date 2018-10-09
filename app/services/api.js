@@ -735,5 +735,18 @@ export function meetingList(params) {
 }
 
 export function getIndustryDetail(id) {
-  return request.get(`industry-investments/${id}`);
+  return request.get(`/industry-investments/${id}`);
+}
+
+export function getCoinSets() {
+  return request.get('/coin-sets');
+}
+
+export function getCoinsBySetID(set_id, params = {}) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get(`/coin-sets/${set_id}/coins`, { params: paramsTransform(params) });
 }

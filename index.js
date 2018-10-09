@@ -27,6 +27,7 @@ import institutionModel from './app/models/institution';
 import newsModel from './app/models/news';
 import favoredModel from './app/models/favored';
 import activityModel from './app/models/activity';
+import coinSetsModel from './app/models/coinSets';
 
 export const app = dva({
   initialState: {},
@@ -48,6 +49,7 @@ export const app = dva({
     newsModel,
     favoredModel,
     activityModel,
+    coinSetsModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],

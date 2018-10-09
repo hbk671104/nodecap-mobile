@@ -30,24 +30,6 @@ export default {
         index: null,
         params: {},
       },
-      {
-        id: 2,
-        title: '即将开始',
-        index: null,
-        params: {},
-      },
-      {
-        id: 3,
-        title: '进行中',
-        index: null,
-        params: {},
-      },
-      {
-        id: 4,
-        title: '已结束',
-        index: null,
-        params: {},
-      },
     ],
     search: {
       index: null,
@@ -171,7 +153,7 @@ export default {
         console.log(error);
       }
     },
-    *refresh({ id, institutionId }, { put, select }) {
+    *refresh({ id, institutionId, callback }, { put, select }) {
       try {
         // 选择性刷新详情与搜索页
         const current = yield select(state =>
