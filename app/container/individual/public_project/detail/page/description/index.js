@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
+import { View, Text, TouchableWithoutFeedback, Image, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import { Flex, Modal } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
@@ -48,30 +48,9 @@ export default class Description extends PureComponent {
       this.props,
     );
     const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
-    const social_network = R.pathOr([{
-      name: 'telegram',
-    }, {
-      name: 'twitter',
-    }, {
-      name: 'reddit',
-    }, {
-      name: 'github',
-    }, {
-      name: 'medium',
-    }, {
-      name: 'youtube',
-    }], ['portfolio', 'social_network'])(this.props);
+    const social_network = R.pathOr([], ['portfolio', 'social_network'])(this.props);
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
-    const roadmap = R.pathOr([{
-      date: '2019-02-30',
-      content: 'xxxx',
-    }, {
-      date: '2018-12-30',
-      content: 'xcsdf',
-    }, {
-      date: '2018-12-23',
-      content: 'xcsdf',
-    }], ['portfolio', 'roadmap'])(this.props);
+    const roadmap = R.pathOr([], ['portfolio', 'roadmap'])(this.props);
     const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
     const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
     const grading_result = R.pathOr('', [0, 'grading_result'])(rating);
@@ -163,7 +142,9 @@ export default class Description extends PureComponent {
                   key={m.name}
                   name={m.name}
                   data={m.link_url}
-                  onPress={() => this.props.onSocialNetworkItemPress(m)}
+                  onPress={() => {
+                    Linking.openURL(m.link_url);
+                  }}
                 />
               ))(social_network)}
             </Flex>
