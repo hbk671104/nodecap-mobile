@@ -8364,9 +8364,9 @@ victory-line@^30.3.0:
     prop-types "^15.5.8"
     victory-core "^30.3.0"
 
-victory-native@^30.4.0:
-  version "30.4.0"
-  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-30.4.0.tgz#372761a00ed67b60772971080e5ffc80148ce8c6"
+victory-native@30.3.0:
+  version "30.3.0"
+  resolved "https://registry.yarnpkg.com/victory-native/-/victory-native-30.3.0.tgz#8ef32e2dec89a231d45ad909ebdc15856e458b9b"
   dependencies:
     lodash "^4.17.5"
     prop-types "^15.5.10"

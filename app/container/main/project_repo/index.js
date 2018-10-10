@@ -31,6 +31,7 @@ export default class ProjectRepo extends Component {
       type: 'coinSets/fetch',
     });
   }
+
   handleSearchPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -53,7 +54,12 @@ export default class ProjectRepo extends Component {
         onLayout={onLayoutHandler}
       >
         <View style={[styles.tabBar.tab]}>
-          {useIcon ? <Image source={require('asset/public_project/hot.png')} style={styles.tabBar.hot} /> : null}
+          {useIcon ? (
+            <Image
+              source={require('asset/public_project/hot.png')}
+              style={styles.tabBar.hot}
+            />
+          ) : null}
           <Text style={[{ color: textColor, fontWeight }, styles.tabBar.text]}>
             {name}
           </Text>
@@ -61,7 +67,7 @@ export default class ProjectRepo extends Component {
             <View style={styles.tabBar.under}>
               <View style={styles.tabBar.underInner} />
             </View>
-) : null}
+          ) : null}
         </View>
       </Button>
     );
@@ -106,7 +112,7 @@ export default class ProjectRepo extends Component {
               tabLabel={t.title}
             />
           ))(tab)}
-          {R.map((t) => (
+          {R.map(t => (
             <ProjectSets
               key={t.id}
               index={t.id}
