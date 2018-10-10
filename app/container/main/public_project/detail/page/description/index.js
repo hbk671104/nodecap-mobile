@@ -46,8 +46,8 @@ export default class Description extends PureComponent {
     );
     const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
-    const social_network = R.pathOr([], ['portfolio', 'social_network'])(this.props);
-    const roadmap = R.pathOr([], ['portfolio', 'roadmap'])(this.props);
+    const social_network = R.pathOr([], ['portfolio', 'social_networks'])(this.props);
+    const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
     const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
     const industry_investments = R.pathOr('', [
@@ -126,7 +126,18 @@ export default class Description extends PureComponent {
                   name={m.name}
                   data={m.link_url}
                   onPress={() => {
-                    Linking.openURL(m.link_url);
+                    Linking
+                      .canOpenURL(m.link_url)
+                      .then((support) => {
+                        if (support) {
+                          Linking
+                            .openURL(m.link_url)
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                        }
+                      })
+                      .catch((err) => console.error('An error occurred', err));
                   }}
                 />
               ))(social_network)}

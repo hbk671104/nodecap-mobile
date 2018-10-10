@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppRegistry, UIManager, AsyncStorage, Platform } from 'react-native';
+import { AppRegistry, UIManager, AsyncStorage, Platform, YellowBox } from 'react-native';
 import { autoRehydrate, persistStore } from 'redux-persist';
 import { Sentry } from 'react-native-sentry';
 import Orientation from 'react-native-orientation';
@@ -27,6 +27,8 @@ import institutionModel from './app/models/institution';
 import newsModel from './app/models/news';
 import favoredModel from './app/models/favored';
 import activityModel from './app/models/activity';
+
+YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
 export const app = dva({
   initialState: {},

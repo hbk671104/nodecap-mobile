@@ -26,7 +26,21 @@ const memberItem = ({ data }) => {
         </View>
         {!!linkedIn_url && (
         <View>
-          <TouchableWithoutFeedback onPress={() => Linking.openURL(linkedIn_url)}>
+          <TouchableWithoutFeedback onPress={() => {
+            Linking
+              .canOpenURL(linkedIn_url)
+              .then((support) => {
+                if (support) {
+                  Linking
+                    .openURL(linkedIn_url)
+                    .catch((err) => {
+                      console.log(err);
+                    });
+                }
+              })
+              .catch((err) => console.error('An error occurred', err));
+          }}
+          >
             <Image style={styles.content.linkedin} source={require('asset/public_project/linkedin.png')} />
           </TouchableWithoutFeedback>
         </View>
