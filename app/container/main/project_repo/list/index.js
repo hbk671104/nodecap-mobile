@@ -13,16 +13,16 @@ import styles from '../style';
 @connect(({ public_project, loading }) => ({
   data: R.pathOr([], ['list', 'index', 'data'])(public_project),
   pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
-  progress: R.pathOr(0, ['list', 'progress'])(public_project),
+  params: R.pathOr({}, ['list', 'params'])(public_project),
   loading: loading.effects['public_project/fetch'],
 }))
 export default class ProjectList extends Component {
   requestData = (page, size) => {
-    const { progress } = this.props;
+    const { params } = this.props;
     this.props.dispatch({
       type: 'public_project/fetch',
       params: {
-        progress,
+        ...params,
         currentPage: page,
         pageSize: size,
       },

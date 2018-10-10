@@ -24,9 +24,12 @@ export default {
   namespace: 'public_project',
   state: {
     list: {
-      progress: 0,
       index: null,
-      params: {},
+      params: {
+        progress: 0,
+        industry_id: [],
+        tag_id: [],
+      },
     },
     search: {
       index: null,
@@ -46,10 +49,6 @@ export default {
           payload: data,
           params,
         });
-
-        // yield put.resolve({
-        //   type: 'institution/fetch',
-        // });
 
         if (callback) {
           yield call(callback);

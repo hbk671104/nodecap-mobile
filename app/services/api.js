@@ -1,5 +1,6 @@
 import request from '../utils/request';
 import Config from '../runtime';
+import R from 'ramda';
 
 /**
  * 登录
@@ -748,5 +749,18 @@ export function getCoinsBySetID(set_id, params = {}) {
     page: p.currentPage,
     'per-page': p.pageSize,
   });
-  return request.get(`/coin-sets/${set_id}/coins`, { params: paramsTransform(params) });
+  return request.get(`/coin-sets/${set_id}/coins`, {
+    params: paramsTransform(params),
+  });
+}
+
+export function getCoinTags(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/coin-tags', {
+    params: paramsTransform(params),
+  });
 }

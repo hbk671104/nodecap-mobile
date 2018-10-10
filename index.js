@@ -28,6 +28,7 @@ import newsModel from './app/models/news';
 import favoredModel from './app/models/favored';
 import activityModel from './app/models/activity';
 import coinSetsModel from './app/models/coinSets';
+import filterModel from './app/models/filter';
 
 export const app = dva({
   initialState: {},
@@ -50,6 +51,7 @@ export const app = dva({
     favoredModel,
     activityModel,
     coinSetsModel,
+    filterModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
