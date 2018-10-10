@@ -84,6 +84,11 @@ export default {
         request.defaults.headers.common.Authorization = `Bearer ${token}`;
       }
 
+      // fetch coinset
+      yield put({
+        type: 'coinSets/fetch',
+      });
+
       try {
         yield put.resolve({
           type: in_individual ? 'initIndividualEnd' : 'initInstitutionEnd',

@@ -20,18 +20,10 @@ import styles from './style';
   page: '项目大全',
   name: 'App_ProjectRepoOperation',
 })
-@connect(({ public_project, coinSets, loading }) => ({
+@connect(({ coinSets }) => ({
   sets: R.pathOr([], ['sets'])(coinSets),
-  tab: R.pathOr([], ['list'])(public_project),
-  loadingSets: loading.effects['coinSets/fetch'],
 }))
 export default class ProjectRepo extends Component {
-  componentWillMount() {
-    this.props.dispatch({
-      type: 'coinSets/fetch',
-    });
-  }
-
   handleSearchPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -86,7 +78,7 @@ export default class ProjectRepo extends Component {
   );
 
   render() {
-    const { tab, sets } = this.props;
+    const { sets } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -104,14 +96,7 @@ export default class ProjectRepo extends Component {
           renderTabBar={this.renderTabBar}
           prerenderingSiblingsNumber={Infinity}
         >
-          {R.addIndex(R.map)((t, index) => (
-            <ProjectList
-              key={index}
-              index={index}
-              progress={t.id}
-              tabLabel={t.title}
-            />
-          ))(tab)}
+          <ProjectList tabLabel="最热" />
           {R.map(t => (
             <ProjectSets
               key={t.id}

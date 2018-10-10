@@ -6,13 +6,13 @@ import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
 import FavorItem from 'component/favored/item';
-import styles from './style';
+import Header from './header';
+import styles from '../style';
 
-@connect(({ public_project, loading }, { index }) => ({
-  data: R.pathOr([], ['list', index, 'index', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', index, 'index', 'pagination'])(
-    public_project,
-  ),
+@connect(({ public_project, loading }) => ({
+  data: R.pathOr([], ['list', 'index', 'data'])(public_project),
+  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  progress: R.pathOr(0, ['list', 'progress'])(public_project),
   loading: loading.effects['public_project/fetch'],
 }))
 export default class ProjectList extends Component {
@@ -46,6 +46,8 @@ export default class ProjectList extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderHeader = () => <Header {...this.props} />;
+
   render() {
     const { data, pagination, loading } = this.props;
     return (
@@ -58,6 +60,7 @@ export default class ProjectList extends Component {
           loading={loading}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
+          renderHeader={this.renderHeader}
         />
       </View>
     );

@@ -23,14 +23,11 @@ import { paginate } from '../utils/pagination';
 export default {
   namespace: 'public_project',
   state: {
-    list: [
-      {
-        id: 0,
-        title: '最热',
-        index: null,
-        params: {},
-      },
-    ],
+    list: {
+      progress: 0,
+      index: null,
+      params: {},
+    },
     search: {
       index: null,
       params: {},
@@ -457,19 +454,12 @@ export default {
   },
   reducers: {
     list(state, action) {
-      const { progress } = action.params;
       return {
         ...state,
-        list: R.map(t => {
-          if (t.id === progress) {
-            return {
-              ...t,
-              index: paginate(t.index, action.payload),
-              params: action.params,
-            };
-          }
-          return t;
-        })(state.list),
+        list: {
+          index: paginate(state.list.index, action.payload),
+          params: action.params,
+        },
       };
     },
     searchList(state, action) {
