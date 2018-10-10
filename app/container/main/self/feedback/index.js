@@ -20,9 +20,15 @@ const styles = {
 };
 
 @withState('submitting', 'setSubmitting', false)
+@withState('focus', 'setFocus', false)
 @connect()
 @createForm()
 class Feedback extends Component {
+  componentWillMount() {
+    setTimeout(() => {
+     this.props.setFocus(true);
+    }, 200);
+  }
   submit = () => {
     if (this.props.submitting) {
       return;
@@ -62,27 +68,32 @@ class Feedback extends Component {
             </TouchableWithoutFeedback>
           )}
         />
-        {getFieldDecorator('content', {
-          rules: [{
-            required: true,
-            message: '你的意见将是我们进步的动力～（必填）',
-          }],
-        })(
-          <InputItem
-            inputProps={{
-              style: styles.content,
-            }}
-            placeholder="输入意见反馈内容"
-            vertical
-          />
-        )}
-        {getFieldDecorator('mobile', {
-          rules: [{
-            required: true,
-            message: '请您填写手机号，方便我们联系您',
-          }],
-        })(
-          <InputItem placeholder="顺便留下联系方式哦，方便我们联系你" vertical />
+        {this.props.focus && (
+          <View>
+            {getFieldDecorator('content', {
+              rules: [{
+                required: true,
+                message: '你的意见将是我们进步的动力～（必填）',
+              }],
+            })(
+              <InputItem
+                inputProps={{
+                  style: styles.content,
+                  autoFocus: true,
+                }}
+                placeholder="输入意见反馈内容"
+                vertical
+              />
+            )}
+            {getFieldDecorator('mobile', {
+              rules: [{
+                required: true,
+                message: '请您填写手机号，方便我们联系您',
+              }],
+            })(
+              <InputItem placeholder="顺便留下联系方式哦，方便我们联系你" vertical />
+            )}
+          </View>
         )}
       </View>
     );
