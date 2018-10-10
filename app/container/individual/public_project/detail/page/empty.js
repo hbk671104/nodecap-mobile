@@ -12,8 +12,9 @@ const empty = ({ image, title, subtitle }) => (
 
 const styles = {
   container: {
-    paddingVertical: 50,
+    flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     fontSize: 16,
