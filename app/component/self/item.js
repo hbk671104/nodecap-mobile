@@ -5,6 +5,20 @@ import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 import Badge from 'component/uikit/badge';
 
+const StaticItem = ({ icon, title, subtitle, badge, onPress, loading, renderRight }) => (
+  <Touchable foreground onPress={onPress}>
+    <View style={styles.container}>
+      <View style={styles.top}>
+        <Image resizeMode="contain" style={styles.icon} source={icon} />
+        <View style={styles.group}>
+          <Text style={styles.title}>{title}</Text>
+        </View>
+        {renderRight}
+      </View>
+    </View>
+  </Touchable>
+);
+
 const item = ({ icon, title, subtitle, badge, onPress, loading }) => (
   <Touchable foreground onPress={onPress}>
     <View style={styles.container}>
@@ -78,3 +92,6 @@ item.propTypes = {
 };
 
 export default item;
+export {
+  StaticItem,
+};
