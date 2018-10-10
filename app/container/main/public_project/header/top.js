@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Image, Text, Dimensions, StyleSheet } from 'react-native';
+import { View, Image, Text, Dimensions, StyleSheet, ScrollView } from 'react-native';
 import Swiper from '@nart/react-native-swiper';
 import R from 'ramda';
 
@@ -10,6 +10,7 @@ const deviceWidth = Dimensions.get('window').width;
 
 const top = ({
   insite_news,
+  onPRPress,
   onMeetingPress,
   onAnnouncementPress,
   onProjectRepoPress,
@@ -40,7 +41,7 @@ const top = ({
         ))(insite_news)}
       </Swiper>
     </View>
-    <View style={styles.tab.container}>
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.tab.container}>
       <Touchable style={styles.tab.group.wrapper} onPress={onProjectRepoPress}>
         <View style={styles.tab.group.container}>
           <View style={styles.tab.group.imageWrapper}>
@@ -85,7 +86,15 @@ const top = ({
           {notification_badge_visible && <Badge size={8} />}
         </View>
       </Touchable>
-    </View>
+      <Touchable style={styles.tab.group.wrapper} onPress={onPRPress}>
+        <View style={styles.tab.group.container}>
+          <View style={styles.tab.group.imageWrapper}>
+            <Image source={require('asset/public_project/pr.png')} style={{ width: 25, height: 25 }} />
+          </View>
+          <Text style={styles.tab.group.title}>公关服务</Text>
+        </View>
+      </Touchable>
+    </ScrollView>
   </View>
 );
 
@@ -126,7 +135,7 @@ const styles = {
     },
     group: {
       wrapper: {
-        flex: 1,
+        width: 82,
       },
       imageWrapper: {
         height: 30,
