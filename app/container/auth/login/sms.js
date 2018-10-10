@@ -61,6 +61,7 @@ class SMSLogin extends Component {
             () => {
               if (this.state.countdown === 0) {
                 clearInterval(this.countdown);
+                this.countdown = null;
                 this.setState({
                   countdown: 60,
                 });
@@ -135,7 +136,7 @@ class SMSLogin extends Component {
                         onPress={this.handleSendSMSCode}
                       >
                         <Text style={styles.smscode}>
-                          {countdown === 60 ? '获取验证码' : `${countdown}s`}
+                          {!this.countdown ? '获取验证码' : `${countdown}s`}
                         </Text>
                       </Touchable>
                     );
