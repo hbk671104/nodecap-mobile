@@ -26,9 +26,9 @@ export default {
     list: {
       index: null,
       params: {
-        progress: 0,
-        industry_id: [],
-        tag_id: [],
+        progress: null,
+        industry_id: null,
+        tag_id: null,
       },
     },
     search: {
@@ -40,14 +40,16 @@ export default {
   effects: {
     *fetch({ params, callback }, { call, put }) {
       try {
-        const { data } = yield call(getPublicProjects, {
-          ...params,
+        yield put({
+          type: 'setListParam',
+          payload: params,
         });
+
+        const { data } = yield call(getPublicProjects, params);
 
         yield put({
           type: 'list',
           payload: data,
-          params,
         });
 
         if (callback) {
@@ -456,8 +458,17 @@ export default {
       return {
         ...state,
         list: {
+          ...state.list,
           index: paginate(state.list.index, action.payload),
-          params: action.params,
+        },
+      };
+    },
+    setListParam(state, action) {
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          params: action.payload,
         },
       };
     },

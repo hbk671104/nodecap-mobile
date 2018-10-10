@@ -47,7 +47,7 @@ export default class FilterGroup extends PureComponent {
         </View>
         <View style={styles.tag.container}>
           {R.map(d => {
-            const selected = R.contains(d.id)(selection);
+            const selected = R.contains(`${d.id}`)(selection);
             return (
               <Touchable
                 key={d.id}

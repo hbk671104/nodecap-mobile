@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { NavigationActions, SafeAreaView } from 'react-navigation';
+import { SafeAreaView } from 'react-navigation';
 
+import { handleSelection as selection } from 'utils/utils';
 import FilterGroup from './group';
 import styles from './style';
 
@@ -15,30 +16,11 @@ import styles from './style';
 export default class ProjectListFilter extends Component {
   handleSelection = ({ value, key }) => {
     const { params } = this.props;
-    let data = R.path([key])(params);
-    if (data) {
-      const array = R.split(',')(data);
-      if (R.contains(value)(array)) {
-        data = R.remove(value)(array);
-      } else {
-        data = R.append(value)(array);
-      }
-      data = array;
-    } else {
-      data = [value];
-    }
-
-    data = R.join(',')(data);
-
-    console.log(data);
-
     this.props.dispatch({
       type: 'public_project/fetch',
       params: {
         ...params,
-        [key]: data,
-        currentPage: 1,
-        pageSize: 20,
+        [key]: selection(params, { key, value }),
       },
     });
   };
@@ -64,7 +46,10 @@ export default class ProjectListFilter extends Component {
           <FilterGroup
             title="领域"
             data={coinTag}
-            selection={R.pathOr([], ['tag_id'])(params)}
+            selection={R.pipe(
+              R.pathOr('', ['tag_id']),
+              R.split(','),
+            )(params)}
             onSelect={value => this.handleSelection({ value, key: 'tag_id' })}
           />
         </ScrollView>

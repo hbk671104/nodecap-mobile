@@ -4,7 +4,7 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const header = ({ pagination, onFilterPress }) => {
+const header = ({ pagination, onSelect, selection, onFilterPress }) => {
   const total_count = R.pathOr(0, ['total'])(pagination);
   return (
     <View style={styles.container}>
@@ -16,14 +16,53 @@ const header = ({ pagination, onFilterPress }) => {
           </Text>
         </Text>
         <View style={styles.content.tag.container}>
-          <Touchable style={styles.content.tag.wrapper}>
-            <Text style={styles.content.tag.title}>即将开始</Text>
+          <Touchable
+            style={[
+              styles.content.tag.wrapper,
+              R.contains('2')(selection) && styles.content.tag.highlight,
+            ]}
+            onPress={() => onSelect(2)}
+          >
+            <Text
+              style={[
+                styles.content.tag.title,
+                R.contains('2')(selection) && styles.content.tag.titleHighlight,
+              ]}
+            >
+              即将开始
+            </Text>
           </Touchable>
-          <Touchable style={styles.content.tag.wrapper}>
-            <Text style={styles.content.tag.title}>进行中</Text>
+          <Touchable
+            style={[
+              styles.content.tag.wrapper,
+              R.contains('3')(selection) && styles.content.tag.highlight,
+            ]}
+            onPress={() => onSelect(3)}
+          >
+            <Text
+              style={[
+                styles.content.tag.title,
+                R.contains('3')(selection) && styles.content.tag.titleHighlight,
+              ]}
+            >
+              进行中
+            </Text>
           </Touchable>
-          <Touchable style={styles.content.tag.wrapper}>
-            <Text style={styles.content.tag.title}>已结束</Text>
+          <Touchable
+            style={[
+              styles.content.tag.wrapper,
+              R.contains('4')(selection) && styles.content.tag.highlight,
+            ]}
+            onPress={() => onSelect(4)}
+          >
+            <Text
+              style={[
+                styles.content.tag.title,
+                R.contains('4')(selection) && styles.content.tag.titleHighlight,
+              ]}
+            >
+              已结束
+            </Text>
           </Touchable>
         </View>
       </View>
@@ -73,9 +112,16 @@ const styles = {
         backgroundColor: '#F5F5F5',
         marginRight: 10,
       },
+      highlight: {
+        backgroundColor: '#E5F3FF',
+      },
       title: {
         fontSize: 11,
         color: 'rgba(0, 0, 0, 0.65)',
+      },
+      titleHighlight: {
+        color: '#1890FF',
+        fontWeight: 'bold',
       },
     },
   },

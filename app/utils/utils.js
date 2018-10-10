@@ -47,7 +47,11 @@ export function getTimeDistance(type) {
 
     return [
       moment(`${year}-${fixedZero(month + 1)}-01 00:00:00`),
-      moment(moment(`${nextYear}-${fixedZero(nextMonth + 1)}-01 00:00:00`).valueOf() - 1000),
+      moment(
+        moment(
+          `${nextYear}-${fixedZero(nextMonth + 1)}-01 00:00:00`,
+        ).valueOf() - 1000,
+      ),
     ];
   }
 
@@ -60,7 +64,7 @@ export function getTimeDistance(type) {
 
 export function getPlainNode(nodeList, parentPath = '') {
   const arr = [];
-  nodeList.forEach((node) => {
+  nodeList.forEach(node => {
     const item = node;
     item.path = `${parentPath}/${item.path || ''}`.replace(/\/+/g, '/');
     item.exact = true;
@@ -83,7 +87,10 @@ export function digitUppercase(n) {
   let num = Math.abs(n);
   let s = '';
   fraction.forEach((item, index) => {
-    s += (digit[Math.floor(num * 10 * 10 * index) % 10] + item).replace(/零./, '');
+    s += (digit[Math.floor(num * 10 * 10 * index) % 10] + item).replace(
+      /零./,
+      '',
+    );
   });
   s = s || '整';
   num = Math.floor(num);
@@ -140,15 +147,17 @@ function getRenderArr(routes) {
  */
 export function getRoutes(path, routerData) {
   let routes = Object.keys(routerData).filter(
-    routePath => routePath.indexOf(path) === 0 && routePath !== path
+    routePath => routePath.indexOf(path) === 0 && routePath !== path,
   );
   // Replace path to '' eg. path='user' /user/name => name
   routes = routes.map(item => item.replace(path, ''));
   // Get the route to be rendered to remove the deep rendering
   const renderArr = getRenderArr(routes);
   // Conversion and stitching parameters
-  const renderRoutes = renderArr.map((item) => {
-    const exact = !routes.some(route => route !== item && getRelation(route, item) === 1);
+  const renderRoutes = renderArr.map(item => {
+    const exact = !routes.some(
+      route => route !== item && getRelation(route, item) === 1,
+    );
     return {
       ...routerData[`${path}${item}`],
       key: `${path}${item}`,
@@ -211,8 +220,14 @@ export function ossImgUrl(url) {
   return `${url}?x-oss-process=style/avatar`;
 }
 
-export const currencyFormat = (val) => {
-  return (`${val}`).replace(/\b(\d+)((\.\d+)*)\b/g, (a, b, c) => { return (b.charAt(0) > 0 && !(c || '.').lastIndexOf('.') ? b.replace(/(\d)(?=(\d{3})+$)/g, '$1,') : b) + c; });
+export const currencyFormat = val => {
+  return `${val}`.replace(/\b(\d+)((\.\d+)*)\b/g, (a, b, c) => {
+    return (
+      (b.charAt(0) > 0 && !(c || '.').lastIndexOf('.')
+        ? b.replace(/(\d)(?=(\d{3})+$)/g, '$1,')
+        : b) + c
+    );
+  });
 };
 
 export const getUrlParameter = function (n) {
@@ -220,7 +235,9 @@ export const getUrlParameter = function (n) {
   name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
   const regex = new RegExp(`[\\?&]${name}=([^&#]*)`);
   const results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+  return results === null
+    ? ''
+    : decodeURIComponent(results[1].replace(/\+/g, ' '));
 };
 
 export const fixedCurrency = (count, util) => {
@@ -229,4 +246,22 @@ export const fixedCurrency = (count, util) => {
   } else {
     return Number(count).toFixed(9);
   }
+};
+
+export const handleSelection = (params, { key, value }) => {
+  let data = R.path([key])(params);
+  if (data) {
+    let array = R.split(',')(data);
+    if (R.contains(`${value}`)(array)) {
+      array = R.filter(i => i !== `${value}`)(array);
+    } else {
+      array = R.append(value)(array);
+    }
+    data = array;
+  } else {
+    data = [value];
+  }
+
+  data = R.join(',')(data);
+  return data;
 };

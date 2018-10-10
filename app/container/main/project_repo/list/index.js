@@ -7,6 +7,8 @@ import { NavigationActions } from 'react-navigation';
 import { setStatusBar } from 'component/uikit/statusBar';
 import List from 'component/uikit/list';
 import FavorItem from 'component/favored/item';
+
+import { handleSelection as selection } from 'utils/utils';
 import Header from './header';
 import styles from '../style';
 
@@ -25,6 +27,17 @@ export default class ProjectList extends Component {
         ...params,
         currentPage: page,
         pageSize: size,
+      },
+    });
+  };
+
+  handleSelection = ({ value, key }) => {
+    const { params } = this.props;
+    this.props.dispatch({
+      type: 'public_project/fetch',
+      params: {
+        ...params,
+        [key]: selection(params, { key, value }),
       },
     });
   };
@@ -60,7 +73,15 @@ export default class ProjectList extends Component {
   renderSeparator = () => <View style={styles.separator} />;
 
   renderHeader = () => (
-    <Header {...this.props} onFilterPress={this.handleFilterPress} />
+    <Header
+      {...this.props}
+      selection={R.pipe(
+        R.pathOr('', ['progress']),
+        R.split(','),
+      )(this.props.params)}
+      onFilterPress={this.handleFilterPress}
+      onSelect={value => this.handleSelection({ value, key: 'progress' })}
+    />
   );
 
   render() {

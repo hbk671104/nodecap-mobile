@@ -20,7 +20,8 @@ export default {
           put.resolve({
             type: 'public_project/fetch',
             params: {
-              progress: 0,
+              currentPage: 1,
+              pageSize: 20,
             },
           }),
           // fetch report
