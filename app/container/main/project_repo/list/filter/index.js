@@ -6,12 +6,15 @@ import { SafeAreaView } from 'react-navigation';
 
 import { handleSelection as selection } from 'utils/utils';
 import FilterGroup from './group';
+import FilterBottom from './bottom';
 import styles from './style';
 
-@connect(({ filter, public_project }) => ({
+@connect(({ filter, public_project, loading }) => ({
   institution: R.pathOr([], ['institution', 'data'])(filter),
   coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
+  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
   params: R.pathOr({}, ['list', 'params'])(public_project),
+  loading: loading.effects['public_project/fetch'],
 }))
 export default class ProjectListFilter extends Component {
   handleSelection = ({ value, key }) => {
@@ -22,6 +25,17 @@ export default class ProjectListFilter extends Component {
         ...params,
         [key]: selection(params, { key, value }),
       },
+    });
+  };
+
+  handleConfirmPress = () => {
+    // console.log(this.props);
+    // this.props.drawerRef.closeDrawer();
+  };
+
+  handleResetPress = () => {
+    this.props.dispatch({
+      type: 'public_project/resetListParam',
     });
   };
 
@@ -53,6 +67,11 @@ export default class ProjectListFilter extends Component {
             onSelect={value => this.handleSelection({ value, key: 'tag_id' })}
           />
         </ScrollView>
+        <FilterBottom
+          {...this.props}
+          onResetPress={this.handleResetPress}
+          onConfirmPress={this.handleConfirmPress}
+        />
       </SafeAreaView>
     );
   }

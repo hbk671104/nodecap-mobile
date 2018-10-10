@@ -4,8 +4,12 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const header = ({ pagination, onSelect, selection, onFilterPress }) => {
+const header = ({ pagination, params, onSelect, selection, onFilterPress }) => {
   const total_count = R.pathOr(0, ['total'])(pagination);
+  const has_filter =
+    !R.isEmpty(params.progress) ||
+    !R.isEmpty(params.industry_id) ||
+    !R.isEmpty(params.tag_id);
   return (
     <View style={styles.container}>
       <View style={styles.content.container}>
@@ -71,8 +75,15 @@ const header = ({ pagination, onSelect, selection, onFilterPress }) => {
         style={styles.filter.container}
         onPress={onFilterPress}
       >
-        <Text style={styles.filter.title}>
-          <Image source={require('asset/public_project/funnel.png')} /> 筛选
+        <Text style={[styles.filter.title, has_filter && { color: '#1890FF' }]}>
+          <Image
+            source={
+              has_filter
+                ? require('asset/public_project/funnel_highlight.png')
+                : require('asset/public_project/funnel.png')
+            }
+          />{' '}
+          筛选
         </Text>
       </Touchable>
     </View>

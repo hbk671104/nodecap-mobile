@@ -20,16 +20,18 @@ import moment from 'moment';
 import R from 'ramda';
 import { paginate } from '../utils/pagination';
 
+const initialParams = {
+  progress: '',
+  industry_id: '',
+  tag_id: '',
+};
+
 export default {
   namespace: 'public_project',
   state: {
     list: {
       index: null,
-      params: {
-        progress: null,
-        industry_id: null,
-        tag_id: null,
-      },
+      params: initialParams,
     },
     search: {
       index: null,
@@ -469,6 +471,15 @@ export default {
         list: {
           ...state.list,
           params: action.payload,
+        },
+      };
+    },
+    resetListParam(state) {
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          params: initialParams,
         },
       };
     },

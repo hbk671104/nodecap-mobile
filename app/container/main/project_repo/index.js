@@ -96,10 +96,10 @@ export default class ProjectRepo extends Component {
         ref={drawer => {
           this.drawer = drawer;
         }}
-        drawerWidth={280}
+        drawerWidth={285}
         drawerPosition="right"
         onDrawerClose={this.handleOnDrawerClose}
-        renderNavigationView={() => <Filter />}
+        renderNavigationView={() => <Filter drawerRef={this.drawer} />}
       >
         <View style={styles.container}>
           <NavBar

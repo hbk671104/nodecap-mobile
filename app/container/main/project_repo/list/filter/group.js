@@ -111,7 +111,7 @@ const styles = {
         alignItems: 'center',
         backgroundColor: '#F5F5F5',
         borderRadius: 2,
-        marginRight: 8,
+        marginRight: 9,
         marginBottom: 10,
         paddingHorizontal: 2,
       },
