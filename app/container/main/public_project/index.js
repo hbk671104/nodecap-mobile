@@ -133,6 +133,15 @@ export default class PublicProject extends Component {
     );
   };
 
+  handlePRPress= () => {
+    this.props.track('点击公关服务');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PRService',
+      }),
+    );
+  };
+
   handleReportItemPress = item => {
     this.props.track('点击进入研报详情');
     this.props.dispatch(
@@ -163,6 +172,7 @@ export default class PublicProject extends Component {
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onInstitutionPress={this.handleInstitutionPress}
+      onPRPress={this.handlePRPress}
     />
   );
 

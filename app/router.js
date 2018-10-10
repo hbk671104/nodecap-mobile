@@ -93,6 +93,8 @@ import IndividualProfile from 'container/individual/self/profile/mine';
 import IndividualEditProfile from 'container/individual/self/profile/edit';
 import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
+import PRService from 'container/main/service/pr';
+import PRServiceDetail from 'container/main/service/pr/detail';
 
 const Tab = createBottomTabNavigator(
   {
@@ -210,6 +212,8 @@ const MainStack = createStackNavigator(
     InstitutionDetail,
     WebPage,
     Settings,
+    PRService,
+    PRServiceDetail,
   },
   {
     headerMode: 'none',
@@ -298,6 +302,8 @@ const IndividualStack = createStackNavigator(
     Institution,
     InstitutionDetail,
     WebPage,
+    PRService,
+    PRServiceDetail,
   },
   {
     headerMode: 'none',

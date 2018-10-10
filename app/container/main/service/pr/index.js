@@ -6,7 +6,7 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
-import InstitutionItem from 'component/institution/item';
+import ServiceItem from './item';
 
 import styles from './style';
 
@@ -16,37 +16,39 @@ import styles from './style';
 })
 @connect(({ institution, loading }) => {
   return {
-    data: R.pathOr([], ['list', 'data'])(institution),
+    data: [{
+      id: 1,
+      logo_url: require('asset/services/nodecap.png'),
+      name: '贝壳公关',
+      description: '一家专注于区块链行业的企业宣发公司',
+    }, {
+      id: 2,
+      logo_url: require('asset/services/nodeplus.png'),
+      name: 'NodePlus',
+      description: '专业的区块链行业项目路演，品牌宣传，企业宣传',
+    }],
     pagination: R.pathOr(null, ['list', 'pagination'])(institution),
     loading: loading.effects['institution/fetch'],
   };
 })
 export default class InstitutionReport extends Component {
-  requestData = (page, size) => {
-    this.props.dispatch({
-      type: 'institution/fetch',
-      payload: {
-        currentPage: page,
-        pageSize: size,
-      },
-    });
-  };
+  requestData = (page, size) => {};
 
   handleItemPress = item => () => {
     this.props.track('点击进入详情');
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'InstitutionDetail',
+        routeName: 'PRServiceDetail',
         params: {
           id: item.id,
         },
-        key: `InstitutionDetail_${item.id}`,
+        key: `PRServiceDetail_${item.id}`,
       }),
     );
   };
 
   renderItem = ({ item }) => (
-    <InstitutionItem data={item} onPress={this.handleItemPress(item)} />
+    <ServiceItem data={item} onPress={this.handleItemPress(item)} />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
