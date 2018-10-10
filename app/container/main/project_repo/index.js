@@ -4,16 +4,18 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import ScrollableTabView, {
-  DefaultTabBar,
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import Button from 'react-native-scrollable-tab-view/Button';
+import DrawerLayout from 'react-native-drawer-layout';
 
 import NavBar from 'component/navBar';
 import SearchBarDisplay from 'component/searchBar/display';
+import { setStatusBar } from 'component/uikit/statusBar';
 
 import ProjectList from './list';
 import ProjectSets from './sets';
+import Filter from './list/filter';
 import styles from './style';
 
 @global.bindTrack({
@@ -28,6 +30,16 @@ export default class ProjectRepo extends Component {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'PublicProjectSearch',
+      }),
+    );
+  };
+
+  handleOnDrawerClose = () => {
+    setStatusBar('light-content');
+    this.props.dispatch(
+      NavigationActions.setParams({
+        params: { tabBarVisible: true },
+        key: 'ProjectRepo',
       }),
     );
   };
@@ -80,33 +92,43 @@ export default class ProjectRepo extends Component {
   render() {
     const { sets } = this.props;
     return (
-      <View style={styles.container}>
-        <NavBar
-          gradient
-          renderTitle={() => (
-            <View style={styles.searchBar.container}>
-              <SearchBarDisplay
-                title="搜索项目名、Token"
-                onPress={this.handleSearchPress}
+      <DrawerLayout
+        ref={drawer => {
+          this.drawer = drawer;
+        }}
+        drawerWidth={280}
+        drawerPosition="right"
+        onDrawerClose={this.handleOnDrawerClose}
+        renderNavigationView={() => <Filter />}
+      >
+        <View style={styles.container}>
+          <NavBar
+            gradient
+            renderTitle={() => (
+              <View style={styles.searchBar.container}>
+                <SearchBarDisplay
+                  title="搜索项目名、Token"
+                  onPress={this.handleSearchPress}
+                />
+              </View>
+            )}
+          />
+          <ScrollableTabView
+            renderTabBar={this.renderTabBar}
+            prerenderingSiblingsNumber={Infinity}
+          >
+            <ProjectList drawerRef={this.drawer} tabLabel="最热" />
+            {R.map(t => (
+              <ProjectSets
+                key={t.id}
+                index={t.id}
+                set_id={t.id}
+                tabLabel={t.name}
               />
-            </View>
-          )}
-        />
-        <ScrollableTabView
-          renderTabBar={this.renderTabBar}
-          prerenderingSiblingsNumber={Infinity}
-        >
-          <ProjectList tabLabel="最热" />
-          {R.map(t => (
-            <ProjectSets
-              key={t.id}
-              index={t.id}
-              set_id={t.id}
-              tabLabel={t.name}
-            />
-          ))(sets)}
-        </ScrollableTabView>
-      </View>
+            ))(sets)}
+          </ScrollableTabView>
+        </View>
+      </DrawerLayout>
     );
   }
 }

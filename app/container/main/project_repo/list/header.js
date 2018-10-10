@@ -2,11 +2,9 @@ import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import R from 'ramda';
 
-import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
-import { shadow } from 'utils/style';
 
-const header = ({ pagination }) => {
+const header = ({ pagination, onFilterPress }) => {
   const total_count = R.pathOr(0, ['total'])(pagination);
   return (
     <View style={styles.container}>
@@ -29,7 +27,11 @@ const header = ({ pagination }) => {
           </Touchable>
         </View>
       </View>
-      <Touchable borderless style={styles.filter.container}>
+      <Touchable
+        borderless
+        style={styles.filter.container}
+        onPress={onFilterPress}
+      >
         <Text style={styles.filter.title}>
           <Image source={require('asset/public_project/funnel.png')} /> 筛选
         </Text>
