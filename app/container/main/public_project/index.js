@@ -48,29 +48,23 @@ import styles from './style';
   })),
 )
 export default class PublicProject extends Component {
-  componentWillReceiveProps(nextProps) {
-    if (this.shouldAnimate) {
-      if (nextProps.updateCount > this.props.updateCount) {
-        const count = nextProps.updateCount - this.props.updateCount;
-        if (this.scroll) {
-          this.scroll.getNode().scrollToIndex({
-            index: 0,
-            // animated: true,
-            viewOffset: realBarHeight,
-          });
-          this.alert.show(`新增 ${count} 条更新`);
-        }
-      } else {
-        this.alert.show('暂无新快讯');
+  handleDataAlert = (newUpdateCount, oldUpdateCount) => {
+    if (newUpdateCount > oldUpdateCount) {
+      const count = newUpdateCount - oldUpdateCount;
+      if (this.scroll) {
+        this.alert.show(`新增 ${count} 条更新`);
       }
+    } else {
+      this.alert.show('暂无新快讯');
     }
   }
 
-  requestData = isRefresh => {
+  requestData = (isRefresh, callback) => {
     this.shouldAnimate = this.shouldAnimate && isRefresh;
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
+      callback,
     });
   };
 
@@ -163,6 +157,11 @@ export default class PublicProject extends Component {
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onInstitutionPress={this.handleInstitutionPress}
+      onRefreshPress={() => {
+        this.shouldAnimate = true;
+        this.requestData(true, this.handleDataAlert);
+      }}
+      newsLoading={this.props.loading && this.shouldAnimate}
     />
   );
 
@@ -218,15 +217,6 @@ export default class PublicProject extends Component {
           )}
         />
         {this.renderNavBar()}
-        <Refresh
-          {...this.props}
-          loading={this.props.loading && this.shouldAnimate}
-          style={{ opacity: refreshButtonOpacityRange }}
-          onPress={() => {
-            this.shouldAnimate = true;
-            this.requestData(true);
-          }}
-        />
       </View>
     );
   }

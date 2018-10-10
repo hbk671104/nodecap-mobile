@@ -8,7 +8,7 @@ import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import Button from 'react-native-scrollable-tab-view/Button';
-
+import { RouterEmitter } from '../../../router';
 import NavBar from 'component/navBar';
 import SearchBarDisplay from 'component/searchBar/display';
 
@@ -29,6 +29,15 @@ export default class ProjectRepo extends Component {
   componentWillMount() {
     this.props.dispatch({
       type: 'coinSets/fetch',
+    });
+    RouterEmitter.addListener('changeTab', (navigation) => {
+      const key = R.path(['navigation', 'state', 'key'])(this.props);
+
+      if (key === 'ProjectRepo' && navigation.routeName === 'ProjectRepo') {
+        this.props.dispatch({
+          type: 'coinSets/fetch',
+        });
+      }
     });
   }
   handleSearchPress = () => {
