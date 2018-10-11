@@ -18,7 +18,9 @@ const handleOpen = extras => {
 
   switch (type) {
     case 'news':
-      global.track('动态推送点击');
+      global.track('App_NotificationPushOpen', {
+        trackName: '动态推送点击',
+      });
       store.dispatch(
         NavigationActions.navigate({
           routeName: 'NotificationDetail',
@@ -44,7 +46,9 @@ const handleReceive = extras => {
 
   switch (type) {
     case 'news': {
-      global.track('动态推送接收');
+      global.track('App_NotificationPushReceive', {
+        trackName: '动态推送接收',
+      });
       store.dispatch({
         type: 'notification/fetch',
       });
