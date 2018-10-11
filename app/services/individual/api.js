@@ -62,7 +62,7 @@ export function getCoinTrend(id) {
   return request.get(`/coins/${id}/trend`);
 }
 
-export function trendList(payload) {
+export function trendList(payload = {}) {
   const paramsTransform = p => ({
     ...payload,
     page: p.currentPage,

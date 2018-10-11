@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 
 import Report from './report';
 import Trending from './trending';
+import Announcement from './announcement';
 import styles from './style';
 
 const newsItem = props => {
@@ -14,6 +15,12 @@ const newsItem = props => {
       combo = {
         title: '研究报告',
         component: Report,
+      };
+      break;
+    case 'announcement':
+      combo = {
+        title: '上所公告',
+        component: Announcement,
       };
       break;
 

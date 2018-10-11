@@ -20,6 +20,10 @@ export default {
           put.resolve({
             type: 'notification/fetchInSite',
           }),
+          // 上所公告
+          put.resolve({
+            type: 'notification/fetch',
+          }),
           // fetch public project
           put.resolve({
             type: 'public_project/fetch',
@@ -87,7 +91,10 @@ export default {
       return {
         ...state,
         payload: payload.id,
-        news: R.insert(9, { type: 'report' }, payload.data),
+        news: R.pipe(
+          R.insert(9, { type: 'report' }),
+          R.insert(0, { type: 'announcement' })
+        )(payload.data),
       };
     },
     concat(state, action) {

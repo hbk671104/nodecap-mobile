@@ -26,6 +26,7 @@ import styles from './style';
   pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
   loading: loading.effects['news/index'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
+  announcement: R.pathOr([], ['list', 'data'])(notification),
   reports: R.pathOr([], ['report', 'data'])(institution),
   updateCount: R.path(['updated_count'])(news),
   notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
@@ -147,12 +148,26 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleAnnouncementItemPress = item => {
+    this.props.track('点击进入上所公告详情');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'NotificationDetail',
+        params: {
+          id: item.id,
+        },
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
     <NewsItem
       {...this.props}
       data={item}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onInstitutionItemPress={this.handleReportItemPress}
+      onAnnouncementPress={this.handleAnnouncementPress}
+      onAnnouncementItemPress={this.handleAnnouncementItemPress}
     />
   );
 
