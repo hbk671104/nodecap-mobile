@@ -194,7 +194,7 @@ export default {
         console.log(error);
       }
     },
-    *refresh({ id, institutionId, callback }, { put, select }) {
+    *refresh({ id, institutionId }, { put, select }) {
       try {
         // 选择性刷新详情与搜索页
         const current = yield select(state =>
@@ -203,10 +203,6 @@ export default {
         const search = yield select(state =>
           R.path(['public_project', 'search'])(state),
         );
-        // 需要 institution id
-        // const institution = yield select(state =>
-        //   R.path(['institution', 'current'])(state),
-        // );
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
@@ -396,14 +392,21 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, institutionId, callback }, { call, put }) {
+    *favor({ payload, institutionId, callback }, { call, put, all }) {
       try {
         const { status: response_status } = yield call(favorCoin, [payload]);
-        yield put({
-          type: 'setFavorStatus',
-          payload,
-          status: true,
-        });
+        yield all([
+          put({
+            type: 'setFavorStatus',
+            payload,
+            status: true,
+          }),
+          put({
+            type: 'coinSets/setFavorStatus',
+            payload,
+            status: true,
+          }),
+        ]);
 
         // 刷新
         yield put({
@@ -419,14 +422,21 @@ export default {
         console.log(e);
       }
     },
-    *unfavor({ payload, institutionId, callback }, { call, put }) {
+    *unfavor({ payload, institutionId, callback }, { call, put, all }) {
       try {
         const { status: response_status } = yield call(unfavorCoin, payload);
-        yield put({
-          type: 'setFavorStatus',
-          payload,
-          status: false,
-        });
+        yield all([
+          put({
+            type: 'setFavorStatus',
+            payload,
+            status: false,
+          }),
+          put({
+            type: 'coinSets/setFavorStatus',
+            payload,
+            status: false,
+          }),
+        ]);
 
         // 刷新
         yield put({
@@ -602,30 +612,25 @@ export default {
     setFavorStatus(state, action) {
       return {
         ...state,
-        list: R.map(t => {
-          return {
-            ...t,
-            index: {
-              ...t.index,
-              data: R.pipe(
-                R.pathOr([], ['index', 'data']),
-                R.map(i => {
-                  if (i.id === action.payload) {
-                    const star_number = parseInt(i.stars, 10);
-                    return {
-                      ...i,
-                      is_focused: action.status,
-                      stars: action.status
-                        ? `${star_number + 1}`
-                        : `${star_number - 1}`,
-                    };
-                  }
-                  return i;
-                }),
-              )(t),
-            },
-          };
-        })(state.list),
+        list: {
+          ...state.list,
+          index: {
+            ...state.list.index,
+            data: R.map(i => {
+              if (i.id === action.payload) {
+                const star_number = parseInt(i.stars, 10);
+                return {
+                  ...i,
+                  is_focused: action.status,
+                  stars: action.status
+                    ? `${star_number + 1}`
+                    : `${star_number - 1}`,
+                };
+              }
+              return i;
+            })(state.list.index.data),
+          },
+        },
       };
     },
   },

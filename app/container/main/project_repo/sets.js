@@ -10,9 +10,7 @@ import styles from './style';
 
 @connect(({ coinSets, loading }, { set_id }) => ({
   data: R.pathOr([], ['coins', set_id, 'data'])(coinSets),
-  pagination: R.pathOr(null, ['coins', set_id, 'pagination'])(
-    coinSets,
-  ),
+  pagination: R.pathOr(null, ['coins', set_id, 'pagination'])(coinSets),
   loading: loading.effects['coinSets/fetchCoins'],
 }))
 export default class CoinsInSet extends Component {
@@ -44,7 +42,7 @@ export default class CoinsInSet extends Component {
     <FavorItem
       data={item}
       onPress={this.handleItemPress(item)}
-      afterFavor={() => this.requestData()}
+      // afterFavor={() => this.requestData()}
     />
   );
 

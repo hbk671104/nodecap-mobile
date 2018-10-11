@@ -1,9 +1,5 @@
-
 import R from 'ramda';
-import {
-  getCoinSets,
-  getCoinsBySetID,
-} from 'services/api';
+import { getCoinSets, getCoinsBySetID } from 'services/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -57,6 +53,35 @@ export default {
           ...state.coins,
           [action.set_id]: paginate(state.coins[action.set_id], action.payload),
         },
+      };
+    },
+    setFavorStatus(state, action) {
+      const { coins } = state;
+      R.pipe(
+        R.keys,
+        R.forEach(c => {
+          coins[c].data = R.pipe(
+            R.path([c, 'data']),
+            R.map(i => {
+              if (i.id === action.payload) {
+                const star_number = parseInt(i.stars, 10);
+                return {
+                  ...i,
+                  is_focused: action.status,
+                  stars: action.status
+                    ? `${star_number + 1}`
+                    : `${star_number - 1}`,
+                };
+              }
+              return i;
+            }),
+          )(coins);
+        }),
+      )(coins);
+
+      return {
+        ...state,
+        coins,
       };
     },
   },
