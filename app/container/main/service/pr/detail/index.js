@@ -17,30 +17,38 @@ const mock = {
     logo_url: require('asset/services/nodecap.png'),
     name: '贝壳公关',
     description: '一家专注于区块链行业的企业宣发公司',
-    members: [{
-      name: '晓雨',
-      title: '创始人',
-      description: '创始人',
-    }],
-    coins: [{
-      name: 'Zilliqa',
-      description: '基于真实数据的区块链开源协议',
-    }],
+    members: [
+      {
+        name: '姜晓玉',
+        title: '创始人',
+        description: '创始人',
+      },
+    ],
+    coins: [
+      {
+        name: 'Zilliqa',
+        description: '基于真实数据的区块链开源协议',
+      },
+    ],
   },
   2: {
     id: 2,
     logo_url: require('asset/services/nodeplus.png'),
     name: 'NodePlus',
     description: '专业的区块链行业项目路演，品牌宣传，企业宣传',
-    members: [{
-      name: '晓雨',
-      title: '创始人',
-      description: '创始人',
-    }],
-    coins: [{
-      name: 'Zilliqa',
-      description: '基于真实数据的区块链开源协议',
-    }],
+    members: [
+      {
+        name: '陈玉玲',
+        title: '创始人',
+        description: '创始人',
+      },
+    ],
+    coins: [
+      {
+        name: 'Zilliqa',
+        description: '基于真实数据的区块链开源协议',
+      },
+    ],
   },
 };
 @global.bindTrack({
@@ -124,10 +132,7 @@ export default class PRServiceDetail extends Component {
           {R.not(R.isEmpty(coins)) && (
             <Group title="服务项目">
               {R.addIndex(R.map)((m, index) => (
-                <CoinItem
-                  data={m}
-                  showTopBorder={index !== 0}
-                />
+                <CoinItem data={m} showTopBorder={index !== 0} />
               ))(coins)}
             </Group>
           )}

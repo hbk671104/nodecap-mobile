@@ -44,7 +44,7 @@ class CodePushPage extends Component {
             <Bar color="#108EE9" width={255} progress={this.props.codepush} />
             <View style={styles.bar.wrapper}>
               <Text style={styles.bar.title}>
-                <Text style={styles.bar.highlight}>v{appInfo.version}</Text>
+                <Text style={styles.bar.highlight}>v{appInfo.version}</Text>{' '}
                 正在更新中...
               </Text>
               {!R.isEmpty(description) && (

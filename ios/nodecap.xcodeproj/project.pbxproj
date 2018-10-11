@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -94,6 +93,7 @@
 		E428D934D949492794638C8A /* libRNExitApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE0FADE63FE4127947428ED /* libRNExitApp.a */; };
 		F3F567A7A4A74E1EB9E60D60 /* libRCTJPushModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0022A7FEF1DF4F149837E6CD /* libRCTJPushModule.a */; };
 		F80C87900157961ACCCA3A01 /* libPods-nodecap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCDB3DC87BEA44FE3F35F6A /* libPods-nodecap.a */; };
+		C9B2B1755EB74A6E98854F9C /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9D5B6C7AF5624B708B05EA5C /* AntDesign.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -680,6 +680,7 @@
 		FAF3AAB18CCF4893A96B6C10 /* libresolv.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		FBB1CA07742F487DBA994159 /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		FD119069291C4C01B4D3A97E /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		9D5B6C7AF5624B708B05EA5C /* AntDesign.ttf */ = {isa = PBXFileReference; name = "AntDesign.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1152,6 +1153,7 @@
 				23ABB6F8B42143C99737CF36 /* FontAwesome5_Brands.ttf */,
 				125C9F81B118401C8030BE37 /* FontAwesome5_Regular.ttf */,
 				BB9CDA8476404A518A75ACD9 /* FontAwesome5_Solid.ttf */,
+				9D5B6C7AF5624B708B05EA5C /* AntDesign.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2058,6 +2060,7 @@
 				334809F686444F448AA3ADB1 /* FontAwesome5_Brands.ttf in Resources */,
 				527DE685E5244E8B873660C3 /* FontAwesome5_Regular.ttf in Resources */,
 				5641D2FA3A8E4F7FBD4FA238 /* FontAwesome5_Solid.ttf in Resources */,
+				C9B2B1755EB74A6E98854F9C /* AntDesign.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

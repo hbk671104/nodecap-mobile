@@ -4641,9 +4641,9 @@ jest@23.0.0:
     import-local "^1.0.0"
     jest-cli "^23.0.0"
 
-jpush-react-native@^2.2.9:
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/jpush-react-native/-/jpush-react-native-2.2.9.tgz#06f809f40e6e668758e1d891a48ad7cd36b399df"
+jpush-react-native@^2.2.11:
+  version "2.2.11"
+  resolved "https://registry.yarnpkg.com/jpush-react-native/-/jpush-react-native-2.2.11.tgz#d268b7100992e748aa92752995034d197dd2526a"
   dependencies:
     inquirer "*"
     mpatch "^0.1.0"
@@ -6064,18 +6064,18 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@15.6.2, prop-types@^15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
+  dependencies:
+    loose-envify "^1.3.1"
+    object-assign "^4.1.1"
+
 prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
     fbjs "^0.8.16"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
-prop-types@^15.6.2:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
-  dependencies:
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
@@ -6330,12 +6330,12 @@ react-native-camera-roll-picker@^1.2.1:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/react-native-camera-roll-picker/-/react-native-camera-roll-picker-1.2.3.tgz#b117fd3a2b9012dcccee1261a9bc427226b8d6d2"
 
-react-native-camera@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.2.0.tgz#fa93b39726d15bdbb02fac06f4a23957b0be403a"
+react-native-camera@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.3.0.tgz#b4d8bea052ab4bd43f58576dac03def7a5ea416e"
   dependencies:
-    lodash "^4.17.4"
-    prop-types "^15.5.10"
+    lodash "^4.17.10"
+    prop-types "^15.6.2"
 
 react-native-code-push-saga@^1.0.1:
   version "1.0.1"
@@ -6372,9 +6372,9 @@ react-native-datepicker@^1.7.2:
   dependencies:
     moment "^2.22.0"
 
-react-native-device-info@^0.22.5:
-  version "0.22.5"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.22.5.tgz#9b1882cbb030f2926cff77336e7cd2e87edf52bf"
+react-native-device-info@^0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.24.0.tgz#a6c2a8977229e1b94435e30469fa6af21a68f3ea"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
@@ -6415,25 +6415,25 @@ react-native-exit-app@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-exit-app/-/react-native-exit-app-1.0.0.tgz#a2fbb121d902e6967cd8a365fe8453e5c4bc3172"
 
-react-native-global-props@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/react-native-global-props/-/react-native-global-props-1.1.3.tgz#4ea66136b03e42ff93a4fed544576e1993be0d70"
+react-native-global-props@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-global-props/-/react-native-global-props-1.1.4.tgz#7d3f3d6151f6f046a1557c6aaec0fe0b9c200111"
 
-react-native-image-picker@^0.26.10:
-  version "0.26.10"
-  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.26.10.tgz#0bb9ab928984948c67aee0b9e64216bee007a9fc"
+react-native-image-picker@^0.27.1:
+  version "0.27.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-picker/-/react-native-image-picker-0.27.1.tgz#32877c667e8c2713466fe178a6c7dd648e6cb5d3"
 
 react-native-iphone-x-helper@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.0.3.tgz#7a2f1e0574e899a0f1d426e6167fd98990083214"
 
-react-native-iphone-x-helper@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.1.0.tgz#3a881720900bd8d1c67de2c465ea9aa9296180a7"
+react-native-iphone-x-helper@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.0.tgz#9f8a376eb00bc712115abff4420318a0063fa796"
 
-react-native-keyboard-aware-scroll-view@^0.7.2:
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.7.2.tgz#3c758dea21bfe1d292ad907b89b74fcbd9d13a73"
+react-native-keyboard-aware-scroll-view@^0.7.3:
+  version "0.7.3"
+  resolved "https://registry.yarnpkg.com/react-native-keyboard-aware-scroll-view/-/react-native-keyboard-aware-scroll-view-0.7.3.tgz#63981afa613a7100b860ab534c6f444fefd0e0bc"
   dependencies:
     prop-types "^15.6.2"
     react-native-iphone-x-helper "^1.0.3"
@@ -6467,9 +6467,9 @@ react-native-modal@^6.5.0:
     prop-types "^15.6.1"
     react-native-animatable "^1.2.4"
 
-react-native-offline@^3.12.0:
-  version "3.12.0"
-  resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-3.12.0.tgz#44d7c3b393357f0b0111ad1e8370fe8a7114e169"
+react-native-offline@^3.14.0:
+  version "3.14.0"
+  resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-3.14.0.tgz#932a4a5df923bed9a4422ff02f720d03ac6ca80d"
   dependencies:
     hoist-non-react-statics "^1.2.0"
     lodash "^4.17.4"
@@ -6485,9 +6485,9 @@ react-native-parallax-scroll-view@^0.21.3:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-pdf@^5.0.5:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-5.0.5.tgz#4a60624055ab2b4a2514638af45aaae305ac6e2d"
+react-native-pdf@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-pdf/-/react-native-pdf-5.0.6.tgz#6243b11a007323e678f9635f2a98a086de0c0844"
   dependencies:
     crypto-js "^3.1.9-1"
     prop-types "^15.5.10"
@@ -6539,9 +6539,9 @@ react-native-sentry@^0.39.0:
     "@sentry/wizard" "^0.11.0"
     raven-js "^3.24.2"
 
-react-native-shimmer@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/react-native-shimmer/-/react-native-shimmer-0.3.2.tgz#14e86aa26cfe7bec86ae933e21d35e1b4e8cbe48"
+react-native-shimmer@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-shimmer/-/react-native-shimmer-0.4.1.tgz#4221a4b19e9001c1a8afd0cee0979e1ede6e8a44"
   dependencies:
     prop-types "^15.6.0"
 
@@ -6577,18 +6577,24 @@ react-native-tab-view@^0.0.77:
   dependencies:
     prop-types "^15.6.0"
 
-react-native-tab-view@^1.0.0, react-native-tab-view@^1.0.2:
+react-native-tab-view@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.0.2.tgz#66e0bc6d38a227ed2b212e3a256b7902f6ce02ed"
   dependencies:
     prop-types "^15.6.1"
 
-react-native-vector-icons@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-5.0.0.tgz#d0bd6fdda01159db409810718dd04904951a98f5"
+react-native-tab-view@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.2.0.tgz#0cc26a1c8e49b6c0d58a30363dbbe43954907c31"
+  dependencies:
+    prop-types "^15.6.1"
+
+react-native-vector-icons@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-vector-icons/-/react-native-vector-icons-6.0.2.tgz#826252a72d648cf957d46ada8df890318dac53e1"
   dependencies:
     lodash "^4.0.0"
-    prop-types "^15.5.10"
+    prop-types "^15.6.2"
     yargs "^8.0.2"
 
 react-native-vertical-view-pager@^0.1.1:
@@ -7293,11 +7299,11 @@ rn-fetch-blob@^0.10.13:
     base-64 "0.1.0"
     glob "7.0.6"
 
-rn-placeholder@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/rn-placeholder/-/rn-placeholder-1.2.0.tgz#d0d7c2fb278698f4101bd0a8a06b14f2147d994c"
+rn-placeholder@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/rn-placeholder/-/rn-placeholder-1.3.0.tgz#9ba19493e1a72098176d7f3b3bb60aa3775e913a"
   dependencies:
-    prop-types "^15.5.10"
+    prop-types "15.6.2"
 
 rn-topview@^0.1.6:
   version "0.1.6"
