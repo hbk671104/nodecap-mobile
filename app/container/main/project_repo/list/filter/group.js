@@ -26,7 +26,10 @@ export default class FilterGroup extends PureComponent {
       expanded,
       selection,
       onSelect,
+      onAllPress,
     } = this.props;
+
+    const empty_selection = R.isEmpty(selection) || R.isNil(selection);
     return (
       <View style={styles.container}>
         <View style={styles.header.container}>
@@ -46,6 +49,22 @@ export default class FilterGroup extends PureComponent {
           )}
         </View>
         <View style={styles.tag.container}>
+          <Touchable
+            style={[
+              styles.tag.item.container,
+              empty_selection && styles.tag.item.highlight,
+            ]}
+            onPress={() => onAllPress()}
+          >
+            <Text
+              style={[
+                styles.tag.item.title,
+                empty_selection && styles.tag.item.titleHighlight,
+              ]}
+            >
+              全部
+            </Text>
+          </Touchable>
           {R.map(d => {
             const selected = R.contains(`${d.id}`)(selection);
             return (

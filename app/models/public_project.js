@@ -40,7 +40,7 @@ export default {
     current: null,
   },
   effects: {
-    *fetch({ params, callback }, { call, put }) {
+    *fetch({ params, callback }, { call, put, all }) {
       try {
         yield put({
           type: 'setListParam',
@@ -49,10 +49,16 @@ export default {
 
         const { data } = yield call(getPublicProjects, params);
 
-        yield put({
-          type: 'list',
-          payload: data,
-        });
+        yield all([
+          put({
+            type: 'list',
+            payload: data,
+          }),
+          put({
+            type: 'saveCount',
+            payload: data,
+          }),
+        ]);
 
         if (callback) {
           yield call(callback);

@@ -46,8 +46,23 @@ export default class ProjectListFilter extends Component {
     });
   };
 
+  handleAllPress = key => () => {
+    const { params } = this.props;
+    this.props.dispatch({
+      type: 'public_project/fetchCount',
+      params: {
+        ...params,
+        [key]: '',
+      },
+    });
+  };
+
   render() {
     const { institution, coinTag, params } = this.props;
+
+    const industry_id = R.pathOr('', ['industry_id'])(params);
+    const tag_id = R.pathOr('', ['tag_id'])(params);
+
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
@@ -55,23 +70,19 @@ export default class ProjectListFilter extends Component {
           <FilterGroup
             title="知名机构"
             data={institution}
-            selection={R.pipe(
-              R.pathOr('', ['industry_id']),
-              R.split(','),
-            )(params)}
+            selection={R.isEmpty(industry_id) ? [] : R.split(',')(industry_id)}
             onSelect={value =>
               this.handleSelection({ value, key: 'industry_id' })
             }
+            onAllPress={this.handleAllPress('industry_id')}
           />
           <View style={styles.separator} />
           <FilterGroup
             title="领域"
             data={coinTag}
-            selection={R.pipe(
-              R.pathOr('', ['tag_id']),
-              R.split(','),
-            )(params)}
+            selection={R.isEmpty(tag_id) ? [] : R.split(',')(tag_id)}
             onSelect={value => this.handleSelection({ value, key: 'tag_id' })}
+            onAllPress={this.handleAllPress('tag_id')}
           />
         </ScrollView>
         <FilterBottom

@@ -4,8 +4,7 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const header = ({ pagination, params, onSelect, selection, onFilterPress }) => {
-  const total_count = R.pathOr(0, ['total'])(pagination);
+const header = ({ count, params, onSelect, selection, onFilterPress }) => {
   const has_filter =
     !R.isEmpty(params.progress) ||
     !R.isEmpty(params.industry_id) ||
@@ -15,9 +14,7 @@ const header = ({ pagination, params, onSelect, selection, onFilterPress }) => {
       <View style={styles.content.container}>
         <Text style={styles.content.title}>
           当前：
-          <Text style={{ fontWeight: 'bold', color: '#1890FF' }}>
-            {total_count}
-          </Text>
+          <Text style={{ fontWeight: 'bold', color: '#1890FF' }}>{count}</Text>
         </Text>
         <View style={styles.content.tag.container}>
           <Touchable

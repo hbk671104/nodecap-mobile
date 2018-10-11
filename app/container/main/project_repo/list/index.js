@@ -15,6 +15,7 @@ import styles from '../style';
 @connect(({ public_project, loading }) => ({
   data: R.pathOr([], ['list', 'index', 'data'])(public_project),
   pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  count: R.pathOr(0, ['list', 'count'])(public_project),
   params: R.pathOr({}, ['list', 'params'])(public_project),
   loading: loading.effects['public_project/fetch'],
 }))
@@ -72,17 +73,17 @@ export default class ProjectList extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
-  renderHeader = () => (
-    <Header
-      {...this.props}
-      selection={R.pipe(
-        R.pathOr('', ['progress']),
-        R.split(','),
-      )(this.props.params)}
-      onFilterPress={this.handleFilterPress}
-      onSelect={value => this.handleSelection({ value, key: 'progress' })}
-    />
-  );
+  renderHeader = () => {
+    const progress = R.pathOr('', ['progress'])(this.props.params);
+    return (
+      <Header
+        {...this.props}
+        selection={R.isEmpty(progress) ? [] : R.split(',')(progress)}
+        onFilterPress={this.handleFilterPress}
+        onSelect={value => this.handleSelection({ value, key: 'progress' })}
+      />
+    );
+  };
 
   render() {
     const { data, pagination, loading } = this.props;
