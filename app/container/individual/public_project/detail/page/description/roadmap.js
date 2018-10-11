@@ -4,14 +4,13 @@ import styles from './roadmap.style';
 import R from 'ramda';
 import moment from 'moment';
 
-
 class Roadmap extends Component {
-  renderItem = ({ item }) => {
+  renderItem = ({ item, index }) => {
     const date = R.pathOr('', ['date'])(item);
     const content = R.pathOr('', ['content'])(item);
 
     return (
-      <View style={styles.container}>
+      <View key={`${index}`} style={styles.container}>
         <View style={styles.point} />
         <View style={styles.title}>
           <Text style={styles.time}>{date} </Text>
@@ -27,8 +26,8 @@ class Roadmap extends Component {
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     return (
       <View>
-        {roadmap.map(i => {
-          return this.renderItem({ item: i });
+        {roadmap.map((i, index) => {
+          return this.renderItem({ item: i, index });
         })}
       </View>
     );

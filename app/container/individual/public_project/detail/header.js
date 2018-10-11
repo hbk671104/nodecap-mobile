@@ -30,7 +30,7 @@ const header = ({
   )(data);
   const logo = R.pathOr('', ['icon'])(data);
   const category = R.pipe(
-    R.pathOr([], ['category']),
+    R.pathOr([], ['tags']),
     R.take(2),
   )(data);
   const market = R.pathOr({}, ['market'])(portfolio);
@@ -79,10 +79,15 @@ const header = ({
                 ]}
               >
                 {R.pipe(
-                  R.filter(t => !R.isEmpty(R.trim(t))),
+                  // R.filter(t => !R.isEmpty(R.trim(t))),
                   R.map(k => (
                     <View key={k} style={styles.tag.container}>
-                      <Text style={styles.tag.title}>{R.trim(k)}</Text>
+                      <Text style={styles.tag.title}>
+                        {R.pipe(
+                          R.pathOr('', ['name']),
+                          R.trim,
+                        )(k)}
+                      </Text>
                     </View>
                   )),
                 )(category)}

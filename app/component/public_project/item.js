@@ -29,7 +29,10 @@ const publicProjectItem = ({ style, data, onPress }) => {
   const icon = R.pathOr('', ['icon'])(data);
   const project_name = R.pathOr('--', ['name'])(data);
   const status = R.pathOr('', ['finance_status'])(data);
-  const category = R.pathOr([], ['category'])(data);
+  const category = R.pipe(
+    R.pathOr([], ['tags']),
+    R.take(2),
+  )(data);
   const description = R.pathOr('--', ['description'])(data);
 
   return (
@@ -78,7 +81,10 @@ const publicProjectItem = ({ style, data, onPress }) => {
                   <Text
                     style={[styles.content.tag.title, { color: textColor }]}
                   >
-                    {t || '--'}
+                    {R.pipe(
+                      R.pathOr('', ['name']),
+                      R.trim,
+                    )(t)}
                   </Text>
                 </View>
               );

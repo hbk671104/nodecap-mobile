@@ -78,7 +78,7 @@ class FavorItem extends PureComponent {
     const icon = R.pathOr('', ['icon'])(data);
     const project_name = R.pathOr('--', ['name'])(data);
     const status = R.pathOr('', ['finance_status'])(data);
-    const category = R.pathOr([], ['category'])(data);
+    const category = R.pathOr([], ['tags'])(data);
     const description = R.pathOr('--', ['description'])(data);
     const stars = R.pathOr(0, ['stars'])(data);
     const favored = R.pathOr(false, ['is_focused'])(data);
@@ -100,7 +100,7 @@ class FavorItem extends PureComponent {
             <View style={styles.content.tag.wrapper}>
               {R.pipe(
                 R.take(2),
-                R.filter(t => !R.isEmpty(R.trim(t))),
+                // R.filter(t => !R.isEmpty(R.trim(t))),
                 R.addIndex(R.map)((t, i) => {
                   const textColor = R.pathOr('#939393', [i, 'textColor'])(
                     colorMap,
@@ -120,7 +120,10 @@ class FavorItem extends PureComponent {
                       <Text
                         style={[styles.content.tag.title, { color: textColor }]}
                       >
-                        {R.trim(t)}
+                        {R.pipe(
+                          R.pathOr('', ['name']),
+                          R.trim,
+                        )(t)}
                       </Text>
                     </View>
                   );

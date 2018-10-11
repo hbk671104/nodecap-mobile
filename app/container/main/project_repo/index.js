@@ -31,7 +31,7 @@ export default class ProjectRepo extends Component {
     this.props.dispatch({
       type: 'coinSets/fetch',
     });
-    RouterEmitter.addListener('changeTab', (navigation) => {
+    RouterEmitter.addListener('changeTab', navigation => {
       const key = R.path(['navigation', 'state', 'key'])(this.props);
 
       if (key === 'ProjectRepo' && navigation.routeName === 'ProjectRepo') {
@@ -54,6 +54,21 @@ export default class ProjectRepo extends Component {
     this.props.dispatch(
       NavigationActions.setParams({
         params: { tabBarVisible: true },
+        key: 'ProjectRepo',
+      }),
+    );
+  };
+
+  handleOnDrawerSlide = () => {
+    const tabBarVisible = this.props.navigation.getParam('tabBarVisible', true);
+    if (!tabBarVisible) {
+      return;
+    }
+
+    setStatusBar('dark-content');
+    this.props.dispatch(
+      NavigationActions.setParams({
+        params: { tabBarVisible: false },
         key: 'ProjectRepo',
       }),
     );
@@ -119,6 +134,7 @@ export default class ProjectRepo extends Component {
         drawerWidth={285}
         drawerPosition="right"
         onDrawerClose={this.handleOnDrawerClose}
+        onDrawerSlide={this.handleOnDrawerSlide}
         renderNavigationView={() => (
           <Filter closeDrawer={this.handleCloseDrawer} />
         )}

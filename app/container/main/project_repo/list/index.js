@@ -56,13 +56,13 @@ export default class ProjectList extends Component {
   };
 
   handleFilterPress = () => {
-    setStatusBar('dark-content');
-    this.props.dispatch(
-      NavigationActions.setParams({
-        params: { tabBarVisible: false },
-        key: 'ProjectRepo',
-      }),
-    );
+    // setStatusBar('dark-content');
+    // this.props.dispatch(
+    //   NavigationActions.setParams({
+    //     params: { tabBarVisible: false },
+    //     key: 'ProjectRepo',
+    //   }),
+    // );
 
     this.props.drawerRef.openDrawer();
   };

@@ -167,7 +167,7 @@ class ShareCoin extends Component {
           <Flex style={styles.groupContent} align="center">
             {industryInvestments.length ? (
               industryInvestments.map((i, idx) => (
-                <Flex align="center">
+                <Flex key={`${idx}`} align="center">
                   <Text style={{ color: 'rgba(0,0,0,.85)' }}>{i.name}</Text>
                   {idx !== industryInvestments.length - 1 && (
                     <View style={styles.orgDivision} />
