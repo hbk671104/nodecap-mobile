@@ -89,6 +89,7 @@ export default class ProjectList extends Component {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
+        {this.renderHeader()}
         <List
           contentContainerStyle={styles.listContainer}
           action={this.requestData}
@@ -97,7 +98,6 @@ export default class ProjectList extends Component {
           loading={loading}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
-          renderHeader={this.renderHeader}
         />
       </View>
     );

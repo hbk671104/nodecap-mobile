@@ -9,7 +9,7 @@ import Icon from 'component/uikit/icon';
 @compose(
   withState('expanded', 'setExpanded', false),
   withProps(({ expanded, data }) => ({
-    clipped_data: expanded ? data : R.take(9)(data),
+    clipped_data: expanded ? data : R.take(8)(data),
   })),
 )
 export default class FilterGroup extends PureComponent {
@@ -36,7 +36,7 @@ export default class FilterGroup extends PureComponent {
           <Text style={styles.header.title} numberOfLines={1}>
             {title}
           </Text>
-          {R.length(data) > 9 && (
+          {R.length(data) > 8 && (
             <Touchable borderless onPress={this.handleExpandPress}>
               <Text style={styles.header.expand}>
                 {expanded ? '收起' : '展开'}{' '}
