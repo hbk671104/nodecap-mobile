@@ -4,9 +4,7 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const bottom = ({ pagination, loading, onResetPress, onConfirmPress }) => {
-  const total_count = R.pathOr(0, ['total'])(pagination);
-
+const bottom = ({ count, loading, onResetPress, onConfirmPress }) => {
   return (
     <View style={styles.container}>
       <Touchable style={styles.reset.container} onPress={onResetPress}>
@@ -17,7 +15,7 @@ const bottom = ({ pagination, loading, onResetPress, onConfirmPress }) => {
           {loading && <ActivityIndicator color="white" />}
           <Text style={styles.confirm.title}>
             确定（
-            {total_count}
+            {count}
             个项目）
           </Text>
         </View>

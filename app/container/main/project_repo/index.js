@@ -44,6 +44,10 @@ export default class ProjectRepo extends Component {
     );
   };
 
+  handleCloseDrawer = () => {
+    this.drawer.closeDrawer();
+  };
+
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
     const textColor = isTabActive ? '#1890FF' : 'rgba(0, 0, 0, 0.65)';
     const fontWeight = isTabActive ? 'bold' : 'normal';
@@ -93,13 +97,16 @@ export default class ProjectRepo extends Component {
     const { sets } = this.props;
     return (
       <DrawerLayout
+        useNativeAnimations
         ref={drawer => {
           this.drawer = drawer;
         }}
         drawerWidth={285}
         drawerPosition="right"
         onDrawerClose={this.handleOnDrawerClose}
-        renderNavigationView={() => <Filter drawerRef={this.drawer} />}
+        renderNavigationView={() => (
+          <Filter closeDrawer={this.handleCloseDrawer} />
+        )}
       >
         <View style={styles.container}>
           <NavBar

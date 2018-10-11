@@ -13,6 +13,7 @@ import styles from './style';
   institution: R.pathOr([], ['institution', 'data'])(filter),
   coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
   pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  count: R.pathOr(0, ['list', 'count'])(public_project),
   params: R.pathOr({}, ['list', 'params'])(public_project),
   loading: loading.effects['public_project/fetch'],
 }))
@@ -20,7 +21,7 @@ export default class ProjectListFilter extends Component {
   handleSelection = ({ value, key }) => {
     const { params } = this.props;
     this.props.dispatch({
-      type: 'public_project/fetch',
+      type: 'public_project/fetchCount',
       params: {
         ...params,
         [key]: selection(params, { key, value }),
@@ -29,13 +30,19 @@ export default class ProjectListFilter extends Component {
   };
 
   handleConfirmPress = () => {
-    // console.log(this.props);
-    // this.props.drawerRef.closeDrawer();
+    const { params } = this.props;
+    this.props.dispatch({
+      type: 'public_project/fetch',
+      params,
+      callback: () => {
+        this.props.closeDrawer();
+      },
+    });
   };
 
   handleResetPress = () => {
     this.props.dispatch({
-      type: 'public_project/resetListParam',
+      type: 'public_project/resetFilterParam',
     });
   };
 

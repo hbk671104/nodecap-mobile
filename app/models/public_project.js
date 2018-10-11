@@ -10,7 +10,6 @@ import {
   favorCoin,
   unfavorCoin,
   getInvestmentsByCoinID,
-  createInvestment,
   createInvestInfo,
   getCoinMarket,
   getCoinROI,
@@ -31,6 +30,7 @@ export default {
   state: {
     list: {
       index: null,
+      count: 0,
       params: initialParams,
     },
     search: {
@@ -59,6 +59,41 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *fetchCount({ params, callback }, { call, put }) {
+      try {
+        yield put({
+          type: 'setListParam',
+          payload: params,
+        });
+
+        const { data } = yield call(getPublicProjects, params);
+
+        yield put({
+          type: 'saveCount',
+          payload: data,
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *resetFilterParam(_, { put }) {
+      try {
+        yield put({
+          type: 'resetListParam',
+        });
+
+        yield put({
+          type: 'fetchCount',
+          params: initialParams,
+        });
+      } catch (error) {
+        console.log(error);
       }
     },
     *search({ payload, callback }, { call, put }) {
@@ -462,6 +497,16 @@ export default {
         list: {
           ...state.list,
           index: paginate(state.list.index, action.payload),
+        },
+      };
+    },
+    saveCount(state, action) {
+      const count = R.pathOr(0, ['pagination', 'total'])(action.payload);
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          count,
         },
       };
     },
