@@ -3,6 +3,7 @@ import { BackHandler, Alert, Platform, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
+import R from 'ramda';
 import {
   NavigationActions,
   createSwitchNavigator,
@@ -371,6 +372,9 @@ class Router extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
     JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);
+    if (this.state.isIOS) {
+      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -399,7 +403,23 @@ class Router extends Component {
     return true;
   };
 
-  handleOpenNotification = ({ extras }) => {
+  handleOpenLaunchNotification = result => {
+    if (R.isNil(result)) {
+      return;
+    }
+
+    setTimeout(() => {
+      const { extras } = result;
+      handleOpen(extras);
+    }, 1000);
+  };
+
+  handleOpenNotification = result => {
+    if (R.isNil(result)) {
+      return;
+    }
+
+    const { extras } = result;
     handleOpen(extras);
   };
 
@@ -434,6 +454,4 @@ export function routerReducer(state, action = {}) {
 export default Router;
 
 const RouterEmitter = new EventEmitter();
-export {
-  RouterEmitter,
-};
+export { RouterEmitter };

@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { View, Animated, Platform } from 'react-native';
+import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { TabView, TabBar } from 'react-native-tab-view';
 import R from 'ramda';
 import { compose, withState } from 'recompose';
-import JPush from 'jpush-react-native';
 
 import NavBar from 'component/navBar';
 import Empty from 'component/empty';
 import FundWrapper from './wrapper';
 import styles from './style';
-import { handleOpen } from '../../../utils/jpush_handler';
 
 @global.bindTrack({
   page: '基金管理',
@@ -27,27 +25,6 @@ import { handleOpen } from '../../../utils/jpush_handler';
 }))
 @compose(withState('index', 'setIndex', 0))
 class Fund extends Component {
-  state = {
-    isIOS: Platform.OS === 'ios',
-  };
-
-  componentDidMount() {
-    if (this.state.isIOS) {
-      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
-    }
-  }
-
-  handleOpenLaunchNotification = result => {
-    if (R.isNil(result)) {
-      return;
-    }
-
-    setTimeout(() => {
-      const { extras } = result;
-      handleOpen(extras);
-    }, 500);
-  };
-
   handleIndexChange = index => {
     this.props.setIndex(index, () => {
       this.props.track('Tab切换', { subModuleName: index });
