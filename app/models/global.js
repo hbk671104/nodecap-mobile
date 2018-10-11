@@ -74,7 +74,7 @@ export default {
         console.log(error);
       }
     },
-    *initial(_, { select, put }) {
+    *initial(_, { select, put, all }) {
       const in_individual = yield select(state =>
         R.path(['login', 'in_individual'])(state),
       );
@@ -83,6 +83,19 @@ export default {
         const token = yield select(state => R.path(['login', 'token'])(state));
         request.defaults.headers.common.Authorization = `Bearer ${token}`;
       }
+
+      // basic info init
+      yield all([
+        put({
+          type: 'filter/fetchInstitution',
+        }),
+        put({
+          type: 'filter/fetchCoinTag',
+        }),
+        put({
+          type: 'coinSets/fetch',
+        }),
+      ]);
 
       try {
         yield put.resolve({

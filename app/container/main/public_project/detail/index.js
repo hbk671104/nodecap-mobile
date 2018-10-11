@@ -236,7 +236,7 @@ export default class PublicProjectDetail extends Component {
             list={selectionList}
             page={Current}
             onPress={this.handlePageSwitch}
-          />
+          />1
           <View style={styles.page}>
             <Current.component
               {...this.props}

@@ -8,6 +8,8 @@ import R from 'ramda';
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
 import InstitutionItem from 'component/institution/item';
+import SocialNetworkItem from './socialNetworkItem';
+import Roadmap from './roadmap';
 import styles from './style';
 
 @connect()
@@ -44,6 +46,8 @@ export default class Description extends PureComponent {
     );
     const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    const social_network = R.pathOr([], ['portfolio', 'social_networks'])(this.props);
+    const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
     const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
     const industry_investments = R.pathOr('', [
@@ -111,6 +115,35 @@ export default class Description extends PureComponent {
             </Flex>
           </View>
         )}
+        {R.not(R.isEmpty(social_network)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>媒体信息</Text>
+            <Flex wrap="wrap">
+              {R.map((m) => (
+                <SocialNetworkItem
+                  style={{ paddingHorizontal: 0 }}
+                  key={m.name}
+                  name={m.name}
+                  data={m.link_url}
+                  onPress={() => {
+                    Linking
+                      .canOpenURL(m.link_url)
+                      .then((support) => {
+                        if (support) {
+                          Linking
+                            .openURL(m.link_url)
+                            .catch((err) => {
+                              console.log(err);
+                            });
+                        }
+                      })
+                      .catch((err) => console.error('An error occurred', err));
+                  }}
+                />
+              ))(social_network)}
+            </Flex>
+          </View>
+        )}
         <Financing {...this.props} />
         {R.not(R.isEmpty(members)) && (
           <View>
@@ -134,6 +167,12 @@ export default class Description extends PureComponent {
                 />
               ))(industry_investments)}
             </View>
+          </View>
+        )}
+        {R.not(R.isEmpty(roadmap)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>路线图</Text>
+            <Roadmap {...this.props} />
           </View>
         )}
       </View>

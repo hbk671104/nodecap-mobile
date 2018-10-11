@@ -11,6 +11,10 @@ export default {
   effects: {
     *index({ payload }, { call, put, select, all }) {
       try {
+        const public_project_params = yield select(state =>
+          R.path(['public_project', 'list', 'params'])(state),
+        );
+
         yield all([
           // insite news
           put.resolve({
@@ -20,7 +24,9 @@ export default {
           put.resolve({
             type: 'public_project/fetch',
             params: {
-              progress: 0,
+              ...public_project_params,
+              currentPage: 1,
+              pageSize: 20,
             },
           }),
           // fetch report

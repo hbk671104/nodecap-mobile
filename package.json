@@ -46,6 +46,7 @@
     "react-native-config": "^0.11.5",
     "react-native-datepicker": "^1.7.2",
     "react-native-device-info": "^0.22.5",
+    "react-native-drawer-layout": "^2.0.0",
     "react-native-easy-grid": "^0.2.0",
     "react-native-elements": "^0.19.1",
     "react-native-exit-app": "^1.0.0",

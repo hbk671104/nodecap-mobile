@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Animated } from 'react-native';
 import { raised } from '../../utils/style';
+import SolidAvatar from './avatar.solid';
 
 const avatar = props => (
   <Animated.View
@@ -47,4 +48,7 @@ const styles = {
   },
 };
 
+export {
+  SolidAvatar,
+};
 export default avatar;
