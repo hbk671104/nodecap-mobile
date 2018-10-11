@@ -66,6 +66,7 @@ class FavorItem extends PureComponent {
       type: is_focused ? 'public_project/unfavor' : 'public_project/favor',
       payload: id,
       institutionId: this.props.institutionId,
+      callback: this.props.afterFavor,
     });
   };
 

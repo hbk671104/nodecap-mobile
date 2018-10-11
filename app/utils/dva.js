@@ -15,6 +15,7 @@ export default options => {
     createLoading({
       only: [
         'login/login',
+        'login/logout',
         'login/smsLogin',
         'login/setPassword',
         'login/sendLoginSMS',
@@ -48,6 +49,7 @@ export default options => {
         'news/index',
         'favored/fetch',
         'activity/fetch',
+        'coinSets/fetchCoins',
       ],
     }),
   );

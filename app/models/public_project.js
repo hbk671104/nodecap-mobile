@@ -10,7 +10,6 @@ import {
   favorCoin,
   unfavorCoin,
   getInvestmentsByCoinID,
-  createInvestment,
   createInvestInfo,
   getCoinMarket,
   getCoinROI,
@@ -20,35 +19,20 @@ import moment from 'moment';
 import R from 'ramda';
 import { paginate } from '../utils/pagination';
 
+const initialParams = {
+  progress: '',
+  industry_id: '',
+  tag_id: '',
+};
+
 export default {
   namespace: 'public_project',
   state: {
-    list: [
-      {
-        id: 0,
-        title: '最热',
-        index: null,
-        params: {},
-      },
-      {
-        id: 2,
-        title: '即将开始',
-        index: null,
-        params: {},
-      },
-      {
-        id: 3,
-        title: '进行中',
-        index: null,
-        params: {},
-      },
-      {
-        id: 4,
-        title: '已结束',
-        index: null,
-        params: {},
-      },
-    ],
+    list: {
+      index: null,
+      count: 0,
+      params: initialParams,
+    },
     search: {
       index: null,
       params: {},
@@ -56,27 +40,66 @@ export default {
     current: null,
   },
   effects: {
-    *fetch({ params, callback }, { call, put }) {
+    *fetch({ params, callback }, { call, put, all }) {
       try {
-        const { data } = yield call(getPublicProjects, {
-          ...params,
-        });
-
         yield put({
-          type: 'list',
-          payload: data,
-          params,
+          type: 'setListParam',
+          payload: params,
         });
 
-        // yield put.resolve({
-        //   type: 'institution/fetch',
-        // });
+        const { data } = yield call(getPublicProjects, params);
+
+        yield all([
+          put({
+            type: 'list',
+            payload: data,
+          }),
+          put({
+            type: 'saveCount',
+            payload: data,
+          }),
+        ]);
 
         if (callback) {
           yield call(callback);
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *fetchCount({ params, callback }, { call, put }) {
+      try {
+        yield put({
+          type: 'setListParam',
+          payload: params,
+        });
+
+        const { data } = yield call(getPublicProjects, params);
+
+        yield put({
+          type: 'saveCount',
+          payload: data,
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *resetFilterParam(_, { put }) {
+      try {
+        yield put({
+          type: 'resetListParam',
+        });
+
+        yield put({
+          type: 'fetchCount',
+          params: initialParams,
+        });
+      } catch (error) {
+        console.log(error);
       }
     },
     *search({ payload, callback }, { call, put }) {
@@ -180,10 +203,6 @@ export default {
         const search = yield select(state =>
           R.path(['public_project', 'search'])(state),
         );
-        // 需要 institution id
-        // const institution = yield select(state =>
-        //   R.path(['institution', 'current'])(state),
-        // );
         if (!R.isNil(current)) {
           yield put.resolve({
             type: 'getBase',
@@ -373,14 +392,21 @@ export default {
         console.log(e);
       }
     },
-    *favor({ payload, institutionId, callback }, { call, put }) {
+    *favor({ payload, institutionId, callback }, { call, put, all }) {
       try {
         const { status: response_status } = yield call(favorCoin, [payload]);
-        yield put({
-          type: 'setFavorStatus',
-          payload,
-          status: true,
-        });
+        yield all([
+          put({
+            type: 'setFavorStatus',
+            payload,
+            status: true,
+          }),
+          put({
+            type: 'coinSets/setFavorStatus',
+            payload,
+            status: true,
+          }),
+        ]);
 
         // 刷新
         yield put({
@@ -396,14 +422,21 @@ export default {
         console.log(e);
       }
     },
-    *unfavor({ payload, institutionId, callback }, { call, put }) {
+    *unfavor({ payload, institutionId, callback }, { call, put, all }) {
       try {
         const { status: response_status } = yield call(unfavorCoin, payload);
-        yield put({
-          type: 'setFavorStatus',
-          payload,
-          status: false,
-        });
+        yield all([
+          put({
+            type: 'setFavorStatus',
+            payload,
+            status: false,
+          }),
+          put({
+            type: 'coinSets/setFavorStatus',
+            payload,
+            status: false,
+          }),
+        ]);
 
         // 刷新
         yield put({
@@ -475,19 +508,40 @@ export default {
   },
   reducers: {
     list(state, action) {
-      const { progress } = action.params;
       return {
         ...state,
-        list: R.map(t => {
-          if (t.id === progress) {
-            return {
-              ...t,
-              index: paginate(t.index, action.payload),
-              params: action.params,
-            };
-          }
-          return t;
-        })(state.list),
+        list: {
+          ...state.list,
+          index: paginate(state.list.index, action.payload),
+        },
+      };
+    },
+    saveCount(state, action) {
+      const count = R.pathOr(0, ['pagination', 'total'])(action.payload);
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          count,
+        },
+      };
+    },
+    setListParam(state, action) {
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          params: action.payload,
+        },
+      };
+    },
+    resetListParam(state) {
+      return {
+        ...state,
+        list: {
+          ...state.list,
+          params: initialParams,
+        },
       };
     },
     searchList(state, action) {
@@ -558,30 +612,25 @@ export default {
     setFavorStatus(state, action) {
       return {
         ...state,
-        list: R.map(t => {
-          return {
-            ...t,
-            index: {
-              ...t.index,
-              data: R.pipe(
-                R.pathOr([], ['index', 'data']),
-                R.map(i => {
-                  if (i.id === action.payload) {
-                    const star_number = parseInt(i.stars, 10);
-                    return {
-                      ...i,
-                      is_focused: action.status,
-                      stars: action.status
-                        ? `${star_number + 1}`
-                        : `${star_number - 1}`,
-                    };
-                  }
-                  return i;
-                }),
-              )(t),
-            },
-          };
-        })(state.list),
+        list: {
+          ...state.list,
+          index: {
+            ...state.list.index,
+            data: R.map(i => {
+              if (i.id === action.payload) {
+                const star_number = parseInt(i.stars, 10);
+                return {
+                  ...i,
+                  is_focused: action.status,
+                  stars: action.status
+                    ? `${star_number + 1}`
+                    : `${star_number - 1}`,
+                };
+              }
+              return i;
+            })(state.list.index.data),
+          },
+        },
       };
     },
   },

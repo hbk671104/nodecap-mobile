@@ -27,6 +27,8 @@ import institutionModel from './app/models/institution';
 import newsModel from './app/models/news';
 import favoredModel from './app/models/favored';
 import activityModel from './app/models/activity';
+import coinSetsModel from './app/models/coinSets';
+import filterModel from './app/models/filter';
 
 YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
 
@@ -50,6 +52,8 @@ export const app = dva({
     newsModel,
     favoredModel,
     activityModel,
+    coinSetsModel,
+    filterModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],

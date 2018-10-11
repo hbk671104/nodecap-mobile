@@ -115,8 +115,18 @@ export default {
         console.log(error);
       }
     },
-    *logout({ callback }, { call, put }) {
+    *logout({ callback }, { call, put, select }) {
       try {
+        const in_individual = yield select(state =>
+          R.path(['login', 'in_individual'])(state),
+        );
+
+        if (!in_individual) {
+          yield put.resolve({
+            type: 'switch',
+          });
+        }
+
         request.defaults.headers.common.Authorization = null;
         request.defaults.headers.common['X-Company-ID'] = null;
         // clearKeychain();

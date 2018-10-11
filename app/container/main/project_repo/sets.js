@@ -8,20 +8,18 @@ import List from 'component/uikit/list';
 import FavorItem from 'component/favored/item';
 import styles from './style';
 
-@connect(({ public_project, loading }, { index }) => ({
-  data: R.pathOr([], ['list', index, 'index', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', index, 'index', 'pagination'])(
-    public_project,
-  ),
-  loading: loading.effects['public_project/fetch'],
+@connect(({ coinSets, loading }, { set_id }) => ({
+  data: R.pathOr([], ['coins', set_id, 'data'])(coinSets),
+  pagination: R.pathOr(null, ['coins', set_id, 'pagination'])(coinSets),
+  loading: loading.effects['coinSets/fetchCoins'],
 }))
-export default class ProjectList extends Component {
+export default class CoinsInSet extends Component {
   requestData = (page, size) => {
-    const { progress } = this.props;
+    const { set_id } = this.props;
     this.props.dispatch({
-      type: 'public_project/fetch',
+      type: 'coinSets/fetchCoins',
+      set_id,
       params: {
-        progress,
         currentPage: page,
         pageSize: size,
       },
@@ -41,7 +39,11 @@ export default class ProjectList extends Component {
   };
 
   renderItem = ({ item }) => (
-    <FavorItem data={item} onPress={this.handleItemPress(item)} />
+    <FavorItem
+      data={item}
+      onPress={this.handleItemPress(item)}
+      // afterFavor={() => this.requestData()}
+    />
   );
 
   renderSeparator = () => <View style={styles.separator} />;

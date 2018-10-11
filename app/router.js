@@ -209,6 +209,7 @@ const MainStack = createStackNavigator(
     Institution,
     InstitutionDetail,
     WebPage,
+    Settings,
   },
   {
     headerMode: 'none',
@@ -231,8 +232,12 @@ const IndividualTab = createBottomTabNavigator(
     // },
     ProjectRepo: {
       screen: ProjectRepo,
-      navigationOptions: {
-        title: '项目大全',
+      navigationOptions: ({ navigation }) => {
+        const tabBarVisible = navigation.getParam('tabBarVisible', true);
+        return {
+          title: '项目大全',
+          tabBarVisible,
+        };
       },
     },
     Favored: {
