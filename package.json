@@ -31,6 +31,7 @@
     "bignumber.js": "^7.2.1",
     "dva-core": "^1.4.0",
     "dva-loading": "^2.0.5",
+    "fbemitter": "^2.1.1",
     "jcore-react-native": "^1.2.10",
     "jpush-react-native": "^2.2.9",
     "moment": "^2.22.2",

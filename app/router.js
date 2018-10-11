@@ -22,7 +22,7 @@ import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { handleOpen, handleReceive } from './utils/jpush_handler';
 import { shadow } from './utils/style';
-
+import { EventEmitter } from 'fbemitter';
 // Screen
 import Loader from 'container/loader';
 // import Landing from 'container/auth/landing';
@@ -96,6 +96,11 @@ import ChangeLog from 'container/individual/self/settings/changelog';
 import PRService from 'container/main/service/pr';
 import PRServiceDetail from 'container/main/service/pr/detail';
 
+const tabBarOnPress = ({ navigation, defaultHandler }) => {
+  RouterEmitter.emit('changeTab', navigation.state);
+  defaultHandler();
+};
+
 const Tab = createBottomTabNavigator(
   {
     // Dashboard,
@@ -164,6 +169,7 @@ const Tab = createBottomTabNavigator(
         const { routeName } = state;
         return <BadgeTabIcon route={routeName} focused={focused} />;
       },
+      tabBarOnPress,
     }),
   },
 );
@@ -273,6 +279,7 @@ const IndividualTab = createBottomTabNavigator(
         const { routeName } = state;
         return <BadgeTabIcon route={routeName} focused={focused} />;
       },
+      tabBarOnPress,
     }),
   },
 );
@@ -425,3 +432,8 @@ export function routerReducer(state, action = {}) {
 }
 
 export default Router;
+
+const RouterEmitter = new EventEmitter();
+export {
+  RouterEmitter,
+};

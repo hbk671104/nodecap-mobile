@@ -9,7 +9,7 @@ export default {
     updated_count: 0,
   },
   effects: {
-    *index({ payload }, { call, put, select, all }) {
+    *index({ payload, callback }, { call, put, select, all }) {
       try {
         const public_project_params = yield select(state =>
           R.path(['public_project', 'list', 'params'])(state),
@@ -59,6 +59,7 @@ export default {
           R.path(['news', 0, 'id'])(news),
         );
         const batchTopId = R.path([0, 'id'])(newsList);
+        const oldUpdateCount = yield select(({ news }) => news.updated_count);
         yield put({
           type: 'saveUpdateCount',
           payload: batchTopId - topId,
@@ -71,6 +72,10 @@ export default {
             data: newsList,
           },
         });
+
+        if (callback) {
+          callback(batchTopId - topId, oldUpdateCount);
+        }
       } catch (e) {
         console.log(e);
       }
