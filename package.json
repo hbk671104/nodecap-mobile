@@ -34,6 +34,7 @@
     "fbemitter": "^2.1.1",
     "jcore-react-native": "^1.2.10",
     "jpush-react-native": "^2.2.11",
+    "lodash-decorators": "^6.0.0",
     "moment": "^2.22.2",
     "ramda": "^0.25.0",
     "rc-form": "2.2.1",

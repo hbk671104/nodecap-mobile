@@ -8,9 +8,12 @@ import Icon from 'component/uikit/icon';
 
 @compose(
   withState('expanded', 'setExpanded', false),
-  withProps(({ expanded, data }) => ({
-    clipped_data: expanded ? data : R.take(8)(data),
-  })),
+  withProps(({ expanded, data }) => {
+    const sortData = R.sort((a, b) => a.id - b.id)(data);
+    return {
+      clipped_data: expanded ? sortData : R.take(8)(sortData),
+    };
+  }),
 )
 export default class FilterGroup extends PureComponent {
   handleExpandPress = () => {

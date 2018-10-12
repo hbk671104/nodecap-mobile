@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import * as R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import { EventEmitter } from 'fbemitter';
+import debounce from 'lodash-decorators/debounce';
+import bind from 'lodash-decorators/bind';
 
 import List from 'component/uikit/list';
 import FavorItem from 'component/favored/item';
@@ -46,7 +48,9 @@ export default class ProjectList extends Component {
     });
   };
 
-  handleSelection = ({ value, name, key }) => {
+  @bind()
+  @debounce(150)
+  handleSelection({ value, name, key }) {
     const { params, track } = this.props;
     track('筛选项点击', { name });
     this.props.dispatch({
@@ -56,7 +60,7 @@ export default class ProjectList extends Component {
         [key]: selection(params, { key, value }),
       },
     });
-  };
+  }
 
   handleItemPress = item => () => {
     this.props.track('点击进入详情');

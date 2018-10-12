@@ -43,7 +43,7 @@ export const itemHeight = 66;
 const styles = {
   container: {
     justifyContent: 'center',
-    marginRight: 18,
+    marginRight: 17,
   },
   content: {
     container: {

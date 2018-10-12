@@ -101,6 +101,7 @@ const styles = {
         },
       },
       date: {
+        flexShrink: 0,
         fontSize: 12,
         color: 'rgba(0, 0, 0, 0.45)',
       },
