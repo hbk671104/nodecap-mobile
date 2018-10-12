@@ -72,16 +72,20 @@ const header = ({ count, params, onSelect, selection, onFilterPress }) => {
         style={styles.filter.container}
         onPress={onFilterPress}
       >
-        <Text style={[styles.filter.title, has_filter && { color: '#1890FF' }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <Image
             source={
               has_filter
                 ? require('asset/public_project/funnel_highlight.png')
                 : require('asset/public_project/funnel.png')
             }
-          />{' '}
-          筛选
-        </Text>
+          />
+          <Text
+            style={[styles.filter.title, has_filter && { color: '#1890FF' }]}
+          >
+            筛选
+          </Text>
+        </View>
       </Touchable>
     </View>
   );
@@ -141,6 +145,7 @@ const styles = {
     title: {
       fontSize: 14,
       color: 'rgba(0, 0, 0, 0.65)',
+      marginLeft: 3,
     },
   },
 };
