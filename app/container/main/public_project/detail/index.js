@@ -11,6 +11,7 @@ import Empty from 'component/empty';
 import Gradient from 'component/uikit/gradient';
 import { hasPermission } from 'component/auth/permission/lock';
 import { NavigationActions } from 'react-navigation';
+import Share from '../../../individual/public_project/detail/share';
 
 import Description from './page/description';
 import Trend from './page/trend';
@@ -36,6 +37,7 @@ import StatusSelector from './statusSelector';
   };
 })
 @compose(
+  withState('showShareModal', 'toggleShareModal', false),
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
@@ -254,12 +256,23 @@ export default class PublicProjectDetail extends Component {
             />
           </View>
         </Animated.ScrollView>
-        <Bottom {...this.props} onStatusPress={this.handleStatusPress} />
+        <Bottom
+          {...this.props}
+          onStatusPress={this.handleStatusPress}
+          openShareModal={() => {
+            this.props.toggleShareModal(true);
+          }}
+        />
         <StatusSelector
           loading={favor_loading}
           isVisible={this.props.showStatusSelector}
           onCancel={() => this.props.toggleStatusSelector(false)}
           onSubmit={this.handleSubmit}
+        />
+        <Share
+          onClose={() => this.props.toggleShareModal(false)}
+          coin={this.props.portfolio}
+          visible={this.props.showShareModal}
         />
       </SafeArea>
     );
