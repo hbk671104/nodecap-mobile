@@ -43,7 +43,7 @@ export default {
     current: null,
   },
   effects: {
-    *fetch({ params, callback }, { call, put, all }) {
+    *fetch({ params, refresh, callback }, { call, put, all }) {
       try {
         yield put({
           type: 'setListParam',
@@ -56,6 +56,7 @@ export default {
           put({
             type: 'list',
             payload: data,
+            refresh,
           }),
           put({
             type: 'saveCount',
@@ -527,11 +528,14 @@ export default {
   },
   reducers: {
     list(state, action) {
+      const { refresh } = action;
       return {
         ...state,
         list: {
           ...state.list,
-          index: paginate(state.list.index, action.payload),
+          index: refresh
+            ? action.payload
+            : paginate(state.list.index, action.payload),
         },
       };
     },

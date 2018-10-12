@@ -103,6 +103,7 @@ const styles = {
       alignItems: 'center',
     },
     title: {
+      width: 72,
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.65)',
     },

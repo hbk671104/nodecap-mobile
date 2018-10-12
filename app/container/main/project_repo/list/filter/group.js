@@ -74,7 +74,7 @@ export default class FilterGroup extends PureComponent {
                   styles.tag.item.container,
                   selected && styles.tag.item.highlight,
                 ]}
-                onPress={() => onSelect(d.id)}
+                onPress={() => onSelect({ value: d.id, name: d.name })}
               >
                 <Text
                   style={[

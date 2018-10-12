@@ -154,6 +154,9 @@ export default class ProjectRepo extends Component {
           <ScrollableTabView
             renderTabBar={this.renderTabBar}
             prerenderingSiblingsNumber={Infinity}
+            onChangeTab={({ i }) => {
+              this.props.track('tab 滑动', { tabIndex: `${i}` });
+            }}
           >
             <ProjectList drawerRef={this.drawer} tabLabel="最热" />
             {R.map(t => (

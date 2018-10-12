@@ -3,14 +3,16 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import { EventEmitter } from 'fbemitter';
 
-import { setStatusBar } from 'component/uikit/statusBar';
 import List from 'component/uikit/list';
 import FavorItem from 'component/favored/item';
 
 import { handleSelection as selection } from 'utils/utils';
 import Header from './header';
 import styles from '../style';
+
+export const emitter = new EventEmitter();
 
 @connect(({ public_project, loading }) => ({
   data: R.pathOr([], ['list', 'index', 'data'])(public_project),
@@ -20,6 +22,12 @@ import styles from '../style';
   loading: loading.effects['public_project/fetch'],
 }))
 export default class ProjectList extends Component {
+  componentWillMount() {
+    emitter.addListener('shouldScroll', () => {
+      this.listRef.scrollToOffset({ offset: 0, animated: false });
+    });
+  }
+
   requestData = (page, size) => {
     const { params } = this.props;
     this.props.dispatch({
@@ -91,6 +99,9 @@ export default class ProjectList extends Component {
       <View style={styles.container}>
         {this.renderHeader()}
         <List
+          listRef={ref => {
+            this.listRef = ref;
+          }}
           contentContainerStyle={styles.listContainer}
           action={this.requestData}
           data={data}

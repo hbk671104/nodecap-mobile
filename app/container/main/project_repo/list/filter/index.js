@@ -7,8 +7,13 @@ import { SafeAreaView } from 'react-navigation';
 import { handleSelection as selection } from 'utils/utils';
 import FilterGroup from './group';
 import FilterBottom from './bottom';
+import { emitter } from '../index';
 import styles from './style';
 
+@global.bindTrack({
+  page: '项目大全筛选',
+  name: 'App_ProjectRepoFilterOperation',
+})
 @connect(({ filter, public_project, loading }) => ({
   institution: R.pathOr([], ['institution', 'data'])(filter),
   coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
@@ -18,8 +23,9 @@ import styles from './style';
   loading: loading.effects['public_project/fetch'],
 }))
 export default class ProjectListFilter extends Component {
-  handleSelection = ({ value, key }) => {
-    const { params } = this.props;
+  handleSelection = ({ value, name, key }) => {
+    const { params, track } = this.props;
+    track('筛选项点击', { name });
     this.props.dispatch({
       type: 'public_project/fetchCount',
       params: {
@@ -30,10 +36,16 @@ export default class ProjectListFilter extends Component {
   };
 
   handleConfirmPress = () => {
+    emitter.emit('shouldScroll');
     const { params } = this.props;
     this.props.dispatch({
       type: 'public_project/fetch',
-      params,
+      params: {
+        ...params,
+        currentPage: 1,
+        pageSize: 20,
+      },
+      refresh: true,
       callback: () => {
         this.props.closeDrawer();
       },
@@ -71,8 +83,8 @@ export default class ProjectListFilter extends Component {
             title="知名机构"
             data={institution}
             selection={R.isEmpty(industry_id) ? [] : R.split(',')(industry_id)}
-            onSelect={value =>
-              this.handleSelection({ value, key: 'industry_id' })
+            onSelect={({ value, name }) =>
+              this.handleSelection({ value, name, key: 'industry_id' })
             }
             onAllPress={this.handleAllPress('industry_id')}
           />
@@ -81,7 +93,9 @@ export default class ProjectListFilter extends Component {
             title="领域"
             data={coinTag}
             selection={R.isEmpty(tag_id) ? [] : R.split(',')(tag_id)}
-            onSelect={value => this.handleSelection({ value, key: 'tag_id' })}
+            onSelect={({ value, name }) =>
+              this.handleSelection({ value, name, key: 'tag_id' })
+            }
             onAllPress={this.handleAllPress('tag_id')}
           />
         </ScrollView>

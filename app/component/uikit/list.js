@@ -48,8 +48,8 @@ class List extends PureComponent {
 
   componentWillMount() {
     if (this.props.action && this.props.loadOnStart) {
-      this.pageCount = 1;
-      this.handleAction(this.pageCount);
+      this.isRefresh = true;
+      this.handleAction(1);
     }
   }
 
@@ -61,8 +61,8 @@ class List extends PureComponent {
 
   handleOnRefresh = () => {
     if (this.props.action) {
-      this.pageCount = 1;
-      this.handleAction(this.pageCount);
+      this.isRefresh = true;
+      this.handleAction(1);
     }
   };
 
@@ -70,8 +70,8 @@ class List extends PureComponent {
     if (this.props.action && this.props.pagination) {
       const { current, pageCount, pageSize } = this.props.pagination;
       if (current < pageCount) {
-        this.pageCount += 1;
-        this.handleAction(this.pageCount, pageSize);
+        this.isRefresh = false;
+        this.handleAction(current + 1, pageSize);
       }
     }
   };
@@ -182,7 +182,7 @@ class List extends PureComponent {
         if (!pagination) {
           return true;
         }
-        if (pagination && this.pageCount === 1) {
+        if (pagination && this.isRefresh) {
           return true;
         }
       }
