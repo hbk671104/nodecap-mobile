@@ -22,7 +22,7 @@ const header = ({ count, params, onSelect, selection, onFilterPress }) => {
               styles.content.tag.wrapper,
               R.contains('2')(selection) && styles.content.tag.highlight,
             ]}
-            onPress={() => onSelect(2)}
+            onPress={() => onSelect({ value: 2, name: '即将开始' })}
           >
             <Text
               style={[
@@ -38,7 +38,7 @@ const header = ({ count, params, onSelect, selection, onFilterPress }) => {
               styles.content.tag.wrapper,
               R.contains('3')(selection) && styles.content.tag.highlight,
             ]}
-            onPress={() => onSelect(3)}
+            onPress={() => onSelect({ value: 3, name: '进行中' })}
           >
             <Text
               style={[
@@ -54,7 +54,7 @@ const header = ({ count, params, onSelect, selection, onFilterPress }) => {
               styles.content.tag.wrapper,
               R.contains('4')(selection) && styles.content.tag.highlight,
             ]}
-            onPress={() => onSelect(4)}
+            onPress={() => onSelect({ value: 4, name: '已结束' })}
           >
             <Text
               style={[

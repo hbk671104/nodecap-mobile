@@ -14,6 +14,10 @@ import styles from '../style';
 
 export const emitter = new EventEmitter();
 
+@global.bindTrack({
+  page: '项目大全列表',
+  name: 'App_ProjectRepoListOperation',
+})
 @connect(({ public_project, loading }) => ({
   data: R.pathOr([], ['list', 'index', 'data'])(public_project),
   pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
@@ -40,8 +44,9 @@ export default class ProjectList extends Component {
     });
   };
 
-  handleSelection = ({ value, key }) => {
-    const { params } = this.props;
+  handleSelection = ({ value, name, key }) => {
+    const { params, track } = this.props;
+    track('筛选项点击', { name });
     this.props.dispatch({
       type: 'public_project/fetch',
       params: {
@@ -88,7 +93,9 @@ export default class ProjectList extends Component {
         {...this.props}
         selection={R.isEmpty(progress) ? [] : R.split(',')(progress)}
         onFilterPress={this.handleFilterPress}
-        onSelect={value => this.handleSelection({ value, key: 'progress' })}
+        onSelect={({ value, name }) =>
+          this.handleSelection({ value, name, key: 'progress' })
+        }
       />
     );
   };
