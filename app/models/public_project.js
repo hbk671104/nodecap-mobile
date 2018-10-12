@@ -28,6 +28,9 @@ const initialParams = {
 export default {
   namespace: 'public_project',
   state: {
+    selected: {
+      index: null,
+    },
     list: {
       index: null,
       count: 0,
@@ -59,6 +62,22 @@ export default {
             payload: data,
           }),
         ]);
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchSelected({ params = {}, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getPublicProjects, params);
+
+        yield put({
+          type: 'selected',
+          payload: data,
+        });
 
         if (callback) {
           yield call(callback);
@@ -513,6 +532,15 @@ export default {
         list: {
           ...state.list,
           index: paginate(state.list.index, action.payload),
+        },
+      };
+    },
+    selected(state, action) {
+      return {
+        ...state,
+        selected: {
+          ...state.selected,
+          index: paginate(state.list.selected, action.payload),
         },
       };
     },

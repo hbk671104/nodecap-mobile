@@ -22,8 +22,10 @@ import styles from './style';
 @connect(({ public_project, news, loading, notification, institution }) => ({
   news: R.pathOr([], ['news'])(news),
   lastNewsID: R.pathOr(null, ['payload'])(news),
-  data: R.pathOr([], ['list', 'index', 'data'])(public_project),
-  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  data: R.pathOr([], ['selected', 'index', 'data'])(public_project),
+  pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
+    public_project,
+  ),
   loading: loading.effects['news/index'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
   announcement: R.pathOr([], ['list', 'data'])(notification),
@@ -56,7 +58,7 @@ export default class PublicProject extends Component {
     } else {
       this.alert.show('暂无新快讯');
     }
-  }
+  };
 
   requestData = (isRefresh, callback) => {
     this.shouldAnimate = this.shouldAnimate && isRefresh;
@@ -126,7 +128,7 @@ export default class PublicProject extends Component {
     );
   };
 
-  handlePRPress= () => {
+  handlePRPress = () => {
     this.props.track('点击公关服务');
     this.props.dispatch(
       NavigationActions.navigate({

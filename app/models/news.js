@@ -24,14 +24,9 @@ export default {
           put.resolve({
             type: 'notification/fetch',
           }),
-          // fetch public project
+          // fetch selected public project
           put.resolve({
-            type: 'public_project/fetch',
-            params: {
-              ...public_project_params,
-              currentPage: 1,
-              pageSize: 20,
-            },
+            type: 'public_project/fetchSelected',
           }),
           // fetch report
           put.resolve({
@@ -93,7 +88,7 @@ export default {
         payload: payload.id,
         news: R.pipe(
           R.insert(9, { type: 'report' }),
-          R.insert(0, { type: 'announcement' })
+          R.insert(0, { type: 'announcement' }),
         )(payload.data),
       };
     },
