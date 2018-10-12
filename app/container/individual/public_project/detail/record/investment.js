@@ -133,7 +133,7 @@ class Investment extends PureComponent {
   }
 
   render() {
-    const finance_token = R.pathOr([], ['item', 'investments', 'data'])(
+    const finance_token = R.pathOr([], ['item', this.props.id, 'investments', 'data'])(
       this.props,
     );
 
@@ -145,7 +145,6 @@ class Investment extends PureComponent {
     const afterSort = R.sort((a, b) => b.created_at - a.created_at)(
       financeData,
     );
-
     const invalid = R.isNil(afterSort) || R.isEmpty(afterSort);
 
     return (
