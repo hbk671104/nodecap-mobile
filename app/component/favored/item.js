@@ -141,18 +141,18 @@ class FavorItem extends PureComponent {
             </Text>
           </View>
           <View style={styles.end.container}>
-            {!R.isEmpty(status) && (
-              <Text
-                style={[
-                  styles.end.status,
-                  status === '未设定' && { color: 'rgba(0, 0, 0, 0.45)' },
-                  status === '进行中' && { color: '#09AC32' },
-                  status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
-                ]}
-              >
-                {status}
-              </Text>
-            )}
+            {!R.isEmpty(status) &&
+              !R.equals(status, '未设定') && (
+                <Text
+                  style={[
+                    styles.end.status,
+                    status === '进行中' && { color: '#09AC32' },
+                    status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
+                  ]}
+                >
+                  {status}
+                </Text>
+              )}
             <Touchable foreground onPress={this.handleFavorPress}>
               <View
                 style={[

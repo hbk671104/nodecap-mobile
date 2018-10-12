@@ -1,5 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, Text, TouchableWithoutFeedback, Image, Linking } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableWithoutFeedback,
+  Image,
+  Linking,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { Flex, Modal } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
@@ -14,9 +20,9 @@ import styles from './style';
 
 @connect()
 export default class Description extends PureComponent {
-  showRatingTip = (content) => {
+  showRatingTip = content => {
     Modal.alert('评级说明', content);
-  }
+  };
   handleDocPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -48,7 +54,9 @@ export default class Description extends PureComponent {
       this.props,
     );
     const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
-    const social_network = R.pathOr([], ['portfolio', 'social_networks'])(this.props);
+    const social_network = R.pathOr([], ['portfolio', 'social_networks'])(
+      this.props,
+    );
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
@@ -97,17 +105,24 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(invest_score) && R.isEmpty(risk_score)) && (
           <View>
             <Flex style={[styles.title, styles.site]} align="center">
-              <Text style={{
-                fontSize: 14,
-                color: 'rgba(0,0,0,0.85)',
-                fontWeight: 'bold',
-              }}
-              >评级信息
+              <Text
+                style={{
+                  fontSize: 14,
+                  color: 'rgba(0,0,0,0.85)',
+                  fontWeight: 'bold',
+                }}
+              >
+                评级信息
               </Text>
               {!R.isEmpty(grading_result) && (
-              <TouchableWithoutFeedback onPress={() => this.showRatingTip(grading_result)}>
-                <Image style={styles.tip} source={require('asset/public_project/tip_icon.png')} />
-              </TouchableWithoutFeedback>
+                <TouchableWithoutFeedback
+                  onPress={() => this.showRatingTip(grading_result)}
+                >
+                  <Image
+                    style={styles.tip}
+                    source={require('asset/public_project/tip_icon.png')}
+                  />
+                </TouchableWithoutFeedback>
               )}
             </Flex>
             <Flex style={styles.ratingItem}>
@@ -136,25 +151,22 @@ export default class Description extends PureComponent {
           <View>
             <Text style={[styles.title, styles.site]}>媒体信息</Text>
             <Flex wrap="wrap">
-              {R.map((m) => (
+              {R.addIndex(R.map)((m, i) => (
                 <SocialNetworkItem
                   style={{ paddingHorizontal: 0 }}
-                  key={m.name}
+                  key={`${i}`}
                   name={m.name}
                   data={m.link_url}
                   onPress={() => {
-                    Linking
-                      .canOpenURL(m.link_url)
-                      .then((support) => {
-                        if (support) {
-                          Linking
-                            .openURL(m.link_url)
-                            .catch((err) => {
-                              console.log(err);
-                            });
-                        }
-                      })
-                      .catch((err) => console.error('An error occurred', err));
+                    this.props.dispatch(
+                      NavigationActions.navigate({
+                        routeName: 'WebPage',
+                        params: {
+                          title: m.name,
+                          uri: m.link_url,
+                        },
+                      }),
+                    );
                   }}
                 />
               ))(social_network)}
