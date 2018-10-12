@@ -3,11 +3,12 @@ const mock = [
     id: 1,
     logo_url: require('asset/services/logo/nodeplus.png'),
     name: 'Nodeplus',
-    description: 'Nodeplus成立于2018年下半年，是一家专注于区块链行业品牌营销的公司，主打海外市场。通过公关咨询、品牌创意、内容营销、会议路演等，贯穿项目与企业的全生命周期，为其发展的各个阶段助力。已服务过Chainup等知名区块链项目。',
+    description: 'NodePlus是一家专注于区块链行业的全球市场营销咨询公司，为区块链项目提供专业的行业咨询、品牌服务及全球化发展解决方案，旨在通过品牌策划、公关推广、会议活动、媒体宣传、资源对接等，助力区块链项目全球化。截止目前，NodePlus已经完成硅谷区块链周、芝加哥区块链周、全球区块链黑客马拉松赛事等系列活动，并服务节点资本等20多家区块链企业建立全球品牌影响力。',
     members: [
       {
         name: '陈玉玲',
         title: '创始人',
+        avatar_url: require('asset/services/avatar/chenyuling.jpg'),
       },
     ],
     coins: [
@@ -83,7 +84,7 @@ const mock = [
   },
   {
     id: 5,
-    logo_url: require('asset/services/logo/2_(18区.png'),
+    logo_url: require('asset/services/logo/18q.png'),
     name: '18区',
     site_url: 'https://static.block18.io/index',
     description: '全球区块链社区领航者\n' +
@@ -99,7 +100,7 @@ const mock = [
     '9.护照在手，全球区块链孵化器任性办公',
     members: [
       {
-        avatar_url: require('asset/services/avatar/2_(18区)_TommyKao.png'),
+        avatar_url: require('asset/services/avatar/TommyKao.png'),
         name: 'Tommy Kao',
         title: '联合创始人',
         description: '台湾人；全球区块链社区运营专家（原块讯海外社区核心骨干）；2015年开始接触以太坊，区块链资深投资专家，全球区块链100人台湾区负责人；毕业于美国宾西法尼亚大学。',

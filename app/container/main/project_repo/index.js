@@ -81,7 +81,7 @@ export default class ProjectRepo extends Component {
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
     const textColor = isTabActive ? '#1890FF' : 'rgba(0, 0, 0, 0.65)';
     const fontWeight = isTabActive ? 'bold' : 'normal';
-    const useIcon = name === '最热';
+    const useIcon = name === '项目大全';
     return (
       <Button
         key={`${name}_${page}`}
@@ -94,7 +94,7 @@ export default class ProjectRepo extends Component {
         <View style={[styles.tabBar.tab]}>
           {useIcon ? (
             <Image
-              source={require('asset/public_project/hot.png')}
+              source={require('asset/tabIcon/latest/project_sel.png')}
               style={styles.tabBar.hot}
             />
           ) : null}
@@ -158,7 +158,7 @@ export default class ProjectRepo extends Component {
               this.props.track('tab 滑动', { tabIndex: `${i}` });
             }}
           >
-            <ProjectList drawerRef={this.drawer} tabLabel="最热" />
+            <ProjectList drawerRef={this.drawer} tabLabel="项目大全" />
             {R.map(t => (
               <ProjectSets
                 key={t.id}
