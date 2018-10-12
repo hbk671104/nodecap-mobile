@@ -113,8 +113,12 @@ const Tab = createBottomTabNavigator(
     },
     ProjectRepo: {
       screen: ProjectRepo,
-      navigationOptions: {
-        title: '项目大全',
+      navigationOptions: ({ navigation }) => {
+        const tabBarVisible = navigation.getParam('tabBarVisible', true);
+        return {
+          title: '项目大全',
+          tabBarVisible,
+        };
       },
     },
     Portfolio: {

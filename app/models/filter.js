@@ -11,6 +11,7 @@ export default {
       const { data } = yield call(getIndustries, {
         currentPage: 1,
         pageSize: 300,
+        has_coin: 1,
       });
 
       yield put({
@@ -26,6 +27,7 @@ export default {
       const { data } = yield call(getCoinTags, {
         currentPage: 1,
         pageSize: 300,
+        has_coin: 1,
       });
 
       yield put({
