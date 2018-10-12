@@ -84,7 +84,7 @@ const mock = [
   },
   {
     id: 5,
-    logo_url: require('asset/services/logo/2_(18区.png'),
+    logo_url: require('asset/services/logo/18q.png'),
     name: '18区',
     site_url: 'https://static.block18.io/index',
     description: '全球区块链社区领航者\n' +
@@ -100,7 +100,7 @@ const mock = [
     '9.护照在手，全球区块链孵化器任性办公',
     members: [
       {
-        avatar_url: require('asset/services/avatar/2_(18区)_TommyKao.png'),
+        avatar_url: require('asset/services/avatar/TommyKao.png'),
         name: 'Tommy Kao',
         title: '联合创始人',
         description: '台湾人；全球区块链社区运营专家（原块讯海外社区核心骨干）；2015年开始接触以太坊，区块链资深投资专家，全球区块链100人台湾区负责人；毕业于美国宾西法尼亚大学。',
