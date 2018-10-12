@@ -46,7 +46,6 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
                 ]}
               >
                 {R.pipe(
-                  R.filter(t => !R.isEmpty(R.trim(t))),
                   R.map(k => (
                     <View key={k} style={styles.tag.container}>
                       <Text style={styles.tag.title}>
