@@ -21,10 +21,10 @@ export default {
       position: 'relative',
     },
     hot: {
-      width: 10,
       height: 15,
       marginRight: 5,
       marginBottom: 2,
+      resizeMode: 'contain',
     },
     text: {
       fontSize: 14,

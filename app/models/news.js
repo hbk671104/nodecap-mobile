@@ -88,7 +88,7 @@ export default {
         payload: payload.id,
         news: R.pipe(
           R.insert(9, { type: 'report' }),
-          R.insert(0, { type: 'announcement' }),
+          R.insert(3, { type: 'announcement' }),
         )(payload.data),
       };
     },
