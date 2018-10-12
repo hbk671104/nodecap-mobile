@@ -29,4 +29,13 @@ export default {
       marginVertical: 15,
     },
   },
+  wechatCopy: {
+    marginLeft: 10,
+    color: '#1890FF',
+    fontSize: 13,
+  },
+  wechatNumber: {
+    fontSize: 13,
+    color: 'rgba(0, 0, 0, .65)',
+  },
 };
