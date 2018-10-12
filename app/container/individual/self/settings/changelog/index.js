@@ -12,6 +12,18 @@ class ChangeLog extends Component {
         <NavBar gradient back title="版本更新" />
         <ScrollView>
           <ChangeLogItem
+            version="v6.2.0"
+            date="2018-10-12"
+            changelog={[
+              '项目大全新增可按领域、机构筛选，方便查找',
+              '项目大全新增「稳定币专场」、「STO专场」，帮您追踪市场热点项目',
+              '项目详情扩充「媒体信息」、「路线图」、「项目评级」',
+              '新增「公关服务」，找服务上 Hotnode',
+              '新增加入 Hotnode 官方微信群，7*24小时为您服务',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
             version="v6.1.0"
             date="2018-09-29"
             changelog={[

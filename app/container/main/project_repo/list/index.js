@@ -28,7 +28,9 @@ export const emitter = new EventEmitter();
 export default class ProjectList extends Component {
   componentWillMount() {
     emitter.addListener('shouldScroll', () => {
-      this.listRef.scrollToOffset({ offset: 0, animated: false });
+      if (this.listRef) {
+        this.listRef.scrollToOffset({ offset: 0, animated: false });
+      }
     });
   }
 
