@@ -116,7 +116,7 @@ class Self extends Component {
   renderWechat() {
     return (
       <Flex>
-        <Text style={styles.wechatNumber}>18379287492</Text>
+        <Text style={styles.wechatNumber}>ladh2857</Text>
         <TouchableWithoutFeedback
           hitSlop={{
             top: 20,
@@ -125,7 +125,7 @@ class Self extends Component {
             right: 20,
           }}
           onPress={() => {
-            Clipboard.setString('18379287492');
+            Clipboard.setString('ladh2857');
             Toast.show('已复制', Toast.SHORT);
           }}
         >

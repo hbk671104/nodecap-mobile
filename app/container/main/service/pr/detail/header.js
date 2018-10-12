@@ -15,6 +15,14 @@ const header = ({ style, data, loading, onLinkPress }) => {
       <View style={styles.content.wrapper}>
         <View style={styles.content.container}>
           <Text style={styles.content.title}>{name}</Text>
+          {!R.isEmpty(site_url) && (
+            <Text
+              style={styles.content.subtitle}
+              onPress={() => onLinkPress(site_url)}
+            >
+              {site_url}
+            </Text>
+          )}
         </View>
         <Avatar size={50} source={logo} innerRatio={0.9} />
       </View>

@@ -11,55 +11,15 @@ import Member from './partials/member';
 import Header from './header';
 import styles from './style';
 
-const mock = {
-  1: {
-    id: 1,
-    logo_url: require('asset/services/nodecap.png'),
-    name: '贝壳公关',
-    description: '一家专注于区块链行业的企业宣发公司',
-    members: [
-      {
-        name: '姜晓玉',
-        title: '创始人',
-        description: '创始人',
-      },
-    ],
-    coins: [
-      {
-        name: 'Zilliqa',
-        description: '基于真实数据的区块链开源协议',
-      },
-    ],
-  },
-  2: {
-    id: 2,
-    logo_url: require('asset/services/nodeplus.png'),
-    name: 'NodePlus',
-    description: '专业的区块链行业项目路演，品牌宣传，企业宣传',
-    members: [
-      {
-        name: '陈玉玲',
-        title: '创始人',
-        description: '创始人',
-      },
-    ],
-    coins: [
-      {
-        name: 'Zilliqa',
-        description: '基于真实数据的区块链开源协议',
-      },
-    ],
-  },
-};
 @global.bindTrack({
   page: '公关服务详情',
   name: 'App_ServiceDetailOperation',
 })
-@connect(({ institution, loading }, props) => {
+@connect(({ service, loading }, props) => {
   const id = props.navigation.getParam('id');
   return {
     id,
-    data: R.pathOr({}, [id])(mock),
+    data: R.pathOr({}, ['pr', 'detail', id])(service),
     loading: loading.effects['institution/get'],
   };
 })
@@ -91,7 +51,7 @@ export default class PRServiceDetail extends Component {
       NavigationActions.navigate({
         routeName: 'WebPage',
         params: {
-          title: R.pathOr('机构主页', ['data', 'name'])(this.props),
+          title: R.pathOr('服务主页', ['data', 'name'])(this.props),
           uri,
         },
       }),

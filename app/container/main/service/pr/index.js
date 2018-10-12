@@ -14,20 +14,10 @@ import styles from './style';
   page: '公关公司列表',
   name: 'App_ServiceOperation',
 })
-@connect(({ institution, loading }) => {
+@connect(({ service, loading }) => {
   return {
-    data: [{
-      id: 1,
-      logo_url: require('asset/services/nodecap.png'),
-      name: '贝壳公关',
-      description: '一家专注于区块链行业的企业宣发公司',
-    }, {
-      id: 2,
-      logo_url: require('asset/services/nodeplus.png'),
-      name: 'NodePlus',
-      description: '专业的区块链行业项目路演，品牌宣传，企业宣传',
-    }],
-    pagination: R.pathOr(null, ['list', 'pagination'])(institution),
+    data: R.pathOr(null, ['pr', 'list'])(service),
+    pagination: R.pathOr(null, ['list', 'pagination'])(service),
     loading: loading.effects['institution/fetch'],
   };
 })

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Alert, ScrollView } from 'react-native';
+import { View, Alert, ScrollView, Text, TouchableWithoutFeedback, Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { Flex, Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
-import Item from 'component/self/item';
+import Item, { StaticItem } from 'component/self/item';
 import { hasPermission } from 'component/auth/permission/lock';
 import Header from './header';
 import styles from './style';
@@ -82,6 +83,30 @@ class Self extends Component {
     />
   );
 
+  renderWechat() {
+    return (
+      <Flex>
+        <Text style={styles.wechatNumber}>ladh2857</Text>
+        <TouchableWithoutFeedback
+          hitSlop={{
+            top: 20,
+            left: 20,
+            bottom: 20,
+            right: 20,
+          }}
+          onPress={() => {
+            Clipboard.setString('ladh2857');
+            Toast.show('已复制', Toast.SHORT);
+          }}
+        >
+          <View>
+            <Text style={styles.wechatCopy}>复制</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </Flex>
+    );
+  }
+
   render() {
     const { user, loading } = this.props;
     return (
@@ -107,6 +132,11 @@ class Self extends Component {
             icon={require('asset/mine/settings.png')}
             title="设置"
             onPress={this.handleSettingsPress}
+          />
+          <StaticItem
+            icon={require('asset/mine/wechat.png')}
+            title="加微信群"
+            renderRight={this.renderWechat()}
           />
           <View style={styles.scroll.divider} />
           <Item
