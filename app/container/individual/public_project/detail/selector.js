@@ -7,7 +7,7 @@ import { navBarHeight } from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 
 const selector = ({ list, page, onPress, onLayout }) => {
-  if (R.isNil(list) || R.isEmpty(list)) {
+  if (R.isNil(list) || R.isEmpty(list) || R.length(list) === 1) {
     return null;
   }
   return (

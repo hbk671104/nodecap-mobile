@@ -15,16 +15,10 @@ import styles from './style';
 }))
 export default class Return extends PureComponent {
   render() {
-    const { portfolio, loadingStat, can_calculate, unmatched } = this.props;
+    const { portfolio, loadingStat } = this.props;
 
     if (loadingStat) {
       return <ActivityIndicator style={styles.indicator} />;
-    }
-
-    if (unmatched) {
-      return (
-        <Empty title="项目暂未匹配" subtitle="通过下方立即匹配后即可查看" />
-      );
     }
 
     const investment = R.pathOr({}, ['roi'])(portfolio);

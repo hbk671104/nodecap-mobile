@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Animated } from 'react-native';
+import { View, Animated } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -25,28 +25,6 @@ import Fund from './fund';
 import Bottom from './bottom';
 import styles from './style';
 
-const selectionList = [
-  {
-    component: Description,
-    name: '详情',
-  },
-  {
-    component: Financing,
-    name: '募集信息',
-  },
-  {
-    component: Trend,
-    name: '动态',
-  },
-  {
-    component: Pairs,
-    name: '交易所',
-  },
-  {
-    component: Return,
-    name: '回报',
-  },
-];
 @connectActionSheet
 @global.bindTrack({
   page: '项目详情',
@@ -67,26 +45,72 @@ const selectionList = [
   };
 })
 @compose(
-  withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
-  withProps(({ animateY, can_calculate }) => ({
-    headerWrapperYRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [0, can_calculate ? -headerHeight : 0],
-      extrapolate: 'clamp',
-    }),
-    headerOpacityRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [1, can_calculate ? 0 : 1],
-      extrapolate: 'clamp',
-    }),
-    titleOpacityRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [0, can_calculate ? 1 : 0],
-      extrapolate: 'clamp',
-    }),
-  })),
+  withProps(({ animateY, can_calculate, portfolio }) => {
+    const finance_info = R.pathOr({}, ['finance_info'])(portfolio);
+    const symbols = R.pathOr([], ['symbols'])(portfolio);
+    const investment = R.pathOr({}, ['stats', 'investment'])(portfolio);
+    const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    return {
+      headerWrapperYRange: animateY.interpolate({
+        inputRange: [0, headerHeight],
+        outputRange: [0, can_calculate ? -headerHeight : 0],
+        extrapolate: 'clamp',
+      }),
+      headerOpacityRange: animateY.interpolate({
+        inputRange: [0, headerHeight],
+        outputRange: [1, can_calculate ? 0 : 1],
+        extrapolate: 'clamp',
+      }),
+      titleOpacityRange: animateY.interpolate({
+        inputRange: [0, headerHeight],
+        outputRange: [0, can_calculate ? 1 : 0],
+        extrapolate: 'clamp',
+      }),
+      selectionList: [
+        {
+          component: Description,
+          name: '详情',
+        },
+        ...(R.isEmpty(finance_info)
+          ? []
+          : [
+              {
+                component: Financing,
+                name: '募集信息',
+              },
+            ]),
+        ...(R.isEmpty(trends)
+          ? []
+          : [
+              {
+                component: Trend,
+                name: '动态',
+              },
+            ]),
+        ...(R.isEmpty(symbols)
+          ? []
+          : [
+              {
+                component: Pairs,
+                name: '交易所',
+              },
+            ]),
+        ...(R.isEmpty(investment)
+          ? []
+          : [
+              {
+                component: Return,
+                name: '回报',
+              },
+            ]),
+      ],
+    };
+  }),
+  withState('currentPage', 'setCurrentPage', ({ selectionList }) =>
+    R.path([0])(selectionList),
+  ),
 )
 export default class PortfolioDetail extends Component {
   componentWillMount() {
@@ -219,6 +243,7 @@ export default class PortfolioDetail extends Component {
     }
 
     const {
+      selectionList,
       currentPage: Current,
       portfolio,
       can_calculate,

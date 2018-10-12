@@ -113,19 +113,10 @@ export default class Financing extends PureComponent {
   };
 
   render() {
-    const { portfolio, loading, unmatched } = this.props;
+    const { portfolio, loading } = this.props;
 
     // if (loading) {
     //   return <ActivityIndicator style={styles.indicator} />;
-    // }
-
-    // if (unmatched) {
-    //   return (
-    //     <Empty
-    //       title="项目暂未匹配"
-    //       subtitle="通过下方立即匹配后即可查看募集信息"
-    //     />
-    //   );
     // }
 
     const finance_info = R.pathOr({}, ['finance_info'])(portfolio);

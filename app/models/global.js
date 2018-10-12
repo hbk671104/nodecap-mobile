@@ -50,16 +50,24 @@ export default {
         console.log(e);
       }
     },
-    *startup({ callback }, { call, put }) {
+    *startup({ callback }, { call, put, all }) {
       try {
         // sensor set profile
         global.setProfile({
           client_type: '个人版',
         });
 
-        yield put.resolve({
-          type: 'getConstant',
-        });
+        yield all([
+          put.resolve({
+            type: 'getConstant',
+          }),
+          put({
+            type: 'filter/fetchInstitution',
+          }),
+          put({
+            type: 'filter/fetchCoinTag',
+          }),
+        ]);
 
         yield put(
           NavigationActions.navigate({

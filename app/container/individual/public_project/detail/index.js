@@ -21,24 +21,6 @@ import Selector from './selector';
 import Bottom from './bottom';
 import styles from './style';
 
-const selectionList = [
-  {
-    component: Description,
-    name: '详情',
-  },
-  {
-    component: Trend,
-    name: '动态',
-  },
-  {
-    component: Pairs,
-    name: '交易所',
-  },
-  {
-    component: Return,
-    name: '回报',
-  },
-];
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -60,27 +42,64 @@ const selectionList = [
 })
 @compose(
   withState('showShareModal', 'toggleShareModal', false),
-  withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
-  withProps(({ animateY, can_calculate }) => ({
-    headerWrapperYRange: animateY.interpolate({
-      inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
-      outputRange: [0, -(can_calculate ? fullHeaderHeight : headerHeight)],
-      extrapolate: 'clamp',
-    }),
-    headerOpacityRange: animateY.interpolate({
-      inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
-      outputRange: [1, 0],
-      extrapolate: 'clamp',
-    }),
-    titleOpacityRange: animateY.interpolate({
-      inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    }),
-  })),
+  withProps(({ animateY, can_calculate, portfolio }) => {
+    const investment = R.pathOr({}, ['roi'])(portfolio);
+    const symbols = R.pathOr([], ['symbols'])(portfolio);
+    const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    return {
+      headerWrapperYRange: animateY.interpolate({
+        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+        outputRange: [0, -(can_calculate ? fullHeaderHeight : headerHeight)],
+        extrapolate: 'clamp',
+      }),
+      headerOpacityRange: animateY.interpolate({
+        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+      }),
+      titleOpacityRange: animateY.interpolate({
+        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      selectionList: [
+        {
+          component: Description,
+          name: '详情',
+        },
+        ...(R.isEmpty(trends)
+          ? []
+          : [
+              {
+                component: Trend,
+                name: '动态',
+              },
+            ]),
+        ...(R.isEmpty(symbols)
+          ? []
+          : [
+              {
+                component: Pairs,
+                name: '交易所',
+              },
+            ]),
+        ...(R.isEmpty(investment)
+          ? []
+          : [
+              {
+                component: Return,
+                name: '回报',
+              },
+            ]),
+      ],
+    };
+  }),
+  withState('currentPage', 'setCurrentPage', ({ selectionList }) =>
+    R.path([0])(selectionList),
+  ),
 )
 export default class PublicProjectDetail extends Component {
   componentWillMount() {
@@ -211,6 +230,7 @@ export default class PublicProjectDetail extends Component {
   render() {
     const {
       currentPage: Current,
+      selectionList,
       portfolio,
       titleOpacityRange,
       can_calculate,

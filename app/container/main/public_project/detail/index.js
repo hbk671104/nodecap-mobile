@@ -20,16 +20,6 @@ import Bottom from './bottom';
 import styles from './style';
 import StatusSelector from './statusSelector';
 
-const selectionList = [
-  {
-    component: Description,
-    name: '详情',
-  },
-  {
-    component: Trend,
-    name: '动态',
-  },
-];
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -46,28 +36,47 @@ const selectionList = [
   };
 })
 @compose(
-  withState('currentPage', 'setCurrentPage', R.path([0])(selectionList)),
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('selectorY', 'setSelectorY', 0),
   withState('showStatusSelector', 'toggleStatusSelector', false),
-  withProps(({ animateY }) => ({
-    headerWrapperYRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [0, -headerHeight],
-      extrapolate: 'clamp',
-    }),
-    headerOpacityRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [1, 0],
-      extrapolate: 'clamp',
-    }),
-    titleOpacityRange: animateY.interpolate({
-      inputRange: [0, headerHeight],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    }),
-  })),
+  withProps(({ animateY, portfolio }) => {
+    const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    return {
+      headerWrapperYRange: animateY.interpolate({
+        inputRange: [0, headerHeight],
+        outputRange: [0, -headerHeight],
+        extrapolate: 'clamp',
+      }),
+      headerOpacityRange: animateY.interpolate({
+        inputRange: [0, headerHeight],
+        outputRange: [1, 0],
+        extrapolate: 'clamp',
+      }),
+      titleOpacityRange: animateY.interpolate({
+        inputRange: [0, headerHeight],
+        outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      selectionList: [
+        {
+          component: Description,
+          name: '详情',
+        },
+        ...(R.isEmpty(trends)
+          ? []
+          : [
+              {
+                component: Trend,
+                name: '动态',
+              },
+            ]),
+      ],
+    };
+  }),
+  withState('currentPage', 'setCurrentPage', ({ selectionList }) =>
+    R.path([0])(selectionList),
+  ),
 )
 export default class PublicProjectDetail extends Component {
   componentWillMount() {
@@ -190,6 +199,7 @@ export default class PublicProjectDetail extends Component {
     }
 
     const {
+      selectionList,
       currentPage: Current,
       portfolio,
       titleOpacityRange,
@@ -236,7 +246,7 @@ export default class PublicProjectDetail extends Component {
             list={selectionList}
             page={Current}
             onPress={this.handlePageSwitch}
-          />1
+          />
           <View style={styles.page}>
             <Current.component
               {...this.props}
