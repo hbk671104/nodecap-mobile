@@ -9,10 +9,10 @@ const group = ({ data }) => {
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
   const desc = R.pathOr('--', ['description'])(data);
-  const avatar_url = R.pathOr('', ['avatar_url'])(data);
+  const logo_url = R.pathOr('', ['logo_url'])(data);
   return (
     <View style={styles.container}>
-      <Avatar source={{ uri: avatar_url }} />
+      <Avatar source={logo_url} />
       <View style={styles.content.container}>
         <Text style={styles.content.title}>{name}</Text>
         <Text style={styles.content.content}>{desc}</Text>

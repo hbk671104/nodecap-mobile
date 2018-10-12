@@ -20,12 +20,13 @@ const mock = [
   },
   {
   id: 2,
-  // logo_url: require('asset/services/logo/nodeplus.png'),
+  logo_url: require('asset/services/logo/beike.png'),
   name: '贝壳公关',
   description: '贝壳（BlockChoice）成立于2017年12月，是专注于区块链行业品牌营销的国际性公司，通过公关咨询、品牌创意、内容营销、会议路演等，贯穿项目与企业的全生命周期，为其发展的各个阶段助力，建立区块链项目和企业的品牌优势。希望与全球最顶级的区块链项目合作，做最懂区块链的最专业的咨询公司。',
   members: [
     {
       name: '姜晓玉',
+      avatar_url: require('asset/services/avatar/beikeceo.jpeg'),
       title: '贝壳公关CEO&节点资本合伙人',
     },
   ],
