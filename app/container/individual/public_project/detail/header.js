@@ -29,10 +29,7 @@ const header = ({
     R.toUpper,
   )(data);
   const logo = R.pathOr('', ['icon'])(data);
-  const category = R.pipe(
-    R.pathOr([], ['tags']),
-    R.take(2),
-  )(data);
+  const category = R.pathOr([], ['tags'])(data);
   const market = R.pathOr({}, ['market'])(portfolio);
   const current_price = R.pathOr('--', ['current_price', 'CNY'])(market);
   const price_change_percentage_24h = R.pathOr('--', [
@@ -79,9 +76,8 @@ const header = ({
                 ]}
               >
                 {R.pipe(
-                  // R.filter(t => !R.isEmpty(R.trim(t))),
                   R.map(k => (
-                    <View key={k} style={styles.tag.container}>
+                    <View key={k.id} style={styles.tag.container}>
                       <Text style={styles.tag.title}>
                         {R.pipe(
                           R.pathOr('', ['name']),

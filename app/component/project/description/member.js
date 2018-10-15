@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, Linking } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableWithoutFeedback,
+  Linking,
+} from 'react-native';
 import { Flex } from 'antd-mobile';
 import R from 'ramda';
 
@@ -25,25 +32,26 @@ const memberItem = ({ data }) => {
           <Text style={styles.content.subtitle}>{R.trim(title)}</Text>
         </View>
         {!!linkedIn_url && (
-        <View>
-          <TouchableWithoutFeedback onPress={() => {
-            Linking
-              .canOpenURL(linkedIn_url)
-              .then((support) => {
-                if (support) {
-                  Linking
-                    .openURL(linkedIn_url)
-                    .catch((err) => {
-                      console.log(err);
-                    });
-                }
-              })
-              .catch((err) => console.error('An error occurred', err));
-          }}
-          >
-            <Image style={styles.content.linkedin} source={require('asset/public_project/linkedin.png')} />
-          </TouchableWithoutFeedback>
-        </View>
+          <View>
+            <TouchableWithoutFeedback
+              onPress={() => {
+                Linking.canOpenURL(linkedIn_url)
+                  .then(support => {
+                    if (support) {
+                      Linking.openURL(linkedIn_url).catch(err => {
+                        console.log(err);
+                      });
+                    }
+                  })
+                  .catch(err => console.error('An error occurred', err));
+              }}
+            >
+              <Image
+                style={styles.content.linkedin}
+                source={require('asset/public_project/linkedin.png')}
+              />
+            </TouchableWithoutFeedback>
+          </View>
         )}
       </Flex>
     </View>
@@ -60,6 +68,7 @@ const styles = {
   },
   content: {
     container: {
+      flex: 1,
       marginLeft: 15,
     },
     title: {

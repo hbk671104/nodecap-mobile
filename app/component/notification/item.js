@@ -37,9 +37,11 @@ const notificationItem = ({ data, onPress }) => {
                 {title}
               </Text>
             </View>
-            <Text style={styles.content.top.date}>
-              {push_at ? moment.unix(push_at).format('MM-DD HH:mm') : '--'}
-            </Text>
+            <View>
+              <Text style={styles.content.top.date}>
+                {push_at ? moment.unix(push_at).format('MM-DD HH:mm') : '--'}
+              </Text>
+            </View>
           </View>
           <View style={styles.content.tag.wrapper}>
             <View
@@ -101,7 +103,6 @@ const styles = {
         },
       },
       date: {
-        flexShrink: 0,
         fontSize: 12,
         color: 'rgba(0, 0, 0, 0.45)',
       },

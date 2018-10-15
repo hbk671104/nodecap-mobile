@@ -13,10 +13,7 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
     R.toUpper,
   )(data);
   const logo = R.pathOr('', ['icon'])(data);
-  const category = R.pipe(
-    R.pathOr([], ['tags']),
-    R.take(2),
-  )(data);
+  const category = R.pathOr([], ['tags'])(data);
 
   return (
     <Animated.View style={[styles.container, style]}>
@@ -46,9 +43,8 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
                 ]}
               >
                 {R.pipe(
-                  R.filter(t => !R.isEmpty(R.trim(t))),
                   R.map(k => (
-                    <View key={k} style={styles.tag.container}>
+                    <View key={k.id} style={styles.tag.container}>
                       <Text style={styles.tag.title}>
                         {R.pipe(
                           R.pathOr('', ['name']),
