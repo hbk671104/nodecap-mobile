@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Alert, ScrollView, Text, TouchableWithoutFeedback, Clipboard } from 'react-native';
+import {
+  View,
+  Alert,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  Clipboard,
+} from 'react-native';
 import { Flex, Toast } from 'antd-mobile';
 
 import { connect } from 'react-redux';
@@ -73,6 +80,22 @@ class Self extends Component {
     );
   };
 
+  handleMyProjectPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'MyProject',
+      }),
+    );
+  };
+
+  handleInstitutionJoinPress = () => {
+    // this.props.dispatch(
+    //   NavigationActions.navigate({
+    //     routeName: 'MyProject',
+    //   }),
+    // );
+  };
+
   handleSwitchEndPress = () => {
     if (
       R.pipe(
@@ -143,7 +166,21 @@ class Self extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView contentContainerStyle={styles.scroll.content}>
-          {/* <View style={styles.scroll.divider} /> */}
+          {isLogin && (
+            <View>
+              <Item
+                icon={require('asset/mine/my_project.png')}
+                title="我的项目"
+                onPress={this.handleMyProjectPress}
+              />
+              <Item
+                icon={require('asset/mine/institution_join.png')}
+                title="机构入驻通道"
+                onPress={this.handleInstitutionJoinPress}
+              />
+              <View style={styles.scroll.divider} />
+            </View>
+          )}
           <Item
             icon={require('asset/mine/feedback.png')}
             title="意见反馈"

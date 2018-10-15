@@ -82,6 +82,8 @@ import Announcement from 'container/main/announcement/index';
 import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
+import PRService from 'container/main/service/pr';
+import PRServiceDetail from 'container/main/service/pr/detail';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -94,8 +96,7 @@ import IndividualProfile from 'container/individual/self/profile/mine';
 import IndividualEditProfile from 'container/individual/self/profile/edit';
 import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
-import PRService from 'container/main/service/pr';
-import PRServiceDetail from 'container/main/service/pr/detail';
+import MyProject from 'container/individual/self/my_project';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -320,6 +321,7 @@ const IndividualStack = createStackNavigator(
     WebPage,
     PRService,
     PRServiceDetail,
+    MyProject,
   },
   {
     headerMode: 'none',
