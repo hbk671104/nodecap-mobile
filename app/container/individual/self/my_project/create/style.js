@@ -18,6 +18,15 @@ export default {
         fontSize: 14,
       },
     },
+    content: {
+      container: {
+        marginRight: 10,
+      },
+      text: {
+        color: 'rgba(0, 0, 0, 0.85)',
+        fontSize: 14,
+      },
+    },
   },
   divider: {
     height: StyleSheet.hairlineWidth,

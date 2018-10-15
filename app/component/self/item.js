@@ -26,6 +26,7 @@ const item = ({
   titleStyle,
   title,
   subtitle,
+  renderRight,
   badge,
   onPress,
   loading,
@@ -39,9 +40,13 @@ const item = ({
         <View style={[styles.group, titleContainer]}>
           <Text style={[styles.title, titleStyle]}>{title}</Text>
         </View>
-        <View style={styles.badge.container}>
-          {loading ? <ActivityIndicator /> : <Badge value={badge} />}
-        </View>
+        {renderRight ? (
+          renderRight()
+        ) : (
+          <View style={styles.badge.container}>
+            {loading ? <ActivityIndicator /> : <Badge value={badge} />}
+          </View>
+        )}
         <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
       </View>
       {!!subtitle && (

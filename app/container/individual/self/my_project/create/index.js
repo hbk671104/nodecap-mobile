@@ -45,6 +45,11 @@ class CreateProject extends Component {
             titleContainer={styles.item.title.container}
             titleStyle={styles.item.title.text}
             title="项目名称"
+            renderRight={() => (
+              <View style={styles.item.content.container}>
+                <Text style={styles.item.content.text}>Zilliqa</Text>
+              </View>
+            )}
             onPress={this.handleProjectNamePress}
           />
           <View style={styles.divider} />
