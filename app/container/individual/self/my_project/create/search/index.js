@@ -38,10 +38,9 @@ class CreateMyProjectSearch extends Component {
   };
 
   requestData = () => {
-    const { searchText } = this.state;
-    if (R.isEmpty(searchText)) return;
-
-    Toast.loading('loading...', 0);
+    // const { searchText } = this.state;
+    // if (R.isEmpty(searchText)) return;
+    // Toast.loading('loading...', 0);
     // this.props.dispatch({
     //   type: 'portfolio/searchMatchedCoin',
     //   payload: {
@@ -53,7 +52,13 @@ class CreateMyProjectSearch extends Component {
     // });
   };
 
-  handleSavePress = () => {};
+  handleSavePress = () => {
+    const { searchText } = this.state;
+    if (R.isEmpty(searchText)) return;
+
+    const onSave = this.props.navigation.getParam('onProjectSave');
+    onSave(searchText);
+  };
 
   renderNavBar = () => (
     <NavBar
