@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, Text, StyleSheet } from 'react-native';
+import { View, Animated, Text, StyleSheet, ScrollView } from 'react-native';
 import R from 'ramda';
 
 import Price from 'component/price';
@@ -66,13 +66,14 @@ const header = ({
           <View style={{ marginTop: 4 }}>
             <View style={styles.tag.wrapper}>
               <Text style={styles.top.subtitle}>{token}</Text>
-              <View
+              <ScrollView
+                showsHorizontalScrollIndicator={false}
+                horizontal
                 style={[
                   {
                     flex: 1,
-                    marginLeft: 8,
+                    marginHorizontal: 8,
                   },
-                  styles.tag.wrapper,
                 ]}
               >
                 {R.pipe(
@@ -87,7 +88,7 @@ const header = ({
                     </View>
                   )),
                 )(category)}
-              </View>
+              </ScrollView>
             </View>
           </View>
         </View>

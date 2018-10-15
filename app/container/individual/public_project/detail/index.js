@@ -206,13 +206,12 @@ export default class PublicProjectDetail extends Component {
           {
             height:
               realBarHeight + (can_calculate ? fullHeaderHeight : headerHeight),
-          },
-          {
             transform: [
               {
                 translateY: headerWrapperYRange,
               },
             ],
+            zIndex: 50,
           },
         ]}
       >
@@ -241,7 +240,7 @@ export default class PublicProjectDetail extends Component {
         <NavBar
           back
           iconStyle={styles.navBar.icon}
-          style={styles.navBar.container}
+          style={[styles.navBar.container, { zIndex: 100 }]}
           title={R.pathOr('', ['name'])(portfolio)}
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />

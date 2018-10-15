@@ -164,13 +164,14 @@ export default class PublicProjectDetail extends Component {
       <Animated.View
         style={[
           styles.navBar.wrapper,
-          { height: realBarHeight + headerHeight },
           {
+            height: realBarHeight + headerHeight,
             transform: [
               {
                 translateY: headerWrapperYRange,
               },
             ],
+            zIndex: 50,
           },
         ]}
       >
@@ -211,7 +212,7 @@ export default class PublicProjectDetail extends Component {
         <NavBar
           back
           iconStyle={styles.navBar.icon}
-          style={styles.navBar.container}
+          style={[styles.navBar.container, { zIndex: 100 }]}
           title={R.pathOr('', ['name'])(portfolio)}
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
