@@ -98,6 +98,7 @@ import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
 import MyProject from 'container/individual/self/my_project';
 import CreateMyProject from 'container/individual/self/my_project/create';
+import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -324,6 +325,7 @@ const IndividualStack = createStackNavigator(
     PRServiceDetail,
     MyProject,
     CreateMyProject,
+    CreateMyProjectSearch,
   },
   {
     headerMode: 'none',

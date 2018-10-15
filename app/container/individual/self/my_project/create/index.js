@@ -24,7 +24,13 @@ class CreateProject extends Component {
     this.props.track('进入');
   }
 
-  handleProjectNamePress = () => {};
+  handleProjectNamePress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyProjectSearch',
+      }),
+    );
+  };
 
   handleNextPress = () => {};
 
