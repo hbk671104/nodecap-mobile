@@ -45,7 +45,7 @@ class CreateProject extends Component {
   handleNextPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'OptionalClaimMyProject',
+        routeName: 'CreateMyProjectNormal',
       }),
     );
   };

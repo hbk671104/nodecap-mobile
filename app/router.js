@@ -99,7 +99,8 @@ import ChangeLog from 'container/individual/self/settings/changelog';
 import MyProject from 'container/individual/self/my_project';
 import CreateMyProject from 'container/individual/self/my_project/create';
 import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
-import OptionalClaimMyProject from 'container/individual/self/my_project/create/optional_claim';
+import CreateMyProjectNormal from 'container/individual/self/my_project/create/normal';
+import CreateMyProjectNormalWrapper from 'container/individual/self/my_project/create/normal/steps';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -327,7 +328,8 @@ const IndividualStack = createStackNavigator(
     MyProject,
     CreateMyProject,
     CreateMyProjectSearch,
-    OptionalClaimMyProject,
+    CreateMyProjectNormal,
+    CreateMyProjectNormalWrapper,
   },
   {
     headerMode: 'none',

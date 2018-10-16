@@ -13,8 +13,8 @@ import Button from '../../component/button';
 import styles from './style';
 
 @global.bindTrack({
-  page: '选择性认领我的项目',
-  name: 'App_MyProjectOptionalClaimOperation',
+  page: '正常创建项目流程',
+  name: 'App_MyProjectCreateNormalOperation',
 })
 @connect(({ user, login, loading }) => ({
   data: [],
@@ -25,14 +25,22 @@ class OptionalClaimProject extends Component {
     this.props.track('进入');
   }
 
-  handleNextPress = () => {};
+  handleNextPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyProjectNormalWrapper',
+      }),
+    );
+  };
+
+  renderItem = ({ item }) => null;
 
   render() {
     const { data, loading } = this.props;
     return (
       <View style={styles.container}>
         <NavBar back gradient title="认领项目" />
-        <List data={data} />
+        <List data={data} renderItem={this.renderItem} />
         <Button
           title="继续创建"
           onPress={this.handleNextPress}
