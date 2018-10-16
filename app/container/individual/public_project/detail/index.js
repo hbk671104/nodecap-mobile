@@ -164,6 +164,28 @@ export default class PublicProjectDetail extends Component {
     );
   };
 
+  handleCommentPress = () => {
+    this.props.track('点击点评按钮');
+
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CommentCoin',
+        params: {
+          coin: this.props.portfolio,
+        },
+      }),
+    );
+  };
+
   handlePageSwitch = page => () => {
     this.props.setCurrentPage(page, () => {
       if (this.props.currentScrollY < this.props.selectorY) {
@@ -293,6 +315,7 @@ export default class PublicProjectDetail extends Component {
           }}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
+          onPressComment={this.handleCommentPress}
         />
         <Share
           onClose={() => this.props.toggleShareModal(false)}

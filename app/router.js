@@ -37,6 +37,7 @@ import Login from 'container/auth/login';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
+import CommentCoin from 'container/main/public_project/comment';
 import InstitutionReport from 'container/main/public_project/institution_report';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
 import Fund from 'container/main/fund';
@@ -225,6 +226,7 @@ const MainStack = createStackNavigator(
     Settings,
     PRService,
     PRServiceDetail,
+    CommentCoin,
   },
   {
     headerMode: 'none',
@@ -320,6 +322,7 @@ const IndividualStack = createStackNavigator(
     WebPage,
     PRService,
     PRServiceDetail,
+    CommentCoin,
   },
   {
     headerMode: 'none',
