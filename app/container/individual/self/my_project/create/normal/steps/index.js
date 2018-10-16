@@ -21,13 +21,29 @@ class CreateProjectNormalWrapper extends Component {
     this.props.track('进入');
   }
 
-  handleNextPress = () => {};
+  handleNextPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyProjectDescription',
+      }),
+    );
+  };
 
   render() {
-    const { data, loading } = this.props;
+    const { data, loading, children } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar back gradient title="基本信息" />
+        <NavBar
+          back
+          gradient
+          title="基本信息"
+          renderRight={() => (
+            <Touchable borderless onPress={this.handleNextPress}>
+              <Text style={styles.navBar.right}>下一步</Text>
+            </Touchable>
+          )}
+        />
+        {children}
       </View>
     );
   }

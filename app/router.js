@@ -101,6 +101,12 @@ import CreateMyProject from 'container/individual/self/my_project/create';
 import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
 import CreateMyProjectNormal from 'container/individual/self/my_project/create/normal';
 import CreateMyProjectNormalWrapper from 'container/individual/self/my_project/create/normal/steps';
+import CreateMyProjectBasicInfo from 'container/individual/self/my_project/create/normal/steps/basic';
+import CreateMyProjectDescription from 'container/individual/self/my_project/create/normal/steps/description';
+import CreateMyProjectTeam from 'container/individual/self/my_project/create/normal/steps/team';
+import CreateMyProjectSocial from 'container/individual/self/my_project/create/normal/steps/social';
+import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/normal/steps/roadmap';
+import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -294,6 +300,20 @@ const IndividualTab = createBottomTabNavigator(
   },
 );
 
+const ProjectCreate = createStackNavigator(
+  {
+    CreateMyProjectBasicInfo,
+    CreateMyProjectDescription,
+    CreateMyProjectTeam,
+    CreateMyProjectSocial,
+    CreateMyProjectRoadMap,
+    CreateMyProjectFunding,
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
@@ -329,7 +349,13 @@ const IndividualStack = createStackNavigator(
     CreateMyProject,
     CreateMyProjectSearch,
     CreateMyProjectNormal,
-    CreateMyProjectNormalWrapper,
+    CreateMyProjectNormalWrapper: {
+      screen: props => (
+        <CreateMyProjectNormalWrapper>
+          <ProjectCreate />
+        </CreateMyProjectNormalWrapper>
+      ),
+    },
   },
   {
     headerMode: 'none',
