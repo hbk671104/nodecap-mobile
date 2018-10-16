@@ -22,6 +22,12 @@ import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { borderColor } from 'component/uikit/color';
 import Accounting from 'accounting';
 
+import MemberItem from 'component/project/description/member';
+import InstitutionItem from './page/description/institutionItem';
+import SocialNetworkItem from './page/description/socialNetworkItem';
+import Roadmap from './page/description/roadmap';
+
+
 const window = Dimensions.get('window');
 const isIOS = Platform === 'ios';
 export const DEVICE_WIDTH = window.width;
@@ -87,7 +93,12 @@ class ShareCoin extends Component {
     const end_at = R.pathOr(null, ['end_at'])(info);
     const token_supply = R.pathOr(null, ['token_supply'])(info);
     const conversion_ratio = R.pathOr(null, ['conversion_ratio'])(info);
-    const industryInvestments = R.pathOr([], ['industry_investments'])(coin);
+    const industry_investments = R.pathOr([], ['industry_investments'])(coin);
+    const social_network = R.pathOr([], ['coin', 'social_networks'])(
+      this.props,
+    );
+    const members = R.pathOr([], ['coin', 'members'])(this.props);
+    const roadmap = R.pathOr([], ['coin', 'basic', 'roadmap'])(this.props);
     const renderTitle = title => (
       <Flex>
         <View style={styles.dot} />
@@ -110,30 +121,42 @@ class ShareCoin extends Component {
         </View>
         <View style={styles.group}>
           {renderTitle('评级信息')}
+          {(risk_score || invest_score) && (
           <Flex style={styles.groupContent}>
+            {risk_score && (
             <Flex align="center">
               <Text style={styles.groupContentText}>风险评估</Text>
-              <Text style={styles.highLight}>{risk_score || '无'}</Text>
+              <Text style={styles.highLight}>{risk_score}</Text>
             </Flex>
+            )}
+            {invest_score && (
             <Flex align="center" style={{ marginLeft: 46 }}>
               <Text style={styles.groupContentText}>投资评分</Text>
               <Text style={styles.highLight}>{invest_score || '无'}</Text>
             </Flex>
+            )}
           </Flex>
+          )}
+          <Text style={[styles.groupContentTip]}>
+            - 长按底部二维码，查看更多募资信息
+          </Text>
         </View>
         <View style={styles.group}>
           {renderTitle('募集信息')}
-          <Flex style={styles.groupContent} align="center">
-            <Text style={styles.groupContentText}>开始时间</Text>
-            <Text
-              style={[
+          {!!start_at && (
+            <Flex style={styles.groupContent} align="center">
+              <Text style={styles.groupContentText}>开始时间</Text>
+              <Text
+                style={[
                 styles.groupContentText,
                 { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
               ]}
-            >
-              {start_at ? moment.unix(start_at).format('YYYY.MM.DD') : '无'}
-            </Text>
-          </Flex>
+              >
+                {start_at ? moment.unix(start_at).format('YYYY.MM.DD') : '无'}
+              </Text>
+            </Flex>
+          )}
+          {!!end_at && (
           <Flex style={styles.groupContent} align="center">
             <Text style={styles.groupContentText}>结束时间</Text>
             <Text
@@ -145,6 +168,8 @@ class ShareCoin extends Component {
               {end_at ? moment.unix(end_at).format('YYYY.MM.DD') : '无'}
             </Text>
           </Flex>
+)}
+          {!!token_supply && (
           <Flex style={styles.groupContent} align="center">
             <Text style={styles.groupContentText}>发售总量</Text>
             <Text
@@ -153,9 +178,11 @@ class ShareCoin extends Component {
                 { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
               ]}
             >
-              {token_supply ? Accounting.formatNumber(token_supply) : '无'}
+              {Accounting.formatNumber(token_supply)}
             </Text>
           </Flex>
+          )}
+          {!!conversion_ratio && (
           <Flex style={styles.groupContent} align="center">
             <Text style={styles.groupContentText}>兑换比例</Text>
             <Text
@@ -164,26 +191,60 @@ class ShareCoin extends Component {
                 { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
               ]}
             >
-              {conversion_ratio || '无'}
+              {conversion_ratio}
             </Text>
           </Flex>
+)}
+          <Text style={[styles.groupContentTip]}>
+            - 长按底部二维码，查看更多募资信息
+          </Text>
         </View>
         <View style={styles.group}>
-          {renderTitle('投资机构')}
-          <Flex style={styles.groupContent} align="center">
-            {industryInvestments.length ? (
-              industryInvestments.map((i, idx) => (
-                <Flex key={`${idx}`} align="center">
-                  <Text style={{ color: 'rgba(0,0,0,.85)' }}>{i.name}</Text>
-                  {idx !== industryInvestments.length - 1 && (
-                    <View style={styles.orgDivision} />
-                  )}
-                </Flex>
-              ))
-            ) : (
-              <Text style={styles.groupContentText}>暂无</Text>
-            )}
+          {renderTitle('团队成员')}
+          <View>
+            {R.map(m => <MemberItem key={m.id} data={m} style={{ marginLeft: 10 }} />)(members)}
+          </View>
+          <Text style={[styles.groupContentTip]}>
+            - 长按底部二维码，联系团队成员
+          </Text>
+        </View>
+        <View style={styles.group}>
+          {renderTitle('媒体信息')}
+          <Flex wrap="wrap">
+            {R.addIndex(R.map)((m, i) => (
+              <SocialNetworkItem
+                style={{ paddingHorizontal: 0, marginTop: 10 }}
+                key={`${i}`}
+                name={m.name}
+                data={m.link_url}
+              />
+            ))(social_network)}
           </Flex>
+          <Text style={[styles.groupContentTip]}>
+            - 长按底部二维码，查看媒体信息
+          </Text>
+        </View>
+        <View style={[styles.group]}>
+          {renderTitle('投资机构')}
+          <Flex wrap="wrap">
+            {R.map(m => (
+              <InstitutionItem
+                style={{ paddingHorizontal: 0, marginTop: 10 }}
+                key={m.id}
+                data={m}
+              />
+            ))(industry_investments)}
+          </Flex>
+          <Text style={[styles.groupContentTip]}>
+            - 长按底部二维码，查看投资机构
+          </Text>
+        </View>
+        <View style={{ marginBottom: 30 }}>
+          {renderTitle('路线图')}
+          <Roadmap {...this.props} roadmap={roadmap} />
+          <Text style={[styles.groupContentTip]}>
+            - 长按底部二维码，查看路线图
+          </Text>
         </View>
       </View>
     );
@@ -464,6 +525,11 @@ const styles = {
     fontFamily: 'PingFangSC-Regular',
     fontSize: 13,
     color: 'rgba(0,0,0,0.65)',
+  },
+  groupContentTip: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.45)',
+    marginTop: 12,
   },
   highLight: {
     fontFamily: 'PingFangSC-Medium',

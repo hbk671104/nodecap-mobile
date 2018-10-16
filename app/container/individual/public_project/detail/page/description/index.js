@@ -200,7 +200,7 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(roadmap)) && (
           <View>
             <Text style={[styles.title, styles.site]}>路线图</Text>
-            <Roadmap {...this.props} />
+            <Roadmap {...this.props} roadmap={roadmap} />
           </View>
         )}
       </View>

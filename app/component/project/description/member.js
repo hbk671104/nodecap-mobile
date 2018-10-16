@@ -6,13 +6,13 @@ import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
 
-const memberItem = ({ data }) => {
+const memberItem = ({ data, style }) => {
   const profile_pic = R.pathOr('', ['profile_pic'])(data);
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
   const linkedIn_url = R.path(['linkedIn_url'])(data);
   return (
-    <View style={[styles.container]}>
+    <View style={[styles.container, style]}>
       <Avatar
         source={{ uri: profile_pic }}
         raised={false}
