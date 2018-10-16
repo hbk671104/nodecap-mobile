@@ -1,9 +1,15 @@
 import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 
+import Wrapper from './index';
+
 class Social extends PureComponent {
   render() {
-    return <Text>Social</Text>;
+    return (
+      <Wrapper>
+        <Text>Social</Text>
+      </Wrapper>
+    );
   }
 }
 

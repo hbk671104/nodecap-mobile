@@ -6,31 +6,42 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
+
+import { getCurrentScreen } from '../../../../../../../router';
+import ProgressBar from '../../../component/progress_bar';
 import styles from './style';
 
 @global.bindTrack({
   page: '正常创建项目流程外层',
   name: 'App_MyProjectCreateNormalWrapperOperation',
 })
-@connect(({ user, login, loading }) => ({
-  data: [],
-  //   loading: loading.effects['login/switch'],
-}))
+@connect(({ project_create, router }) => {
+  const route = R.path(['route'])(project_create);
+  const index = R.indexOf(getCurrentScreen(router))(route);
+  return {
+    index,
+    route,
+    nextPage: R.pathOr('ClaimMyProject', [index + 1])(route),
+  };
+})
 class CreateProjectNormalWrapper extends Component {
   componentDidMount() {
     this.props.track('进入');
   }
 
+  handleSubmit = () => {};
+
   handleNextPress = () => {
+    const { nextPage } = this.props;
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'CreateMyProjectDescription',
+        routeName: nextPage,
       }),
     );
   };
 
   render() {
-    const { data, loading, children } = this.props;
+    const { children } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -43,6 +54,7 @@ class CreateProjectNormalWrapper extends Component {
             </Touchable>
           )}
         />
+        <ProgressBar {...this.props} />
         {children}
       </View>
     );
