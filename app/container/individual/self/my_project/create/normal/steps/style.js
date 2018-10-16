@@ -9,4 +9,15 @@ export default {
       fontSize: 14,
     },
   },
+  inputItem: {
+    container: {
+      paddingVertical: 20,
+    },
+    title: {
+      color: 'rgba(0, 0, 0, 0.65)',
+    },
+    input: {
+      textAlign: 'right',
+    },
+  },
 };

@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
 import R from 'ramda';
 
+import Touchable from 'component/uikit/touchable';
 import Input from 'component/uikit/textInput';
 
 class InputItem extends PureComponent {
   static propTypes = {
     style: ViewPropTypes.style,
+    wrapperStyle: ViewPropTypes.style,
     title: PropTypes.string,
     titleStyle: PropTypes.object,
     placeholder: PropTypes.string,
@@ -15,6 +17,7 @@ class InputItem extends PureComponent {
     renderContent: PropTypes.func,
     renderRight: PropTypes.func,
     inputProps: PropTypes.object,
+    onPress: PropTypes.func,
     error: PropTypes.array,
   };
 
@@ -34,6 +37,7 @@ class InputItem extends PureComponent {
   render() {
     const {
       style,
+      wrapperStyle,
       title,
       titleStyle,
       vertical,
@@ -42,46 +46,53 @@ class InputItem extends PureComponent {
       placeholder,
       onChange,
       inputProps = {},
+      onPress,
       value,
       error,
     } = this.props;
     return (
-      <View style={[styles.container, style]}>
-        <View style={[styles.wrapper, vertical && styles.vertical]}>
-          {!!title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
+      <Touchable disabled={!onPress} onPress={onPress}>
+        <View style={[styles.container, style]}>
           <View
-            style={
-              vertical
-                ? styles.content.vertical.container
-                : styles.content.horizontal.container
-            }
+            style={[styles.wrapper, vertical && styles.vertical, wrapperStyle]}
           >
-            {renderContent ? (
-              renderContent({ onChange, value })
-            ) : (
-              <View style={styles.content.horizontal.wrapper}>
-                <Input
-                  {...inputProps}
-                  style={[
-                    styles.content.horizontal.input,
-                    vertical && styles.content.vertical.input,
-                    inputProps.style,
-                  ]}
-                  multiline={vertical}
-                  placeholder={placeholder}
-                  placeholderTextColor="rgba(0, 0, 0, 0.25)"
-                  onChange={onChange}
-                  value={value || ''}
-                />
-                {renderRight && renderRight()}
-              </View>
-            )}
+            {!!title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
+            <View
+              style={
+                vertical
+                  ? styles.content.vertical.container
+                  : styles.content.horizontal.container
+              }
+            >
+              {renderContent ? (
+                renderContent({ onChange, value })
+              ) : (
+                <View style={styles.content.horizontal.wrapper}>
+                  <Input
+                    {...inputProps}
+                    style={[
+                      styles.content.horizontal.input,
+                      vertical && styles.content.vertical.input,
+                      inputProps.style,
+                    ]}
+                    multiline={vertical}
+                    placeholder={placeholder}
+                    placeholderTextColor="rgba(0, 0, 0, 0.25)"
+                    onChange={onChange}
+                    value={value || ''}
+                  />
+                  {renderRight && renderRight()}
+                </View>
+              )}
+            </View>
           </View>
+          {!R.isEmpty(error) && (
+            <View style={styles.error.container}>
+              {this.renderError(error)}
+            </View>
+          )}
         </View>
-        {!R.isEmpty(error) && (
-          <View style={styles.error.container}>{this.renderError(error)}</View>
-        )}
-      </View>
+      </Touchable>
     );
   }
 }
