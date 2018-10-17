@@ -19,5 +19,8 @@ export default {
     input: {
       textAlign: 'right',
     },
+    greyOutText: {
+      color: 'rgba(0, 0, 0, 0.25)',
+    },
   },
 };

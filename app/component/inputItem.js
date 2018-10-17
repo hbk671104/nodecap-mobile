@@ -2,14 +2,18 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, ViewPropTypes } from 'react-native';
 import R from 'ramda';
+import { Flex } from 'antd-mobile';
 
 import Touchable from 'component/uikit/touchable';
+import Icon from 'component/uikit/icon';
 import Input from 'component/uikit/textInput';
 
 class InputItem extends PureComponent {
   static propTypes = {
     style: ViewPropTypes.style,
     wrapperStyle: ViewPropTypes.style,
+    contentWrapperStyle: ViewPropTypes.style,
+    showArrow: PropTypes.bool,
     title: PropTypes.string,
     titleStyle: PropTypes.object,
     placeholder: PropTypes.string,
@@ -23,6 +27,7 @@ class InputItem extends PureComponent {
 
   static defaultProps = {
     vertical: false,
+    showArrow: false,
     inputProps: {},
     error: [],
   };
@@ -36,8 +41,10 @@ class InputItem extends PureComponent {
 
   render() {
     const {
+      showArrow,
       style,
       wrapperStyle,
+      contentWrapperStyle,
       title,
       titleStyle,
       vertical,
@@ -65,7 +72,17 @@ class InputItem extends PureComponent {
               }
             >
               {renderContent ? (
-                renderContent({ onChange, value })
+                <Flex style={contentWrapperStyle}>
+                  {renderContent({ onChange, value })}
+                  {showArrow && (
+                    <Icon
+                      style={{ marginLeft: 8 }}
+                      name="arrow-forward"
+                      color="rgba(0, 0, 0, 0.25)"
+                      size={16}
+                    />
+                  )}
+                </Flex>
               ) : (
                 <View style={styles.content.horizontal.wrapper}>
                   <Input

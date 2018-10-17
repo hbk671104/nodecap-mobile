@@ -17,11 +17,15 @@ import styles from './style';
 })
 @connect(({ project_create, router }) => {
   const route = R.path(['route'])(project_create);
-  const index = R.indexOf(getCurrentScreen(router))(route);
+  const index = R.pipe(
+    R.map(r => r.name),
+    R.indexOf(getCurrentScreen(router)),
+  )(route);
   return {
     index,
     route,
-    nextPage: R.pathOr('ClaimMyProject', [index + 1])(route),
+    title: R.path([index, 'title'])(route),
+    nextPage: R.pathOr('ClaimMyProject', [index + 1, 'name'])(route),
   };
 })
 class CreateProjectNormalWrapper extends Component {
@@ -41,13 +45,13 @@ class CreateProjectNormalWrapper extends Component {
   };
 
   render() {
-    const { children } = this.props;
+    const { children, title } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
           back
           gradient
-          title="基本信息"
+          title={title}
           renderRight={() => (
             <Touchable borderless onPress={this.handleNextPress}>
               <Text style={styles.navBar.right}>下一步</Text>

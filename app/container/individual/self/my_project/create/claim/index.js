@@ -45,7 +45,7 @@ class ClaimProject extends Component {
 
   render() {
     // const { data, loading, projectName } = this.props;
-    const { getFieldDecorator, getFieldValue, getFieldError } = this.props.form;
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <View style={styles.container}>
         <NavBar
@@ -117,9 +117,9 @@ class ClaimProject extends Component {
               title="名片"
               placeholder="请上传名片"
               inputProps={{ style: styles.inputItem.input }}
+              contentWrapperStyle={{ alignSelf: 'flex-end' }}
               renderContent={({ onChange, value }) => (
                 <Image
-                  style={{ alignSelf: 'flex-end' }}
                   source={require('asset/project_create/business_card.png')}
                 />
               )}

@@ -1,13 +1,100 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { connect } from 'react-redux';
+import { createForm } from 'rc-form';
+
+import EnhancedScroll from 'component/enhancedScroll';
+import InputItem from 'component/inputItem';
+import { launchImagePicker } from 'utils/imagepicker';
 
 import Wrapper from './index';
+import styles from './style';
 
+@connect()
+@createForm()
 class BasicInfo extends PureComponent {
+  handleLogoPress = () => {};
+
+  handleTagPress = () => {};
+
+  handleWhitepaperPress = () => {};
+
   render() {
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <Wrapper>
-        <Text>HAHAH1</Text>
+        <EnhancedScroll>
+          {getFieldDecorator('symbol', {
+            rules: [{ required: true, message: '请输入项目 Token 简称' }],
+          })(
+            <InputItem
+              style={styles.inputItem.container}
+              titleStyle={styles.inputItem.title}
+              title="Token 简称"
+              placeholder="请输入项目 Token 简称"
+              inputProps={{ style: styles.inputItem.input }}
+              error={getFieldError('symbol')}
+            />,
+          )}
+          {getFieldDecorator('icon')(
+            <InputItem
+              style={styles.inputItem.container}
+              titleStyle={styles.inputItem.title}
+              contentWrapperStyle={{ alignSelf: 'flex-end' }}
+              title="Logo"
+              placeholder="请上传 Logo"
+              showArrow
+              renderContent={() => (
+                <Image
+                  source={require('asset/project_create/logo_placeholder.png')}
+                />
+              )}
+              inputProps={{ style: styles.inputItem.input }}
+              onPress={this.handleLogoPress}
+            />,
+          )}
+          {getFieldDecorator('tags')(
+            <InputItem
+              style={styles.inputItem.container}
+              titleStyle={styles.inputItem.title}
+              contentWrapperStyle={{ alignSelf: 'flex-end' }}
+              title="标签/领域"
+              placeholder="请选择标签/领域"
+              showArrow
+              renderContent={() => (
+                <Text style={styles.inputItem.greyOutText}>
+                  请选择标签/领域
+                </Text>
+              )}
+              inputProps={{ style: styles.inputItem.input }}
+              onPress={this.handleTagPress}
+            />,
+          )}
+          {getFieldDecorator('white_paper')(
+            <InputItem
+              style={styles.inputItem.container}
+              titleStyle={styles.inputItem.title}
+              contentWrapperStyle={{ alignSelf: 'flex-end' }}
+              title="白皮书"
+              placeholder="请上传白皮书"
+              showArrow
+              renderContent={() => (
+                <Text style={styles.inputItem.greyOutText}>请上传白皮书</Text>
+              )}
+              inputProps={{ style: styles.inputItem.input }}
+              onPress={this.handleWhitepaperPress}
+            />,
+          )}
+          {getFieldDecorator('homepages')(
+            <InputItem
+              style={styles.inputItem.container}
+              titleStyle={styles.inputItem.title}
+              title="官网"
+              placeholder="请输入官网"
+              inputProps={{ style: styles.inputItem.input }}
+            />,
+          )}
+        </EnhancedScroll>
       </Wrapper>
     );
   }
