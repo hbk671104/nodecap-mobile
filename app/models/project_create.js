@@ -27,7 +27,18 @@ export default {
         title: '募资信息',
       },
     ],
+    current: {},
   },
   effects: {},
-  reducers: {},
+  reducers: {
+    saveCurrent(state, action) {
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          ...action.payload,
+        },
+      };
+    },
+  },
 };

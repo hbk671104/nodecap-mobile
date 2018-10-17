@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { createForm } from 'rc-form';
 
 import EnhancedScroll from 'component/enhancedScroll';
+import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
 import { launchImagePicker } from 'utils/imagepicker';
 
@@ -21,82 +22,99 @@ class Team extends PureComponent {
     });
   };
 
+  handleAddMore = () => {};
+
+  renderForm = () => {
+    const { getFieldDecorator } = this.props.form;
+    return (
+      <View>
+        {getFieldDecorator('name')(
+          <InputItem
+            style={styles.inputItem.container}
+            titleStyle={styles.inputItem.title}
+            title="姓名"
+            placeholder="请输入成员姓名"
+            inputProps={{ style: styles.inputItem.input }}
+          />,
+        )}
+        {getFieldDecorator('profile_pic')(
+          <InputItem
+            style={styles.inputItem.container}
+            titleStyle={styles.inputItem.title}
+            contentWrapperStyle={{ alignSelf: 'flex-end' }}
+            title="头像"
+            placeholder="请上传头像"
+            showArrow
+            renderContent={() => (
+              <Image
+                source={require('asset/project_create/logo_placeholder.png')}
+              />
+            )}
+            inputProps={{ style: styles.inputItem.input }}
+            onPress={this.handleLogoPress}
+          />,
+        )}
+        {getFieldDecorator('title')(
+          <InputItem
+            style={styles.inputItem.container}
+            titleStyle={styles.inputItem.title}
+            title="职位"
+            placeholder="请输入成员职位"
+            inputProps={{ style: styles.inputItem.input }}
+          />,
+        )}
+        {getFieldDecorator('mobile')(
+          <InputItem
+            style={styles.inputItem.container}
+            titleStyle={styles.inputItem.title}
+            title="手机号"
+            placeholder="请输入成员手机号"
+            inputProps={{ style: styles.inputItem.input }}
+          />,
+        )}
+        {getFieldDecorator('wechat')(
+          <InputItem
+            style={styles.inputItem.container}
+            titleStyle={styles.inputItem.title}
+            title="微信"
+            placeholder="请输入成员微信"
+            inputProps={{ style: styles.inputItem.input }}
+          />,
+        )}
+        {getFieldDecorator('linkedin_url')(
+          <InputItem
+            style={styles.inputItem.container}
+            titleStyle={styles.inputItem.title}
+            title="LinkedIn"
+            placeholder="请输入成员LinkedIn"
+            inputProps={{ style: styles.inputItem.input }}
+          />,
+        )}
+        {getFieldDecorator('introduction')(
+          <InputItem
+            vertical
+            style={styles.inputItem.container}
+            titleStyle={styles.inputItem.title}
+            title="简介"
+            placeholder="请输入成员简介"
+          />,
+        )}
+      </View>
+    );
+  };
+
   render() {
-    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <Wrapper>
         <EnhancedScroll>
-          {getFieldDecorator('name')(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              title="姓名"
-              placeholder="请输入成员姓名"
-              inputProps={{ style: styles.inputItem.input }}
-            />,
-          )}
-          {getFieldDecorator('profile_pic')(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              contentWrapperStyle={{ alignSelf: 'flex-end' }}
-              title="头像"
-              placeholder="请上传头像"
-              showArrow
-              renderContent={() => (
-                <Image
-                  source={require('asset/project_create/logo_placeholder.png')}
-                />
-              )}
-              inputProps={{ style: styles.inputItem.input }}
-              onPress={this.handleLogoPress}
-            />,
-          )}
-          {getFieldDecorator('title')(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              title="职位"
-              placeholder="请输入成员职位"
-              inputProps={{ style: styles.inputItem.input }}
-            />,
-          )}
-          {getFieldDecorator('mobile')(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              title="手机号"
-              placeholder="请输入成员手机号"
-              inputProps={{ style: styles.inputItem.input }}
-            />,
-          )}
-          {getFieldDecorator('wechat')(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              title="微信"
-              placeholder="请输入成员微信"
-              inputProps={{ style: styles.inputItem.input }}
-            />,
-          )}
-          {getFieldDecorator('linkedin_url')(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              title="LinkedIn"
-              placeholder="请输入成员LinkedIn"
-              inputProps={{ style: styles.inputItem.input }}
-            />,
-          )}
-          {getFieldDecorator('introduction')(
-            <InputItem
-              vertical
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              title="简介"
-              placeholder="请输入成员简介"
-            />,
-          )}
+          {this.renderForm()}
+          <Touchable
+            borderless
+            style={styles.addMore.container}
+            onPress={this.handleAddMore}
+          >
+            <Text style={styles.addMore.text}>继续添加 +</Text>
+          </Touchable>
         </EnhancedScroll>
       </Wrapper>
     );

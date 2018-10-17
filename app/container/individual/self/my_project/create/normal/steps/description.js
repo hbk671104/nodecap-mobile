@@ -1,13 +1,35 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { createForm } from 'rc-form';
+import { createForm, createFormField } from 'rc-form';
+import R from 'ramda';
 
 import Input from 'component/uikit/textInput';
 import Wrapper from './index';
 
-@connect()
-@createForm()
+@connect(({ project_create }) => ({
+  current: R.pathOr({}, ['current'])(project_create),
+}))
+@createForm({
+  onValuesChange: ({ dispatch }, changed) => {
+    dispatch({
+      type: 'project_create/saveCurrent',
+      payload: changed,
+    });
+  },
+  mapPropsToFields: ({ current }) =>
+    R.pipe(
+      R.keys,
+      R.reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: createFormField({
+            value: current[key],
+          }),
+        }),
+        {},
+      ),
+    )(current),
+})
 class Description extends PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
