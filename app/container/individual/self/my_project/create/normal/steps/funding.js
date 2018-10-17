@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Text } from 'react-native';
+import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import InputItem from 'component/inputItem';
+import DatePicker from 'component/datePicker';
 
 import Wrapper from './index';
 import styles from './style';
@@ -50,12 +51,18 @@ class Funding extends PureComponent {
               titleStyle={styles.inputItem.title}
               contentWrapperStyle={{ alignSelf: 'flex-end' }}
               title="开始时间"
-              renderContent={() => (
-                <Text style={styles.inputItem.greyOutText}>请选择开始时间</Text>
+              placeholder="请选择开始时间"
+              renderContent={({ onChange, value }) => (
+                <DatePicker
+                  style={{ flex: 1 }}
+                  inputStyle={{ alignItems: 'flex-end' }}
+                  onChange={onChange}
+                  value={value}
+                  maxDate={null}
+                />
               )}
               showArrow
               inputProps={{ style: styles.inputItem.input }}
-              onPress={this.handleStartPress}
             />,
           )}
           {getFieldDecorator('end_at')(
@@ -64,12 +71,18 @@ class Funding extends PureComponent {
               titleStyle={styles.inputItem.title}
               contentWrapperStyle={{ alignSelf: 'flex-end' }}
               title="结束时间"
-              renderContent={() => (
-                <Text style={styles.inputItem.greyOutText}>请选择结束时间</Text>
+              placeholder="请选择开始时间"
+              renderContent={({ onChange, value }) => (
+                <DatePicker
+                  style={{ flex: 1 }}
+                  inputStyle={{ alignItems: 'flex-end' }}
+                  onChange={onChange}
+                  value={value}
+                  maxDate={null}
+                />
               )}
               showArrow
               inputProps={{ style: styles.inputItem.input }}
-              onPress={this.handleEndPress}
             />,
           )}
           {getFieldDecorator('soft_cap')(

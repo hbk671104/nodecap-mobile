@@ -29,6 +29,8 @@ export default {
     ],
     current: {
       members: [{}],
+      social_network: [{}],
+      roadmap: [{}],
     },
   },
   effects: {},
