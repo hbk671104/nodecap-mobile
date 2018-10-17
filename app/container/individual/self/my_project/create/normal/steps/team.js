@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
-import { createForm } from 'rc-form';
+import { createForm, createFormField } from 'rc-form';
+import R from 'ramda';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import Touchable from 'component/uikit/touchable';
@@ -11,8 +12,37 @@ import { launchImagePicker } from 'utils/imagepicker';
 import Wrapper from './index';
 import styles from './style';
 
-@connect()
-@createForm()
+@connect(({ project_create }) => ({
+  members: R.path(['current', 'members'])(project_create),
+}))
+@createForm({
+  onValuesChange: ({ dispatch }, changed, all) => {
+    dispatch({
+      type: 'project_create/saveCurrent',
+      payload: all,
+    });
+  },
+  mapPropsToFields: ({ members }) => {
+    return R.addIndex(R.reduce)(
+      (acc, v, i) => ({
+        ...acc,
+        [`members[${i}]`]: R.pipe(
+          R.keys,
+          R.reduce(
+            (accu, key) => ({
+              ...accu,
+              [key]: createFormField({
+                value: v[key],
+              }),
+            }),
+            {},
+          ),
+        )(v),
+      }),
+      {},
+    )(members);
+  },
+})
 class Team extends PureComponent {
   handleLogoPress = () => {
     launchImagePicker(response => {
@@ -22,13 +52,38 @@ class Team extends PureComponent {
     });
   };
 
-  handleAddMore = () => {};
+  handleAddMore = () => {
+    const { members } = this.props;
 
-  renderForm = () => {
+    LayoutAnimation.easeInEaseOut();
+    this.props.dispatch({
+      type: 'project_create/saveCurrent',
+      payload: {
+        members: R.concat(members, [{}]),
+      },
+    });
+  };
+
+  handleDelete = index => () => {
+    const { members } = this.props;
+
+    LayoutAnimation.easeInEaseOut();
+    this.props.dispatch({
+      type: 'project_create/saveCurrent',
+      payload: {
+        members: R.remove(index, 1)(members),
+      },
+    });
+  };
+
+  renderForm = (value, index) => {
     const { getFieldDecorator } = this.props.form;
     return (
-      <View>
-        {getFieldDecorator('name')(
+      <View key={`${index}`}>
+        <View style={styles.formTitle.container}>
+          <Text style={styles.formTitle.text}>成员 {index + 1}</Text>
+        </View>
+        {getFieldDecorator(`members[${index}].name`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -37,7 +92,7 @@ class Team extends PureComponent {
             inputProps={{ style: styles.inputItem.input }}
           />,
         )}
-        {getFieldDecorator('profile_pic')(
+        {getFieldDecorator(`members[${index}].profile_pic`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -54,7 +109,7 @@ class Team extends PureComponent {
             onPress={this.handleLogoPress}
           />,
         )}
-        {getFieldDecorator('title')(
+        {getFieldDecorator(`members[${index}].title`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -63,7 +118,7 @@ class Team extends PureComponent {
             inputProps={{ style: styles.inputItem.input }}
           />,
         )}
-        {getFieldDecorator('mobile')(
+        {getFieldDecorator(`members[${index}].mobile`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -72,7 +127,7 @@ class Team extends PureComponent {
             inputProps={{ style: styles.inputItem.input }}
           />,
         )}
-        {getFieldDecorator('wechat')(
+        {getFieldDecorator(`members[${index}].wechat`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -81,7 +136,7 @@ class Team extends PureComponent {
             inputProps={{ style: styles.inputItem.input }}
           />,
         )}
-        {getFieldDecorator('linkedin_url')(
+        {getFieldDecorator(`members[${index}].linkedin_url`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -90,7 +145,7 @@ class Team extends PureComponent {
             inputProps={{ style: styles.inputItem.input }}
           />,
         )}
-        {getFieldDecorator('introduction')(
+        {getFieldDecorator(`members[${index}].introduction`)(
           <InputItem
             vertical
             style={styles.inputItem.container}
@@ -99,15 +154,25 @@ class Team extends PureComponent {
             placeholder="请输入成员简介"
           />,
         )}
+        {index > 0 && (
+          <Touchable
+            borderless
+            style={styles.delete.container}
+            onPress={this.handleDelete(index)}
+          >
+            <Text style={styles.delete.text}>删除</Text>
+          </Touchable>
+        )}
       </View>
     );
   };
 
   render() {
+    const { members } = this.props;
     return (
       <Wrapper>
         <EnhancedScroll>
-          {this.renderForm()}
+          {R.addIndex(R.map)(this.renderForm)(members)}
           <Touchable
             borderless
             style={styles.addMore.container}

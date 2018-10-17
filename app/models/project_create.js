@@ -27,7 +27,9 @@ export default {
         title: '募资信息',
       },
     ],
-    current: {},
+    current: {
+      members: [{}],
+    },
   },
   effects: {},
   reducers: {

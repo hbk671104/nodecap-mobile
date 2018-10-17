@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {
     flex: 1,
@@ -7,6 +9,19 @@ export default {
     right: {
       color: 'white',
       fontSize: 14,
+    },
+  },
+  formTitle: {
+    container: {
+      paddingVertical: 15,
+      marginLeft: 12,
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: '#E9E9E9',
+    },
+    text: {
+      fontSize: 16,
+      color: 'rgba(0, 0, 0, 0.85)',
+      fontWeight: 'bold',
     },
   },
   inputItem: {
@@ -23,9 +38,19 @@ export default {
       color: 'rgba(0, 0, 0, 0.25)',
     },
   },
+  delete: {
+    container: {
+      margin: 12,
+      alignSelf: 'flex-end',
+    },
+    text: {
+      color: '#F55454',
+      fontSize: 13,
+    },
+  },
   addMore: {
     container: {
-      marginTop: 18,
+      marginVertical: 18,
       alignSelf: 'center',
     },
     text: {
