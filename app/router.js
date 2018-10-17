@@ -83,6 +83,7 @@ import Announcement from 'container/main/announcement/index';
 import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
+import WhitePaper from 'container/main/public_project/whitepaper';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -222,6 +223,7 @@ const MainStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WhitePaper,
     WebPage,
     Settings,
     PRService,
@@ -319,6 +321,7 @@ const IndividualStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WhitePaper,
     WebPage,
     PRService,
     PRServiceDetail,

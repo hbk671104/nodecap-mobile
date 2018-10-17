@@ -17,10 +17,11 @@ export default class Description extends PureComponent {
   handleDocPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'InstitutionReportDetail',
+        routeName: 'WhitePaper',
         params: {
           pdf_url: item.path_url,
           title: item.filename,
+          id: R.path(['portfolio', 'id'])(this.props),
         },
       }),
     );
