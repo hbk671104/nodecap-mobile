@@ -13,7 +13,13 @@ import styles from './style';
 @connect()
 @createForm()
 class BasicInfo extends PureComponent {
-  handleLogoPress = () => {};
+  handleLogoPress = () => {
+    launchImagePicker(response => {
+      if (!response.didCancel && !response.error) {
+        // this.handleAvatarUpdate(response);
+      }
+    });
+  };
 
   handleTagPress = () => {};
 
