@@ -147,7 +147,7 @@ class ShareCoin extends Component {
                 { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
               ]}
             >
-              {token_supply ? Accounting.formatNumber(token_supply) : '无'}
+              {token_supply || '无'}
             </Text>
           </Flex>
           <Flex style={styles.groupContent} align="center">
