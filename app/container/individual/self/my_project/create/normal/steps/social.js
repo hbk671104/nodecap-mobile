@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, LayoutAnimation } from 'react-native';
+import { View, Text, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
@@ -7,12 +7,23 @@ import R from 'ramda';
 import EnhancedScroll from 'component/enhancedScroll';
 import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
+import PickerSelect from 'component/picker';
+import { deepCheckEmptyOrNull, nullOrEmpty } from 'utils/utils';
 
 import Wrapper from './index';
 import styles from './style';
 
 @connect(({ project_create }) => ({
   social_network: R.path(['current', 'social_network'])(project_create),
+  options: [
+    'Telegram',
+    'Twitter',
+    'Facebook',
+    'Reddit',
+    'LinkedIn',
+    'Medium',
+    'YouTube',
+  ],
 }))
 @createForm({
   onValuesChange: ({ dispatch }, changed, all) => {
@@ -67,16 +78,38 @@ class Social extends PureComponent {
     });
   };
 
-  handleTypePress = () => {};
+  handleMultiFormValidation = (rule, value, callback) => {
+    const { social_network } = this.props;
+    const isNullOrEmpty = deepCheckEmptyOrNull(social_network);
+    if (isNullOrEmpty) {
+      callback();
+      return;
+    }
+
+    if (nullOrEmpty(value)) {
+      callback(null);
+      return;
+    }
+
+    callback();
+  };
 
   renderForm = (value, index) => {
-    const { getFieldDecorator } = this.props.form;
+    const { options } = this.props;
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <View key={`${index}`}>
         <View style={styles.formTitle.container}>
           <Text style={styles.formTitle.text}>社群 {index + 1}</Text>
         </View>
-        {getFieldDecorator(`social_network[${index}].name`)(
+        {getFieldDecorator(`social_network[${index}].name`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请选择社区类型',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -84,20 +117,37 @@ class Social extends PureComponent {
             title="类型"
             placeholder="请选择社区类型"
             showArrow
-            renderContent={() => (
-              <Text style={styles.inputItem.greyOutText}>请选择社区类型</Text>
+            renderContent={({ onChange, value: v }) => (
+              <PickerSelect
+                hideIcon
+                placeholder={{
+                  label: '请选择社区类型',
+                  value: null,
+                }}
+                data={options.map(o => ({ label: o, value: o }))}
+                onChange={onChange}
+                value={v}
+              />
             )}
             inputProps={{ style: styles.inputItem.input }}
-            onPress={this.handleTypePress}
+            error={getFieldError(`social_network[${index}].name`)}
           />,
         )}
-        {getFieldDecorator(`social_network[${index}].link_url`)(
+        {getFieldDecorator(`social_network[${index}].link_url`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请输入社群地址',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="地址"
             placeholder="请输入社群地址"
             inputProps={{ style: styles.inputItem.input }}
+            error={getFieldError(`social_network[${index}].link_url`)}
           />,
         )}
         {getFieldDecorator(`social_network[${index}].fans_count`)(

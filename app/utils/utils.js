@@ -265,3 +265,18 @@ export const handleSelection = (params, { key, value }) => {
   data = R.join(',')(data);
   return data;
 };
+
+export const nullOrEmpty = value => R.isNil(value) || R.isEmpty(value);
+
+export const deepCheckEmptyOrNull = array => {
+  return R.reduce((acc, value) => {
+    const isEmptyOrNull = R.pipe(
+      R.keys,
+      R.reduce((accm, v) => {
+        const item = value[v];
+        return accm && nullOrEmpty(item);
+      }, true),
+    )(value);
+    return nullOrEmpty(value) ? acc && true : acc && isEmptyOrNull;
+  }, true)(array);
+};

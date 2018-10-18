@@ -19,15 +19,19 @@ import styles from './style';
 }))
 @createForm({
   onValuesChange: ({ dispatch, current }, changed) => {
-    const purpose = R.pathOr('', ['purpose'])(changed);
+    const purpose = R.path(['purpose'])(changed);
     const store_purpose = R.pathOr([], ['purpose'])(current);
     dispatch({
       type: 'project_create/saveCurrent',
       payload: {
         ...changed,
-        purpose: R.contains(purpose)(store_purpose)
-          ? R.filter(p => p !== purpose)(store_purpose)
-          : [...store_purpose, purpose],
+        ...(R.isNil(purpose)
+          ? {}
+          : {
+              purpose: R.contains(purpose)(store_purpose)
+                ? R.filter(p => p !== purpose)(store_purpose)
+                : [...store_purpose, purpose],
+            }),
       },
     });
   },

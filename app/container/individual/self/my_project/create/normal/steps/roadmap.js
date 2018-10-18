@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, LayoutAnimation } from 'react-native';
+import { View, Text, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
@@ -7,6 +7,7 @@ import R from 'ramda';
 import EnhancedScroll from 'component/enhancedScroll';
 import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
+import { deepCheckEmptyOrNull, nullOrEmpty } from 'utils/utils';
 
 import Wrapper from './index';
 import styles from './style';
@@ -67,31 +68,61 @@ class RoadMap extends PureComponent {
     });
   };
 
-  handleTypePress = () => {};
+  handleMultiFormValidation = (rule, value, callback) => {
+    const { roadmap } = this.props;
+    const isNullOrEmpty = deepCheckEmptyOrNull(roadmap);
+    if (isNullOrEmpty) {
+      callback();
+      return;
+    }
+
+    if (nullOrEmpty(value)) {
+      callback(null);
+      return;
+    }
+
+    callback();
+  };
 
   renderForm = (value, index) => {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <View key={`${index}`}>
         <View style={styles.formTitle.container}>
           <Text style={styles.formTitle.text}>事件 {index + 1}</Text>
         </View>
-        {getFieldDecorator(`roadmap[${index}].date`)(
+        {getFieldDecorator(`roadmap[${index}].date`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请输入时间点',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="时间点"
             placeholder="请输入时间点"
             inputProps={{ style: styles.inputItem.input }}
+            error={getFieldError(`roadmap[${index}].date`)}
           />,
         )}
-        {getFieldDecorator(`roadmap[${index}].content`)(
+        {getFieldDecorator(`roadmap[${index}].content`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请输入项目规划',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="事件或规划"
             placeholder="请输入项目规划"
             inputProps={{ style: styles.inputItem.input }}
+            error={getFieldError(`roadmap[${index}].content`)}
           />,
         )}
         {index > 0 && (

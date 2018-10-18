@@ -8,6 +8,7 @@ import EnhancedScroll from 'component/enhancedScroll';
 import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
 import { launchImagePicker } from 'utils/imagepicker';
+import { deepCheckEmptyOrNull, nullOrEmpty } from 'utils/utils';
 
 import Wrapper from './index';
 import styles from './style';
@@ -76,20 +77,44 @@ class Team extends PureComponent {
     });
   };
 
+  handleMultiFormValidation = (rule, value, callback) => {
+    const { members } = this.props;
+    const isNullOrEmpty = deepCheckEmptyOrNull(members);
+    if (isNullOrEmpty) {
+      callback();
+      return;
+    }
+
+    if (nullOrEmpty(value)) {
+      callback(null);
+      return;
+    }
+
+    callback();
+  };
+
   renderForm = (value, index) => {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <View key={`${index}`}>
         <View style={styles.formTitle.container}>
           <Text style={styles.formTitle.text}>成员 {index + 1}</Text>
         </View>
-        {getFieldDecorator(`members[${index}].name`)(
+        {getFieldDecorator(`members[${index}].name`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请输入成员姓名',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="姓名"
             placeholder="请输入成员姓名"
             inputProps={{ style: styles.inputItem.input }}
+            error={getFieldError(`members[${index}].name`)}
           />,
         )}
         {getFieldDecorator(`members[${index}].profile_pic`)(
@@ -109,31 +134,55 @@ class Team extends PureComponent {
             onPress={this.handleLogoPress}
           />,
         )}
-        {getFieldDecorator(`members[${index}].title`)(
+        {getFieldDecorator(`members[${index}].title`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请输入成员职位',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="职位"
             placeholder="请输入成员职位"
             inputProps={{ style: styles.inputItem.input }}
+            error={getFieldError(`members[${index}].title`)}
           />,
         )}
-        {getFieldDecorator(`members[${index}].mobile`)(
+        {getFieldDecorator(`members[${index}].mobile`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请输入成员手机号',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="手机号"
             placeholder="请输入成员手机号"
             inputProps={{ style: styles.inputItem.input }}
+            error={getFieldError(`members[${index}].mobile`)}
           />,
         )}
-        {getFieldDecorator(`members[${index}].wechat`)(
+        {getFieldDecorator(`members[${index}].wechat`, {
+          rules: [
+            {
+              validator: this.handleMultiFormValidation,
+              message: '请输入成员微信',
+            },
+          ],
+        })(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="微信"
             placeholder="请输入成员微信"
             inputProps={{ style: styles.inputItem.input }}
+            error={getFieldError(`members[${index}].wechat`)}
           />,
         )}
         {getFieldDecorator(`members[${index}].linkedin_url`)(
