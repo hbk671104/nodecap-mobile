@@ -16,11 +16,23 @@ import Pairs from './page/pairs';
 import Chart from './chart';
 import Fund from './fund';
 import Share from './share';
-import Header, { headerHeight, fullHeaderHeight } from './header';
+import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
 import styles from './style';
 
+const calcHeaderHeight = ({ can_calculate, purpose }) => {
+  let baseHeight = headerHeight;
+  if (can_calculate) {
+    baseHeight += 80;
+  }
+
+  if (R.compose(R.not, R.isEmpty)(purpose)) {
+    baseHeight += 37;
+  }
+
+  return baseHeight;
+};
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -49,19 +61,20 @@ import styles from './style';
     const investment = R.pathOr({}, ['roi'])(portfolio);
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    const height = calcHeaderHeight({ can_calculate, purpose: portfolio.purpose });
     return {
       headerWrapperYRange: animateY.interpolate({
-        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
-        outputRange: [0, -(can_calculate ? fullHeaderHeight : headerHeight)],
+        inputRange: [0, height],
+        outputRange: [0, -(height)],
         extrapolate: 'clamp',
       }),
       headerOpacityRange: animateY.interpolate({
-        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+        inputRange: [0, height],
         outputRange: [1, 0],
         extrapolate: 'clamp',
       }),
       titleOpacityRange: animateY.interpolate({
-        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+        inputRange: [0, height],
         outputRange: [0, 1],
         extrapolate: 'clamp',
       }),
@@ -221,13 +234,15 @@ export default class PublicProjectDetail extends Component {
       headerOpacityRange,
       can_calculate,
     } = this.props;
+    const height = calcHeaderHeight({ can_calculate, purpose: portfolio.purpose });
+
     return (
       <Animated.View
         style={[
           styles.navBar.wrapper,
           {
             height:
-              realBarHeight + (can_calculate ? fullHeaderHeight : headerHeight),
+              realBarHeight + (height),
           },
           {
             transform: [
@@ -257,6 +272,7 @@ export default class PublicProjectDetail extends Component {
       titleOpacityRange,
       can_calculate,
     } = this.props;
+    const height = calcHeaderHeight({ can_calculate, purpose: portfolio.purpose });
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBarBackground()}
@@ -272,7 +288,7 @@ export default class PublicProjectDetail extends Component {
             this.scroll = ref;
           }}
           contentContainerStyle={{
-            paddingTop: can_calculate ? fullHeaderHeight : headerHeight,
+            paddingTop: height,
           }}
           scrollEventThrottle={1}
           stickyHeaderIndices={[2]}

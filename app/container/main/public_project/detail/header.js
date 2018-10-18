@@ -5,6 +5,7 @@ import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
 import Shimmer from 'component/shimmer';
+import Purpose from './purpose';
 
 const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
   const name = R.pathOr('--', ['name'])(data);
@@ -16,6 +17,14 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
   const category = R.pipe(
     R.pathOr([], ['tags']),
     R.take(2),
+  )(data);
+  const tags = R.pipe(
+    R.pathOr([], ['tags']),
+    R.map((i) => ({
+      ...i,
+      name: R.trim(i.name),
+    })),
+    R.reduce((last, current) => `${last ? `${last}/` : last}${current.name}`, '')
   )(data);
 
   return (
@@ -45,19 +54,9 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
                   styles.tag.wrapper,
                 ]}
               >
-                {R.pipe(
-                  R.filter(t => !R.isEmpty(R.trim(t))),
-                  R.map(k => (
-                    <View key={k} style={styles.tag.container}>
-                      <Text style={styles.tag.title}>
-                        {R.pipe(
-                          R.pathOr('', ['name']),
-                          R.trim,
-                        )(k)}
-                      </Text>
-                    </View>
-                  )),
-                )(category)}
+                <Text style={styles.tag.title}>
+                  {tags}
+                </Text>
               </View>
             </View>
           </View>
@@ -66,6 +65,9 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
           <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
         </Animated.View>
       </View>
+      {R.compose(R.not, R.isEmpty, R.pathOr([], ['purpose']))(data) && (
+        <Purpose portfolio={data} />
+      )}
     </Animated.View>
   );
 };

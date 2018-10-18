@@ -20,6 +20,14 @@ import Bottom from './bottom';
 import styles from './style';
 import StatusSelector from './statusSelector';
 
+const calcHeaderHeight = ({ can_calculate, purpose }) => {
+  let baseHeight = headerHeight;
+  if (R.compose(R.not, R.isEmpty)(purpose)) {
+    baseHeight += 37;
+  }
+  return baseHeight;
+};
+
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -42,19 +50,21 @@ import StatusSelector from './statusSelector';
   withState('showStatusSelector', 'toggleStatusSelector', false),
   withProps(({ animateY, portfolio }) => {
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    const height = calcHeaderHeight({ purpose: portfolio.purpose });
+
     return {
       headerWrapperYRange: animateY.interpolate({
-        inputRange: [0, headerHeight],
-        outputRange: [0, -headerHeight],
+        inputRange: [0, height],
+        outputRange: [0, -height],
         extrapolate: 'clamp',
       }),
       headerOpacityRange: animateY.interpolate({
-        inputRange: [0, headerHeight],
+        inputRange: [0, height],
         outputRange: [1, 0],
         extrapolate: 'clamp',
       }),
       titleOpacityRange: animateY.interpolate({
-        inputRange: [0, headerHeight],
+        inputRange: [0, height],
         outputRange: [0, 1],
         extrapolate: 'clamp',
       }),
@@ -160,11 +170,13 @@ export default class PublicProjectDetail extends Component {
 
   renderNavBarBackground = () => {
     const { portfolio, headerWrapperYRange, headerOpacityRange } = this.props;
+    const height = calcHeaderHeight({ purpose: portfolio.purpose });
+
     return (
       <Animated.View
         style={[
           styles.navBar.wrapper,
-          { height: realBarHeight + headerHeight },
+          { height: realBarHeight + height },
           {
             transform: [
               {
@@ -205,6 +217,8 @@ export default class PublicProjectDetail extends Component {
       titleOpacityRange,
       favor_loading,
     } = this.props;
+    const height = calcHeaderHeight({ purpose: portfolio.purpose });
+
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBarBackground()}
@@ -220,7 +234,7 @@ export default class PublicProjectDetail extends Component {
             this.scroll = ref;
           }}
           contentContainerStyle={{
-            paddingTop: headerHeight,
+            paddingTop: height,
           }}
           scrollEventThrottle={1}
           stickyHeaderIndices={[0]}
