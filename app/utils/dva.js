@@ -50,6 +50,8 @@ export default options => {
         'favored/fetch',
         'activity/fetch',
         'coinSets/fetchCoins',
+        'project_create/fetch',
+        'project_create/claimProject',
       ],
     }),
   );

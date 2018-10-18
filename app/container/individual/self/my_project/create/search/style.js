@@ -1,6 +1,20 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {
     flex: 1,
+  },
+  listContent: {
+    paddingVertical: 0,
+  },
+  listHeader: {
+    container: {
+      padding: 12,
+    },
+    text: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.45)',
+    },
   },
   navBar: {
     right: {
@@ -23,5 +37,10 @@ export default {
       fontSize: 14,
       color: '#333333',
     },
+  },
+  separator: {
+    backgroundColor: '#E9E9E9',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 72,
   },
 };

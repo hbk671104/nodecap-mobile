@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { createForm, createFormField } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
@@ -17,9 +17,14 @@ import styles from './style';
   page: '认领我的项目认证',
   name: 'App_MyProjectClaimOperation',
 })
-@connect(({ project_create }) => ({
-  owner: R.pathOr({}, ['owner'])(project_create),
-}))
+@connect(({ project_create, loading }, props) => {
+  const id = props.navigation.getParam('project_id');
+  return {
+    id,
+    owner: R.pathOr({}, ['owner'])(project_create),
+    submitting: loading.effects['project_create/claimProject'],
+  };
+})
 @createForm({
   onValuesChange: ({ dispatch }, changed) => {
     dispatch({
@@ -60,14 +65,28 @@ class ClaimProject extends Component {
   };
 
   handleSavePress = () => {
-    this.props.form.validateFields(err => {
+    this.props.form.validateFields((err, value) => {
       if (!err) {
-        this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: 'CreateMyProjectDone',
-          }),
-        );
+        this.handleSubmit(value);
       }
+    });
+  };
+
+  handleSubmit = value => {
+    const { id } = this.props;
+    this.props.dispatch({
+      type: id ? 'project_create/claimProject' : '///',
+      id,
+      payload: value,
+      callback: success => {
+        if (success) {
+          this.props.dispatch(
+            NavigationActions.navigate({
+              routeName: 'CreateMyProjectDone',
+            }),
+          );
+        }
+      },
     });
   };
 
@@ -79,11 +98,16 @@ class ClaimProject extends Component {
           back
           gradient
           title="认领项目"
-          renderRight={() => (
-            <Touchable borderless onPress={this.handleSavePress}>
-              <Text style={styles.navBar.right}>提交</Text>
-            </Touchable>
-          )}
+          renderRight={() => {
+            if (this.props.submitting) {
+              return <ActivityIndicator />;
+            }
+            return (
+              <Touchable borderless onPress={this.handleSavePress}>
+                <Text style={styles.navBar.right}>提交</Text>
+              </Touchable>
+            );
+          }}
         />
         <EnhancedScroll>
           {getFieldDecorator('owner_name', {

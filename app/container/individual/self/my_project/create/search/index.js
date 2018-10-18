@@ -8,6 +8,7 @@ import _ from 'lodash';
 
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
+import SimplifiedItem from 'component/public_project/simplified_item';
 import Touchable from 'component/uikit/touchable';
 import List from 'component/uikit/list';
 import styles from './style';
@@ -16,9 +17,8 @@ import styles from './style';
   page: '创建项目搜索',
   name: 'App_CreateMyProjectSearchOperation',
 })
-@connect(({ user, login, loading }) => ({
-  data: [],
-  //   loading: loading.effects['login/switch'],
+@connect(({ project_create }) => ({
+  data: R.pathOr(null, ['query', 'data'])(project_create),
 }))
 class CreateMyProjectSearch extends Component {
   constructor(props) {
@@ -33,23 +33,24 @@ class CreateMyProjectSearch extends Component {
     this.props.track('进入');
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({ type: 'project_create/clearQuery' });
+  }
+
   onSearchTextChange = text => {
     this.setState({ searchText: text }, this.searchDelayed);
   };
 
   requestData = () => {
-    // const { searchText } = this.state;
-    // if (R.isEmpty(searchText)) return;
-    // Toast.loading('loading...', 0);
-    // this.props.dispatch({
-    //   type: 'portfolio/searchMatchedCoin',
-    //   payload: {
-    //     q: searchText,
-    //   },
-    //   callback: () => {
-    //     Toast.hide();
-    //   },
-    // });
+    const { searchText } = this.state;
+    if (R.isEmpty(searchText)) return;
+
+    this.props.dispatch({
+      type: 'project_create/search',
+      payload: {
+        q: searchText,
+      },
+    });
   };
 
   handleSavePress = () => {
@@ -58,6 +59,17 @@ class CreateMyProjectSearch extends Component {
 
     const onSave = this.props.navigation.getParam('onProjectSave');
     onSave(searchText);
+  };
+
+  handleItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ClaimMyProject',
+        params: {
+          project_id: item.id,
+        },
+      }),
+    );
   };
 
   renderNavBar = () => (
@@ -73,7 +85,7 @@ class CreateMyProjectSearch extends Component {
     />
   );
 
-  renderHeader = () => (
+  renderSearchHeader = () => (
     <View style={styles.searchBar.container}>
       <SearchBar
         autoFocus
@@ -87,15 +99,34 @@ class CreateMyProjectSearch extends Component {
     </View>
   );
 
-  renderItem = ({ item }) => null;
+  renderItem = ({ item }) => (
+    <SimplifiedItem data={item} onPress={this.handleItemPress(item)} />
+  );
+
+  renderHeader = () => (
+    <View style={styles.listHeader.container}>
+      <Text style={styles.listHeader.text}>
+        如名称已存在，从下方列表选择；否则直接点击保存
+      </Text>
+    </View>
+  );
+
+  renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data, loading } = this.props;
+    const { data } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        {this.renderHeader()}
-        <List data={data} renderItem={this.renderItem} />
+        {this.renderSearchHeader()}
+        <List
+          disableRefresh
+          contentContainerStyle={styles.listContent}
+          data={data}
+          renderItem={this.renderItem}
+          renderHeader={this.renderHeader}
+          renderSeparator={this.renderSeparator}
+        />
       </View>
     );
   }

@@ -6,6 +6,7 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
+import SimplifiedItem from 'component/public_project/simplified_item';
 import List from 'component/uikit/list';
 import styles from './style';
 
@@ -13,19 +14,38 @@ import styles from './style';
   page: '我的项目',
   name: 'App_MyProjectOperation',
 })
-@connect(({ user, login, loading }) => ({
-  data: [],
-  //   loading: loading.effects['login/switch'],
+@connect(({ project_create, loading }) => ({
+  data: R.pathOr([], ['list', 'data'])(project_create),
+  pagination: R.pathOr(null, ['list', 'pagination'])(project_create),
+  loading: loading.effects['project_create/fetch'],
 }))
 class MyProject extends Component {
   componentDidMount() {
     this.props.track('进入');
   }
 
+  requestData = (page, size) => {
+    this.props.dispatch({
+      type: 'project_create/fetch',
+      payload: {
+        page,
+        'per-page': size,
+      },
+    });
+  };
+
   handleCreatePress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateMyProject',
+      }),
+    );
+  };
+
+  handleItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyProjectNormalWrapper',
       }),
     );
   };
@@ -43,14 +63,25 @@ class MyProject extends Component {
     />
   );
 
-  renderItem = ({ item }) => null;
+  renderItem = ({ item }) => (
+    <SimplifiedItem data={item} onPress={this.handleItemPress(item)} />
+  );
+
+  renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data, loading } = this.props;
+    const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        <List data={data} renderItem={this.renderItem} />
+        <List
+          loading={loading}
+          action={this.requestData}
+          pagination={pagination}
+          data={data}
+          renderItem={this.renderItem}
+          renderSeparator={this.renderSeparator}
+        />
       </View>
     );
   }
