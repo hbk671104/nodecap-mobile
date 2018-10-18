@@ -36,16 +36,20 @@ import styles from './style';
     )(current),
 })
 class Funding extends PureComponent {
-  handleStartPress = () => {};
-
-  handleEndPress = () => {};
-
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldValue, getFieldError } = this.props.form;
+    const end_at = getFieldValue('end_at');
     return (
       <Wrapper {...this.props}>
         <EnhancedScroll>
-          {getFieldDecorator('start_at')(
+          {getFieldDecorator('start_at', {
+            rules: [
+              {
+                required: true,
+                message: '请选择开始时间',
+              },
+            ],
+          })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -58,14 +62,22 @@ class Funding extends PureComponent {
                   inputStyle={{ alignItems: 'flex-end' }}
                   onChange={onChange}
                   value={value}
-                  maxDate={null}
+                  maxDate={end_at || null}
                 />
               )}
               showArrow
               inputProps={{ style: styles.inputItem.input }}
+              error={getFieldError('start_at')}
             />,
           )}
-          {getFieldDecorator('end_at')(
+          {getFieldDecorator('end_at', {
+            rules: [
+              {
+                required: true,
+                message: '请选择结束时间',
+              },
+            ],
+          })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -83,33 +95,58 @@ class Funding extends PureComponent {
               )}
               showArrow
               inputProps={{ style: styles.inputItem.input }}
+              error={getFieldError('end_at')}
             />,
           )}
-          {getFieldDecorator('soft_cap')(
+          {getFieldDecorator('soft_cap', {
+            rules: [
+              {
+                required: true,
+                message: '请输入募资软顶',
+              },
+            ],
+          })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="软顶"
               placeholder="请输入募资软顶"
               inputProps={{ style: styles.inputItem.input }}
+              error={getFieldError('soft_cap')}
             />,
           )}
-          {getFieldDecorator('hard_cap')(
+          {getFieldDecorator('hard_cap', {
+            rules: [
+              {
+                required: true,
+                message: '请输入募资硬顶',
+              },
+            ],
+          })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="硬顶"
               placeholder="请输入募资硬顶"
               inputProps={{ style: styles.inputItem.input }}
+              error={getFieldError('hard_cap')}
             />,
           )}
-          {getFieldDecorator('token_accepted')(
+          {getFieldDecorator('token_accepted', {
+            rules: [
+              {
+                required: true,
+                message: '请输入募集币种',
+              },
+            ],
+          })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="募集币种"
               placeholder="请输入募集币种"
               inputProps={{ style: styles.inputItem.input }}
+              error={getFieldError('token_accepted')}
             />,
           )}
         </EnhancedScroll>

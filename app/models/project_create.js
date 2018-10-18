@@ -34,6 +34,7 @@ export default {
       purpose: [],
       tags: [],
     },
+    owner: {},
   },
   effects: {},
   reducers: {
@@ -42,6 +43,15 @@ export default {
         ...state,
         current: {
           ...state.current,
+          ...payload,
+        },
+      };
+    },
+    saveOwner(state, { payload }) {
+      return {
+        ...state,
+        owner: {
+          ...state.owner,
           ...payload,
         },
       };

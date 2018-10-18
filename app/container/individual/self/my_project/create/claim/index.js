@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Image } from 'react-native';
-import { createForm } from 'rc-form';
+import { createForm, createFormField } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
@@ -17,11 +17,30 @@ import styles from './style';
   page: '认领我的项目认证',
   name: 'App_MyProjectClaimOperation',
 })
-@connect(({ user, login, loading }) => ({
-  data: [],
-  //   loading: loading.effects['login/switch'],
+@connect(({ project_create }) => ({
+  owner: R.pathOr({}, ['owner'])(project_create),
 }))
-@createForm()
+@createForm({
+  onValuesChange: ({ dispatch }, changed) => {
+    dispatch({
+      type: 'project_create/saveOwner',
+      payload: changed,
+    });
+  },
+  mapPropsToFields: ({ owner }) =>
+    R.pipe(
+      R.keys,
+      R.reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: createFormField({
+            value: owner[key],
+          }),
+        }),
+        {},
+      ),
+    )(owner),
+})
 class ClaimProject extends Component {
   componentDidMount() {
     this.props.track('进入');
@@ -31,20 +50,28 @@ class ClaimProject extends Component {
     launchImagePicker(response => {
       if (!response.didCancel && !response.error) {
         // this.handleAvatarUpdate(response);
+
+        const { uri } = response;
+        this.props.form.setFieldsValue({
+          owner_card: uri,
+        });
       }
     });
   };
 
   handleSavePress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'CreateMyProjectDone',
-      }),
-    );
+    this.props.form.validateFields(err => {
+      if (!err) {
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'CreateMyProjectDone',
+          }),
+        );
+      }
+    });
   };
 
   render() {
-    // const { data, loading, projectName } = this.props;
     const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <View style={styles.container}>
@@ -59,7 +86,7 @@ class ClaimProject extends Component {
           )}
         />
         <EnhancedScroll>
-          {getFieldDecorator('realname', {
+          {getFieldDecorator('owner_name', {
             rules: [{ required: true, message: '请输入姓名' }],
           })(
             <InputItem
@@ -68,10 +95,10 @@ class ClaimProject extends Component {
               title="姓名"
               placeholder="请输入姓名"
               inputProps={{ style: styles.inputItem.input }}
-              error={getFieldError('realname')}
+              error={getFieldError('owner_name')}
             />,
           )}
-          {getFieldDecorator('position', {
+          {getFieldDecorator('owner_title', {
             rules: [{ required: true, message: '请输入公司职位' }],
           })(
             <InputItem
@@ -80,10 +107,10 @@ class ClaimProject extends Component {
               title="职位"
               placeholder="请输入公司职位"
               inputProps={{ style: styles.inputItem.input }}
-              error={getFieldError('position')}
+              error={getFieldError('owner_title')}
             />,
           )}
-          {getFieldDecorator('mobile', {
+          {getFieldDecorator('owner_mobile', {
             rules: [{ required: true, message: '请输入手机号码' }],
           })(
             <InputItem
@@ -92,10 +119,10 @@ class ClaimProject extends Component {
               title="手机"
               placeholder="请输入手机号码"
               inputProps={{ style: styles.inputItem.input }}
-              error={getFieldError('mobile')}
+              error={getFieldError('owner_mobile')}
             />,
           )}
-          {getFieldDecorator('wechat', {
+          {getFieldDecorator('owner_wechat', {
             rules: [{ required: true, message: '请输入微信号' }],
           })(
             <InputItem
@@ -104,11 +131,11 @@ class ClaimProject extends Component {
               title="微信"
               placeholder="请输入微信号"
               inputProps={{ style: styles.inputItem.input }}
-              error={getFieldError('wechat')}
+              error={getFieldError('owner_wechat')}
             />,
           )}
-          {getFieldDecorator('business_card', {
-            rules: [{ message: '请上传名片' }],
+          {getFieldDecorator('owner_card', {
+            rules: [{ required: true, message: '请上传名片' }],
           })(
             <InputItem
               style={styles.inputItem.container}
@@ -124,7 +151,7 @@ class ClaimProject extends Component {
                 />
               )}
               onPress={this.handleBusinessCardPress}
-              error={getFieldError('business_card')}
+              error={getFieldError('owner_card')}
             />,
           )}
           <View style={styles.notice.container}>
