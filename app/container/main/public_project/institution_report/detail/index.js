@@ -19,7 +19,12 @@ import styles from './style';
 })
 @compose(withState('navBarHidden', 'setNavBarHidden', false))
 export default class InstitutionReportDetail extends Component {
+  state={
+    isWXAppSupportApi: false,
+  }
   componentDidMount() {
+    this.checkWechatAval();
+
     Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this.orientationDidChange);
   }
@@ -60,6 +65,12 @@ export default class InstitutionReportDetail extends Component {
 
   orientationDidChange = orientation => {
     this.props.setNavBarHidden(orientation === 'LANDSCAPE');
+  };
+
+  checkWechatAval = async () => {
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+    });
   };
 
   render() {

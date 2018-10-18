@@ -29,7 +29,7 @@ export default class Description extends PureComponent {
         routeName: 'WhitePaper',
         params: {
           pdf_url: item.path_url,
-          title: item.filename,
+          title: R.path(['portfolio', 'name'])(this.props),
           id: R.path(['portfolio', 'id'])(this.props),
         },
       }),

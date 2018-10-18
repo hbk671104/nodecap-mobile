@@ -560,6 +560,13 @@
 			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
 			remoteInfo = RCTCameraRoll;
 		};
+		DD9B8EF52178DC4E0039BA2D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B69AD6F7A5C647778C158DD7 /* RNVectorIcons.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A39873CE1EA65EE60051E01A;
+			remoteInfo = "RNVectorIcons-tvOS";
+		};
 		DDBADDE620BD38A900509EB9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D029AFE602C144FA8147756F /* ReactNativeConfig.xcodeproj */;
@@ -1072,6 +1079,7 @@
 			isa = PBXGroup;
 			children = (
 				408E3A1F20BCF254009E0527 /* libRNVectorIcons.a */,
+				DD9B8EF62178DC4E0039BA2D /* libRNVectorIcons-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2018,6 +2026,13 @@
 			fileType = archive.ar;
 			path = libRCTCameraRoll.a;
 			remoteRef = DD41DFFD20E5116C007696F1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		DD9B8EF62178DC4E0039BA2D /* libRNVectorIcons-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libRNVectorIcons-tvOS.a";
+			remoteRef = DD9B8EF52178DC4E0039BA2D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		DDBADDE720BD38A900509EB9 /* libReactNativeConfig.a */ = {
