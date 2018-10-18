@@ -38,6 +38,7 @@ import styles from './style';
 class Funding extends PureComponent {
   render() {
     const { getFieldDecorator, getFieldValue, getFieldError } = this.props.form;
+    const start_at = getFieldValue('start_at');
     const end_at = getFieldValue('end_at');
     return (
       <Wrapper {...this.props}>
@@ -90,7 +91,7 @@ class Funding extends PureComponent {
                   inputStyle={{ alignItems: 'flex-end' }}
                   onChange={onChange}
                   value={value}
-                  maxDate={null}
+                  minDate={start_at || null}
                 />
               )}
               showArrow
