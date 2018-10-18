@@ -430,6 +430,7 @@ export function createUser(payload) {
  * @returns {AxiosPromise<any>}
  */
 export function updateUserProfile(payload) {
+  console.log('payload', payload);
   return request.put('/user', payload);
 }
 
