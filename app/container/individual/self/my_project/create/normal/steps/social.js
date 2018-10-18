@@ -125,7 +125,7 @@ class Social extends PureComponent {
   render() {
     const { social_network } = this.props;
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         <EnhancedScroll>
           {R.addIndex(R.map)(this.renderForm)(social_network)}
           <Touchable

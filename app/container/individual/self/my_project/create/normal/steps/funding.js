@@ -43,7 +43,7 @@ class Funding extends PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         <EnhancedScroll>
           {getFieldDecorator('start_at')(
             <InputItem

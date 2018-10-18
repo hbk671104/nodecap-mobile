@@ -170,7 +170,7 @@ class Team extends PureComponent {
   render() {
     const { members } = this.props;
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         <EnhancedScroll>
           {R.addIndex(R.map)(this.renderForm)(members)}
           <Touchable

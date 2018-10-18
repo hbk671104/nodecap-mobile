@@ -67,7 +67,7 @@ class BasicInfo extends PureComponent {
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         <EnhancedScroll>
           {getFieldDecorator('symbol', {
             rules: [{ required: true, message: '请输入项目 Token 简称' }],

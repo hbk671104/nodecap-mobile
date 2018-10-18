@@ -36,12 +36,16 @@ class CreateProjectNormalWrapper extends Component {
   handleSubmit = () => {};
 
   handleNextPress = () => {
-    const { nextPage } = this.props;
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: nextPage,
-      }),
-    );
+    this.props.form.validateFields(err => {
+      if (!err) {
+        const { nextPage } = this.props;
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: nextPage,
+          }),
+        );
+      }
+    });
   };
 
   render() {

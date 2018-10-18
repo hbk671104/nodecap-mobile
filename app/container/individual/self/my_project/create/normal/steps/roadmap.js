@@ -110,7 +110,7 @@ class RoadMap extends PureComponent {
   render() {
     const { roadmap } = this.props;
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         <EnhancedScroll>
           {R.addIndex(R.map)(this.renderForm)(roadmap)}
           <Touchable

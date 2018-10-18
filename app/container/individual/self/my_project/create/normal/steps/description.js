@@ -34,7 +34,7 @@ class Description extends PureComponent {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
-      <Wrapper>
+      <Wrapper {...this.props}>
         {getFieldDecorator('description')(
           <Input
             autoFocus
