@@ -7,7 +7,7 @@ import {
   Linking,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Flex, Modal } from 'antd-mobile';
+import { Flex, Modal, Grid } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
@@ -162,8 +162,14 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(social_network)) && (
           <View>
             <Text style={[styles.title, styles.site]}>媒体信息</Text>
-            <Flex wrap="wrap">
-              {R.addIndex(R.map)((m, i) => (
+            <Grid
+              data={social_network}
+              columnNum={3}
+              hasLine={false}
+              itemStyle={{
+                height: 74,
+              }}
+              renderItem={(m, i) => (
                 <SocialNetworkItem
                   style={{ paddingHorizontal: 0 }}
                   key={`${i}`}
@@ -181,8 +187,8 @@ export default class Description extends PureComponent {
                     );
                   }}
                 />
-              ))(social_network)}
-            </Flex>
+              )}
+            />
           </View>
         )}
         <Financing {...this.props} />
