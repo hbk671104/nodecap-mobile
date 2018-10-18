@@ -8,6 +8,24 @@ import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import Input from 'component/uikit/textInput';
 
+export const InputError = ({ error }) => (
+  <View style={styles.error.container}>
+    {error.map(info => (
+      <Text key={info} style={styles.error.text}>
+        {info}
+      </Text>
+    ))}
+  </View>
+);
+
+InputError.propTypes = {
+  error: PropTypes.array,
+};
+
+InputError.defaultProps = {
+  error: [],
+};
+
 class InputItem extends PureComponent {
   static propTypes = {
     style: ViewPropTypes.style,
@@ -31,13 +49,6 @@ class InputItem extends PureComponent {
     inputProps: {},
     error: [],
   };
-
-  renderError = error =>
-    error.map(info => (
-      <Text key={info} style={styles.error.text}>
-        {info}
-      </Text>
-    ));
 
   render() {
     const {
@@ -103,11 +114,7 @@ class InputItem extends PureComponent {
               )}
             </View>
           </View>
-          {!R.isEmpty(error) && (
-            <View style={styles.error.container}>
-              {this.renderError(error)}
-            </View>
-          )}
+          {!R.isEmpty(error) && <InputError error={error} />}
         </View>
       </Touchable>
     );

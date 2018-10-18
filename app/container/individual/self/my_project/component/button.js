@@ -3,10 +3,14 @@ import { View, Text } from 'react-native';
 
 import Touchable from 'component/uikit/touchable';
 
-const button = ({ title, renderTop, onPress }) => (
+const button = ({ title, renderTop, onPress, disabled }) => (
   <View>
     {!!renderTop && renderTop()}
-    <Touchable style={styles.container} onPress={onPress}>
+    <Touchable
+      disabled={disabled}
+      style={[styles.container, disabled && { opacity: 0.6 }]}
+      onPress={onPress}
+    >
       <Text style={styles.title}>{title}</Text>
     </Touchable>
   </View>

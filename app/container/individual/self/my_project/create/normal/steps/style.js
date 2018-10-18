@@ -62,4 +62,9 @@ export default {
       fontWeight: 'bold',
     },
   },
+  error: {
+    container: {
+      padding: 12,
+    },
+  },
 };

@@ -70,7 +70,11 @@ class CreateProject extends Component {
           />
           <View style={styles.divider} />
         </ScrollView>
-        <Button title="下一步" onPress={this.handleNextPress} />
+        <Button
+          disabled={R.isEmpty(projectName)}
+          title="下一步"
+          onPress={this.handleNextPress}
+        />
       </View>
     );
   }

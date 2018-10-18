@@ -6,7 +6,7 @@ import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
 
 import EnhancedScroll from 'component/enhancedScroll';
-import InputItem from 'component/inputItem';
+import InputItem, { InputError } from 'component/inputItem';
 import { launchImagePicker } from 'utils/imagepicker';
 
 import Wrapper from './index';
@@ -49,7 +49,12 @@ class BasicInfo extends PureComponent {
   handleLogoPress = () => {
     launchImagePicker(response => {
       if (!response.didCancel && !response.error) {
-        // this.handleAvatarUpdate(response);
+        // update
+
+        const { uri } = response;
+        this.props.form.setFieldsValue({
+          icon: uri,
+        });
       }
     });
   };
@@ -62,7 +67,7 @@ class BasicInfo extends PureComponent {
     );
   };
 
-  handleWhitepaperPress = () => {};
+  // handleWhitepaperPress = () => {};
 
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
@@ -70,7 +75,12 @@ class BasicInfo extends PureComponent {
       <Wrapper {...this.props}>
         <EnhancedScroll>
           {getFieldDecorator('symbol', {
-            rules: [{ required: true, message: '请输入项目 Token 简称' }],
+            rules: [
+              {
+                required: true,
+                message: '请输入项目 Token 简称',
+              },
+            ],
           })(
             <InputItem
               style={styles.inputItem.container}
@@ -81,7 +91,9 @@ class BasicInfo extends PureComponent {
               error={getFieldError('symbol')}
             />,
           )}
-          {getFieldDecorator('icon')(
+          {getFieldDecorator('icon', {
+            rules: [{ required: true, message: '请上传 Logo' }],
+          })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -96,9 +108,17 @@ class BasicInfo extends PureComponent {
               )}
               inputProps={{ style: styles.inputItem.input }}
               onPress={this.handleLogoPress}
+              error={getFieldError('icon')}
             />,
           )}
-          {getFieldDecorator('tags')(
+          {getFieldDecorator('tags', {
+            rules: [
+              {
+                required: true,
+                message: '请选择标签/领域',
+              },
+            ],
+          })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -129,9 +149,10 @@ class BasicInfo extends PureComponent {
               }}
               inputProps={{ style: styles.inputItem.input }}
               onPress={this.handleTagPress}
+              error={getFieldError('tags')}
             />,
           )}
-          {getFieldDecorator('white_paper')(
+          {/* {getFieldDecorator('white_paper')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -145,7 +166,7 @@ class BasicInfo extends PureComponent {
               inputProps={{ style: styles.inputItem.input }}
               onPress={this.handleWhitepaperPress}
             />,
-          )}
+          )} */}
           {getFieldDecorator('homepages')(
             <InputItem
               style={styles.inputItem.container}
@@ -155,9 +176,28 @@ class BasicInfo extends PureComponent {
               inputProps={{ style: styles.inputItem.input }}
             />,
           )}
-          {getFieldDecorator('purpose')(
-            <Demand title="当前需求" subtitle="请选择当前项目所需的服务" />,
+          {getFieldDecorator('country_origin')(
+            <InputItem
+              style={styles.inputItem.container}
+              titleStyle={styles.inputItem.title}
+              title="国别"
+              placeholder="请输入国别"
+              inputProps={{ style: styles.inputItem.input }}
+            />,
           )}
+          <View>
+            {getFieldDecorator('purpose', {
+              rules: [
+                {
+                  required: true,
+                  message: '请选择当前需求',
+                },
+              ],
+            })(<Demand title="当前需求" subtitle="请选择当前项目所需的服务" />)}
+            <View style={styles.error.container}>
+              <InputError error={getFieldError('purpose')} />
+            </View>
+          </View>
         </EnhancedScroll>
       </Wrapper>
     );

@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
 
 import Input from 'component/uikit/textInput';
+import { InputError } from 'component/inputItem';
 import Wrapper from './index';
+import styles from './style';
 
 @connect(({ project_create }) => ({
   current: R.pathOr({}, ['current'])(project_create),
@@ -32,10 +35,17 @@ import Wrapper from './index';
 })
 class Description extends PureComponent {
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <Wrapper {...this.props}>
-        {getFieldDecorator('description')(
+        {getFieldDecorator('description', {
+          rules: [
+            {
+              required: true,
+              message: '请输入项目简介',
+            },
+          ],
+        })(
           <Input
             autoFocus
             style={{ margin: 12, lineHeight: 20 }}
@@ -44,6 +54,9 @@ class Description extends PureComponent {
             placeholderTextColor="#9B9B9B"
           />,
         )}
+        <View style={styles.error.container}>
+          <InputError error={getFieldError('description')} />
+        </View>
       </Wrapper>
     );
   }
