@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Toast } from 'antd-mobile';
-
+import R from 'ramda';
 import NavBar from 'component/navBar';
 import Avatar from 'component/uikit/avatar';
 import ListItem from 'component/listItem';
@@ -91,6 +91,28 @@ class MyProfile extends Component {
               key: 'mobile',
               title: '手机',
               default: user.mobile,
+            })}
+          />
+          <ListItem
+            title="公司"
+            content={R.path(['profile', 'company'])(user)}
+            titleStyle={styles.listItem.title}
+            contentStyle={styles.listItem.content}
+            onPress={this.handleItemPress({
+              key: 'company',
+              title: '公司',
+              default: R.path(['profile', 'company'])(user),
+            })}
+          />
+          <ListItem
+            title="职位"
+            content={R.path(['profile', 'title'])(user)}
+            titleStyle={styles.listItem.title}
+            contentStyle={styles.listItem.content}
+            onPress={this.handleItemPress({
+              key: 'title',
+              title: '职位',
+              default: R.path(['profile', 'title'])(user),
             })}
           />
           <ListItem
