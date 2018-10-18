@@ -31,16 +31,18 @@ export default {
       members: [{}],
       social_network: [{}],
       roadmap: [{}],
+      purpose: [],
+      tags: [],
     },
   },
   effects: {},
   reducers: {
-    saveCurrent(state, action) {
+    saveCurrent(state, { payload }) {
       return {
         ...state,
         current: {
           ...state.current,
-          ...action.payload,
+          ...payload,
         },
       };
     },

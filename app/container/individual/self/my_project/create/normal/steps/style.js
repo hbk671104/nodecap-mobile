@@ -37,6 +37,9 @@ export default {
     greyOutText: {
       color: 'rgba(0, 0, 0, 0.25)',
     },
+    valueText: {
+      color: 'rgba(0, 0, 0, 0.85)',
+    },
   },
   delete: {
     container: {

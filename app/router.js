@@ -108,6 +108,7 @@ import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/
 import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
+import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -355,6 +356,7 @@ const IndividualStack = createStackNavigator(
     },
     ClaimMyProject,
     CreateMyProjectDone,
+    CreateMyProjectTagSelect,
   },
   {
     headerMode: 'none',
