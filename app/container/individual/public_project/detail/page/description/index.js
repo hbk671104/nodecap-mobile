@@ -67,6 +67,7 @@ export default class Description extends PureComponent {
       'portfolio',
       'industry_investments',
     ])(this.props);
+    const country_origin = R.pathOr('', ['portfolio', 'basic', 'country_origin'])(this.props);
 
     return (
       <View style={styles.container}>
@@ -100,6 +101,16 @@ export default class Description extends PureComponent {
               onPress={() => this.handleUrlPress(siteUrl)}
             >
               {siteUrl}
+            </Text>
+          </View>
+        )}
+        {R.not(R.isEmpty(country_origin)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>国别</Text>
+            <Text
+              style={styles.desc}
+            >
+              {country_origin}
             </Text>
           </View>
         )}

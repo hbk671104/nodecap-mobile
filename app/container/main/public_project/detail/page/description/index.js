@@ -49,6 +49,7 @@ export default class Description extends PureComponent {
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
     const social_network = R.pathOr([], ['portfolio', 'social_networks'])(this.props);
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
+    const country_origin = R.pathOr('', ['portfolio', 'basic', 'country_origin'])(this.props);
     const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
     const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
     const industry_investments = R.pathOr('', [
@@ -88,6 +89,16 @@ export default class Description extends PureComponent {
               onPress={() => this.handleUrlPress(siteUrl)}
             >
               {siteUrl}
+            </Text>
+          </View>
+        )}
+        {R.not(R.isEmpty(country_origin)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>国别</Text>
+            <Text
+              style={styles.desc}
+            >
+              {country_origin}
             </Text>
           </View>
         )}
