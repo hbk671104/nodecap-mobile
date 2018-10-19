@@ -121,10 +121,10 @@ export default {
           owner: [owner],
         });
 
-        if (current.coin_id) {
+        if (current.id) {
           yield put.resolve({
             type: 'editProject',
-            id: current.coin_id,
+            id: current.id,
             payload: sanitized_data,
             callback,
           });

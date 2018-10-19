@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, TextInput, Text, TouchableWithoutFeedback, Platform } from 'react-native';
+import {
+  View,
+  TextInput,
+  Text,
+  TouchableWithoutFeedback,
+  Platform,
+} from 'react-native';
 import { Flex } from 'antd-mobile';
 import NavBar from 'component/navBar';
 import { withState } from 'recompose';
@@ -16,16 +22,18 @@ class CommentCoin extends Component {
     if (this.props.comment) {
       submitComment(coin.id, this.props.comment);
     }
-  }
+  };
 
   clearInput = () => {
     this.props.setTextCount(0);
     this.props.setComment('');
     if (this.textInput) {
       if (Platform.OS === 'ios') this.textInput.setNativeProps({ text: ' ' });
-      setTimeout(() => { this.textInput.setNativeProps({ text: '' }); }, 5);
+      setTimeout(() => {
+        this.textInput.setNativeProps({ text: '' });
+      }, 5);
     }
-  }
+  };
   render() {
     const coin = this.props.navigation.getParam('coin');
     return (
@@ -42,7 +50,7 @@ class CommentCoin extends Component {
         />
         <TextInput
           multiline
-          ref={(ref) => {
+          ref={ref => {
             this.textInput = ref;
           }}
           style={{
@@ -51,8 +59,9 @@ class CommentCoin extends Component {
             paddingHorizontal: 12,
             marginVertical: 20,
           }}
+          underlineColorAndroid="transparent"
           maxLength={200}
-          onChangeText={(text) => {
+          onChangeText={text => {
             if (text) {
               this.props.setTextCount(text.length);
             }
@@ -69,11 +78,14 @@ class CommentCoin extends Component {
             paddingBottom: 10,
           }}
         >
-          <Text style={style.bottomText}>{this.props.textCount}/200</Text>
-          {this.props.textCount && (
-          <TouchableWithoutFeedback onPress={this.clearInput}>
-            <Text style={style.bottomText}>清除</Text>
-          </TouchableWithoutFeedback>
+          <Text style={style.bottomText}>
+            {this.props.textCount}
+            /200
+          </Text>
+          {!!this.props.textCount && (
+            <TouchableWithoutFeedback onPress={this.clearInput}>
+              <Text style={style.bottomText}>清除</Text>
+            </TouchableWithoutFeedback>
           )}
         </Flex>
         <ShareModal

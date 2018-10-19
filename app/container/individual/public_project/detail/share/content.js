@@ -1,16 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Dimensions,
-  View,
-  Image,
-  Text,
-} from 'react-native';
+import { Dimensions, View, Image, Text } from 'react-native';
 import { Flex } from 'antd-mobile';
 import R from 'ramda';
 import moment from 'moment';
 import Accounting from 'accounting';
 
-import MemberItem from 'component/project/description/member';
+import MemberItem from './member';
 import InstitutionItem from '../page/description/institutionItem';
 import SocialNetworkItem from '../page/description/socialNetworkItem';
 import Roadmap from '../page/description/roadmap';
@@ -48,7 +43,10 @@ class ShareCoinContent extends Component {
       <View style={{ marginTop: 10 }}>
         <View style={styles.group}>
           {renderTitle('简介')}
-          <Text numberOfLines={12} style={[styles.groupContent, styles.groupContentText]}>
+          <Text
+            numberOfLines={12}
+            style={[styles.groupContent, styles.groupContentText]}
+          >
             {coin.description}
           </Text>
         </View>
@@ -60,9 +58,7 @@ class ShareCoinContent extends Component {
         </View>
         <View style={styles.group}>
           {renderTitle('评级信息')}
-          {(risk_score || invest_score) && (
-            <Rating {...this.props} />
-          )}
+          {(risk_score || invest_score) && <Rating {...this.props} />}
           <Text style={[styles.groupContentTip]}>
             - 长按底部二维码，查看更多募资信息
           </Text>
@@ -128,7 +124,9 @@ class ShareCoinContent extends Component {
         <View style={styles.group}>
           {renderTitle('团队成员')}
           <View>
-            {R.map(m => <MemberItem key={m.id} data={m} style={{ marginLeft: 10 }} />)(members)}
+            {R.map(m => (
+              <MemberItem key={m.id} data={m} style={{ marginLeft: 10 }} />
+            ))(members)}
           </View>
           <Text style={[styles.groupContentTip]}>
             - 长按底部二维码，联系团队成员
@@ -203,6 +201,5 @@ class ShareCoinContent extends Component {
     );
   }
 }
-
 
 export default ShareCoinContent;
