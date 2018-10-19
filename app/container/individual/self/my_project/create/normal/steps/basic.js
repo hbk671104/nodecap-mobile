@@ -53,6 +53,10 @@ import styles from './style';
     )(current),
 })
 class BasicInfo extends PureComponent {
+  state = {
+    barStyle: 'light-content',
+  };
+
   handleUpload = async response => {
     Toast.loading('上传中...', 0);
     const { url } = await uploadImage({
@@ -67,10 +71,14 @@ class BasicInfo extends PureComponent {
   };
 
   handleLogoPress = () => {
-    launchImagePicker(response => {
-      if (!response.didCancel && !response.error) {
-        this.handleUpload(response);
-      }
+    this.setState({ barStyle: 'dark-content' }, () => {
+      launchImagePicker(response => {
+        this.setState({ barStyle: 'light-content' }, () => {
+          if (!response.didCancel && !response.error) {
+            this.handleUpload(response);
+          }
+        });
+      });
     });
   };
 
@@ -87,7 +95,7 @@ class BasicInfo extends PureComponent {
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
     return (
-      <Wrapper {...this.props}>
+      <Wrapper {...this.props} barStyle={this.state.barStyle}>
         <EnhancedScroll>
           {getFieldDecorator('symbol', {
             rules: [

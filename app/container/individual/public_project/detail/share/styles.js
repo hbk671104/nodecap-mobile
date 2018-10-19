@@ -17,7 +17,7 @@ export default {
   },
   wave: {
     width: window.width,
-    resizeMode: 'contain',
+    resizeMode: 'cover',
     position: 'absolute',
     zIndex: 10,
   },

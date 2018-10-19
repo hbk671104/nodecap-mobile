@@ -30,6 +30,16 @@ const handleOpen = extras => {
         }),
       );
       break;
+    case 'coin_owner':
+      global.track('App_NotificationPushOpen', {
+        trackName: '审核推送点击',
+      });
+      store.dispatch(
+        NavigationActions.navigate({
+          routeName: 'MyProject',
+        }),
+      );
+      break;
     default:
       break;
   }
