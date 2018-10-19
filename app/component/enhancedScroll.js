@@ -5,6 +5,7 @@ const enhancedScroll = props => (
   <KeyboardAwareScrollView
     {...props}
     enableOnAndroid
+    keyboardDismissMode="interactive"
     keyboardShouldPersistTaps="handled"
   >
     {props.children}

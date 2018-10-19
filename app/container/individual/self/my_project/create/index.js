@@ -19,9 +19,12 @@ import styles from './style';
 }))
 class CreateProject extends Component {
   componentWillMount() {
-    this.props.dispatch({
-      type: 'project_create/resetCurrent',
-    });
+    const { current } = this.props;
+    if (R.has('id')(current)) {
+      this.props.dispatch({
+        type: 'project_create/resetCurrent',
+      });
+    }
   }
 
   componentDidMount() {

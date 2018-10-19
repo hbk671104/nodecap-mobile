@@ -44,6 +44,15 @@ class MyProject extends Component {
   };
 
   handleItemPress = item => () => {
+    if (R.path(['owner_status'])(item) !== '1') {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'CreateMyProjectDone',
+        }),
+      );
+      return;
+    }
+
     Toast.loading('加载中...', 0);
     this.props.dispatch({
       type: 'project_create/get',

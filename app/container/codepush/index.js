@@ -36,9 +36,7 @@ class CodePushPage extends Component {
         <View style={styles.wrapper}>
           <View style={styles.top.container}>
             <Image source={require('asset/big_logo.png')} />
-            <Text style={styles.top.intro}>
-              专业的 Token Fund 资产项目管理终端
-            </Text>
+            <Text style={styles.top.intro}>找项目 上 Hotnode</Text>
           </View>
           <View style={styles.bar.container}>
             <Bar color="#108EE9" width={255} progress={this.props.codepush} />
