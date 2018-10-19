@@ -44,8 +44,6 @@ class CreateProjectNormalWrapper extends Component {
     this.props.track('进入');
   }
 
-  handleSubmit = () => {};
-
   handleNextPress = () => {
     const { isLastPage, isEditing } = this.props;
     this.props.form.validateFields(err => {
@@ -75,10 +73,18 @@ class CreateProjectNormalWrapper extends Component {
   };
 
   render() {
-    const { children, title, isLastPage, isEditing, loading } = this.props;
+    const {
+      children,
+      title,
+      isLastPage,
+      isEditing,
+      loading,
+      barStyle,
+    } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
+          barStyle={barStyle}
           back
           gradient
           title={title}

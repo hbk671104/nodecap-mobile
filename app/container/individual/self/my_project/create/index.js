@@ -6,6 +6,7 @@ import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import Item from 'component/self/item';
+import SafeAreaView from 'component/uikit/safeArea';
 
 import Button from '../component/button';
 import styles from './style';
@@ -16,6 +17,7 @@ import styles from './style';
 })
 @connect(({ project_create }) => ({
   current: R.pathOr({}, ['current'])(project_create),
+  query: R.pathOr([], ['query', 'data'])(project_create),
 }))
 class CreateProject extends Component {
   componentWillMount() {
@@ -40,9 +42,12 @@ class CreateProject extends Component {
   };
 
   handleNextPress = () => {
+    const { query } = this.props;
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'CreateMyProjectNormal',
+        routeName: R.isEmpty(query)
+          ? 'CreateMyProjectNormalWrapper'
+          : 'CreateMyProjectNormal',
       }),
     );
   };
@@ -51,7 +56,7 @@ class CreateProject extends Component {
     const { current } = this.props;
     const name = R.pathOr('', ['name'])(current);
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <NavBar back gradient title="创建项目" />
         <ScrollView>
           <Item
@@ -73,7 +78,7 @@ class CreateProject extends Component {
           title="下一步"
           onPress={this.handleNextPress}
         />
-      </View>
+      </SafeAreaView>
     );
   }
 }

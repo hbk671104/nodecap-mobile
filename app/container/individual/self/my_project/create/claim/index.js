@@ -51,6 +51,10 @@ import styles from './style';
     )(owner),
 })
 class ClaimProject extends Component {
+  state = {
+    barStyle: 'light-content',
+  };
+
   componentDidMount() {
     this.props.track('进入');
   }
@@ -69,10 +73,14 @@ class ClaimProject extends Component {
   };
 
   handleBusinessCardPress = () => {
-    launchImagePicker(response => {
-      if (!response.didCancel && !response.error) {
-        this.handleUpload(response);
-      }
+    this.setState({ barStyle: 'dark-content' }, () => {
+      launchImagePicker(response => {
+        this.setState({ barStyle: 'light-content' }, () => {
+          if (!response.didCancel && !response.error) {
+            this.handleUpload(response);
+          }
+        });
+      });
     });
   };
 
@@ -95,6 +103,9 @@ class ClaimProject extends Component {
           this.props.dispatch(
             NavigationActions.navigate({
               routeName: 'CreateMyProjectDone',
+              params: {
+                id,
+              },
             }),
           );
         }
@@ -107,6 +118,7 @@ class ClaimProject extends Component {
     return (
       <View style={styles.container}>
         <NavBar
+          barStyle={this.state.barStyle}
           back
           gradient
           title="认领项目"

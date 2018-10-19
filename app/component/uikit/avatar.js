@@ -1,30 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Animated } from 'react-native';
+import R from 'ramda';
 import { raised } from '../../utils/style';
 import SolidAvatar from './avatar.solid';
 
-const avatar = props => (
-  <Animated.View
-    style={[
-      styles.container,
-      { height: props.size, width: props.size, borderRadius: props.size / 2 },
-      props.raised && { ...raised },
-      props.style,
-    ]}
-  >
-    <Animated.Image
-      {...props}
-      resizeMode={props.resizeMode}
-      defaultSource={require('asset/project/project_logo_default.png')}
-      style={{
-        height: props.size * props.innerRatio,
-        width: props.size * props.innerRatio,
-        borderRadius: (props.size * props.innerRatio) / 2,
-      }}
-    />
-  </Animated.View>
-);
+const avatar = props => {
+  const uri = R.pathOr('', ['source', 'uri'])(props);
+  return (
+    <Animated.View
+      style={[
+        styles.container,
+        { height: props.size, width: props.size, borderRadius: props.size / 2 },
+        props.raised && { ...raised },
+        props.style,
+      ]}
+    >
+      <Animated.Image
+        {...props}
+        resizeMode={props.resizeMode}
+        source={
+          R.isEmpty(uri)
+            ? require('asset/project/project_logo_default.png')
+            : { uri }
+        }
+        style={{
+          height: props.size * props.innerRatio,
+          width: props.size * props.innerRatio,
+          borderRadius: (props.size * props.innerRatio) / 2,
+        }}
+      />
+    </Animated.View>
+  );
+};
 
 avatar.defaultProps = {
   size: 42,
@@ -48,7 +56,5 @@ const styles = {
   },
 };
 
-export {
-  SolidAvatar,
-};
+export { SolidAvatar };
 export default avatar;

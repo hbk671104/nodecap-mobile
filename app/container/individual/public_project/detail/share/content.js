@@ -58,7 +58,7 @@ class ShareCoinContent extends Component {
         </View>
         <View style={styles.group}>
           {renderTitle('评级信息')}
-          {(risk_score || invest_score) && <Rating {...this.props} />}
+          {!!(risk_score || invest_score) && <Rating {...this.props} />}
           <Text style={[styles.groupContentTip]}>
             - 长按底部二维码，查看更多评级信息
           </Text>

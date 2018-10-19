@@ -3,6 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import Communications from 'react-native-communications';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
@@ -13,13 +14,27 @@ import styles from './style';
   page: '项目创建完成',
   name: 'App_MyProjectCreateDoneOperation',
 })
-@connect()
+@connect(({ public_project }, props) => {
+  const id = props.navigation.getParam('id');
+  return {
+    current_project_detail: R.path(['current', id])(public_project),
+  };
+})
 class CreateProjectDone extends Component {
   componentDidMount() {
     this.props.track('进入');
   }
 
   handleDonePress = () => {
+    const { current_project_detail } = this.props;
+    if (current_project_detail) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'PublicProjectDetail',
+        }),
+      );
+      return;
+    }
     this.props.dispatch(NavigationActions.navigate({ routeName: 'MyProject' }));
   };
 
