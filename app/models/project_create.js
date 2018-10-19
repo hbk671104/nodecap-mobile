@@ -172,15 +172,20 @@ export default {
         console.log(error);
       }
     },
-    *refresh(_, { put }) {
+    *refresh(_, { all, put }) {
       try {
-        yield put({
-          type: 'fetch',
-          payload: {
-            page: 1,
-            'per-page': 20,
-          },
-        });
+        yield all([
+          put({
+            type: 'fetch',
+            payload: {
+              page: 1,
+              'per-page': 20,
+            },
+          }),
+          put({
+            type: 'user/fetchCurrent',
+          }),
+        ]);
       } catch (error) {
         console.log(error);
       }
@@ -220,6 +225,12 @@ export default {
         ...state,
         current: initialCurrent,
         query: null,
+      };
+    },
+    resetOwner(state, { payload }) {
+      return {
+        ...state,
+        owner: payload,
       };
     },
     saveOwner(state, { payload }) {

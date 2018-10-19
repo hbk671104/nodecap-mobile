@@ -86,6 +86,14 @@ export default {
           type: 'saveCurrentUser',
           payload: data,
         });
+
+        yield put({
+          type: 'project_create/resetOwner',
+          payload: {
+            owner_name: R.path(['realname'])(data),
+            owner_mobile: R.path(['mobile'])(data),
+          },
+        });
       } catch (e) {
         console.log(e);
       }
