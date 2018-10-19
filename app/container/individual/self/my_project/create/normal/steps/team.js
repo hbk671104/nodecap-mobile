@@ -3,11 +3,13 @@ import { View, Text, Image, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
+import { Toast } from 'antd-mobile';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
 import { launchImagePicker } from 'utils/imagepicker';
+import { uploadImage } from 'services/upload';
 
 import Wrapper from './index';
 import styles from './style';
@@ -44,10 +46,23 @@ import styles from './style';
   },
 })
 class Team extends PureComponent {
-  handleLogoPress = () => {
+  handleUpload = async (index, response) => {
+    Toast.loading('上传中...', 0);
+    const { url } = await uploadImage({
+      image: response,
+      type: 'avatar',
+    });
+    Toast.hide();
+
+    this.props.form.setFieldsValue({
+      [`members[${index}].profile_pic`]: url,
+    });
+  };
+
+  handleLogoPress = index => () => {
     launchImagePicker(response => {
       if (!response.didCancel && !response.error) {
-        // this.handleAvatarUpdate(response);
+        this.handleUpload(index, response);
       }
     });
   };
@@ -108,13 +123,18 @@ class Team extends PureComponent {
             title="头像"
             placeholder="请上传头像"
             showArrow
-            renderContent={() => (
+            renderContent={({ value: v }) => (
               <Image
-                source={require('asset/project_create/logo_placeholder.png')}
+                style={styles.avatar}
+                source={
+                  v
+                    ? { uri: v }
+                    : require('asset/project_create/logo_placeholder.png')
+                }
               />
             )}
             inputProps={{ style: styles.inputItem.input }}
-            onPress={this.handleLogoPress}
+            onPress={this.handleLogoPress(index)}
           />,
         )}
         {getFieldDecorator(`members[${index}].title`, {
