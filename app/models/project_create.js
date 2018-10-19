@@ -67,6 +67,7 @@ export default {
         yield put({
           type: 'setCurrent',
           payload: data,
+          owner: R.pathOr({}, ['owners', 0])(data),
         });
 
         if (callback) {
@@ -120,10 +121,10 @@ export default {
           owner: [owner],
         });
 
-        if (current.id) {
+        if (current.coin_id) {
           yield put.resolve({
             type: 'editProject',
-            id: current.id,
+            id: current.coin_id,
             payload: sanitized_data,
             callback,
           });
@@ -171,26 +172,15 @@ export default {
         console.log(error);
       }
     },
-    *refresh(_, { put, all }) {
+    *refresh(_, { put }) {
       try {
-        yield all([
-          // refresh list
-          put({
-            type: 'fetch',
-            payload: {
-              page: 1,
-              'per-page': 20,
-            },
-          }),
-          // reset current
-          put({
-            type: 'clearCurrent',
-          }),
-          // clear query
-          put({
-            type: 'clearQuery',
-          }),
-        ]);
+        yield put({
+          type: 'fetch',
+          payload: {
+            page: 1,
+            'per-page': 20,
+          },
+        });
       } catch (error) {
         console.log(error);
       }
@@ -209,12 +199,6 @@ export default {
         query: paginate(state.query, payload),
       };
     },
-    clearQuery(state) {
-      return {
-        ...state,
-        query: null,
-      };
-    },
     saveCurrent(state, { payload }) {
       return {
         ...state,
@@ -224,22 +208,18 @@ export default {
         },
       };
     },
-    setCurrent(state, { payload }) {
+    setCurrent(state, { payload, owner }) {
       return {
         ...state,
-        current: convertToFormData({ ...initialCurrent, ...payload }),
+        current: convertToFormData({ ...payload }),
+        ...(R.isEmpty(owner) ? {} : { owner }),
       };
     },
     resetCurrent(state) {
       return {
         ...state,
         current: initialCurrent,
-      };
-    },
-    clearCurrent(state) {
-      return {
-        ...state,
-        current: null,
+        query: null,
       };
     },
     saveOwner(state, { payload }) {

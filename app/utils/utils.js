@@ -282,17 +282,30 @@ export const deepCheckEmptyOrNull = array => {
 };
 
 export const convertToFormData = data => {
-  const start_at = R.path(['start_at'])(data);
-  const end_at = R.path(['end_at'])(data);
+  const finance = R.path(['finances', 0])(data);
+  const start_at = R.path(['start_at'])(finance);
+  const end_at = R.path(['end_at'])(finance);
+  const roadmap = R.pathOr([{}], ['basic', 'roadmap'])(data);
+  const members = R.pathOr([{}], ['members'])(data);
+  const social_network = R.pathOr([{}], ['social_networks'])(data);
   return {
     ...data,
     homepages: R.path(['homepage'])(data),
+    country_origin: R.path(['basic', 'country_origin'])(data),
     tags: R.pipe(
       R.pathOr([], ['tags']),
       R.map(t => t.id),
     )(data),
+    ...finance,
     start_at: start_at ? moment.unix(start_at).format('YYYY-MM-DD') : null,
     end_at: end_at ? moment.unix(end_at).format('YYYY-MM-DD') : null,
+    purpose: R.pipe(
+      R.pathOr([], ['purpose']),
+      R.map(p => p.id),
+    )(data),
+    roadmap: R.isEmpty(roadmap) ? [{}] : roadmap,
+    members: R.isEmpty(members) ? [{}] : members,
+    social_network: R.isEmpty(social_network) ? [{}] : social_network,
   };
 };
 
