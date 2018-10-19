@@ -72,3 +72,11 @@ export function trendList(payload = {}) {
     params: paramsTransform(payload),
   });
 }
+
+
+export function submitComment(coin_id, content) {
+  return request.post('/user/share-comment', {
+    coin_id,
+    content,
+  });
+}
