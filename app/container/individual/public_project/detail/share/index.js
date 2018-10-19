@@ -60,7 +60,7 @@ class ShareCoin extends Component {
   renderHeader() {
     const { coin } = this.props;
     const siteUrl = R.pathOr('', ['homepage'])(coin);
-    const country = R.pathOr('', ['base', 'country_origin'])(coin);
+    const country = R.pathOr('', ['basic', 'country_origin'])(coin);
     const tags = R.pipe(
       R.pathOr([], ['tags']),
       R.reduce(
@@ -114,8 +114,10 @@ class ShareCoin extends Component {
           </View>
         </Flex>
         <Flex>
-          <Text style={[styles.symbol, styles.siteUrl]}>{siteUrl}</Text>
-          <Text numberOfLines={1} style={[styles.title, { marginLeft: 10 }]}>
+          {!!siteUrl &&
+          (<Text style={[styles.symbol, styles.siteUrl, { marginRight: 10 }]}>{siteUrl}</Text>)
+          }
+          <Text numberOfLines={1} style={[styles.symbol, styles.siteUrl, { marginLeft: 5 }]}>
             {country}
           </Text>
         </Flex>
@@ -254,7 +256,7 @@ class ShareCoin extends Component {
                   </ImageBackground>
                   <Image
                     source={require('asset/coin_share/footer.png')}
-                    style={[styles.backgroundImage, { height: 28 }]}
+                    style={[styles.backgroundImage, { height: 28, marginTop: 0 }]}
                   />
                 </View>
               </View>
