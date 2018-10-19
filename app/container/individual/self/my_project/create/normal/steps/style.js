@@ -67,4 +67,9 @@ export default {
       padding: 12,
     },
   },
+  avatar: {
+    height: 38,
+    width: 38,
+    borderRadius: 19,
+  },
 };

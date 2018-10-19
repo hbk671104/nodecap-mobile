@@ -56,7 +56,17 @@ class OptionalClaimProject extends Component {
 
   renderItem = ({ item }) => (
     <View>
-      <SimplifiedItem data={item} onPress={this.handleItemPress(item)} />
+      <SimplifiedItem
+        style={styles.item}
+        data={item}
+        onPress={this.handleItemPress(item)}
+      />
+      <Touchable
+        style={styles.claim.container}
+        onPress={this.handleClaimPress(item)}
+      >
+        <Text style={styles.claim.text}>立即认领</Text>
+      </Touchable>
     </View>
   );
 
@@ -69,6 +79,7 @@ class OptionalClaimProject extends Component {
         <NavBar back gradient title="认领项目" />
         <List
           disableRefresh
+          style={styles.list}
           contentContainerStyle={{ paddingVertical: 0 }}
           data={data}
           renderItem={this.renderItem}

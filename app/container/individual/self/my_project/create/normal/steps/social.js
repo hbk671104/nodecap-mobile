@@ -8,7 +8,6 @@ import EnhancedScroll from 'component/enhancedScroll';
 import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
 import PickerSelect from 'component/picker';
-import { deepCheckEmptyOrNull, nullOrEmpty } from 'utils/utils';
 
 import Wrapper from './index';
 import styles from './style';
@@ -78,22 +77,6 @@ class Social extends PureComponent {
     });
   };
 
-  handleMultiFormValidation = (rule, value, callback) => {
-    const { social_network } = this.props;
-    const isNullOrEmpty = deepCheckEmptyOrNull(social_network);
-    if (isNullOrEmpty) {
-      callback();
-      return;
-    }
-
-    if (nullOrEmpty(value)) {
-      callback(null);
-      return;
-    }
-
-    callback();
-  };
-
   renderForm = (value, index) => {
     const { options } = this.props;
     const { getFieldDecorator, getFieldError } = this.props.form;
@@ -105,7 +88,7 @@ class Social extends PureComponent {
         {getFieldDecorator(`social_network[${index}].name`, {
           rules: [
             {
-              validator: this.handleMultiFormValidation,
+              required: true,
               message: '请选择社区类型',
             },
           ],
@@ -136,7 +119,7 @@ class Social extends PureComponent {
         {getFieldDecorator(`social_network[${index}].link_url`, {
           rules: [
             {
-              validator: this.handleMultiFormValidation,
+              required: true,
               message: '请输入社群地址',
             },
           ],

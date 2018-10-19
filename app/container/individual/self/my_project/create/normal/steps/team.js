@@ -8,7 +8,6 @@ import EnhancedScroll from 'component/enhancedScroll';
 import Touchable from 'component/uikit/touchable';
 import InputItem from 'component/inputItem';
 import { launchImagePicker } from 'utils/imagepicker';
-import { deepCheckEmptyOrNull, nullOrEmpty } from 'utils/utils';
 
 import Wrapper from './index';
 import styles from './style';
@@ -77,22 +76,6 @@ class Team extends PureComponent {
     });
   };
 
-  handleMultiFormValidation = (rule, value, callback) => {
-    const { members } = this.props;
-    const isNullOrEmpty = deepCheckEmptyOrNull(members);
-    if (isNullOrEmpty) {
-      callback();
-      return;
-    }
-
-    if (nullOrEmpty(value)) {
-      callback(null);
-      return;
-    }
-
-    callback();
-  };
-
   renderForm = (value, index) => {
     const { getFieldDecorator, getFieldError } = this.props.form;
     return (
@@ -103,7 +86,7 @@ class Team extends PureComponent {
         {getFieldDecorator(`members[${index}].name`, {
           rules: [
             {
-              validator: this.handleMultiFormValidation,
+              required: true,
               message: '请输入成员姓名',
             },
           ],
@@ -137,7 +120,7 @@ class Team extends PureComponent {
         {getFieldDecorator(`members[${index}].title`, {
           rules: [
             {
-              validator: this.handleMultiFormValidation,
+              required: true,
               message: '请输入成员职位',
             },
           ],
@@ -154,7 +137,7 @@ class Team extends PureComponent {
         {getFieldDecorator(`members[${index}].mobile`, {
           rules: [
             {
-              validator: this.handleMultiFormValidation,
+              required: true,
               message: '请输入成员手机号',
             },
           ],
@@ -171,7 +154,7 @@ class Team extends PureComponent {
         {getFieldDecorator(`members[${index}].wechat`, {
           rules: [
             {
-              validator: this.handleMultiFormValidation,
+              required: true,
               message: '请输入成员微信',
             },
           ],

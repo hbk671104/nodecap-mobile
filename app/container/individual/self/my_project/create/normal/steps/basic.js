@@ -4,10 +4,12 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
+import { Toast } from 'antd-mobile';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import InputItem, { InputError } from 'component/inputItem';
 import { launchImagePicker } from 'utils/imagepicker';
+import { uploadImage } from 'services/upload';
 
 import Wrapper from './index';
 import Demand from '../../../component/demand';
@@ -51,15 +53,23 @@ import styles from './style';
     )(current),
 })
 class BasicInfo extends PureComponent {
+  handleUpload = async response => {
+    Toast.loading('上传中...', 0);
+    const { url } = await uploadImage({
+      image: response,
+      type: 'avatar',
+    });
+    Toast.hide();
+
+    this.props.form.setFieldsValue({
+      icon: url,
+    });
+  };
+
   handleLogoPress = () => {
     launchImagePicker(response => {
       if (!response.didCancel && !response.error) {
-        // update
-
-        const { uri } = response;
-        this.props.form.setFieldsValue({
-          icon: uri,
-        });
+        this.handleUpload(response);
       }
     });
   };
@@ -106,9 +116,14 @@ class BasicInfo extends PureComponent {
               title="Logo"
               placeholder="请上传 Logo"
               showArrow
-              renderContent={() => (
+              renderContent={({ value }) => (
                 <Image
-                  source={require('asset/project_create/logo_placeholder.png')}
+                  style={styles.avatar}
+                  source={
+                    value
+                      ? { uri: value }
+                      : require('asset/project_create/logo_placeholder.png')
+                  }
                 />
               )}
               inputProps={{ style: styles.inputItem.input }}
