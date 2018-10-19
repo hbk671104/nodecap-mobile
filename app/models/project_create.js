@@ -1,5 +1,7 @@
 import R from 'ramda';
 import * as Individual from 'services/individual/api';
+import * as API from 'services/api';
+
 import { paginate } from 'utils/pagination';
 import { convertToFormData, convertToPayloadData } from 'utils/utils';
 
@@ -54,6 +56,22 @@ export default {
           type: 'save',
           payload: data,
         });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *get({ id, callback }, { call, put }) {
+      try {
+        const { data } = yield call(API.getCoinInfo, id);
+
+        yield put({
+          type: 'setCurrent',
+          payload: data,
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
       } catch (error) {
         console.log(error);
       }

@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
@@ -43,15 +44,19 @@ class MyProject extends Component {
   };
 
   handleItemPress = item => () => {
+    Toast.loading('加载中...', 0);
     this.props.dispatch({
-      type: 'project_create/setCurrent',
-      payload: item,
+      type: 'project_create/get',
+      id: item.id,
+      callback: () => {
+        Toast.hide();
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'CreateMyProjectNormalWrapper',
+          }),
+        );
+      },
     });
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'CreateMyProjectNormalWrapper',
-      }),
-    );
   };
 
   renderNavBar = () => (
