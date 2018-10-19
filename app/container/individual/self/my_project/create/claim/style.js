@@ -9,6 +9,11 @@ export default {
       fontSize: 14,
     },
   },
+  image: {
+    height: 60,
+    width: 100,
+    borderRadius: 2,
+  },
   inputItem: {
     container: {
       paddingVertical: 20,

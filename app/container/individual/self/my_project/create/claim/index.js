@@ -4,12 +4,14 @@ import { createForm, createFormField } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { Toast } from 'antd-mobile';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
 import Touchable from 'component/uikit/touchable';
 import { launchImagePicker } from 'utils/imagepicker';
+import { uploadImage } from 'services/upload';
 
 import styles from './style';
 
@@ -51,15 +53,23 @@ class ClaimProject extends Component {
     this.props.track('进入');
   }
 
+  handleUpload = async response => {
+    Toast.loading('上传中...', 0);
+    const { url } = await uploadImage({
+      image: response,
+      type: 'business_card',
+    });
+    Toast.hide();
+
+    this.props.form.setFieldsValue({
+      owner_card: url,
+    });
+  };
+
   handleBusinessCardPress = () => {
     launchImagePicker(response => {
       if (!response.didCancel && !response.error) {
-        // this.handleAvatarUpdate(response);
-
-        const { uri } = response;
-        this.props.form.setFieldsValue({
-          owner_card: uri,
-        });
+        this.handleUpload(response);
       }
     });
   };
@@ -100,7 +110,7 @@ class ClaimProject extends Component {
           title="认领项目"
           renderRight={() => {
             if (this.props.submitting) {
-              return <ActivityIndicator />;
+              return <ActivityIndicator color="white" />;
             }
             return (
               <Touchable borderless onPress={this.handleSavePress}>
@@ -169,9 +179,14 @@ class ClaimProject extends Component {
               placeholder="请上传名片"
               inputProps={{ style: styles.inputItem.input }}
               contentWrapperStyle={{ alignSelf: 'flex-end' }}
-              renderContent={({ onChange, value }) => (
+              renderContent={({ value }) => (
                 <Image
-                  source={require('asset/project_create/business_card.png')}
+                  style={styles.image}
+                  source={
+                    value
+                      ? { uri: value }
+                      : require('asset/project_create/business_card.png')
+                  }
                 />
               )}
               onPress={this.handleBusinessCardPress}
