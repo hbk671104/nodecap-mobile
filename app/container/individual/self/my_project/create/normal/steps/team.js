@@ -199,7 +199,7 @@ class Team extends PureComponent {
             error={getFieldError(`members[${index}].wechat`)}
           />,
         )}
-        {getFieldDecorator(`members[${index}].linkedin_url`)(
+        {getFieldDecorator(`members[${index}].linkedIn_url`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}

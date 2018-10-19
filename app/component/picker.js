@@ -13,6 +13,10 @@ const picker = props => (
 );
 
 const styles = {
+  viewContainer: {
+    // alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+  },
   inputIOS: {
     color: 'rgba(0, 0, 0, 0.85)',
   },

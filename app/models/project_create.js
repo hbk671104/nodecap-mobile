@@ -118,7 +118,7 @@ export default {
 
         const sanitized_data = convertToPayloadData({
           ...current,
-          owner: [owner],
+          owner,
         });
 
         if (current.id) {
