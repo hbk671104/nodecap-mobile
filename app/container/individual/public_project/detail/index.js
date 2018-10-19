@@ -146,6 +146,14 @@ export default class PublicProjectDetail extends Component {
   }
   onPressClaimCoin = () => {
     this.props.track('点击认领按钮');
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ClaimMyProject',
