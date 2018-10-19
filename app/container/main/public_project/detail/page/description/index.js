@@ -114,6 +114,7 @@ export default class Description extends PureComponent {
                   key={m.name}
                   name={m.name}
                   data={m.link_url}
+                  fans_count={m.fans_count}
                   onPress={() => {
                     Linking
                       .canOpenURL(m.link_url)
