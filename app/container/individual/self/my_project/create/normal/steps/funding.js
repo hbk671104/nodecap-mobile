@@ -7,6 +7,7 @@ import R from 'ramda';
 import EnhancedScroll from 'component/enhancedScroll';
 import InputItem from 'component/inputItem';
 import DatePicker from 'component/datePicker';
+import { nullOrEmpty } from 'utils/utils';
 
 import Wrapper from './index';
 import styles from './style';
@@ -36,6 +37,27 @@ import styles from './style';
     )(current),
 })
 class Funding extends PureComponent {
+  handleFormValidation = (rule, value, callback) => {
+    const { current } = this.props;
+    const isNullOrEmpty =
+      nullOrEmpty(current.start_at) &&
+      nullOrEmpty(current.end_at) &&
+      nullOrEmpty(current.soft_cap) &&
+      nullOrEmpty(current.hard_cap) &&
+      nullOrEmpty(current.token_accepted);
+    if (isNullOrEmpty) {
+      callback();
+      return;
+    }
+
+    if (nullOrEmpty(value)) {
+      callback(null);
+      return;
+    }
+
+    callback();
+  };
+
   render() {
     const { getFieldDecorator, getFieldValue, getFieldError } = this.props.form;
     const start_at = getFieldValue('start_at');
@@ -46,7 +68,7 @@ class Funding extends PureComponent {
           {getFieldDecorator('start_at', {
             rules: [
               {
-                required: true,
+                validator: this.handleFormValidation,
                 message: '请选择开始时间',
               },
             ],
@@ -74,7 +96,7 @@ class Funding extends PureComponent {
           {getFieldDecorator('end_at', {
             rules: [
               {
-                required: true,
+                validator: this.handleFormValidation,
                 message: '请选择结束时间',
               },
             ],
@@ -102,7 +124,7 @@ class Funding extends PureComponent {
           {getFieldDecorator('soft_cap', {
             rules: [
               {
-                required: true,
+                validator: this.handleFormValidation,
                 message: '请输入募资软顶',
               },
             ],
@@ -119,7 +141,7 @@ class Funding extends PureComponent {
           {getFieldDecorator('hard_cap', {
             rules: [
               {
-                required: true,
+                validator: this.handleFormValidation,
                 message: '请输入募资硬顶',
               },
             ],
@@ -136,7 +158,7 @@ class Funding extends PureComponent {
           {getFieldDecorator('token_accepted', {
             rules: [
               {
-                required: true,
+                validator: this.handleFormValidation,
                 message: '请输入募集币种',
               },
             ],

@@ -1,6 +1,14 @@
 import * as Individual from 'services/individual/api';
 import { paginate } from 'utils/pagination';
 
+const initialCurrent = {
+  members: [{}],
+  social_network: [{}],
+  roadmap: [{}],
+  purpose: [],
+  tags: [],
+};
+
 export default {
   namespace: 'project_create',
   state: {
@@ -32,13 +40,7 @@ export default {
     ],
     list: null,
     query: null,
-    current: {
-      members: [{}],
-      social_network: [{}],
-      roadmap: [{}],
-      purpose: [],
-      tags: [],
-    },
+    current: initialCurrent,
     owner: null,
   },
   effects: {
@@ -66,20 +68,31 @@ export default {
         console.log(error);
       }
     },
-    *claimProject({ id, payload, callback }, { put, call }) {
+    *claimProject({ id, payload, callback }, { put, all, call }) {
       try {
         const { status } = yield call(Individual.claimMyProject, {
           id,
           payload,
         });
 
-        yield put({
-          type: 'fetch',
-          payload: {
-            page: 1,
-            'per-page': 20,
-          },
-        });
+        yield all([
+          // refresh list
+          put({
+            type: 'fetch',
+            payload: {
+              page: 1,
+              'per-page': 20,
+            },
+          }),
+          // reset current
+          put({
+            type: 'resetCurrent',
+          }),
+          // clear query
+          put({
+            type: 'clearQuery',
+          }),
+        ]);
 
         if (callback) {
           yield callback(status === 200);
@@ -115,6 +128,12 @@ export default {
           ...state.current,
           ...payload,
         },
+      };
+    },
+    resetCurrent(state) {
+      return {
+        ...state,
+        current: initialCurrent,
       };
     },
     saveOwner(state, { payload }) {

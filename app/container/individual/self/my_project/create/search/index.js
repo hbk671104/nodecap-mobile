@@ -33,10 +33,6 @@ class CreateMyProjectSearch extends Component {
     this.props.track('进入');
   }
 
-  componentWillUnmount() {
-    this.props.dispatch({ type: 'project_create/clearQuery' });
-  }
-
   onSearchTextChange = text => {
     this.setState({ searchText: text }, this.searchDelayed);
   };

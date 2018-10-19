@@ -128,7 +128,7 @@ class ClaimProject extends Component {
               titleStyle={styles.inputItem.title}
               title="姓名"
               placeholder="请输入姓名"
-              inputProps={{ style: styles.inputItem.input }}
+              inputProps={{ style: styles.inputItem.input, autoFocus: true }}
               error={getFieldError('owner_name')}
             />,
           )}
@@ -152,7 +152,10 @@ class ClaimProject extends Component {
               titleStyle={styles.inputItem.title}
               title="手机"
               placeholder="请输入手机号码"
-              inputProps={{ style: styles.inputItem.input }}
+              inputProps={{
+                style: styles.inputItem.input,
+                keyboardType: 'number-pad',
+              }}
               error={getFieldError('owner_mobile')}
             />,
           )}

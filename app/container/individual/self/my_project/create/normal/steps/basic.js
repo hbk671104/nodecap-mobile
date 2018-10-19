@@ -13,9 +13,10 @@ import Wrapper from './index';
 import Demand from '../../../component/demand';
 import styles from './style';
 
-@connect(({ project_create, filter }) => ({
+@connect(({ project_create, filter, global }) => ({
   current: R.pathOr({}, ['current'])(project_create),
   coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
+  purpose: R.pathOr([], ['constants', 'purpose'])(global),
 }))
 @createForm({
   onValuesChange: ({ dispatch, current }, changed) => {
@@ -197,7 +198,13 @@ class BasicInfo extends PureComponent {
                   message: '请选择当前需求',
                 },
               ],
-            })(<Demand title="当前需求" subtitle="请选择当前项目所需的服务" />)}
+            })(
+              <Demand
+                data={this.props.purpose}
+                title="当前需求"
+                subtitle="请选择当前项目所需的服务"
+              />,
+            )}
             <View style={styles.error.container}>
               <InputError error={getFieldError('purpose')} />
             </View>

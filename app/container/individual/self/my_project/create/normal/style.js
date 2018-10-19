@@ -10,7 +10,11 @@ export default {
     },
     text: {
       fontSize: 12,
-      color: 'rgba(0, 0, 0, 0.85)',
+      color: 'rgba(0, 0, 0, 0.65)',
     },
+  },
+  separator: {
+    height: 10,
+    backgroundColor: '#F5F5F5',
   },
 };
