@@ -10,6 +10,7 @@ import MemberItem from 'component/project/description/member';
 import InstitutionItem from 'component/institution/item';
 import SocialNetworkItem from './socialNetworkItem';
 import Roadmap from './roadmap';
+import Rating from './rating';
 import styles from './style';
 
 @connect()
@@ -102,31 +103,7 @@ export default class Description extends PureComponent {
             </Text>
           </View>
         )}
-        {R.not(R.isEmpty(invest_score) && R.isEmpty(risk_score)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>评级信息</Text>
-            <Flex style={styles.ratingItem}>
-              {R.not(R.isEmpty(invest_score)) && (
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.ratingTitleText}>
-                    投资评分
-                    {'   '}
-                    <Text style={styles.ratingItemText}>{invest_score}</Text>
-                  </Text>
-                </View>
-              )}
-              {R.not(R.isEmpty(risk_score)) && (
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.ratingTitleText}>
-                    风险评估
-                    {'   '}
-                    <Text style={styles.ratingItemText}>{risk_score}</Text>
-                  </Text>
-                </View>
-              )}
-            </Flex>
-          </View>
-        )}
+        <Rating {...this.props} />
         {R.not(R.isEmpty(social_network)) && (
           <View>
             <Text style={[styles.title, styles.site]}>媒体信息</Text>
