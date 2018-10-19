@@ -63,7 +63,10 @@ class ShareCoin extends Component {
     const country = R.pathOr('', ['base', 'country_origin'])(coin);
     const tags = R.pipe(
       R.pathOr([], ['tags']),
-      R.reduce((last, current) => `${last === '' ? '' : `${last}/`}${current.name}`, ''),
+      R.reduce(
+        (last, current) => `${last === '' ? '' : `${last}/`}${current.name}`,
+        '',
+      ),
     )(coin);
     return (
       <View>
@@ -71,13 +74,17 @@ class ShareCoin extends Component {
           <Flex direction="column" align="start">
             <View style={{ flex: 0 }}>
               <ImageBackground
-                style={{ width: '100%', height: isIOS ? 20 : 23, position: 'relative' }}
+                style={{
+                  width: '100%',
+                  height: isIOS ? 20 : 23,
+                  position: 'relative',
+                }}
                 source={require('asset/coin_share/title_back.png')}
-                {
-                  ...isIOS ? {
-                    resizeMode: 'repeat',
-                  } : {}
-                }
+                {...(isIOS
+                  ? {
+                      resizeMode: 'repeat',
+                    }
+                  : {})}
                 imageStyle={{
                   resizeMode: 'stretch',
                   left: 0,
@@ -94,7 +101,10 @@ class ShareCoin extends Component {
               <Text numberOfLines={1} style={styles.symbol}>
                 {coin.symbol ? coin.symbol.toUpperCase() : '--'}
               </Text>
-              <Text numberOfLines={1} style={[styles.symbol, { marginLeft: 10 }]}>
+              <Text
+                numberOfLines={1}
+                style={[styles.symbol, { marginLeft: 10 }]}
+              >
                 {tags}
               </Text>
             </Flex>
@@ -104,9 +114,7 @@ class ShareCoin extends Component {
           </View>
         </Flex>
         <Flex>
-          <Text style={[styles.symbol, styles.siteUrl]}>
-            {siteUrl}
-          </Text>
+          <Text style={[styles.symbol, styles.siteUrl]}>{siteUrl}</Text>
           <Text numberOfLines={1} style={[styles.title, { marginLeft: 10 }]}>
             {country}
           </Text>
@@ -143,7 +151,6 @@ class ShareCoin extends Component {
   }
   render() {
     const { comment } = this.props;
-    console.log('comment', comment);
     return (
       <Modal
         useNativeDriver
@@ -163,25 +170,45 @@ class ShareCoin extends Component {
             <ImageBackground
               style={{ width: '100%' }}
               source={require('asset/coin_share/main_background.jpg')}
-              {
-                ...isIOS ? {
-                  resizeMode: 'repeat',
-                } : {}
-              }
+              {...(isIOS
+                ? {
+                    resizeMode: 'repeat',
+                  }
+                : {})}
             >
               <View>
                 <Image
                   source={require('asset/coin_share/wave_top.png')}
-                  style={[styles.backgroundImage, { height: 165, top: 0, left: 0 }, styles.wave]}
+                  style={[
+                    styles.backgroundImage,
+                    { height: 165, top: 0, left: 0 },
+                    styles.wave,
+                  ]}
                 />
                 <Image
                   source={require('asset/coin_share/wave_bottom.png')}
-                  style={[styles.backgroundImage, { height: 182, bottom: 0, left: 0 }, styles.wave]}
+                  style={[
+                    styles.backgroundImage,
+                    { height: 182, bottom: 0, left: 0 },
+                    styles.wave,
+                  ]}
                 />
-                {comment ? <CommentContent comment={comment} /> : (
+                {comment ? (
+                  <CommentContent comment={comment} />
+                ) : (
                   <Image
                     source={require('asset/coin_share/share_header.png')}
-                    style={[styles.backgroundImage, { width: 314, height: 68, zIndex: 20, marginTop: 35, marginBottom: 30, alignSelf: 'center' }]}
+                    style={[
+                      styles.backgroundImage,
+                      {
+                        width: 314,
+                        height: 68,
+                        zIndex: 20,
+                        marginTop: 35,
+                        marginBottom: 30,
+                        alignSelf: 'center',
+                      },
+                    ]}
                   />
                 )}
                 <View style={[styles.container]}>
@@ -192,14 +219,14 @@ class ShareCoin extends Component {
                   <ImageBackground
                     style={{ width: 350 }}
                     source={require('asset/coin_share/back.png')}
-                    {
-                    ...isIOS ? {
-                      resizeMode: 'repeat',
-                    } : {}
-                  }
+                    {...(isIOS
+                      ? {
+                          resizeMode: 'repeat',
+                        }
+                      : {})}
                     imageStyle={{
-                    resizeMode: 'stretch',
-                  }}
+                      resizeMode: 'stretch',
+                    }}
                   >
                     <View style={{ paddingLeft: 23, paddingRight: 28 }}>
                       {this.renderHeader()}
@@ -212,14 +239,14 @@ class ShareCoin extends Component {
                   <ImageBackground
                     style={{ width: 350 }}
                     source={require('asset/coin_share/back.png')}
-                    {
-                    ...isIOS ? {
-                      resizeMode: 'repeat',
-                    } : {}
-                  }
+                    {...(isIOS
+                      ? {
+                          resizeMode: 'repeat',
+                        }
+                      : {})}
                     imageStyle={{
-                    resizeMode: 'stretch',
-                  }}
+                      resizeMode: 'stretch',
+                    }}
                   >
                     <View style={{ paddingHorizontal: 28 }}>
                       <ShareContent {...this.props} />

@@ -1,6 +1,4 @@
-import {
-  Dimensions,
-} from 'react-native';
+import { Dimensions } from 'react-native';
 import { ifIphoneX } from 'react-native-iphone-x-helper';
 import { borderColor } from 'component/uikit/color';
 
@@ -145,5 +143,12 @@ export default {
   siteUrl: {
     marginTop: 0,
   },
-  comment: { fontSize: 16, color: '#FFFFFF', lineHeight: 27, textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2, textShadowColor: 'rgba(18,41,50,0.25)' },
+  comment: {
+    fontSize: 16,
+    color: '#FFFFFF',
+    lineHeight: 27,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+    textShadowColor: 'rgba(18,41,50,0.25)',
+  },
 };

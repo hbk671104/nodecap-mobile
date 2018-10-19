@@ -296,9 +296,11 @@ export const convertToFormData = data => {
       R.pathOr([], ['tags']),
       R.map(t => t.id),
     )(data),
-    ...finance,
     start_at: start_at ? moment.unix(start_at).format('YYYY-MM-DD') : null,
     end_at: end_at ? moment.unix(end_at).format('YYYY-MM-DD') : null,
+    soft_cap: R.path(['soft_cap'])(finance),
+    hard_cap: R.path(['hard_cap'])(finance),
+    token_accepted: R.path(['token_accepted'])(finance),
     purpose: R.pipe(
       R.pathOr([], ['purpose']),
       R.map(p => p.id),

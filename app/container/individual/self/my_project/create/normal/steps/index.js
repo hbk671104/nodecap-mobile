@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
+import { compose, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
@@ -15,7 +16,7 @@ import styles from './style';
   page: '正常创建项目流程外层',
   name: 'App_MyProjectCreateNormalWrapperOperation',
 })
-@connect(({ project_create, router }) => {
+@connect(({ project_create, router, loading }) => {
   const route = R.path(['route'])(project_create);
   const index = R.pipe(
     R.map(r => r.name),
@@ -26,8 +27,18 @@ import styles from './style';
     route,
     title: R.path([index, 'title'])(route),
     nextPage: R.pathOr('ClaimMyProject', [index + 1, 'name'])(route),
+    isEditing: R.pipe(
+      R.path(['current']),
+      R.has('id'),
+    )(project_create),
+    loading: loading.effects['project_create/submitProject'],
   };
 })
+@compose(
+  withProps(({ nextPage }) => ({
+    isLastPage: nextPage === 'ClaimMyProject',
+  })),
+)
 class CreateProjectNormalWrapper extends Component {
   componentDidMount() {
     this.props.track('进入');
@@ -36,8 +47,23 @@ class CreateProjectNormalWrapper extends Component {
   handleSubmit = () => {};
 
   handleNextPress = () => {
+    const { isLastPage, isEditing } = this.props;
     this.props.form.validateFields(err => {
       if (!err) {
+        if (isLastPage && isEditing) {
+          this.props.dispatch({
+            type: 'project_create/submitProject',
+            callback: () => {
+              this.props.dispatch(
+                NavigationActions.navigate({
+                  routeName: 'MyProject',
+                }),
+              );
+            },
+          });
+          return;
+        }
+
         const { nextPage } = this.props;
         this.props.dispatch(
           NavigationActions.navigate({
@@ -49,18 +75,25 @@ class CreateProjectNormalWrapper extends Component {
   };
 
   render() {
-    const { children, title } = this.props;
+    const { children, title, isLastPage, isEditing, loading } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
           back
           gradient
           title={title}
-          renderRight={() => (
-            <Touchable borderless onPress={this.handleNextPress}>
-              <Text style={styles.navBar.right}>下一步</Text>
-            </Touchable>
-          )}
+          renderRight={() => {
+            if (loading) {
+              return <ActivityIndicator color="white" />;
+            }
+            return (
+              <Touchable borderless onPress={this.handleNextPress}>
+                <Text style={styles.navBar.right}>
+                  {isLastPage && isEditing ? '提交' : '下一步'}
+                </Text>
+              </Touchable>
+            );
+          }}
         />
         <ProgressBar {...this.props} />
         {children}

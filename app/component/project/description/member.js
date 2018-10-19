@@ -130,8 +130,8 @@ const styles = {
       fontWeight: 'bold',
     },
     linkedin: {
-      width: 15,
-      height: 15,
+      width: 25,
+      height: 25,
     },
     subtitle: {
       marginTop: 6,
