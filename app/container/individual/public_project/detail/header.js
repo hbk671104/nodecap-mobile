@@ -9,6 +9,7 @@ import Percentage from 'component/percentage';
 import Amount from 'component/amount';
 import Shimmer from 'component/shimmer';
 import { symbol } from '../../../../utils/icon';
+import Purpose from './purpose';
 
 export const headerHeight = 64;
 export const fullHeaderHeight = 144;
@@ -37,7 +38,17 @@ const header = ({
   ])(market);
   const total_volume = R.pathOr('--', ['total_volume', base_symbol])(market);
   const high_24h = R.pathOr('--', ['high_24h', base_symbol])(market);
-
+  const tags = R.pipe(
+    R.pathOr([], ['tags']),
+    R.map(i => ({
+      ...i,
+      name: R.trim(i.name),
+    })),
+    R.reduce(
+      (last, current) => `${last ? `${last}/` : last}${current.name}`,
+      '',
+    ),
+  )(data);
   // const desc = R.pathOr('--', ['description'])(market);
 
   return (
@@ -76,18 +87,7 @@ const header = ({
                   },
                 ]}
               >
-                {R.pipe(
-                  R.map(k => (
-                    <View key={k.id} style={styles.tag.container}>
-                      <Text style={styles.tag.title}>
-                        {R.pipe(
-                          R.pathOr('', ['name']),
-                          R.trim,
-                        )(k)}
-                      </Text>
-                    </View>
-                  )),
-                )(category)}
+                <Text style={styles.tag.title}>{tags}</Text>
               </ScrollView>
             </View>
           </View>
@@ -123,6 +123,11 @@ const header = ({
           </Shimmer>
         </View>
       ) : null}
+      {R.compose(
+        R.not,
+        R.isEmpty,
+        R.pathOr([], ['purpose']),
+      )(data) && <Purpose portfolio={data} />}
     </Animated.View>
   );
 };

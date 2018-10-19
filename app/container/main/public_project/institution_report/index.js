@@ -40,6 +40,7 @@ export default class InstitutionReport extends Component {
         params: {
           pdf_url: item.pdf_url,
           title: item.title,
+          id: item.id,
         },
       }),
     );

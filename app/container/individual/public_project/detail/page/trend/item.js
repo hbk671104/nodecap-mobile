@@ -15,7 +15,7 @@ const notificationItem = ({ data: trend, onPress }) => {
   const push_at = R.pathOr('--', ['release_at'])(trend);
 
   return (
-    <Touchable foreground onPress={onPress(trend.id)}>
+    <Touchable foreground onPress={onPress(trend)}>
       <View style={styles.container}>
         <View style={styles.content.container}>
           <View style={styles.content.top.container}>

@@ -20,7 +20,6 @@ import styles from './style';
 })
 @connect(({ public_project, login }) => ({
   data: R.pathOr(null, ['search', 'index', 'data'])(public_project),
-  pagination: R.pathOr(null, ['search', 'index', 'pagination'])(public_project),
   in_individual: login.in_individual,
 }))
 class PublicProjectSearch extends Component {
@@ -107,16 +106,14 @@ class PublicProjectSearch extends Component {
   };
 
   render() {
-    const { data, pagination } = this.props;
+    const { data } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
         <List
+          disableRefresh
           contentContainerStyle={styles.listContent}
-          loadOnStart={false}
-          action={this.requestData}
           data={data}
-          pagination={pagination}
           renderItem={this.renderItem}
         />
       </View>

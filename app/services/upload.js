@@ -3,7 +3,7 @@ import R from 'ramda';
 import { getUploadToken } from './api';
 import request from '../utils/request';
 import Base64 from 'base-64';
-import Config from 'react-native-config';
+import Config from 'runtime/index';
 
 const typeDirMap = {
   whitepaper: 'whitepaper/',
@@ -43,22 +43,17 @@ function dataURLtoFile(dataurl, filename) {
 }
 
 export async function uploadImage({ image, type }) {
+
   const serverToken = await UploadService(type);
   const form = new FormData();
   const file = dataURLtoFile(image.data, image.fileName);
   form.append('key', `${type}/${file.size}${file.lastModified}-${file.name}`);
   R.mapObjIndexed((key, value) => form.append(value, key))(serverToken);
   form.append('OSSAccessKeyId', serverToken.accessid);
-  form.append('file', file);
+  form.append('file', {type: 'image/*', name: image.fileName, uri: image.uri});
+
   try {
-    await fetch(serverToken.host, {
-      method: 'put',
-      headers: {
-        Authorization: `OSS ${serverToken.signature}`,
-        'Content-Type': 'multipart/form-data',
-      },
-      body: form,
-    });
+    await request.post(serverToken.host, form);
     return {
       ...file,
       name: file.name,

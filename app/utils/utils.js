@@ -265,3 +265,89 @@ export const handleSelection = (params, { key, value }) => {
   data = R.join(',')(data);
   return data;
 };
+
+export const nullOrEmpty = value => R.isNil(value) || R.isEmpty(value);
+
+export const deepCheckEmptyOrNull = array => {
+  return R.reduce((acc, value) => {
+    const isEmptyOrNull = R.pipe(
+      R.keys,
+      R.reduce((accm, v) => {
+        const item = value[v];
+        return accm && nullOrEmpty(item);
+      }, true),
+    )(value);
+    return nullOrEmpty(value) ? acc && true : acc && isEmptyOrNull;
+  }, true)(array);
+};
+
+export const convertToFormData = data => {
+  const finance = R.path(['finances', 0])(data);
+  const start_at = R.path(['start_at'])(finance);
+  const end_at = R.path(['end_at'])(finance);
+  const roadmap = R.pathOr([{}], ['basic', 'roadmap'])(data);
+  const members = R.pathOr([{}], ['members'])(data);
+  const social_network = R.pathOr([{}], ['social_networks'])(data);
+  return {
+    ...data,
+    homepages: R.path(['homepage'])(data),
+    country_origin: R.path(['basic', 'country_origin'])(data),
+    tags: R.pipe(
+      R.pathOr([], ['tags']),
+      R.map(t => t.id),
+    )(data),
+    ...finance,
+    start_at: start_at ? moment.unix(start_at).format('YYYY-MM-DD') : null,
+    end_at: end_at ? moment.unix(end_at).format('YYYY-MM-DD') : null,
+    purpose: R.pipe(
+      R.pathOr([], ['purpose']),
+      R.map(p => p.id),
+    )(data),
+    roadmap: R.isEmpty(roadmap) ? [{}] : roadmap,
+    members: R.isEmpty(members) ? [{}] : members,
+    social_network: R.isEmpty(social_network) ? [{}] : social_network,
+  };
+};
+
+export const convertToPayloadData = data => {
+  return {
+    ...data,
+    homepages: [R.path(['homepage'])(data)],
+    basic: [
+      {
+        country_origin: R.path(['country_origin'])(data),
+        roadmap: R.pipe(
+          R.path(['roadmap']),
+          R.filter(r => !R.isEmpty(r)),
+        )(data),
+      },
+    ],
+    finance: [
+      {
+        start_at: R.path(['start_at'])(data),
+        end_at: R.path(['end_at'])(data),
+        soft_cap: R.path(['soft_cap'])(data),
+        hard_cap: R.path(['hard_cap'])(data),
+        token_accepted: R.path(['token_accepted'])(data),
+      },
+    ],
+    members: R.pipe(
+      R.path(['members']),
+      R.filter(m => !R.isEmpty(m)),
+    )(data),
+    social_network: R.pipe(
+      R.path(['social_network']),
+      R.filter(s => !R.isEmpty(s)),
+    )(data),
+    purpose: R.pipe(
+      R.path(['purpose']),
+      R.map(p => ({
+        id: p,
+      })),
+    )(data),
+    tags: R.pipe(
+      R.path(['tags']),
+      R.map(t => ({ id: t })),
+    )(data),
+  };
+};

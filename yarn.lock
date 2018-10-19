@@ -952,9 +952,9 @@ async-limiter@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
 
-async-validator@1.x:
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-1.8.2.tgz#b77597226e96242f8d531c0d46ae295f62422ba4"
+async-validator@~1.8.5:
+  version "1.8.5"
+  resolved "https://registry.yarnpkg.com/async-validator/-/async-validator-1.8.5.tgz#dc3e08ec1fd0dddb67e60842f02c0cd1cec6d7f0"
   dependencies:
     babel-runtime "6.x"
 
@@ -6209,11 +6209,11 @@ rc-collapse@~1.9.1:
     prop-types "^15.5.6"
     rc-animate "2.x"
 
-rc-form@2.2.1:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/rc-form/-/rc-form-2.2.1.tgz#9c6d968f1460fd3872d2e9371324d717775af260"
+rc-form@^2.2.5:
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/rc-form/-/rc-form-2.2.5.tgz#a7cdf21bdec31ee667f3ceb8acca68484e35c69a"
   dependencies:
-    async-validator "1.x"
+    async-validator "~1.8.5"
     babel-runtime "6.x"
     create-react-class "^15.5.3"
     dom-scroll-into-view "1.x"

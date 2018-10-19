@@ -37,6 +37,7 @@ import Login from 'container/auth/login';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
+import CommentCoin from 'container/main/public_project/comment';
 import InstitutionReport from 'container/main/public_project/institution_report';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
 import Fund from 'container/main/fund';
@@ -82,6 +83,9 @@ import Announcement from 'container/main/announcement/index';
 import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
+import PRService from 'container/main/service/pr';
+import PRServiceDetail from 'container/main/service/pr/detail';
+import WhitePaper from 'container/main/public_project/whitepaper';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -94,8 +98,19 @@ import IndividualProfile from 'container/individual/self/profile/mine';
 import IndividualEditProfile from 'container/individual/self/profile/edit';
 import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
-import PRService from 'container/main/service/pr';
-import PRServiceDetail from 'container/main/service/pr/detail';
+import MyProject from 'container/individual/self/my_project';
+import CreateMyProject from 'container/individual/self/my_project/create';
+import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
+import CreateMyProjectNormal from 'container/individual/self/my_project/create/normal';
+import CreateMyProjectBasicInfo from 'container/individual/self/my_project/create/normal/steps/basic';
+import CreateMyProjectDescription from 'container/individual/self/my_project/create/normal/steps/description';
+import CreateMyProjectTeam from 'container/individual/self/my_project/create/normal/steps/team';
+import CreateMyProjectSocial from 'container/individual/self/my_project/create/normal/steps/social';
+import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/normal/steps/roadmap';
+import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
+import ClaimMyProject from 'container/individual/self/my_project/create/claim';
+import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
+import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -221,10 +236,12 @@ const MainStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WhitePaper,
     WebPage,
     Settings,
     PRService,
     PRServiceDetail,
+    CommentCoin,
   },
   {
     headerMode: 'none',
@@ -289,6 +306,20 @@ const IndividualTab = createBottomTabNavigator(
   },
 );
 
+const ProjectCreate = createStackNavigator(
+  {
+    CreateMyProjectBasicInfo,
+    CreateMyProjectDescription,
+    CreateMyProjectTeam,
+    CreateMyProjectSocial,
+    CreateMyProjectRoadMap,
+    CreateMyProjectFunding,
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
@@ -317,9 +348,21 @@ const IndividualStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WhitePaper,
     WebPage,
     PRService,
     PRServiceDetail,
+    MyProject,
+    CreateMyProject,
+    CreateMyProjectSearch,
+    CreateMyProjectNormal,
+    CreateMyProjectNormalWrapper: {
+      screen: ProjectCreate,
+    },
+    ClaimMyProject,
+    CreateMyProjectDone,
+    CreateMyProjectTagSelect,
+    CommentCoin,
   },
   {
     headerMode: 'none',
