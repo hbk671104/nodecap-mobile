@@ -72,6 +72,18 @@ class OptionalClaimProject extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderFooter = () => (
+    <Button
+      title="继续创建"
+      onPress={this.handleNextPress}
+      renderTop={() => (
+        <View style={styles.notice.container}>
+          <Text style={styles.notice.text}>都不是您的项目？继续创建项目</Text>
+        </View>
+      )}
+    />
+  );
+
   render() {
     const { data } = this.props;
     return (
@@ -84,17 +96,7 @@ class OptionalClaimProject extends Component {
           data={data}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
-        />
-        <Button
-          title="继续创建"
-          onPress={this.handleNextPress}
-          renderTop={() => (
-            <View style={styles.notice.container}>
-              <Text style={styles.notice.text}>
-                都不是您的项目？继续创建项目
-              </Text>
-            </View>
-          )}
+          renderFooter={this.renderFooter}
         />
       </View>
     );

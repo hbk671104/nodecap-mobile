@@ -39,18 +39,23 @@ function dataURLtoFile(dataurl, filename) {
   while (n--) {
     u8arr[n] = bstr.charCodeAt(n);
   }
-  return new File([u8arr], filename, { type: 'image/*' });
+  return new File([u8arr], filename || `${moment().format('X')}.jpg`, {
+    type: 'image/*',
+  });
 }
 
 export async function uploadImage({ image, type }) {
-
   const serverToken = await UploadService(type);
   const form = new FormData();
   const file = dataURLtoFile(image.data, image.fileName);
   form.append('key', `${type}/${file.size}${file.lastModified}-${file.name}`);
   R.mapObjIndexed((key, value) => form.append(value, key))(serverToken);
   form.append('OSSAccessKeyId', serverToken.accessid);
-  form.append('file', {type: 'image/*', name: image.fileName, uri: image.uri});
+  form.append('file', {
+    type: 'image/*',
+    name: image.fileName,
+    uri: image.uri,
+  });
 
   try {
     await request.post(serverToken.host, form);

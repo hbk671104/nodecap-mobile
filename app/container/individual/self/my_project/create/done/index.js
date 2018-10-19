@@ -42,12 +42,12 @@ class CreateProjectDone extends Component {
           <Image source={require('asset/project_create/in_review.png')} />
           <Text style={styles.content.title}>审核中</Text>
           <Text style={styles.content.subtitle}>
-            {'1小时内将审核完成，请耐心等待\n有问题请联系'}{' '}
+            {'将在1小时内审核完成，请耐心等待\n如有问题请垂询'}{' '}
             <Text
               style={{ color: '#1890FF' }}
-              onPress={this.handlePhonePress('18511092920')}
+              onPress={this.handlePhonePress('18500193244')}
             >
-              18511092920
+              18500193244
             </Text>
           </Text>
         </View>

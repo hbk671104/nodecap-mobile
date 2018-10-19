@@ -49,6 +49,7 @@ class CommentCoin extends Component {
           )}
         />
         <TextInput
+          autoFocus
           multiline
           ref={ref => {
             this.textInput = ref;
