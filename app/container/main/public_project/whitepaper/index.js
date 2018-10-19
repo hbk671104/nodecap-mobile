@@ -48,7 +48,7 @@ export default class WhitePaperDetail extends Component {
       if (index !== 2) {
         const request = {
           type: 'news',
-          webpageUrl: `${Config.MOBILE_SITE}/whitepaper/${id}`,
+          webpageUrl: `${Config.MOBILE_SITE}/white-paper?id=${id}`,
           title: `「白皮书」${navigation.getParam('title')}`,
           description: '来 Hotnode, 发现最新最热项目！',
           thumbImage: 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',

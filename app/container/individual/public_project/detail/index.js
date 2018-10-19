@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, TouchableWithoutFeedback, Image, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -21,6 +21,7 @@ import Selector from './selector';
 import Bottom from './bottom';
 import styles from './style';
 
+const window = Dimensions.get('window');
 const calcHeaderHeight = ({ can_calculate, purpose }) => {
   let baseHeight = headerHeight;
   if (can_calculate) {
@@ -129,7 +130,17 @@ export default class PublicProjectDetail extends Component {
       id: this.props.id,
     });
   }
-
+  onPressClaimCoin = () => {
+    this.props.track('点击认领按钮');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ClaimMyProject',
+        params: {
+          project_id: this.props.id,
+        },
+      }),
+    );
+  }
   loadDetail = () => {
     this.props.dispatch({
       type: 'public_project/get',
@@ -283,6 +294,17 @@ export default class PublicProjectDetail extends Component {
           title={R.pathOr('', ['name'])(portfolio)}
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
+        <View style={{
+          position: 'absolute',
+          right: 0,
+          top: window.height / 2,
+          zIndex: 200,
+        }}
+        >
+          <TouchableWithoutFeedback onPress={this.onPressClaimCoin}>
+            <Image style={{ height: 28, width: 68 }} source={require('asset/project/detail/claim.png')} />
+          </TouchableWithoutFeedback>
+        </View>
         <Animated.ScrollView
           ref={ref => {
             this.scroll = ref;
@@ -290,6 +312,7 @@ export default class PublicProjectDetail extends Component {
           contentContainerStyle={{
             paddingTop: height,
           }}
+          showsVerticalScrollIndicator={false}
           scrollEventThrottle={1}
           stickyHeaderIndices={[2]}
           onScroll={Animated.event(

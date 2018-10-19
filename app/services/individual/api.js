@@ -74,22 +74,12 @@ export function trendList(payload = {}) {
 }
 
 export const myProjectList = params => {
-  // const paramsTransform = p => ({
-  //   ...params,
-  //   page: p.currentPage,
-  //   'per-page': p.pageSize,
-  // });
   return request.get('/coins/owned', {
     params,
   });
 };
 
 export const searchProject = params => {
-  // const paramsTransform = p => ({
-  //   ...params,
-  //   page: p.currentPage,
-  //   'per-page': p.pageSize,
-  // });
   return request.get('/coins/public', {
     params,
   });
@@ -106,3 +96,10 @@ export const editMyProject = ({ id, payload }) => {
 export const claimMyProject = ({ id, payload }) => {
   return request.post(`/coins/${id}/own`, payload);
 };
+
+export function submitComment(coin_id, content) {
+  return request.post('/user/share-comment', {
+    coin_id,
+    content,
+  });
+}

@@ -4,11 +4,18 @@ import { Flex } from 'antd-mobile';
 import NavBar from 'component/navBar';
 import { withState } from 'recompose';
 import ShareModal from '../../../individual/public_project/detail/share';
+import { submitComment } from '../../../../services/individual/api';
 
 @withState('showShareModal', 'toggleShareModal', false)
 @withState('textCount', 'setTextCount', 0)
 @withState('comment', 'setComment', '')
 class CommentCoin extends Component {
+  onComment = () => {
+    const coin = this.props.navigation.getParam('coin');
+    this.props.toggleShareModal(true);
+    submitComment(coin.id, this.props.comment);
+  }
+
   clearInput = () => {
     this.props.setTextCount(0);
     this.props.setComment('');
@@ -22,7 +29,7 @@ class CommentCoin extends Component {
           gradient
           title="点评"
           renderRight={() => (
-            <TouchableWithoutFeedback onPress={() => this.props.toggleShareModal(true)}>
+            <TouchableWithoutFeedback onPress={this.onComment}>
               <Text style={{ fontSize: 14, color: '#FFFFFF' }}>分享</Text>
             </TouchableWithoutFeedback>
           )}
@@ -36,7 +43,6 @@ class CommentCoin extends Component {
             marginVertical: 20,
           }}
           maxLength={200}
-          value={this.props.comment}
           onChangeText={(text) => {
             if (text) {
               this.props.setTextCount(text.length);

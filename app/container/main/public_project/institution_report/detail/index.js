@@ -49,7 +49,7 @@ export default class InstitutionReportDetail extends Component {
       if (index !== 2) {
         const request = {
           type: 'news',
-          webpageUrl: `${Config.MOBILE_SITE}/industry-report/${id}`,
+          webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${id}`,
           title: `「研报」${navigation.getParam('title')}`,
           description: '来 Hotnode, 发现最新最热研报！',
           thumbImage: 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',

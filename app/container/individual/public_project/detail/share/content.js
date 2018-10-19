@@ -14,6 +14,7 @@ import MemberItem from 'component/project/description/member';
 import InstitutionItem from '../page/description/institutionItem';
 import SocialNetworkItem from '../page/description/socialNetworkItem';
 import Roadmap from '../page/description/roadmap';
+import Rating from './rating';
 import styles from './styles';
 
 const window = Dimensions.get('window');
@@ -60,20 +61,7 @@ class ShareCoinContent extends Component {
         <View style={styles.group}>
           {renderTitle('评级信息')}
           {(risk_score || invest_score) && (
-            <Flex style={styles.groupContent}>
-              {risk_score && (
-                <Flex align="center">
-                  <Text style={styles.groupContentText}>风险评估</Text>
-                  <Text style={styles.highLight}>{risk_score}</Text>
-                </Flex>
-              )}
-              {invest_score && (
-                <Flex align="center" style={{ marginLeft: 46 }}>
-                  <Text style={styles.groupContentText}>投资评分</Text>
-                  <Text style={styles.highLight}>{invest_score || '无'}</Text>
-                </Flex>
-              )}
-            </Flex>
+            <Rating {...this.props} />
           )}
           <Text style={[styles.groupContentTip]}>
             - 长按底部二维码，查看更多募资信息
