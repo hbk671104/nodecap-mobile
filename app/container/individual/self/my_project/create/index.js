@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { compose, withState } from 'recompose';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
-import Touchable from 'component/uikit/touchable';
 import Item from 'component/self/item';
 
 import Button from '../component/button';
@@ -16,28 +14,24 @@ import styles from './style';
   page: '创建我的项目',
   name: 'App_MyProjectCreateOperation',
 })
-@connect(({ user, login, loading }) => ({
-  data: [],
-  //   loading: loading.effects['login/switch'],
+@connect(({ project_create }) => ({
+  current: R.pathOr({}, ['current'])(project_create),
 }))
-@compose(withState('projectName', 'setProjectName', ''))
 class CreateProject extends Component {
+  componentWillMount() {
+    this.props.dispatch({
+      type: 'project_create/resetCurrent',
+    });
+  }
+
   componentDidMount() {
     this.props.track('进入');
   }
-
-  handleOnProjectSave = text => {
-    this.props.setProjectName(text);
-    this.props.dispatch(NavigationActions.back());
-  };
 
   handleProjectNamePress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateMyProjectSearch',
-        params: {
-          onProjectSave: this.handleOnProjectSave,
-        },
       }),
     );
   };
@@ -51,7 +45,8 @@ class CreateProject extends Component {
   };
 
   render() {
-    const { data, loading, projectName } = this.props;
+    const { current } = this.props;
+    const name = R.pathOr('', ['name'])(current);
     return (
       <View style={styles.container}>
         <NavBar back gradient title="创建项目" />
@@ -63,7 +58,7 @@ class CreateProject extends Component {
             title="项目名称"
             renderRight={() => (
               <View style={styles.item.content.container}>
-                <Text style={styles.item.content.text}>{projectName}</Text>
+                <Text style={styles.item.content.text}>{name}</Text>
               </View>
             )}
             onPress={this.handleProjectNamePress}
@@ -71,7 +66,7 @@ class CreateProject extends Component {
           <View style={styles.divider} />
         </ScrollView>
         <Button
-          disabled={R.isEmpty(projectName)}
+          disabled={R.isEmpty(name)}
           title="下一步"
           onPress={this.handleNextPress}
         />

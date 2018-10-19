@@ -52,6 +52,7 @@ export default options => {
         'coinSets/fetchCoins',
         'project_create/fetch',
         'project_create/claimProject',
+        'project_create/submitProject',
       ],
     }),
   );

@@ -173,11 +173,11 @@ class Self extends Component {
                 title="我的项目"
                 onPress={this.handleMyProjectPress}
               />
-              <Item
+              {/* <Item
                 icon={require('asset/mine/institution_join.png')}
                 title="机构入驻通道"
                 onPress={this.handleInstitutionJoinPress}
-              />
+              /> */}
               <View style={styles.scroll.divider} />
             </View>
           )}

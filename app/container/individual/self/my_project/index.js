@@ -43,6 +43,10 @@ class MyProject extends Component {
   };
 
   handleItemPress = item => () => {
+    this.props.dispatch({
+      type: 'project_create/setCurrent',
+      payload: item,
+    });
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'CreateMyProjectNormalWrapper',

@@ -280,3 +280,61 @@ export const deepCheckEmptyOrNull = array => {
     return nullOrEmpty(value) ? acc && true : acc && isEmptyOrNull;
   }, true)(array);
 };
+
+export const convertToFormData = data => {
+  const start_at = R.path(['start_at'])(data);
+  const end_at = R.path(['end_at'])(data);
+  return {
+    ...data,
+    homepages: R.path(['homepage'])(data),
+    tags: R.pipe(
+      R.pathOr([], ['tags']),
+      R.map(t => t.id),
+    )(data),
+    start_at: start_at ? moment.unix(start_at).format('YYYY-MM-DD') : null,
+    end_at: end_at ? moment.unix(end_at).format('YYYY-MM-DD') : null,
+  };
+};
+
+export const convertToPayloadData = data => {
+  return {
+    ...data,
+    homepages: [R.path(['homepage'])(data)],
+    basic: [
+      {
+        country_origin: R.path(['country_origin'])(data),
+        roadmap: R.pipe(
+          R.path(['roadmap']),
+          R.filter(r => !R.isEmpty(r)),
+        )(data),
+      },
+    ],
+    finance: [
+      {
+        start_at: R.path(['start_at'])(data),
+        end_at: R.path(['end_at'])(data),
+        soft_cap: R.path(['soft_cap'])(data),
+        hard_cap: R.path(['hard_cap'])(data),
+        token_accepted: R.path(['token_accepted'])(data),
+      },
+    ],
+    members: R.pipe(
+      R.path(['members']),
+      R.filter(m => !R.isEmpty(m)),
+    )(data),
+    social_network: R.pipe(
+      R.path(['social_network']),
+      R.filter(s => !R.isEmpty(s)),
+    )(data),
+    purpose: R.pipe(
+      R.path(['purpose']),
+      R.map(p => ({
+        id: p,
+      })),
+    )(data),
+    tags: R.pipe(
+      R.path(['tags']),
+      R.map(t => ({ id: t })),
+    )(data),
+  };
+};

@@ -139,7 +139,10 @@ class Social extends PureComponent {
             titleStyle={styles.inputItem.title}
             title="粉丝数"
             placeholder="请输入社群粉丝数"
-            inputProps={{ style: styles.inputItem.input }}
+            inputProps={{
+              style: styles.inputItem.input,
+              keyboardType: 'number-pad',
+            }}
           />,
         )}
         {index > 0 && (

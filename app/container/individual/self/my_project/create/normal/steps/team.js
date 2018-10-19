@@ -167,7 +167,10 @@ class Team extends PureComponent {
             titleStyle={styles.inputItem.title}
             title="手机号"
             placeholder="请输入成员手机号"
-            inputProps={{ style: styles.inputItem.input }}
+            inputProps={{
+              style: styles.inputItem.input,
+              keyboardType: 'number-pad',
+            }}
             error={getFieldError(`members[${index}].mobile`)}
           />,
         )}

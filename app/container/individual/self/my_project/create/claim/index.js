@@ -24,7 +24,9 @@ import styles from './style';
   return {
     id,
     owner: R.pathOr({}, ['owner'])(project_create),
-    submitting: loading.effects['project_create/claimProject'],
+    submitting:
+      loading.effects['project_create/claimProject'] ||
+      loading.effects['project_create/submitProject'],
   };
 })
 @createForm({
@@ -85,7 +87,7 @@ class ClaimProject extends Component {
   handleSubmit = value => {
     const { id } = this.props;
     this.props.dispatch({
-      type: id ? 'project_create/claimProject' : '///',
+      type: id ? 'project_create/claimProject' : 'project_create/submitProject',
       id,
       payload: value,
       callback: success => {

@@ -1,5 +1,7 @@
+import R from 'ramda';
 import * as Individual from 'services/individual/api';
 import { paginate } from 'utils/pagination';
+import { convertToFormData, convertToPayloadData } from 'utils/utils';
 
 const initialCurrent = {
   members: [{}],
@@ -40,7 +42,7 @@ export default {
     ],
     list: null,
     query: null,
-    current: initialCurrent,
+    current: null,
     owner: null,
   },
   effects: {
@@ -68,13 +70,91 @@ export default {
         console.log(error);
       }
     },
-    *claimProject({ id, payload, callback }, { put, all, call }) {
+    *claimProject({ id, payload, callback }, { put, call }) {
       try {
         const { status } = yield call(Individual.claimMyProject, {
           id,
           payload,
         });
 
+        yield put({
+          type: 'refresh',
+        });
+
+        if (callback) {
+          yield callback(status === 200);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *submitProject({ callback }, { select, put }) {
+      try {
+        const owner = yield select(state =>
+          R.path(['project_create', 'owner'])(state),
+        );
+        const current = yield select(state =>
+          R.path(['project_create', 'current'])(state),
+        );
+
+        const sanitized_data = convertToPayloadData({
+          ...current,
+          owner: [owner],
+        });
+
+        if (current.id) {
+          yield put.resolve({
+            type: 'editProject',
+            id: current.id,
+            payload: sanitized_data,
+            callback,
+          });
+        } else {
+          yield put.resolve({
+            type: 'createProject',
+            payload: sanitized_data,
+            callback,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *createProject({ payload, callback }, { put, call }) {
+      try {
+        const { status } = yield call(Individual.createMyProject, payload);
+
+        yield put({
+          type: 'refresh',
+        });
+
+        if (callback) {
+          yield callback(status === 200);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *editProject({ id, payload, callback }, { put, call }) {
+      try {
+        const { status } = yield call(Individual.editMyProject, {
+          id,
+          payload,
+        });
+
+        yield put({
+          type: 'refresh',
+        });
+
+        if (callback) {
+          yield callback(status === 200);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *refresh(_, { put, all }) {
+      try {
         yield all([
           // refresh list
           put({
@@ -86,17 +166,13 @@ export default {
           }),
           // reset current
           put({
-            type: 'resetCurrent',
+            type: 'clearCurrent',
           }),
           // clear query
           put({
             type: 'clearQuery',
           }),
         ]);
-
-        if (callback) {
-          yield callback(status === 200);
-        }
       } catch (error) {
         console.log(error);
       }
@@ -130,10 +206,22 @@ export default {
         },
       };
     },
+    setCurrent(state, { payload }) {
+      return {
+        ...state,
+        current: convertToFormData({ ...initialCurrent, ...payload }),
+      };
+    },
     resetCurrent(state) {
       return {
         ...state,
         current: initialCurrent,
+      };
+    },
+    clearCurrent(state) {
+      return {
+        ...state,
+        current: null,
       };
     },
     saveOwner(state, { payload }) {
