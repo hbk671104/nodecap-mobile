@@ -23,7 +23,7 @@ class Roadmap extends Component {
   };
 
   render() {
-    const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
+    const roadmap = R.pathOr([], ['roadmap'])(this.props);
     return (
       <View>
         {roadmap.map((i, index) => {

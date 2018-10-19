@@ -59,7 +59,6 @@ class MyProfile extends Component {
         <NavBar barStyle={this.state.barStyle} gradient back title="我的信息" />
         <ScrollView>
           <ListItem
-            disablePress
             title="头像"
             titleStyle={styles.listItem.title}
             renderContent={() => (

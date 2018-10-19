@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Platform } from 'react-native';
+import { Platform, Clipboard } from 'react-native';
 import JPush from 'jpush-react-native';
 import {
   getUser,
@@ -111,7 +111,7 @@ export default {
         }
         yield call(updateUserProfile, {
           ...payload,
-          avatar_url: R.prop('url')(R.head()(uploadRes || [])),
+          avatar_url: R.prop('url')(uploadRes),
         });
         yield put({
           type: 'fetchCurrent',

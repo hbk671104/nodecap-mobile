@@ -7,7 +7,7 @@ import {
   Linking,
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Flex, Modal } from 'antd-mobile';
+import { Flex, Modal, Grid } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
@@ -26,10 +26,11 @@ export default class Description extends PureComponent {
   handleDocPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'InstitutionReportDetail',
+        routeName: 'WhitePaper',
         params: {
           pdf_url: item.path_url,
-          title: item.filename,
+          title: R.path(['portfolio', 'name'])(this.props),
+          id: R.path(['portfolio', 'id'])(this.props),
         },
       }),
     );
@@ -66,6 +67,7 @@ export default class Description extends PureComponent {
       'portfolio',
       'industry_investments',
     ])(this.props);
+    const country_origin = R.pathOr('', ['portfolio', 'basic', 'country_origin'])(this.props);
 
     return (
       <View style={styles.container}>
@@ -99,6 +101,16 @@ export default class Description extends PureComponent {
               onPress={() => this.handleUrlPress(siteUrl)}
             >
               {siteUrl}
+            </Text>
+          </View>
+        )}
+        {R.not(R.isEmpty(country_origin)) && (
+          <View>
+            <Text style={[styles.title, styles.site]}>国别</Text>
+            <Text
+              style={styles.desc}
+            >
+              {country_origin}
             </Text>
           </View>
         )}
@@ -150,8 +162,14 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(social_network)) && (
           <View>
             <Text style={[styles.title, styles.site]}>媒体信息</Text>
-            <Flex wrap="wrap">
-              {R.addIndex(R.map)((m, i) => (
+            <Grid
+              data={social_network}
+              columnNum={3}
+              hasLine={false}
+              itemStyle={{
+                height: 74,
+              }}
+              renderItem={(m, i) => (
                 <SocialNetworkItem
                   style={{ paddingHorizontal: 0 }}
                   key={`${i}`}
@@ -169,8 +187,8 @@ export default class Description extends PureComponent {
                     );
                   }}
                 />
-              ))(social_network)}
-            </Flex>
+              )}
+            />
           </View>
         )}
         <Financing {...this.props} />
@@ -200,7 +218,7 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(roadmap)) && (
           <View>
             <Text style={[styles.title, styles.site]}>路线图</Text>
-            <Roadmap {...this.props} />
+            <Roadmap {...this.props} roadmap={roadmap} />
           </View>
         )}
       </View>

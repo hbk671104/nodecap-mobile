@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, ViewPropTypes } from 'react-native';
+import { View, Text, ViewPropTypes, Image } from 'react-native';
+import Accounting from 'accounting';
+
 
 import Touchable from 'component/uikit/touchable';
 import { SolidAvatar } from 'component/uikit/avatar';
@@ -13,17 +15,24 @@ const iconMap = {
   medium: require('asset/social_network/medium-2.png'),
   youtube: require('asset/social_network/youtube.png'),
 };
-const item = ({ style, name, onPress }) => {
+const item = ({ style, name, fans_count, onPress }) => {
   const icon = iconMap[name.toLowerCase()];
   if (!icon) {
     return null;
   }
+  const fansCount = fans_count ? (
+    <View>
+      <Text style={styles.content.fansCount}>{Accounting.formatNumber(fans_count)}</Text>
+      <Text style={styles.content.fansLabel}>成员数</Text>
+    </View>
+  ) : null;
   return (
     <Touchable foreground onPress={onPress}>
       <View style={[styles.container, style]}>
-        <SolidAvatar size={40} innerRatio={2 / 5} source={icon} />
+        <Image source={icon} style={{ width: 25, height: 25, resizeMode: 'contain' }} />
         <View style={styles.content.container}>
           <Text style={styles.content.title}>{name}</Text>
+          {fansCount}
         </View>
       </View>
     </Touchable>
@@ -42,19 +51,24 @@ item.defaultProps = {
 export const itemHeight = 66;
 const styles = {
   container: {
+    flexDirection: 'row',
     justifyContent: 'center',
-    marginRight: 17,
+    alignItems: 'center',
+    borderWidth: 0.5,
+    borderColor: '#e9e9e9',
+    padding: 10,
+    height: itemHeight,
+    marginRight: 10,
+    borderRadius: 2,
   },
   content: {
     container: {
-      flex: 1,
+      width: 50,
+      marginLeft: 15,
     },
-    title: {
-      marginTop: 5,
-      fontSize: 10,
-      color: 'rgba(0, 0, 0, 0.65)',
-      textAlign: 'center',
-    },
+    title: { fontSize: 11, color: 'rgba(0,0,0,0.85)', letterSpacing: 0.13 },
+    fansCount: { fontSize: 11, color: '#1890FF', letterSpacing: 0.13, marginTop: 5 },
+    fansLabel: { fontSize: 10, color: 'rgba(0,0,0,0.45)', letterSpacing: 0.12 },
   },
 };
 

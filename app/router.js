@@ -37,6 +37,7 @@ import Login from 'container/auth/login';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
+import CommentCoin from 'container/main/public_project/comment';
 import InstitutionReport from 'container/main/public_project/institution_report';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
 import Fund from 'container/main/fund';
@@ -84,6 +85,7 @@ import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
 import PRService from 'container/main/service/pr';
 import PRServiceDetail from 'container/main/service/pr/detail';
+import WhitePaper from 'container/main/public_project/whitepaper';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -234,10 +236,12 @@ const MainStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WhitePaper,
     WebPage,
     Settings,
     PRService,
     PRServiceDetail,
+    CommentCoin,
   },
   {
     headerMode: 'none',
@@ -344,6 +348,7 @@ const IndividualStack = createStackNavigator(
     Announcement,
     Institution,
     InstitutionDetail,
+    WhitePaper,
     WebPage,
     PRService,
     PRServiceDetail,
@@ -357,6 +362,7 @@ const IndividualStack = createStackNavigator(
     ClaimMyProject,
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
+    CommentCoin,
   },
   {
     headerMode: 'none',
