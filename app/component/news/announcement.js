@@ -62,7 +62,7 @@ const styles = {
       marginTop: 10,
     },
     subtitle: {
-      fontSize: 13,
+      fontSize: 14,
       color: 'rgba(0, 0, 0, 0.45)',
     },
   },

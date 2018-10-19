@@ -34,11 +34,11 @@ const newsItem = props => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.label.wrapper}>
+      {/* <View style={styles.label.wrapper}>
         <View style={styles.label.container}>
           <Text style={styles.label.text}># {combo.title}</Text>
         </View>
-      </View>
+      </View> */}
       <combo.component {...props} />
     </View>
   );

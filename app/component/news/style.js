@@ -22,8 +22,8 @@ export default {
     },
   },
   title: {
-    fontSize: 16,
-    lineHeight: 23,
+    fontSize: 17,
+    lineHeight: 26,
     color: 'black',
     fontWeight: 'bold',
   },
@@ -32,9 +32,9 @@ export default {
       marginTop: 8,
     },
     text: {
-      fontSize: 14,
+      fontSize: 15,
       color: 'rgba(0, 0, 0, 0.65)',
-      lineHeight: 21,
+      lineHeight: 26,
     },
   },
   date: {
