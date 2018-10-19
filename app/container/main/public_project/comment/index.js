@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TextInput, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, TextInput, Text, TouchableWithoutFeedback, Platform } from 'react-native';
 import { Flex } from 'antd-mobile';
 import NavBar from 'component/navBar';
 import { withState } from 'recompose';
@@ -13,12 +13,18 @@ class CommentCoin extends Component {
   onComment = () => {
     const coin = this.props.navigation.getParam('coin');
     this.props.toggleShareModal(true);
-    submitComment(coin.id, this.props.comment);
+    if (this.props.comment) {
+      submitComment(coin.id, this.props.comment);
+    }
   }
 
   clearInput = () => {
     this.props.setTextCount(0);
     this.props.setComment('');
+    if (this.textInput) {
+      if (Platform.OS === 'ios') this.textInput.setNativeProps({ text: ' ' });
+      setTimeout(() => { this.textInput.setNativeProps({ text: '' }); }, 5);
+    }
   }
   render() {
     const coin = this.props.navigation.getParam('coin');
@@ -36,6 +42,9 @@ class CommentCoin extends Component {
         />
         <TextInput
           multiline
+          ref={(ref) => {
+            this.textInput = ref;
+          }}
           style={{
             height: 226,
             verticalAlign: 'top',
