@@ -178,7 +178,7 @@ class ShareCoin extends Component {
                   source={require('asset/coin_share/wave_bottom.png')}
                   style={[styles.backgroundImage, { height: 182, bottom: 0, left: 0 }, styles.wave]}
                 />
-                {!comment ? <CommentContent comment={comment} /> : (
+                {comment ? <CommentContent comment={comment} /> : (
                   <Image
                     source={require('asset/coin_share/share_header.png')}
                     style={[styles.backgroundImage, { width: 314, height: 68, zIndex: 20, marginTop: 35, marginBottom: 30, alignSelf: 'center' }]}

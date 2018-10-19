@@ -9,8 +9,8 @@ import R from 'ramda';
 class CommentShare extends Component {
   render() {
     const name = R.path(['user', 'realname'])(this.props);
-    const title = R.path(['user', 'title'])(this.props);
-    const company = R.path(['user', 'company'])(this.props);
+    const title = R.path(['user', 'profile', 'title'])(this.props);
+    const company = R.path(['user', 'profile', 'company'])(this.props);
     const avatar_url = R.path(['user', 'avatar_url'])(this.props);
     const comment = R.path(['comment'])(this.props);
 
@@ -26,7 +26,7 @@ class CommentShare extends Component {
               >
                 <Image
                   source={avatar_url ? { uri: avatar_url } : require('asset/project/project_logo_default.png')}
-                  style={{ width: 100, height: 100, borderRadius: 50 }}
+                  style={{ width: 100, height: 100, borderRadius: 50, resizeMode: 'contain' }}
                 />
               </ImageBackground>
             </View>
@@ -39,7 +39,7 @@ class CommentShare extends Component {
           </View>
         )}
         <View style={{ marginTop: 15 }}>
-          <Text style={style.poster.commentText}>{comment}</Text>
+          <Text style={style.poster.commentText}>“{comment}”</Text>
           <Image
             source={require('asset/coin_share/comment_arrow.png')}
             style={{ width: 659 / 2, height: 10, marginBottom: 23.75, marginTop: 10 }}
