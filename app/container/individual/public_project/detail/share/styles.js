@@ -136,8 +136,8 @@ export default {
       marginTop: 10,
     },
     qr: {
-      width: 60,
-      height: 60,
+      width: 80,
+      height: 80,
     },
   },
   siteUrl: {
