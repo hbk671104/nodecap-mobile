@@ -121,7 +121,6 @@ export default class Description extends PureComponent {
               }}
               renderItem={(m, i) => (
                 <SocialNetworkItem
-                  style={{ paddingHorizontal: 0 }}
                   key={`${i}`}
                   name={m.name}
                   fans_count={m.fans_count}

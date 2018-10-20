@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text, ViewPropTypes, Image } from 'react-native';
+import { Flex } from 'antd-mobile';
 import Accounting from 'accounting';
 
 
@@ -28,13 +29,13 @@ const item = ({ style, name, fans_count, onPress }) => {
   ) : null;
   return (
     <Touchable foreground onPress={onPress}>
-      <View style={[styles.container, style]}>
+      <Flex align="center" justify="around" style={[styles.container, style]}>
         <Image source={icon} style={{ width: 25, height: 25, resizeMode: 'contain' }} />
         <View style={styles.content.container}>
           <Text style={styles.content.title}>{name}</Text>
           {fansCount}
         </View>
-      </View>
+      </Flex>
     </Touchable>
   );
 };
@@ -51,9 +52,6 @@ item.defaultProps = {
 export const itemHeight = 66;
 const styles = {
   container: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
     borderWidth: 0.5,
     borderColor: '#e9e9e9',
     padding: 10,
