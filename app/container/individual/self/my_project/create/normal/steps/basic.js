@@ -38,8 +38,8 @@ import styles from './style';
       },
     });
   },
-  mapPropsToFields: ({ current }) =>
-    R.pipe(
+  mapPropsToFields: ({ current }) => {
+    return R.pipe(
       R.keys,
       R.reduce(
         (acc, key) => ({
@@ -50,7 +50,8 @@ import styles from './style';
         }),
         {},
       ),
-    )(current),
+    )(current);
+  },
 })
 class BasicInfo extends PureComponent {
   state = {
