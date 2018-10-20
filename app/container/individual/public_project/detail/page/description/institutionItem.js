@@ -4,7 +4,7 @@ import { View, Text, ViewPropTypes } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
-import Avatar from 'component/uikit/avatar';
+import { SolidAvatar } from 'component/uikit/avatar';
 
 const item = ({ style, data, onPress, disableSubtitle }) => {
   const title = R.pathOr('--', ['name'])(data);
@@ -13,7 +13,7 @@ const item = ({ style, data, onPress, disableSubtitle }) => {
   return (
     <Touchable foreground onPress={onPress}>
       <View style={[styles.container, style]}>
-        <Avatar source={{ uri: logo_url }} />
+        <SolidAvatar source={{ uri: logo_url }} />
         <View style={styles.content.container}>
           <Text style={styles.content.title}>{title}</Text>
         </View>
@@ -35,7 +35,7 @@ export const itemHeight = 66;
 const styles = {
   container: {
     justifyContent: 'center',
-    marginRight: 32,
+    marginRight: 23,
   },
   content: {
     container: {

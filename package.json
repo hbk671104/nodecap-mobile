@@ -1,6 +1,6 @@
 {
   "name": "nodecap",
-  "version": "6.2.0",
+  "version": "6.3.0",
   "private": true,
   "scripts": {
     "precommit": "npm run lint-staged",
@@ -37,7 +37,7 @@
     "lodash-decorators": "^6.0.0",
     "moment": "^2.22.2",
     "ramda": "^0.25.0",
-    "rc-form": "2.2.1",
+    "rc-form": "^2.2.5",
     "react": "16.3.1",
     "react-native": "0.55.4",
     "react-native-animatable": "^1.3.0",

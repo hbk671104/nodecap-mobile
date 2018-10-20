@@ -17,7 +17,15 @@ export default class InstitutionWebsite extends Component {
           title={title}
           titleContainerStyle={{ paddingHorizontal: 42 }}
         />
-        <WebView startInLoadingState source={{ uri }} />
+        <WebView
+          startInLoadingState
+          source={{ uri }}
+          renderError={(e) => {
+            if (e === 'WebKitErrorDomain') {
+              return null;
+            }
+          }}
+        />
       </View>
     );
   }

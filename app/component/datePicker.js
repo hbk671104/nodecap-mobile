@@ -5,17 +5,20 @@ import DatePicker from 'react-native-datepicker';
 import moment from 'moment';
 
 const datePicker = props => {
-  const { onChange, value } = props;
+  const { onChange, style, inputStyle, value, maxDate } = props;
   return (
     <DatePicker
       {...props}
-      style={{ width: undefined }}
-      customStyles={styles.customStyles}
+      style={[styles.container, style]}
+      customStyles={{
+        ...styles.customStyles,
+        dateInput: { ...styles.customStyles.dateInput, ...inputStyle },
+      }}
       date={value}
       mode="date"
       placeholder="请选择日期"
       format="YYYY-MM-DD"
-      maxDate={moment().format('YYYY-MM-DD')}
+      maxDate={maxDate}
       confirmBtnText="确认"
       cancelBtnText="取消"
       iconComponent={<View />}
@@ -54,6 +57,11 @@ const styles = {
 
 datePicker.propTypes = {
   onChange: PropTypes.func,
+  maxDate: PropTypes.string,
+};
+
+datePicker.defaultProps = {
+  maxDate: moment().format('YYYY-MM-DD'),
 };
 
 export default datePicker;

@@ -1,5 +1,5 @@
 import R from 'ramda';
-import { Platform } from 'react-native';
+import { Platform, Clipboard } from 'react-native';
 import JPush from 'jpush-react-native';
 import {
   getUser,
@@ -86,6 +86,14 @@ export default {
           type: 'saveCurrentUser',
           payload: data,
         });
+
+        yield put({
+          type: 'project_create/resetOwner',
+          payload: {
+            owner_name: R.path(['realname'])(data),
+            owner_mobile: R.path(['mobile'])(data),
+          },
+        });
       } catch (e) {
         console.log(e);
       }
@@ -111,7 +119,7 @@ export default {
         }
         yield call(updateUserProfile, {
           ...payload,
-          avatar_url: R.prop('url')(R.head()(uploadRes || [])),
+          avatar_url: R.prop('url')(uploadRes),
         });
         yield put({
           type: 'fetchCurrent',

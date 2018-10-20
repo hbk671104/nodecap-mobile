@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, Animated } from 'react-native';
+import {
+  View,
+  Animated,
+  TouchableWithoutFeedback,
+  Image,
+  Dimensions,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
@@ -16,11 +22,29 @@ import Pairs from './page/pairs';
 import Chart from './chart';
 import Fund from './fund';
 import Share from './share';
-import Header, { headerHeight, fullHeaderHeight } from './header';
+import Header, { headerHeight } from './header';
 import Selector from './selector';
 import Bottom from './bottom';
 import styles from './style';
 
+const window = Dimensions.get('window');
+const calcHeaderHeight = ({ can_calculate, purpose }) => {
+  let baseHeight = headerHeight;
+  if (can_calculate) {
+    baseHeight += 80;
+  }
+
+  if (
+    R.compose(
+      R.not,
+      R.isEmpty,
+    )(purpose)
+  ) {
+    baseHeight += 37;
+  }
+
+  return baseHeight;
+};
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -49,19 +73,23 @@ import styles from './style';
     const investment = R.pathOr({}, ['roi'])(portfolio);
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    const height = calcHeaderHeight({
+      can_calculate,
+      purpose: portfolio.purpose,
+    });
     return {
       headerWrapperYRange: animateY.interpolate({
-        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
-        outputRange: [0, -(can_calculate ? fullHeaderHeight : headerHeight)],
+        inputRange: [0, height],
+        outputRange: [0, -height],
         extrapolate: 'clamp',
       }),
       headerOpacityRange: animateY.interpolate({
-        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+        inputRange: [0, height],
         outputRange: [1, 0],
         extrapolate: 'clamp',
       }),
       titleOpacityRange: animateY.interpolate({
-        inputRange: [0, can_calculate ? fullHeaderHeight : headerHeight],
+        inputRange: [0, height],
         outputRange: [0, 1],
         extrapolate: 'clamp',
       }),
@@ -116,7 +144,25 @@ export default class PublicProjectDetail extends Component {
       id: this.props.id,
     });
   }
-
+  onPressClaimCoin = () => {
+    this.props.track('点击认领按钮');
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ClaimMyProject',
+        params: {
+          project_id: this.props.id,
+        },
+      }),
+    );
+  };
   loadDetail = () => {
     this.props.dispatch({
       type: 'public_project/get',
@@ -164,6 +210,28 @@ export default class PublicProjectDetail extends Component {
     );
   };
 
+  handleCommentPress = () => {
+    this.props.track('点击点评按钮');
+
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CommentCoin',
+        params: {
+          coin: this.props.portfolio,
+        },
+      }),
+    );
+  };
+
   handlePageSwitch = page => () => {
     this.props.setCurrentPage(page, () => {
       if (this.props.currentScrollY < this.props.selectorY) {
@@ -199,13 +267,17 @@ export default class PublicProjectDetail extends Component {
       headerOpacityRange,
       can_calculate,
     } = this.props;
+    const height = calcHeaderHeight({
+      can_calculate,
+      purpose: portfolio.purpose,
+    });
+
     return (
       <Animated.View
         style={[
           styles.navBar.wrapper,
           {
-            height:
-              realBarHeight + (can_calculate ? fullHeaderHeight : headerHeight),
+            height: realBarHeight + height,
           },
           {
             transform: [
@@ -213,6 +285,7 @@ export default class PublicProjectDetail extends Component {
                 translateY: headerWrapperYRange,
               },
             ],
+            zIndex: 50,
           },
         ]}
       >
@@ -235,23 +308,43 @@ export default class PublicProjectDetail extends Component {
       titleOpacityRange,
       can_calculate,
     } = this.props;
+    const height = calcHeaderHeight({
+      can_calculate,
+      purpose: portfolio.purpose,
+    });
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBarBackground()}
         <NavBar
           back
           iconStyle={styles.navBar.icon}
-          style={styles.navBar.container}
+          style={[styles.navBar.container, { zIndex: 100 }]}
           title={R.pathOr('', ['name'])(portfolio)}
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
+        <View
+          style={{
+            position: 'absolute',
+            right: 0,
+            top: window.height / 2,
+            zIndex: 200,
+          }}
+        >
+          <TouchableWithoutFeedback onPress={this.onPressClaimCoin}>
+            <Image
+              style={{ height: 28, width: 68 }}
+              source={require('asset/project/detail/claim.png')}
+            />
+          </TouchableWithoutFeedback>
+        </View>
         <Animated.ScrollView
           ref={ref => {
             this.scroll = ref;
           }}
           contentContainerStyle={{
-            paddingTop: can_calculate ? fullHeaderHeight : headerHeight,
+            paddingTop: height,
           }}
+          showsVerticalScrollIndicator={false}
           scrollEventThrottle={1}
           stickyHeaderIndices={[2]}
           onScroll={Animated.event(
@@ -293,6 +386,7 @@ export default class PublicProjectDetail extends Component {
           }}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
+          onPressComment={this.handleCommentPress}
         />
         <Share
           onClose={() => this.props.toggleShareModal(false)}

@@ -31,7 +31,7 @@ const publicProjectItem = ({ style, data, onPress }) => {
   const status = R.pathOr('', ['finance_status'])(data);
   const category = R.pipe(
     R.pathOr([], ['tags']),
-    R.take(2),
+    R.take(4),
   )(data);
   const description = R.pathOr('--', ['description'])(data);
 

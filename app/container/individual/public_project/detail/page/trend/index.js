@@ -10,8 +10,20 @@ import styles from './style';
 
 @connect()
 export default class Trend extends PureComponent {
-  handleItemPress = id => () => {
+  handleItemPress = ({ id, type, original_link, push_title }) => () => {
     this.props.track('点击进入详情');
+    if (type === '快讯') {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'NotificationDetailRaw',
+          params: {
+            uri: original_link,
+            title: push_title,
+          },
+        })
+      );
+      return;
+    }
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'NotificationDetail',

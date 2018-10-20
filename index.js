@@ -1,5 +1,11 @@
 import React from 'react';
-import { AppRegistry, UIManager, AsyncStorage, Platform, YellowBox } from 'react-native';
+import {
+  AppRegistry,
+  UIManager,
+  AsyncStorage,
+  Platform,
+  YellowBox,
+} from 'react-native';
 import { autoRehydrate, persistStore } from 'redux-persist';
 import { Sentry } from 'react-native-sentry';
 import Orientation from 'react-native-orientation';
@@ -30,8 +36,12 @@ import activityModel from './app/models/activity';
 import coinSetsModel from './app/models/coinSets';
 import filterModel from './app/models/filter';
 import serviceModel from './app/models/service';
+import projectCreateModel from './app/models/project_create';
 
-YellowBox.ignoreWarnings(['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader']);
+YellowBox.ignoreWarnings([
+  'Warning: isMounted(...) is deprecated',
+  'Module RCTImageLoader',
+]);
 
 export const app = dva({
   initialState: {},
@@ -56,6 +66,7 @@ export const app = dva({
     coinSetsModel,
     filterModel,
     serviceModel,
+    projectCreateModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -75,6 +86,7 @@ export const persist = callback => {
         'institution',
         'notification',
         'news',
+        'project_create',
       ],
     },
     callback,

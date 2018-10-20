@@ -5,7 +5,7 @@ import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 import Badge from 'component/uikit/badge';
 
-const StaticItem = ({ icon, title, subtitle, badge, onPress, loading, renderRight }) => (
+const StaticItem = ({ icon, title, onPress, renderRight }) => (
   <Touchable foreground onPress={onPress}>
     <View style={styles.container}>
       <View style={styles.top}>
@@ -19,17 +19,34 @@ const StaticItem = ({ icon, title, subtitle, badge, onPress, loading, renderRigh
   </Touchable>
 );
 
-const item = ({ icon, title, subtitle, badge, onPress, loading }) => (
+const item = ({
+  style,
+  icon,
+  titleContainer,
+  titleStyle,
+  title,
+  subtitle,
+  renderRight,
+  badge,
+  onPress,
+  loading,
+}) => (
   <Touchable foreground onPress={onPress}>
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <View style={styles.top}>
-        <Image resizeMode="contain" style={styles.icon} source={icon} />
-        <View style={styles.group}>
-          <Text style={styles.title}>{title}</Text>
+        {!!icon && (
+          <Image resizeMode="contain" style={styles.icon} source={icon} />
+        )}
+        <View style={[styles.group, titleContainer]}>
+          <Text style={[styles.title, titleStyle]}>{title}</Text>
         </View>
-        <View style={styles.badge.container}>
-          {loading ? <ActivityIndicator /> : <Badge value={badge} />}
-        </View>
+        {renderRight ? (
+          renderRight()
+        ) : (
+          <View style={styles.badge.container}>
+            {loading ? <ActivityIndicator /> : <Badge value={badge} />}
+          </View>
+        )}
         <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
       </View>
       {!!subtitle && (
@@ -92,6 +109,4 @@ item.propTypes = {
 };
 
 export default item;
-export {
-  StaticItem,
-};
+export { StaticItem };
