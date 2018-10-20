@@ -44,7 +44,7 @@ export default {
     ],
     list: null,
     query: null,
-    current: null,
+    current: initialCurrent,
     owner: null,
   },
   effects: {
@@ -181,6 +181,9 @@ export default {
               page: 1,
               'per-page': 20,
             },
+          }),
+          put({
+            type: 'resetCurrent',
           }),
           put({
             type: 'user/fetchCurrent',
