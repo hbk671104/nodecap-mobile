@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import { Flex } from 'antd-mobile';
+import { Flex, Toast } from 'antd-mobile';
 import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/avatar';
@@ -34,6 +34,16 @@ class ShareCoin extends Component {
     },
   };
 
+  componentWillMount() {
+    this.checkWechatAval();
+  }
+
+  checkWechatAval = async () => {
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+      isWXAppInstalled: await WeChat.isWXAppInstalled(),
+    });
+  };
   shareTo = type => async () => {
     this.setState({
       loading: {
@@ -47,6 +57,10 @@ class ShareCoin extends Component {
         type: 'imageFile',
         imageUrl: `file://${uri}`,
       };
+
+      if (!this.state.isWXAppSupportApi || !this.state.isWXAppInstalled) {
+        alert('您的设备暂不支持分享至微信');
+      }
 
       if (type === 'wechat') {
         WeChat.shareToSession(request);
