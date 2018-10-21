@@ -19,9 +19,9 @@ import styles from './style';
 })
 @compose(withState('navBarHidden', 'setNavBarHidden', false))
 export default class InstitutionReportDetail extends Component {
-  state={
+  state = {
     isWXAppSupportApi: false,
-  }
+  };
   componentDidMount() {
     this.checkWechatAval();
 
@@ -36,32 +36,34 @@ export default class InstitutionReportDetail extends Component {
 
   onPressShare = () => {
     const { navigation } = this.props;
-    this.props.showActionSheetWithOptions({
-      options: ['通过微信分享给朋友',
-        '分享至微信朋友圈',
-        '取消'],
-      cancelButtonIndex: 2,
-    }, (index) => {
-      const id = navigation.getParam('id');
-      if (!this.state.isWXAppSupportApi) {
-        return;
-      }
-      if (index !== 2) {
-        const request = {
-          type: 'news',
-          webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${id}`,
-          title: `「研报」${navigation.getParam('title')}`,
-          description: '来 Hotnode, 发现最新最热研报！',
-          thumbImage: 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
-        };
-        if (index === 0) {
-          WeChat.shareToSession(request);
-        } else if (index === 1) {
-          WeChat.shareToTimeline(request);
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['通过微信分享给朋友', '分享至微信朋友圈', '取消'],
+        cancelButtonIndex: 2,
+      },
+      index => {
+        const id = navigation.getParam('id');
+        if (!this.state.isWXAppSupportApi) {
+          return;
         }
-      }
-    });
-  }
+        if (index !== 2) {
+          const request = {
+            type: 'news',
+            webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${id}`,
+            title: `「研报」${navigation.getParam('title')}`,
+            description: '来 Hotnode, 发现最新最热研报！',
+            thumbImage:
+              'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
+          };
+          if (index === 0) {
+            WeChat.shareToSession(request);
+          } else if (index === 1) {
+            WeChat.shareToTimeline(request);
+          }
+        }
+      },
+    );
+  };
 
   orientationDidChange = orientation => {
     this.props.setNavBarHidden(orientation === 'LANDSCAPE');
@@ -88,7 +90,7 @@ export default class InstitutionReportDetail extends Component {
             gradient
             back
             title={title}
-            titleContainerStyle={{ paddingHorizontal: 30 }}
+            titleContainerStyle={{ paddingHorizontal: 48 }}
             renderRight={() => (
               <TouchableWithoutFeedback onPress={this.onPressShare}>
                 <Text style={{ fontSize: 14, color: '#FFFFFF' }}>分享</Text>
