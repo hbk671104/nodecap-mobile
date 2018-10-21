@@ -54,6 +54,25 @@ const mock = [
     ],
   },
   {
+    id: 9,
+    name: 'WXY',
+    logo_url: require('asset/services/logo/wxy.jpg'),
+    description: 'WXY Group是区块链领域的市场营销公司和投资公司。\n' +
+    '主要业务涵盖：\n' +
+    '1. 品牌管理 & 市场营销：品牌咨询、PR、线下活动、社群管理\n' +
+    '2. 投行业务：FA、上所\n' +
+    '3. 投资：WXY已获得来自火币、八维资本等著名基金的风险投资。\n' +
+    '\n' +
+    '服务案例：\n' +
+    '成立以来服务了超过30个区块链项目，如DCC、Taxa 、GSE、PChain、Huobi、APEX、HMS、Coinsuper、Cobo、Lucidity、ENT、Youdeal等项目\n',
+    members: [
+      {
+        name: '王亚瑟',
+        title: 'CEO',
+      },
+    ],
+  },
+  {
     id: 3,
     logo_url: require('asset/services/logo/4_(BLOCK_ARK.png'),
     name: 'BLOCK ARK',

@@ -4,7 +4,7 @@ import { View, Text, ViewPropTypes } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
-import Avatar from 'component/uikit/avatar';
+import Avatar from './avatar';
 
 const item = ({ style, data, onPress, disableSubtitle }) => {
   const title = R.pathOr('--', ['name'])(data);

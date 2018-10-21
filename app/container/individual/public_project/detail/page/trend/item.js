@@ -11,8 +11,9 @@ const notificationItem = ({ data: trend, onPress }) => {
   const title = R.pathOr('--', ['title'])(trend);
   const project_name = R.pathOr('--', ['project_name'])(trend);
   const type = R.pathOr('--', ['type'])(trend);
-  const subtitle = R.pathOr('--', ['subtitle'])(trend);
-  const push_at = R.pathOr('--', ['release_at'])(trend);
+  const subtitle = R.path(['subtitle'])(trend);
+  const content = R.pathOr('--', ['content'])(trend);
+  const push_at = R.path(['release_at'])(trend);
 
   return (
     <Touchable foreground onPress={onPress(trend)}>
@@ -25,7 +26,7 @@ const notificationItem = ({ data: trend, onPress }) => {
               </Text>
             </View>
             <Text style={styles.content.top.date}>
-              {moment(push_at).format('MM-DD HH:ss')}
+              {push_at ? moment(push_at).format('MM-DD HH:ss') : null}
             </Text>
           </View>
           <View style={styles.content.tag.wrapper}>
@@ -42,7 +43,7 @@ const notificationItem = ({ data: trend, onPress }) => {
           </View>
           <View style={styles.content.subtitle.container}>
             <Text numberOfLines={2} style={styles.content.subtitle.text}>
-              {subtitle}
+              {subtitle || content}
             </Text>
           </View>
         </View>

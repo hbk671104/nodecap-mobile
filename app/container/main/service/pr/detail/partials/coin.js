@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
-import Avatar from 'component/uikit/avatar';
+import Avatar from '../../avatar';
 
 const group = ({ data }) => {
   const name = R.pathOr('--', ['name'])(data);

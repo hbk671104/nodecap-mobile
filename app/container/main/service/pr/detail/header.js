@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import R from 'ramda';
 
-import Avatar from 'component/uikit/avatar';
+import Avatar from '../avatar';
 import Shimmer from 'component/shimmer';
 
 const header = ({ style, data, loading, onLinkPress }) => {
