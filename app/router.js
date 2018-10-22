@@ -424,11 +424,11 @@ class Router extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.isConnected && !nextProps.isConnected) {
-      Toast.fail('失去网络连接');
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   if (this.props.isConnected && !nextProps.isConnected) {
+  //     Toast.fail('失去网络连接');
+  //   }
+  // }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
