@@ -111,6 +111,12 @@ import CreateMyProjectFunding from 'container/individual/self/my_project/create/
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
 import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
+import MyInstitution from 'container/individual/self/my_institution';
+import CreateMyInstitution from 'container/individual/self/my_institution/create';
+import CreateMyInstitutionBasicInfo from 'container/individual/self/my_institution/create/basic';
+import CreateMyInstitutionDescription from 'container/individual/self/my_institution/create/description';
+import CreateMyInstitutionTeam from 'container/individual/self/my_institution/create/team';
+import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -320,6 +326,17 @@ const ProjectCreate = createStackNavigator(
   },
 );
 
+const InstitutionCreate = createStackNavigator(
+  {
+    CreateMyInstitutionBasicInfo,
+    CreateMyInstitutionDescription,
+    CreateMyInstitutionTeam,
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
@@ -363,6 +380,12 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,
+    MyInstitution,
+    CreateMyInstitution,
+    CreateMyInstitutionWrapper: {
+      screen: InstitutionCreate,
+    },
+    ClaimMyInstitution,
   },
   {
     headerMode: 'none',

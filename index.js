@@ -37,6 +37,7 @@ import coinSetsModel from './app/models/coinSets';
 import filterModel from './app/models/filter';
 import serviceModel from './app/models/service';
 import projectCreateModel from './app/models/project_create';
+import institutionCreateModel from './app/models/institution_create';
 
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated',
@@ -67,6 +68,7 @@ export const app = dva({
     filterModel,
     serviceModel,
     projectCreateModel,
+    institutionCreateModel,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],

@@ -38,7 +38,7 @@ class MyInstitution extends Component {
   handleCreatePress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'CreateMyProject',
+        routeName: 'CreateMyInstitutionWrapper',
       }),
     );
   };
@@ -72,10 +72,10 @@ class MyInstitution extends Component {
     <NavBar
       back
       gradient
-      title="我的项目"
+      title="机构入驻通道"
       renderRight={() => (
         <Touchable borderless onPress={this.handleCreatePress}>
-          <Text style={styles.navBar.right}>创建项目</Text>
+          <Text style={styles.navBar.right}>创建机构</Text>
         </Touchable>
       )}
     />
