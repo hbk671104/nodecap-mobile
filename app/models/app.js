@@ -48,38 +48,40 @@ export default {
   },
   effects: {
     *checkCodePush(_, { spawn }) {
-      if (!global.__DEV__) {
-        codePush.allowRestart();
-        yield spawn(codePushSaga, {
-          codePushStatusDidChange: e => {
-            if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE) {
-              store.dispatch(
-                routerRedux.navigate({
-                  routeName: 'CodePush',
-                }),
-              );
-            }
-            store.dispatch({
-              type: 'codePush/changeState',
-              payload: e,
-            });
-          },
-          codePushDownloadDidProgress: progress => {
-            const percent = (
-              progress.receivedBytes / progress.totalBytes
-            ).toFixed(2);
-            store.dispatch({
-              type: 'codePush/changePercent',
-              payload: percent,
-            });
-          },
-          syncOptions: {
-            installMode: codePush.InstallMode.IMMEDIATE,
-            syncOnResume: true,
-            syncOnInterval: 60,
-          },
-        });
+      if (global.__DEV__) {
+        return;
       }
+
+      codePush.allowRestart();
+      yield spawn(codePushSaga, {
+        codePushStatusDidChange: e => {
+          if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE) {
+            store.dispatch(
+              routerRedux.navigate({
+                routeName: 'CodePush',
+              }),
+            );
+          }
+          store.dispatch({
+            type: 'codePush/changeState',
+            payload: e,
+          });
+        },
+        codePushDownloadDidProgress: progress => {
+          const percent = (
+            progress.receivedBytes / progress.totalBytes
+          ).toFixed(2);
+          store.dispatch({
+            type: 'codePush/changePercent',
+            payload: percent,
+          });
+        },
+        syncOptions: {
+          installMode: codePush.InstallMode.ON_NEXT_RESTART,
+          syncOnResume: true,
+          syncOnInterval: 60,
+        },
+      });
     },
     *loadStorage(action, { call, put, take }) {
       yield put({
