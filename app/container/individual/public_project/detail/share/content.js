@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Dimensions, View, Image, Text } from 'react-native';
-import { Flex } from 'antd-mobile';
+import { Flex, Grid } from 'antd-mobile';
 import R from 'ramda';
 import moment from 'moment';
 import Accounting from 'accounting';
 
 import MemberItem from './member';
 import InstitutionItem from '../page/description/institutionItem';
-import SocialNetworkItem from '../page/description/socialNetworkItem';
+import SocialNetworkItem, { iconMap } from '../page/description/socialNetworkItem';
 import Roadmap from '../page/description/roadmap';
 import Rating from './rating';
 import styles from './styles';
@@ -28,7 +28,7 @@ class ShareCoinContent extends Component {
     const token_supply = R.pathOr(null, ['token_supply'])(info);
     const conversion_ratio = R.pathOr(null, ['conversion_ratio'])(info);
     const industry_investments = R.pathOr([], ['industry_investments'])(coin);
-    const social_network = R.pathOr([], ['coin', 'social_networks'])(
+    const social_network = R.compose(R.filter(i => !!iconMap[String(i.name).toLowerCase()]), R.pathOr([], ['coin', 'social_networks']))(
       this.props,
     );
     const members = R.pathOr([], ['coin', 'members'])(this.props);
@@ -126,7 +126,7 @@ class ShareCoinContent extends Component {
           <View>
             {R.map(m => (
               <MemberItem key={m.id} data={m} style={{ marginLeft: 10 }} />
-            ))(members)}
+            ))(R.take(5)(members))}
           </View>
           <Text style={[styles.groupContentTip]}>
             - 长按底部二维码，联系团队成员
@@ -134,16 +134,27 @@ class ShareCoinContent extends Component {
         </View>
         <View style={styles.group}>
           {renderTitle('媒体信息')}
-          <Flex wrap="wrap">
-            {R.addIndex(R.map)((m, i) => (
-              <SocialNetworkItem
-                style={{ paddingHorizontal: 0, marginTop: 10 }}
-                key={`${i}`}
-                name={m.name}
-                data={m.link_url}
-              />
-            ))(social_network)}
-          </Flex>
+          <View style={{
+            marginTop: 10,
+          }}
+          >
+            <Grid
+              data={social_network}
+              columnNum={3}
+              hasLine={false}
+              itemStyle={{
+              height: 74,
+            }}
+              renderItem={(m, i) => (
+                <SocialNetworkItem
+                  key={`${i}`}
+                  name={m.name}
+                  fans_count={m.fans_count}
+                  data={m.link_url}
+                />
+            )}
+            />
+          </View>
           <Text style={[styles.groupContentTip]}>
             - 长按底部二维码，查看媒体信息
           </Text>

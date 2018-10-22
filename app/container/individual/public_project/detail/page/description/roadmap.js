@@ -26,7 +26,7 @@ class Roadmap extends Component {
     const roadmap = R.pathOr([], ['roadmap'])(this.props);
     return (
       <View>
-        {roadmap.map((i, index) => {
+        {R.take(5)(roadmap).map((i, index) => {
           return this.renderItem({ item: i, index });
         })}
       </View>
