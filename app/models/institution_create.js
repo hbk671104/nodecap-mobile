@@ -7,10 +7,6 @@ import { convertToFormData, convertToPayloadData } from 'utils/utils';
 
 const initialCurrent = {
   members: [{}],
-  social_network: [{}],
-  roadmap: [{}],
-  purpose: [],
-  tags: [],
 };
 
 export default {

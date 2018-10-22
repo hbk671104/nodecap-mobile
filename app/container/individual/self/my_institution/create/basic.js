@@ -1,11 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Text, Image } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
 
+import PickerSelect from 'component/picker';
 import EnhancedScroll from 'component/enhancedScroll';
 import InputItem from 'component/inputItem';
 import { launchImagePicker } from 'utils/imagepicker';
@@ -14,26 +15,15 @@ import { uploadImage } from 'services/upload';
 import Wrapper from './index';
 import styles from './style';
 
-@connect(({ project_create, filter, global }) => ({
-  current: R.pathOr({}, ['current'])(project_create),
-  coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
-  purpose: R.pathOr([], ['constants', 'purpose'])(global),
+@connect(({ institution_create, filter, global }) => ({
+  current: R.pathOr({}, ['current'])(institution_create),
 }))
 @createForm({
   onValuesChange: ({ dispatch, current }, changed) => {
-    const purpose = R.path(['purpose'])(changed);
-    const store_purpose = R.pathOr([], ['purpose'])(current);
     dispatch({
       type: 'project_create/saveCurrent',
       payload: {
         ...changed,
-        ...(R.isNil(purpose)
-          ? {}
-          : {
-              purpose: R.contains(purpose)(store_purpose)
-                ? R.filter(p => p !== purpose)(store_purpose)
-                : [...store_purpose, purpose],
-            }),
       },
     });
   },
@@ -82,14 +72,6 @@ class BasicInfo extends PureComponent {
     });
   };
 
-  handleTagPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'CreateMyProjectTagSelect',
-      }),
-    );
-  };
-
   // handleWhitepaperPress = () => {};
 
   render() {
@@ -97,21 +79,54 @@ class BasicInfo extends PureComponent {
     return (
       <Wrapper {...this.props} barStyle={this.state.barStyle}>
         <EnhancedScroll>
-          {getFieldDecorator('symbol', {
+          {getFieldDecorator('type', {
             rules: [
               {
                 required: true,
-                message: '请输入项目 Token 简称',
+                message: '请选择机构类型',
               },
             ],
           })(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
-              title="Token 简称"
-              placeholder="请输入项目 Token 简称"
+              contentWrapperStyle={{ alignSelf: 'flex-end' }}
+              title="类型"
+              placeholder="请选择社区类型"
+              showArrow
+              renderContent={({ onChange, value: v }) => (
+                <View style={{ flex: 1 }}>
+                  <PickerSelect
+                    hideIcon
+                    placeholder={{
+                      label: '请选择社区类型',
+                      value: null,
+                    }}
+                    // data={options.map(o => ({ label: o, value: o }))}
+                    onChange={onChange}
+                    value={v}
+                  />
+                </View>
+              )}
               inputProps={{ style: styles.inputItem.input }}
-              error={getFieldError('symbol')}
+              error={getFieldError('type')}
+            />,
+          )}
+          {getFieldDecorator('name', {
+            rules: [
+              {
+                required: true,
+                message: '请输入机构名称',
+              },
+            ],
+          })(
+            <InputItem
+              style={styles.inputItem.container}
+              titleStyle={styles.inputItem.title}
+              title="名称"
+              placeholder="请输入机构名称"
+              inputProps={{ style: styles.inputItem.input }}
+              error={getFieldError('name')}
             />,
           )}
           {getFieldDecorator('icon', {
@@ -139,47 +154,6 @@ class BasicInfo extends PureComponent {
               error={getFieldError('icon')}
             />,
           )}
-          {getFieldDecorator('tags', {
-            rules: [
-              {
-                required: true,
-                message: '请选择标签/领域',
-              },
-            ],
-          })(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              contentWrapperStyle={{ marginLeft: 12, alignSelf: 'flex-end' }}
-              title="标签/领域"
-              placeholder="请选择标签/领域"
-              showArrow
-              renderContent={({ value }) => {
-                const { coinTag } = this.props;
-                return (
-                  <Text
-                    style={[
-                      styles.inputItem.greyOutText,
-                      !R.isEmpty(value) && styles.inputItem.valueText,
-                    ]}
-                  >
-                    {R.isEmpty(value)
-                      ? '请选择标签/领域'
-                      : R.pipe(
-                          R.map(v => {
-                            const item = R.find(i => i.id === v)(coinTag);
-                            return item.name;
-                          }),
-                          R.join('、'),
-                        )(value)}
-                  </Text>
-                );
-              }}
-              inputProps={{ style: styles.inputItem.input }}
-              onPress={this.handleTagPress}
-              error={getFieldError('tags')}
-            />,
-          )}
           {/* {getFieldDecorator('white_paper')(
             <InputItem
               style={styles.inputItem.container}
@@ -200,16 +174,7 @@ class BasicInfo extends PureComponent {
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="官网"
-              placeholder="请输入官网"
-              inputProps={{ style: styles.inputItem.input }}
-            />,
-          )}
-          {getFieldDecorator('country_origin')(
-            <InputItem
-              style={styles.inputItem.container}
-              titleStyle={styles.inputItem.title}
-              title="国别"
-              placeholder="请输入国别"
+              placeholder="请输入机构官网"
               inputProps={{ style: styles.inputItem.input }}
             />,
           )}
