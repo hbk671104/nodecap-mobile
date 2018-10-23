@@ -57,7 +57,7 @@ class BasicInfo extends PureComponent {
     Toast.hide();
 
     this.props.form.setFieldsValue({
-      icon: url,
+      logo_url: url,
     });
   };
 
@@ -134,7 +134,7 @@ class BasicInfo extends PureComponent {
               error={getFieldError('name')}
             />,
           )}
-          {getFieldDecorator('icon', {
+          {getFieldDecorator('logo_url', {
             rules: [{ required: true, message: '请上传 Logo' }],
           })(
             <InputItem
@@ -156,7 +156,7 @@ class BasicInfo extends PureComponent {
               )}
               inputProps={{ style: styles.inputItem.input }}
               onPress={this.handleLogoPress}
-              error={getFieldError('icon')}
+              error={getFieldError('logo_url')}
             />,
           )}
           {/* {getFieldDecorator('white_paper')(
@@ -174,7 +174,7 @@ class BasicInfo extends PureComponent {
               onPress={this.handleWhitepaperPress}
             />,
           )} */}
-          {getFieldDecorator('homepages')(
+          {getFieldDecorator('site_url')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}

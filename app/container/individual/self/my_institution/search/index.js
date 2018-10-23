@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { NavigationActions } from 'react-navigation';
 import _ from 'lodash';
 
+import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
 import SimplifiedItem from 'component/public_project/simplified_item';
-import Touchable from 'component/uikit/touchable';
-import List from 'component/uikit/list';
+
 import styles from './style';
 
 @global.bindTrack({
-  page: '创建项目搜索',
-  name: 'App_CreateMyProjectSearchOperation',
+  page: '创建机构项目搜索',
+  name: 'App_MyInstitutionCreateProjectSearchOperation',
 })
-@connect(({ project_create }) => ({
-  data: R.pathOr(null, ['query', 'data'])(project_create),
+@connect(({ public_project }) => ({
+  data: R.pathOr(null, ['search', 'index', 'data'])(public_project),
 }))
-class CreateMyProjectSearch extends Component {
+class PublicProjectSearch extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -32,6 +32,10 @@ class CreateMyProjectSearch extends Component {
     this.props.track('进入');
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({ type: 'public_project/clearSearch' });
+  }
+
   onSearchTextChange = text => {
     this.setState({ searchText: text }, this.searchDelayed);
   };
@@ -41,7 +45,7 @@ class CreateMyProjectSearch extends Component {
     if (R.isEmpty(searchText)) return;
 
     this.props.dispatch({
-      type: 'project_create/search',
+      type: 'public_project/search',
       payload: {
         q: searchText,
       },
@@ -49,28 +53,23 @@ class CreateMyProjectSearch extends Component {
   };
 
   handleItemPress = item => () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'ClaimMyProject',
-        params: {
-          project_id: item.id,
-        },
-      }),
-    );
+    // this.props.track('点击进入详情');
+    // this.props.dispatch(
+    //   NavigationActions.navigate({
+    //     routeName: 'PublicProjectDetail',
+    //     params: {
+    //       item,
+    //     },
+    //     key: `PublicProjectDetail_${this.props.data.id}`,
+    //   }),
+    // );
   };
 
-  renderNavBar = () => (
-    <NavBar
-      back
-      gradient
-      title="项目名称"
-      renderRight={() => (
-        <Touchable borderless onPress={this.handleSavePress}>
-          <Text style={styles.navBar.right}>保存</Text>
-        </Touchable>
-      )}
-    />
-  );
+  handleBackPress = () => {
+    this.props.dispatch(NavigationActions.back());
+  };
+
+  renderNavBar = () => <NavBar back gradient title="项目名称" />;
 
   renderSearchHeader = () => (
     <View style={styles.searchBar.container}>
@@ -79,7 +78,7 @@ class CreateMyProjectSearch extends Component {
         style={styles.searchBar.wrapper}
         inputStyle={styles.searchBar.input}
         onChange={this.onSearchTextChange}
-        placeholder="请填写项目名称，可从列表中选择"
+        placeholder="请填写项目名称"
         placeholderTextColor="rgba(0, 0, 0, 0.45)"
         iconColor="#1890FF"
       />
@@ -89,16 +88,6 @@ class CreateMyProjectSearch extends Component {
   renderItem = ({ item }) => (
     <SimplifiedItem data={item} onPress={this.handleItemPress(item)} />
   );
-
-  renderHeader = () => (
-    <View style={styles.listHeader.container}>
-      <Text style={styles.listHeader.text}>
-        如名称已存在，从下方列表选择；否则直接点击保存
-      </Text>
-    </View>
-  );
-
-  renderSeparator = () => <View style={styles.separator} />;
 
   render() {
     const { data } = this.props;
@@ -111,12 +100,10 @@ class CreateMyProjectSearch extends Component {
           contentContainerStyle={styles.listContent}
           data={data}
           renderItem={this.renderItem}
-          renderHeader={this.renderHeader}
-          renderSeparator={this.renderSeparator}
         />
       </View>
     );
   }
 }
 
-export default CreateMyProjectSearch;
+export default PublicProjectSearch;

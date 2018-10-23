@@ -77,4 +77,30 @@ export default {
     height: StyleSheet.hairlineWidth,
     marginLeft: 72,
   },
+  empty: {
+    container: {
+      marginTop: 235,
+      alignItems: 'center',
+    },
+    button: {
+      container: {
+        height: 35,
+        width: 114,
+        borderRadius: 2,
+        backgroundColor: '#1890FF',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      text: {
+        fontSize: 13,
+        fontWeight: 'bold',
+        color: 'white',
+      },
+    },
+    text: {
+      marginTop: 18,
+      fontSize: 13,
+      color: 'rgba(0, 0, 0, 0.65)',
+    },
+  },
 };

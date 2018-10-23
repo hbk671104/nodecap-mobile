@@ -117,6 +117,7 @@ import CreateMyInstitutionBasicInfo from 'container/individual/self/my_instituti
 import CreateMyInstitutionDescription from 'container/individual/self/my_institution/create/description';
 import CreateMyInstitutionTeam from 'container/individual/self/my_institution/create/team';
 import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
+import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 
@@ -385,6 +386,7 @@ const IndividualStack = createStackNavigator(
     CommentCoin,
     MyInstitution,
     CreateMyInstitution,
+    CreateMyInstitutionSearch,
     CreateMyInstitutionWrapper: {
       screen: InstitutionCreate,
     },

@@ -59,7 +59,7 @@ class Team extends PureComponent {
     Toast.hide();
 
     this.props.form.setFieldsValue({
-      [`members[${index}].profile_pic`]: url,
+      [`members[${index}].avatar_url`]: url,
     });
   };
 
@@ -123,7 +123,7 @@ class Team extends PureComponent {
             error={getFieldError(`members[${index}].name`)}
           />,
         )}
-        {getFieldDecorator(`members[${index}].profile_pic`)(
+        {getFieldDecorator(`members[${index}].avatar_url`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -199,7 +199,7 @@ class Team extends PureComponent {
             error={getFieldError(`members[${index}].wechat`)}
           />,
         )}
-        {getFieldDecorator(`members[${index}].linkedIn_url`)(
+        {getFieldDecorator(`members[${index}].linkedin`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -208,7 +208,7 @@ class Team extends PureComponent {
             inputProps={{ style: styles.inputItem.input }}
           />,
         )}
-        {getFieldDecorator(`members[${index}].introduction`)(
+        {getFieldDecorator(`members[${index}].description`)(
           <InputItem
             vertical
             style={styles.inputItem.container}
