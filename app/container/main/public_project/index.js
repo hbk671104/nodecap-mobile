@@ -13,6 +13,7 @@ import { handleBadgeAction } from 'utils/badge_handler';
 import List from './components/list';
 import Refresh from './components/refresh';
 import Header from './header';
+import ShareNews from './shareNews';
 import styles from './style';
 
 @global.bindTrack({
@@ -34,6 +35,8 @@ import styles from './style';
   notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
 }))
 @compose(
+  withState('showShareModal', 'toggleShareModal', false),
+  withState('currentShareNews', 'setShareNews', ''),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
@@ -162,6 +165,11 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleNewsSharePress = (data) => {
+    this.props.setShareNews(data);
+    this.props.toggleShareModal(true);
+  }
+
   renderItem = ({ item }) => (
     <NewsItem
       {...this.props}
@@ -170,6 +178,7 @@ export default class PublicProject extends Component {
       onInstitutionItemPress={this.handleReportItemPress}
       onAnnouncementPress={this.handleAnnouncementPress}
       onAnnouncementItemPress={this.handleAnnouncementItemPress}
+      onPressShare={this.handleNewsSharePress}
     />
   );
 
@@ -242,6 +251,14 @@ export default class PublicProject extends Component {
           )}
         />
         {this.renderNavBar()}
+        <ShareNews
+          visible={this.props.showShareModal}
+          news={this.props.currentShareNews}
+          onClose={() => {
+            this.props.toggleShareModal(false);
+            this.props.setShareNews('');
+          }}
+        />
       </View>
     );
   }
