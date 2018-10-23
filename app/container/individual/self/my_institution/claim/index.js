@@ -16,23 +16,17 @@ import { uploadImage } from 'services/upload';
 import styles from './style';
 
 @global.bindTrack({
-  page: '认领我的项目认证',
-  name: 'App_MyProjectClaimOperation',
+  page: '创建我的机构认证',
+  name: 'App_MyInstitutionClaimOperation',
 })
-@connect(({ project_create, loading }, props) => {
-  const id = props.navigation.getParam('project_id');
-  return {
-    id,
-    owner: R.pathOr({}, ['owner'])(project_create),
-    submitting:
-      loading.effects['project_create/claimProject'] ||
-      loading.effects['project_create/submitProject'],
-  };
-})
+@connect(({ institution_create, loading }) => ({
+  owner: R.pathOr({}, ['owner'])(institution_create),
+  submitting: loading.effects['institution_create/submitProject'],
+}))
 @createForm({
   onValuesChange: ({ dispatch }, changed) => {
     dispatch({
-      type: 'project_create/saveOwner',
+      type: 'institution_create/saveOwner',
       payload: changed,
     });
   },
@@ -50,7 +44,7 @@ import styles from './style';
       ),
     )(owner),
 })
-class ClaimProject extends Component {
+class ClaimInstitution extends Component {
   state = {
     barStyle: 'light-content',
   };
@@ -93,19 +87,14 @@ class ClaimProject extends Component {
   };
 
   handleSubmit = value => {
-    const { id } = this.props;
     this.props.dispatch({
-      type: id ? 'project_create/claimProject' : 'project_create/submitProject',
-      id,
+      type: 'institution_create/submitProject',
       payload: value,
       callback: success => {
         if (success) {
           this.props.dispatch(
             NavigationActions.navigate({
-              routeName: 'CreateMyProjectDone',
-              params: {
-                id,
-              },
+              routeName: 'CreateMyInstitutionDone',
             }),
           );
         }
@@ -221,4 +210,4 @@ class ClaimProject extends Component {
   }
 }
 
-export default ClaimProject;
+export default ClaimInstitution;

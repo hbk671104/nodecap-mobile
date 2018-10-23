@@ -78,7 +78,7 @@ export default {
         console.log(e);
       }
     },
-    *fetchCurrent(_, { call, put }) {
+    *fetchCurrent(_, { call, put, all }) {
       try {
         const { data } = yield call(getUser);
 
@@ -87,13 +87,22 @@ export default {
           payload: data,
         });
 
-        yield put({
-          type: 'project_create/resetOwner',
-          payload: {
-            owner_name: R.path(['realname'])(data),
-            owner_mobile: R.path(['mobile'])(data),
-          },
-        });
+        yield all([
+          put({
+            type: 'project_create/resetOwner',
+            payload: {
+              owner_name: R.path(['realname'])(data),
+              owner_mobile: R.path(['mobile'])(data),
+            },
+          }),
+          put({
+            type: 'institution_create/resetOwner',
+            payload: {
+              owner_name: R.path(['realname'])(data),
+              owner_mobile: R.path(['mobile'])(data),
+            },
+          }),
+        ]);
       } catch (e) {
         console.log(e);
       }

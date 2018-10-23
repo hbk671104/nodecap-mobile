@@ -12,8 +12,8 @@ import { getCurrentScreen } from '../../../../../router';
 import styles from './style';
 
 @global.bindTrack({
-  page: '正常创建项目流程外层',
-  name: 'App_MyProjectCreateNormalWrapperOperation',
+  page: '创建机构流程外层',
+  name: 'App_MyInstitutionCreateWrapperOperation',
 })
 @connect(({ institution_create, router, loading }) => {
   const route = R.path(['route'])(institution_create);
@@ -41,19 +41,19 @@ class CreateInstitutionWrapper extends Component {
     const { isLastPage } = this.props;
     this.props.form.validateFields(err => {
       if (!err) {
-        if (isLastPage) {
-          this.props.dispatch({
-            type: 'project_create/submitProject',
-            callback: () => {
-              this.props.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'MyProject',
-                }),
-              );
-            },
-          });
-          return;
-        }
+        // if (isLastPage) {
+        //   this.props.dispatch({
+        //     type: 'project_create/submitProject',
+        //     callback: () => {
+        //       this.props.dispatch(
+        //         NavigationActions.navigate({
+        //           routeName: 'MyProject',
+        //         }),
+        //       );
+        //     },
+        //   });
+        //   return;
+        // }
 
         const { nextPage } = this.props;
         this.props.dispatch(
@@ -81,7 +81,8 @@ class CreateInstitutionWrapper extends Component {
             return (
               <Touchable borderless onPress={this.handleNextPress}>
                 <Text style={styles.navBar.right}>
-                  {isLastPage ? '提交' : '下一步'}
+                  {/* {isLastPage ? '提交' : '下一步'} */}
+                  下一步
                 </Text>
               </Touchable>
             );

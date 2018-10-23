@@ -15,8 +15,9 @@ import { uploadImage } from 'services/upload';
 import Wrapper from './index';
 import styles from './style';
 
-@connect(({ institution_create, filter, global }) => ({
+@connect(({ institution_create, global }) => ({
   current: R.pathOr({}, ['current'])(institution_create),
+  institution_type: R.pathOr([], ['constants', 'industry_type'])(global),
 }))
 @createForm({
   onValuesChange: ({ dispatch, current }, changed) => {
@@ -76,6 +77,7 @@ class BasicInfo extends PureComponent {
 
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
+    const { institution_type } = this.props;
     return (
       <Wrapper {...this.props} barStyle={this.state.barStyle}>
         <EnhancedScroll>
@@ -102,7 +104,10 @@ class BasicInfo extends PureComponent {
                       label: '请选择社区类型',
                       value: null,
                     }}
-                    data={[{ label: '哈哈', value: '嘿嘿' }]}
+                    data={institution_type.map(i => ({
+                      label: i.name,
+                      value: i.value,
+                    }))}
                     onChange={onChange}
                     value={v}
                   />

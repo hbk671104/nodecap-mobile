@@ -81,9 +81,7 @@ class MyInstitution extends Component {
     />
   );
 
-  renderItem = ({ item }) => (
-    <SimplifiedItem data={item} onPress={this.handleItemPress(item)} />
-  );
+  renderItem = ({ item }) => null;
 
   renderSeparator = () => <View style={styles.separator} />;
 
@@ -96,7 +94,7 @@ class MyInstitution extends Component {
           loading={loading}
           action={this.requestData}
           pagination={pagination}
-          data={data}
+          data={[]}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
         />
