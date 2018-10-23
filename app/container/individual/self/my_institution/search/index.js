@@ -16,8 +16,11 @@ import styles from './style';
   page: '创建机构项目搜索',
   name: 'App_MyInstitutionCreateProjectSearchOperation',
 })
-@connect(({ public_project }) => ({
+@connect(({ public_project, institution_create }) => ({
   data: R.pathOr(null, ['search', 'index', 'data'])(public_project),
+  served_project: R.pathOr([], ['current', 'served_project'])(
+    institution_create,
+  ),
 }))
 class PublicProjectSearch extends Component {
   constructor(props) {
@@ -53,19 +56,13 @@ class PublicProjectSearch extends Component {
   };
 
   handleItemPress = item => () => {
-    // this.props.track('点击进入详情');
-    // this.props.dispatch(
-    //   NavigationActions.navigate({
-    //     routeName: 'PublicProjectDetail',
-    //     params: {
-    //       item,
-    //     },
-    //     key: `PublicProjectDetail_${this.props.data.id}`,
-    //   }),
-    // );
-  };
-
-  handleBackPress = () => {
+    const { served_project } = this.props;
+    this.props.dispatch({
+      type: 'institution_create/saveCurrent',
+      payload: {
+        served_project: [...served_project, item],
+      },
+    });
     this.props.dispatch(NavigationActions.back());
   };
 
@@ -86,7 +83,15 @@ class PublicProjectSearch extends Component {
   );
 
   renderItem = ({ item }) => (
-    <SimplifiedItem data={item} onPress={this.handleItemPress(item)} />
+    <SimplifiedItem
+      data={item}
+      onPress={this.handleItemPress(item)}
+      renderRight={() => (
+        <View style={styles.itemRight.container}>
+          <Text style={styles.itemRight.text}>快速添加</Text>
+        </View>
+      )}
+    />
   );
 
   render() {

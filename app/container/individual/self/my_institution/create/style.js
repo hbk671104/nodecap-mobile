@@ -103,4 +103,21 @@ export default {
       color: 'rgba(0, 0, 0, 0.65)',
     },
   },
+  itemRight: {
+    container: {
+      justifyContent: 'center',
+      marginLeft: 24,
+    },
+  },
+  footer: {
+    container: {
+      alignSelf: 'center',
+      marginTop: 18,
+    },
+    text: {
+      color: '#1890FF',
+      fontWeight: 'bold',
+      fontSize: 13,
+    },
+  },
 };

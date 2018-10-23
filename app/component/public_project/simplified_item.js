@@ -25,7 +25,7 @@ const colorMap = [
   },
 ];
 
-const simplifiedPublicProjectItem = ({ style, data, onPress }) => {
+const simplifiedPublicProjectItem = ({ style, data, renderRight, onPress }) => {
   const icon = R.pathOr('', ['icon'])(data);
   const project_name = R.pathOr('--', ['name'])(data);
   const category = R.pipe(
@@ -106,6 +106,7 @@ const simplifiedPublicProjectItem = ({ style, data, onPress }) => {
             </Text>
           </View>
         </View>
+        {renderRight && renderRight()}
       </View>
     </Touchable>
   );

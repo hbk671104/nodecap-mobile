@@ -26,4 +26,14 @@ export default {
       color: '#333333',
     },
   },
+  itemRight: {
+    container: {
+      justifyContent: 'center',
+      marginLeft: 24,
+    },
+    text: {
+      color: 'rgba(0, 0, 0, 0.45)',
+      fontSize: 12,
+    },
+  },
 };

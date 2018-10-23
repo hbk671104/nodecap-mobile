@@ -7,6 +7,7 @@ import { convertToFormData, convertToPayloadData } from 'utils/utils';
 
 const initialCurrent = {
   members: [{}],
+  served_project: [],
 };
 
 export default {
