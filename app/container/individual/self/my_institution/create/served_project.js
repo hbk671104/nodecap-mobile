@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
+import { createForm } from 'rc-form';
 import R from 'ramda';
 
 import List from 'component/uikit/list';
@@ -10,6 +11,7 @@ import styles from './style';
 @connect(({ institution_create }) => ({
   current: R.pathOr({}, ['current'])(institution_create),
 }))
+@createForm()
 class ServedProject extends PureComponent {
   renderItem = ({ item }) => null;
 
