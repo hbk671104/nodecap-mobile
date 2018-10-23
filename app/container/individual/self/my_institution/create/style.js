@@ -72,4 +72,9 @@ export default {
     width: 38,
     borderRadius: 19,
   },
+  separator: {
+    backgroundColor: '#E9E9E9',
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 72,
+  },
 };

@@ -116,6 +116,7 @@ import CreateMyInstitution from 'container/individual/self/my_institution/create
 import CreateMyInstitutionBasicInfo from 'container/individual/self/my_institution/create/basic';
 import CreateMyInstitutionDescription from 'container/individual/self/my_institution/create/description';
 import CreateMyInstitutionTeam from 'container/individual/self/my_institution/create/team';
+import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
@@ -331,6 +332,7 @@ const InstitutionCreate = createStackNavigator(
     CreateMyInstitutionBasicInfo,
     CreateMyInstitutionDescription,
     CreateMyInstitutionTeam,
+    CreateMyInstitutionServedProject,
   },
   {
     headerMode: 'none',

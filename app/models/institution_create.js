@@ -26,7 +26,7 @@ export default {
         title: '团队成员',
       },
       {
-        name: 'CreateMyInstitutionProjectServed',
+        name: 'CreateMyInstitutionServedProject',
         title: '服务过的项目',
       },
     ],

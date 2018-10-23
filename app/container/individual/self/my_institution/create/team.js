@@ -14,13 +14,13 @@ import { uploadImage } from 'services/upload';
 import Wrapper from './index';
 import styles from './style';
 
-@connect(({ project_create }) => ({
-  members: R.path(['current', 'members'])(project_create),
+@connect(({ institution_create }) => ({
+  members: R.path(['current', 'members'])(institution_create),
 }))
 @createForm({
   onValuesChange: ({ dispatch }, changed, all) => {
     dispatch({
-      type: 'project_create/saveCurrent',
+      type: 'institution_create/saveCurrent',
       payload: all,
     });
   },
@@ -80,7 +80,7 @@ class Team extends PureComponent {
 
     LayoutAnimation.easeInEaseOut();
     this.props.dispatch({
-      type: 'project_create/saveCurrent',
+      type: 'institution_create/saveCurrent',
       payload: {
         members: R.concat(members, [{}]),
       },
@@ -92,7 +92,7 @@ class Team extends PureComponent {
 
     LayoutAnimation.easeInEaseOut();
     this.props.dispatch({
-      type: 'project_create/saveCurrent',
+      type: 'institution_create/saveCurrent',
       payload: {
         members: R.remove(index, 1)(members),
       },

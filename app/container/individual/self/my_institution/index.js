@@ -15,10 +15,10 @@ import styles from './style';
   page: '我的机构',
   name: 'App_MyInstitutionOperation',
 })
-@connect(({ project_create, loading }) => ({
-  data: R.pathOr([], ['list', 'data'])(project_create),
-  pagination: R.pathOr(null, ['list', 'pagination'])(project_create),
-  loading: loading.effects['project_create/fetch'],
+@connect(({ institution_create, loading }) => ({
+  data: R.pathOr([], ['list', 'data'])(institution_create),
+  pagination: R.pathOr(null, ['list', 'pagination'])(institution_create),
+  loading: loading.effects['institution_create/fetch'],
 }))
 class MyInstitution extends Component {
   componentDidMount() {
@@ -27,7 +27,7 @@ class MyInstitution extends Component {
 
   requestData = (page, size) => {
     this.props.dispatch({
-      type: 'project_create/fetch',
+      type: 'institution_create/fetch',
       payload: {
         page,
         'per-page': size,
@@ -55,7 +55,7 @@ class MyInstitution extends Component {
 
     Toast.loading('加载中...', 0);
     this.props.dispatch({
-      type: 'project_create/get',
+      type: 'institution_create/get',
       id: item.id,
       callback: () => {
         Toast.hide();

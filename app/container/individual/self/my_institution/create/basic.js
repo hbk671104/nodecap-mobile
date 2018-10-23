@@ -21,7 +21,7 @@ import styles from './style';
 @createForm({
   onValuesChange: ({ dispatch, current }, changed) => {
     dispatch({
-      type: 'project_create/saveCurrent',
+      type: 'institution_create/saveCurrent',
       payload: {
         ...changed,
       },
@@ -102,7 +102,7 @@ class BasicInfo extends PureComponent {
                       label: '请选择社区类型',
                       value: null,
                     }}
-                    // data={options.map(o => ({ label: o, value: o }))}
+                    data={[{ label: '哈哈', value: '嘿嘿' }]}
                     onChange={onChange}
                     value={v}
                   />

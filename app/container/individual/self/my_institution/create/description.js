@@ -9,13 +9,13 @@ import { InputError } from 'component/inputItem';
 import Wrapper from './index';
 import styles from './style';
 
-@connect(({ project_create }) => ({
-  current: R.pathOr({}, ['current'])(project_create),
+@connect(({ institution_create }) => ({
+  current: R.pathOr({}, ['current'])(institution_create),
 }))
 @createForm({
   onValuesChange: ({ dispatch }, changed) => {
     dispatch({
-      type: 'project_create/saveCurrent',
+      type: 'institution_create/saveCurrent',
       payload: changed,
     });
   },
@@ -42,7 +42,7 @@ class Description extends PureComponent {
           rules: [
             {
               required: true,
-              message: '请输入项目简介',
+              message: '请填写机构简介',
             },
           ],
         })(
@@ -50,7 +50,7 @@ class Description extends PureComponent {
             autoFocus
             style={{ margin: 12, lineHeight: 20 }}
             multiline
-            placeholder="项目主要的解决的问题是？可以从这几个方面来介绍"
+            placeholder="请填写机构简介，包括服务方向及内容等"
             placeholderTextColor="#9B9B9B"
           />,
         )}
