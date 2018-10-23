@@ -12,7 +12,7 @@ import {
 import { Flex, Toast } from 'antd-mobile';
 import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
-import Avatar from 'component/avatar';
+import Avatar from 'component/uikit/avatar';
 import Modal from 'react-native-modal';
 import * as WeChat from 'react-native-wechat';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -77,6 +77,7 @@ class ShareCoin extends Component {
     const country = R.pathOr('', ['basic', 'country_origin'])(coin);
     const tags = R.pipe(
       R.pathOr([], ['tags']),
+      R.take(2),
       R.reduce(
         (last, current) => `${last === '' ? '' : `${last}/`}${current.name}`,
         '',
@@ -124,7 +125,7 @@ class ShareCoin extends Component {
             </Flex>
           </Flex>
           <View>
-            <Avatar url={coin.icon} />
+            <Avatar source={{ uri: coin.icon }} size={60} />
           </View>
         </Flex>
         <Flex>
