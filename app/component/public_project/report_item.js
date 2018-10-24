@@ -10,15 +10,18 @@ const reportItem = ({ data, onPress }) => {
   const title = R.pathOr('--', ['title'])(data);
   const date = R.pathOr('--', ['published_at'])(data);
   const institution = R.pathOr('--', ['industry', 'name'])(data);
+  const institution_url = R.pathOr('--', ['industry', 'logo_url'])(data);
   return (
     <Touchable onPress={() => onPress(data)}>
       <View style={styles.container}>
-        <View style={{ flexDirection: 'row' }}>
-          <Image source={require('asset/institution/pdf.png')} />
+        <View style={{ flex: 1 }}>
           <Text style={styles.title}>{title}</Text>
         </View>
         <View style={styles.content.container}>
-          <Text style={styles.content.text}>{institution}</Text>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <Image style={styles.icon} source={{ uri: institution_url }} />
+            <Text style={styles.content.text}>{institution}</Text>
+          </View>
           <Text style={styles.content.text}>
             {moment(date).format('MM-DD')}
           </Text>
@@ -33,24 +36,26 @@ const styles = {
     padding: 12,
   },
   title: {
-    flex: 1,
     fontSize: 15,
     lineHeight: 20,
     color: 'rgba(0, 0, 0, 0.85)',
     fontWeight: 'bold',
-    marginLeft: 8,
   },
   content: {
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-between',
       marginTop: 12,
     },
     text: {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.45)',
     },
+  },
+  icon: {
+    height: 15,
+    width: 15,
+    marginRight: 8,
   },
 };
 
