@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { RouterEmitter } from '../../../router';
 
 import NavBar, { realBarHeight } from 'component/navBar';
 import NewsItem from 'component/news';
@@ -51,6 +52,19 @@ import styles from './style';
   })),
 )
 export default class PublicProject extends Component {
+  componentWillMount() {
+    RouterEmitter.addListener('resume', () => {
+      const nextPage = this.props.selectPage + 1;
+      this.props.dispatch({
+        type: 'news/index',
+        nextSelectPage: nextPage,
+        payload: null,
+        callback: () => {
+          this.props.setSelectPage(nextPage);
+        },
+      });
+    });
+  }
   handleDataAlert = (newUpdateCount, oldUpdateCount) => {
     if (newUpdateCount > oldUpdateCount) {
       const count = newUpdateCount - oldUpdateCount;
@@ -67,6 +81,7 @@ export default class PublicProject extends Component {
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
+      nextSelectPage: this.props.selectPage,
       callback,
     });
   };
