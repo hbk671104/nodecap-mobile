@@ -111,6 +111,15 @@ import CreateMyProjectFunding from 'container/individual/self/my_project/create/
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
 import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
+import MyInstitution from 'container/individual/self/my_institution';
+import CreateMyInstitution from 'container/individual/self/my_institution/create';
+import CreateMyInstitutionBasicInfo from 'container/individual/self/my_institution/create/basic';
+import CreateMyInstitutionDescription from 'container/individual/self/my_institution/create/description';
+import CreateMyInstitutionTeam from 'container/individual/self/my_institution/create/team';
+import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
+import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
+import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
+import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -320,6 +329,18 @@ const ProjectCreate = createStackNavigator(
   },
 );
 
+const InstitutionCreate = createStackNavigator(
+  {
+    CreateMyInstitutionBasicInfo,
+    CreateMyInstitutionDescription,
+    CreateMyInstitutionTeam,
+    CreateMyInstitutionServedProject,
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
@@ -363,6 +384,14 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,
+    MyInstitution,
+    CreateMyInstitution,
+    CreateMyInstitutionSearch,
+    CreateMyInstitutionWrapper: {
+      screen: InstitutionCreate,
+    },
+    ClaimMyInstitution,
+    CreateMyInstitutionDone,
   },
   {
     headerMode: 'none',

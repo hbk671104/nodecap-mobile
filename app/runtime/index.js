@@ -6,7 +6,7 @@ import production from './production';
 const runtimeConfig =
   Config.API_URL === 'http://api-staging.hotnode.cn/v1'
     ? global.__DEV__
-      ? production
+      ? development
       : staging
     : production;
 

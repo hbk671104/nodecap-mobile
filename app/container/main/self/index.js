@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Alert, ScrollView, Text, TouchableWithoutFeedback, Clipboard } from 'react-native';
+import {
+  View,
+  Alert,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  Clipboard,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { Flex, Toast } from 'antd-mobile';
@@ -96,7 +103,7 @@ class Self extends Component {
           }}
           onPress={() => {
             Clipboard.setString('ladh2857');
-            Toast.show('已复制', Toast.SHORT);
+            Toast.show('已复制', 2000);
           }}
         >
           <View>
