@@ -73,7 +73,10 @@ export default {
     },
     *fetchSelected({ params = {}, callback }, { call, put }) {
       try {
-        const { data } = yield call(getPublicProjects, params);
+        const { data } = yield call(getPublicProjects, {
+          ...params,
+          pageSize: 5,
+        });
 
         yield put({
           type: 'selected',
@@ -544,7 +547,7 @@ export default {
         ...state,
         selected: {
           ...state.selected,
-          index: paginate(state.list.selected, action.payload),
+          index: action.payload,
         },
       };
     },

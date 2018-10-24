@@ -27,6 +27,7 @@ import styles from './style';
     public_project,
   ),
   loading: loading.effects['news/index'],
+  selectedLoading: loading.effects['public_project/fetchSelected'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
   announcement: R.pathOr([], ['list', 'data'])(notification),
   reports: R.pathOr([], ['report', 'data'])(institution),
@@ -35,6 +36,7 @@ import styles from './style';
 }))
 @compose(
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('selectPage', 'setSelectPage', 1),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 192],
@@ -68,6 +70,19 @@ export default class PublicProject extends Component {
       callback,
     });
   };
+
+  refreshProject = () => {
+    const nextPage = this.props.selectPage + 1;
+    this.props.dispatch({
+      type: 'public_project/fetchSelected',
+      params: {
+        currentPage: nextPage,
+      },
+      callback: () => {
+        this.props.setSelectPage(nextPage);
+      },
+    });
+  }
 
   handleItemPress = item => () => {
     this.props.track('点击进入详情');
@@ -185,6 +200,9 @@ export default class PublicProject extends Component {
       onRefreshPress={() => {
         this.shouldAnimate = true;
         this.requestData(true, this.handleDataAlert);
+      }}
+      onRefreshProject={() => {
+        this.refreshProject();
       }}
       newsLoading={this.props.loading && this.shouldAnimate}
     />
