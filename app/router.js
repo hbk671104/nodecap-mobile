@@ -39,6 +39,7 @@ import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
 import CommentCoin from 'container/main/public_project/comment';
 import InstitutionReport from 'container/main/public_project/institution_report';
+import InstitutionReportSet from 'container/main/public_project/institution_report/report_set';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
@@ -208,6 +209,7 @@ const MainStack = createStackNavigator(
     PublicProjectSearch,
     PublicProjectDetail,
     InstitutionReport,
+    InstitutionReportSet,
     InstitutionReportDetail,
     FundProject,
     PortfolioDetail,
@@ -343,6 +345,7 @@ const IndividualStack = createStackNavigator(
   {
     IndividualTab,
     InstitutionReport,
+    InstitutionReportSet,
     InstitutionReportDetail,
     PublicProjectSearch,
     PublicProjectDetail: {

@@ -46,6 +46,7 @@ export default options => {
         'institution/fetch',
         'institution/get',
         'institution/fetchReports',
+        'institution/fetchReportSet',
         'news/index',
         'favored/fetch',
         'activity/fetch',

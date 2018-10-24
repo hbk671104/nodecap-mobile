@@ -778,3 +778,13 @@ export function getInstitution(params) {
 export function getInstitutionDetail(id) {
   return request.get(`/industry-investments/${id}`);
 }
+
+export function getInstitutionBanner() {
+  return request.get('/report-sets');
+}
+
+export function getInstitutionReportSet(params) {
+  return request.get('/reports', {
+    params,
+  });
+}
