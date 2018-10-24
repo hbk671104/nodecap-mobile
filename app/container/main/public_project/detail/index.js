@@ -12,6 +12,7 @@ import Gradient from 'component/uikit/gradient';
 import { hasPermission } from 'component/auth/permission/lock';
 import { NavigationActions } from 'react-navigation';
 import Share from '../../../individual/public_project/detail/share';
+import { nullOrEmpty } from 'utils/utils';
 
 import Description from './page/description';
 import Trend from './page/trend';
@@ -21,17 +22,29 @@ import Bottom from './bottom';
 import styles from './style';
 import StatusSelector from './statusSelector';
 
-const calcHeaderHeight = ({ can_calculate, purpose }) => {
-  let baseHeight = headerHeight;
-  if (
-    R.compose(
-      R.not,
-      R.isEmpty,
-    )(purpose)
-  ) {
-    baseHeight += 37;
+const calcHeaderHeight = ({ data }) => {
+  let height = headerHeight;
+  const purpose = R.path(['purpose'])(data);
+  if (!nullOrEmpty(purpose)) {
+    height += 36;
   }
-  return baseHeight;
+
+  const invested_by_renowned_insti = R.pipe(
+    R.pathOr([], ['renowned_industry']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const top_rated = R.pipe(
+    R.pathOr([], ['top_rating']),
+    R.isEmpty,
+    R.not,
+  )(data);
+
+  if (invested_by_renowned_insti || top_rated) {
+    height += 30;
+  }
+
+  return height;
 };
 
 @global.bindTrack({
@@ -57,7 +70,7 @@ const calcHeaderHeight = ({ can_calculate, purpose }) => {
   withState('showStatusSelector', 'toggleStatusSelector', false),
   withProps(({ animateY, portfolio }) => {
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
-    const height = calcHeaderHeight({ purpose: portfolio.purpose });
+    const height = calcHeaderHeight({ data: portfolio });
 
     return {
       headerWrapperYRange: animateY.interpolate({

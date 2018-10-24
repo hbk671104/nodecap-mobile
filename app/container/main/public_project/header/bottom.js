@@ -4,8 +4,6 @@ import R from 'ramda';
 import * as Animatable from 'react-native-animatable';
 
 import Touchable from 'component/uikit/touchable';
-import Icon from 'component/uikit/icon';
-import FavorItem from 'component/favored/item';
 import Group from './group';
 
 const bottom = props => (
@@ -25,7 +23,7 @@ const bottom = props => (
           <Text style={styles.rightText}>刷新</Text>
         </View>
       </Touchable>
-     )}
+    )}
   >
     {/* <View style={styles.info.container}>
       <Text style={styles.info.text}>

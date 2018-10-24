@@ -10,6 +10,7 @@ import Amount from 'component/amount';
 import Shimmer from 'component/shimmer';
 import { symbol } from '../../../../utils/icon';
 import Purpose from './purpose';
+import MiscTag from 'component/public_project/misc_tag';
 
 export const headerHeight = 64;
 export const fullHeaderHeight = 144;
@@ -96,6 +97,7 @@ const header = ({
           <Avatar size={50} source={{ uri: logo }} />
         </Animated.View>
       </View>
+      <MiscTag data={data} />
       {can_calculate ? (
         <View>
           <View style={styles.divider} />

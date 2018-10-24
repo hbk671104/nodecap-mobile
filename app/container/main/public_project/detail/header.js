@@ -5,6 +5,7 @@ import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
 import Shimmer from 'component/shimmer';
+import MiscTag from 'component/public_project/misc_tag';
 import Purpose from './purpose';
 
 const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
@@ -67,6 +68,7 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
           <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
         </Animated.View>
       </View>
+      <MiscTag data={data} />
       {R.compose(
         R.not,
         R.isEmpty,

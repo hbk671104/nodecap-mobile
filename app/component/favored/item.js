@@ -9,25 +9,6 @@ import PublicProjectItem from 'component/public_project/item';
 import Avatar from 'component/uikit/avatar';
 import Touchable from 'component/uikit/touchable';
 
-const colorMap = [
-  {
-    textColor: '#1890FF',
-    backgroundColor: '#E5F3FF',
-  },
-  {
-    textColor: '#FF7600',
-    backgroundColor: '#FFE9D6',
-  },
-  {
-    textColor: '#A663E0',
-    backgroundColor: '#ECD7FE',
-  },
-  {
-    textColor: '#09AC32',
-    backgroundColor: '#BCF4CA',
-  },
-];
-
 @connect(({ login }) => ({
   logged_in: !!login.token,
   in_individual: login.in_individual,
@@ -82,13 +63,39 @@ class FavorItem extends PureComponent {
     const description = R.pathOr('--', ['description'])(data);
     const stars = R.pathOr(0, ['stars'])(data);
     const favored = R.pathOr(false, ['is_focused'])(data);
+
+    // misc
+    const has_white_paper = R.pipe(
+      R.pathOr([], ['white_papers']),
+      R.isEmpty,
+      R.not,
+    )(data);
+    const is_vip = R.pipe(
+      R.pathOr({}, ['vip']),
+      R.isEmpty,
+      R.not,
+    )(data);
+    const invested_by_renowned_insti = R.pipe(
+      R.pathOr([], ['renowned_industry']),
+      R.isEmpty,
+      R.not,
+    )(data);
+    const top_rated = R.pipe(
+      R.pathOr([], ['top_rating']),
+      R.isEmpty,
+      R.not,
+    )(data);
+
     return (
       <Touchable foreground onPress={this.handlePress}>
         <View
           style={[styles.container, showTopBorder && styles.topBorder, style]}
         >
           <Avatar
-            size={45}
+            style={styles.avatar}
+            raised={false}
+            size={52}
+            innerRatio={0.75}
             source={
               R.isEmpty(icon)
                 ? require('asset/project/project_logo_default.png')
@@ -96,43 +103,90 @@ class FavorItem extends PureComponent {
             }
           />
           <View style={styles.content.container}>
-            <Text style={styles.content.title}>{project_name}</Text>
+            <View style={styles.content.titleContainer}>
+              <Text style={styles.content.title}>{project_name}</Text>
+              {is_vip && (
+                <Image
+                  style={{ marginLeft: 8 }}
+                  source={require('asset/public_project/is_vip.png')}
+                />
+              )}
+            </View>
             <View style={styles.content.tag.wrapper}>
               {R.pipe(
                 R.take(4),
-                R.addIndex(R.map)((t, i) => {
-                  const textColor = R.pathOr('#939393', [i, 'textColor'])(
-                    colorMap,
-                  );
-                  const backgroundColor = R.pathOr('#E2E2E2', [
-                    i,
-                    'backgroundColor',
-                  ])(colorMap);
-                  return (
-                    <View
-                      key={`${i}`}
-                      style={[
-                        styles.content.tag.container,
-                        { backgroundColor },
-                      ]}
-                    >
-                      <Text
-                        style={[styles.content.tag.title, { color: textColor }]}
-                      >
-                        {R.pipe(
-                          R.pathOr('', ['name']),
-                          R.trim,
-                        )(t)}
-                      </Text>
-                    </View>
-                  );
-                }),
+                R.addIndex(R.map)((t, i) => (
+                  <View key={`${i}`} style={styles.content.tag.container}>
+                    <Text style={styles.content.tag.title}>
+                      {R.pipe(
+                        R.pathOr('', ['name']),
+                        R.trim,
+                      )(t)}
+                    </Text>
+                  </View>
+                )),
               )(category)}
+            </View>
+            <View style={styles.content.miscTag.container}>
+              {has_white_paper && (
+                <View
+                  style={[
+                    styles.content.miscTag.item.container,
+                    { backgroundColor: '#E5F3FF', marginRight: 4 },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: '#1890FF' },
+                    ]}
+                  >
+                    有白皮书
+                  </Text>
+                </View>
+              )}
+              {invested_by_renowned_insti && (
+                <View
+                  style={[
+                    styles.content.miscTag.item.container,
+                    { backgroundColor: '#FFE9D6', marginRight: 4 },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: '#FF7600' },
+                    ]}
+                  >
+                    知名机构所投
+                  </Text>
+                </View>
+              )}
+              {top_rated && (
+                <View
+                  style={[
+                    styles.content.miscTag.item.container,
+                    { backgroundColor: '#BCF4CA' },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: '#09AC32' },
+                    ]}
+                  >
+                    评级优秀
+                  </Text>
+                </View>
+              )}
             </View>
             <Text
               style={[
                 styles.content.subtitle,
-                R.isEmpty(category) && { marginTop: 0 },
+                (R.isEmpty(category) ||
+                  (!has_white_paper &&
+                    !invested_by_renowned_insti &&
+                    !top_rated)) && { marginTop: 0 },
               ]}
               numberOfLines={1}
             >
@@ -179,21 +233,27 @@ class FavorItem extends PureComponent {
   }
 }
 
-export const itemHeight = 90;
 const styles = {
   container: {
-    height: itemHeight,
     flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 12,
-    paddingRight: 10,
+    // alignItems: 'center',
+    padding: 12,
     backgroundColor: 'white',
+  },
+  avatar: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#F0F0F0',
+    borderRadius: 2,
   },
   content: {
     container: {
       flex: 1,
-      marginLeft: 20,
+      marginLeft: 12,
       justifyContent: 'center',
+    },
+    titleContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     title: {
       fontSize: 16,
@@ -202,7 +262,7 @@ const styles = {
     },
     subtitle: {
       marginTop: 8,
-      fontSize: 12,
+      fontSize: 11,
       color: 'rgba(0, 0, 0, 0.45)',
     },
     tag: {
@@ -211,21 +271,43 @@ const styles = {
         flexDirection: 'row',
       },
       container: {
-        height: 19,
+        height: 17,
         paddingHorizontal: 3,
-        borderRadius: 2,
-        marginRight: 8,
+        borderRadius: 1,
+        marginRight: 4,
         justifyContent: 'center',
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: 'rgba(0, 0, 0, 0.25)',
       },
       title: {
-        fontSize: 11,
+        fontSize: 10,
+        color: 'rgba(0, 0, 0, 0.45)',
+      },
+    },
+    miscTag: {
+      container: {
+        marginTop: 8,
+        flexDirection: 'row',
+      },
+      item: {
+        container: {
+          height: 17,
+          paddingHorizontal: 3,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 1,
+        },
+        text: {
+          fontSize: 10,
+        },
       },
     },
   },
   end: {
     container: {
+      marginVertical: 3,
       alignItems: 'flex-end',
-      justifyContent: 'center',
+      justifyContent: 'space-between',
       marginLeft: 6,
     },
     status: {
@@ -235,7 +317,7 @@ const styles = {
     },
     favor: {
       container: {
-        marginTop: 8,
+        // marginTop: 24,
         paddingHorizontal: 12,
         height: 24,
         maxWidth: 60,
