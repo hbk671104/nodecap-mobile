@@ -128,11 +128,11 @@ export default class PublicProject extends Component {
     );
   };
 
-  handlePRPress = () => {
-    this.props.track('点击公关服务');
+  handleServicePress = () => {
+    this.props.track('点击找服务');
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PRService',
+        routeName: 'Service',
       }),
     );
   };
@@ -181,7 +181,7 @@ export default class PublicProject extends Component {
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onInstitutionPress={this.handleInstitutionPress}
-      onPRPress={this.handlePRPress}
+      onServicePress={this.handleServicePress}
       onRefreshPress={() => {
         this.shouldAnimate = true;
         this.requestData(true, this.handleDataAlert);

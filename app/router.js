@@ -83,8 +83,8 @@ import Announcement from 'container/main/announcement/index';
 import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
-import PRService from 'container/main/service/pr';
-import PRServiceDetail from 'container/main/service/pr/detail';
+import Service from 'container/main/service/wrapper';
+import ServiceDetail from 'container/main/service/detail';
 import WhitePaper from 'container/main/public_project/whitepaper';
 import WebPage from 'container/webview';
 
@@ -248,8 +248,8 @@ const MainStack = createStackNavigator(
     WhitePaper,
     WebPage,
     Settings,
-    PRService,
-    PRServiceDetail,
+    Service,
+    ServiceDetail,
     CommentCoin,
   },
   {
@@ -371,8 +371,8 @@ const IndividualStack = createStackNavigator(
     InstitutionDetail,
     WhitePaper,
     WebPage,
-    PRService,
-    PRServiceDetail,
+    Service,
+    ServiceDetail,
     MyProject,
     CreateMyProject,
     CreateMyProjectSearch,

@@ -11,8 +11,9 @@ import ServiceItem from './item';
 import styles from './style';
 
 @global.bindTrack({
-  page: '公关公司列表',
+  page: '找服务',
   name: 'App_ServiceOperation',
+  subModuleName: '列表',
 })
 @connect(({ service, loading }) => {
   return {
@@ -21,18 +22,18 @@ import styles from './style';
     loading: loading.effects['institution/fetch'],
   };
 })
-export default class InstitutionReport extends Component {
+export default class ServiceList extends Component {
   requestData = (page, size) => {};
 
   handleItemPress = item => () => {
     this.props.track('点击进入详情');
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PRServiceDetail',
+        routeName: 'ServiceDetail',
         params: {
           id: item.id,
         },
-        key: `PRServiceDetail_${item.id}`,
+        key: `ServiceDetail_${item.id}`,
       }),
     );
   };
@@ -47,7 +48,6 @@ export default class InstitutionReport extends Component {
     const { data, loading, pagination } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient back title="公关服务" />
         <List
           contentContainerStyle={styles.list.content}
           action={this.requestData}

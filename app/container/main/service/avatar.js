@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, Animated } from 'react-native';
+import { Animated } from 'react-native';
 import R from 'ramda';
-import { raised } from '../../../../utils/style';
+import { raised } from '../../../utils/style';
 
 const avatar = props => {
   const source = R.pathOr('', ['source'])(props);
