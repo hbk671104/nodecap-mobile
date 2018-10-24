@@ -4,8 +4,8 @@ import R from 'ramda';
 
 const miscTags = ({ data }) => {
   // misc
-  const has_white_paper = R.pipe(
-    R.pathOr([], ['white_papers']),
+  const owners = R.pipe(
+    R.pathOr([], ['owners']),
     R.isEmpty,
     R.not,
   )(data);
@@ -22,6 +22,11 @@ const miscTags = ({ data }) => {
 
   return (
     <View style={styles.container}>
+      {owners && (
+        <View style={styles.item.container}>
+          <Text style={styles.item.text}>项目已入驻</Text>
+        </View>
+      )}
       {top_rated && (
         <View style={styles.item.container}>
           <Text style={styles.item.text}>有评级</Text>
