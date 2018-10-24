@@ -26,7 +26,7 @@ const calcHeaderHeight = ({ data }) => {
   let height = headerHeight;
   const purpose = R.path(['purpose'])(data);
   if (!nullOrEmpty(purpose)) {
-    height += 36;
+    height += 40;
   }
 
   const invested_by_renowned_insti = R.pipe(

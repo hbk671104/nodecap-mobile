@@ -55,7 +55,11 @@ class rating extends Component {
         </Flex>
         <View>
           {R.map(m => (
-            <Flex justify="between" style={{ marginBottom: 10 }}>
+            <Flex
+              key={m.rating_name}
+              justify="between"
+              style={{ marginBottom: 10 }}
+            >
               <View>
                 <Text
                   style={{

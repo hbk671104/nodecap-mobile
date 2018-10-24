@@ -37,7 +37,7 @@ const calcHeaderHeight = ({ can_calculate, data }) => {
 
   const purpose = R.path(['purpose'])(data);
   if (!nullOrEmpty(purpose)) {
-    baseHeight += 36;
+    baseHeight += 40;
   }
 
   const invested_by_renowned_insti = R.pipe(
@@ -86,6 +86,7 @@ const calcHeaderHeight = ({ can_calculate, data }) => {
     const investment = R.pathOr({}, ['roi'])(portfolio);
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
+
     const height = calcHeaderHeight({
       can_calculate,
       data: portfolio,
@@ -283,7 +284,7 @@ export default class PublicProjectDetail extends Component {
     } = this.props;
     const height = calcHeaderHeight({
       can_calculate,
-      purpose: portfolio.purpose,
+      data: portfolio,
     });
 
     return (
@@ -324,7 +325,7 @@ export default class PublicProjectDetail extends Component {
     } = this.props;
     const height = calcHeaderHeight({
       can_calculate,
-      purpose: portfolio.purpose,
+      data: portfolio,
     });
     return (
       <SafeArea style={styles.container}>
