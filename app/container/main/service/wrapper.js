@@ -54,6 +54,7 @@ export default class Service extends Component {
           {R.map(t => (
             <ServiceList
               key={t.value}
+              type={t.value}
               //   index={t.id}
               tabLabel={t.name}
             />

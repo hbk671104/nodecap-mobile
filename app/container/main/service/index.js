@@ -15,15 +15,24 @@ import styles from './style';
   name: 'App_ServiceOperation',
   subModuleName: '列表',
 })
-@connect(({ service, loading }) => {
+@connect(({ service, loading }, { type }) => {
   return {
-    data: R.pathOr(null, ['pr', 'list'])(service),
-    pagination: R.pathOr(null, ['list', 'pagination'])(service),
-    loading: loading.effects['institution/fetch'],
+    data: R.pathOr([], ['list', type, 'data'])(service),
+    pagination: R.pathOr(null, ['list', type, 'pagination'])(service),
+    loading: loading.effects['service/fetch'],
   };
 })
 export default class ServiceList extends Component {
-  requestData = (page, size) => {};
+  requestData = (page, size) => {
+    this.props.dispatch({
+      type: 'service/fetch',
+      payload: {
+        type: this.props.type,
+        page,
+        'per-page': size,
+      },
+    });
+  };
 
   handleItemPress = item => () => {
     this.props.track('点击进入详情');
