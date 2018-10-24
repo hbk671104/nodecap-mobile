@@ -56,7 +56,7 @@ const styles = {
       color: 'rgba(0, 0, 0, 0.85)',
     },
     subtitle: {
-      marginTop: 12,
+      marginTop: 8,
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.45)',
     },

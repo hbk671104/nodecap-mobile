@@ -1,11 +1,5 @@
 import R from 'ramda';
-// import {
-//   getUsers,
-//   getUserById,
-//   createUser,
-//   updateUserById,
-//   deleteUserById,
-// } from '../services/api';
+import { getInstitution } from '../services/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -15,31 +9,31 @@ export default {
     detail: null,
   },
   effects: {
-    // *fetch({ callback, payload }, { call, put }) {
-    //   try {
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
-    // *get({ callback, id }, { call, put }) {
-    //   try {
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
+    *fetch({ payload }, { call, put }) {
+      try {
+        const { data } = yield call(getInstitution, payload);
+
+        yield put({
+          type: 'list',
+          service_type: payload.type,
+          payload: data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   reducers: {
-    list(state, { payload, type }) {
+    list(state, { payload, service_type }) {
       return {
         ...state,
         list: {
-          [type]: paginate(state.list[type], payload),
+          ...state.list,
+          [service_type]: paginate(
+            R.pathOr({}, ['list', service_type])(state),
+            payload,
+          ),
         },
-      };
-    },
-    detail(state, action) {
-      return {
-        ...state,
       };
     },
   },

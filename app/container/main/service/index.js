@@ -4,9 +4,8 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
-import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
-import ServiceItem from './item';
+import InstitutionItem from 'component/institution/item';
 
 import styles from './style';
 
@@ -38,17 +37,17 @@ export default class ServiceList extends Component {
     this.props.track('点击进入详情');
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ServiceDetail',
+        routeName: 'InstitutionDetail',
         params: {
           id: item.id,
         },
-        key: `ServiceDetail_${item.id}`,
+        key: `InstitutionDetail_${item.id}`,
       }),
     );
   };
 
   renderItem = ({ item }) => (
-    <ServiceItem data={item} onPress={this.handleItemPress(item)} />
+    <InstitutionItem data={item} onPress={this.handleItemPress(item)} />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
