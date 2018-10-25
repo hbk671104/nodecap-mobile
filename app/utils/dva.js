@@ -43,6 +43,7 @@ export default options => {
         'public_project/get',
         'public_project/favor',
         'public_project/addToWorkflow',
+        'public_project/fetchSelected',
         'institution/fetch',
         'institution/get',
         'institution/fetchReports',

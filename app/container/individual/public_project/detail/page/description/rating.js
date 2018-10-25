@@ -18,7 +18,7 @@ class rating extends Component {
       return null;
     }
     return (
-      <View>
+      <View style={styles.fieldGroup}>
         <Text style={[styles.title, styles.site]}>评级信息</Text>
         <Flex
           justify="between"

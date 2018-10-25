@@ -46,7 +46,19 @@ export default class Description extends PureComponent {
     );
   };
 
+  errorCorrection = (name, coinName) => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Feedback',
+        params: {
+          name: `项目名：${coinName}\n字段名：${name}\n\n出现问题:\n`,
+        },
+      }),
+    );
+  }
+
   render() {
+    const coinName = R.pathOr('', ['portfolio', 'name'])(this.props);
     const description = R.pathOr('', ['portfolio', 'description'])(this.props);
     const siteUrl = R.pathOr('', ['portfolio', 'homepage'])(this.props);
     const white_papers = R.pathOr([], ['portfolio', 'white_papers'])(
@@ -62,18 +74,27 @@ export default class Description extends PureComponent {
       'industry_investments',
     ])(this.props);
     const country_origin = R.pathOr('', ['portfolio', 'basic', 'country_origin'])(this.props);
-
+    const title = (name) => (
+      <Flex justify="between" align="center" style={styles.titleWrap}>
+        <Text style={styles.title}>{name}</Text>
+        <TouchableWithoutFeedback onPress={() => this.errorCorrection(name, coinName)}>
+          <View>
+            <Text style={styles.correction}>纠错</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      </Flex>
+    );
     return (
       <View style={styles.container}>
         {R.not(R.isEmpty(description)) && (
-          <View>
-            <Text style={styles.title}>项目简介</Text>
+          <View style={styles.fieldGroup}>
+            {title('项目简介')}
             <Text style={styles.desc}>{description}</Text>
           </View>
         )}
         {R.not(R.isEmpty(white_papers)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>白皮书</Text>
+          <View style={styles.fieldGroup}>
+            {title('白皮书')}
             <View>
               {R.map(w => (
                 <Text
@@ -88,8 +109,8 @@ export default class Description extends PureComponent {
           </View>
         )}
         {R.not(R.isEmpty(siteUrl)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>官网</Text>
+          <View style={styles.fieldGroup}>
+            {title('官网')}
             <Text
               style={styles.link}
               onPress={() => this.handleUrlPress(siteUrl)}
@@ -99,8 +120,8 @@ export default class Description extends PureComponent {
           </View>
         )}
         {R.not(R.isEmpty(country_origin)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>国别</Text>
+          <View style={styles.fieldGroup}>
+            {title('国别')}
             <Text
               style={styles.desc}
             >
@@ -110,8 +131,8 @@ export default class Description extends PureComponent {
         )}
         <Rating {...this.props} />
         {R.not(R.isEmpty(social_network)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>媒体信息</Text>
+          <View style={styles.fieldGroup}>
+            {title('媒体信息')}
             <Grid
               data={social_network}
               columnNum={3}
@@ -143,16 +164,16 @@ export default class Description extends PureComponent {
         )}
         <Financing {...this.props} />
         {R.not(R.isEmpty(members)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>团队成员</Text>
+          <View style={styles.fieldGroup}>
+            {title('团队成员')}
             <View>
               {R.map(m => <MemberItem key={m.id} data={m} />)(members)}
             </View>
           </View>
         )}
         {R.not(R.isEmpty(industry_investments)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>投资机构</Text>
+          <View style={styles.fieldGroup}>
+            {title('投资机构')}
             <Flex wrap="wrap">
               {R.map(m => (
                 <InstitutionItem
@@ -166,8 +187,8 @@ export default class Description extends PureComponent {
           </View>
         )}
         {R.not(R.isEmpty(roadmap)) && (
-          <View>
-            <Text style={[styles.title, styles.site]}>路线图</Text>
+          <View style={styles.fieldGroup}>
+            {title('路线图')}
             <Roadmap {...this.props} roadmap={roadmap} />
           </View>
         )}

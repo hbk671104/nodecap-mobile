@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { RouterEmitter } from '../../../router';
 
 import NavBar, { realBarHeight } from 'component/navBar';
 import NewsItem from 'component/news';
@@ -27,6 +28,7 @@ import styles from './style';
     public_project,
   ),
   loading: loading.effects['news/index'],
+  selectedLoading: loading.effects['public_project/fetchSelected'],
   insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
   announcement: R.pathOr([], ['list', 'data'])(notification),
   reports: R.pathOr([], ['report', 'data'])(institution),
@@ -35,6 +37,7 @@ import styles from './style';
 }))
 @compose(
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('selectPage', 'setSelectPage', 1),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 192],
@@ -49,6 +52,19 @@ import styles from './style';
   })),
 )
 export default class PublicProject extends Component {
+  componentWillMount() {
+    RouterEmitter.addListener('resume', () => {
+      const nextPage = this.props.selectPage + 1;
+      this.props.dispatch({
+        type: 'news/index',
+        nextSelectPage: nextPage,
+        payload: null,
+        callback: () => {
+          this.props.setSelectPage(nextPage);
+        },
+      });
+    });
+  }
   handleDataAlert = (newUpdateCount, oldUpdateCount) => {
     if (newUpdateCount > oldUpdateCount) {
       const count = newUpdateCount - oldUpdateCount;
@@ -65,9 +81,23 @@ export default class PublicProject extends Component {
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
+      nextSelectPage: this.props.selectPage,
       callback,
     });
   };
+
+  refreshProject = () => {
+    const nextPage = this.props.selectPage + 1;
+    this.props.dispatch({
+      type: 'public_project/fetchSelected',
+      params: {
+        currentPage: nextPage,
+      },
+      callback: () => {
+        this.props.setSelectPage(nextPage);
+      },
+    });
+  }
 
   handleItemPress = item => () => {
     this.props.track('点击进入详情');
@@ -185,6 +215,9 @@ export default class PublicProject extends Component {
       onRefreshPress={() => {
         this.shouldAnimate = true;
         this.requestData(true, this.handleDataAlert);
+      }}
+      onRefreshProject={() => {
+        this.refreshProject();
       }}
       newsLoading={this.props.loading && this.shouldAnimate}
     />

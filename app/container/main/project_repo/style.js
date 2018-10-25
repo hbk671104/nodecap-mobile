@@ -62,4 +62,12 @@ export default {
     backgroundColor: '#E9E9E9',
     marginLeft: 76,
   },
+  header: {
+    height: 45,
+    paddingHorizontal: 12,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#e9e9e9',
+  },
+  headerText: { fontSize: 14, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.17 },
+  headerHighlight: { fontSize: 14, color: '#1890FF', letterSpacing: 0.17 },
 };

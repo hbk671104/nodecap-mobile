@@ -13,7 +13,7 @@ const group = ({ title, children }) => (
 
 const styles = {
   container: {
-    marginTop: 20,
+    marginBottom: 20,
   },
   titleContainer: {
     marginBottom: 4,

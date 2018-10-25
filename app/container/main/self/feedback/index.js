@@ -27,8 +27,16 @@ class Feedback extends Component {
   componentWillMount() {
     setTimeout(() => {
      this.props.setFocus(true);
+      const name = this.props.navigation.getParam('name');
+      if (!name || !this.textInput) {
+        return name;
+      }
+      setTimeout(() => {
+        this.textInput.setNativeProps({ text: name });
+      }, 50);
     }, 200);
   }
+
   submit = () => {
     if (this.props.submitting) {
       return;
@@ -80,6 +88,9 @@ class Feedback extends Component {
                 inputProps={{
                   style: styles.content,
                   autoFocus: true,
+                  inputRef: ref => {
+                    this.textInput = ref;
+                  },
                 }}
                 placeholder="输入意见反馈内容"
                 vertical

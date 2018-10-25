@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, View, Platform, Vibration } from 'react-native';
+import { BackHandler, Alert, View, Platform, Vibration, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -444,6 +444,7 @@ import { hasAppStoreUpdate } from 'utils/utils';
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
+    appState: '',
   };
 
   async componentWillMount() {
@@ -465,6 +466,7 @@ class Router extends Component {
     if (this.state.isIOS) {
       JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
     }
+    AppState.addEventListener('change', this._handleAppStateChange);
   }
 
   // componentWillReceiveProps(nextProps) {
@@ -477,6 +479,15 @@ class Router extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
     JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
+    AppState.removeEventListener('change', this._handleAppStateChange);
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      console.log('App has come to the foreground!');
+      RouterEmitter.emit('resume');
+    }
+    this.setState({ appState: nextAppState });
   }
 
   backHandle = () => {

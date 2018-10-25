@@ -8,10 +8,16 @@ export default {
   },
   title: {
     fontSize: 14,
-    marginBottom: 10,
     color: 'rgba(0,0,0,0.85)',
     fontWeight: 'bold',
   },
+  titleWrap: {
+    marginBottom: 10,
+  },
+  fieldGroup: {
+    marginBottom: 26,
+  },
+  correction: { fontSize: 12, color: '#6C98C0', letterSpacing: 0.29 },
   desc: {
     fontFamily: 'PingFangSC-Regular',
     fontSize: 13,
