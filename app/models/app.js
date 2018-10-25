@@ -77,7 +77,7 @@ export default {
           });
         },
         syncOptions: {
-          installMode: codePush.InstallMode.ON_NEXT_RESTART,
+          installMode: codePush.InstallMode.ON_NEXT_RESUME,
           syncOnResume: true,
           syncOnInterval: 60,
         },

@@ -7,7 +7,7 @@ import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
-import SimplifiedItem from 'component/public_project/simplified_item';
+import InstitutionSimplifiedItem from 'component/institution/simplified_item';
 import List from 'component/uikit/list';
 import styles from './style';
 
@@ -81,7 +81,7 @@ class MyInstitution extends Component {
     />
   );
 
-  renderItem = ({ item }) => null;
+  renderItem = ({ item }) => <InstitutionSimplifiedItem data={item} />;
 
   renderSeparator = () => <View style={styles.separator} />;
 
@@ -94,7 +94,7 @@ class MyInstitution extends Component {
           loading={loading}
           action={this.requestData}
           pagination={pagination}
-          data={[]}
+          data={data}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
         />

@@ -39,7 +39,7 @@ export default {
   effects: {
     *fetch({ payload }, { put, call }) {
       try {
-        const { data } = yield call(Individual.myProjectList, payload);
+        const { data } = yield call(Individual.myInstitution, payload);
 
         yield put({
           type: 'save',

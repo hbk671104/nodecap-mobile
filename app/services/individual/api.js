@@ -111,3 +111,7 @@ export function createInstitution(payload) {
 export function editInstitution({ id, payload }) {
   return request.post(`/industry-investments/${id}`, payload);
 }
+
+export function myInstitution(payload) {
+  return request.get('/my-industry-investments', payload);
+}
