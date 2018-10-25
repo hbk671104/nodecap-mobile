@@ -44,10 +44,10 @@ class MyInstitution extends Component {
   };
 
   handleItemPress = item => () => {
-    if (R.path(['owner_status'])(item) !== '1') {
+    if (R.path(['status'])(item) !== 1) {
       this.props.dispatch(
         NavigationActions.navigate({
-          routeName: 'CreateMyProjectDone',
+          routeName: 'CreateMyInstitutionDone',
         }),
       );
       return;
@@ -61,7 +61,7 @@ class MyInstitution extends Component {
         Toast.hide();
         this.props.dispatch(
           NavigationActions.navigate({
-            routeName: 'CreateMyProjectNormalWrapper',
+            routeName: 'CreateMyInstitutionWrapper',
           }),
         );
       },
@@ -81,7 +81,12 @@ class MyInstitution extends Component {
     />
   );
 
-  renderItem = ({ item }) => <InstitutionSimplifiedItem data={item} />;
+  renderItem = ({ item }) => (
+    <InstitutionSimplifiedItem
+      data={item}
+      onPress={this.handleItemPress(item)}
+    />
+  );
 
   renderSeparator = () => <View style={styles.separator} />;
 

@@ -51,7 +51,7 @@ export default {
     },
     *get({ id, callback }, { call, put }) {
       try {
-        const { data } = yield call(API.getCoinInfo, id);
+        const { data } = yield call(API.getInstitutionDetail, id);
 
         yield put({
           type: 'setCurrent',
