@@ -78,31 +78,13 @@ export default {
         console.log(error);
       }
     },
-    *claimProject({ id, payload, callback }, { put, call }) {
-      try {
-        const { status } = yield call(Individual.claimMyProject, {
-          id,
-          payload,
-        });
-
-        yield put({
-          type: 'refresh',
-        });
-
-        if (callback) {
-          yield callback(status === 200);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    *submitProject({ callback }, { select, put }) {
+    *submitInstitution({ callback }, { select, put }) {
       try {
         const owner = yield select(state =>
-          R.path(['project_create', 'owner'])(state),
+          R.path(['institution_create', 'owner'])(state),
         );
         const current = yield select(state =>
-          R.path(['project_create', 'current'])(state),
+          R.path(['institution_create', 'current'])(state),
         );
 
         const sanitized_data = convertToPayloadData({
@@ -112,14 +94,14 @@ export default {
 
         if (current.id) {
           yield put.resolve({
-            type: 'editProject',
+            type: 'editInstitution',
             id: current.id,
             payload: sanitized_data,
             callback,
           });
         } else {
           yield put.resolve({
-            type: 'createProject',
+            type: 'createInstitution',
             payload: sanitized_data,
             callback,
           });
@@ -128,7 +110,7 @@ export default {
         console.log(error);
       }
     },
-    *createProject({ payload, callback }, { put, call }) {
+    *createInstitution({ payload, callback }, { put, call }) {
       try {
         const { status } = yield call(Individual.createMyProject, payload);
 
@@ -143,7 +125,7 @@ export default {
         console.log(error);
       }
     },
-    *editProject({ id, payload, callback }, { put, call }) {
+    *editInstitution({ id, payload, callback }, { put, call }) {
       try {
         const { status } = yield call(Individual.editMyProject, {
           id,
