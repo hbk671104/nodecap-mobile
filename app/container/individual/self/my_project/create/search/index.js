@@ -3,7 +3,6 @@ import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
-import { Toast } from 'antd-mobile';
 import _ from 'lodash';
 
 import NavBar from 'component/navBar';
@@ -49,19 +48,6 @@ class CreateMyProjectSearch extends Component {
     });
   };
 
-  handleSavePress = () => {
-    const { searchText } = this.state;
-    if (R.isEmpty(searchText)) return;
-
-    this.props.dispatch({
-      type: 'project_create/saveCurrent',
-      payload: {
-        name: searchText,
-      },
-    });
-    this.props.dispatch(NavigationActions.back());
-  };
-
   handleItemPress = item => () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -93,7 +79,7 @@ class CreateMyProjectSearch extends Component {
         style={styles.searchBar.wrapper}
         inputStyle={styles.searchBar.input}
         onChange={this.onSearchTextChange}
-        placeholder="请填写项目名称"
+        placeholder="请填写项目名称，可从列表中选择"
         placeholderTextColor="rgba(0, 0, 0, 0.45)"
         iconColor="#1890FF"
       />

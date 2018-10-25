@@ -2,14 +2,19 @@ import {
   getIndustries,
   getIndustryDetail,
   getReportsByIndustry,
+  getInstitutionBanner,
+  getInstitutionReportSet,
 } from '../services/api';
 import { paginate } from '../utils/pagination';
+import R from 'ramda';
 
 export default {
   namespace: 'institution',
   state: {
     list: null,
     report: null,
+    banner: null,
+    report_set: null,
     current: null,
   },
   effects: {
@@ -27,9 +32,39 @@ export default {
     *fetchReports({ payload }, { call, put }) {
       try {
         const { data } = yield call(getReportsByIndustry, payload);
+
+        if (R.pathOr(1, ['currentPage'])(payload) === 1) {
+          yield put({
+            type: 'fetchReportBanner',
+          });
+        }
+
         yield put({
           type: 'report',
           payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchReportBanner(_, { call, put }) {
+      try {
+        const { data } = yield call(getInstitutionBanner);
+        yield put({
+          type: 'banner',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchReportSet({ payload }, { call, put }) {
+      try {
+        const { data } = yield call(getInstitutionReportSet, payload);
+        yield put({
+          type: 'reportSet',
+          payload: data,
+          id: R.pathOr(0, ['set_id'])(payload),
         });
       } catch (e) {
         console.log(e);
@@ -58,6 +93,21 @@ export default {
       return {
         ...state,
         report: paginate(state.report, action.payload),
+      };
+    },
+    banner(state, action) {
+      return {
+        ...state,
+        banner: action.payload,
+      };
+    },
+    reportSet(state, { payload, id }) {
+      return {
+        ...state,
+        report_set: {
+          ...state.report_set,
+          [id]: paginate(R.pathOr({}, ['report_set', id])(state), payload),
+        },
       };
     },
     save(state, action) {

@@ -1,10 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, Text, ScrollView, StyleSheet } from 'react-native';
+import {
+  View,
+  Animated,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
 import Shimmer from 'component/shimmer';
+import MiscTag from 'component/public_project/misc_tag';
 import Purpose from './purpose';
 
 const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
@@ -28,6 +36,11 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
       (last, current) => `${last ? `${last}/` : last}${current.name}`,
       '',
     ),
+  )(data);
+  const is_vip = R.pipe(
+    R.pathOr([], ['vip']),
+    R.isEmpty,
+    R.not,
   )(data);
 
   return (
@@ -65,8 +78,15 @@ const header = ({ style, titleStyle, data, loading, avatarWrapperStyle }) => {
         </View>
         <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
           <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+          {is_vip && (
+            <Image
+              style={styles.vipIcon}
+              source={require('asset/public_project/vip_icon.png')}
+            />
+          )}
         </Animated.View>
       </View>
+      <MiscTag data={data} />
       {R.compose(
         R.not,
         R.isEmpty,
@@ -150,6 +170,11 @@ const styles = {
       fontSize: 11,
       color: 'white',
     },
+  },
+  vipIcon: {
+    position: 'absolute',
+    right: 0,
+    bottom: 8,
   },
 };
 

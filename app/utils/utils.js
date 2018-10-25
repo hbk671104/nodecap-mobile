@@ -1,5 +1,7 @@
 import moment from 'moment';
 import * as R from 'ramda';
+import DeviceInfo from 'react-native-device-info';
+import compareVersions from 'compare-versions';
 
 export function fixedZero(val) {
   return val * 1 < 10 ? `0${val}` : val;
@@ -380,4 +382,30 @@ export const convertToPayloadData = data => {
     ...(R.isEmpty(purpose) ? {} : { purpose }),
     ...(R.isEmpty(tags) ? {} : { tags }),
   };
+};
+
+export const hasAppStoreUpdate = async () => {
+  try {
+    let result = await fetch('https://itunes.apple.com/lookup?id=1397744640');
+    result = await result.json();
+
+    const appStoreVersion = R.path(['results', 0, 'version'])(result);
+    const releaseNotes = R.path(['results', 0, 'releaseNotes'])(result);
+    const systemVersion = DeviceInfo.getVersion();
+
+    const compare = compareVersions(appStoreVersion, systemVersion);
+    if (compare === 1) {
+      return {
+        hasUpdate: true,
+        releaseNotes,
+      };
+    }
+
+    return {
+      hasUpdate: false,
+      releaseNotes,
+    };
+  } catch (error) {
+    console.log(error);
+  }
 };

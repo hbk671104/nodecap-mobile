@@ -764,3 +764,27 @@ export function getCoinTags(params) {
     params: paramsTransform(params),
   });
 }
+
+/**
+ * 评级机构列表
+ * @returns {AxiosPromise<any>}
+ */
+export function getInstitution(params) {
+  return request.get('/industry-investments', {
+    params,
+  });
+}
+
+export function getInstitutionDetail(id) {
+  return request.get(`/industry-investments/${id}`);
+}
+
+export function getInstitutionBanner() {
+  return request.get('/report-sets');
+}
+
+export function getInstitutionReportSet(params) {
+  return request.get('/reports', {
+    params,
+  });
+}

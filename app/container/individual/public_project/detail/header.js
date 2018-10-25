@@ -1,6 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, Text, StyleSheet, ScrollView } from 'react-native';
+import {
+  View,
+  Animated,
+  Image,
+  Text,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import R from 'ramda';
 
 import Price from 'component/price';
@@ -10,6 +17,7 @@ import Amount from 'component/amount';
 import Shimmer from 'component/shimmer';
 import { symbol } from '../../../../utils/icon';
 import Purpose from './purpose';
+import MiscTag from 'component/public_project/misc_tag';
 
 export const headerHeight = 64;
 export const fullHeaderHeight = 144;
@@ -49,7 +57,11 @@ const header = ({
       '',
     ),
   )(data);
-  // const desc = R.pathOr('--', ['description'])(market);
+  const is_vip = R.pipe(
+    R.pathOr([], ['vip']),
+    R.isEmpty,
+    R.not,
+  )(data);
 
   return (
     <Animated.View
@@ -93,9 +105,16 @@ const header = ({
           </View>
         </View>
         <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
-          <Avatar size={50} source={{ uri: logo }} />
+          <Avatar size={57} source={{ uri: logo }} />
+          {is_vip && (
+            <Image
+              style={styles.vipIcon}
+              source={require('asset/public_project/vip_icon.png')}
+            />
+          )}
         </Animated.View>
       </View>
+      <MiscTag data={data} />
       {can_calculate ? (
         <View>
           <View style={styles.divider} />
@@ -205,6 +224,11 @@ const styles = {
       fontSize: 11,
       color: 'white',
     },
+  },
+  vipIcon: {
+    position: 'absolute',
+    right: 0,
+    bottom: 8,
   },
 };
 

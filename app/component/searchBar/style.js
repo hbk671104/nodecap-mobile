@@ -1,15 +1,15 @@
 export default {
   container: {
-    height: 30,
+    height: 31,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 12,
     borderRadius: 4,
-    backgroundColor: '#0A9FF7',
+    backgroundColor: '#1287F1',
   },
   title: {
     flex: 1,
-    fontSize: 12,
+    fontSize: 13,
     color: 'white',
     alignSelf: 'center',
   },

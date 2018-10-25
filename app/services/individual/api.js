@@ -103,3 +103,11 @@ export function submitComment(coin_id, content) {
     content,
   });
 }
+
+export function createInstitution(payload) {
+  return request.post('/industry-investments', payload);
+}
+
+export function editInstitution({ id, payload }) {
+  return request.post(`/industry-investments/${id}`, payload);
+}

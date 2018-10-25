@@ -67,7 +67,7 @@ const memberItem = ({ data, style }) => {
                 }}
                 onPress={() => {
                   Clipboard.setString(wechat);
-                  Toast.show('微信号已复制');
+                  Toast.show('微信号已复制', 2000);
                 }}
               >
                 <Image

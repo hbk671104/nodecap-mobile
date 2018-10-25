@@ -14,6 +14,7 @@ import SafeArea from 'component/uikit/safeArea';
 import NavBar, { realBarHeight } from 'component/navBar';
 import Gradient from 'component/uikit/gradient';
 import { NavigationActions } from 'react-navigation';
+import { nullOrEmpty } from 'utils/utils';
 
 import Description from './page/description';
 import Trend from './page/trend';
@@ -28,23 +29,35 @@ import Bottom from './bottom';
 import styles from './style';
 
 const window = Dimensions.get('window');
-const calcHeaderHeight = ({ can_calculate, purpose }) => {
+const calcHeaderHeight = ({ can_calculate, data }) => {
   let baseHeight = headerHeight;
   if (can_calculate) {
     baseHeight += 80;
   }
 
-  if (
-    R.compose(
-      R.not,
-      R.isEmpty,
-    )(purpose)
-  ) {
-    baseHeight += 37;
+  const purpose = R.path(['purpose'])(data);
+  if (!nullOrEmpty(purpose)) {
+    baseHeight += 40;
+  }
+
+  const invested_by_renowned_insti = R.pipe(
+    R.pathOr([], ['renowned_industry']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const top_rated = R.pipe(
+    R.pathOr([], ['top_rating']),
+    R.isEmpty,
+    R.not,
+  )(data);
+
+  if (invested_by_renowned_insti || top_rated) {
+    baseHeight += 30;
   }
 
   return baseHeight;
 };
+
 @global.bindTrack({
   page: '项目详情',
   name: 'App_ProjectDetailOperation',
@@ -73,10 +86,12 @@ const calcHeaderHeight = ({ can_calculate, purpose }) => {
     const investment = R.pathOr({}, ['roi'])(portfolio);
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
+
     const height = calcHeaderHeight({
       can_calculate,
-      purpose: portfolio.purpose,
+      data: portfolio,
     });
+
     return {
       headerWrapperYRange: animateY.interpolate({
         inputRange: [0, height],
@@ -269,7 +284,7 @@ export default class PublicProjectDetail extends Component {
     } = this.props;
     const height = calcHeaderHeight({
       can_calculate,
-      purpose: portfolio.purpose,
+      data: portfolio,
     });
 
     return (
@@ -310,7 +325,7 @@ export default class PublicProjectDetail extends Component {
     } = this.props;
     const height = calcHeaderHeight({
       can_calculate,
-      purpose: portfolio.purpose,
+      data: portfolio,
     });
     return (
       <SafeArea style={styles.container}>

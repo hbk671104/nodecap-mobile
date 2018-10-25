@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, Platform, Vibration, AppState } from 'react-native';
+import { BackHandler, Alert, View, Platform, Vibration, AppState } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -39,6 +39,7 @@ import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
 import CommentCoin from 'container/main/public_project/comment';
 import InstitutionReport from 'container/main/public_project/institution_report';
+import InstitutionReportSet from 'container/main/public_project/institution_report/report_set';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
@@ -83,8 +84,7 @@ import Announcement from 'container/main/announcement/index';
 import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
-import PRService from 'container/main/service/pr';
-import PRServiceDetail from 'container/main/service/pr/detail';
+import Service from 'container/main/service/wrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
 import WebPage from 'container/webview';
 
@@ -111,6 +111,15 @@ import CreateMyProjectFunding from 'container/individual/self/my_project/create/
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
 import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
+import MyInstitution from 'container/individual/self/my_institution';
+import CreateMyInstitution from 'container/individual/self/my_institution/create';
+import CreateMyInstitutionBasicInfo from 'container/individual/self/my_institution/create/basic';
+import CreateMyInstitutionDescription from 'container/individual/self/my_institution/create/description';
+import CreateMyInstitutionTeam from 'container/individual/self/my_institution/create/team';
+import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
+import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
+import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
+import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -200,6 +209,7 @@ const MainStack = createStackNavigator(
     PublicProjectSearch,
     PublicProjectDetail,
     InstitutionReport,
+    InstitutionReportSet,
     InstitutionReportDetail,
     FundProject,
     PortfolioDetail,
@@ -239,8 +249,7 @@ const MainStack = createStackNavigator(
     WhitePaper,
     WebPage,
     Settings,
-    PRService,
-    PRServiceDetail,
+    Service,
     CommentCoin,
   },
   {
@@ -320,10 +329,23 @@ const ProjectCreate = createStackNavigator(
   },
 );
 
+const InstitutionCreate = createStackNavigator(
+  {
+    CreateMyInstitutionBasicInfo,
+    CreateMyInstitutionDescription,
+    CreateMyInstitutionTeam,
+    CreateMyInstitutionServedProject,
+  },
+  {
+    headerMode: 'none',
+  },
+);
+
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
     InstitutionReport,
+    InstitutionReportSet,
     InstitutionReportDetail,
     PublicProjectSearch,
     PublicProjectDetail: {
@@ -350,8 +372,7 @@ const IndividualStack = createStackNavigator(
     InstitutionDetail,
     WhitePaper,
     WebPage,
-    PRService,
-    PRServiceDetail,
+    Service,
     MyProject,
     CreateMyProject,
     CreateMyProjectSearch,
@@ -363,6 +384,14 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,
+    MyInstitution,
+    CreateMyInstitution,
+    CreateMyInstitutionSearch,
+    CreateMyInstitutionWrapper: {
+      screen: InstitutionCreate,
+    },
+    ClaimMyInstitution,
+    CreateMyInstitutionDone,
   },
   {
     headerMode: 'none',
@@ -399,20 +428,34 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 
 const addListener = createReduxBoundAddListener('root');
 
+import UpdateAlert from 'component/update';
+import Modal from 'component/modal';
+import { hasAppStoreUpdate } from 'utils/utils';
+
 @withNetworkConnectivity({
   pingServerUrl: 'https://www.baidu.com/',
 })
-@connect(({ app, router }) => ({ app, router }))
+@connect(({ app, router, update }) => ({
+  app,
+  router,
+  showAlert: R.pathOr(false, ['modal_visible'])(update),
+  release_notes: R.pathOr('', ['release_notes'])(update),
+}))
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
     appState: '',
   };
 
-  componentWillMount() {
+  async componentWillMount() {
     WeChat.registerApp('wx9e13272f60a68c63');
     if (!this.state.isIOS) {
       JPush.notifyJSDidLoad(() => null);
+    }
+
+    const { hasUpdate, releaseNotes } = await hasAppStoreUpdate();
+    if (hasUpdate) {
+      this.toggleAlert({ releaseNotes });
     }
   }
 
@@ -488,8 +531,15 @@ class Router extends Component {
     handleReceive(extras);
   };
 
+  toggleAlert = payload => {
+    this.props.dispatch({
+      type: 'update/toggle',
+      payload,
+    });
+  };
+
   render() {
-    const { dispatch, app, router } = this.props;
+    const { dispatch, app, router, showAlert, release_notes } = this.props;
     if (app.loading) return <Loading />;
 
     const navigation = {
@@ -498,9 +548,20 @@ class Router extends Component {
       addListener,
     };
     return (
-      <ActionSheetProvider>
-        <AppRouter navigation={navigation} />
-      </ActionSheetProvider>
+      <View style={{ flex: 1 }}>
+        <ActionSheetProvider>
+          <AppRouter navigation={navigation} />
+        </ActionSheetProvider>
+        <Modal
+          style={{ alignSelf: 'center' }}
+          isVisible={showAlert}
+          useNativeDriver
+          hideModalContentWhileAnimating
+          onBackdropPress={this.toggleAlert}
+        >
+          <UpdateAlert note={release_notes} />
+        </Modal>
+      </View>
     );
   }
 }

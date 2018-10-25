@@ -47,6 +47,7 @@ export default options => {
         'institution/fetch',
         'institution/get',
         'institution/fetchReports',
+        'institution/fetchReportSet',
         'news/index',
         'favored/fetch',
         'activity/fetch',
@@ -54,6 +55,9 @@ export default options => {
         'project_create/fetch',
         'project_create/claimProject',
         'project_create/submitProject',
+        'institution_create/fetch',
+        'service/fetch',
+        'service/get',
       ],
     }),
   );

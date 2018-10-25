@@ -1,29 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
-
-const colorMap = [
-  {
-    textColor: '#1890FF',
-    backgroundColor: '#E5F3FF',
-  },
-  {
-    textColor: '#FF7600',
-    backgroundColor: '#FFE9D6',
-  },
-  {
-    textColor: '#A663E0',
-    backgroundColor: '#ECD7FE',
-  },
-  {
-    textColor: '#09AC32',
-    backgroundColor: '#BCF4CA',
-  },
-];
 
 const publicProjectItem = ({ style, data, onPress }) => {
   const icon = R.pathOr('', ['icon'])(data);
@@ -35,11 +16,36 @@ const publicProjectItem = ({ style, data, onPress }) => {
   )(data);
   const description = R.pathOr('--', ['description'])(data);
 
+  // misc
+  const has_white_paper = R.pipe(
+    R.pathOr([], ['white_papers']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const is_vip = R.pipe(
+    R.pathOr({}, ['vip']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const invested_by_renowned_insti = R.pipe(
+    R.pathOr([], ['renowned_industry']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const top_rated = R.pipe(
+    R.pathOr([], ['top_rating']),
+    R.isEmpty,
+    R.not,
+  )(data);
+
   return (
     <Touchable foreground onPress={onPress}>
       <View style={[styles.container, style]}>
         <Avatar
-          size={50}
+          style={styles.avatar}
+          raised={false}
+          size={52}
+          innerRatio={0.75}
           source={
             R.isEmpty(icon)
               ? require('asset/project/project_logo_default.png')
@@ -48,10 +54,16 @@ const publicProjectItem = ({ style, data, onPress }) => {
         />
         <View style={styles.content.container}>
           <View style={styles.content.top.container}>
-            <View style={styles.content.top.title.container}>
+            <View style={styles.content.titleContainer}>
               <Text style={styles.content.top.title.text} numberOfLines={2}>
                 {project_name}
               </Text>
+              {is_vip && (
+                <Image
+                  style={{ marginLeft: 8 }}
+                  source={require('asset/public_project/is_vip.png')}
+                />
+              )}
             </View>
             {!R.isEmpty(status) &&
               !R.equals(status, '未设定') && (
@@ -67,30 +79,79 @@ const publicProjectItem = ({ style, data, onPress }) => {
               )}
           </View>
           <View style={styles.content.tag.wrapper}>
-            {R.addIndex(R.map)((t, i) => {
-              const textColor = R.pathOr('#939393', [i, 'textColor'])(colorMap);
-              const backgroundColor = R.pathOr('#E2E2E2', [
-                i,
-                'backgroundColor',
-              ])(colorMap);
-              return (
-                <View
-                  key={`${i}`}
-                  style={[styles.content.tag.container, { backgroundColor }]}
-                >
-                  <Text
-                    style={[styles.content.tag.title, { color: textColor }]}
-                  >
-                    {R.pipe(
-                      R.pathOr('', ['name']),
-                      R.trim,
-                    )(t)}
-                  </Text>
-                </View>
-              );
-            })(category)}
+            {R.addIndex(R.map)((t, i) => (
+              <View key={`${i}`} style={styles.content.tag.container}>
+                <Text style={styles.content.tag.title}>
+                  {R.pipe(
+                    R.pathOr('', ['name']),
+                    R.trim,
+                  )(t)}
+                </Text>
+              </View>
+            ))(category)}
           </View>
-          <View style={styles.content.subtitle.container}>
+          <View style={styles.content.miscTag.container}>
+            {has_white_paper && (
+              <View
+                style={[
+                  styles.content.miscTag.item.container,
+                  { backgroundColor: '#E5F3FF', marginRight: 4 },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.content.miscTag.item.text,
+                    { color: '#1890FF' },
+                  ]}
+                >
+                  有白皮书
+                </Text>
+              </View>
+            )}
+            {invested_by_renowned_insti && (
+              <View
+                style={[
+                  styles.content.miscTag.item.container,
+                  { backgroundColor: '#FFE9D6', marginRight: 4 },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.content.miscTag.item.text,
+                    { color: '#FF7600' },
+                  ]}
+                >
+                  知名机构所投
+                </Text>
+              </View>
+            )}
+            {top_rated && (
+              <View
+                style={[
+                  styles.content.miscTag.item.container,
+                  { backgroundColor: '#BCF4CA' },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.content.miscTag.item.text,
+                    { color: '#09AC32' },
+                  ]}
+                >
+                  评级优秀
+                </Text>
+              </View>
+            )}
+          </View>
+          <View
+            style={[
+              styles.content.subtitle.container,
+              (R.isEmpty(category) ||
+                (!has_white_paper &&
+                  !invested_by_renowned_insti &&
+                  !top_rated)) && { marginTop: 0 },
+            ]}
+          >
             <Text numberOfLines={2} style={styles.content.subtitle.text}>
               {description}
             </Text>
@@ -106,10 +167,20 @@ const styles = {
     padding: 12,
     flexDirection: 'row',
   },
+  avatar: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#F0F0F0',
+    borderRadius: 2,
+  },
   content: {
     container: {
       marginLeft: 15,
       flex: 1,
+    },
+    titleContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     top: {
       container: {
@@ -134,24 +205,46 @@ const styles = {
     },
     tag: {
       wrapper: {
-        marginTop: 6,
+        marginTop: 8,
         flexDirection: 'row',
-        flexWrap: 'wrap',
       },
       container: {
-        height: 19,
+        height: 17,
         paddingHorizontal: 3,
-        borderRadius: 2,
-        marginRight: 8,
+        borderRadius: 1,
+        marginRight: 4,
         justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: 'rgba(0, 0, 0, 0.25)',
       },
       title: {
-        fontSize: 11,
+        fontSize: 10,
+        color: 'rgba(0, 0, 0, 0.45)',
+      },
+    },
+    miscTag: {
+      container: {
+        marginTop: 8,
+        flexDirection: 'row',
+      },
+      item: {
+        container: {
+          height: 17,
+          paddingHorizontal: 3,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 1,
+          marginRight: 4,
+        },
+        text: {
+          fontSize: 10,
+        },
       },
     },
     subtitle: {
       container: {
-        marginTop: 10,
+        marginTop: 8,
       },
       text: {
         fontSize: 12,

@@ -15,4 +15,11 @@ export default {
     backgroundColor: '#E9E9E9',
     marginLeft: 12,
   },
+  right: {
+    container: {},
+    text: {
+      fontSize: 14,
+      color: 'white',
+    },
+  },
 };
