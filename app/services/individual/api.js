@@ -109,7 +109,7 @@ export function createInstitution(payload) {
 }
 
 export function editInstitution({ id, payload }) {
-  return request.post(`/industry-investments/${id}`, payload);
+  return request.put(`/industry-investments/${id}`, payload);
 }
 
 export function myInstitution(payload) {

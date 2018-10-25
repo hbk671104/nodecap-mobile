@@ -91,6 +91,7 @@ export const persist = callback => {
         'notification',
         'news',
         'project_create',
+        'institution_create',
       ],
     },
     callback,

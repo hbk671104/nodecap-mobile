@@ -21,7 +21,7 @@ import styles from './style';
 })
 @connect(({ institution_create, loading }) => ({
   owner: R.pathOr({}, ['owner'])(institution_create),
-  submitting: loading.effects['institution_create/submitProject'],
+  submitting: loading.effects['institution_create/submitInstitution'],
 }))
 @createForm({
   onValuesChange: ({ dispatch }, changed) => {
@@ -88,7 +88,7 @@ class ClaimInstitution extends Component {
 
   handleSubmit = value => {
     this.props.dispatch({
-      type: 'institution_create/submitProject',
+      type: 'institution_create/submitInstitution',
       payload: value,
       callback: success => {
         if (success) {

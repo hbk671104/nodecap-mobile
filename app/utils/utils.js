@@ -409,3 +409,19 @@ export const hasAppStoreUpdate = async () => {
     console.log(error);
   }
 };
+
+export const convertToInstitutionPayload = form => {
+  const served_project = R.pathOr([], ['served_project'])(form);
+  return {
+    ...form,
+    coin_ids: R.map(s => s.id)(served_project),
+  };
+};
+
+export const convertToInstitutionFormData = data => {
+  const served_project = R.pathOr([], ['coins'])(data);
+  return {
+    ...data,
+    served_project,
+  };
+};

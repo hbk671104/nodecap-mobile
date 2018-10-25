@@ -16,11 +16,21 @@ import styles from './style';
   name: 'App_MyInstitutionOperation',
 })
 @connect(({ institution_create, loading }) => ({
+  current: R.pathOr({}, ['current'])(institution_create),
   data: R.pathOr([], ['list', 'data'])(institution_create),
   pagination: R.pathOr(null, ['list', 'pagination'])(institution_create),
   loading: loading.effects['institution_create/fetch'],
 }))
 class MyInstitution extends Component {
+  componentWillMount() {
+    const { current } = this.props;
+    if (R.has('id')(current)) {
+      this.props.dispatch({
+        type: 'institution_create/resetCurrent',
+      });
+    }
+  }
+
   componentDidMount() {
     this.props.track('进入');
   }

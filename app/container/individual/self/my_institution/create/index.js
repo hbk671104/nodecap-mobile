@@ -24,6 +24,10 @@ import styles from './style';
   return {
     title: R.path([index, 'title'])(route),
     nextPage: R.pathOr('ClaimMyInstitution', [index + 1, 'name'])(route),
+    isEditing: R.pipe(
+      R.path(['current']),
+      R.has('id'),
+    )(institution_create),
     loading: loading.effects['institution_create/submitInstitution'],
   };
 })
@@ -38,22 +42,22 @@ class CreateInstitutionWrapper extends Component {
   }
 
   handleNextPress = () => {
-    const { isLastPage } = this.props;
+    const { isLastPage, isEditing } = this.props;
     this.props.form.validateFields(err => {
       if (!err) {
-        // if (isLastPage) {
-        //   this.props.dispatch({
-        //     type: 'project_create/submitProject',
-        //     callback: () => {
-        //       this.props.dispatch(
-        //         NavigationActions.navigate({
-        //           routeName: 'MyProject',
-        //         }),
-        //       );
-        //     },
-        //   });
-        //   return;
-        // }
+        if (isLastPage && isEditing) {
+          this.props.dispatch({
+            type: 'institution_create/submitInstitution',
+            callback: () => {
+              this.props.dispatch(
+                NavigationActions.navigate({
+                  routeName: 'MyInstitution',
+                }),
+              );
+            },
+          });
+          return;
+        }
 
         const { nextPage } = this.props;
         this.props.dispatch(
@@ -66,7 +70,14 @@ class CreateInstitutionWrapper extends Component {
   };
 
   render() {
-    const { children, title, isLastPage, loading, barStyle } = this.props;
+    const {
+      children,
+      title,
+      isLastPage,
+      isEditing,
+      loading,
+      barStyle,
+    } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -81,8 +92,7 @@ class CreateInstitutionWrapper extends Component {
             return (
               <Touchable borderless onPress={this.handleNextPress}>
                 <Text style={styles.navBar.right}>
-                  {/* {isLastPage ? '提交' : '下一步'} */}
-                  下一步
+                  {isLastPage && isEditing ? '提交' : '下一步'}
                 </Text>
               </Touchable>
             );

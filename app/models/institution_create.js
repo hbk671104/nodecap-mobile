@@ -3,7 +3,10 @@ import * as Individual from 'services/individual/api';
 import * as API from 'services/api';
 
 import { paginate } from 'utils/pagination';
-import { convertToFormData, convertToPayloadData } from 'utils/utils';
+import {
+  convertToInstitutionFormData,
+  convertToInstitutionPayload,
+} from 'utils/utils';
 
 const initialCurrent = {
   members: [{}],
@@ -87,7 +90,7 @@ export default {
           R.path(['institution_create', 'current'])(state),
         );
 
-        const sanitized_data = convertToPayloadData({
+        const sanitized_data = convertToInstitutionPayload({
           ...current,
           owner,
         });
@@ -112,14 +115,14 @@ export default {
     },
     *createInstitution({ payload, callback }, { put, call }) {
       try {
-        const { status } = yield call(Individual.createMyProject, payload);
+        const { status } = yield call(Individual.createInstitution, payload);
 
         yield put({
           type: 'refresh',
         });
 
         if (callback) {
-          yield callback(status === 200);
+          yield callback(status === 201);
         }
       } catch (error) {
         console.log(error);
@@ -127,7 +130,7 @@ export default {
     },
     *editInstitution({ id, payload, callback }, { put, call }) {
       try {
-        const { status } = yield call(Individual.editMyProject, {
+        const { status } = yield call(Individual.editInstitution, {
           id,
           payload,
         });
@@ -190,7 +193,7 @@ export default {
     setCurrent(state, { payload, owner }) {
       return {
         ...state,
-        current: convertToFormData({ ...payload }),
+        current: convertToInstitutionFormData(payload),
         ...(R.isEmpty(owner) ? {} : { owner }),
       };
     },
