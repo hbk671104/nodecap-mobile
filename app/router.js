@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, Platform, Vibration } from 'react-native';
+import { BackHandler, Alert, View, Platform, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -428,10 +428,17 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 
 const addListener = createReduxBoundAddListener('root');
 
+import UpdateAlert from 'component/update';
+import Modal from 'component/modal';
+
 @withNetworkConnectivity({
   pingServerUrl: 'https://www.baidu.com/',
 })
-@connect(({ app, router }) => ({ app, router }))
+@connect(({ app, router, update }) => ({
+  app,
+  router,
+  showAlert: R.pathOr(false, ['modal_visible'])(update),
+}))
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
@@ -506,8 +513,14 @@ class Router extends Component {
     handleReceive(extras);
   };
 
+  toggleAlert = () => {
+    this.props.dispatch({
+      type: 'update/toggle',
+    });
+  };
+
   render() {
-    const { dispatch, app, router } = this.props;
+    const { dispatch, app, router, showAlert } = this.props;
     if (app.loading) return <Loading />;
 
     const navigation = {
@@ -516,9 +529,20 @@ class Router extends Component {
       addListener,
     };
     return (
-      <ActionSheetProvider>
-        <AppRouter navigation={navigation} />
-      </ActionSheetProvider>
+      <View style={{ flex: 1 }}>
+        <ActionSheetProvider>
+          <AppRouter navigation={navigation} />
+        </ActionSheetProvider>
+        <Modal
+          style={{ alignSelf: 'center' }}
+          isVisible={showAlert}
+          useNativeDriver
+          hideModalContentWhileAnimating
+          onBackdropPress={this.toggleAlert}
+        >
+          <UpdateAlert />
+        </Modal>
+      </View>
     );
   }
 }
