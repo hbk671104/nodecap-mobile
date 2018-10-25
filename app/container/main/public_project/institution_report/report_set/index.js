@@ -10,7 +10,9 @@ import Touchable from 'component/uikit/touchable';
 import List from 'component/uikit/list';
 import InstitutionReportItem from 'component/public_project/report_item';
 
+import Config from '../../../../../runtime';
 import styles from './style';
+import * as Wechat from 'react-native-wechat';
 
 @global.bindTrack({
   page: '研报集',
@@ -60,14 +62,23 @@ export default class InstitutionReportSet extends Component {
         cancelButtonIndex: 2,
       },
       buttonIndex => {
+        const request = {
+          type: 'news',
+          webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${
+            this.props.id
+          }`,
+          title: `「研报集」${this.props.name}`,
+          description: '来 Hotnode, 发现最新最热研报集！',
+          thumbImage:
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
+        };
+
         switch (buttonIndex) {
           case 0:
-            // this.props.setCurrentItem({ item, icon }, this.toggleVisible);
+            Wechat.shareToTimeline(request);
             break;
           case 1:
-            // this.handleResetPress(item);
-            break;
-          case 2:
+            Wechat.shareToSession(request);
             break;
           default:
             break;
