@@ -430,6 +430,7 @@ const addListener = createReduxBoundAddListener('root');
 
 import UpdateAlert from 'component/update';
 import Modal from 'component/modal';
+import { hasAppStoreUpdate } from 'utils/utils';
 
 @withNetworkConnectivity({
   pingServerUrl: 'https://www.baidu.com/',
@@ -438,16 +439,22 @@ import Modal from 'component/modal';
   app,
   router,
   showAlert: R.pathOr(false, ['modal_visible'])(update),
+  release_notes: R.pathOr('', ['release_notes'])(update),
 }))
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
   };
 
-  componentWillMount() {
+  async componentWillMount() {
     WeChat.registerApp('wx9e13272f60a68c63');
     if (!this.state.isIOS) {
       JPush.notifyJSDidLoad(() => null);
+    }
+
+    const { hasUpdate, releaseNotes } = await hasAppStoreUpdate();
+    if (hasUpdate) {
+      this.toggleAlert({ releaseNotes });
     }
   }
 
@@ -513,14 +520,15 @@ class Router extends Component {
     handleReceive(extras);
   };
 
-  toggleAlert = () => {
+  toggleAlert = payload => {
     this.props.dispatch({
       type: 'update/toggle',
+      payload,
     });
   };
 
   render() {
-    const { dispatch, app, router, showAlert } = this.props;
+    const { dispatch, app, router, showAlert, release_notes } = this.props;
     if (app.loading) return <Loading />;
 
     const navigation = {
@@ -540,7 +548,7 @@ class Router extends Component {
           hideModalContentWhileAnimating
           onBackdropPress={this.toggleAlert}
         >
-          <UpdateAlert />
+          <UpdateAlert note={release_notes} />
         </Modal>
       </View>
     );

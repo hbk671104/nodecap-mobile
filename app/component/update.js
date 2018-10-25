@@ -6,7 +6,7 @@ import Communications from 'react-native-communications';
 
 import AuthButton from 'component/auth/button';
 
-const update = props => (
+const update = ({ note }) => (
   <View style={styles.wrapper}>
     <View style={styles.container} />
     <Animatable.Image
@@ -18,12 +18,7 @@ const update = props => (
     />
     <Image source={require('asset/update_found.png')} />
     <View style={styles.content.container}>
-      <Text style={styles.content.text}>1. 新增项目公海，优质项目供您挑选</Text>
-      <Text style={styles.content.text}>
-        2. 新增评级、研报，深度观点一手掌握
-      </Text>
-      <Text style={styles.content.text}>3. 新增机构成员的默认角色</Text>
-      <Text style={styles.content.text}>4. 性能优化，Bug 修复</Text>
+      <Text style={styles.content.text}>{note}</Text>
     </View>
     <AuthButton
       disabled={false}
