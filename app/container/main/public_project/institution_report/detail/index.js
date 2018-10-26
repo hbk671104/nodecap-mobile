@@ -7,7 +7,7 @@ import R from 'ramda';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import * as WeChat from 'react-native-wechat';
 import Config from 'runtime/index';
-
+import { getInstitutionReportByID } from '../../../../../services/api';
 import NavBar from 'component/navBar';
 
 import styles from './style';
@@ -21,7 +21,19 @@ import styles from './style';
 export default class InstitutionReportDetail extends Component {
   state = {
     isWXAppSupportApi: false,
+    // coins: [],
   };
+
+  // async componentWillMount() {
+  //   try {
+  //     const { data } = await getInstitutionReportByID(this.props.navigation.getParam('id'));
+  //     this.setState({
+  //       coins: data.coins,
+  //     });
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }
   componentDidMount() {
     this.checkWechatAval();
 
