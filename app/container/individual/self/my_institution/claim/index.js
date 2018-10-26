@@ -90,14 +90,12 @@ class ClaimInstitution extends Component {
     this.props.dispatch({
       type: 'institution_create/submitInstitution',
       payload: value,
-      callback: success => {
-        if (success) {
-          this.props.dispatch(
-            NavigationActions.navigate({
-              routeName: 'CreateMyInstitutionDone',
-            }),
-          );
-        }
+      callback: () => {
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'CreateMyInstitutionDone',
+          }),
+        );
       },
     });
   };
