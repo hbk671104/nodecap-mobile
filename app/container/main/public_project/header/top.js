@@ -7,6 +7,7 @@ import {
   StyleSheet,
   ScrollView,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import Swiper from '@nart/react-native-swiper';
 import R from 'ramda';
@@ -46,8 +47,7 @@ const top = ({
         }}
       >
         {R.map(n => (
-          <Touchable
-            borderless
+          <TouchableWithoutFeedback
             onPress={() => {
               if (n.banner_url) {
                 Linking.openURL(n.banner_url);
@@ -58,7 +58,7 @@ const top = ({
               style={styles.banner}
               source={{ uri: n.banner }}
             />
-          </Touchable>
+          </TouchableWithoutFeedback>
       ))(banners)}
       </Swiper>
     </View>
