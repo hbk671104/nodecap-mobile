@@ -31,6 +31,7 @@ export default {
     paddingBottom: 6.5,
     borderBottomWidth: 0.5,
     borderBottomColor: '#e9e9e9',
+    backgroundColor: 'white',
   },
   title: { fontFamily: 'PingFangSC-Medium', fontSize: 18, color: 'rgba(0,0,0,0.85)', letterSpacing: 0.22, marginTop: 16 },
   newsContent: { marginTop: 12, fontSize: 14, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.17, textAlign: 'justify', lineHeight: 25 },
