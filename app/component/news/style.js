@@ -40,11 +40,15 @@ export default {
   date: {
     container: {
       flexDirection: 'row',
+      justifyContent: 'space-between',
       marginTop: 8,
     },
     text: {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.45)',
+    },
+    link: {
+      color: '#1890FF',
     },
   },
 };
