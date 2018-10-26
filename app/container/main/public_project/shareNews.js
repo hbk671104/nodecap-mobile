@@ -130,25 +130,27 @@ class ShareNews extends Component {
               source={require('asset/share/news_share_background.jpg')}
               style={styles.banner}
             />
-            <View style={styles.content}>
-              <Flex style={styles.top}>
-                <Image
-                  source={require('asset/share/clock.png')}
-                  style={styles.clock}
-                />
-                <Text style={styles.date}>{created_at ? moment(created_at * 1000).format('YYYY-MM-DD HH:mm') : ''}</Text>
-              </Flex>
-              <Text style={styles.title}>{title}</Text>
-              <Text style={styles.newsContent}>{content}</Text>
-              <Flex style={styles.tip}>
-                <View style={styles.tipDot} />
-                <Text style={styles.tipText}>以上信息分享自 Hotnode APP</Text>
-              </Flex>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
+              <View style={styles.content}>
+                <Flex style={styles.top}>
+                  <Image
+                    source={require('asset/share/clock.png')}
+                    style={styles.clock}
+                  />
+                  <Text style={styles.date}>{created_at ? moment(created_at * 1000).format('YYYY-MM-DD HH:mm') : ''}</Text>
+                </Flex>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.newsContent}>{content}</Text>
+                <Flex style={styles.tip}>
+                  <View style={styles.tipDot} />
+                  <Text style={styles.tipText}>以上信息分享自 Hotnode APP</Text>
+                </Flex>
+              </View>
+              <Image
+                source={require('asset/share/footer.png')}
+                style={styles.footer}
+              />
             </View>
-            <Image
-              source={require('asset/share/footer.png')}
-              style={styles.footer}
-            />
           </ViewShot>
         </ScrollView>
         {this.renderAction()}
