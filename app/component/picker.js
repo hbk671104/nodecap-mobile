@@ -4,7 +4,10 @@ import PickerSelect from 'react-native-picker-select';
 const picker = props => (
   <PickerSelect
     {...props}
-    style={styles}
+    style={{
+      ...styles,
+      ...props.style,
+    }}
     placeholder={props.placeholder}
     items={props.data}
     onValueChange={value => props.onChange(value)}
