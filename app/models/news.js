@@ -20,6 +20,9 @@ export default {
           put.resolve({
             type: 'notification/fetchInSite',
           }),
+          put.resolve({
+            type: 'banners/get',
+          }),
           // 上所公告
           put.resolve({
             type: 'notification/fetch',

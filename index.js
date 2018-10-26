@@ -39,6 +39,7 @@ import serviceModel from './app/models/service';
 import projectCreateModel from './app/models/project_create';
 import institutionCreateModel from './app/models/institution_create';
 import updateModel from './app/models/update';
+import bannerModal from './app/models/banners';
 
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated',
@@ -71,6 +72,7 @@ export const app = dva({
     projectCreateModel,
     institutionCreateModel,
     updateModel,
+    bannerModal,
   ],
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
@@ -92,6 +94,7 @@ export const persist = callback => {
         'news',
         'project_create',
         'institution_create',
+        'banners',
       ],
     },
     callback,

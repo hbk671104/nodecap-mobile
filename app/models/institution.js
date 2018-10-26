@@ -31,14 +31,12 @@ export default {
     },
     *fetchReports({ payload }, { call, put }) {
       try {
-        const { data } = yield call(getReportsByIndustry, payload);
-
         if (R.pathOr(1, ['currentPage'])(payload) === 1) {
           yield put({
             type: 'fetchReportBanner',
           });
         }
-
+        const { data } = yield call(getReportsByIndustry, payload);
         yield put({
           type: 'report',
           payload: data,

@@ -67,7 +67,6 @@ export default {
             }
             return;
           }
-
           if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE && (update && update.isMandatory)) {
             store.dispatch(
               routerRedux.navigate({

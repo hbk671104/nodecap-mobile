@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, View, Platform, Vibration, AppState } from 'react-native';
+import { BackHandler, Alert, View, Platform, Vibration, AppState, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -18,6 +18,10 @@ import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
 import { withNetworkConnectivity } from 'react-native-offline';
 import { Toast } from 'antd-mobile';
+import queryString from 'query-string';
+import {
+  NavigationActions as routerRedux,
+} from './utils';
 
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
@@ -460,6 +464,7 @@ class Router extends Component {
   }
 
   componentDidMount() {
+    Linking.addEventListener('url', this.handleOpenURL);
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
     JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);
@@ -480,6 +485,25 @@ class Router extends Component {
     JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
     AppState.removeEventListener('change', this._handleAppStateChange);
+    Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  handleOpenURL = (event) => {
+    const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
+    if (!reg) {
+      return;
+    }
+    const route = reg[1];
+    const params = reg[2];
+    const query = queryString.parse(params) || {};
+
+    const { dispatch } = this.props;
+    dispatch(routerRedux.navigate({
+      routeName: route,
+      params: {
+        ...R.filter(i => !!i)(query),
+      },
+    }));
   }
 
   _handleAppStateChange = (nextAppState) => {

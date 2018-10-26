@@ -69,6 +69,9 @@ export default class InstitutionReport extends Component {
 
   renderHeader = () => {
     const { banner } = this.props;
+    if (R.isEmpty(banner)) {
+      return null;
+    }
     return (
       <View style={styles.swiper.container}>
         <Swiper

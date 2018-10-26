@@ -175,7 +175,7 @@ class FavorItem extends PureComponent {
                       { color: '#09AC32' },
                     ]}
                   >
-                    评级优秀
+                    有评级
                   </Text>
                 </View>
               )}

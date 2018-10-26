@@ -64,10 +64,10 @@ export default class InstitutionReportSet extends Component {
       buttonIndex => {
         const request = {
           type: 'news',
-          webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${
+          webpageUrl: `${Config.MOBILE_SITE}/report-set?id=${
             this.props.id
           }`,
-          title: `「研报集」${this.props.name}`,
+          title: `「研报集」${this.props.title}`,
           description: '来 Hotnode, 发现最新最热研报集！',
           thumbImage:
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',

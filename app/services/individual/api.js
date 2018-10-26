@@ -115,3 +115,7 @@ export function editInstitution({ id, payload }) {
 export function myInstitution(payload) {
   return request.get('/my-industry-investments', payload);
 }
+
+export function getBanners() {
+  return request.get('/banner');
+}

@@ -138,7 +138,7 @@ const publicProjectItem = ({ style, data, onPress }) => {
                     { color: '#09AC32' },
                   ]}
                 >
-                  评级优秀
+                  有评级
                 </Text>
               </View>
             )}

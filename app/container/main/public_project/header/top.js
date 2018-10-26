@@ -6,6 +6,7 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
+  Linking,
 } from 'react-native';
 import Swiper from '@nart/react-native-swiper';
 import R from 'ramda';
@@ -17,6 +18,7 @@ const deviceWidth = Dimensions.get('window').width;
 
 const top = ({
   insite_news,
+  banners,
   onServicePress,
   onMeetingPress,
   onAnnouncementPress,
@@ -26,10 +28,40 @@ const top = ({
   notification_badge_visible,
 }) => (
   <View style={styles.container}>
-    <Image
-      style={styles.banner}
-      source={require('asset/public_project/banner.png')}
-    />
+    <View style={{ height: 160 }}>
+      <Swiper
+        width={deviceWidth}
+        height={120}
+        autoplay
+        autoplayTimeout={4}
+        renderPagination={(index, total, context) => {
+          const dots = R.repeat('', total).map((i, idx) => (
+            <View style={[styles.dot, idx === index ? styles.dotActive : {}]} />
+          ));
+          return (
+            <View style={styles.pagination}>
+              {dots}
+            </View>
+);
+        }}
+      >
+        {R.map(n => (
+          <Touchable
+            borderless
+            onPress={() => {
+              if (n.banner_url) {
+                Linking.openURL(n.banner_url);
+              }
+            }}
+          >
+            <Image
+              style={styles.banner}
+              source={{ uri: n.banner }}
+            />
+          </Touchable>
+      ))(banners)}
+      </Swiper>
+    </View>
     <View style={styles.verticalBanner.container}>
       <Image source={require('asset/public_project/announcement_label.png')} />
       <Swiper
@@ -115,7 +147,7 @@ const top = ({
 const styles = {
   container: {},
   banner: {
-    // height: 160,
+    height: 160,
     width: deviceWidth,
   },
   verticalBanner: {
@@ -168,6 +200,27 @@ const styles = {
         marginTop: 8,
       },
     },
+  },
+  dot: {
+    width: 10,
+    height: 2,
+    borderRadius: 1,
+    backgroundColor: 'rgba(255, 255, 255, .4)',
+    marginRight: 4,
+  },
+  dotActive: {
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+  },
+  pagination: {
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
   },
 };
 

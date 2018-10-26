@@ -19,12 +19,12 @@ class CodePushPage extends Component {
   };
 
   async componentWillMount() {
-    const remoteInfo = await CodePush.checkForUpdate();
-    if (remoteInfo) {
-      this.setState({
-        remoteInfo,
-      });
-    }
+    // const remoteInfo = await CodePush.checkForUpdate();
+    // if (remoteInfo) {
+    //   this.setState({
+    //     remoteInfo,
+    //   });
+    // }
   }
 
   render() {

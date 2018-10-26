@@ -788,3 +788,7 @@ export function getInstitutionReportSet(params) {
     params,
   });
 }
+
+export function getBanners() {
+  return request.get('/banner');
+}
