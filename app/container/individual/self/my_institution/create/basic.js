@@ -118,7 +118,9 @@ class BasicInfo extends PureComponent {
                 } else {
                   return (
                     <PickerSelect
-                      style={{ viewContainer: { width: 200 } }}
+                      style={{
+                        viewContainer: { width: 200, alignSelf: 'flex-end' },
+                      }}
                       hideIcon
                       placeholder={{
                         label: '请选择机构类型',
