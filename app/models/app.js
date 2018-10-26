@@ -3,6 +3,7 @@ import {
   NavigationActions as routerRedux,
   Storage,
 } from '../utils';
+import { Toast } from 'antd-mobile';
 import codePush from 'react-native-code-push';
 import codePushSaga from 'react-native-code-push-saga';
 import { login } from '../services/api';
@@ -47,15 +48,27 @@ export default {
     },
   },
   effects: {
-    *checkCodePush(_, { spawn }) {
+    *checkCodePush(_, { spawn, call, put }) {
       if (global.__DEV__) {
         return;
       }
-
+      yield put({
+        type: 'codePush/getMeta',
+      });
+      const update = yield call(codePush.checkForUpdate);
       codePush.allowRestart();
       yield spawn(codePushSaga, {
         codePushStatusDidChange: e => {
-          if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE) {
+          if (e === codePush.SyncStatus.UNKNOWN_ERROR) {
+            if (update && update.isMandatory) {
+              store.dispatch({
+                type: 'app/checkCodePush',
+              });
+            }
+            return;
+          }
+
+          if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE && (update && update.isMandatory)) {
             store.dispatch(
               routerRedux.navigate({
                 routeName: 'CodePush',
@@ -68,16 +81,21 @@ export default {
           });
         },
         codePushDownloadDidProgress: progress => {
-          const percent = (
-            progress.receivedBytes / progress.totalBytes
-          ).toFixed(2);
-          store.dispatch({
-            type: 'codePush/changePercent',
-            payload: percent,
-          });
+          try {
+            const percent = (
+              progress.receivedBytes / progress.totalBytes
+            ).toFixed(2);
+            store.dispatch({
+              type: 'codePush/changePercent',
+              payload: percent,
+            });
+          } catch (e) {
+            alert(JSON.stringify(e));
+          }
         },
         syncOptions: {
           installMode: codePush.InstallMode.ON_NEXT_RESUME,
+          mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
           syncOnResume: true,
           syncOnInterval: 60,
         },

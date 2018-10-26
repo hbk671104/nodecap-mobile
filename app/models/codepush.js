@@ -1,3 +1,4 @@
+import codePush from 'react-native-code-push';
 
 export default {
   namespace: 'codePush',
@@ -5,8 +6,21 @@ export default {
   state: {
     status: null,
     percent: 0,
+    meta: {},
   },
-
+  effects: {
+    *getMeta(_, { call, put }) {
+      try {
+        const update = yield call(codePush.getUpdateMetadata, codePush.UpdateState.RUNNING);
+        yield put({
+          type: 'saveMeta',
+          payload: update,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
   reducers: {
     changeState(state, { payload }) {
       return {
@@ -18,6 +32,12 @@ export default {
       return {
         ...state,
         percent: payload,
+      };
+    },
+    saveMeta(state, { payload }) {
+      return {
+        ...state,
+        meta: payload,
       };
     },
   },

@@ -105,7 +105,7 @@ const top = ({
               style={{ width: 25, height: 25 }}
             />
           </View>
-          <Text style={styles.tab.group.title}>公关服务</Text>
+          <Text style={styles.tab.group.title}>找服务</Text>
         </View>
       </Touchable>
     </ScrollView>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -15,9 +16,10 @@ import styles from './style';
   page: '设置',
   name: 'App_SettingsOperation',
 })
-@connect(({ login, loading }) => ({
+@connect(({ login, loading, codePush }) => ({
   isLogin: !!login.token,
   loading: loading.effects['login/logout'],
+  versionLabel: R.pathOr('', ['meta', 'label'])(codePush),
 }))
 class Settings extends Component {
   logout = () => {
@@ -59,7 +61,7 @@ class Settings extends Component {
           <ListItem
             disablePress
             title="当前版本"
-            content={`v${appInfo.version}`}
+            content={`v${appInfo.version} ${this.props.versionLabel}`}
           />
           <ListItem title="版本更新" onPress={this.handleChangelogPress} />
           {/* <ListItem title="评价 Hotnode" /> */}

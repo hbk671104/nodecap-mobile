@@ -19,6 +19,13 @@ import styles from './style';
   loading: loading.effects['coinSets/fetchCoins'],
 }))
 export default class CoinsInSet extends Component {
+  state={
+    isWXAppSupportApi: false,
+  }
+
+  componentWillMount() {
+    this.checkWechatAval();
+  }
   onPressShare = () => {
     this.props.showActionSheetWithOptions({
       options: ['通过微信分享给朋友',
@@ -45,6 +52,12 @@ export default class CoinsInSet extends Component {
       }
     });
   }
+
+  checkWechatAval = async () => {
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+    });
+  };
 
   requestData = (page, size) => {
     const { set_id } = this.props;
