@@ -50,8 +50,13 @@ const calcHeaderHeight = ({ can_calculate, data }) => {
     R.isEmpty,
     R.not,
   )(data);
+  const owners = R.pipe(
+    R.pathOr([], ['owners']),
+    R.isEmpty,
+    R.not,
+  )(data);
 
-  if (invested_by_renowned_insti || top_rated) {
+  if (invested_by_renowned_insti || top_rated || owners) {
     baseHeight += 30;
   }
 

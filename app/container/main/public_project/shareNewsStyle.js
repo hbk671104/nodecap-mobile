@@ -46,6 +46,7 @@ export default {
   footer: {
     width: window.width - 24,
     marginHorizontal: 12,
+    marginBottom: 28.25,
     marginTop: 28.25,
   },
   tipText: { fontSize: 12, color: 'rgba(0,0,0,0.45)', letterSpacing: 0.15 },

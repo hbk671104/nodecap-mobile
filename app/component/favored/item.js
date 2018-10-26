@@ -194,8 +194,8 @@ class FavorItem extends PureComponent {
             </Text>
           </View>
           <View style={styles.end.container}>
-            {!R.isEmpty(status) &&
-              !R.equals(status, '未设定') && (
+            {!R.isEmpty(status) ?
+              (!R.equals(status, '未设定') ? (
                 <Text
                   style={[
                     styles.end.status,
@@ -205,7 +205,7 @@ class FavorItem extends PureComponent {
                 >
                   {status}
                 </Text>
-              )}
+              ) : <View style={styles.end.status} />) : (<View style={styles.end.status} />)}
             <Touchable foreground onPress={this.handleFavorPress}>
               <View
                 style={[

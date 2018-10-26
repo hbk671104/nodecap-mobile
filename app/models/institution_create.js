@@ -1,6 +1,7 @@
 import R from 'ramda';
 import * as Individual from 'services/individual/api';
 import * as API from 'services/api';
+import { uploadImage } from 'services/upload';
 
 import { paginate } from 'utils/pagination';
 import {

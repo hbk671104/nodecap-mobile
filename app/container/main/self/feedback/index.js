@@ -46,6 +46,8 @@ class Feedback extends Component {
             NavigationActions.back()
           );
         });
+      } else {
+        Toast.success('请将表单填写完整后再提交');
       }
     });
   }

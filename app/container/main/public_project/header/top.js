@@ -112,12 +112,15 @@ const top = ({
           <Text style={styles.tab.group.title}>找机构</Text>
         </View>
       </Touchable>
-      <Touchable style={styles.tab.group.wrapper} onPress={onMeetingPress}>
+      <Touchable style={styles.tab.group.wrapper} onPress={onServicePress}>
         <View style={styles.tab.group.container}>
           <View style={styles.tab.group.imageWrapper}>
-            <Image source={require('asset/public_project/meeting.png')} />
+            <Image
+              source={require('asset/public_project/pr.png')}
+              style={{ width: 25, height: 25 }}
+            />
           </View>
-          <Text style={styles.tab.group.title}>找会议</Text>
+          <Text style={styles.tab.group.title}>找服务</Text>
         </View>
       </Touchable>
       <Touchable style={styles.tab.group.wrapper} onPress={onAnnouncementPress}>
@@ -129,15 +132,12 @@ const top = ({
           {notification_badge_visible && <Badge size={8} />}
         </View>
       </Touchable>
-      <Touchable style={styles.tab.group.wrapper} onPress={onServicePress}>
+      <Touchable style={styles.tab.group.wrapper} onPress={onMeetingPress}>
         <View style={styles.tab.group.container}>
           <View style={styles.tab.group.imageWrapper}>
-            <Image
-              source={require('asset/public_project/pr.png')}
-              style={{ width: 25, height: 25 }}
-            />
+            <Image source={require('asset/public_project/meeting.png')} />
           </View>
-          <Text style={styles.tab.group.title}>找服务</Text>
+          <Text style={styles.tab.group.title}>找会议</Text>
         </View>
       </Touchable>
     </ScrollView>

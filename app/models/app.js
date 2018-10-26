@@ -3,17 +3,11 @@ import {
   NavigationActions as routerRedux,
   Storage,
 } from '../utils';
-import { Toast } from 'antd-mobile';
 import codePush from 'react-native-code-push';
 import codePushSaga from 'react-native-code-push-saga';
 import { login } from '../services/api';
 import request from '../utils/request';
 import store from '../../index';
-import {
-  Sentry,
-  SentrySeverity,
-  SentryLog,
-} from 'react-native-sentry';
 
 export default {
   namespace: 'app',
@@ -57,22 +51,13 @@ export default {
       if (global.__DEV__) {
         return;
       }
-      yield put({
-        type: 'codePush/getMeta',
-      });
-      const update = yield call(codePush.checkForUpdate);
       codePush.allowRestart();
       yield spawn(codePushSaga, {
         codePushStatusDidChange: e => {
           if (e === codePush.SyncStatus.UNKNOWN_ERROR) {
-            if (update && update.isMandatory) {
-              store.dispatch({
-                type: 'app/checkCodePush',
-              });
-            }
             return;
           }
-          if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE && (update && update.isMandatory)) {
+          if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE) {
             store.dispatch(
               routerRedux.navigate({
                 routeName: 'CodePush',
@@ -103,6 +88,9 @@ export default {
           syncOnResume: true,
           syncOnInterval: 60,
         },
+      });
+      yield put({
+        type: 'codePush/getMeta',
       });
     },
     *loadStorage(action, { call, put, take }) {

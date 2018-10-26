@@ -103,6 +103,7 @@ class Team extends PureComponent {
     const { getFieldDecorator, getFieldError } = this.props.form;
     return (
       <View key={`${index}`}>
+        {getFieldDecorator(`members[${index}].id`)(<View />)}
         <View style={styles.formTitle.container}>
           <Text style={styles.formTitle.text}>成员 {index + 1}</Text>
         </View>

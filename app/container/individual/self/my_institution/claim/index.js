@@ -110,7 +110,7 @@ class ClaimInstitution extends Component {
           barStyle={this.state.barStyle}
           back
           gradient
-          title="认领项目"
+          title="身份认证"
           renderRight={() => {
             if (this.props.submitting) {
               return <ActivityIndicator color="white" />;
