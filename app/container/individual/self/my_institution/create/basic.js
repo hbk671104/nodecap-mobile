@@ -94,14 +94,14 @@ class BasicInfo extends PureComponent {
               titleStyle={styles.inputItem.title}
               contentWrapperStyle={{ alignSelf: 'flex-end' }}
               title="类型"
-              placeholder="请选择社区类型"
+              placeholder="请选择机构类型"
               showArrow
               renderContent={({ onChange, value: v }) => (
                 <View style={{ flex: 1 }}>
                   <PickerSelect
                     hideIcon
                     placeholder={{
-                      label: '请选择社区类型',
+                      label: '请选择机构类型',
                       value: null,
                     }}
                     data={institution_type.map(i => ({

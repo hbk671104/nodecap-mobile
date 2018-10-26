@@ -38,7 +38,7 @@ export default class InstitutionReportDetail extends Component {
     const { navigation } = this.props;
     this.props.showActionSheetWithOptions(
       {
-        options: ['通过微信分享给朋友', '分享至微信朋友圈', '取消'],
+        options: ['分享至朋友圈', '分享至微信', '取消'],
         cancelButtonIndex: 2,
       },
       index => {
@@ -55,9 +55,9 @@ export default class InstitutionReportDetail extends Component {
             thumbImage:
               'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
           };
-          if (index === 0) {
+          if (index === 1) {
             WeChat.shareToSession(request);
-          } else if (index === 1) {
+          } else if (index === 0) {
             WeChat.shareToTimeline(request);
           }
         }
