@@ -9,6 +9,11 @@ import codePushSaga from 'react-native-code-push-saga';
 import { login } from '../services/api';
 import request from '../utils/request';
 import store from '../../index';
+import {
+  Sentry,
+  SentrySeverity,
+  SentryLog,
+} from 'react-native-sentry';
 
 export default {
   namespace: 'app',
