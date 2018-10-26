@@ -465,6 +465,7 @@ class Router extends Component {
 
   componentDidMount() {
     Linking.addEventListener('url', this.handleOpenURL);
+    RouterEmitter.addListener('android_url', this.handleOpenURL);
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
     JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);

@@ -34,7 +34,7 @@ const miscTags = ({ data }) => {
       )}
       {invested_by_renowned_insti && (
         <View style={styles.item.container}>
-          <Text style={styles.item.text}>知名机构投资</Text>
+          <Text style={styles.item.text}>知名机构所投</Text>
         </View>
       )}
     </View>
