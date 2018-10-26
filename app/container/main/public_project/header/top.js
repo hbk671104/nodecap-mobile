@@ -8,9 +8,11 @@ import {
   ScrollView,
   Linking,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import Swiper from '@nart/react-native-swiper';
 import R from 'ramda';
+import { RouterEmitter } from '../../../../router';
 
 import Badge from 'component/badge';
 import Touchable from 'component/uikit/touchable';
@@ -49,6 +51,10 @@ const top = ({
         {R.map(n => (
           <TouchableWithoutFeedback
             onPress={() => {
+              if (Platform.OS !== 'ios') {
+                RouterEmitter.emit('android_url', { url: n.banner_url });
+                return;
+              }
               if (n.banner_url) {
                 Linking.openURL(n.banner_url);
               }
