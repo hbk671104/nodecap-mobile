@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { createForm, createFormField } from 'rc-form';
@@ -96,23 +96,44 @@ class BasicInfo extends PureComponent {
               title="类型"
               placeholder="请选择机构类型"
               showArrow
-              renderContent={({ onChange, value: v }) => (
-                <View style={{ flex: 1 }}>
-                  <PickerSelect
-                    hideIcon
-                    placeholder={{
-                      label: '请选择机构类型',
-                      value: null,
-                    }}
-                    data={institution_type.map(i => ({
-                      label: i.name,
-                      value: i.value,
-                    }))}
-                    onChange={onChange}
-                    value={v}
-                  />
-                </View>
-              )}
+              renderContent={({ onChange, value: v }) => {
+                if (Platform.OS === 'ios') {
+                  return (
+                    <View style={{ flex: 1 }}>
+                      <PickerSelect
+                        hideIcon
+                        placeholder={{
+                          label: '请选择机构类型',
+                          value: null,
+                        }}
+                        data={institution_type.map(i => ({
+                          label: i.name,
+                          value: i.value,
+                        }))}
+                        onChange={onChange}
+                        value={v}
+                      />
+                    </View>
+                  );
+                } else {
+                  return (
+                    <PickerSelect
+                      style={{ viewContainer: { width: 200 } }}
+                      hideIcon
+                      placeholder={{
+                        label: '请选择机构类型',
+                        value: null,
+                      }}
+                      data={institution_type.map(i => ({
+                        label: i.name,
+                        value: i.value,
+                      }))}
+                      onChange={onChange}
+                      value={v}
+                    />
+                  );
+                }
+              }}
               inputProps={{ style: styles.inputItem.input }}
               error={getFieldError('type')}
             />,
