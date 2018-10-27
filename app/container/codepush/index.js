@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Image, Text } from 'react-native';
 import { connect } from 'react-redux';
-import CodePush from 'react-native-code-push';
 import { Bar } from 'react-native-progress';
 import R from 'ramda';
 
@@ -12,24 +11,12 @@ import styles from './styles';
 
 @connect(({ codePush }) => ({
   codepush: codePush.percent || 0,
+  updateInfo: R.pathOr({}, ['update'])(codePush),
 }))
 class CodePushPage extends Component {
-  state = {
-    remoteInfo: null,
-  };
-
-  async componentWillMount() {
-    // const remoteInfo = await CodePush.checkForUpdate();
-    // if (remoteInfo) {
-    //   this.setState({
-    //     remoteInfo,
-    //   });
-    // }
-  }
-
   render() {
-    const { remoteInfo } = this.state;
-    const description = R.pathOr('', ['description'])(remoteInfo);
+    const { updateInfo } = this.props;
+    const description = R.pathOr('', ['description'])(updateInfo);
     return (
       <View style={styles.container}>
         <NavBar barStyle="dark-content" />

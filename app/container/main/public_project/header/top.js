@@ -37,19 +37,19 @@ const top = ({
         height={120}
         autoplay
         autoplayTimeout={4}
-        renderPagination={(index, total, context) => {
+        renderPagination={(index, total) => {
           const dots = R.repeat('', total).map((i, idx) => (
-            <View style={[styles.dot, idx === index ? styles.dotActive : {}]} />
+            <View
+              key={`${idx}`}
+              style={[styles.dot, idx === index ? styles.dotActive : {}]}
+            />
           ));
-          return (
-            <View style={styles.pagination}>
-              {dots}
-            </View>
-);
+          return <View style={styles.pagination}>{dots}</View>;
         }}
       >
         {R.map(n => (
           <TouchableWithoutFeedback
+            key={n.id}
             onPress={() => {
               if (Platform.OS !== 'ios') {
                 RouterEmitter.emit('android_url', { url: n.banner_url });
@@ -60,12 +60,9 @@ const top = ({
               }
             }}
           >
-            <Image
-              style={styles.banner}
-              source={{ uri: n.banner }}
-            />
+            <Image style={styles.banner} source={{ uri: n.banner }} />
           </TouchableWithoutFeedback>
-      ))(banners)}
+        ))(banners)}
       </Swiper>
     </View>
     <View style={styles.verticalBanner.container}>
