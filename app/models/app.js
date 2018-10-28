@@ -17,26 +17,21 @@ export default {
 
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
-      if (result) {
+
+      if (isMandatory) {
         yield put({
           type: 'codePush/saveUpdateInfo',
           payload: result,
         });
+        yield put(
+          routerRedux.navigate({
+            routeName: 'CodePush',
+          }),
+        );
       }
 
       yield spawn(codePushSaga, {
         codePushStatusDidChange: e => {
-          if (e === codePush.SyncStatus.UNKNOWN_ERROR) {
-            return;
-          }
-
-          if (e === codePush.SyncStatus.DOWNLOADING_PACKAGE && isMandatory) {
-            store.dispatch(
-              routerRedux.navigate({
-                routeName: 'CodePush',
-              }),
-            );
-          }
           store.dispatch({
             type: 'codePush/changeState',
             payload: e,
@@ -55,20 +50,13 @@ export default {
             alert(JSON.stringify(e));
           }
         },
-        syncOptions: {
-          installMode: codePush.InstallMode.ON_NEXT_RESUME,
-          mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
-          syncOnResume: true,
-          syncOnInterval: 60,
-        },
+        // syncOptions: {
+        //   installMode: codePush.InstallMode.ON_NEXT_RESUME,
+        //   mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+        //   syncOnResume: true,
+        //   syncOnInterval: 60,
+        // },
       });
-
-      // codePush.allowRestart();
-    },
-  },
-  subscriptions: {
-    setup({ dispatch }) {
-      dispatch({ type: 'checkCodePush' });
     },
   },
 };

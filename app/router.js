@@ -1,5 +1,13 @@
 import React, { Component } from 'react';
-import { BackHandler, Alert, View, Platform, Vibration, AppState, Linking } from 'react-native';
+import {
+  BackHandler,
+  Alert,
+  View,
+  Platform,
+  Vibration,
+  AppState,
+  Linking,
+} from 'react-native';
 import { connect } from 'react-redux';
 import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
@@ -19,9 +27,7 @@ import JPush from 'jpush-react-native';
 import { withNetworkConnectivity } from 'react-native-offline';
 import { Toast } from 'antd-mobile';
 import queryString from 'query-string';
-import {
-  NavigationActions as routerRedux,
-} from './utils';
+import { NavigationActions as routerRedux } from './utils';
 
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
@@ -457,10 +463,16 @@ class Router extends Component {
       JPush.notifyJSDidLoad(() => null);
     }
 
+    // check app store
     const { hasUpdate, releaseNotes } = await hasAppStoreUpdate();
     if (hasUpdate) {
       this.toggleAlert({ releaseNotes });
     }
+
+    // check codepush
+    this.props.dispatch({
+      type: 'app/checkCodePush',
+    });
   }
 
   componentDidMount() {
@@ -489,7 +501,7 @@ class Router extends Component {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
 
-  handleOpenURL = (event) => {
+  handleOpenURL = event => {
     const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
     if (!reg) {
       return;
@@ -499,21 +511,30 @@ class Router extends Component {
     const query = queryString.parse(params) || {};
 
     const { dispatch } = this.props;
-    dispatch(routerRedux.navigate({
-      routeName: route,
-      params: {
-        ...R.filter(i => !!i)(query),
-      },
-    }));
-  }
+    dispatch(
+      routerRedux.navigate({
+        routeName: route,
+        params: {
+          ...R.filter(i => !!i)(query),
+        },
+      }),
+    );
+  };
 
-  _handleAppStateChange = (nextAppState) => {
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground!');
+  _handleAppStateChange = nextAppState => {
+    if (
+      this.state.appState.match(/inactive|background/) &&
+      nextAppState === 'active'
+    ) {
       RouterEmitter.emit('resume');
+
+      // check codepush
+      this.props.dispatch({
+        type: 'app/checkCodePush',
+      });
     }
     this.setState({ appState: nextAppState });
-  }
+  };
 
   backHandle = () => {
     const { dispatch, router } = this.props;
