@@ -17,7 +17,6 @@ export default {
 
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
-
       if (result) {
         yield put({
           type: 'codePush/saveUpdateInfo',
@@ -49,15 +48,15 @@ export default {
               payload: percent,
             });
           } catch (e) {
-            alert(JSON.stringify(e));
+            console.log(e);
           }
         },
-        // syncOptions: {
-        //   installMode: codePush.InstallMode.ON_NEXT_RESUME,
-        //   mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
-        //   syncOnResume: true,
-        //   syncOnInterval: 60,
-        // },
+        syncOptions: {
+          installMode: codePush.InstallMode.ON_NEXT_RESUME,
+          mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
+          syncOnResume: true,
+          syncOnInterval: 60,
+        },
       });
     },
   },
