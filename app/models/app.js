@@ -11,9 +11,9 @@ export default {
   reducers: {},
   effects: {
     *checkCodePush(_, { spawn, call, put }) {
-      // if (global.__DEV__) {
-      //   return;
-      // }
+      if (global.__DEV__) {
+        return;
+      }
 
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { compose, withState, withProps } from 'recompose';
 import PDF from 'react-native-pdf';
 import Orientation from 'react-native-orientation';
@@ -8,6 +8,7 @@ import { connectActionSheet } from '@expo/react-native-action-sheet';
 import * as WeChat from 'react-native-wechat';
 import * as Animatable from 'react-native-animatable';
 
+import SafeArea from 'component/uikit/safeArea';
 import Touchable from 'component/uikit/touchable';
 import FavorItem from 'component/favored/item';
 import Config from 'runtime/index';
@@ -184,7 +185,7 @@ export default class InstitutionReportDetail extends Component {
     const title = navigation.getParam('title');
 
     return (
-      <View style={styles.container}>
+      <SafeArea style={styles.container}>
         {R.not(navBarHidden) && (
           <NavBar
             gradient
@@ -207,7 +208,7 @@ export default class InstitutionReportDetail extends Component {
         />
         {this.renderWrapper()}
         {this.renderRecommended()}
-      </View>
+      </SafeArea>
     );
   }
 }
