@@ -19,7 +19,7 @@ import styles from './style';
 @connect(({ login, loading, codePush }) => ({
   isLogin: !!login.token,
   loading: loading.effects['login/logout'],
-  versionLabel: R.pathOr('', ['meta', 'label'])(codePush),
+  versionLabel: R.pathOr('', ['update', 'label'])(codePush),
 }))
 class Settings extends Component {
   logout = () => {
@@ -52,7 +52,7 @@ class Settings extends Component {
   };
 
   render() {
-    const { isLogin } = this.props;
+    const { isLogin, versionLabel } = this.props;
     return (
       <View style={styles.container}>
         <NavBar gradient back title="设置" />
@@ -61,7 +61,9 @@ class Settings extends Component {
           <ListItem
             disablePress
             title="当前版本"
-            content={`v${appInfo.version} ${this.props.versionLabel}`}
+            content={`v${appInfo.version}${
+              R.isEmpty(versionLabel) ? '' : ` (${versionLabel})`
+            }`}
           />
           <ListItem title="版本更新" onPress={this.handleChangelogPress} />
           {/* <ListItem title="评价 Hotnode" /> */}

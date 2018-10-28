@@ -18,16 +18,18 @@ export default {
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
 
-      if (isMandatory) {
+      if (result) {
         yield put({
           type: 'codePush/saveUpdateInfo',
           payload: result,
         });
-        yield put(
-          routerRedux.navigate({
-            routeName: 'CodePush',
-          }),
-        );
+        if (isMandatory) {
+          yield put(
+            routerRedux.navigate({
+              routeName: 'CodePush',
+            }),
+          );
+        }
       }
 
       yield spawn(codePushSaga, {
