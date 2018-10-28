@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, LayoutAnimation } from 'react-native';
 import { compose, withState, withProps } from 'recompose';
 import PDF from 'react-native-pdf';
 import Orientation from 'react-native-orientation';
@@ -8,14 +8,13 @@ import { connectActionSheet } from '@expo/react-native-action-sheet';
 import * as WeChat from 'react-native-wechat';
 import * as Animatable from 'react-native-animatable';
 
-import SafeArea from 'component/uikit/safeArea';
 import Touchable from 'component/uikit/touchable';
 import FavorItem from 'component/favored/item';
 import Config from 'runtime/index';
 import { getInstitutionReportByID } from '../../../../../services/api';
 import NavBar from 'component/navBar';
 
-import styles from './style';
+import styles, { translateY } from './style';
 
 @connectActionSheet
 @global.bindTrack({
@@ -106,12 +105,13 @@ export default class InstitutionReportDetail extends Component {
 
   toggleCollapsed = () => {
     const { footerCollapsed } = this.props;
+    LayoutAnimation.easeInEaseOut();
     this.props.setFooterCollapsed(!footerCollapsed, () => {
       this.footer.transitionTo(
         {
           transform: [
             {
-              translateY: footerCollapsed ? 0 : 310,
+              translateY: footerCollapsed ? 0 : translateY,
             },
           ],
         },
@@ -142,13 +142,16 @@ export default class InstitutionReportDetail extends Component {
         style={styles.recommended.container}
       >
         <View style={styles.recommended.header.container}>
-          <Text style={styles.recommended.header.title}>相关项目</Text>
+          <Text style={styles.recommended.header.title}>
+            为您推荐 {R.length(coins)} 个项目
+          </Text>
           <Touchable borderless onPress={this.toggleCollapsed}>
             <Text style={styles.recommended.header.action}>
               {footerCollapsed ? '点击查看' : '点击收起'}
             </Text>
           </Touchable>
         </View>
+        {footerCollapsed && <View style={styles.recommended.dummy} />}
         <ScrollView>
           {R.map(c => (
             <FavorItem key={c.id} data={c} afterFavor={this.loadCoins} />
@@ -185,7 +188,7 @@ export default class InstitutionReportDetail extends Component {
     const title = navigation.getParam('title');
 
     return (
-      <SafeArea style={styles.container}>
+      <View style={styles.container}>
         {R.not(navBarHidden) && (
           <NavBar
             gradient
@@ -208,7 +211,7 @@ export default class InstitutionReportDetail extends Component {
         />
         {this.renderWrapper()}
         {this.renderRecommended()}
-      </SafeArea>
+      </View>
     );
   }
 }

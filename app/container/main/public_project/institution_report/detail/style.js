@@ -1,5 +1,7 @@
 import { StyleSheet } from 'react-native';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
+export const translateY = 310 - getBottomSpace();
 export default {
   container: {
     flex: 1,
@@ -22,7 +24,7 @@ export default {
       right: 0,
       transform: [
         {
-          translateY: 310,
+          translateY,
         },
       ],
     },
@@ -43,6 +45,9 @@ export default {
         fontSize: 14,
         color: '#1890FF',
       },
+    },
+    dummy: {
+      height: getBottomSpace(),
     },
   },
 };
