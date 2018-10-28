@@ -143,7 +143,7 @@ export default class InstitutionReportDetail extends Component {
       >
         <View style={styles.recommended.header.container}>
           <Text style={styles.recommended.header.title}>
-            为您推荐 {R.length(coins)} 个项目
+            为您推荐 {R.length(coins)} 个相关项目
           </Text>
           <Touchable borderless onPress={this.toggleCollapsed}>
             <Text style={styles.recommended.header.action}>

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { shadow } from '../../../../../utils/style';
 
 export const translateY = 310 - getBottomSpace();
 export default {
@@ -27,6 +28,11 @@ export default {
           translateY,
         },
       ],
+      ...shadow,
+      shadowOffset: {
+        height: -2,
+      },
+      shadowOpacity: 0.2,
     },
     header: {
       container: {
