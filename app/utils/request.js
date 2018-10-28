@@ -81,14 +81,14 @@ function checkStatus({ response = {} }) {
     // });
     return;
   }
-  let errortext =
+  const errortext =
     codeMessage[R.path(['data', 'code'])(response)] ||
     R.path(['data', 'message'])(response) ||
     R.path(['data', 0, 'message'])(response);
 
-  if (!response.status) {
-    errortext = '您的网络出现问题，请确认已经连接至互联网';
-  }
+  // if (!response.status) {
+  //   errortext = '您的网络出现问题，请确认已经连接至互联网';
+  // }
 
   if (errortext) {
     Toast.fail(errortext, 1);
