@@ -16,10 +16,14 @@
     "lint:fix": "eslint --fix --ext .js src mock tests && npm run lint:style",
     "lint-staged": "lint-staged",
     "lint-staged:js": "eslint --ext .js",
-    "codepush:android": "code-push release-react hotnode-android android -d Production -m",
-    "codepush:android:staging": "code-push release-react hotnode-android android -d Staging -m",
-    "codepush:ios": "code-push release-react hotnode-ios ios -d Production -m",
-    "codepush:ios:staging": "code-push release-react hotnode-ios ios -d Staging -m"
+    "codepush:android:m": "code-push release-react hotnode-android android -d Production -m",
+    "codepush:android:staging:m": "code-push release-react hotnode-android android -d Staging -m",
+    "codepush:ios:m": "code-push release-react hotnode-ios ios -d Production -m",
+    "codepush:ios:staging:m": "code-push release-react hotnode-ios ios -d Staging -m",
+    "codepush:android": "code-push release-react hotnode-android android -d Production",
+    "codepush:android:staging": "code-push release-react hotnode-android android -d Staging",
+    "codepush:ios": "code-push release-react hotnode-ios ios -d Production",
+    "codepush:ios:staging": "code-push release-react hotnode-ios ios -d Staging"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^1.1.2",
