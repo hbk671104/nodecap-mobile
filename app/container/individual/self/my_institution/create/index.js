@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { compose, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { Toast } from 'antd-mobile';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
@@ -42,14 +43,35 @@ class CreateInstitutionWrapper extends Component {
   }
 
   handleNextPress = () => {
-    const { isLastPage, isEditing } = this.props;
+    const { isLastPage, nextPage, isEditing } = this.props;
     this.props.form.validateFields(err => {
       if (!err) {
+        if (nextPage === 'CreateMyInstitutionDescription') {
+          Toast.loading('加载中...', 0);
+          this.props.dispatch({
+            type: 'institution_create/searchInstitution',
+            payload: {
+              page: 1,
+              'per-page': 20,
+            },
+            callback: ({ data }) => {
+              Toast.hide();
+              this.props.dispatch(
+                NavigationActions.navigate({
+                  routeName: R.isEmpty(data)
+                    ? nextPage
+                    : 'ClaimMyInstitutionSearch',
+                }),
+              );
+            },
+          });
+          return;
+        }
+
         if (isLastPage && isEditing) {
           this.props.dispatch({
             type: 'institution_create/submitInstitution',
             callback: () => {
-              console.log('institution_create/submitInstitution');
               this.props.dispatch(
                 NavigationActions.navigate({
                   routeName: 'MyInstitution',
@@ -60,7 +82,6 @@ class CreateInstitutionWrapper extends Component {
           return;
         }
 
-        const { nextPage } = this.props;
         this.props.dispatch(
           NavigationActions.navigate({
             routeName: nextPage,

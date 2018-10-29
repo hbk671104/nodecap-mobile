@@ -130,6 +130,7 @@ import CreateMyInstitutionServedProject from 'container/individual/self/my_insti
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
+import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -345,6 +346,7 @@ const InstitutionCreate = createStackNavigator(
     CreateMyInstitutionDescription,
     CreateMyInstitutionTeam,
     CreateMyInstitutionServedProject,
+    ClaimMyInstitutionSearch,
   },
   {
     headerMode: 'none',

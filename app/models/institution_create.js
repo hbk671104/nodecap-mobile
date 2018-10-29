@@ -35,6 +35,7 @@ export default {
       },
     ],
     list: null,
+    search_list: null,
     query: null,
     current: initialCurrent,
     owner: null,
@@ -77,6 +78,29 @@ export default {
           type: 'query',
           payload: data,
         });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *searchInstitution({ payload, callback }, { put, call, select }) {
+      try {
+        const current = yield select(state =>
+          R.path(['institution_create', 'current'])(state),
+        );
+        const { data } = yield call(Individual.searchInstitution, {
+          ...payload,
+          q: current.name,
+          type: current.type,
+        });
+
+        yield put({
+          type: 'searchList',
+          payload: data,
+        });
+
+        if (callback) {
+          yield call(callback, data);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -178,6 +202,12 @@ export default {
       return {
         ...state,
         query: paginate(state.query, payload),
+      };
+    },
+    searchList(state, { payload }) {
+      return {
+        ...state,
+        search_list: paginate(state.search_list, payload),
       };
     },
     saveCurrent(state, { payload }) {
