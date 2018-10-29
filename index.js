@@ -86,7 +86,7 @@ export const persist = callback => {
       whitelist: [
         'login',
         'global',
-        'app',
+        'codePush',
         'fund',
         'user',
         'institution',

@@ -4,11 +4,12 @@ import { createForm } from 'rc-form';
 import { NavigationActions } from 'react-navigation';
 import { connect } from 'react-redux';
 import { withState } from 'recompose';
-import { View, TouchableWithoutFeedback, Text } from 'react-native';
+import { View, TouchableWithoutFeedback, Text, Keyboard } from 'react-native';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
 import request from 'utils/request';
 import runtimeConfig from 'runtime/index';
+import R from 'ramda';
 
 const styles = {
   content: {
@@ -21,7 +22,9 @@ const styles = {
 
 @withState('submitting', 'setSubmitting', false)
 @withState('focus', 'setFocus', false)
-@connect()
+@connect(({ user }) => ({
+  user: user.currentUser,
+}))
 @createForm()
 class Feedback extends Component {
   componentWillMount() {
@@ -47,12 +50,14 @@ class Feedback extends Component {
           );
         });
       } else {
-        Toast.success('请将表单填写完整后再提交');
+        Keyboard.dismiss();
+        Toast.fail('请将表单填写完整后再提交');
       }
     });
   }
   render() {
     const { getFieldDecorator } = this.props.form;
+
     return (
       <View style={{
         flex: 1,
@@ -90,6 +95,7 @@ class Feedback extends Component {
               />
             )}
             {getFieldDecorator('mobile', {
+              initialValue: R.path(['user', 'mobile'])(this.props),
               rules: [{
                 required: true,
                 message: '请您填写手机号，方便我们联系您',

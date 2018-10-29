@@ -651,19 +651,44 @@ export default {
           ...state.list,
           index: {
             ...state.list.index,
-            data: R.map(i => {
-              if (i.id === action.payload) {
-                const star_number = parseInt(i.stars, 10);
-                return {
-                  ...i,
-                  is_focused: action.status,
-                  stars: action.status
-                    ? `${star_number + 1}`
-                    : `${star_number - 1}`,
-                };
-              }
-              return i;
-            })(state.list.index.data),
+            data: R.pipe(
+              R.pathOr([], ['list', 'index', 'data']),
+              R.map(i => {
+                if (i.id === action.payload) {
+                  const star_number = parseInt(i.stars, 10);
+                  return {
+                    ...i,
+                    is_focused: action.status,
+                    stars: action.status
+                      ? `${star_number + 1}`
+                      : `${star_number - 1}`,
+                  };
+                }
+                return i;
+              }),
+            )(state),
+          },
+        },
+        selected: {
+          ...state.selected,
+          index: {
+            ...state.selected.index,
+            data: R.pipe(
+              R.pathOr([], ['selected', 'index', 'data']),
+              R.map(i => {
+                if (i.id === action.payload) {
+                  const star_number = parseInt(i.stars, 10);
+                  return {
+                    ...i,
+                    is_focused: action.status,
+                    stars: action.status
+                      ? `${star_number + 1}`
+                      : `${star_number - 1}`,
+                  };
+                }
+                return i;
+              }),
+            )(state),
           },
         },
       };

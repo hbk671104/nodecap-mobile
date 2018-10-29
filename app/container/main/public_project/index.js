@@ -21,22 +21,24 @@ import styles from './style';
   page: '项目公海',
   name: 'App_PublicProjectOperation',
 })
-@connect(({ public_project, news, loading, notification, institution, banners }) => ({
-  news: R.pathOr([], ['news'])(news),
-  lastNewsID: R.pathOr(null, ['payload'])(news),
-  data: R.pathOr([], ['selected', 'index', 'data'])(public_project),
-  pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
-    public_project,
-  ),
-  loading: loading.effects['news/index'],
-  selectedLoading: loading.effects['public_project/fetchSelected'],
-  insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
-  announcement: R.pathOr([], ['list', 'data'])(notification),
-  reports: R.pathOr([], ['report', 'data'])(institution),
-  updateCount: R.path(['updated_count'])(news),
-  notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
-  banners: R.pathOr([], ['list', 'data'])(banners),
-}))
+@connect(
+  ({ public_project, news, loading, notification, institution, banners }) => ({
+    news: R.pathOr([], ['news'])(news),
+    lastNewsID: R.pathOr(null, ['payload'])(news),
+    data: R.pathOr([], ['selected', 'index', 'data'])(public_project),
+    pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
+      public_project,
+    ),
+    loading: loading.effects['news/index'],
+    selectedLoading: loading.effects['public_project/fetchSelected'],
+    insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
+    announcement: R.pathOr([], ['list', 'data'])(notification),
+    reports: R.pathOr([], ['report', 'data'])(institution),
+    updateCount: R.path(['updated_count'])(news),
+    notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
+    banners: R.pathOr([], ['list', 'data'])(banners),
+  }),
+)
 @compose(
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentShareNews', 'setShareNews', ''),
@@ -101,7 +103,7 @@ export default class PublicProject extends Component {
         this.props.setSelectPage(nextPage);
       },
     });
-  }
+  };
 
   handleItemPress = item => () => {
     this.props.track('点击进入详情');
@@ -196,10 +198,10 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleNewsSharePress = (data) => {
+  handleNewsSharePress = data => {
     this.props.setShareNews(data);
     this.props.toggleShareModal(true);
-  }
+  };
 
   renderItem = ({ item }) => (
     <NewsItem

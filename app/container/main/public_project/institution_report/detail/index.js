@@ -1,39 +1,46 @@
 import React, { Component } from 'react';
-import { View, TouchableWithoutFeedback, Text } from 'react-native';
-import { compose, withState } from 'recompose';
+import { View, Text, ScrollView, LayoutAnimation } from 'react-native';
+import { compose, withState, withProps } from 'recompose';
 import PDF from 'react-native-pdf';
 import Orientation from 'react-native-orientation';
 import R from 'ramda';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import * as WeChat from 'react-native-wechat';
+import * as Animatable from 'react-native-animatable';
+
+import Touchable from 'component/uikit/touchable';
+import FavorItem from 'component/favored/item';
 import Config from 'runtime/index';
 import { getInstitutionReportByID } from '../../../../../services/api';
 import NavBar from 'component/navBar';
 
-import styles from './style';
+import styles, { translateY } from './style';
 
 @connectActionSheet
 @global.bindTrack({
   page: '项目公海机构报告详情',
   name: 'App_PublicProjectInstitutionReportDetailOperation',
 })
-@compose(withState('navBarHidden', 'setNavBarHidden', false))
+@compose(
+  withState('navBarHidden', 'setNavBarHidden', false),
+  withState('coins', 'setCoins', []),
+  withState('footerCollapsed', 'setFooterCollapsed', true),
+  withProps(props => {
+    const id = props.navigation.getParam('id');
+    return {
+      id,
+    };
+  }),
+)
 export default class InstitutionReportDetail extends Component {
   state = {
     isWXAppSupportApi: false,
-    // coins: [],
   };
 
-  // async componentWillMount() {
-  //   try {
-  //     const { data } = await getInstitutionReportByID(this.props.navigation.getParam('id'));
-  //     this.setState({
-  //       coins: data.coins,
-  //     });
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
+  componentWillMount() {
+    this.loadCoins();
+  }
+
   componentDidMount() {
     this.checkWechatAval();
 
@@ -87,6 +94,91 @@ export default class InstitutionReportDetail extends Component {
     });
   };
 
+  loadCoins = async () => {
+    try {
+      const { data } = await getInstitutionReportByID(this.props.id);
+      this.props.setCoins(R.pathOr([], ['coins'])(data));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  toggleCollapsed = () => {
+    const { footerCollapsed } = this.props;
+    LayoutAnimation.easeInEaseOut();
+    this.props.setFooterCollapsed(!footerCollapsed, () => {
+      this.footer.transitionTo(
+        {
+          transform: [
+            {
+              translateY: footerCollapsed ? 0 : translateY,
+            },
+          ],
+        },
+        250,
+        'ease-in-out',
+      );
+      this.wrapper.transitionTo(
+        {
+          opacity: footerCollapsed ? 0.4 : 0,
+        },
+        250,
+        'ease-in-out',
+      );
+    });
+  };
+
+  renderRecommended = () => {
+    const { coins, footerCollapsed } = this.props;
+    if (R.isEmpty(coins)) {
+      return null;
+    }
+
+    return (
+      <Animatable.View
+        ref={ref => {
+          this.footer = ref;
+        }}
+        style={styles.recommended.container}
+      >
+        <View style={styles.recommended.header.container}>
+          <Text style={styles.recommended.header.title}>
+            为您推荐 {R.length(coins)} 个相关项目
+          </Text>
+          <Touchable borderless onPress={this.toggleCollapsed}>
+            <Text style={styles.recommended.header.action}>
+              {footerCollapsed ? '点击查看' : '点击收起'}
+            </Text>
+          </Touchable>
+        </View>
+        {footerCollapsed && <View style={styles.recommended.dummy} />}
+        <ScrollView>
+          {R.map(c => (
+            <FavorItem key={c.id} data={c} afterFavor={this.loadCoins} />
+          ))(coins)}
+        </ScrollView>
+      </Animatable.View>
+    );
+  };
+
+  renderWrapper = () => {
+    const { coins, footerCollapsed } = this.props;
+    if (R.isEmpty(coins)) {
+      return null;
+    }
+
+    return (
+      <Animatable.View
+        pointerEvents={footerCollapsed ? 'none' : 'auto'}
+        onStartShouldSetResponder={this.toggleCollapsed}
+        ref={ref => {
+          this.wrapper = ref;
+        }}
+        style={styles.recommended.wrapper}
+      />
+    );
+  };
+
   render() {
     const { navigation, navBarHidden } = this.props;
     let pdf_url = navigation.getParam('pdf_url');
@@ -104,9 +196,9 @@ export default class InstitutionReportDetail extends Component {
             title={title}
             titleContainerStyle={{ paddingHorizontal: 48 }}
             renderRight={() => (
-              <TouchableWithoutFeedback onPress={this.onPressShare}>
+              <Touchable borderless onPress={this.onPressShare}>
                 <Text style={{ fontSize: 14, color: '#FFFFFF' }}>分享</Text>
-              </TouchableWithoutFeedback>
+              </Touchable>
             )}
           />
         )}
@@ -116,16 +208,9 @@ export default class InstitutionReportDetail extends Component {
             uri: pdf_url,
             cache: true,
           }}
-          // onLoadComplete={(numberOfPages, filePath) => {
-          //   console.log(`number of pages: ${numberOfPages}`);
-          // }}
-          // onPageChanged={(page, numberOfPages) => {
-          //   console.log(`current page: ${page}`);
-          // }}
-          // onError={error => {
-          //   console.log(error);
-          // }}
         />
+        {this.renderWrapper()}
+        {this.renderRecommended()}
       </View>
     );
   }
