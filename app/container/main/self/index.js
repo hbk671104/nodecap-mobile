@@ -103,7 +103,7 @@ class Self extends Component {
           }}
           onPress={() => {
             Clipboard.setString('ladh2857');
-            Toast.show('已复制', Toast.SHORT);
+            Toast.show('已复制', Toast.SHORT, false);
           }}
         >
           <View>
