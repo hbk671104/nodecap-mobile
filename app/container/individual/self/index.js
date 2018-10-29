@@ -56,22 +56,6 @@ class Self extends Component {
     }
   };
 
-  handleResourcesPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Resources',
-      }),
-    );
-  };
-
-  handleColleaguePress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Colleague',
-      }),
-    );
-  };
-
   handleFeedbackPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -83,7 +67,7 @@ class Self extends Component {
   handleMyProjectPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'MyProject',
+        routeName: this.props.isLogin ? 'MyProject' : 'Login',
       }),
     );
   };
@@ -91,7 +75,7 @@ class Self extends Component {
   handleInstitutionJoinPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'MyInstitution',
+        routeName: this.props.isLogin ? 'MyInstitution' : 'Login',
       }),
     );
   };
@@ -149,7 +133,7 @@ class Self extends Component {
           }}
           onPress={() => {
             Clipboard.setString('ladh2857');
-            Toast.show('已复制', 2000);
+            Toast.show('已复制', Toast.SHORT, false);
           }}
         >
           <View>
@@ -166,21 +150,17 @@ class Self extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView contentContainerStyle={styles.scroll.content}>
-          {isLogin && (
-            <View>
-              <Item
-                icon={require('asset/mine/my_project.png')}
-                title="我的项目"
-                onPress={this.handleMyProjectPress}
-              />
-              <Item
-                icon={require('asset/mine/institution_join.png')}
-                title="机构入驻通道"
-                onPress={this.handleInstitutionJoinPress}
-              />
-              <View style={styles.scroll.divider} />
-            </View>
-          )}
+          <Item
+            icon={require('asset/mine/my_project.png')}
+            title="我的项目"
+            onPress={this.handleMyProjectPress}
+          />
+          <Item
+            icon={require('asset/mine/institution_join.png')}
+            title="机构入驻通道"
+            onPress={this.handleInstitutionJoinPress}
+          />
+          <View style={styles.scroll.divider} />
           <Item
             icon={require('asset/mine/feedback.png')}
             title="意见反馈"
