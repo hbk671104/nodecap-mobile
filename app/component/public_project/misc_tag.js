@@ -53,6 +53,8 @@ const styles = {
       borderRadius: 1,
       paddingHorizontal: 3,
       marginRight: 4,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     text: {
       fontSize: 11,
