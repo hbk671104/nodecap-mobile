@@ -83,24 +83,28 @@ class ClaimInstitution extends Component {
   };
 
   handleSavePress = () => {
-    this.props.form.validateFields((err, value) => {
+    this.props.form.validateFields(err => {
       if (!err) {
-        this.handleSubmit(value);
+        this.handleSubmit();
       }
     });
   };
 
-  handleSubmit = value => {
+  handleSubmit = () => {
     // institution claim saga check
     this.props.dispatch({
-      type: 'institution_create/submitInstitution',
-      payload: value,
-      callback: () => {
-        this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: 'CreateMyInstitutionDone',
-          }),
-        );
+      type: this.props.id
+        ? 'institution_create/claimInstitution'
+        : 'institution_create/submitInstitution',
+      id: this.props.id,
+      callback: success => {
+        if (success) {
+          this.props.dispatch(
+            NavigationActions.navigate({
+              routeName: 'CreateMyInstitutionDone',
+            }),
+          );
+        }
       },
     });
   };

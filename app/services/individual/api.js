@@ -122,6 +122,10 @@ export function myInstitution(payload) {
   return request.get('/my-industry-investments', payload);
 }
 
+export function claimMyInstitution({ id, payload }) {
+  return request.post(`/industry-investments/${id}/own`, payload);
+}
+
 export function getBanners() {
   return request.get('/banner');
 }

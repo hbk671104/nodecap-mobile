@@ -105,6 +105,28 @@ export default {
         console.log(error);
       }
     },
+    *claimInstitution({ callback, id }, { select, call, put }) {
+      try {
+        const owner = yield select(state =>
+          R.path(['institution_create', 'owner'])(state),
+        );
+
+        const { status } = yield call(Individual.claimMyInstitution, {
+          id,
+          payload: owner,
+        });
+
+        yield put({
+          type: 'refresh',
+        });
+
+        if (callback) {
+          yield call(callback, status === 200);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     *submitInstitution({ callback }, { select, put }) {
       try {
         const owner = yield select(state =>
