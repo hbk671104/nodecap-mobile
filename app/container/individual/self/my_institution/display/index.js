@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
-import Touchable from 'component/uikit/touchable';
 
 import Group from './partials/group';
 import Member from './partials/member';
@@ -37,7 +36,13 @@ export default class MyInstitutionDetail extends Component {
     );
   };
 
-  handleEditPress = key => () => {};
+  handleEditPress = routeName => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName,
+      }),
+    );
+  };
 
   renderNavBar = () => (
     <NavBar
@@ -61,7 +66,9 @@ export default class MyInstitutionDetail extends Component {
           {R.not(R.isEmpty(desc)) && (
             <Group
               title="机构简介"
-              onEditPress={this.handleEditPress('description')}
+              onEditPress={this.handleEditPress(
+                'CreateMyInstitutionDescription',
+              )}
             >
               <View style={styles.desc.container}>
                 <Text style={styles.desc.text}>{desc}</Text>
@@ -71,13 +78,18 @@ export default class MyInstitutionDetail extends Component {
           {R.not(R.isEmpty(members)) && (
             <Group
               title="机构成员"
-              onEditPress={this.handleEditPress('members')}
+              onEditPress={this.handleEditPress('CreateMyInstitutionTeam')}
             >
               {R.map(m => <Member key={m.id} data={m} />)(members)}
             </Group>
           )}
           {R.not(R.isEmpty(coins)) && (
-            <Group title="已投项目" onEditPress={this.handleEditPress('coins')}>
+            <Group
+              title="服务项目"
+              onEditPress={this.handleEditPress(
+                'CreateMyInstitutionServedProject',
+              )}
+            >
               {R.addIndex(R.map)((m, index) => (
                 <FavorItem
                   institutionId={this.props.id}

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { compose, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
@@ -32,20 +31,27 @@ import styles from './style';
     loading: loading.effects['institution_create/submitInstitution'],
   };
 })
-@compose(
-  withProps(({ nextPage }) => ({
-    isLastPage: nextPage === 'ClaimMyInstitution',
-  })),
-)
 class CreateInstitutionWrapper extends Component {
   componentDidMount() {
     this.props.track('进入');
   }
 
   handleNextPress = () => {
-    const { isLastPage, nextPage, isEditing } = this.props;
+    const { nextPage, isEditing } = this.props;
     this.props.form.validateFields(err => {
       if (!err) {
+        if (isEditing) {
+          Toast.loading('保存中...', 0);
+          this.props.dispatch({
+            type: 'institution_create/submitInstitution',
+            callback: () => {
+              Toast.hide();
+              this.props.dispatch(NavigationActions.back());
+            },
+          });
+          return;
+        }
+
         if (nextPage === 'CreateMyInstitutionDescription') {
           Toast.loading('加载中...', 0);
           this.props.dispatch({
@@ -68,20 +74,6 @@ class CreateInstitutionWrapper extends Component {
           return;
         }
 
-        if (isLastPage && isEditing) {
-          this.props.dispatch({
-            type: 'institution_create/submitInstitution',
-            callback: () => {
-              this.props.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'MyInstitution',
-                }),
-              );
-            },
-          });
-          return;
-        }
-
         this.props.dispatch(
           NavigationActions.navigate({
             routeName: nextPage,
@@ -92,14 +84,7 @@ class CreateInstitutionWrapper extends Component {
   };
 
   render() {
-    const {
-      children,
-      title,
-      isLastPage,
-      isEditing,
-      loading,
-      barStyle,
-    } = this.props;
+    const { children, title, isEditing, loading, barStyle } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -114,7 +99,7 @@ class CreateInstitutionWrapper extends Component {
             return (
               <Touchable borderless onPress={this.handleNextPress}>
                 <Text style={styles.navBar.right}>
-                  {isLastPage && isEditing ? '提交' : '下一步'}
+                  {isEditing ? '保存' : '下一步'}
                 </Text>
               </Touchable>
             );
