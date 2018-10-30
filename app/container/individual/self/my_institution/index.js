@@ -66,12 +66,12 @@ class MyInstitution extends Component {
     Toast.loading('加载中...', 0);
     this.props.dispatch({
       type: 'institution_create/get',
-      id: item.id,
+      id: R.path(['id'])(item),
       callback: () => {
         Toast.hide();
         this.props.dispatch(
           NavigationActions.navigate({
-            routeName: 'CreateMyInstitutionWrapper',
+            routeName: 'CreateMyInstitutionDetail',
           }),
         );
       },

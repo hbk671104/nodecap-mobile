@@ -131,6 +131,7 @@ import CreateMyInstitutionSearch from 'container/individual/self/my_institution/
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
+import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -398,6 +399,7 @@ const IndividualStack = createStackNavigator(
     CommentCoin,
     MyInstitution,
     CreateMyInstitution,
+    CreateMyInstitutionDetail,
     CreateMyInstitutionSearch,
     CreateMyInstitutionWrapper: {
       screen: InstitutionCreate,
