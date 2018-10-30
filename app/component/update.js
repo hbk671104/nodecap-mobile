@@ -27,7 +27,7 @@ const update = ({ note }) => (
       titleStyle={styles.button.title}
       onPress={() =>
         Communications.web(
-          'https://itunes.apple.com/cn/app/hotnode/id1397744640?mt=8',
+          'http://a.app.qq.com/o/simple.jsp?pkgname=com.nodecap.hotnode',
         )
       }
     />
