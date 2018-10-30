@@ -121,7 +121,7 @@ export default {
         });
 
         if (callback) {
-          yield call(callback, status === 200);
+          yield call(callback, status === 201);
         }
       } catch (error) {
         console.log(error);

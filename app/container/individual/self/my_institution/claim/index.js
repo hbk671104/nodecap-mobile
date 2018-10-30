@@ -24,7 +24,9 @@ import styles from './style';
   return {
     id,
     owner: R.pathOr({}, ['owner'])(institution_create),
-    submitting: loading.effects['institution_create/submitInstitution'],
+    submitting:
+      loading.effects['institution_create/claimInstitution'] ||
+      loading.effects['institution_create/submitInstitution'],
   };
 })
 @createForm({
@@ -102,6 +104,9 @@ class ClaimInstitution extends Component {
           this.props.dispatch(
             NavigationActions.navigate({
               routeName: 'CreateMyInstitutionDone',
+              params: {
+                id: this.props.id,
+              },
             }),
           );
         }

@@ -57,6 +57,7 @@ export default options => {
         'project_create/submitProject',
         'institution_create/fetch',
         'institution_create/submitInstitution',
+        'institution_create/claimInstitution',
         'service/fetch',
         'service/get',
       ],

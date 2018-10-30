@@ -13,4 +13,11 @@ export default {
       lineHeight: 21,
     },
   },
+  claim: {
+    container: {
+      position: 'absolute',
+      right: 0,
+      bottom: 190,
+    },
+  },
 };
