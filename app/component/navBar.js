@@ -99,7 +99,11 @@ class NavBar extends Component {
                 >
                   {!!title && (
                     <Text
-                      style={[styles.title.text, titleStyle]}
+                      style={[
+                        styles.title.text,
+                        { color: gradient ? 'white' : '#333333' },
+                        titleStyle,
+                      ]}
                       numberOfLines={1}
                     >
                       {title}

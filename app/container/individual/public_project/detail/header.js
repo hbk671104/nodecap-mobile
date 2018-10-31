@@ -1,13 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Animated,
-  Image,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import { View, Image, Text, StyleSheet, ScrollView } from 'react-native';
 import R from 'ramda';
 
 import Price from 'component/price';
@@ -19,14 +12,10 @@ import { symbol } from '../../../../utils/icon';
 import Purpose from './purpose';
 import MiscTag from 'component/public_project/misc_tag';
 
-export const headerHeight = 64;
-export const fullHeaderHeight = 144;
-
 const header = ({
   style,
   titleStyle,
-  data,
-  portfolio,
+  portfolio: data,
   loading,
   avatarWrapperStyle,
   base_symbol,
@@ -38,8 +27,8 @@ const header = ({
     R.toUpper,
   )(data);
   const logo = R.pathOr('', ['icon'])(data);
-  const category = R.pathOr([], ['tags'])(data);
-  const market = R.pathOr({}, ['market'])(portfolio);
+  // const category = R.pathOr([], ['tags'])(data);
+  const market = R.pathOr({}, ['market'])(data);
   const current_price = R.pathOr('--', ['current_price', 'CNY'])(market);
   const price_change_percentage_24h = R.pathOr('--', [
     'price_change_percentage_24h',
@@ -64,15 +53,7 @@ const header = ({
   )(data);
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        style,
-        {
-          height: headerHeight,
-        },
-      ]}
-    >
+    <View style={[styles.container, style]}>
       <View style={styles.top.container}>
         <View style={{ flex: 1 }}>
           <Shimmer animating={loading}>
@@ -104,7 +85,7 @@ const header = ({
             </View>
           </View>
         </View>
-        <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
+        <View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
           <Avatar size={57} source={{ uri: logo }} />
           {is_vip && (
             <Image
@@ -112,7 +93,7 @@ const header = ({
               source={require('asset/public_project/vip_icon.png')}
             />
           )}
-        </Animated.View>
+        </View>
       </View>
       <MiscTag data={data} />
       {can_calculate ? (
@@ -147,15 +128,16 @@ const header = ({
         R.isEmpty,
         R.pathOr([], ['purpose']),
       )(data) && <Purpose portfolio={data} />}
-    </Animated.View>
+    </View>
   );
 };
 
 const styles = {
   container: {
     flex: 1,
-    height: headerHeight,
+    backgroundColor: '#1890FF',
     paddingHorizontal: 12,
+    paddingTop: 46,
   },
   top: {
     container: {
