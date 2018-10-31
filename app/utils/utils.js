@@ -386,7 +386,9 @@ export const convertToPayloadData = data => {
 
 export const hasAppStoreUpdate = async () => {
   try {
-    let result = await fetch('https://itunes.apple.com/lookup?id=1397744640');
+    let result = await fetch(
+      `https://itunes.apple.com/lookup?id=1397744640&v=${Date.now()}`,
+    );
     result = await result.json();
 
     const appStoreVersion = R.path(['results', 0, 'version'])(result);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Image, Text } from 'react-native';
 import R from 'ramda';
 
 const miscTags = ({ data }) => {
@@ -24,6 +24,10 @@ const miscTags = ({ data }) => {
     <View style={styles.container}>
       {owners && (
         <View style={styles.item.container}>
+          <Image
+            style={{ marginRight: 3 }}
+            source={require('asset/public_project/star.png')}
+          />
           <Text style={styles.item.text}>项目已入驻</Text>
         </View>
       )}
@@ -53,6 +57,9 @@ const styles = {
       borderRadius: 1,
       paddingHorizontal: 3,
       marginRight: 4,
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     text: {
       fontSize: 11,

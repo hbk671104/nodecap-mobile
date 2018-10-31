@@ -49,7 +49,6 @@ class CreateInstitutionWrapper extends Component {
           this.props.dispatch({
             type: 'institution_create/submitInstitution',
             callback: () => {
-              console.log('institution_create/submitInstitution');
               this.props.dispatch(
                 NavigationActions.navigate({
                   routeName: 'MyInstitution',

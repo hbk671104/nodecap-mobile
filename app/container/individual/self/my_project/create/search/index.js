@@ -59,6 +59,18 @@ class CreateMyProjectSearch extends Component {
     );
   };
 
+  handleSavePress = () => {
+    const { searchText } = this.state;
+    if (R.isEmpty(searchText)) return;
+    this.props.dispatch({
+      type: 'project_create/saveCurrent',
+      payload: {
+        name: searchText,
+      },
+    });
+    this.props.dispatch(NavigationActions.back());
+  };
+
   renderNavBar = () => (
     <NavBar
       back
