@@ -1,6 +1,6 @@
 PODS:
-  - SensorsAnalyticsSDK/core (1.10.17)
-  - SensorsAnalyticsSDK/ENABLE_REACT_NATIVE_APPCLICK (1.10.17):
+  - SensorsAnalyticsSDK/core (1.10.9)
+  - SensorsAnalyticsSDK/ENABLE_REACT_NATIVE_APPCLICK (1.10.9):
     - SensorsAnalyticsSDK/core
 
 DEPENDENCIES:
@@ -11,7 +11,7 @@ SPEC REPOS:
     - SensorsAnalyticsSDK
 
 SPEC CHECKSUMS:
-  SensorsAnalyticsSDK: 6e25c25f26e25ecb36b92d4f11ce3007e689f602
+  SensorsAnalyticsSDK: 5690e9f33cfebf462fffdaaf768835ebdc08b611
 
 PODFILE CHECKSUM: 9ca6035c899590f5c1ee9652f2dd8e8fefdf0047
 
