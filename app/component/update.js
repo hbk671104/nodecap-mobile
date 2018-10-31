@@ -51,14 +51,13 @@ const styles = {
   },
   content: {
     container: {
-      // flex: 1,
       marginVertical: 16,
+      marginHorizontal: 12,
     },
     text: {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.65)',
       lineHeight: 17,
-      marginVertical: 3,
     },
   },
   button: {
