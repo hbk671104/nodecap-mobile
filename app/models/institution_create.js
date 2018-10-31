@@ -159,13 +159,19 @@ export default {
         console.log(error);
       }
     },
-    *createInstitution({ payload, callback }, { put, call }) {
+    *createInstitution({ payload, callback }, { put, call, all }) {
       try {
         const { status } = yield call(Individual.createInstitution, payload);
 
-        yield put({
-          type: 'refresh',
-        });
+        yield all([
+          put({
+            type: 'refresh',
+          }),
+          put({
+            type: 'resetCurrent',
+          }),
+        ]);
+
         if (callback) {
           callback(status === 200);
         }
@@ -173,16 +179,26 @@ export default {
         console.log(error);
       }
     },
-    *editInstitution({ id, payload, callback }, { put, call }) {
+    *editInstitution({ id, payload, callback }, { put, call, all, select }) {
       try {
         const { status } = yield call(Individual.editInstitution, {
           id,
           payload,
         });
 
-        yield put({
-          type: 'refresh',
-        });
+        const current_instituton_id = yield select(state =>
+          R.path(['current', 'id'])(state),
+        );
+
+        yield all([
+          put({
+            type: 'refresh',
+          }),
+          put({
+            type: 'get',
+            id: current_instituton_id,
+          }),
+        ]);
 
         if (callback) {
           callback(status === 200);
@@ -200,9 +216,6 @@ export default {
               page: 1,
               'per-page': 20,
             },
-          }),
-          put({
-            type: 'resetCurrent',
           }),
           put({
             type: 'user/fetchCurrent',

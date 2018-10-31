@@ -41,12 +41,14 @@ class CreateInstitutionWrapper extends Component {
     this.props.form.validateFields(err => {
       if (!err) {
         if (isEditing) {
-          Toast.loading('保存中...', 0);
           this.props.dispatch({
             type: 'institution_create/submitInstitution',
             callback: () => {
-              Toast.hide();
-              this.props.dispatch(NavigationActions.back());
+              this.props.dispatch(
+                NavigationActions.navigate({
+                  routeName: 'CreateMyInstitutionDetail',
+                }),
+              );
             },
           });
           return;
