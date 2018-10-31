@@ -91,7 +91,7 @@ const handleReceive = extras => {
       global.track('App_NotificationPushReceive', {
         trackName: '项目集增量更新推送接收',
       });
-      this.props.dispatch({
+      store.dispatch({
         type: 'coinSets/fetch',
       });
       break;

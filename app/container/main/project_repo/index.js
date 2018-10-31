@@ -58,8 +58,10 @@ export default class ProjectRepo extends Component {
       nextProps.targeted_coinset_index > 0
     ) {
       setTimeout(() => {
-        this.tabView.goToPage(nextProps.targeted_coinset_index);
-      }, 250);
+        if (this.tabView) {
+          this.tabView.goToPage(nextProps.targeted_coinset_index);
+        }
+      }, 500);
     }
   }
 
