@@ -59,6 +59,9 @@ export default class Announcement extends Component {
           data={data}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
+          style={{
+            backgroundColor: '#F9F9F9',
+          }}
         />
       </View>
     );
