@@ -31,9 +31,8 @@ import styles from './style';
   withProps(({ navigation, sets }) => {
     const targeted_coinset_id = navigation.getParam('coinset_id');
     return {
-      targeted_coinset_index: R.findIndex(s => s.id === targeted_coinset_id)(
-        sets,
-      ),
+      targeted_coinset_index:
+        R.findIndex(s => `${s.id}` === targeted_coinset_id)(sets) + 1,
     };
   }),
 )
@@ -55,11 +54,12 @@ export default class ProjectRepo extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.targeted_coinset_index !== this.props.targeted_coinset_index
+      nextProps.targeted_coinset_index &&
+      nextProps.targeted_coinset_index > 0
     ) {
       setTimeout(() => {
         this.tabView.goToPage(nextProps.targeted_coinset_index);
-      }, 500);
+      }, 250);
     }
   }
 
