@@ -42,7 +42,6 @@ const styles = {
     borderTopWidth: 1,
     borderTopColor: '#168AF3',
     alignItems: 'center',
-    marginBottom: 12,
   },
   item: {
     container: {

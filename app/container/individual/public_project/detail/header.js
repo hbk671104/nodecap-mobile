@@ -1,25 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Image, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
-import Price from 'component/price';
 import Avatar from 'component/uikit/avatar';
-import Percentage from 'component/percentage';
-import Amount from 'component/amount';
-import Shimmer from 'component/shimmer';
 import NavBar from 'component/navBar';
 import MiscTag from 'component/public_project/misc_tag';
+import Tag from 'component/public_project/tag';
 import Label from 'component/public_project/label';
 import Purpose from 'component/public_project/purpose';
-
-import { symbol } from 'utils/icon';
+import Price from 'component/public_project/price';
 
 const header = ({
   style,
   titleStyle,
   portfolio: data,
-  loading,
   base_symbol,
   can_calculate,
 }) => {
@@ -29,25 +24,6 @@ const header = ({
     R.toUpper,
   )(data);
   const logo = R.pathOr('', ['icon'])(data);
-  // const category = R.pathOr([], ['tags'])(data);
-  const market = R.pathOr({}, ['market'])(data);
-  const current_price = R.pathOr('--', ['current_price', 'CNY'])(market);
-  const price_change_percentage_24h = R.pathOr('--', [
-    'price_change_percentage_24h',
-  ])(market);
-  const total_volume = R.pathOr('--', ['total_volume', base_symbol])(market);
-  const high_24h = R.pathOr('--', ['high_24h', base_symbol])(market);
-  const tags = R.pipe(
-    R.pathOr([], ['tags']),
-    R.map(i => ({
-      ...i,
-      name: R.trim(i.name),
-    })),
-    R.reduce(
-      (last, current) => `${last ? `${last}/` : last}${current.name}`,
-      '',
-    ),
-  )(data);
 
   return (
     <View>
@@ -63,33 +39,12 @@ const header = ({
           </View>
           <Avatar source={{ uri: logo }} />
         </View>
-        {/* {can_calculate ? (
-          <View>
-            <View style={styles.divider} />
-            <View style={styles.bottom.container}>
-              <Shimmer animating={loading}>
-                <Text style={styles.bottom.title}>
-                  {symbol('CNY', styles.bottom.title)}
-                  <Price symbol="CNY">{current_price}</Price>
-                </Text>
-              </Shimmer>
-              <Shimmer style={{ marginLeft: 15 }} animating={loading}>
-                <Text style={styles.bottom.subtitle}>
-                  <Percentage colorAware={false}>
-                    {price_change_percentage_24h}
-                  </Percentage>
-                </Text>
-              </Shimmer>
-            </View>
-            <Shimmer style={{ marginTop: 6 }} animating={loading}>
-              <Text style={styles.bottom.content}>
-                额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
-                最高(24H) {symbol(base_symbol, styles.bottom.content)}
-                <Price symbol={base_symbol}>{high_24h}</Price>
-              </Text>
-            </Shimmer>
-          </View>
-        ) : null} */}
+        <Price
+          base_symbol={base_symbol}
+          data={data}
+          can_calculate={can_calculate}
+        />
+        <Tag data={data} />
       </View>
       <MiscTag data={data} />
       {R.compose(

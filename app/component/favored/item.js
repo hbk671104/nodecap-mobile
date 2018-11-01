@@ -127,7 +127,12 @@ class FavorItem extends PureComponent {
                 )),
               )(category)}
             </View>
-            <View style={styles.content.miscTag.container}>
+            <View
+              style={[
+                styles.content.miscTag.container,
+                R.isEmpty(category) && { marginTop: 0 },
+              ]}
+            >
               {has_white_paper && (
                 <View
                   style={[
@@ -180,16 +185,7 @@ class FavorItem extends PureComponent {
                 </View>
               )}
             </View>
-            <Text
-              style={[
-                styles.content.subtitle,
-                (R.isEmpty(category) ||
-                  (!has_white_paper &&
-                    !invested_by_renowned_insti &&
-                    !top_rated)) && { marginTop: 0 },
-              ]}
-              numberOfLines={1}
-            >
+            <Text style={[styles.content.subtitle]} numberOfLines={1}>
               {description}
             </Text>
           </View>
