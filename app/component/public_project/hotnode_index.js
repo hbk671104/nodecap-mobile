@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
@@ -15,6 +15,10 @@ const hotnode_index = ({ data, onInvitedPress }) => {
     <View style={styles.container}>
       <View style={styles.top.container}>
         <View style={styles.top.title.container}>
+          <Image
+            style={{ marginRight: 8 }}
+            source={require('asset/public_project/hotnode_index.png')}
+          />
           <Text style={styles.top.title.text}>Hotnode 指数</Text>
         </View>
         <Touchable borderless onPress={onInvitedPress}>

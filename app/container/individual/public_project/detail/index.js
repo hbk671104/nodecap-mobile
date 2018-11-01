@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Animated, Image } from 'react-native';
+import { View, Animated, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
@@ -8,6 +8,7 @@ import R from 'ramda';
 import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
+import Modal from 'component/modal';
 
 // Partials
 import Description from './page/description';
@@ -45,6 +46,7 @@ import styles from './style';
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('explanationVisible', 'setExplanationVisible', false),
   withState('selectorY', 'setSelectorY', 0),
   withProps(({ animateY, portfolio }) => {
     const investment = R.pathOr({}, ['roi'])(portfolio);
@@ -131,6 +133,7 @@ export default class PublicProjectDetail extends Component {
       }),
     );
   };
+
   loadDetail = () => {
     this.props.dispatch({
       type: 'public_project/get',
@@ -283,7 +286,7 @@ export default class PublicProjectDetail extends Component {
           <Header
             {...this.props}
             onInvitedPress={() => null}
-            onExplanationPress={() => null}
+            onExplanationPress={() => this.props.setExplanationVisible(true)}
           />
           <Fund {...this.props} />
           <Chart {...this.props} />
@@ -320,6 +323,32 @@ export default class PublicProjectDetail extends Component {
           coin={this.props.portfolio}
           visible={this.props.showShareModal}
         />
+        <Modal
+          useNativeDriver
+          hideModalContentWhileAnimating
+          isVisible={this.props.explanationVisible}
+          style={{
+            alignSelf: 'center',
+          }}
+          onBackdropPress={() => this.props.setExplanationVisible(false)}
+        >
+          <View style={styles.explanation.container}>
+            <View style={styles.explanation.content.container}>
+              <Text style={styles.explanation.content.title}>项目得分</Text>
+              <Text style={styles.explanation.content.text}>
+                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。若您是项目成员，认领后可进行信息完善
+              </Text>
+            </View>
+            <Touchable
+              style={styles.explanation.bottom.container}
+              onPress={() =>
+                this.props.setExplanationVisible(false, this.onPressClaimCoin)
+              }
+            >
+              <Text style={styles.explanation.bottom.text}>认领并完善</Text>
+            </Touchable>
+          </View>
+        </Modal>
       </SafeArea>
     );
   }
