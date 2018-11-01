@@ -27,12 +27,11 @@ export default class Loader extends Component {
     persist(() => {
       this.props.dispatch({
         type: this.props.isLogin ? 'global/bootstrap' : 'global/startup',
-        callback: () => {
-          SplashScreen.hide();
-        },
       });
-
       initializeListeners('root', this.props.router);
+
+      // hide
+      SplashScreen.hide();
     });
   }
 
