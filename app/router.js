@@ -132,6 +132,7 @@ import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
 import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
+import CreateMyProjectDetail from 'container/individual/self/my_project/display';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -388,6 +389,7 @@ const IndividualStack = createStackNavigator(
     Service,
     MyProject,
     CreateMyProject,
+    CreateMyProjectDetail,
     CreateMyProjectSearch,
     CreateMyProjectNormal,
     CreateMyProjectNormalWrapper: {

@@ -7,7 +7,10 @@ const tag = ({ data }) => {
     R.pathOr([], ['tags']),
     R.map(i => ({
       ...i,
-      name: R.trim(i.name),
+      name: R.pipe(
+        R.pathOr('', ['name']),
+        R.trim,
+      )(i),
     })),
   )(data);
 
