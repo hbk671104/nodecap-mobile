@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
+import { compose, withState, withProps } from 'recompose';
 
+import ShareNews from './shareAnnouncement';
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import NotificationItem from 'component/notification/item';
@@ -18,6 +20,10 @@ import styles from './style';
   pagination: R.pathOr(null, ['list', 'pagination'])(notification),
   loading: loading.effects['notification/fetch'],
 }))
+@compose(
+  withState('showShareModal', 'toggleShareModal', false),
+  withState('currentShareNews', 'setShareNews', ''),
+)
 export default class Announcement extends Component {
   handleItemPress = id => () => {
     this.props.track('点击进入详情');
@@ -31,6 +37,11 @@ export default class Announcement extends Component {
     );
   };
 
+  handleNewsSharePress = data => {
+    this.props.setShareNews(data);
+    this.props.toggleShareModal(true);
+  };
+
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'notification/fetch',
@@ -42,7 +53,11 @@ export default class Announcement extends Component {
   };
 
   renderItem = ({ item }) => (
-    <NotificationItem data={item} onPress={this.handleItemPress} />
+    <NotificationItem
+      data={item}
+      onPress={this.handleItemPress}
+      onPressShare={() => this.handleNewsSharePress(item)}
+    />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
@@ -61,6 +76,14 @@ export default class Announcement extends Component {
           renderSeparator={this.renderSeparator}
           style={{
             backgroundColor: '#F9F9F9',
+          }}
+        />
+        <ShareNews
+          visible={this.props.showShareModal}
+          news={this.props.currentShareNews}
+          onClose={() => {
+            this.props.toggleShareModal(false);
+            this.props.setShareNews('');
           }}
         />
       </View>
