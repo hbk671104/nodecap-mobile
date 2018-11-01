@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
@@ -10,6 +10,7 @@ import Tag from 'component/public_project/tag';
 import Label from 'component/public_project/label';
 import Purpose from 'component/public_project/purpose';
 import Price from 'component/public_project/price';
+import HotnodeIndex from 'component/public_project/hotnode_index';
 
 const header = ({
   style,
@@ -17,6 +18,7 @@ const header = ({
   portfolio: data,
   base_symbol,
   can_calculate,
+  onInvitedPress,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pipe(
@@ -51,7 +53,16 @@ const header = ({
         R.not,
         R.isEmpty,
         R.pathOr([], ['purpose']),
-      )(data) && <Purpose portfolio={data} />}
+      )(data) && (
+        <View>
+          <Purpose portfolio={data} />
+          <View style={styles.divider} />
+        </View>
+      )}
+      <View>
+        <HotnodeIndex data={data} onInvitedPress={onInvitedPress} />
+        <View style={styles.divider} />
+      </View>
     </View>
   );
 };
@@ -75,55 +86,9 @@ const styles = {
       fontSize: 12,
     },
   },
-  bottom: {
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    title: {
-      fontWeight: 'bold',
-      fontSize: 30,
-      color: 'white',
-    },
-    subtitle: {
-      fontWeight: 'bold',
-      fontSize: 14,
-      color: 'white',
-    },
-    content: {
-      fontWeight: '300',
-      fontSize: 10,
-      color: 'white',
-    },
-    description: {
-      fontSize: 12,
-      color: 'white',
-      lineHeight: 17,
-    },
-  },
-  tag: {
-    wrapper: {
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-    container: {
-      height: 19,
-      paddingHorizontal: 3,
-      borderRadius: 2,
-      marginLeft: 8,
-      justifyContent: 'center',
-      borderColor: 'white',
-      borderWidth: StyleSheet.hairlineWidth,
-    },
-    title: {
-      fontSize: 11,
-      color: 'white',
-    },
-  },
-  vipIcon: {
-    position: 'absolute',
-    right: 0,
-    bottom: 8,
+  divider: {
+    backgroundColor: '#F5F5F5',
+    height: 8,
   },
 };
 
