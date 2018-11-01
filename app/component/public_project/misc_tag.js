@@ -1,14 +1,8 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Text } from 'react-native';
 import R from 'ramda';
 
 const miscTags = ({ data }) => {
-  // misc
-  const owners = R.pipe(
-    R.pathOr([], ['owners']),
-    R.isEmpty,
-    R.not,
-  )(data);
   const invested_by_renowned_insti = R.pipe(
     R.pathOr([], ['renowned_industry']),
     R.isEmpty,
@@ -20,17 +14,12 @@ const miscTags = ({ data }) => {
     R.not,
   )(data);
 
+  if (!invested_by_renowned_insti && !top_rated) {
+    return null;
+  }
+
   return (
     <View style={styles.container}>
-      {owners && (
-        <View style={styles.item.container}>
-          <Image
-            style={{ marginRight: 3 }}
-            source={require('asset/public_project/star.png')}
-          />
-          <Text style={styles.item.text}>项目已入驻</Text>
-        </View>
-      )}
       {top_rated && (
         <View style={styles.item.container}>
           <Text style={styles.item.text}>有评级</Text>
@@ -48,12 +37,17 @@ const miscTags = ({ data }) => {
 const styles = {
   container: {
     flexDirection: 'row',
-    marginTop: 8,
+    height: 41,
+    paddingHorizontal: 12,
+    borderTopWidth: 1,
+    borderTopColor: '#168AF3',
+    alignItems: 'center',
+    marginBottom: 12,
   },
   item: {
     container: {
       height: 17,
-      backgroundColor: '#088CEE',
+      backgroundColor: '#0F7ADD',
       borderRadius: 1,
       paddingHorizontal: 3,
       marginRight: 4,

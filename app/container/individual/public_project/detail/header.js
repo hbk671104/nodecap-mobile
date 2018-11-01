@@ -8,16 +8,18 @@ import Avatar from 'component/uikit/avatar';
 import Percentage from 'component/percentage';
 import Amount from 'component/amount';
 import Shimmer from 'component/shimmer';
-import { symbol } from '../../../../utils/icon';
-import Purpose from './purpose';
+import NavBar from 'component/navBar';
 import MiscTag from 'component/public_project/misc_tag';
+import Label from 'component/public_project/label';
+import Purpose from 'component/public_project/purpose';
+
+import { symbol } from 'utils/icon';
 
 const header = ({
   style,
   titleStyle,
   portfolio: data,
   loading,
-  avatarWrapperStyle,
   base_symbol,
   can_calculate,
 }) => {
@@ -46,83 +48,50 @@ const header = ({
       '',
     ),
   )(data);
-  const is_vip = R.pipe(
-    R.pathOr([], ['vip']),
-    R.isEmpty,
-    R.not,
-  )(data);
 
   return (
-    <View style={[styles.container, style]}>
-      <View style={styles.top.container}>
-        <View style={{ flex: 1 }}>
-          <Shimmer animating={loading}>
-            <Text
-              style={[
-                styles.top.title,
-                R.length(name) > 13 && { fontSize: 18 },
-                titleStyle,
-              ]}
-            >
+    <View>
+      <NavBar back disableStatusBar iconStyle={{ color: 'white' }} />
+      <View style={[styles.container, style]}>
+        <View style={styles.top.container}>
+          <View style={{ flex: 1 }}>
+            <Text style={[styles.top.title, titleStyle]}>
               {name}
+              <Text style={styles.top.subtitle}>（{token}）</Text>
             </Text>
-          </Shimmer>
-          <View style={{ marginTop: 4 }}>
-            <View style={styles.tag.wrapper}>
-              <Text style={styles.top.subtitle}>{token}</Text>
-              <ScrollView
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                style={[
-                  {
-                    flex: 1,
-                    marginHorizontal: 8,
-                  },
-                ]}
-              >
-                <Text style={styles.tag.title}>{tags}</Text>
-              </ScrollView>
-            </View>
+            <Label data={data} />
           </View>
+          <Avatar source={{ uri: logo }} />
         </View>
-        <View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
-          <Avatar size={57} source={{ uri: logo }} />
-          {is_vip && (
-            <Image
-              style={styles.vipIcon}
-              source={require('asset/public_project/vip_icon.png')}
-            />
-          )}
-        </View>
+        {/* {can_calculate ? (
+          <View>
+            <View style={styles.divider} />
+            <View style={styles.bottom.container}>
+              <Shimmer animating={loading}>
+                <Text style={styles.bottom.title}>
+                  {symbol('CNY', styles.bottom.title)}
+                  <Price symbol="CNY">{current_price}</Price>
+                </Text>
+              </Shimmer>
+              <Shimmer style={{ marginLeft: 15 }} animating={loading}>
+                <Text style={styles.bottom.subtitle}>
+                  <Percentage colorAware={false}>
+                    {price_change_percentage_24h}
+                  </Percentage>
+                </Text>
+              </Shimmer>
+            </View>
+            <Shimmer style={{ marginTop: 6 }} animating={loading}>
+              <Text style={styles.bottom.content}>
+                额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
+                最高(24H) {symbol(base_symbol, styles.bottom.content)}
+                <Price symbol={base_symbol}>{high_24h}</Price>
+              </Text>
+            </Shimmer>
+          </View>
+        ) : null} */}
       </View>
       <MiscTag data={data} />
-      {can_calculate ? (
-        <View>
-          <View style={styles.divider} />
-          <View style={styles.bottom.container}>
-            <Shimmer animating={loading}>
-              <Text style={styles.bottom.title}>
-                {symbol('CNY', styles.bottom.title)}
-                <Price symbol="CNY">{current_price}</Price>
-              </Text>
-            </Shimmer>
-            <Shimmer style={{ marginLeft: 15 }} animating={loading}>
-              <Text style={styles.bottom.subtitle}>
-                <Percentage colorAware={false}>
-                  {price_change_percentage_24h}
-                </Percentage>
-              </Text>
-            </Shimmer>
-          </View>
-          <Shimmer style={{ marginTop: 6 }} animating={loading}>
-            <Text style={styles.bottom.content}>
-              额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
-              最高(24H) {symbol(base_symbol, styles.bottom.content)}
-              <Price symbol={base_symbol}>{high_24h}</Price>
-            </Text>
-          </Shimmer>
-        </View>
-      ) : null}
       {R.compose(
         R.not,
         R.isEmpty,
@@ -137,12 +106,10 @@ const styles = {
     flex: 1,
     backgroundColor: '#1890FF',
     paddingHorizontal: 12,
-    paddingTop: 46,
   },
   top: {
     container: {
       flexDirection: 'row',
-      alignItems: 'center',
     },
     title: {
       fontWeight: 'bold',
@@ -150,17 +117,8 @@ const styles = {
       color: 'white',
     },
     subtitle: {
-      fontWeight: 'bold',
       fontSize: 12,
-      color: 'white',
     },
-  },
-  divider: {
-    height: 1,
-    width: 58,
-    backgroundColor: 'white',
-    marginTop: 8,
-    marginBottom: 8,
   },
   bottom: {
     container: {

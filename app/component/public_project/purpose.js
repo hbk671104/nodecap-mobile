@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { View, Image, Text } from 'react-native';
+import React, { PureComponent } from 'react';
+import { View, Text } from 'react-native';
 import { Flex } from 'antd-mobile';
 import R from 'ramda';
 
-class PublicProjectPurpose extends Component {
+class PublicProjectPurpose extends PureComponent {
   render() {
     const purpose = R.pipe(
       R.pathOr([], ['portfolio', 'purpose']),

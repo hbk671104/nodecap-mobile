@@ -13,6 +13,7 @@ import Gradient from './uikit/gradient';
 @connect()
 class NavBar extends Component {
   static propTypes = {
+    disableStatusBar: PropTypes.bool,
     barStyle: PropTypes.string,
     renderContent: PropTypes.func,
     renderLeft: PropTypes.func,
@@ -30,6 +31,7 @@ class NavBar extends Component {
   };
 
   static defaultProps = {
+    disableStatusBar: false,
     barStyle: 'light-content',
     hidden: false,
     bottomHidden: false,
@@ -75,11 +77,12 @@ class NavBar extends Component {
       titleStyle,
       titleContainerStyle,
       iconStyle,
+      disableStatusBar,
     } = this.props;
     const WrapperComp = gradient ? Gradient : View;
     return (
       <WrapperComp style={style}>
-        <StatusBar barStyle={barStyle} />
+        {!disableStatusBar && <StatusBar barStyle={barStyle} />}
         <Animated.View
           style={[
             styles.container,
