@@ -417,6 +417,13 @@ export const convertToInstitutionPayload = form => {
   return {
     ...form,
     coin_ids: R.map(s => s.id)(served_project),
+    industry: {
+      name: R.path(['name'])(form),
+      type: R.path(['type'])(form),
+      logo_url: R.path(['logo_url'])(form),
+      site_url: R.path(['site_url'])(form),
+      description: R.path(['description'])(form),
+    },
   };
 };
 

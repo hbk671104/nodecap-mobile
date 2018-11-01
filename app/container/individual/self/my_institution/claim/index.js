@@ -19,10 +19,16 @@ import styles from './style';
   page: '创建我的机构认证',
   name: 'App_MyInstitutionClaimOperation',
 })
-@connect(({ institution_create, loading }) => ({
-  owner: R.pathOr({}, ['owner'])(institution_create),
-  submitting: loading.effects['institution_create/submitInstitution'],
-}))
+@connect(({ institution_create, loading }, props) => {
+  const id = props.navigation.getParam('id');
+  return {
+    id,
+    owner: R.pathOr({}, ['owner'])(institution_create),
+    submitting:
+      loading.effects['institution_create/claimInstitution'] ||
+      loading.effects['institution_create/submitInstitution'],
+  };
+})
 @createForm({
   onValuesChange: ({ dispatch }, changed) => {
     dispatch({
@@ -79,23 +85,31 @@ class ClaimInstitution extends Component {
   };
 
   handleSavePress = () => {
-    this.props.form.validateFields((err, value) => {
+    this.props.form.validateFields(err => {
       if (!err) {
-        this.handleSubmit(value);
+        this.handleSubmit();
       }
     });
   };
 
-  handleSubmit = value => {
+  handleSubmit = () => {
+    // institution claim saga check
     this.props.dispatch({
-      type: 'institution_create/submitInstitution',
-      payload: value,
-      callback: () => {
-        this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: 'CreateMyInstitutionDone',
-          }),
-        );
+      type: this.props.id
+        ? 'institution_create/claimInstitution'
+        : 'institution_create/submitInstitution',
+      id: this.props.id,
+      callback: success => {
+        if (success) {
+          this.props.dispatch(
+            NavigationActions.navigate({
+              routeName: 'CreateMyInstitutionDone',
+              params: {
+                id: this.props.id,
+              },
+            }),
+          );
+        }
       },
     });
   };

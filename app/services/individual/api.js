@@ -104,6 +104,12 @@ export function submitComment(coin_id, content) {
   });
 }
 
+export function searchInstitution(params) {
+  return request.get('/industry-investments', {
+    params,
+  });
+}
+
 export function createInstitution(payload) {
   return request.post('/industry-investments', payload);
 }
@@ -116,6 +122,14 @@ export function myInstitution(payload) {
   return request.get('/my-industry-investments', payload);
 }
 
+export function claimMyInstitution({ id, payload }) {
+  return request.post(`/industry-investments/${id}/own`, payload);
+}
+
 export function getBanners() {
   return request.get('/banner');
+}
+
+export function selectedProject() {
+  return request.get('/coins/selected');
 }

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
-import { compose, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
@@ -34,27 +33,22 @@ import styles from './style';
     loading: loading.effects['project_create/submitProject'],
   };
 })
-@compose(
-  withProps(({ nextPage }) => ({
-    isLastPage: nextPage === 'ClaimMyProject',
-  })),
-)
 class CreateProjectNormalWrapper extends Component {
   componentDidMount() {
     this.props.track('进入');
   }
 
   handleNextPress = () => {
-    const { isLastPage, isEditing } = this.props;
+    const { nextPage, isEditing } = this.props;
     this.props.form.validateFields(err => {
       if (!err) {
-        if (isLastPage && isEditing) {
+        if (isEditing) {
           this.props.dispatch({
             type: 'project_create/submitProject',
             callback: () => {
               this.props.dispatch(
                 NavigationActions.navigate({
-                  routeName: 'MyProject',
+                  routeName: 'CreateMyProjectDetail',
                 }),
               );
             },
@@ -62,7 +56,6 @@ class CreateProjectNormalWrapper extends Component {
           return;
         }
 
-        const { nextPage } = this.props;
         this.props.dispatch(
           NavigationActions.navigate({
             routeName: nextPage,
@@ -73,14 +66,7 @@ class CreateProjectNormalWrapper extends Component {
   };
 
   render() {
-    const {
-      children,
-      title,
-      isLastPage,
-      isEditing,
-      loading,
-      barStyle,
-    } = this.props;
+    const { children, title, isEditing, loading, barStyle } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -95,13 +81,13 @@ class CreateProjectNormalWrapper extends Component {
             return (
               <Touchable borderless onPress={this.handleNextPress}>
                 <Text style={styles.navBar.right}>
-                  {isLastPage && isEditing ? '提交' : '下一步'}
+                  {isEditing ? '保存' : '下一步'}
                 </Text>
               </Touchable>
             );
           }}
         />
-        <ProgressBar {...this.props} />
+        {!isEditing && <ProgressBar {...this.props} />}
         {children}
       </View>
     );

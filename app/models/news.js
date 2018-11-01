@@ -9,12 +9,8 @@ export default {
     updated_count: 0,
   },
   effects: {
-    *index({ payload, callback, nextSelectPage = 1 }, { call, put, select, all }) {
+    *index({ payload, callback }, { call, put, select, all }) {
       try {
-        const public_project_params = yield select(state =>
-          R.path(['public_project', 'list', 'params'])(state),
-        );
-
         yield all([
           // insite news
           put.resolve({
@@ -30,9 +26,6 @@ export default {
           // fetch selected public project
           put.resolve({
             type: 'public_project/fetchSelected',
-            params: {
-              currentPage: nextSelectPage,
-            },
           }),
           // fetch report
           put.resolve({

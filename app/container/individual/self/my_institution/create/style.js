@@ -120,4 +120,18 @@ export default {
       fontSize: 13,
     },
   },
+  claim: {
+    container: {
+      height: 39,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderTopWidth: StyleSheet.hairlineWidth,
+      borderTopColor: '#E9E9E9',
+    },
+    title: {
+      fontSize: 13,
+      fontWeight: 'bold',
+      color: '#1890FF',
+    },
+  },
 };

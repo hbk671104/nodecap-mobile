@@ -85,6 +85,11 @@ class FavorItem extends PureComponent {
       R.isEmpty,
       R.not,
     )(data);
+    const is_reachable = R.pipe(
+      R.pathOr([], ['is_reachable']),
+      R.isEmpty,
+      R.not,
+    )(data);
 
     return (
       <Touchable foreground onPress={this.handlePress}>
@@ -127,7 +132,12 @@ class FavorItem extends PureComponent {
                 )),
               )(category)}
             </View>
-            <View style={styles.content.miscTag.container}>
+            <View
+              style={[
+                styles.content.miscTag.container,
+                R.isEmpty(category) && { marginTop: 0 },
+              ]}
+            >
               {has_white_paper && (
                 <View
                   style={[
@@ -179,17 +189,25 @@ class FavorItem extends PureComponent {
                   </Text>
                 </View>
               )}
+              {is_reachable && (
+                <View
+                  style={[
+                    styles.content.miscTag.item.container,
+                    { backgroundColor: '#BCF4CA' },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: '#09AC32' },
+                    ]}
+                  >
+                    可联系
+                  </Text>
+                </View>
+              )}
             </View>
-            <Text
-              style={[
-                styles.content.subtitle,
-                (R.isEmpty(category) ||
-                  (!has_white_paper &&
-                    !invested_by_renowned_insti &&
-                    !top_rated)) && { marginTop: 0 },
-              ]}
-              numberOfLines={1}
-            >
+            <Text style={[styles.content.subtitle]} numberOfLines={1}>
               {description}
             </Text>
           </View>
