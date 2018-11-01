@@ -9,12 +9,15 @@ import {
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import R from 'ramda';
+import * as WeChat from 'react-native-wechat';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import SafeArea from 'component/uikit/safeArea';
 import NavBar, { realBarHeight } from 'component/navBar';
 import Gradient from 'component/uikit/gradient';
 import { NavigationActions } from 'react-navigation';
 import { nullOrEmpty } from 'utils/utils';
+import Config from 'runtime/index';
 
 import Description from './page/description';
 import Trend from './page/trend';
@@ -149,9 +152,14 @@ const calcHeaderHeight = ({ can_calculate, data }) => {
     R.path([0])(selectionList),
   ),
 )
+@connectActionSheet
 export default class PublicProjectDetail extends Component {
+  state={
+    isWXAppSupportApi: false,
+  }
   componentWillMount() {
     this.loadDetail();
+    this.checkWechatAval();
   }
 
   componentDidMount() {
@@ -183,6 +191,13 @@ export default class PublicProjectDetail extends Component {
       }),
     );
   };
+
+  checkWechatAval = async () => {
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+    });
+  };
+
   loadDetail = () => {
     this.props.dispatch({
       type: 'public_project/get',
@@ -279,6 +294,34 @@ export default class PublicProjectDetail extends Component {
       }),
     );
   };
+
+  handleShare = () => {
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['分享至朋友圈', '分享至微信', '分享图片', '取消'],
+        cancelButtonIndex: 3,
+      },
+      index => {
+        const id = this.props.id;
+
+        const request = {
+          type: 'news',
+          webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
+          title: R.path(['portfolio', 'name'])(this.props),
+          description: '来 Hotnode, 发现最新最热项目！',
+          thumbImage: R.path(['portfolio', 'icon'])(this.props) || 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+
+        };
+        if (index === 1 && this.state.isWXAppSupportApi) {
+          WeChat.shareToSession(request);
+        } else if (index === 0 && this.state.isWXAppSupportApi) {
+          WeChat.shareToTimeline(request);
+        } else if (index === 2) {
+          this.props.toggleShareModal(true);
+        }
+      },
+    );
+  }
 
   renderNavBarBackground = () => {
     const {
@@ -401,9 +444,7 @@ export default class PublicProjectDetail extends Component {
         </Animated.ScrollView>
         <Bottom
           {...this.props}
-          openShareModal={() => {
-            this.props.toggleShareModal(true);
-          }}
+          openShareModal={this.handleShare}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
           onPressComment={this.handleCommentPress}
