@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import R from 'ramda';
 
-import Avatar from 'component/uikit/avatar';
 import NavBar from 'component/navBar';
 import MiscTag from 'component/public_project/misc_tag';
 import Tag from 'component/public_project/tag';
@@ -11,6 +10,7 @@ import Label from 'component/public_project/label';
 import Purpose from 'component/public_project/purpose';
 import Price from 'component/public_project/price';
 import HotnodeIndex from 'component/public_project/hotnode_index';
+import AvatarGroup from 'component/public_project/avatar_group';
 
 const header = ({
   style,
@@ -19,13 +19,13 @@ const header = ({
   base_symbol,
   can_calculate,
   onInvitedPress,
+  onExplanationPress,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pipe(
     R.pathOr('--', ['symbol']),
     R.toUpper,
   )(data);
-  const logo = R.pathOr('', ['icon'])(data);
 
   return (
     <View>
@@ -39,7 +39,7 @@ const header = ({
             </Text>
             <Label data={data} />
           </View>
-          <Avatar source={{ uri: logo }} />
+          <AvatarGroup data={data} onExplanationPress={onExplanationPress} />
         </View>
         <Price
           base_symbol={base_symbol}

@@ -280,7 +280,11 @@ export default class PublicProjectDetail extends Component {
             },
           )}
         >
-          <Header {...this.props} onInvitedPress={() => null} />
+          <Header
+            {...this.props}
+            onInvitedPress={() => null}
+            onExplanationPress={() => null}
+          />
           <Fund {...this.props} />
           <Chart {...this.props} />
           <Selector
