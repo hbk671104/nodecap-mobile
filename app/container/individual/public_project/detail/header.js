@@ -38,14 +38,14 @@ const header = ({
               <Text style={styles.top.subtitle}>（{token}）</Text>
             </Text>
             <Label data={data} />
+            <Price
+              base_symbol={base_symbol}
+              data={data}
+              can_calculate={can_calculate}
+            />
           </View>
           <AvatarGroup data={data} onExplanationPress={onExplanationPress} />
         </View>
-        <Price
-          base_symbol={base_symbol}
-          data={data}
-          can_calculate={can_calculate}
-        />
         <Tag data={data} />
       </View>
       <MiscTag data={data} />

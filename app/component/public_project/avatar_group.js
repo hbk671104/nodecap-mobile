@@ -40,7 +40,7 @@ const styles = {
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginTop: 10,
+      marginTop: 8,
     },
     text: {
       color: 'white',
@@ -59,7 +59,7 @@ const styles = {
     },
   },
   subtitle: {
-    container: { marginTop: 5.5 },
+    container: { marginTop: 4 },
     text: {
       color: 'white',
       fontSize: 10,
