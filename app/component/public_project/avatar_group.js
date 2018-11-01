@@ -1,17 +1,45 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, Image, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
+import SVG, { Path } from 'react-native-svg';
 
 import Avatar from 'component/uikit/avatar';
 import Touchable from 'component/uikit/touchable';
+import { describeArc } from 'utils/svg';
 
 const avatar_group = ({ data, onExplanationPress }) => {
   const logo = R.pathOr('', ['icon'])(data);
   const score = R.pathOr(0, ['score'])(data);
   const score_distribution = R.pathOr(0, ['score_distribution'])(data);
+
+  const baseAngle = 130;
   return (
     <View style={styles.container}>
-      <Avatar size={57} innerRatio={0.8} source={{ uri: logo }} />
+      <View style={styles.svg.wrapper}>
+        <Avatar size={54} innerRatio={0.8} source={{ uri: logo }} />
+        <SVG style={styles.svg.container}>
+          <Path
+            d={describeArc(34, 34, 32.5, -baseAngle, baseAngle)}
+            fill="none"
+            stroke="#007CEF"
+            strokeWidth={3}
+            strokeLinecap="round"
+          />
+          <Path
+            d={describeArc(
+              34,
+              34,
+              32.5,
+              -baseAngle,
+              (score / 50 - 1) * baseAngle,
+            )}
+            fill="none"
+            stroke="white"
+            strokeWidth={3}
+            strokeLinecap="round"
+          />
+        </SVG>
+      </View>
       <Touchable borderless onPress={onExplanationPress}>
         <View style={styles.title.container}>
           <Text style={styles.title.text}>项目得分：</Text>
@@ -63,6 +91,17 @@ const styles = {
     text: {
       color: 'white',
       fontSize: 10,
+    },
+  },
+  svg: {
+    wrapper: {
+      height: 68,
+      width: 68,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    container: {
+      ...StyleSheet.absoluteFillObject,
     },
   },
 };
