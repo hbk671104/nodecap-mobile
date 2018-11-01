@@ -13,8 +13,13 @@ const miscTags = ({ data }) => {
     R.isEmpty,
     R.not,
   )(data);
+  const is_reachable = R.pipe(
+    R.pathOr([], ['is_reachable']),
+    R.isEmpty,
+    R.not,
+  )(data);
 
-  if (!invested_by_renowned_insti && !top_rated) {
+  if (!invested_by_renowned_insti && !top_rated && !is_reachable) {
     return null;
   }
 
@@ -28,6 +33,11 @@ const miscTags = ({ data }) => {
       {invested_by_renowned_insti && (
         <View style={styles.item.container}>
           <Text style={styles.item.text}>知名机构所投</Text>
+        </View>
+      )}
+      {is_reachable && (
+        <View style={styles.item.container}>
+          <Text style={styles.item.text}>可联系</Text>
         </View>
       )}
     </View>
