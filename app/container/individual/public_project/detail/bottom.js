@@ -26,8 +26,8 @@ const bottom = ({
           <View style={styles.group.container}>
             <Image
               style={{
-                width: 19,
-                height: 19,
+                width: 20,
+                height: 20,
               }}
               source={
                 favored
@@ -48,9 +48,8 @@ const bottom = ({
           <View style={styles.group.container}>
             <Image
               style={{
-                width: 19,
-                height: 19,
-                marginTop: 2,
+                width: 18,
+                height: 18,
               }}
               source={require('asset/project/detail/share.png')}
             />
@@ -65,9 +64,8 @@ const bottom = ({
           <View style={styles.group.container}>
             <Image
               style={{
-                width: 19,
+                width: 17.5,
                 height: 19,
-                marginTop: 2,
               }}
               source={require('asset/project/detail/invest_record.png')}
             />

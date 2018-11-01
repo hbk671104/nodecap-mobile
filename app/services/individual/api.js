@@ -129,3 +129,7 @@ export function claimMyInstitution({ id, payload }) {
 export function getBanners() {
   return request.get('/banner');
 }
+
+export function selectedProject() {
+  return request.get('/coins/selected');
+}

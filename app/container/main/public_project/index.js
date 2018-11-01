@@ -12,7 +12,6 @@ import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 import { handleBadgeAction } from 'utils/badge_handler';
 
 import List from './components/list';
-import Refresh from './components/refresh';
 import Header from './header';
 import ShareNews from './shareNews';
 import styles from './style';
@@ -25,7 +24,7 @@ import styles from './style';
   ({ public_project, news, loading, notification, institution, banners }) => ({
     news: R.pathOr([], ['news'])(news),
     lastNewsID: R.pathOr(null, ['payload'])(news),
-    data: R.pathOr([], ['selected', 'index', 'data'])(public_project),
+    data: R.pathOr([], ['selected', 'index'])(public_project),
     pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
       public_project,
     ),
@@ -43,7 +42,6 @@ import styles from './style';
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentShareNews', 'setShareNews', ''),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
-  withState('selectPage', 'setSelectPage', 1),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 192],
@@ -60,17 +58,12 @@ import styles from './style';
 export default class PublicProject extends Component {
   componentWillMount() {
     RouterEmitter.addListener('resume', () => {
-      const nextPage = this.props.selectPage + 1;
       this.props.dispatch({
         type: 'news/index',
-        nextSelectPage: nextPage,
-        payload: null,
-        callback: () => {
-          this.props.setSelectPage(nextPage);
-        },
       });
     });
   }
+
   handleDataAlert = (newUpdateCount, oldUpdateCount) => {
     if (newUpdateCount > oldUpdateCount) {
       const count = newUpdateCount - oldUpdateCount;
@@ -87,21 +80,13 @@ export default class PublicProject extends Component {
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
-      nextSelectPage: this.props.selectPage,
       callback,
     });
   };
 
   refreshProject = () => {
-    const nextPage = this.props.selectPage + 1;
     this.props.dispatch({
       type: 'public_project/fetchSelected',
-      params: {
-        currentPage: nextPage,
-      },
-      callback: () => {
-        this.props.setSelectPage(nextPage);
-      },
     });
   };
 

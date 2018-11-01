@@ -14,6 +14,7 @@ import {
   getCoinMarket,
   getCoinROI,
   getCoinTrend,
+  selectedProject,
 } from '../services/individual/api';
 import moment from 'moment';
 import R from 'ramda';
@@ -71,12 +72,9 @@ export default {
         console.log(e);
       }
     },
-    *fetchSelected({ params = {}, callback }, { call, put }) {
+    *fetchSelected({ callback }, { call, put }) {
       try {
-        const { data } = yield call(getPublicProjects, {
-          ...params,
-          pageSize: 5,
-        });
+        const { data } = yield call(selectedProject);
 
         yield put({
           type: 'selected',
@@ -671,25 +669,22 @@ export default {
         },
         selected: {
           ...state.selected,
-          index: {
-            ...state.selected.index,
-            data: R.pipe(
-              R.pathOr([], ['selected', 'index', 'data']),
-              R.map(i => {
-                if (i.id === action.payload) {
-                  const star_number = parseInt(i.stars, 10);
-                  return {
-                    ...i,
-                    is_focused: action.status,
-                    stars: action.status
-                      ? `${star_number + 1}`
-                      : `${star_number - 1}`,
-                  };
-                }
-                return i;
-              }),
-            )(state),
-          },
+          index: R.pipe(
+            R.pathOr([], ['selected', 'index']),
+            R.map(i => {
+              if (i.id === action.payload) {
+                const star_number = parseInt(i.stars, 10);
+                return {
+                  ...i,
+                  is_focused: action.status,
+                  stars: action.status
+                    ? `${star_number + 1}`
+                    : `${star_number - 1}`,
+                };
+              }
+              return i;
+            }),
+          )(state),
         },
       };
     },
