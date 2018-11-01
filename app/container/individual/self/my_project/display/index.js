@@ -18,14 +18,16 @@ import styles from './style';
   page: '项目编辑详情',
   name: 'App_MyProjectDetailOperation',
 })
-@connect(({ project_create }) => ({
+@connect(({ project_create, filter, global }) => ({
   portfolio: R.pathOr({}, ['current'])(project_create),
+  tags: R.pathOr([], ['coinTag', 'data'])(filter),
+  purpose: R.pathOr([], ['constants', 'purpose'])(global),
 }))
 @compose(
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('explanationVisible', 'setExplanationVisible', false),
-  withProps(({ animateY }) => ({
+  withProps(({ animateY, portfolio, tags, purpose }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 160],
       outputRange: [0, 1],
@@ -36,6 +38,17 @@ import styles from './style';
       outputRange: [1, 0],
       extrapolate: 'clamp',
     }),
+    portfolio: {
+      ...portfolio,
+      tags: R.pipe(
+        R.pathOr([], ['tags']),
+        R.map(t => R.find(tag => t === tag.id)(tags)),
+      )(portfolio),
+      purpose: R.pipe(
+        R.pathOr([], ['purpose']),
+        R.map(p => R.find(pur => p === pur.id)(purpose)),
+      )(portfolio),
+    },
   })),
 )
 export default class MyProjectDetail extends Component {
