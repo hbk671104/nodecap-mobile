@@ -13,35 +13,24 @@ export default class Financing extends PureComponent {
     const start_at = R.pathOr('', ['start_at'])(info);
     const end_at = R.pathOr('', ['end_at'])(info);
     const token_supply = R.pathOr('--', ['token_supply'])(info);
-    const soft_cap = R.pathOr('--', ['soft_cap'])(info);
-    const hard_cap = R.pathOr('--', ['hard_cap'])(info);
-    const isEmpty = v => {
-      return v === '--' || v === '';
-    };
-    if (
-      isEmpty(start_at) &&
-      isEmpty(end_at) &&
-      isEmpty(token_supply) &&
-      isEmpty(soft_cap) &&
-      isEmpty(hard_cap)
-    ) {
-      return null;
-    }
+    const soft_cap = R.pathOr('--', ['finances', 0, 'soft_cap'])(info);
+    const hard_cap = R.pathOr('--', ['finances', 0, 'hard_cap'])(info);
+
     return (
-      <Group title="发售信息">
+      <Group title="发售信息" onEditPress={() => this.props.onEditPress()}>
         <Field
           style={styles.item.container}
           titleStyle={styles.item.title}
           valueStyle={styles.item.value}
           name="开始时间"
-          value={start_at ? moment.unix(start_at).format('YYYY-MM-DD') : null}
+          value={start_at}
         />
         <Field
           style={styles.item.container}
           titleStyle={styles.item.title}
           valueStyle={styles.item.value}
           name="结束时间"
-          value={end_at ? moment.unix(end_at).format('YYYY-MM-DD') : null}
+          value={end_at}
         />
         <Field
           style={styles.item.container}
@@ -75,21 +64,12 @@ export default class Financing extends PureComponent {
     const token_distribution = R.pathOr('--', ['token_distribution'])(info);
     const country_limitation = R.pathOr('--', ['country_limitation'])(info);
     const discount = R.pathOr('--', ['discount'])(info);
-    const isEmpty = v => {
-      return v === '--' || v === '';
-    };
-    if (
-      isEmpty(token_type) &&
-      isEmpty(token_accepted) &&
-      isEmpty(conversion_ratio) &&
-      isEmpty(token_distribution) &&
-      isEmpty(country_limitation) &&
-      isEmpty(discount)
-    ) {
-      return null;
-    }
+
     return (
-      <Group title="Token 详情">
+      <Group
+        title="Token 详情"
+        onEditPress={() => this.props.onEditPress('CreateMyProjectFunding')}
+      >
         <Field
           style={styles.item.container}
           titleStyle={styles.item.title}
@@ -137,24 +117,13 @@ export default class Financing extends PureComponent {
   };
 
   render() {
-    const { portfolio, loading } = this.props;
-
-    // if (loading) {
-    //   return <ActivityIndicator style={styles.indicator} />;
-    // }
-
+    const { portfolio } = this.props;
     const finance_info = R.pathOr({}, ['finance_info'])(portfolio);
-    const empty = R.isEmpty(finance_info);
-
-    if (empty) {
-      // return <Empty title="暂无募集信息" />;
-      return null;
-    }
 
     return (
       <View style={styles.container}>
-        {this.renderSalesInfo(finance_info)}
-        {this.renderTokenInfo(finance_info)}
+        {this.renderSalesInfo(portfolio)}
+        {this.renderTokenInfo(portfolio)}
       </View>
     );
   }

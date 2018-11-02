@@ -118,15 +118,15 @@ export default {
         );
 
         if (current.id) {
-          const edited = yield select(state =>
-            R.path(['project_create', 'edited'])(state),
-          );
+          // const edited = yield select(state =>
+          //   R.path(['project_create', 'edited'])(state),
+          // );
 
           yield put.resolve({
             type: 'editProject',
             id: current.id,
             payload: convertToPayloadData({
-              ...edited,
+              ...current,
               owner,
             }),
             callback,

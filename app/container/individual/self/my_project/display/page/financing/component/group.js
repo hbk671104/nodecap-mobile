@@ -2,10 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 
-const group = ({ title, children }) => (
+import Touchable from 'component/uikit/touchable';
+
+const group = ({ title, children, onEditPress }) => (
   <View style={styles.container}>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>
+      <Touchable borderless onPress={onEditPress}>
+        <Text style={{ fontSize: 12, color: '#6C98C0' }}>编辑</Text>
+      </Touchable>
     </View>
     {children}
   </View>
@@ -17,6 +22,9 @@ const styles = {
   },
   titleContainer: {
     marginBottom: 4,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   title: {
     fontSize: 14,
