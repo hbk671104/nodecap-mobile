@@ -1,6 +1,7 @@
 import { NavigationActions as routerRedux } from '../utils';
 import codePush from 'react-native-code-push';
 import codePushSaga from 'react-native-code-push-saga';
+import { Alert } from 'react-native';
 import R from 'ramda';
 
 import store from '../../index';
@@ -15,6 +16,9 @@ export default {
         return;
       }
 
+      // disallow
+      codePush.disallowRestart();
+
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
       if (result) {
@@ -23,6 +27,8 @@ export default {
           payload: result,
         });
         if (isMandatory) {
+          // reallow
+          codePush.allowRestart();
           yield put(
             routerRedux.navigate({
               routeName: 'CodePush',
@@ -38,11 +44,17 @@ export default {
             payload: e,
           });
         },
-        codePushDownloadDidProgress: progress => {
+        codePushDownloadDidProgress: ({ receivedBytes, totalBytes }) => {
           try {
-            const percent = (
-              progress.receivedBytes / progress.totalBytes
-            ).toFixed(2);
+            if (!isMandatory && receivedBytes === totalBytes) {
+              // download complete
+              Alert.alert('版本更新', '更新内容已准备就绪', [
+                { text: '立即更新', onPress: () => codePush.restartApp() },
+                { text: '取消', style: 'cancel' },
+              ]);
+            }
+
+            const percent = (receivedBytes / totalBytes).toFixed(2);
             store.dispatch({
               type: 'codePush/changePercent',
               payload: percent,
