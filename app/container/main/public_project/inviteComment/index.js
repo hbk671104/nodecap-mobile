@@ -7,6 +7,7 @@ import LargeCoinItem from 'component/favored/large';
 import Touchable from 'component/uikit/touchable';
 import * as WeChat from 'react-native-wechat';
 import Config from 'runtime/index';
+import R from 'ramda';
 
 class InviteComment extends Component {
   state = {
@@ -105,7 +106,7 @@ class InviteComment extends Component {
                   paddingLeft: 5,
                   fontSize: 14,
                 }}
-              >已获得 15 点评
+              >已获得 {R.pathOr(0, ['comments_count'])(data)} 点评
               </Text>
             </View>
           </View>
