@@ -23,7 +23,7 @@ const hotnode_index = ({ data, onInvitedPress }) => {
         </View>
         <Touchable borderless onPress={onInvitedPress}>
           <Text style={styles.top.invite}>
-            邀请点评 <Icon name="arrow-forward" />
+            邀请「打电话」 <Icon name="arrow-forward" />
           </Text>
         </Touchable>
       </View>

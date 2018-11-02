@@ -3,11 +3,10 @@ import { StyleSheet } from 'react-native';
 export default {
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#F9F9F9',
   },
   separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: '#E9E9E9',
-    marginLeft: 76,
+    height: 8,
+    backgroundColor: '#F9F9F9',
   },
 };

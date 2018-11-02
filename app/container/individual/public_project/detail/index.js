@@ -4,11 +4,14 @@ import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import * as WeChat from 'react-native-wechat';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import Modal from 'component/modal';
+import Config from 'runtime/index';
 
 // Partials
 import Description from './page/description';
@@ -99,9 +102,14 @@ import styles from './style';
     R.path([0])(selectionList),
   ),
 )
+@connectActionSheet
 export default class PublicProjectDetail extends Component {
+  state={
+    isWXAppSupportApi: false,
+  }
   componentWillMount() {
     this.loadDetail();
+    this.checkWechatAval();
   }
 
   componentDidMount() {
@@ -132,6 +140,12 @@ export default class PublicProjectDetail extends Component {
         },
       }),
     );
+  };
+
+  checkWechatAval = async () => {
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+    });
   };
 
   loadDetail = () => {
@@ -231,6 +245,47 @@ export default class PublicProjectDetail extends Component {
     );
   };
 
+  handleInvitedPress = item => {
+    this.props.track('点击进入邀请点评');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InviteComment',
+        params: {
+          item,
+        },
+        key: `InviteComment_${item.id}`,
+      }),
+    );
+  };
+
+  handleShare = () => {
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['分享至朋友圈', '分享至微信', '分享图片', '取消'],
+        cancelButtonIndex: 3,
+      },
+      index => {
+        const id = this.props.id;
+
+        const request = {
+          type: 'news',
+          webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
+          title: R.path(['portfolio', 'name'])(this.props),
+          description: '来 Hotnode, 发现最新最热项目！',
+          thumbImage: R.path(['portfolio', 'icon'])(this.props) || 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+
+        };
+        if (index === 1 && this.state.isWXAppSupportApi) {
+          WeChat.shareToSession(request);
+        } else if (index === 0 && this.state.isWXAppSupportApi) {
+          WeChat.shareToTimeline(request);
+        } else if (index === 2) {
+          this.props.toggleShareModal(true);
+        }
+      },
+    );
+  }
+
   render() {
     const {
       currentPage: Current,
@@ -285,7 +340,7 @@ export default class PublicProjectDetail extends Component {
         >
           <Header
             {...this.props}
-            onInvitedPress={() => null}
+            onInvitedPress={() => this.handleInvitedPress(portfolio)}
             onExplanationPress={() => this.props.setExplanationVisible(true)}
           />
           <Fund {...this.props} />
@@ -311,9 +366,7 @@ export default class PublicProjectDetail extends Component {
         </Touchable>
         <Bottom
           {...this.props}
-          openShareModal={() => {
-            this.props.toggleShareModal(true);
-          }}
+          openShareModal={this.handleShare}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
           onPressComment={this.handleCommentPress}
