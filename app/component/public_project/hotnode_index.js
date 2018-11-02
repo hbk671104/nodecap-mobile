@@ -24,7 +24,7 @@ const hotnode_index = ({ data, onInvitedPress, showDaCall = true }) => {
         {showDaCall && (
           <Touchable borderless onPress={onInvitedPress}>
             <Text style={styles.top.invite}>
-              邀请「打电话」 <Icon name="arrow-forward" />
+              邀请「点评」 <Icon name="arrow-forward" />
             </Text>
           </Touchable>
         )}
