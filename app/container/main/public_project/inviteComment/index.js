@@ -43,8 +43,8 @@ class InviteComment extends Component {
       const request = {
         type: 'news',
         webpageUrl: `${Config.MOBILE_SITE}/coin/${item.id}/invite-comment`,
-        title: `${item.name}`,
-        description: '来 Hotnode, 发现全网项目！',
+        title: `邀请你来给 「${item.name}」打电话`,
+        description: '来 Hotnode, 帮项目提高热度！',
         thumbImage: item.icon || 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
       };
 
