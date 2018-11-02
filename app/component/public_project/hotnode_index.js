@@ -5,7 +5,7 @@ import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 
-const hotnode_index = ({ data, onInvitedPress }) => {
+const hotnode_index = ({ data, onInvitedPress, showDaCall = true }) => {
   const views = R.pathOr('0', ['view'])(data);
   const stars = R.pathOr('0', ['stars'])(data);
   const comments_count = R.pathOr('0', ['comments_count'])(data);
@@ -21,11 +21,13 @@ const hotnode_index = ({ data, onInvitedPress }) => {
           />
           <Text style={styles.top.title.text}>Hotnode 指数</Text>
         </View>
-        <Touchable borderless onPress={onInvitedPress}>
-          <Text style={styles.top.invite}>
-            邀请「打电话」 <Icon name="arrow-forward" />
-          </Text>
-        </Touchable>
+        {showDaCall && (
+          <Touchable borderless onPress={onInvitedPress}>
+            <Text style={styles.top.invite}>
+              邀请「打电话」 <Icon name="arrow-forward" />
+            </Text>
+          </Touchable>
+        )}
       </View>
       <View style={styles.content.container}>
         <View style={styles.content.group.container}>

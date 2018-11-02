@@ -29,7 +29,7 @@ export default {
     container: {
       borderRadius: 2,
       width: 270,
-      height: 159,
+      height: 150,
       backgroundColor: 'white',
     },
     content: {

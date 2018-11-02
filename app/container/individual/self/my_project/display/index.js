@@ -134,7 +134,7 @@ export default class MyProjectDetail extends Component {
             <View style={styles.explanation.content.container}>
               <Text style={styles.explanation.content.title}>项目得分</Text>
               <Text style={styles.explanation.content.text}>
-                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。若您是项目成员，认领后可进行信息完善
+                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。
               </Text>
             </View>
             <Touchable
@@ -143,7 +143,7 @@ export default class MyProjectDetail extends Component {
                 this.props.setExplanationVisible(false, this.onPressClaimCoin)
               }
             >
-              <Text style={styles.explanation.bottom.text}>认领并完善</Text>
+              <Text style={styles.explanation.bottom.text}>我知道了</Text>
             </Touchable>
           </View>
         </Modal>

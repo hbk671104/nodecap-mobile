@@ -60,7 +60,11 @@ const header = ({
         </View>
       )}
       <View>
-        <HotnodeIndex data={data} onInvitedPress={onInvitedPress} />
+        <HotnodeIndex
+          showDaCall={false}
+          data={data}
+          onInvitedPress={onInvitedPress}
+        />
         <View style={styles.divider} />
       </View>
     </View>
