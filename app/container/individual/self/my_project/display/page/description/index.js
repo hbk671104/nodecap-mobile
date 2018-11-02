@@ -15,7 +15,9 @@ import Roadmap from './roadmap';
 import Rating from './rating';
 import styles from './style';
 
-@connect()
+@connect(({ global }) => ({
+  regions: R.pathOr([], ['constants', 'regions'])(global),
+}))
 export default class Description extends PureComponent {
   handleDocPress = item => {
     this.props.dispatch(
@@ -66,128 +68,117 @@ export default class Description extends PureComponent {
       'portfolio',
       'industry_investments',
     ])(this.props);
-    const regions = R.pipe(
-      R.pathOr([], ['portfolio', 'regions']),
-      R.map(r => r.name),
-    )(this.props);
-    const title = (name, route) => (
+    const regions = R.find(
+      region => region.id === R.path(['portfolio', 'regions'])(this.props),
+    )(this.props.regions);
+    const title = (name, route, hideEdit = false) => (
       <Flex justify="between" align="center" style={styles.titleWrap}>
         <Text style={styles.title}>{name}</Text>
-        <Touchable
-          hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
-          borderless
-          onPress={this.editField(route)}
-        >
-          <Text style={styles.correction}>编辑</Text>
-        </Touchable>
+        {!hideEdit && (
+          <Touchable
+            hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
+            borderless
+            onPress={this.editField(route)}
+          >
+            <Text style={styles.correction}>编辑</Text>
+          </Touchable>
+        )}
       </Flex>
     );
+
     return (
       <View style={styles.container}>
-        {R.not(R.isEmpty(description)) && (
-          <View style={styles.fieldGroup}>
-            {title('项目简介', 'CreateMyProjectDescription')}
-            <Text style={styles.desc}>{description}</Text>
+        <View style={styles.fieldGroup}>
+          {title('项目简介', 'CreateMyProjectDescription')}
+          <Text style={styles.desc}>{description}</Text>
+        </View>
+        <View style={styles.fieldGroup}>
+          {title('白皮书', 'CreateMyProjectBasicInfo', true)}
+          <View>
+            {R.map(w => (
+              <Text
+                key={w.id}
+                style={styles.link}
+                onPress={() => this.handleDocPress(w)}
+              >
+                查看 {w.filename}
+              </Text>
+            ))(white_papers)}
           </View>
-        )}
-        {R.not(R.isEmpty(white_papers)) && (
-          <View style={styles.fieldGroup}>
-            {title('白皮书', 'CreateMyProjectBasicInfo')}
-            <View>
-              {R.map(w => (
-                <Text
-                  key={w.id}
-                  style={styles.link}
-                  onPress={() => this.handleDocPress(w)}
-                >
-                  查看 {w.filename}
-                </Text>
-              ))(white_papers)}
-            </View>
-          </View>
-        )}
-        {R.not(R.isEmpty(siteUrl)) && (
-          <View style={styles.fieldGroup}>
-            {title('官网', 'CreateMyProjectBasicInfo')}
-            <Text
-              style={styles.link}
-              onPress={() => this.handleUrlPress(siteUrl)}
-            >
-              {siteUrl}
-            </Text>
-          </View>
-        )}
-        {R.not(R.isEmpty(regions)) && (
-          <View style={styles.fieldGroup}>
-            {title('国别', 'CreateMyProjectBasicInfo')}
-            <Text style={styles.desc}>{R.join('，')(regions)}</Text>
-          </View>
-        )}
+        </View>
+        <View style={styles.fieldGroup}>
+          {title('官网', 'CreateMyProjectBasicInfo')}
+          <Text
+            style={styles.link}
+            onPress={() => this.handleUrlPress(siteUrl)}
+          >
+            {siteUrl}
+          </Text>
+        </View>
+        <View style={styles.fieldGroup}>
+          {title('国别', 'CreateMyProjectBasicInfo')}
+          <Text style={styles.desc}>{R.pathOr('', ['name'])(regions)}</Text>
+        </View>
         <Rating {...this.props} />
-        {R.not(R.isEmpty(social_network)) && (
-          <View style={styles.fieldGroup}>
-            {title('媒体信息', 'CreateMyProjectSocial')}
-            <Grid
-              data={social_network}
-              columnNum={3}
-              hasLine={false}
-              itemStyle={{
-                height: 74,
-              }}
-              renderItem={(m, i) => (
-                <SocialNetworkItem
-                  key={`${i}`}
-                  name={m.name}
-                  fans_count={m.fans_count}
-                  data={m.link_url}
-                  onPress={() => {
-                    this.props.dispatch(
-                      NavigationActions.navigate({
-                        routeName: 'WebPage',
-                        params: {
-                          title: m.name,
-                          uri: m.link_url,
-                        },
-                      }),
-                    );
-                  }}
-                />
-              )}
-            />
+        <View style={styles.fieldGroup}>
+          {title('媒体信息', 'CreateMyProjectSocial')}
+          <Grid
+            data={social_network}
+            columnNum={3}
+            hasLine={false}
+            itemStyle={{
+              height: 74,
+            }}
+            renderItem={(m, i) => (
+              <SocialNetworkItem
+                key={`${i}`}
+                name={m.name}
+                fans_count={m.fans_count}
+                data={m.link_url}
+                onPress={() => {
+                  this.props.dispatch(
+                    NavigationActions.navigate({
+                      routeName: 'WebPage',
+                      params: {
+                        title: m.name,
+                        uri: m.link_url,
+                      },
+                    }),
+                  );
+                }}
+              />
+            )}
+          />
+        </View>
+        {/* <Financing
+          {...this.props}
+          onEditPress={this.editField('CreateMyProjectFunding')}
+        /> */}
+        <View style={styles.fieldGroup}>
+          {title('团队成员', 'CreateMyProjectTeam')}
+          <View>
+            {R.addIndex(R.map)((m, i) => (
+              <MemberItem key={m.id || `${i}`} data={m} />
+            ))(members)}
           </View>
-        )}
-        <Financing {...this.props} />
-        {R.not(R.isEmpty(members)) && (
-          <View style={styles.fieldGroup}>
-            {title('团队成员', 'CreateMyProjectTeam')}
-            <View>
-              {R.addIndex(R.map)((m, i) => (
-                <MemberItem key={m.id || `${i}`} data={m} />
-              ))(members)}
-            </View>
-          </View>
-        )}
-        {R.not(R.isEmpty(industry_investments)) && (
-          <View style={styles.fieldGroup}>
-            {title('投资机构', 'CreateMyProjectFunding')}
-            <Flex wrap="wrap">
-              {R.map(m => (
-                <InstitutionItem
-                  style={{ paddingHorizontal: 0 }}
-                  key={m.id}
-                  data={m}
-                  onPress={() => this.props.onInstitutionItemPress(m)}
-                />
-              ))(industry_investments)}
-            </Flex>
-          </View>
-        )}
-        {R.not(R.isEmpty(roadmap)) && (
-          <View style={styles.fieldGroup}>
-            {title('路线图', 'CreateMyProjectRoadMap')}
-            <Roadmap {...this.props} roadmap={roadmap} />
-          </View>
-        )}
+        </View>
+        {/* <View style={styles.fieldGroup}>
+          {title('投资机构', 'CreateMyProjectFunding')}
+          <Flex wrap="wrap">
+            {R.map(m => (
+              <InstitutionItem
+                style={{ paddingHorizontal: 0 }}
+                key={m.id}
+                data={m}
+                onPress={() => this.props.onInstitutionItemPress(m)}
+              />
+            ))(industry_investments)}
+          </Flex>
+        </View> */}
+        <View style={styles.fieldGroup}>
+          {title('路线图', 'CreateMyProjectRoadMap')}
+          <Roadmap {...this.props} roadmap={roadmap} />
+        </View>
       </View>
     );
   }

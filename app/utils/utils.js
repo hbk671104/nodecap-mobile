@@ -415,16 +415,26 @@ export const hasAppStoreUpdate = async () => {
 
 export const convertToInstitutionPayload = form => {
   const served_project = R.pathOr([], ['served_project'])(form);
+  const has_industry =
+    R.path(['name'])(form) ||
+    R.path(['type'])(form) ||
+    R.path(['logo_url'])(form) ||
+    R.path(['site_url'])(form) ||
+    R.path(['description'])(form);
   return {
     ...form,
-    coin_ids: R.map(s => s.id)(served_project),
-    industry: {
-      name: R.path(['name'])(form),
-      type: R.path(['type'])(form),
-      logo_url: R.path(['logo_url'])(form),
-      site_url: R.path(['site_url'])(form),
-      description: R.path(['description'])(form),
-    },
+    ...(R.isEmpty(served_project)
+      ? {}
+      : { coin_ids: R.map(s => s.id)(served_project) }),
+    ...(has_industry
+      ? {
+          name: R.path(['name'])(form),
+          type: R.path(['type'])(form),
+          logo_url: R.path(['logo_url'])(form),
+          site_url: R.path(['site_url'])(form),
+          description: R.path(['description'])(form),
+        }
+      : {}),
   };
 };
 

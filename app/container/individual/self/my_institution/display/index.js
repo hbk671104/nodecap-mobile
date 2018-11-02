@@ -24,6 +24,12 @@ export default class MyInstitutionDetail extends Component {
     this.props.track('进入');
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'institution_create/resetCurrent',
+    });
+  }
+
   handleLinkPress = uri => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -63,44 +69,36 @@ export default class MyInstitutionDetail extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView>
-          {R.not(R.isEmpty(desc)) && (
-            <Group
-              title="机构简介"
-              onEditPress={this.handleEditPress(
-                'CreateMyInstitutionDescription',
-              )}
-            >
-              <View style={styles.desc.container}>
-                <Text style={styles.desc.text}>{desc}</Text>
-              </View>
-            </Group>
-          )}
-          {R.not(R.isEmpty(members)) && (
-            <Group
-              title="机构成员"
-              onEditPress={this.handleEditPress('CreateMyInstitutionTeam')}
-            >
-              {R.map(m => <Member key={m.id} data={m} />)(members)}
-            </Group>
-          )}
-          {R.not(R.isEmpty(coins)) && (
-            <Group
-              title="服务项目"
-              onEditPress={this.handleEditPress(
-                'CreateMyInstitutionServedProject',
-              )}
-            >
-              {R.addIndex(R.map)((m, index) => (
-                <FavorItem
-                  style={{ paddingHorizontal: 0 }}
-                  institutionId={this.props.id}
-                  key={m.id}
-                  data={m}
-                  showTopBorder={index !== 0}
-                />
-              ))(coins)}
-            </Group>
-          )}
+          <Group
+            title="机构简介"
+            onEditPress={this.handleEditPress('CreateMyInstitutionDescription')}
+          >
+            <View style={styles.desc.container}>
+              <Text style={styles.desc.text}>{desc}</Text>
+            </View>
+          </Group>
+          <Group
+            title="机构成员"
+            onEditPress={this.handleEditPress('CreateMyInstitutionTeam')}
+          >
+            {R.map(m => <Member key={m.id} data={m} />)(members)}
+          </Group>
+          <Group
+            title="服务项目"
+            onEditPress={this.handleEditPress(
+              'CreateMyInstitutionServedProject',
+            )}
+          >
+            {R.addIndex(R.map)((m, index) => (
+              <FavorItem
+                style={{ paddingHorizontal: 0 }}
+                institutionId={this.props.id}
+                key={m.id}
+                data={m}
+                showTopBorder={index !== 0}
+              />
+            ))(coins)}
+          </Group>
         </ScrollView>
       </View>
     );

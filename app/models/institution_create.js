@@ -38,6 +38,7 @@ export default {
     search_list: null,
     query: null,
     current: initialCurrent,
+    edited: null,
     owner: null,
   },
   effects: {
@@ -136,22 +137,27 @@ export default {
           R.path(['institution_create', 'current'])(state),
         );
 
-        const sanitized_data = convertToInstitutionPayload({
-          ...current,
-          owner,
-        });
-
         if (current.id) {
+          const edited = yield select(state =>
+            R.path(['institution_create', 'edited'])(state),
+          );
+
           yield put.resolve({
             type: 'editInstitution',
             id: current.id,
-            payload: sanitized_data,
+            payload: convertToInstitutionPayload({
+              ...edited,
+              owner,
+            }),
             callback,
           });
         } else {
           yield put.resolve({
             type: 'createInstitution',
-            payload: sanitized_data,
+            payload: convertToInstitutionPayload({
+              ...current,
+              owner,
+            }),
             callback,
           });
         }
@@ -252,6 +258,10 @@ export default {
           ...state.current,
           ...payload,
         },
+        edited: {
+          ...state.edited,
+          ...payload,
+        },
       };
     },
     setCurrent(state, { payload, owner }) {
@@ -265,6 +275,7 @@ export default {
       return {
         ...state,
         current: initialCurrent,
+        edited: null,
         query: null,
       };
     },

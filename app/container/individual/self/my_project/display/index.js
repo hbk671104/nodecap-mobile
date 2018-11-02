@@ -56,6 +56,12 @@ export default class MyProjectDetail extends Component {
     this.props.track('进入');
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'project_create/resetCurrent',
+    });
+  }
+
   handleEditPress = routeName => () => {
     this.props.dispatch(
       NavigationActions.navigate({

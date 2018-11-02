@@ -45,6 +45,7 @@ export default {
     list: null,
     query: null,
     current: initialCurrent,
+    edited: null,
     owner: null,
   },
   effects: {
@@ -116,22 +117,27 @@ export default {
           R.path(['project_create', 'current'])(state),
         );
 
-        const sanitized_data = convertToPayloadData({
-          ...current,
-          owner,
-        });
-
         if (current.id) {
+          const edited = yield select(state =>
+            R.path(['project_create', 'edited'])(state),
+          );
+
           yield put.resolve({
             type: 'editProject',
             id: current.id,
-            payload: sanitized_data,
+            payload: convertToPayloadData({
+              ...edited,
+              owner,
+            }),
             callback,
           });
         } else {
           yield put.resolve({
             type: 'createProject',
-            payload: sanitized_data,
+            payload: convertToPayloadData({
+              ...current,
+              owner,
+            }),
             callback,
           });
         }
@@ -226,6 +232,10 @@ export default {
           ...state.current,
           ...payload,
         },
+        edited: {
+          ...state.edited,
+          ...payload,
+        },
       };
     },
     setCurrent(state, { payload, owner }) {
@@ -239,6 +249,7 @@ export default {
       return {
         ...state,
         current: initialCurrent,
+        edited: null,
         query: null,
       };
     },
