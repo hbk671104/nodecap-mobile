@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, LayoutAnimation } from 'react-native';
+import { View, Text, LayoutAnimation, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { createForm, createFormField } from 'rc-form';
 import R from 'ramda';
@@ -100,20 +100,43 @@ class Social extends PureComponent {
             title="类型"
             placeholder="请选择社区类型"
             showArrow
-            renderContent={({ onChange, value: v }) => (
-              <View style={{ flex: 1 }}>
-                <PickerSelect
-                  hideIcon
-                  placeholder={{
-                    label: '请选择社区类型',
-                    value: null,
-                  }}
-                  data={options.map(o => ({ label: o, value: o }))}
-                  onChange={onChange}
-                  value={v}
-                />
-              </View>
-            )}
+            renderContent={({ onChange, value: v }) => {
+              if (Platform.OS === 'ios') {
+                return (
+                  <View style={{ flex: 1 }}>
+                    <PickerSelect
+                      hideIcon
+                      placeholder={{
+                        label: '请选择社区类型',
+                        value: null,
+                      }}
+                      data={options.map(o => ({ label: o, value: o }))}
+                      onChange={onChange}
+                      value={v}
+                    />
+                  </View>
+                );
+              } else {
+                return (
+                  <PickerSelect
+                    style={{
+                      viewContainer: {
+                        width: 200,
+                        alignSelf: 'flex-end',
+                      },
+                    }}
+                    hideIcon
+                    placeholder={{
+                      label: '请选择社区类型',
+                      value: null,
+                    }}
+                    data={options.map(o => ({ label: o, value: o }))}
+                    onChange={onChange}
+                    value={v}
+                  />
+                );
+              }
+            }}
             inputProps={{ style: styles.inputItem.input }}
             error={getFieldError(`social_network[${index}].name`)}
           />,
