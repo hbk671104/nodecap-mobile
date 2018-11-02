@@ -8,7 +8,11 @@ const group = ({ title, children, onEditPress }) => (
   <View style={styles.container}>
     <View style={styles.titleContainer}>
       <Text style={styles.title}>{title}</Text>
-      <Touchable borderless onPress={onEditPress}>
+      <Touchable
+        hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
+        borderless
+        onPress={onEditPress}
+      >
         <Text style={styles.edit}>编辑</Text>
       </Touchable>
     </View>

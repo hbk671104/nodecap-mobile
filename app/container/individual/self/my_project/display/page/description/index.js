@@ -73,7 +73,11 @@ export default class Description extends PureComponent {
     const title = (name, route) => (
       <Flex justify="between" align="center" style={styles.titleWrap}>
         <Text style={styles.title}>{name}</Text>
-        <Touchable borderless onPress={this.editField(route)}>
+        <Touchable
+          hitSlop={{ top: 15, right: 15, bottom: 15, left: 15 }}
+          borderless
+          onPress={this.editField(route)}
+        >
           <Text style={styles.correction}>编辑</Text>
         </Touchable>
       </Flex>
@@ -157,7 +161,9 @@ export default class Description extends PureComponent {
           <View style={styles.fieldGroup}>
             {title('团队成员', 'CreateMyProjectTeam')}
             <View>
-              {R.map(m => <MemberItem key={m.id} data={m} />)(members)}
+              {R.addIndex(R.map)((m, i) => (
+                <MemberItem key={m.id || `${i}`} data={m} />
+              ))(members)}
             </View>
           </View>
         )}

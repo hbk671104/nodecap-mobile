@@ -48,13 +48,13 @@ class MyInstitution extends Component {
   handleCreatePress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'CreateMyInstitutionWrapper',
+        routeName: 'CreateMyInstitutionBasicInfo',
       }),
     );
   };
 
   handleItemPress = item => () => {
-    if (R.path(['status'])(item) !== 1) {
+    if (R.path(['owner_status'])(item) !== 1) {
       this.props.dispatch(
         NavigationActions.navigate({
           routeName: 'CreateMyInstitutionDone',

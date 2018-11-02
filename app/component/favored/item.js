@@ -257,7 +257,8 @@ const styles = {
   container: {
     flexDirection: 'row',
     // alignItems: 'center',
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
     backgroundColor: 'white',
   },
   avatar: {

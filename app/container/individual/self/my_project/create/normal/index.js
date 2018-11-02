@@ -27,7 +27,7 @@ class OptionalClaimProject extends Component {
   handleNextPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'CreateMyProjectNormalWrapper',
+        routeName: 'CreateMyProjectBasicInfo',
       }),
     );
   };

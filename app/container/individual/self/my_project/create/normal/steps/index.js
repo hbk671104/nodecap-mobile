@@ -72,7 +72,6 @@ class CreateProjectNormalWrapper extends Component {
     return (
       <View style={styles.container}>
         <NavBar
-          backAction={isEditing ? this.handleBackAction : null}
           barStyle={barStyle}
           back
           gradient

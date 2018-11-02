@@ -330,33 +330,6 @@ const IndividualTab = createBottomTabNavigator(
   },
 );
 
-const ProjectCreate = createStackNavigator(
-  {
-    CreateMyProjectBasicInfo,
-    CreateMyProjectDescription,
-    CreateMyProjectTeam,
-    CreateMyProjectSocial,
-    CreateMyProjectRoadMap,
-    CreateMyProjectFunding,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
-const InstitutionCreate = createStackNavigator(
-  {
-    CreateMyInstitutionBasicInfo,
-    CreateMyInstitutionDescription,
-    CreateMyInstitutionTeam,
-    CreateMyInstitutionServedProject,
-    ClaimMyInstitutionSearch,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
@@ -394,9 +367,12 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectDetail,
     CreateMyProjectSearch,
     CreateMyProjectNormal,
-    CreateMyProjectNormalWrapper: {
-      screen: ProjectCreate,
-    },
+    CreateMyProjectBasicInfo,
+    CreateMyProjectDescription,
+    CreateMyProjectTeam,
+    CreateMyProjectSocial,
+    CreateMyProjectRoadMap,
+    CreateMyProjectFunding,
     ClaimMyProject,
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
@@ -405,9 +381,11 @@ const IndividualStack = createStackNavigator(
     CreateMyInstitution,
     CreateMyInstitutionDetail,
     CreateMyInstitutionSearch,
-    CreateMyInstitutionWrapper: {
-      screen: InstitutionCreate,
-    },
+    CreateMyInstitutionBasicInfo,
+    CreateMyInstitutionDescription,
+    CreateMyInstitutionTeam,
+    CreateMyInstitutionServedProject,
+    ClaimMyInstitutionSearch,
     ClaimMyInstitution,
     CreateMyInstitutionDone,
     InviteComment,
