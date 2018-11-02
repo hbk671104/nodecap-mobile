@@ -176,7 +176,7 @@ class FavorItem extends PureComponent {
                 <View
                   style={[
                     styles.content.miscTag.item.container,
-                    { backgroundColor: '#BCF4CA' },
+                    { backgroundColor: '#BCF4CA', marginRight: 4 },
                   ]}
                 >
                   <Text

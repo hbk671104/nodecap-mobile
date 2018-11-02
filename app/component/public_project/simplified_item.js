@@ -130,11 +130,12 @@ const simplifiedPublicProjectItem = ({ style, data, renderRight, onPress }) => {
           <View style={styles.bottom.container}>
             <View style={styles.bottom.title.container}>
               <Text style={styles.bottom.title.text}>
-                项目完整度
-                {score}
-                %，已超过
-                {score_distribution}
-                %项目方
+                项目得分 <Text style={{ color: '#F55454' }}>{score}</Text>
+                ，已超过{' '}
+                <Text style={{ color: '#F55454' }}>
+                  {score_distribution}%
+                </Text>{' '}
+                项目方
               </Text>
             </View>
             <View style={styles.bottom.label.container}>
@@ -221,7 +222,7 @@ const styles = {
       },
       text: {
         fontSize: 12,
-        color: '#F55454',
+        color: 'rgba(0, 0, 0, 0.65)',
       },
     },
     label: {
