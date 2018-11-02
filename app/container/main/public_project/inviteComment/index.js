@@ -9,6 +9,10 @@ import * as WeChat from 'react-native-wechat';
 import Config from 'runtime/index';
 import R from 'ramda';
 
+@global.bindTrack({
+  page: '邀请点评',
+  name: 'App_InviteCommentOperation',
+})
 class InviteComment extends Component {
   state = {
     loading: {},
@@ -54,6 +58,7 @@ class InviteComment extends Component {
       } else {
         WeChat.shareToTimeline(request);
       }
+      this.props.track('分享邀请点评页');
     } catch (e) {
       console.log(e);
     }
