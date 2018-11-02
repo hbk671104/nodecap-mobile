@@ -1,5 +1,3 @@
-import { StyleSheet } from 'react-native';
-
 export default {
   container: {
     flex: 1,
@@ -11,8 +9,7 @@ export default {
     },
   },
   separator: {
-    backgroundColor: '#E9E9E9',
-    height: StyleSheet.hairlineWidth,
-    marginLeft: 72,
+    backgroundColor: '#F5F5F5',
+    height: 8,
   },
 };

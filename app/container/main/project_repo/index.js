@@ -6,6 +6,7 @@ import R from 'ramda';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
+import { compose, withProps } from 'recompose';
 import Button from 'react-native-scrollable-tab-view/Button';
 import { RouterEmitter } from '../../../router';
 import DrawerLayout from 'react-native-drawer-layout';
@@ -26,6 +27,15 @@ import styles from './style';
 @connect(({ coinSets }) => ({
   sets: R.pathOr([], ['sets'])(coinSets),
 }))
+@compose(
+  withProps(({ navigation, sets }) => {
+    const targeted_coinset_id = navigation.getParam('coinset_id');
+    return {
+      targeted_coinset_index:
+        R.findIndex(s => `${s.id}` === targeted_coinset_id)(sets) + 1,
+    };
+  }),
+)
 export default class ProjectRepo extends Component {
   componentWillMount() {
     this.props.dispatch({
@@ -41,6 +51,20 @@ export default class ProjectRepo extends Component {
       }
     });
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.targeted_coinset_index &&
+      nextProps.targeted_coinset_index > 0
+    ) {
+      setTimeout(() => {
+        if (this.tabView) {
+          this.tabView.goToPage(nextProps.targeted_coinset_index);
+        }
+      }, 500);
+    }
+  }
+
   handleSearchPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -152,6 +176,9 @@ export default class ProjectRepo extends Component {
             )}
           />
           <ScrollableTabView
+            ref={ref => {
+              this.tabView = ref;
+            }}
             renderTabBar={this.renderTabBar}
             prerenderingSiblingsNumber={Infinity}
             onChangeTab={({ i }) => {

@@ -40,6 +40,19 @@ const handleOpen = extras => {
         }),
       );
       break;
+    case 'coin_daily_increment':
+      global.track('App_NotificationPushOpen', {
+        trackName: '项目集增量更新推送点击',
+      });
+      store.dispatch(
+        NavigationActions.navigate({
+          routeName: 'ProjectRepo',
+          params: {
+            coinset_id: id,
+          },
+        }),
+      );
+      break;
     default:
       break;
   }
@@ -74,6 +87,14 @@ const handleReceive = extras => {
       });
       break;
     }
+    case 'coin_daily_increment':
+      global.track('App_NotificationPushReceive', {
+        trackName: '项目集增量更新推送接收',
+      });
+      store.dispatch({
+        type: 'coinSets/fetch',
+      });
+      break;
     default:
       break;
   }
