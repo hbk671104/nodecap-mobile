@@ -48,7 +48,7 @@ export default {
           try {
             if (!isMandatory && receivedBytes === totalBytes) {
               // download complete
-              Alert.alert('版本更新', '更新内容已准备就绪', [
+              Alert.alert('版本更新', '更新内容已准备就绪，即刻享用新版本！', [
                 { text: '立即更新',
                   onPress: () => {
                     // reallow
