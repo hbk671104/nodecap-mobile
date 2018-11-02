@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import R from 'ramda';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 import Touchable from 'component/uikit/touchable';
 
@@ -91,19 +92,18 @@ const bottom = ({
 
 const styles = {
   wrapper: {
-    height: bottomTabHeight,
     backgroundColor: 'white',
     ...shadow,
     shadowOffset: {
       height: -2,
     },
     shadowOpacity: 0.2,
+    paddingBottom: getBottomSpace(),
   },
   container: {
-    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    // paddingHorizontal: 12,
+    height: bottomTabHeight,
   },
   group: {
     wrapper: {

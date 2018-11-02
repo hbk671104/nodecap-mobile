@@ -242,7 +242,7 @@ export default class PublicProjectDetail extends Component {
     } = this.props;
 
     return (
-      <SafeArea style={styles.container}>
+      <View style={styles.container}>
         <Animated.View
           style={[styles.wrapper, { opacity: backgroundOpacityRange }]}
         />
@@ -349,7 +349,7 @@ export default class PublicProjectDetail extends Component {
             </Touchable>
           </View>
         </Modal>
-      </SafeArea>
+      </View>
     );
   }
 }
