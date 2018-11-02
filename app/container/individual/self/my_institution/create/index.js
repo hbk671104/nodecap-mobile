@@ -43,13 +43,7 @@ class CreateInstitutionWrapper extends Component {
         if (isEditing) {
           this.props.dispatch({
             type: 'institution_create/submitInstitution',
-            callback: () => {
-              this.props.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'CreateMyInstitutionDetail',
-                }),
-              );
-            },
+            callback: this.handleBackAction,
           });
           return;
         }
@@ -85,11 +79,20 @@ class CreateInstitutionWrapper extends Component {
     });
   };
 
+  handleBackAction = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyInstitutionDetail',
+      }),
+    );
+  };
+
   render() {
     const { children, title, isEditing, loading, barStyle } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
+          backAction={isEditing ? this.handleBackAction : null}
           barStyle={barStyle}
           back
           gradient

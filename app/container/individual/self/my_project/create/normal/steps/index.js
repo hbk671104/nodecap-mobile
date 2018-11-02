@@ -45,13 +45,7 @@ class CreateProjectNormalWrapper extends Component {
         if (isEditing) {
           this.props.dispatch({
             type: 'project_create/submitProject',
-            callback: () => {
-              this.props.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'CreateMyProjectDetail',
-                }),
-              );
-            },
+            callback: this.handleBackAction,
           });
           return;
         }
@@ -65,11 +59,20 @@ class CreateProjectNormalWrapper extends Component {
     });
   };
 
+  handleBackAction = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyProjectDetail',
+      }),
+    );
+  };
+
   render() {
     const { children, title, isEditing, loading, barStyle } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
+          backAction={isEditing ? this.handleBackAction : null}
           barStyle={barStyle}
           back
           gradient

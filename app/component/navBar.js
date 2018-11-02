@@ -28,6 +28,7 @@ class NavBar extends Component {
     titleStyle: PropTypes.object,
     titleContainerStyle: PropTypes.object,
     iconStyle: PropTypes.object,
+    backAction: PropTypes.func,
   };
 
   static defaultProps = {
@@ -56,6 +57,10 @@ class NavBar extends Component {
   }
 
   handleBackAction = () => {
+    if (this.props.backAction) {
+      this.props.backAction();
+      return;
+    }
     this.props.dispatch(NavigationActions.back());
   };
 
