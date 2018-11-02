@@ -96,6 +96,7 @@ import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
 import Service from 'container/main/service/wrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
+import InviteComment from 'container/main/public_project/inviteComment';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -264,6 +265,7 @@ const MainStack = createStackNavigator(
     Settings,
     Service,
     CommentCoin,
+    InviteComment,
   },
   {
     headerMode: 'none',
@@ -408,6 +410,7 @@ const IndividualStack = createStackNavigator(
     },
     ClaimMyInstitution,
     CreateMyInstitutionDone,
+    InviteComment,
   },
   {
     headerMode: 'none',
