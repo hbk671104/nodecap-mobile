@@ -49,7 +49,13 @@ export default {
             if (!isMandatory && receivedBytes === totalBytes) {
               // download complete
               Alert.alert('版本更新', '更新内容已准备就绪', [
-                { text: '立即更新', onPress: () => codePush.restartApp() },
+                { text: '立即更新',
+                  onPress: () => {
+                    // reallow
+                    codePush.allowRestart();
+                    codePush.restartApp();
+                  },
+                },
                 { text: '取消', style: 'cancel' },
               ]);
             }

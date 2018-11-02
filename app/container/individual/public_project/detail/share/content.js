@@ -69,6 +69,20 @@ class ShareCoinContent extends Component {
       </View>
     );
   }
+
+  renderConditionView({ emptyKey, condition, content }) {
+    if (!condition) {
+      if (emptyKey && R.not(R.contains(emptyKey)(this.state.emptyKeys))) {
+        this.setState({
+          emptyKeys: [...this.state.emptyKeys, emptyKey],
+        });
+      }
+      return null;
+    }
+
+    return content;
+  }
+
   renderContent() {
     const { coin } = this.props;
     const name = R.pathOr('', ['name'])(coin);
@@ -95,155 +109,185 @@ class ShareCoinContent extends Component {
       </Flex>
     );
 
-    const ConditionView = ({ emptyKey, condition, children }) => {
-      if (!condition) {
-        if (emptyKey && R.not(R.contains(emptyKey)(this.state.emptyKeys))) {
-          this.setState({
-            emptyKeys: [...this.state.emptyKeys, emptyKey],
-          });
-        }
-        return null;
-      }
-
-      return children;
-    };
-
     return (
       <View style={{ marginTop: 10 }}>
-        <ConditionView condition={coin.description}>
-          <View style={styles.group}>
-            {renderTitle('简介')}
-            <Text
-              numberOfLines={12}
-              style={[styles.groupContent, styles.groupContentText]}
-            >
-              {coin.description}
-            </Text>
-          </View>
-        </ConditionView>
-        <ConditionView emptyKey="papers" condition={papers && papers.length}>
-          <View style={styles.group}>
-            {renderTitle('白皮书')}
-            <Flex align="center" style={{ marginTop: 10 }}>
-              <Image source={require('asset/institution/pdf.png')} />
-              <Text style={[styles.groupContentText, { marginLeft: 5 }]}>{name} 项目白皮书.pdf</Text>
-            </Flex>
-          </View>
-        </ConditionView>
-        <ConditionView emptyKey="rating" condition={risk_score || invest_score}>
-          <View style={styles.group}>
-            {renderTitle('评级信息')}
-            <Rating {...this.props} />
-          </View>
-        </ConditionView>
-        <ConditionView emptyKey="financing" condition={start_at || end_at || token_supply || conversion_ratio}>
-          <View style={styles.group}>
-            {renderTitle('募集信息')}
-            <ConditionView condition={start_at}>
-              <Flex style={styles.groupContent} align="center">
-                <Text style={styles.groupContentText}>开始时间</Text>
-                <Text
-                  style={[
-                    styles.groupContentText,
-                    { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
-                  ]}
-                >
-                  {start_at ? moment.unix(start_at).format('YYYY.MM.DD') : '无'}
-                </Text>
-              </Flex>
-            </ConditionView>
-            <ConditionView condition={end_at}>
-              <Flex style={styles.groupContent} align="center">
-                <Text style={styles.groupContentText}>结束时间</Text>
-                <Text
-                  style={[
-                    styles.groupContentText,
-                    { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
-                  ]}
-                >
-                  {end_at ? moment.unix(end_at).format('YYYY.MM.DD') : '无'}
-                </Text>
-              </Flex>
-            </ConditionView>
-            <ConditionView condition={token_supply}>
-              <Flex style={styles.groupContent} align="center">
-                <Text style={styles.groupContentText}>发售总量</Text>
-                <Text
-                  style={[
-                    styles.groupContentText,
-                    { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
-                  ]}
-                >
-                  {Accounting.formatNumber(token_supply)}
-                </Text>
-              </Flex>
-            </ConditionView>
-            <ConditionView condition={conversion_ratio}>
-              <Flex style={styles.groupContent} align="center">
-                <Text style={styles.groupContentText}>兑换比例</Text>
-                <Text
-                  style={[
-                    styles.groupContentText,
-                    { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
-                  ]}
-                >
-                  {conversion_ratio}
-                </Text>
-              </Flex>
-            </ConditionView>
-          </View>
-        </ConditionView>
-        <ConditionView emptyKey="members" condition={members && members.length}>
-          <View style={styles.group}>
-            {renderTitle('团队成员')}
-            <View>
-              {R.map(m => (
-                <MemberItem key={m.id} data={m} style={{ marginLeft: 10 }} />
-              ))(R.take(5)(members))}
+        {this.renderConditionView({
+          condition: coin.description,
+          content: (
+            <View style={styles.group}>
+              {renderTitle('简介')}
+              <Text
+                numberOfLines={12}
+                style={[styles.groupContent, styles.groupContentText]}
+              >
+                {coin.description}
+              </Text>
             </View>
-          </View>
-        </ConditionView>
-        <ConditionView emptyKey="social_network" condition={social_network && social_network.length}>
-          <View style={styles.group}>
-            {renderTitle('媒体信息')}
-            <View style={{
-              marginTop: 10,
-              marginLeft: 10,
-            }}
-            >
+          ),
+        })}
+        {this.renderConditionView({
+          condition: papers && papers.length,
+          emptyKey: 'papers',
+          content: (
+            <View style={styles.group}>
+              {renderTitle('白皮书')}
+              <Flex align="center" style={{ marginTop: 10 }}>
+                <Image source={require('asset/institution/pdf.png')} />
+                <Text style={[styles.groupContentText, { marginLeft: 5 }]}>{name} 项目白皮书.pdf</Text>
+              </Flex>
+            </View>
+          ),
+        })}
+        {this.renderConditionView({
+          condition: risk_score || invest_score,
+          emptyKey: 'rating',
+          content: (
+            <View style={styles.group}>
+              {renderTitle('评级信息')}
+              <Rating {...this.props} />
+            </View>
+          ),
+        })}
+        {this.renderConditionView({
+          condition: start_at || end_at || token_supply || conversion_ratio,
+          emptyKey: 'financing',
+          content: (
+            <View style={styles.group}>
+              {renderTitle('募集信息')}
+              {this.renderConditionView({
+                condition: start_at,
+                content: (
+                  <Flex style={styles.groupContent} align="center">
+                    <Text style={styles.groupContentText}>开始时间</Text>
+                    <Text
+                      style={[
+                        styles.groupContentText,
+                        { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+                      ]}
+                    >
+                      {start_at ? moment.unix(start_at).format('YYYY.MM.DD') : '无'}
+                    </Text>
+                  </Flex>
+                ),
+              })}
+              {this.renderConditionView({
+                condition: end_at,
+                content: (
+                  <Flex style={styles.groupContent} align="center">
+                    <Text style={styles.groupContentText}>结束时间</Text>
+                    <Text
+                      style={[
+                        styles.groupContentText,
+                        { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+                      ]}
+                    >
+                      {end_at ? moment.unix(end_at).format('YYYY.MM.DD') : '无'}
+                    </Text>
+                  </Flex>
+                ),
+              })}
+              {this.renderConditionView({
+                condition: token_supply,
+                content: (
+                  <Flex style={styles.groupContent} align="center">
+                    <Text style={styles.groupContentText}>发售总量</Text>
+                    <Text
+                      style={[
+                        styles.groupContentText,
+                        { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+                      ]}
+                    >
+                      {Accounting.formatNumber(token_supply)}
+                    </Text>
+                  </Flex>
+                ),
+              })}
+              {this.renderConditionView({
+                condition: conversion_ratio,
+                content: (
+                  <Flex style={styles.groupContent} align="center">
+                    <Text style={styles.groupContentText}>兑换比例</Text>
+                    <Text
+                      style={[
+                        styles.groupContentText,
+                        { marginLeft: 10, color: 'rgba(0,0,0,.85)' },
+                      ]}
+                    >
+                      {conversion_ratio}
+                    </Text>
+                  </Flex>
+                ),
+              })}
+            </View>
+          ),
+        })}
+        {this.renderConditionView({
+          condition: members && members.length,
+          emptyKey: 'members',
+          content: (
+            <View style={styles.group}>
+              {renderTitle('团队成员')}
+              <View>
+                {R.map(m => (
+                  <MemberItem key={m.id} data={m} style={{ marginLeft: 10 }} />
+                ))(R.take(5)(members))}
+              </View>
+            </View>
+          ),
+        })}
+        {this.renderConditionView({
+          condition: social_network && social_network.length,
+          emptyKey: 'social_network',
+          content: (
+            <View style={styles.group}>
+              {renderTitle('媒体信息')}
+              <View style={{
+                marginTop: 10,
+                marginLeft: 10,
+              }}
+              >
+                <Flex wrap="wrap">
+                  {R.addIndex(R.map)((m, i) => (
+                    <SocialNetworkItem
+                      style={{ paddingHorizontal: 0, marginTop: 10 }}
+                      key={`${i}`}
+                      name={m.name}
+                      data={m.link_url}
+                    />
+                  ))(social_network)}
+                </Flex>
+              </View>
+            </View>
+          ),
+        })}
+        {this.renderConditionView({
+          condition: industry_investments && industry_investments.length,
+          emptyKey: 'industry_investments',
+          content: (
+            <View style={[styles.group]}>
+              {renderTitle('投资机构')}
               <Flex wrap="wrap">
-                {R.addIndex(R.map)((m, i) => (
-                  <SocialNetworkItem
+                {R.map(m => (
+                  <InstitutionItem
                     style={{ paddingHorizontal: 0, marginTop: 10 }}
-                    key={`${i}`}
-                    name={m.name}
-                    data={m.link_url}
+                    key={m.id}
+                    data={m}
                   />
-                ))(social_network)}
+                ))(industry_investments)}
               </Flex>
             </View>
-          </View>
-        </ConditionView>
-        <ConditionView emptyKey="industry_investments" condition={industry_investments && industry_investments.length}>
-          <View style={[styles.group]}>
-            {renderTitle('投资机构')}
-            <Flex wrap="wrap">
-              {R.map(m => (
-                <InstitutionItem
-                  style={{ paddingHorizontal: 0, marginTop: 10 }}
-                  key={m.id}
-                  data={m}
-                />
-              ))(industry_investments)}
-            </Flex>
-          </View>
-        </ConditionView>
-        <ConditionView emptyKey="roadmap" condition={roadmap && roadmap.length}>
-          <View style={{ marginBottom: 30 }}>
-            {renderTitle('路线图')}
-            <Roadmap {...this.props} roadmap={roadmap} />
-          </View>
-        </ConditionView>
+          ),
+        })}
+        {this.renderConditionView({
+          condition: roadmap && roadmap.length,
+          emptyKey: 'roadmap',
+          content: (
+            <View style={{ marginBottom: 30 }}>
+              {renderTitle('路线图')}
+              <Roadmap {...this.props} roadmap={roadmap} />
+            </View>
+          ),
+        })}
         {this.renderRest()}
       </View>
     );
