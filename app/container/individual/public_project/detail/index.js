@@ -270,10 +270,9 @@ export default class PublicProjectDetail extends Component {
         const request = {
           type: 'news',
           webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
-          title: R.path(['portfolio', 'name'])(this.props),
-          description: '来 Hotnode, 发现最新最热项目！',
+          title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
+          description: '来 Hotnode 找最新最热项目！',
           thumbImage: R.path(['portfolio', 'icon'])(this.props) || 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
-
         };
         if (index === 1 && this.state.isWXAppSupportApi) {
           WeChat.shareToSession(request);
