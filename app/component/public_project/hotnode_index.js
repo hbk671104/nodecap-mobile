@@ -6,7 +6,7 @@ import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 
 const hotnode_index = ({ data, onInvitedPress, showDaCall = true }) => {
-  const views = R.pathOr('0', ['view'])(data);
+  const views = R.pathOr('0', ['views'])(data);
   const stars = R.pathOr('0', ['stars'])(data);
   const comments_count = R.pathOr('0', ['comments_count'])(data);
   const heat = R.pathOr('+0.00', ['heat'])(data);

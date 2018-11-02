@@ -185,15 +185,16 @@ class Chart extends PureComponent {
 const styles = {
   placeholder: {
     height: barHeight + chartHeight,
-    marginHorizontal: 12,
-    marginTop: 20,
+    paddingHorizontal: 12,
+    paddingTop: 20,
   },
   container: {
     paddingBottom: 12,
-    marginTop: 20,
-    marginHorizontal: 12,
+    paddingTop: 20,
+    paddingHorizontal: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
+    backgroundColor: 'white',
   },
   chart: {
     left: 72,

@@ -12,8 +12,11 @@ import Price from 'component/public_project/price';
 import HotnodeIndex from 'component/public_project/hotnode_index';
 import AvatarGroup from 'component/public_project/avatar_group';
 
+import Shimmer from 'component/shimmer';
+
 const header = ({
   style,
+  loading,
   titleStyle,
   portfolio: data,
   base_symbol,
@@ -33,10 +36,12 @@ const header = ({
       <View style={[styles.container, style]}>
         <View style={styles.top.container}>
           <View style={{ flex: 1 }}>
-            <Text style={[styles.top.title, titleStyle]}>
-              {name}
-              <Text style={styles.top.subtitle}>（{token}）</Text>
-            </Text>
+            <Shimmer animating={loading}>
+              <Text style={[styles.top.title, titleStyle]}>
+                {name}
+                <Text style={styles.top.subtitle}>（{token}）</Text>
+              </Text>
+            </Shimmer>
             <Label data={data} />
             <Price
               base_symbol={base_symbol}

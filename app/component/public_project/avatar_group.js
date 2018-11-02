@@ -63,6 +63,7 @@ const avatar_group = ({ data, onExplanationPress }) => {
 const styles = {
   container: {
     alignItems: 'center',
+    marginBottom: 8,
   },
   title: {
     container: {
