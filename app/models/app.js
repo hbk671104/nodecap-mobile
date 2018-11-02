@@ -48,7 +48,7 @@ export default {
           try {
             if (!isMandatory && receivedBytes === totalBytes) {
               // download complete
-              Alert.alert('版本更新', '更新内容已准备就绪', [
+              Alert.alert('版本更新', '更新内容已准备就绪，1秒内可完成更新', [
                 { text: '立即更新', onPress: () => codePush.restartApp() },
                 { text: '取消', style: 'cancel' },
               ]);
