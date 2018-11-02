@@ -46,15 +46,19 @@ export default class Description extends PureComponent {
     const white_papers = R.pathOr([], ['portfolio', 'white_papers'])(
       this.props,
     );
-    const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
+    // const rating = R.pathOr([], ['portfolio', 'rating'])(this.props);
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
-    const social_network = R.compose(R.filter(i => !!iconMap[String(i.name).toLowerCase()]), R.pathOr([], ['portfolio', 'social_networks']))(
-      this.props,
-    );
+    const social_network = R.compose(
+      R.filter(i => !!iconMap[String(i.name).toLowerCase()]),
+      R.pathOr([], ['portfolio', 'social_networks']),
+    )(this.props);
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
-    const country_origin = R.pathOr('', ['portfolio', 'basic', 'country_origin'])(this.props);
-    const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
-    const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
+    const regions = R.pipe(
+      R.pathOr([], ['portfolio', 'regions']),
+      R.map(r => r.name),
+    )(this.props);
+    // const invest_score = R.pathOr('', [0, 'invest_score'])(rating);
+    // const risk_score = R.pathOr('', [0, 'risk_score'])(rating);
     const industry_investments = R.pathOr('', [
       'portfolio',
       'industry_investments',
@@ -95,14 +99,10 @@ export default class Description extends PureComponent {
             </Text>
           </View>
         )}
-        {R.not(R.isEmpty(country_origin)) && (
+        {R.not(R.isEmpty(regions)) && (
           <View>
             <Text style={[styles.title, styles.site]}>国别</Text>
-            <Text
-              style={styles.desc}
-            >
-              {country_origin}
-            </Text>
+            <Text style={styles.desc}>{R.join('，')(regions)}</Text>
           </View>
         )}
         <Rating {...this.props} />
@@ -110,7 +110,7 @@ export default class Description extends PureComponent {
           <View>
             <Text style={[styles.title, styles.site]}>媒体信息</Text>
             <Flex wrap="wrap">
-              {R.map((m) => (
+              {R.map(m => (
                 <SocialNetworkItem
                   style={{ paddingHorizontal: 0 }}
                   key={m.name}
@@ -118,18 +118,15 @@ export default class Description extends PureComponent {
                   data={m.link_url}
                   fans_count={m.fans_count}
                   onPress={() => {
-                    Linking
-                      .canOpenURL(m.link_url)
-                      .then((support) => {
+                    Linking.canOpenURL(m.link_url)
+                      .then(support => {
                         if (support) {
-                          Linking
-                            .openURL(m.link_url)
-                            .catch((err) => {
-                              console.log(err);
-                            });
+                          Linking.openURL(m.link_url).catch(err => {
+                            console.log(err);
+                          });
                         }
                       })
-                      .catch((err) => console.error('An error occurred', err));
+                      .catch(err => console.error('An error occurred', err));
                   }}
                 />
               ))(social_network)}

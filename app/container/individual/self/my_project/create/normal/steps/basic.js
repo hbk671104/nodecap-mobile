@@ -208,7 +208,7 @@ class BasicInfo extends PureComponent {
               inputProps={{ style: styles.inputItem.input }}
             />,
           )}
-          {getFieldDecorator('country_origin')(
+          {getFieldDecorator('regions')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}

@@ -187,7 +187,7 @@ export default {
         });
 
         const current_instituton_id = yield select(state =>
-          R.path(['current', 'id'])(state),
+          R.path(['institution_create', 'current', 'id'])(state),
         );
 
         yield all([

@@ -66,11 +66,10 @@ export default class Description extends PureComponent {
       'portfolio',
       'industry_investments',
     ])(this.props);
-    const country_origin = R.pathOr('', [
-      'portfolio',
-      'basic',
-      'country_origin',
-    ])(this.props);
+    const regions = R.pipe(
+      R.pathOr([], ['portfolio', 'regions']),
+      R.map(r => r.name),
+    )(this.props);
     const title = (name, route) => (
       <Flex justify="between" align="center" style={styles.titleWrap}>
         <Text style={styles.title}>{name}</Text>
@@ -114,10 +113,10 @@ export default class Description extends PureComponent {
             </Text>
           </View>
         )}
-        {R.not(R.isEmpty(country_origin)) && (
+        {R.not(R.isEmpty(regions)) && (
           <View style={styles.fieldGroup}>
             {title('国别', 'CreateMyProjectBasicInfo')}
-            <Text style={styles.desc}>{country_origin}</Text>
+            <Text style={styles.desc}>{R.join('，')(regions)}</Text>
           </View>
         )}
         <Rating {...this.props} />

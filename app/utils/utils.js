@@ -293,7 +293,7 @@ export const convertToFormData = data => {
   return {
     ...data,
     homepages: R.path(['homepage'])(data),
-    country_origin: R.path(['basic', 'country_origin'])(data),
+    regions: R.path(['regions', 0, 'id'])(data),
     tags: R.pipe(
       R.pathOr([], ['tags']),
       R.map(t => t.id),
@@ -343,6 +343,7 @@ export const convertToPayloadData = data => {
     R.pathOr([], ['tags']),
     R.map(t => ({ id: t })),
   )(data);
+  const regions = R.pathOr([], ['regions'])(data);
 
   return {
     ...R.omit([
@@ -362,7 +363,6 @@ export const convertToPayloadData = data => {
     homepages: [R.path(['homepages'])(data)],
     basic: {
       ...(R.isNil(basic_id) ? {} : { id: basic_id }),
-      country_origin: R.path(['country_origin'])(data),
       ...(R.isEmpty(roadmap) ? {} : { roadmap }),
     },
     finance: {
@@ -381,6 +381,7 @@ export const convertToPayloadData = data => {
     ...(R.isEmpty(social_network) ? {} : { social_network }),
     ...(R.isEmpty(purpose) ? {} : { purpose }),
     ...(R.isEmpty(tags) ? {} : { tags }),
+    ...(R.isEmpty(regions) ? {} : { regions: [{ id: regions }] }),
   };
 };
 

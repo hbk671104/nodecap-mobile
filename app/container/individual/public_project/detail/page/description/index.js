@@ -55,7 +55,7 @@ export default class Description extends PureComponent {
         },
       }),
     );
-  }
+  };
 
   render() {
     const coinName = R.pathOr('', ['portfolio', 'name'])(this.props);
@@ -64,20 +64,23 @@ export default class Description extends PureComponent {
     const white_papers = R.pathOr([], ['portfolio', 'white_papers'])(
       this.props,
     );
-    const social_network = R.compose(R.filter(i => !!iconMap[String(i.name).toLowerCase()]), R.pathOr([], ['portfolio', 'social_networks']))(
-      this.props,
-    );
+    const social_network = R.compose(
+      R.filter(i => !!iconMap[String(i.name).toLowerCase()]),
+      R.pathOr([], ['portfolio', 'social_networks']),
+    )(this.props);
     const members = R.pathOr([], ['portfolio', 'members'])(this.props);
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     const industry_investments = R.pathOr('', [
       'portfolio',
       'industry_investments',
     ])(this.props);
-    const country_origin = R.pathOr('', ['portfolio', 'basic', 'country_origin'])(this.props);
-    const title = (name) => (
+    const regions = R.pathOr([], ['portfolio', 'regions'])(this.props);
+    const title = name => (
       <Flex justify="between" align="center" style={styles.titleWrap}>
         <Text style={styles.title}>{name}</Text>
-        <TouchableWithoutFeedback onPress={() => this.errorCorrection(name, coinName)}>
+        <TouchableWithoutFeedback
+          onPress={() => this.errorCorrection(name, coinName)}
+        >
           <View>
             <Text style={styles.correction}>纠错</Text>
           </View>
@@ -119,13 +122,14 @@ export default class Description extends PureComponent {
             </Text>
           </View>
         )}
-        {R.not(R.isEmpty(country_origin)) && (
+        {R.not(R.isEmpty(regions)) && (
           <View style={styles.fieldGroup}>
             {title('国别')}
-            <Text
-              style={styles.desc}
-            >
-              {country_origin}
+            <Text style={styles.desc}>
+              {R.pipe(
+                R.map(r => r.name),
+                R.join('，'),
+              )(regions)}
             </Text>
           </View>
         )}

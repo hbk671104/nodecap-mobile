@@ -193,13 +193,13 @@ class FavorItem extends PureComponent {
                 <View
                   style={[
                     styles.content.miscTag.item.container,
-                    { backgroundColor: '#BCF4CA' },
+                    { backgroundColor: '#ECD7FE' },
                   ]}
                 >
                   <Text
                     style={[
                       styles.content.miscTag.item.text,
-                      { color: '#09AC32' },
+                      { color: '#A663E0' },
                     ]}
                   >
                     可联系

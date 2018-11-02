@@ -167,7 +167,7 @@ export default {
         });
 
         const current_project_id = yield select(state =>
-          R.path(['current', 'id'])(state),
+          R.path(['project_create', 'current', 'id'])(state),
         );
 
         yield all([
