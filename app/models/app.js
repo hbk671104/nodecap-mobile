@@ -64,7 +64,7 @@ export default {
           }
         },
         syncOptions: {
-          installMode: codePush.InstallMode.ON_NEXT_RESUME,
+          installMode: codePush.InstallMode.IMMEDIATE,
           mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
           syncOnResume: true,
           syncOnInterval: 60,
