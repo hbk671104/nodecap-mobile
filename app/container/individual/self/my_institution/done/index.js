@@ -14,10 +14,10 @@ import styles from './style';
   page: '机构创建完成',
   name: 'App_MyInstitutionCreateDoneOperation',
 })
-@connect(({ public_project }, props) => {
+@connect(({ institution }, props) => {
   const id = props.navigation.getParam('id');
   return {
-    current_project_detail: R.path(['current', id])(public_project),
+    current_institution_detail: R.path(['current', id])(institution),
   };
 })
 class CreateInstitutionDone extends Component {
@@ -26,6 +26,15 @@ class CreateInstitutionDone extends Component {
   }
 
   handleDonePress = () => {
+    const { current_institution_detail } = this.props;
+    if (current_institution_detail) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'InstitutionDetail',
+        }),
+      );
+      return;
+    }
     this.props.dispatch(
       NavigationActions.navigate({ routeName: 'MyInstitution' }),
     );

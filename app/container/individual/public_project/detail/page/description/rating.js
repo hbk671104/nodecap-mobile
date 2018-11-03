@@ -23,6 +23,7 @@ class rating extends Component {
         <Flex
           justify="between"
           style={{
+            marginTop: 10,
             marginBottom: 10,
             borderBottomWidth: 0.5,
             borderBottomColor: '#e9e9e9',

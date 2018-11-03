@@ -61,7 +61,7 @@ class MyProject extends Component {
         Toast.hide();
         this.props.dispatch(
           NavigationActions.navigate({
-            routeName: 'CreateMyProjectNormalWrapper',
+            routeName: 'CreateMyProjectDetail',
           }),
         );
       },

@@ -10,7 +10,7 @@ const item = ({ style, data, onPress, disableSubtitle }) => {
   const title = R.pathOr('--', ['name'])(data);
   const des = R.pathOr('', ['description'])(data);
   const logo_url = R.pathOr('', ['logo_url'])(data);
-  const status = R.pathOr(0, ['status'])(data);
+  const status = R.pathOr(0, ['owner_status'])(data);
   return (
     <Touchable foreground onPress={onPress}>
       <View style={[styles.container, style]}>

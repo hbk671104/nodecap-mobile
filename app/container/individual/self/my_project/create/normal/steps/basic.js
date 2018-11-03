@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { createForm, createFormField } from 'rc-form';
@@ -8,6 +8,8 @@ import { Toast } from 'antd-mobile';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import InputItem, { InputError } from 'component/inputItem';
+import PickerSelect from 'component/picker';
+
 import { launchImagePicker } from 'utils/imagepicker';
 import { uploadImage } from 'services/upload';
 
@@ -19,6 +21,7 @@ import styles from './style';
   current: R.pathOr({}, ['current'])(project_create),
   coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
   purpose: R.pathOr([], ['constants', 'purpose'])(global),
+  regions: R.pathOr([], ['constants', 'regions'])(global),
 }))
 @createForm({
   onValuesChange: ({ dispatch, current }, changed) => {
@@ -205,13 +208,57 @@ class BasicInfo extends PureComponent {
               inputProps={{ style: styles.inputItem.input }}
             />,
           )}
-          {getFieldDecorator('country_origin')(
+          {getFieldDecorator('regions')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
+              contentWrapperStyle={{ alignSelf: 'flex-end' }}
               title="国别"
               placeholder="请输入国别"
-              inputProps={{ style: styles.inputItem.input }}
+              showArrow
+              renderContent={({ onChange, value: v }) => {
+                if (Platform.OS === 'ios') {
+                  return (
+                    <View style={{ flex: 1 }}>
+                      <PickerSelect
+                        hideIcon
+                        placeholder={{
+                          label: '请选择国别',
+                          value: null,
+                        }}
+                        data={this.props.regions.map(i => ({
+                          label: i.name,
+                          value: i.id,
+                        }))}
+                        onChange={onChange}
+                        value={v}
+                      />
+                    </View>
+                  );
+                } else {
+                  return (
+                    <PickerSelect
+                      style={{
+                        viewContainer: {
+                          width: 120,
+                          alignSelf: 'flex-end',
+                        },
+                      }}
+                      hideIcon
+                      placeholder={{
+                        label: '请选择国别',
+                        value: null,
+                      }}
+                      data={this.props.regions.map(i => ({
+                        label: i.name,
+                        value: i.id,
+                      }))}
+                      onChange={onChange}
+                      value={v}
+                    />
+                  );
+                }
+              }}
             />,
           )}
           <View>

@@ -96,6 +96,7 @@ import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
 import Service from 'container/main/service/wrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
+import InviteComment from 'container/main/public_project/inviteComment';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -130,6 +131,9 @@ import CreateMyInstitutionServedProject from 'container/individual/self/my_insti
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
+import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
+import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
+import CreateMyProjectDetail from 'container/individual/self/my_project/display';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -261,6 +265,7 @@ const MainStack = createStackNavigator(
     Settings,
     Service,
     CommentCoin,
+    InviteComment,
   },
   {
     headerMode: 'none',
@@ -325,32 +330,6 @@ const IndividualTab = createBottomTabNavigator(
   },
 );
 
-const ProjectCreate = createStackNavigator(
-  {
-    CreateMyProjectBasicInfo,
-    CreateMyProjectDescription,
-    CreateMyProjectTeam,
-    CreateMyProjectSocial,
-    CreateMyProjectRoadMap,
-    CreateMyProjectFunding,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
-const InstitutionCreate = createStackNavigator(
-  {
-    CreateMyInstitutionBasicInfo,
-    CreateMyInstitutionDescription,
-    CreateMyInstitutionTeam,
-    CreateMyInstitutionServedProject,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
 const IndividualStack = createStackNavigator(
   {
     IndividualTab,
@@ -385,23 +364,31 @@ const IndividualStack = createStackNavigator(
     Service,
     MyProject,
     CreateMyProject,
+    CreateMyProjectDetail,
     CreateMyProjectSearch,
     CreateMyProjectNormal,
-    CreateMyProjectNormalWrapper: {
-      screen: ProjectCreate,
-    },
+    CreateMyProjectBasicInfo,
+    CreateMyProjectDescription,
+    CreateMyProjectTeam,
+    CreateMyProjectSocial,
+    CreateMyProjectRoadMap,
+    CreateMyProjectFunding,
     ClaimMyProject,
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,
     MyInstitution,
     CreateMyInstitution,
+    CreateMyInstitutionDetail,
     CreateMyInstitutionSearch,
-    CreateMyInstitutionWrapper: {
-      screen: InstitutionCreate,
-    },
+    CreateMyInstitutionBasicInfo,
+    CreateMyInstitutionDescription,
+    CreateMyInstitutionTeam,
+    CreateMyInstitutionServedProject,
+    ClaimMyInstitutionSearch,
     ClaimMyInstitution,
     CreateMyInstitutionDone,
+    InviteComment,
   },
   {
     headerMode: 'none',

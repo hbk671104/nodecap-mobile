@@ -8,21 +8,34 @@ import Icon from 'component/uikit/icon';
 import FavorItem from 'component/favored/item';
 import Group from './group';
 
-const middle = ({ data, pagination, onProjectRepoPress, onRefreshProject, selectedLoading }) => (
-  <Group renderTitle={() => (
-    <Touchable borderless onPress={onProjectRepoPress}>
-      <Flex align="center">
-        <Text style={{
-          fontSize: 16,
-          color: 'rgba(0, 0, 0, 0.85)',
-          fontWeight: 'bold',
-        }}
-        >精选项目
-        </Text>
-        <Icon style={{ fontSize: 16, marginLeft: 5 }} name="ios-arrow-forward" override />
-      </Flex>
-    </Touchable>
-  )}
+const middle = ({
+  data,
+  pagination,
+  onProjectRepoPress,
+  onRefreshProject,
+  selectedLoading,
+}) => (
+  <Group
+    renderTitle={() => (
+      <Touchable borderless onPress={onProjectRepoPress}>
+        <Flex align="center">
+          <Text
+            style={{
+              fontSize: 16,
+              color: 'rgba(0, 0, 0, 0.85)',
+              fontWeight: 'bold',
+            }}
+          >
+            精选项目
+          </Text>
+          <Icon
+            style={{ fontSize: 16, marginLeft: 5 }}
+            name="ios-arrow-forward"
+            override
+          />
+        </Flex>
+      </Touchable>
+    )}
   >
     <View style={styles.bottom.container}>
       <Text style={styles.bottom.subtitle}>
@@ -31,10 +44,10 @@ const middle = ({ data, pagination, onProjectRepoPress, onRefreshProject, select
       <Touchable
         borderless
         onPress={() => {
-        if (!selectedLoading) {
-          onRefreshProject();
-        }
-      }}
+          if (!selectedLoading) {
+            onRefreshProject();
+          }
+        }}
       >
         <Flex style={{ marginTop: -20 }}>
           <Image
@@ -49,7 +62,6 @@ const middle = ({ data, pagination, onProjectRepoPress, onRefreshProject, select
           </Text>
         </Flex>
       </Touchable>
-
     </View>
     <View>
       {R.pipe(
@@ -77,6 +89,7 @@ const styles = {
     subtitle: {
       color: 'rgba(0, 0, 0, 0.45)',
       fontSize: 11,
+      marginTop: 6,
     },
     filter: {
       fontSize: 13,

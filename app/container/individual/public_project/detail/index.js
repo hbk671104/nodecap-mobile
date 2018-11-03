@@ -1,21 +1,19 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Animated,
-  TouchableWithoutFeedback,
-  Image,
-  Dimensions,
-} from 'react-native';
+import { View, Animated, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
+import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import * as WeChat from 'react-native-wechat';
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 
 import SafeArea from 'component/uikit/safeArea';
-import NavBar, { realBarHeight } from 'component/navBar';
-import Gradient from 'component/uikit/gradient';
-import { NavigationActions } from 'react-navigation';
-import { nullOrEmpty } from 'utils/utils';
+import NavBar from 'component/navBar';
+import Touchable from 'component/uikit/touchable';
+import Modal from 'component/modal';
+import Config from 'runtime/index';
 
+// Partials
 import Description from './page/description';
 import Trend from './page/trend';
 import Return from './page/return';
@@ -23,45 +21,10 @@ import Pairs from './page/pairs';
 import Chart from './chart';
 import Fund from './fund';
 import Share from './share';
-import Header, { headerHeight } from './header';
+import Header from './header';
 import Selector from './selector';
 import Bottom from './bottom';
 import styles from './style';
-
-const window = Dimensions.get('window');
-const calcHeaderHeight = ({ can_calculate, data }) => {
-  let baseHeight = headerHeight;
-  if (can_calculate) {
-    baseHeight += 80;
-  }
-
-  const purpose = R.path(['purpose'])(data);
-  if (!nullOrEmpty(purpose)) {
-    baseHeight += 40;
-  }
-
-  const invested_by_renowned_insti = R.pipe(
-    R.pathOr([], ['renowned_industry']),
-    R.isEmpty,
-    R.not,
-  )(data);
-  const top_rated = R.pipe(
-    R.pathOr([], ['top_rating']),
-    R.isEmpty,
-    R.not,
-  )(data);
-  const owners = R.pipe(
-    R.pathOr([], ['owners']),
-    R.isEmpty,
-    R.not,
-  )(data);
-
-  if (invested_by_renowned_insti || top_rated || owners) {
-    baseHeight += 30;
-  }
-
-  return baseHeight;
-};
 
 @global.bindTrack({
   page: '项目详情',
@@ -86,31 +49,21 @@ const calcHeaderHeight = ({ can_calculate, data }) => {
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
+  withState('explanationVisible', 'setExplanationVisible', false),
   withState('selectorY', 'setSelectorY', 0),
-  withProps(({ animateY, can_calculate, portfolio }) => {
+  withProps(({ animateY, portfolio }) => {
     const investment = R.pathOr({}, ['roi'])(portfolio);
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
-
-    const height = calcHeaderHeight({
-      can_calculate,
-      data: portfolio,
-    });
-
     return {
-      headerWrapperYRange: animateY.interpolate({
-        inputRange: [0, height],
-        outputRange: [0, -height],
-        extrapolate: 'clamp',
-      }),
-      headerOpacityRange: animateY.interpolate({
-        inputRange: [0, height],
-        outputRange: [1, 0],
-        extrapolate: 'clamp',
-      }),
-      titleOpacityRange: animateY.interpolate({
-        inputRange: [0, height],
+      navBarOpacityRange: animateY.interpolate({
+        inputRange: [0, 160],
         outputRange: [0, 1],
+        extrapolate: 'clamp',
+      }),
+      backgroundOpacityRange: animateY.interpolate({
+        inputRange: [0, 160],
+        outputRange: [1, 0],
         extrapolate: 'clamp',
       }),
       selectionList: [
@@ -149,9 +102,14 @@ const calcHeaderHeight = ({ can_calculate, data }) => {
     R.path([0])(selectionList),
   ),
 )
+@connectActionSheet
 export default class PublicProjectDetail extends Component {
+  state={
+    isWXAppSupportApi: false,
+  }
   componentWillMount() {
     this.loadDetail();
+    this.checkWechatAval();
   }
 
   componentDidMount() {
@@ -183,6 +141,13 @@ export default class PublicProjectDetail extends Component {
       }),
     );
   };
+
+  checkWechatAval = async () => {
+    this.setState({
+      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+    });
+  };
+
   loadDetail = () => {
     this.props.dispatch({
       type: 'public_project/get',
@@ -280,93 +245,81 @@ export default class PublicProjectDetail extends Component {
     );
   };
 
-  renderNavBarBackground = () => {
-    const {
-      portfolio,
-      headerWrapperYRange,
-      headerOpacityRange,
-      can_calculate,
-    } = this.props;
-    const height = calcHeaderHeight({
-      can_calculate,
-      data: portfolio,
-    });
-
-    return (
-      <Animated.View
-        style={[
-          styles.navBar.wrapper,
-          {
-            height: realBarHeight + height,
-          },
-          {
-            transform: [
-              {
-                translateY: headerWrapperYRange,
-              },
-            ],
-            zIndex: 50,
-          },
-        ]}
-      >
-        <Gradient style={{ flex: 1 }}>
-          <Header
-            {...this.props}
-            style={{ opacity: headerOpacityRange, paddingTop: realBarHeight }}
-            data={portfolio}
-          />
-        </Gradient>
-      </Animated.View>
+  handleInvitedPress = item => {
+    this.props.track('点击进入邀请点评');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InviteComment',
+        params: {
+          item,
+        },
+        key: `InviteComment_${item.id}`,
+      }),
     );
   };
+
+  handleShare = () => {
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['分享至朋友圈', '分享至微信', '分享图片', '取消'],
+        cancelButtonIndex: 3,
+      },
+      index => {
+        const id = this.props.id;
+
+        const request = {
+          type: 'news',
+          webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
+          title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
+          description: '来 Hotnode 找最新最热项目！',
+          thumbImage: R.path(['portfolio', 'icon'])(this.props) || 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+        };
+        if (index === 1 && this.state.isWXAppSupportApi) {
+          WeChat.shareToSession(request);
+        } else if (index === 0 && this.state.isWXAppSupportApi) {
+          WeChat.shareToTimeline(request);
+        } else if (index === 2) {
+          this.props.toggleShareModal(true);
+        }
+      },
+    );
+  }
 
   render() {
     const {
       currentPage: Current,
       selectionList,
       portfolio,
-      titleOpacityRange,
-      can_calculate,
+      currentScrollY,
+      navBarOpacityRange,
+      backgroundOpacityRange,
     } = this.props;
-    const height = calcHeaderHeight({
-      can_calculate,
-      data: portfolio,
-    });
+
     return (
-      <SafeArea style={styles.container}>
-        {this.renderNavBarBackground()}
-        <NavBar
-          back
-          iconStyle={styles.navBar.icon}
-          style={[styles.navBar.container, { zIndex: 100 }]}
-          title={R.pathOr('', ['name'])(portfolio)}
-          titleContainerStyle={{ opacity: titleOpacityRange }}
+      <View style={styles.container}>
+        <Animated.View
+          style={[styles.wrapper, { opacity: backgroundOpacityRange }]}
         />
-        <View
-          style={{
-            position: 'absolute',
-            right: 0,
-            top: window.height / 2,
-            zIndex: 200,
-          }}
+        <Animated.View
+          style={[
+            styles.navBar.wrapper,
+            { opacity: navBarOpacityRange, zIndex: 50 },
+          ]}
         >
-          <TouchableWithoutFeedback onPress={this.onPressClaimCoin}>
-            <Image
-              style={{ height: 28, width: 68 }}
-              source={require('asset/project/detail/claim.png')}
-            />
-          </TouchableWithoutFeedback>
-        </View>
+          <NavBar
+            back
+            barStyle={currentScrollY > 80 ? 'dark-content' : 'light-content'}
+            style={styles.navBar.container}
+            title={R.path(['name'])(portfolio)}
+          />
+        </Animated.View>
         <Animated.ScrollView
           ref={ref => {
             this.scroll = ref;
           }}
-          contentContainerStyle={{
-            paddingTop: height,
-          }}
           showsVerticalScrollIndicator={false}
           scrollEventThrottle={1}
-          stickyHeaderIndices={[2]}
+          stickyHeaderIndices={[3]}
           onScroll={Animated.event(
             [
               {
@@ -384,6 +337,11 @@ export default class PublicProjectDetail extends Component {
             },
           )}
         >
+          <Header
+            {...this.props}
+            onInvitedPress={() => this.handleInvitedPress(portfolio)}
+            onExplanationPress={() => this.props.setExplanationVisible(true)}
+          />
           <Fund {...this.props} />
           <Chart {...this.props} />
           <Selector
@@ -399,11 +357,15 @@ export default class PublicProjectDetail extends Component {
             />
           </View>
         </Animated.ScrollView>
+        <Touchable
+          style={styles.claim.container}
+          onPress={this.onPressClaimCoin}
+        >
+          <Image source={require('asset/project/detail/claim.png')} />
+        </Touchable>
         <Bottom
           {...this.props}
-          openShareModal={() => {
-            this.props.toggleShareModal(true);
-          }}
+          openShareModal={this.handleShare}
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
           onPressComment={this.handleCommentPress}
@@ -413,7 +375,33 @@ export default class PublicProjectDetail extends Component {
           coin={this.props.portfolio}
           visible={this.props.showShareModal}
         />
-      </SafeArea>
+        <Modal
+          useNativeDriver
+          hideModalContentWhileAnimating
+          isVisible={this.props.explanationVisible}
+          style={{
+            alignSelf: 'center',
+          }}
+          onBackdropPress={() => this.props.setExplanationVisible(false)}
+        >
+          <View style={styles.explanation.container}>
+            <View style={styles.explanation.content.container}>
+              <Text style={styles.explanation.content.title}>项目得分</Text>
+              <Text style={styles.explanation.content.text}>
+                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。若您是项目成员，认领后可进行信息完善
+              </Text>
+            </View>
+            <Touchable
+              style={styles.explanation.bottom.container}
+              onPress={() =>
+                this.props.setExplanationVisible(false, this.onPressClaimCoin)
+              }
+            >
+              <Text style={styles.explanation.bottom.text}>认领并完善</Text>
+            </Touchable>
+          </View>
+        </Modal>
+      </View>
     );
   }
 }

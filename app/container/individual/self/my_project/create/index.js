@@ -46,7 +46,7 @@ class CreateProject extends Component {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: R.isEmpty(query)
-          ? 'CreateMyProjectNormalWrapper'
+          ? 'CreateMyProjectBasicInfo'
           : 'CreateMyProjectNormal',
       }),
     );
