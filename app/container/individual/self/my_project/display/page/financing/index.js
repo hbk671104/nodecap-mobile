@@ -12,9 +12,9 @@ export default class Financing extends PureComponent {
   renderSalesInfo = info => {
     const start_at = R.pathOr('', ['start_at'])(info);
     const end_at = R.pathOr('', ['end_at'])(info);
-    const token_accepted = R.pathOr('--', ['token_accepted'])(info);
-    const soft_cap = R.pathOr('--', ['finances', 0, 'soft_cap'])(info);
-    const hard_cap = R.pathOr('--', ['finances', 0, 'hard_cap'])(info);
+    const token_accepted = R.pathOr('', ['token_accepted'])(info);
+    const soft_cap = R.pathOr('', ['finances', 0, 'soft_cap'])(info);
+    const hard_cap = R.pathOr('', ['finances', 0, 'hard_cap'])(info);
 
     return (
       <Group title="发售信息" onEditPress={() => this.props.onEditPress()}>
