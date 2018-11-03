@@ -21,7 +21,7 @@ const styles = {
     marginBottom: 20,
   },
   titleContainer: {
-    marginBottom: 4,
+    marginBottom: 8,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

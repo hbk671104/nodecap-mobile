@@ -12,7 +12,7 @@ export default class Financing extends PureComponent {
   renderSalesInfo = info => {
     const start_at = R.pathOr('', ['start_at'])(info);
     const end_at = R.pathOr('', ['end_at'])(info);
-    const token_supply = R.pathOr('--', ['token_supply'])(info);
+    const token_accepted = R.pathOr('--', ['token_accepted'])(info);
     const soft_cap = R.pathOr('--', ['finances', 0, 'soft_cap'])(info);
     const hard_cap = R.pathOr('--', ['finances', 0, 'hard_cap'])(info);
 
@@ -32,13 +32,13 @@ export default class Financing extends PureComponent {
           name="结束时间"
           value={end_at}
         />
-        <Field
+        {/* <Field
           style={styles.item.container}
           titleStyle={styles.item.title}
           valueStyle={styles.item.value}
           name="发售总量"
           value={token_supply}
-        />
+        /> */}
         <Field
           style={styles.item.container}
           titleStyle={styles.item.title}
@@ -52,6 +52,13 @@ export default class Financing extends PureComponent {
           valueStyle={styles.item.value}
           name="硬顶"
           value={hard_cap}
+        />
+        <Field
+          style={styles.item.container}
+          titleStyle={styles.item.title}
+          valueStyle={styles.item.value}
+          name="募集币种"
+          value={token_accepted}
         />
       </Group>
     );
@@ -123,7 +130,7 @@ export default class Financing extends PureComponent {
     return (
       <View style={styles.container}>
         {this.renderSalesInfo(portfolio)}
-        {this.renderTokenInfo(portfolio)}
+        {/* {this.renderTokenInfo(portfolio)} */}
       </View>
     );
   }

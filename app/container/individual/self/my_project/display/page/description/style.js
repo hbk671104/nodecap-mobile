@@ -15,7 +15,7 @@ export default {
     marginBottom: 10,
   },
   fieldGroup: {
-    marginBottom: 26,
+    marginBottom: 20,
   },
   correction: { fontSize: 12, color: '#6C98C0', letterSpacing: 0.29 },
   desc: {

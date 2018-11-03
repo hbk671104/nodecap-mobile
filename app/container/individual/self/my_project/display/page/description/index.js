@@ -92,20 +92,22 @@ export default class Description extends PureComponent {
           {title('项目简介', 'CreateMyProjectDescription')}
           <Text style={styles.desc}>{description}</Text>
         </View>
-        <View style={styles.fieldGroup}>
-          {title('白皮书', 'CreateMyProjectBasicInfo', true)}
-          <View>
-            {R.map(w => (
-              <Text
-                key={w.id}
-                style={styles.link}
-                onPress={() => this.handleDocPress(w)}
-              >
-                查看 {w.filename}
-              </Text>
-            ))(white_papers)}
+        {R.not(R.isEmpty(white_papers)) && (
+          <View style={styles.fieldGroup}>
+            {title('白皮书', 'CreateMyProjectBasicInfo', true)}
+            <View>
+              {R.map(w => (
+                <Text
+                  key={w.id}
+                  style={styles.link}
+                  onPress={() => this.handleDocPress(w)}
+                >
+                  查看 {w.filename}
+                </Text>
+              ))(white_papers)}
+            </View>
           </View>
-        </View>
+        )}
         <View style={styles.fieldGroup}>
           {title('官网', 'CreateMyProjectBasicInfo')}
           <Text
@@ -150,10 +152,10 @@ export default class Description extends PureComponent {
             )}
           />
         </View>
-        {/* <Financing
+        <Financing
           {...this.props}
           onEditPress={this.editField('CreateMyProjectFunding')}
-        /> */}
+        />
         <View style={styles.fieldGroup}>
           {title('团队成员', 'CreateMyProjectTeam')}
           <View>
