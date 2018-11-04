@@ -6,7 +6,8 @@ export default {
   item: {
     container: {
       marginLeft: 0,
-      paddingRight: 12,
+      marginRight: 0,
+      paddingRight: 0,
       paddingVertical: 12,
     },
     title: {

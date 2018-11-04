@@ -33,7 +33,7 @@ const styles = {
   container: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    marginBottom: 12,
+    marginBottom: 4,
   },
   item: {
     container: {
@@ -43,6 +43,7 @@ const styles = {
       borderWidth: StyleSheet.hairlineWidth,
       paddingHorizontal: 3,
       marginRight: 8,
+      marginBottom: 8,
       justifyContent: 'center',
       alignItems: 'center',
     },

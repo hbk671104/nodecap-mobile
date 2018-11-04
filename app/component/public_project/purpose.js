@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
-import { Flex } from 'antd-mobile';
+import { View, ScrollView, Text } from 'react-native';
 import R from 'ramda';
 
 class PublicProjectPurpose extends PureComponent {
@@ -13,14 +12,19 @@ class PublicProjectPurpose extends PureComponent {
       ),
     )(this.props);
     return (
-      <Flex align="center" style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.title.container}>
           <Text style={styles.title.text}>需求</Text>
         </View>
-        <View style={styles.content.container}>
+        <ScrollView
+          showsHorizontalScrollIndicator={false}
+          horizontal
+          style={styles.content.container}
+          contentContainerStyle={{ alignItems: 'center', paddingRight: 16 }}
+        >
           <Text style={styles.content.text}>{purpose}</Text>
-        </View>
-      </Flex>
+        </ScrollView>
+      </View>
     );
   }
 }
@@ -30,6 +34,7 @@ const styles = {
     paddingLeft: 12,
     height: 46.5,
     backgroundColor: 'white',
+    flexDirection: 'row',
   },
   title: {
     container: {
@@ -39,6 +44,7 @@ const styles = {
       justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: 4,
+      alignSelf: 'center',
     },
     text: {
       fontSize: 12,
@@ -48,6 +54,7 @@ const styles = {
   },
   content: {
     container: {
+      flex: 1,
       marginLeft: 16,
     },
     text: {
