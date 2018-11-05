@@ -7,7 +7,6 @@ import R from 'ramda';
 import * as WeChat from 'react-native-wechat';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 
-import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import Modal from 'component/modal';
@@ -15,6 +14,7 @@ import Config from 'runtime/index';
 
 // Partials
 import Description from './page/description';
+import OverallRatings from './page/overall_ratings';
 import Trend from './page/trend';
 import Return from './page/return';
 import Pairs from './page/pairs';
@@ -71,6 +71,10 @@ import styles from './style';
           component: Description,
           name: '详情',
         },
+        {
+          component: OverallRatings,
+          name: '综合评级',
+        },
         ...(R.isEmpty(trends)
           ? []
           : [
@@ -104,9 +108,9 @@ import styles from './style';
 )
 @connectActionSheet
 export default class PublicProjectDetail extends Component {
-  state={
+  state = {
     isWXAppSupportApi: false,
-  }
+  };
   componentWillMount() {
     this.loadDetail();
     this.checkWechatAval();
@@ -272,7 +276,9 @@ export default class PublicProjectDetail extends Component {
           webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
           title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
           description: '来 Hotnode 找最新最热项目！',
-          thumbImage: R.path(['portfolio', 'icon'])(this.props) || 'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+          thumbImage:
+            R.path(['portfolio', 'icon'])(this.props) ||
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
         };
         if (index === 1 && this.state.isWXAppSupportApi) {
           WeChat.shareToSession(request);
@@ -283,7 +289,7 @@ export default class PublicProjectDetail extends Component {
         }
       },
     );
-  }
+  };
 
   render() {
     const {

@@ -8,7 +8,6 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import StatusBar from './uikit/statusBar';
-import Gradient from './uikit/gradient';
 
 @connect()
 class NavBar extends Component {
@@ -84,9 +83,8 @@ class NavBar extends Component {
       iconStyle,
       disableStatusBar,
     } = this.props;
-    const WrapperComp = gradient ? Gradient : View;
     return (
-      <WrapperComp style={style}>
+      <View style={[style, gradient && { backgroundColor: '#1890FF' }]}>
         {!disableStatusBar && <StatusBar barStyle={barStyle} />}
         <Animated.View
           style={[
@@ -148,7 +146,7 @@ class NavBar extends Component {
           </View>
         </Animated.View>
         {renderBottom && !bottomHidden && renderBottom()}
-      </WrapperComp>
+      </View>
     );
   }
 }
