@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {},
   title: {
@@ -19,7 +21,10 @@ export default {
     },
   },
   chart: {
-    container: {},
+    container: {
+      // labels: { fontSize: 12 },
+      // parent: { border: '1px solid #ccc' },
+    },
     area: {
       data: {
         fill: '#1890FF',
@@ -27,6 +32,14 @@ export default {
         stroke: 'none',
       },
     },
-    axis: {},
+    axis: {
+      axis: { stroke: '#B8CBDD', strokeWidth: StyleSheet.hairlineWidth },
+      tickLabels: {
+        fontSize: 15,
+        color: 'rgba(0, 0, 0, 0.85)',
+        fontWeight: 'bold',
+        padding: 12,
+      },
+    },
   },
 };

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, LayoutAnimation, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -10,7 +10,7 @@ import Icon from 'component/uikit/icon';
 import StatusBar from './uikit/statusBar';
 
 @connect()
-class NavBar extends Component {
+class NavBar extends PureComponent {
   static propTypes = {
     disableStatusBar: PropTypes.bool,
     barStyle: PropTypes.string,
