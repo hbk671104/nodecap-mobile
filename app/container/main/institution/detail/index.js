@@ -117,6 +117,7 @@ export default class InstitutionDetail extends Component {
             <Group title="已投项目">
               {R.addIndex(R.map)((m, index) => (
                 <FavorItem
+                  style={{ paddingHorizontal: 0 }}
                   institutionId={this.props.id}
                   key={m.id}
                   data={m}
