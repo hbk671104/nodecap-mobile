@@ -24,7 +24,9 @@ import styles from './style';
   ({ public_project, news, loading, notification, institution, banners }) => ({
     news: R.pathOr([], ['news'])(news),
     lastNewsID: R.pathOr(null, ['payload'])(news),
-    data: R.pathOr([], ['selected', 'index', 'data'])(public_project),
+    data: R.pathOr([{}, {}, {}, {}, {}], ['selected', 'index', 'data'])(
+      public_project,
+    ),
     pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
       public_project,
     ),
