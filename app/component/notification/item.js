@@ -67,8 +67,6 @@ const styles = {
     backgroundColor: 'white',
   },
   avatar: {
-    height: 20,
-    width: 20,
     marginRight: 10,
   },
   header: {
