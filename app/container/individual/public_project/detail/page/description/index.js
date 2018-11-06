@@ -176,12 +176,11 @@ export default class Description extends PureComponent {
           </View>
         )}
         {R.not(R.isEmpty(industry_investments)) && (
-          <View style={styles.fieldGroup}>
+          <View style={[styles.fieldGroup, { marginBottom: 14 }]}>
             {title('投资机构')}
             <Flex wrap="wrap">
               {R.map(m => (
                 <InstitutionItem
-                  style={{ paddingHorizontal: 0 }}
                   key={m.id}
                   data={m}
                   onPress={() => this.props.onInstitutionItemPress(m)}

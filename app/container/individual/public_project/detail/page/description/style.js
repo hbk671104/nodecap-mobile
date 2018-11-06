@@ -12,7 +12,7 @@ export default {
     fontWeight: 'bold',
   },
   titleWrap: {
-    marginBottom: 10,
+    marginBottom: 12,
   },
   fieldGroup: {
     marginBottom: 26,
