@@ -22,8 +22,13 @@ export default {
   },
   chart: {
     container: {
-      // labels: { fontSize: 12 },
-      // parent: { border: '1px solid #ccc' },
+      parent: {
+        transform: [
+          {
+            rotate: '30deg',
+          },
+        ],
+      },
     },
     area: {
       data: {
@@ -32,17 +37,28 @@ export default {
         stroke: 'none',
       },
     },
+    dependentAxis: {
+      axis: {
+        stroke: 'none',
+      },
+      grid: {
+        stroke: '#D7E4F0',
+        strokeWidth: StyleSheet.hairlineWidth,
+      },
+    },
     axis: {
       axis: { stroke: '#B8CBDD', strokeWidth: StyleSheet.hairlineWidth },
       grid: {
         stroke: '#D7E4F0',
         strokeWidth: StyleSheet.hairlineWidth,
+        strokeLinecap: 'round',
       },
       tickLabels: {
-        fontSize: 15,
+        fontSize: 12,
         color: 'rgba(0, 0, 0, 0.85)',
         fontWeight: 'bold',
         padding: 12,
+        angle: -30,
       },
     },
   },

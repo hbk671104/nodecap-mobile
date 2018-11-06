@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { View, Text } from 'react-native';
 import R from 'ramda';
 import {
@@ -6,17 +6,29 @@ import {
   VictoryArea,
   VictoryPolarAxis,
   VictoryTheme,
+  VictoryLabel,
 } from 'victory-native';
 
 import styles from './style';
 
+class LabelComponent extends PureComponent {
+  render() {
+    return <Text>哈哈</Text>;
+  }
+}
+
 const overall_ratings = ({ portfolio }) => {
   const ratings = R.pathOr({}, ['overall_rating'])(portfolio);
   const overall = R.pathOr(90, ['value'])(ratings);
+
+  const progress = R.pathOr(80, ['progress'])(ratings);
+  const team = R.pathOr(90, ['team'])(ratings);
+  const community = R.pathOr(85, ['community'])(ratings);
+
   const data = [
-    { x: '发展', y: R.pathOr(80, ['progress'])(ratings) },
-    { x: '团队', y: R.pathOr(70, ['team'])(ratings) },
-    { x: '社群', y: R.pathOr(50, ['community'])(ratings) },
+    { x: '发展', y: progress },
+    { x: '团队', y: team },
+    { x: '社群', y: community },
   ];
   return (
     <View style={styles.container}>
@@ -26,11 +38,21 @@ const overall_ratings = ({ portfolio }) => {
       </View>
       <VictoryChart
         polar
+        padding={24}
+        minDomain={{ y: 0 }}
+        maxDomain={{ y: 100 }}
         style={styles.chart.container}
-        theme={VictoryTheme.material}
       >
+        <VictoryPolarAxis
+          dependentAxis
+          style={styles.chart.dependentAxis}
+          tickFormat={() => null}
+        />
+        <VictoryPolarAxis
+          style={styles.chart.axis}
+          tickLabelComponent={<VictoryLabel labelPlacement="vertical" />}
+        />
         <VictoryArea style={styles.chart.area} data={data} />
-        <VictoryPolarAxis style={styles.chart.axis} labelPlacement="vertical" />
       </VictoryChart>
     </View>
   );
