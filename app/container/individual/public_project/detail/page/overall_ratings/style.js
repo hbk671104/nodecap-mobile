@@ -34,6 +34,10 @@ export default {
     },
     axis: {
       axis: { stroke: '#B8CBDD', strokeWidth: StyleSheet.hairlineWidth },
+      grid: {
+        stroke: '#D7E4F0',
+        strokeWidth: StyleSheet.hairlineWidth,
+      },
       tickLabels: {
         fontSize: 15,
         color: 'rgba(0, 0, 0, 0.85)',
