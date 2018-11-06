@@ -21,6 +21,15 @@ export default {
     },
   },
   chart: {
+    label: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.85)',
+    },
+    value: {
+      fontSize: 13,
+      fill: '#1890FF',
+      fontWeight: 'bold',
+    },
     container: {
       parent: {
         transform: [
@@ -52,13 +61,6 @@ export default {
         stroke: '#D7E4F0',
         strokeWidth: StyleSheet.hairlineWidth,
         strokeLinecap: 'round',
-      },
-      tickLabels: {
-        fontSize: 12,
-        color: 'rgba(0, 0, 0, 0.85)',
-        fontWeight: 'bold',
-        padding: 12,
-        angle: -30,
       },
     },
   },
