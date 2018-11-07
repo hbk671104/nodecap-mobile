@@ -1,36 +1,33 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { View, ScrollView, Text } from 'react-native';
 import R from 'ramda';
 
-class PublicProjectPurpose extends PureComponent {
-  render() {
-    const { data } = this.props;
-    const purpose_raw = R.pathOr([], ['purpose'])(data);
-    if (R.isEmpty(purpose_raw)) {
-      return null;
-    }
-
-    const purpose = R.pipe(
-      R.map(p => p.name),
-      R.join('、'),
-    )(purpose_raw);
-    return (
-      <View style={styles.container}>
-        <View style={styles.title.container}>
-          <Text style={styles.title.text}>需求</Text>
-        </View>
-        <ScrollView
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          style={styles.content.container}
-          contentContainerStyle={{ alignItems: 'center', paddingRight: 16 }}
-        >
-          <Text style={styles.content.text}>{purpose}</Text>
-        </ScrollView>
-      </View>
-    );
+const purpose = ({ style, data }) => {
+  const purpose_raw = R.pathOr([], ['purpose'])(data);
+  if (R.isEmpty(purpose_raw)) {
+    return null;
   }
-}
+
+  const purpose_text = R.pipe(
+    R.map(p => p.name),
+    R.join('、'),
+  )(purpose_raw);
+  return (
+    <View style={[styles.container, style]}>
+      <View style={styles.title.container}>
+        <Text style={styles.title.text}>需求</Text>
+      </View>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        style={styles.content.container}
+        contentContainerStyle={{ alignItems: 'center', paddingRight: 16 }}
+      >
+        <Text style={styles.content.text}>{purpose_text}</Text>
+      </ScrollView>
+    </View>
+  );
+};
 
 const styles = {
   container: {
@@ -43,7 +40,7 @@ const styles = {
     container: {
       height: 22.5,
       borderRadius: 2,
-      backgroundColor: '#1890FF',
+      backgroundColor: '#F87A0D',
       justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: 4,
@@ -68,7 +65,4 @@ const styles = {
   },
 };
 
-PublicProjectPurpose.propTypes = {};
-PublicProjectPurpose.defaultProps = {};
-
-export default PublicProjectPurpose;
+export default purpose;

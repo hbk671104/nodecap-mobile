@@ -29,6 +29,7 @@ const header = ({
     R.pathOr('--', ['symbol']),
     R.toUpper,
   )(data);
+  const purpose = R.pathOr([], ['purpose'])(data);
 
   return (
     <View>
@@ -53,7 +54,10 @@ const header = ({
         </View>
         <Tag data={data} />
       </View>
-      <MiscTag data={data} />
+      <MiscTag
+        style={[R.isEmpty(purpose) && { borderBottomWidth: 0 }]}
+        data={data}
+      />
       <Purpose data={data} />
       <View>
         <View style={styles.divider} />
