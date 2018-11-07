@@ -10,4 +10,4 @@ const runtimeConfig =
       : staging
     : production;
 
-export default production;
+export default staging;
