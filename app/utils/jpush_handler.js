@@ -81,10 +81,6 @@ const handleReceive = extras => {
       if (getCurrentScreen(router) === 'NotificationCenter') {
         break;
       }
-
-      store.dispatch({
-        type: 'notification/showBadge',
-      });
       break;
     }
     case 'coin_daily_increment':

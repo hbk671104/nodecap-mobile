@@ -10,9 +10,10 @@ export default {
     insite_list: [],
     current: null,
     badgeVisible: false,
+    lastRead: null,
   },
   effects: {
-    *fetch({ payload }, { call, put }) {
+    *fetch({ payload, refreshLastRead }, { call, put, select }) {
       try {
         const { data } = yield call(individualTrendList, {
           type: 1,
@@ -23,6 +24,13 @@ export default {
           type: 'list',
           payload: data,
         });
+        const lastRead = yield select(({ notification }) => R.path(['lastRead'])(notification));
+        if (refreshLastRead || R.isNil(lastRead)) {
+          yield put({
+            type: 'lastRead',
+            payload: R.path(['pagination', 'total'])(data),
+          });
+        }
       } catch (e) {
         console.log(e);
       }
@@ -77,6 +85,12 @@ export default {
       return {
         ...state,
         current: null,
+      };
+    },
+    lastRead(state, action) {
+      return {
+        ...state,
+        lastRead: action.payload,
       };
     },
     showBadge(state) {

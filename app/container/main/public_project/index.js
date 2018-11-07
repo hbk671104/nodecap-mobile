@@ -36,7 +36,9 @@ import styles from './style';
     announcement: R.pathOr([], ['list', 'data'])(notification),
     reports: R.pathOr([], ['report', 'data'])(institution),
     updateCount: R.path(['updated_count'])(news),
-    notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
+    notification_badge_number: R.isNil(R.path(['lastRead'])(notification)) ?
+      0 :
+      R.pathOr(0, ['list', 'pagination', 'total'])(notification) - R.pathOr(0, ['lastRead'])(notification),
     banners: R.pathOr([], ['list', 'data'])(banners),
   }),
 )
@@ -191,13 +193,24 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleServicePress = () => {
+  handleServicePress = (type) => () => {
     this.props.track('点击找服务');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Service',
-      }),
-    );
+    if (type === 'more') {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Service',
+        }),
+      );
+    } else {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'SingleService',
+          params: {
+            type,
+          },
+        }),
+      );
+    }
   };
 
   handleReportItemPress = item => {

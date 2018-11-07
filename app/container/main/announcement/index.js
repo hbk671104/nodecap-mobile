@@ -45,6 +45,7 @@ export default class Announcement extends Component {
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'notification/fetch',
+      refreshLastRead: true,
       payload: {
         currentPage: page,
         pageSize: size,
