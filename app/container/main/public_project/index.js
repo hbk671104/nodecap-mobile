@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import JPush from 'jpush-react-native';
 import { RouterEmitter } from '../../../router';
 
 import NavBar, { realBarHeight } from 'component/navBar';
 import NewsItem from 'component/news';
 import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 import { handleBadgeAction } from 'utils/badge_handler';
+import { handleOpen } from 'utils/jpush_handler';
 
 import List from './components/list';
 import Header from './header';
@@ -62,6 +64,21 @@ export default class PublicProject extends Component {
         type: 'news/index',
       });
     });
+  }
+
+  componentDidMount() {
+    if (Platform.OS === 'ios') {
+      JPush.getLaunchAppNotification(result => {
+        if (R.isNil(result)) {
+          return;
+        }
+
+        setTimeout(() => {
+          const { extras } = result;
+          handleOpen(extras);
+        }, 750);
+      });
+    }
   }
 
   handleDataAlert = (newUpdateCount, oldUpdateCount) => {

@@ -468,9 +468,6 @@ class Router extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
     JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);
-    if (this.state.isIOS) {
-      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
-    }
     AppState.addEventListener('change', this._handleAppStateChange);
   }
 
@@ -535,17 +532,6 @@ class Router extends Component {
 
     dispatch(NavigationActions.back());
     return true;
-  };
-
-  handleOpenLaunchNotification = result => {
-    if (R.isNil(result)) {
-      return;
-    }
-
-    setTimeout(() => {
-      const { extras } = result;
-      handleOpen(extras);
-    }, 1000);
   };
 
   handleOpenNotification = result => {
