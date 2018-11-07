@@ -10,6 +10,7 @@ const explanation = ({ visible, title, content, onBackdropPress }) => (
     isVisible={visible}
     style={styles.wrapper}
     onBackdropPress={onBackdropPress}
+    backdropOpacity={0.65}
   >
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
