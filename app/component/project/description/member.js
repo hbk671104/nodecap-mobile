@@ -25,6 +25,7 @@ const memberItem = ({ data, style }) => {
   return (
     <View style={[styles.container, style]}>
       <Avatar
+        resizeMode="cover"
         source={{ uri: profile_pic }}
         raised={false}
         size={40}

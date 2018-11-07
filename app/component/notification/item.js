@@ -34,7 +34,7 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
             <Text style={styles.sourceName}>{source}</Text>
           </Flex>
           <Text style={styles.pushAt}>
-            {push_at ? moment.unix(push_at).format('HH:mm') : null}
+            {push_at ? moment.unix(push_at).format('M/D HH:mm') : null}
           </Text>
         </Flex>
         <View style={styles.content}>

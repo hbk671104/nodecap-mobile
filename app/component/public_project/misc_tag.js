@@ -18,21 +18,36 @@ const miscTags = ({ data }) => {
     R.isEmpty,
     R.not,
   )(data);
+  const has_whitepapers = R.pipe(
+    R.pathOr([], ['white_papers']),
+    R.isEmpty,
+    R.not,
+  )(data);
 
-  if (!invested_by_renowned_insti && !top_rated && !is_reachable) {
+  if (
+    !invested_by_renowned_insti &&
+    !top_rated &&
+    !is_reachable &&
+    !has_whitepapers
+  ) {
     return null;
   }
 
   return (
     <View style={styles.container}>
-      {top_rated && (
+      {has_whitepapers && (
         <View style={styles.item.container}>
-          <Text style={styles.item.text}>有评级</Text>
+          <Text style={styles.item.text}>有白皮书</Text>
         </View>
       )}
       {invested_by_renowned_insti && (
         <View style={styles.item.container}>
           <Text style={styles.item.text}>知名机构所投</Text>
+        </View>
+      )}
+      {top_rated && (
+        <View style={styles.item.container}>
+          <Text style={styles.item.text}>有评级</Text>
         </View>
       )}
       {is_reachable && (
