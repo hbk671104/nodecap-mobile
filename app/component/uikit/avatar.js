@@ -8,10 +8,13 @@ import SolidAvatar from './avatar.solid';
 class Avatar extends PureComponent {
   constructor(props) {
     super(props);
-    const uri = R.pathOr('', ['source', 'uri'])(props);
+    const source = R.path(['source'])(props);
+    const uri = R.pathOr('', ['uri'])(source);
     this.state = {
       source: R.isEmpty(uri)
-        ? require('asset/project/project_logo_default.png')
+        ? typeof source === 'number'
+          ? source
+          : require('asset/project/project_logo_default.png')
         : { uri },
     };
   }
