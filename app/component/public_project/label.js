@@ -29,18 +29,21 @@ const label = ({ data }) => {
       )}
       {owners && (
         <View style={styles.item.container}>
-          <Text style={[styles.item.text, { color: '#1890FF' }]}>
-            项目已入驻
-          </Text>
+          <Image
+            style={{ marginRight: 3 }}
+            source={require('asset/public_project/checkmark_highlight.png')}
+          />
+          <Text style={[styles.item.text, { color: '#1890FF' }]}>已入驻</Text>
         </View>
       )}
-      {!R.isNil(finance_status) && (
-        <View style={styles.item.container}>
-          <Text style={[styles.item.text, { color: '#09AC32' }]}>
-            {finance_status}
-          </Text>
-        </View>
-      )}
+      {!R.isNil(finance_status) &&
+        finance_status !== '未设定' && (
+          <View style={styles.item.container}>
+            <Text style={[styles.item.text, { color: '#09AC32' }]}>
+              {finance_status}
+            </Text>
+          </View>
+        )}
     </View>
   );
 };
@@ -49,7 +52,7 @@ const styles = {
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
+    marginTop: 6,
     marginBottom: 12,
   },
   item: {
@@ -57,7 +60,8 @@ const styles = {
       height: 15,
       borderRadius: 1,
       backgroundColor: 'white',
-      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
       paddingHorizontal: 3,
       marginRight: 4,
     },

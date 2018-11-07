@@ -54,17 +54,9 @@ const header = ({
         <Tag data={data} />
       </View>
       <MiscTag data={data} />
-      {R.compose(
-        R.not,
-        R.isEmpty,
-        R.pathOr([], ['purpose']),
-      )(data) && (
-        <View>
-          <Purpose portfolio={data} />
-          <View style={styles.divider} />
-        </View>
-      )}
+      <Purpose data={data} />
       <View>
+        <View style={styles.divider} />
         <HotnodeIndex data={data} onInvitedPress={onInvitedPress} />
         <View style={styles.divider} />
       </View>

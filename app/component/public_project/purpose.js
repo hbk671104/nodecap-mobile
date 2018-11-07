@@ -4,13 +4,16 @@ import R from 'ramda';
 
 class PublicProjectPurpose extends PureComponent {
   render() {
+    const { data } = this.props;
+    const purpose_raw = R.pathOr([], ['purpose'])(data);
+    if (R.isEmpty(purpose_raw)) {
+      return null;
+    }
+
     const purpose = R.pipe(
-      R.pathOr([], ['portfolio', 'purpose']),
-      R.reduce(
-        (last, current) => `${last ? `${last}、` : last}${current.name}`,
-        '',
-      ),
-    )(this.props);
+      R.map(p => p.name),
+      R.join('、'),
+    )(purpose_raw);
     return (
       <View style={styles.container}>
         <View style={styles.title.container}>
