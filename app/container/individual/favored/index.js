@@ -7,12 +7,11 @@ import { NavigationActions } from 'react-navigation';
 import NavBar from 'component/navBar';
 import Empty from 'component/empty';
 import List from 'component/uikit/list';
-import FavoredItem, { itemHeight } from 'component/favored/item';
+import FavoredItem from 'component/favored/item';
 
 import styles from './style';
 
-@connect(({ login, favored, loading }) => ({
-  logged_in: !!login.token,
+@connect(({ favored, loading }) => ({
   data: R.pathOr([], ['list', 'data'])(favored),
   pagination: R.pathOr(null, ['list', 'pagination'])(favored),
   loading: loading.effects['favored/fetch'],
@@ -32,23 +31,6 @@ class Favored extends Component {
     });
   };
 
-  handleLoginPress = () => {
-    this.props.track('点击登录按钮');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Login',
-      }),
-    );
-  };
-
-  renderLogin = () => (
-    <Empty
-      image={require('asset/empty/unlogged_in.png')}
-      title="登录后可查看我关注的项目"
-      action={this.handleLoginPress}
-    />
-  );
-
   renderItem = ({ item }) => (
     <FavoredItem
       data={{
@@ -64,7 +46,6 @@ class Favored extends Component {
     const { data, pagination, loading } = this.props;
     return (
       <List
-        itemHeight={itemHeight}
         contentContainerStyle={styles.listContent}
         action={this.requestData}
         loading={loading}
@@ -77,11 +58,10 @@ class Favored extends Component {
   };
 
   render() {
-    const { logged_in } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient title="关注" />
-        {logged_in ? this.renderList() : this.renderLogin()}
+        <NavBar back gradient title="我的关注" />
+        {this.renderList()}
       </View>
     );
   }

@@ -80,6 +80,14 @@ class Self extends Component {
     );
   };
 
+  handleFavoredPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: this.props.isLogin ? 'Favored' : 'Login',
+      }),
+    );
+  };
+
   handleSwitchEndPress = () => {
     if (
       R.pipe(
@@ -159,6 +167,11 @@ class Self extends Component {
             icon={require('asset/mine/institution_join.png')}
             title="机构入驻通道"
             onPress={this.handleInstitutionJoinPress}
+          />
+          <Item
+            icon={require('asset/mine/favored.png')}
+            title="我的关注"
+            onPress={this.handleFavoredPress}
           />
           <View style={styles.scroll.divider} />
           <Item

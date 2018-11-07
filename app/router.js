@@ -295,12 +295,12 @@ const IndividualTab = createBottomTabNavigator(
         };
       },
     },
-    Favored: {
-      screen: Favored,
-      navigationOptions: {
-        title: '关注',
-      },
-    },
+    // Favored: {
+    //   screen: Favored,
+    //   navigationOptions: {
+    //     title: '关注',
+    //   },
+    // },
     Self: {
       screen: IndividualSelf,
       navigationOptions: {
@@ -388,6 +388,7 @@ const IndividualStack = createStackNavigator(
     ClaimMyInstitution,
     CreateMyInstitutionDone,
     InviteComment,
+    Favored,
   },
   {
     headerMode: 'none',
