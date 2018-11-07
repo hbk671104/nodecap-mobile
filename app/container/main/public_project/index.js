@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, Platform, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import JPush from 'jpush-react-native';
 import { RouterEmitter } from '../../../router';
 
 import NavBar, { realBarHeight } from 'component/navBar';
 import NewsItem from 'component/news';
 import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 import { handleBadgeAction } from 'utils/badge_handler';
+import { handleOpen, handleReceive } from 'utils/jpush_handler';
 
 import List from './components/list';
 import Header from './header';
@@ -65,6 +67,46 @@ export default class PublicProject extends Component {
       });
     });
   }
+
+  componentDidMount() {
+    JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.addReceiveNotificationListener(this.handleReceiveNotification);
+    if (Platform.OS === 'ios') {
+      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
+    }
+  }
+
+  componentWillUnmount() {
+    JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
+  }
+
+  handleOpenLaunchNotification = result => {
+    if (R.isNil(result)) {
+      return;
+    }
+
+    setTimeout(() => {
+      const { extras } = result;
+      handleOpen(extras);
+    }, 1000);
+  };
+
+  handleOpenNotification = result => {
+    if (R.isNil(result)) {
+      return;
+    }
+
+    const { extras } = result;
+    handleOpen(extras);
+  };
+
+  handleReceiveNotification = ({ appState, extras }) => {
+    if (appState === 'active') {
+      Vibration.vibrate(500);
+    }
+    handleReceive(extras);
+  };
 
   handleDataAlert = (newUpdateCount, oldUpdateCount) => {
     if (newUpdateCount > oldUpdateCount) {

@@ -31,7 +31,6 @@ import { NavigationActions as routerRedux } from './utils';
 
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
-import { handleOpen, handleReceive } from './utils/jpush_handler';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
 // Screen
@@ -466,11 +465,6 @@ class Router extends Component {
     Linking.addEventListener('url', this.handleOpenURL);
     RouterEmitter.addListener('android_url', this.handleOpenURL);
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
-    JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
-    JPush.addReceiveNotificationListener(this.handleReceiveNotification);
-    if (this.state.isIOS) {
-      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
-    }
     AppState.addEventListener('change', this._handleAppStateChange);
   }
 
@@ -482,8 +476,6 @@ class Router extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
-    JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
-    JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
     AppState.removeEventListener('change', this._handleAppStateChange);
     Linking.removeEventListener('url', this.handleOpenURL);
   }
@@ -535,33 +527,6 @@ class Router extends Component {
 
     dispatch(NavigationActions.back());
     return true;
-  };
-
-  handleOpenLaunchNotification = result => {
-    if (R.isNil(result)) {
-      return;
-    }
-
-    setTimeout(() => {
-      const { extras } = result;
-      handleOpen(extras);
-    }, 1000);
-  };
-
-  handleOpenNotification = result => {
-    if (R.isNil(result)) {
-      return;
-    }
-
-    const { extras } = result;
-    handleOpen(extras);
-  };
-
-  handleReceiveNotification = ({ appState, extras }) => {
-    if (appState === 'active') {
-      Vibration.vibrate(500);
-    }
-    handleReceive(extras);
   };
 
   toggleAlert = payload => {
