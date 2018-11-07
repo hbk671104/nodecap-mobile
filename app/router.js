@@ -133,6 +133,7 @@ import CreateMyInstitutionDone from 'container/individual/self/my_institution/do
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
 import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
 import CreateMyProjectDetail from 'container/individual/self/my_project/display';
+import HotnodeIndex from 'container/individual/hotnode_index';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -277,6 +278,12 @@ const IndividualTab = createBottomTabNavigator(
       screen: PublicProject,
       navigationOptions: {
         title: '首页',
+      },
+    },
+    HotnodeIndex: {
+      screen: HotnodeIndex,
+      navigationOptions: {
+        title: '指数',
       },
     },
     // Trending: {
