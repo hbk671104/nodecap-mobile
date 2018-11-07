@@ -16,6 +16,15 @@ class Avatar extends PureComponent {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const uri = R.pathOr('', ['source', 'uri'])(nextProps);
+    if (!R.isEmpty(uri)) {
+      this.setState({
+        source: { uri },
+      });
+    }
+  }
+
   onError = error => {
     this.setState({
       source: require('asset/project/project_logo_default.png'),
