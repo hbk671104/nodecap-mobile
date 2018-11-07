@@ -1,11 +1,24 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
+import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import Group from './group';
 
-const emotionIndex = ({ data, onTitlePress, onMoreIndexPress }) => {
+const emotionIndex = ({
+  market_sentiment: data,
+  onTitlePress,
+  onMoreIndexPress,
+}) => {
+  let long = R.pathOr(50, ['long'])(data);
+  let short = R.pathOr(50, ['short'])(data);
+  const total = long + short;
+
+  // percentage
+  long = (long / total) * 100;
+  short = (short / total) * 100;
+
   return (
     <Group
       renderTitle={() => (
@@ -28,12 +41,12 @@ const emotionIndex = ({ data, onTitlePress, onMoreIndexPress }) => {
       )}
     >
       <View style={styles.content.container}>
-        <View style={styles.content.long.container}>
-          <Text style={styles.content.text}>看多</Text>
+        <View style={[styles.content.long.container, { flex: long }]}>
+          <Text style={styles.content.text}>{long}% 看多</Text>
         </View>
         <Image source={require('asset/splitter.png')} />
-        <View style={styles.content.short.container}>
-          <Text style={styles.content.text}>看空</Text>
+        <View style={[styles.content.short.container, { flex: short }]}>
+          <Text style={styles.content.text}>{short}% 看空</Text>
         </View>
       </View>
     </Group>

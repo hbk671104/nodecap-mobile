@@ -133,3 +133,23 @@ export function getBanners() {
 export function selectedProject() {
   return request.get('/coins/selected');
 }
+
+export function marketSentiment() {
+  return request.get('/indexes/market-sentiment');
+}
+
+export function globalIndex() {
+  return request.get('/indexes/global');
+}
+
+export function categoryIndex(params) {
+  return request.get('/indexes/category', {
+    params,
+  });
+}
+
+export function coinIndex(params) {
+  return request.get('/indexes/coin', {
+    params,
+  });
+}

@@ -8,6 +8,7 @@ import JPush from 'jpush-react-native';
 import { RouterEmitter } from '../../../router';
 
 import NavBar, { realBarHeight } from 'component/navBar';
+import Explanation from 'component/explanation';
 import NewsItem from 'component/news';
 import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 import { handleBadgeAction } from 'utils/badge_handler';
@@ -23,7 +24,15 @@ import styles from './style';
   name: 'App_PublicProjectOperation',
 })
 @connect(
-  ({ public_project, news, loading, notification, institution, banners }) => ({
+  ({
+    public_project,
+    news,
+    loading,
+    notification,
+    institution,
+    banners,
+    hotnode_index,
+  }) => ({
     news: R.pathOr([], ['news'])(news),
     lastNewsID: R.pathOr(null, ['payload'])(news),
     data: R.pathOr([{}, {}, {}, {}, {}], ['selected', 'index', 'data'])(
@@ -40,9 +49,11 @@ import styles from './style';
     updateCount: R.path(['updated_count'])(news),
     notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
     banners: R.pathOr([], ['list', 'data'])(banners),
+    market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
   }),
 )
 @compose(
+  withState('showExplanation', 'setShowExplanation', false),
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentShareNews', 'setShareNews', ''),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
@@ -260,6 +271,8 @@ export default class PublicProject extends Component {
       onRefreshProject={() => {
         this.refreshProject();
       }}
+      onMoreIndexPress={() => null}
+      onTitlePress={() => this.props.setShowExplanation(true)}
       newsLoading={this.props.loading && this.shouldAnimate}
     />
   );
@@ -286,7 +299,7 @@ export default class PublicProject extends Component {
   );
 
   render() {
-    const { news, loading, refreshButtonOpacityRange } = this.props;
+    const { news, loading, showExplanation } = this.props;
     return (
       <View style={styles.container}>
         <List
@@ -323,6 +336,12 @@ export default class PublicProject extends Component {
             this.props.toggleShareModal(false);
             this.props.setShareNews('');
           }}
+        />
+        <Explanation
+          visible={showExplanation}
+          onBackdropPress={() => this.props.setShowExplanation(false)}
+          title="市场情绪"
+          content="市场情绪是Hotnode综合全网媒体及自媒体数据，进行大数据建模及分析，科学评估市场情绪看多看空动向。"
         />
       </View>
     );
