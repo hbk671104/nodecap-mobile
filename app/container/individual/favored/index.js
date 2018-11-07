@@ -5,7 +5,6 @@ import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
-import Empty from 'component/empty';
 import List from 'component/uikit/list';
 import FavoredItem from 'component/favored/item';
 
@@ -21,6 +20,10 @@ import styles from './style';
   name: 'App_FavoredOperation',
 })
 class Favored extends Component {
+  componentDidMount() {
+    this.props.track('进入');
+  }
+
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'favored/fetch',
