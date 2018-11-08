@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Animated, Platform, Vibration } from 'react-native';
+import { View, Animated, Platform, Vibration, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
@@ -61,10 +61,12 @@ import styles from './style';
 )
 export default class PublicProject extends Component {
   componentWillMount() {
+    this.checkPushPermission();
     RouterEmitter.addListener('resume', () => {
       this.props.dispatch({
         type: 'news/index',
       });
+      this.checkPushPermission();
     });
   }
 
@@ -80,7 +82,23 @@ export default class PublicProject extends Component {
     JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
   }
-
+  checkPushPermission() {
+    if (Platform.OS === 'ios') {
+      JPush.hasPermission((res) => {
+        if (!res) {
+          Alert.alert(
+            '开启推送通知',
+            '可及时获知项目上所、融资等动态信息',
+            [
+              { text: '取消', style: 'cancel' },
+              { text: '立即开启', onPress: () => JPush.setupPush() },
+            ],
+            { cancelable: false }
+          );
+        }
+      });
+    }
+  }
   handleOpenLaunchNotification = result => {
     if (R.isNil(result)) {
       return;
