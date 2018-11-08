@@ -94,6 +94,7 @@ import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
 import Service from 'container/main/service/wrapper';
+import SingleService from 'container/main/service/singleWrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
 import WebPage from 'container/webview';
@@ -265,6 +266,7 @@ const MainStack = createStackNavigator(
     WebPage,
     Settings,
     Service,
+    SingleService,
     CommentCoin,
     InviteComment,
   },
@@ -369,6 +371,7 @@ const IndividualStack = createStackNavigator(
     WhitePaper,
     WebPage,
     Service,
+    SingleService,
     MyProject,
     CreateMyProject,
     CreateMyProjectDetail,

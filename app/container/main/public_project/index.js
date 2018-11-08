@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Animated, Platform, Vibration } from 'react-native';
+import { View, Animated, Platform, Vibration, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
@@ -47,7 +47,12 @@ import styles from './style';
     announcement: R.pathOr([], ['list', 'data'])(notification),
     reports: R.pathOr([], ['report', 'data'])(institution),
     updateCount: R.path(['updated_count'])(news),
-    notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
+    notification_badge_number: R.isNil(R.path(['lastRead'])(notification)) ?
+      0 :
+      R.pathOr(0, ['list', 'pagination', 'total'])(notification) - R.pathOr(0, ['lastRead'])(notification),
+    reports_badge_number: R.isNil(R.path(['lastReportCount'])(institution)) ?
+      0 :
+      R.pathOr(0, ['report', 'pagination', 'total'])(institution) - R.pathOr(0, ['lastReportCount'])(institution),
     banners: R.pathOr([], ['list', 'data'])(banners),
     market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
   }),
@@ -72,10 +77,12 @@ import styles from './style';
 )
 export default class PublicProject extends Component {
   componentWillMount() {
+    this.checkPushPermission();
     RouterEmitter.addListener('resume', () => {
       this.props.dispatch({
         type: 'news/index',
       });
+      this.checkPushPermission();
     });
   }
 
@@ -91,7 +98,25 @@ export default class PublicProject extends Component {
     JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
     JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
   }
-
+  checkPushPermission() {
+    setTimeout(() => {
+      if (Platform.OS === 'ios') {
+        JPush.hasPermission((res) => {
+          if (!res) {
+            Alert.alert(
+              '开启推送通知',
+              '可及时获知项目上所、融资等动态信息',
+              [
+                { text: '取消', style: 'cancel' },
+                { text: '立即开启', onPress: () => JPush.setupPush() },
+              ],
+              { cancelable: false }
+            );
+          }
+        });
+      }
+    }, 1000);
+  }
   handleOpenLaunchNotification = result => {
     if (R.isNil(result)) {
       return;
@@ -204,13 +229,24 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleServicePress = () => {
+  handleServicePress = (type) => () => {
     this.props.track('点击找服务');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Service',
-      }),
-    );
+    if (type === 'more') {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Service',
+        }),
+      );
+    } else {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'SingleService',
+          params: {
+            type,
+          },
+        }),
+      );
+    }
   };
 
   handleReportItemPress = item => {

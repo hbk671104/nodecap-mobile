@@ -6,7 +6,7 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const reportItem = ({ data, onPress }) => {
+const reportItem = ({ data, onPress, isRead }) => {
   const title = R.pathOr('--', ['title'])(data);
   const date = R.pathOr('--', ['published_at'])(data);
   const institution = R.pathOr('--', ['industry', 'name'])(data);
@@ -15,7 +15,7 @@ const reportItem = ({ data, onPress }) => {
     <Touchable onPress={() => onPress(data)}>
       <View style={styles.container}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={[styles.title, isRead ? styles.isReadTitle : {}]}>{title}</Text>
         </View>
         <View style={styles.content.container}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
@@ -40,6 +40,9 @@ const styles = {
     lineHeight: 20,
     color: 'rgba(0, 0, 0, 0.85)',
     fontWeight: 'bold',
+  },
+  isReadTitle: {
+    color: 'rgba(0, 0, 0, 0.45)',
   },
   content: {
     container: {
