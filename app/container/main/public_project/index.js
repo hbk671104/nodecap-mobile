@@ -243,6 +243,14 @@ export default class PublicProject extends Component {
     this.props.toggleShareModal(true);
   };
 
+  handleMoreIndexPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'HotnodeIndex',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
     <NewsItem
       {...this.props}
@@ -271,7 +279,7 @@ export default class PublicProject extends Component {
       onRefreshProject={() => {
         this.refreshProject();
       }}
-      onMoreIndexPress={() => null}
+      onMoreIndexPress={this.handleMoreIndexPress}
       onTitlePress={() => this.props.setShowExplanation(true)}
       newsLoading={this.props.loading && this.shouldAnimate}
     />
