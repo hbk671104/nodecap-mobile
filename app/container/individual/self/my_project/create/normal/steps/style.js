@@ -72,4 +72,18 @@ export default {
     width: 38,
     borderRadius: 19,
   },
+  forward_pc: {
+    container: {
+      marginVertical: 24,
+      alignSelf: 'center',
+      height: 26.5,
+      borderRadius: 2,
+      backgroundColor: '#F5F5F5',
+      paddingHorizontal: 12,
+    },
+    text: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.65)',
+    },
+  },
 };
