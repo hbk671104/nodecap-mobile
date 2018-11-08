@@ -30,6 +30,7 @@ const top = ({
   onInstitutionPress,
   onInstitutionReportPress,
   notification_badge_number,
+  reports_badge_number,
 }) => (
   <View style={styles.container}>
     <View style={{ height: 160 }}>
@@ -105,6 +106,7 @@ const top = ({
             <Image source={require('asset/public_project/report.png')} />
           </View>
           <Text style={styles.tab.group.title}>研报</Text>
+          {!!reports_badge_number && <NumberBadge number={reports_badge_number} />}
         </View>
       </Touchable>
       <Touchable style={styles.tab.group.wrapper} onPress={onInstitutionPress}>
