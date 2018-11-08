@@ -70,6 +70,7 @@ class FavorItem extends PureComponent {
       R.isEmpty,
       R.not,
     )(data);
+    const has_owner = R.pathOr(false, ['has_owner'])(data);
     const is_vip = R.pipe(
       R.pathOr({}, ['vip']),
       R.isEmpty,
@@ -113,7 +114,7 @@ class FavorItem extends PureComponent {
               {is_vip && (
                 <Image
                   style={{ marginLeft: 8 }}
-                  source={require('asset/public_project/is_vip.png')}
+                  source={require('asset/public_project/vip_latest.png')}
                 />
               )}
             </View>
@@ -138,6 +139,27 @@ class FavorItem extends PureComponent {
                 R.isEmpty(category) && { marginTop: 0 },
               ]}
             >
+              {has_owner && (
+                <View
+                  style={[
+                    styles.content.miscTag.item.container,
+                    { backgroundColor: '#1890FF', marginRight: 4 },
+                  ]}
+                >
+                  <Image
+                    style={{ marginRight: 3 }}
+                    source={require('asset/public_project/checkmark.png')}
+                  />
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: 'white' },
+                    ]}
+                  >
+                    已入驻
+                  </Text>
+                </View>
+              )}
               {has_white_paper && (
                 <View
                   style={[
@@ -314,7 +336,7 @@ const styles = {
         container: {
           height: 17,
           paddingHorizontal: 3,
-          justifyContent: 'center',
+          flexDirection: 'row',
           alignItems: 'center',
           borderRadius: 1,
         },

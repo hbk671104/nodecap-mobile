@@ -17,12 +17,22 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
   const subtitle = R.pathOr('--', ['subtitle'])(data);
   const push_at = R.pathOr(null, ['push_at'])(data);
   const source = R.pathOr('', ['source'])(data);
+  const logo_url = R.pathOr('', ['logo_url'])(data);
 
   return (
     <Touchable foreground onPress={onPress(data.id)}>
       <View style={styles.container}>
         <Flex justify="between" style={styles.header}>
-          <Text style={styles.sourceName}>{source}</Text>
+          <Flex align="center">
+            <Avatar
+              raised={false}
+              innerRatio={1}
+              size={20}
+              style={styles.avatar}
+              source={{ uri: logo_url }}
+            />
+            <Text style={styles.sourceName}>{source}</Text>
+          </Flex>
           <Text style={styles.pushAt}>
             {push_at ? moment.unix(push_at).format('M/D HH:mm') : null}
           </Text>
@@ -55,6 +65,9 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
 const styles = {
   container: {
     backgroundColor: 'white',
+  },
+  avatar: {
+    marginRight: 10,
   },
   header: {
     flex: 1,

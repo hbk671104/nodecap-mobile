@@ -42,13 +42,16 @@ const avatar_group = ({ data, onExplanationPress }) => {
       </View>
       <Touchable borderless onPress={onExplanationPress}>
         <View style={styles.title.container}>
-          <Text style={styles.title.text}>项目得分：</Text>
-          <View style={styles.title.score.container}>
-            <Text style={[styles.title.text, { color: '#1890FF' }]}>
-              {score}
-            </Text>
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={styles.title.text}>{score}</Text>
           </View>
-          <Image source={require('asset/public_project/explanation.png')} />
+          <View style={styles.title.right.container}>
+            <Text style={{ fontSize: 11, color: 'white' }}>分</Text>
+            <Image
+              style={{ marginLeft: 3 }}
+              source={require('asset/public_project/explanation.png')}
+            />
+          </View>
         </View>
       </Touchable>
       <View style={styles.subtitle.container}>
@@ -62,28 +65,28 @@ const avatar_group = ({ data, onExplanationPress }) => {
 
 const styles = {
   container: {
-    alignItems: 'center',
     marginBottom: 8,
   },
   title: {
     container: {
       flexDirection: 'row',
-      alignItems: 'center',
-      marginTop: 8,
+      alignSelf: 'center',
     },
     text: {
       color: 'white',
-      fontSize: 12,
+      fontSize: 23,
       fontWeight: 'bold',
     },
-    score: {
+    right: {
       container: {
-        borderRadius: 1,
-        backgroundColor: 'white',
-        paddingHorizontal: 3,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight: 5.5,
+        position: 'absolute',
+        right: 3,
+        top: 0,
+        bottom: 0,
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        marginBottom: 5,
       },
     },
   },
@@ -100,6 +103,7 @@ const styles = {
       width: 68,
       justifyContent: 'center',
       alignItems: 'center',
+      alignSelf: 'center',
     },
     container: {
       ...StyleSheet.absoluteFillObject,

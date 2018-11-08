@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { View, Animated, LayoutAnimation, Text } from 'react-native';
 import { connect } from 'react-redux';
@@ -8,10 +8,9 @@ import { getStatusBarHeight } from 'react-native-iphone-x-helper';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import StatusBar from './uikit/statusBar';
-import Gradient from './uikit/gradient';
 
 @connect()
-class NavBar extends Component {
+class NavBar extends PureComponent {
   static propTypes = {
     disableStatusBar: PropTypes.bool,
     barStyle: PropTypes.string,
@@ -84,9 +83,8 @@ class NavBar extends Component {
       iconStyle,
       disableStatusBar,
     } = this.props;
-    const WrapperComp = gradient ? Gradient : View;
     return (
-      <WrapperComp style={style}>
+      <View style={[style, gradient && { backgroundColor: '#1890FF' }]}>
         {!disableStatusBar && <StatusBar barStyle={barStyle} />}
         <Animated.View
           style={[
@@ -148,7 +146,7 @@ class NavBar extends Component {
           </View>
         </Animated.View>
         {renderBottom && !bottomHidden && renderBottom()}
-      </WrapperComp>
+      </View>
     );
   }
 }

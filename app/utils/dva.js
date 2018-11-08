@@ -60,6 +60,8 @@ export default options => {
         'institution_create/claimInstitution',
         'service/fetch',
         'service/get',
+        'hotnode_index/fetchCategory',
+        'hotnode_index/fetchCoin',
       ],
     }),
   );

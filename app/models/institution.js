@@ -16,6 +16,8 @@ export default {
     banner: null,
     report_set: null,
     current: null,
+    lastReportCount: null,
+    has_read_reports: [],
   },
   effects: {
     *fetch({ payload }, { call, put }) {
@@ -29,7 +31,7 @@ export default {
         console.log(e);
       }
     },
-    *fetchReports({ payload }, { call, put }) {
+    *fetchReports({ payload, refreshLastCount }, { call, put, select }) {
       try {
         if (R.pathOr(1, ['currentPage'])(payload) === 1) {
           yield put({
@@ -41,6 +43,13 @@ export default {
           type: 'report',
           payload: data,
         });
+        const lastReportCount = yield select(({ institution }) => R.path(['lastReportCount'])(institution));
+        if (refreshLastCount || R.isNil(lastReportCount)) {
+          yield put({
+            type: 'lastReportCount',
+            payload: R.path(['pagination', 'total'])(data),
+          });
+        }
       } catch (e) {
         console.log(e);
       }
@@ -126,6 +135,18 @@ export default {
           ...state.current,
           [id]: null,
         },
+      };
+    },
+    lastReportCount(state, action) {
+      return {
+        ...state,
+        lastReportCount: action.payload,
+      };
+    },
+    setReportRead(state, action) {
+      return {
+        ...state,
+        has_read_reports: R.uniq(state.has_read_reports.concat([action.id])),
       };
     },
   },

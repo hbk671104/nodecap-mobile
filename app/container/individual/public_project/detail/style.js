@@ -46,7 +46,7 @@ export default {
     container: {
       position: 'absolute',
       right: 0,
-      bottom: 190,
+      top: 230,
     },
   },
   explanation: {

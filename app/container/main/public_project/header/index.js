@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
-import R from 'ramda';
+import { View } from 'react-native';
 
-import Touchable from 'component/uikit/touchable';
-import Avatar from 'component/uikit/avatar';
-import Icon from 'component/uikit/icon';
-import Group from './group';
 import Middle from './middle';
 import Bottom from './bottom';
+import EmotionIndex from './emotion_index';
 import Top from './top';
 
 const header = props => (
   <View>
     <Top {...props} />
+    <View style={styles.divider} />
+    <EmotionIndex {...props} />
     <View style={styles.divider} />
     <Middle {...props} />
     <View style={styles.divider} />
