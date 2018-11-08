@@ -8,10 +8,11 @@ import {
   Clipboard,
 } from 'react-native';
 import { Flex, Toast } from 'antd-mobile';
-
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import * as WeChat from 'react-native-wechat';
 import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
@@ -28,6 +29,7 @@ import styles from './style';
   isLogin: !!login.token,
   loading: loading.effects['login/switch'],
 }))
+@connectActionSheet
 class Self extends Component {
   handleSettingsPress = () => {
     this.props.track('设置');
@@ -120,6 +122,36 @@ class Self extends Component {
     ]);
   };
 
+  handleShare = () => {
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['分享至朋友圈', '分享至微信', '取消'],
+        cancelButtonIndex: 2,
+      },
+      index => {
+        const request = {
+          type: 'news',
+          webpageUrl:
+            'http://a.app.qq.com/o/simple.jsp?pkgname=com.nodecap.hotnode',
+          title: '推荐「Hotnode」给你',
+          description: '来 Hotnode 找最新最热项目！',
+          thumbImage:
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+        };
+        switch (index) {
+          case 0:
+            WeChat.shareToTimeline(request);
+            break;
+          case 1:
+            WeChat.shareToSession(request);
+            break;
+          default:
+            break;
+        }
+      },
+    );
+  };
+
   renderNavBar = () => (
     <NavBar
       gradient
@@ -183,6 +215,11 @@ class Self extends Component {
             icon={require('asset/mine/settings.png')}
             title="设置"
             onPress={this.handleSettingsPress}
+          />
+          <Item
+            icon={require('asset/mine/share_hotnode.png')}
+            title="分享 Hotnode"
+            onPress={this.handleShare}
           />
           <StaticItem
             icon={require('asset/mine/wechat.png')}

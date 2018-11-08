@@ -16,9 +16,7 @@ const coinItem = ({ data, onPress }) => {
   const name = R.pathOr('--', ['name'])(data);
   const icon = R.pathOr('', ['icon'])(data);
   const heat = R.pathOr('--', ['heat'])(data);
-  const heat_change_percentage = R.pathOr('--', ['heat_change_percentage'])(
-    data,
-  );
+  const heat_change_percentage = R.pathOr(0, ['heat_change_percentage'])(data);
   const trend = R.pipe(
     R.pathOr([], ['trend']),
     R.map(t => ({
@@ -26,6 +24,8 @@ const coinItem = ({ data, onPress }) => {
       y: t.heat,
     })),
   )(data);
+
+  const minus = heat_change_percentage < 0;
 
   return (
     <Touchable foreground onPress={onPress}>
@@ -44,8 +44,13 @@ const coinItem = ({ data, onPress }) => {
             <Text style={styles.heat}>{heat}</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={styles.heat_percentage}>
-              +{heat_change_percentage}%
+            <Text
+              style={[styles.heat_percentage, minus && { color: '#F55454' }]}
+            >
+              {minus
+                ? `${heat_change_percentage}`
+                : `+${heat_change_percentage}`}
+              %
             </Text>
           </View>
           <View style={{ flex: 1 }}>
@@ -55,12 +60,24 @@ const coinItem = ({ data, onPress }) => {
                 <VictoryAxis style={styles.axis.dependent} dependentAxis />
                 <VictoryArea
                   interpolation="basis"
-                  style={styles.area}
+                  style={{
+                    ...styles.area,
+                    data: {
+                      ...styles.area.data,
+                      fill: minus ? '#FFF6F6' : '#ECFFF1',
+                    },
+                  }}
                   data={trend}
                 />
                 <VictoryLine
                   interpolation="basis"
-                  style={styles.line}
+                  style={{
+                    ...styles.line,
+                    data: {
+                      ...styles.line.data,
+                      stroke: minus ? '#F55454' : '#15D661',
+                    },
+                  }}
                   data={trend}
                 />
               </VictoryChart>

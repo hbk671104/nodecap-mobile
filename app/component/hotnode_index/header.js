@@ -6,34 +6,42 @@ import { Flex } from 'antd-mobile';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 
-const item = ({ title, number, change, percentage_change }) => (
-  <View style={styles.item.container}>
-    <View>
-      <Text style={styles.item.title.text}>{title}</Text>
+const item = ({ title, number, change, percentage_change }) => {
+  const minus_percentage = percentage_change < 0;
+  return (
+    <View style={styles.item.container}>
+      <View>
+        <Text style={styles.item.title.text}>{title}</Text>
+      </View>
+      <View style={styles.item.content.container}>
+        <Text style={styles.item.content.text}>{number}</Text>
+        <Text style={styles.item.content.change}>
+          <Icon override name="md-arrow-dropup" color="#09AC32" /> {change}
+        </Text>
+      </View>
+      <View
+        style={[
+          styles.item.percentage_change.container,
+          minus_percentage && { backgroundColor: '#F55454' },
+        ]}
+      >
+        <Text style={styles.item.percentage_change.text}>
+          {minus_percentage ? `${percentage_change}` : `+${percentage_change}`}%
+        </Text>
+      </View>
     </View>
-    <View style={styles.item.content.container}>
-      <Text style={styles.item.content.text}>{number}</Text>
-      <Text style={styles.item.content.change}>
-        <Icon override name="md-arrow-dropup" color="#09AC32" /> {change}
-      </Text>
-    </View>
-    <View style={styles.item.percentage_change.container}>
-      <Text style={styles.item.percentage_change.text}>
-        +{percentage_change}%
-      </Text>
-    </View>
-  </View>
-);
+  );
+};
 
 const categoryHeader = ({ global, onPress }) => {
   const count = R.pathOr('--', ['count'])(global);
-  const count_change = R.pathOr('', ['count_change'])(global);
-  const count_change_percentage = R.pathOr('', ['count_change_percentage'])(
+  const count_change = R.pathOr(0, ['count_change'])(global);
+  const count_change_percentage = R.pathOr(0, ['count_change_percentage'])(
     global,
   );
   const heat = R.pathOr('--', ['heat'])(global);
-  const heat_change = R.pathOr('', ['heat_change'])(global);
-  const heat_change_percentage = R.pathOr('', ['heat_change_percentage'])(
+  const heat_change = R.pathOr(0, ['heat_change'])(global);
+  const heat_change_percentage = R.pathOr(0, ['heat_change_percentage'])(
     global,
   );
 

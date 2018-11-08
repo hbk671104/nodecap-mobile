@@ -7,10 +7,13 @@ import Touchable from 'component/uikit/touchable';
 const categoryItem = ({ data, onPress }) => {
   const category = R.pathOr('--', ['name'])(data);
   const heat = R.pathOr('--', ['indexes', 'heat'])(data);
-  const heat_change_percentage = R.pathOr('', [
+  const heat_change_percentage = R.pathOr(0, [
     'indexes',
     'heat_change_percentage',
   ])(data);
+
+  const minus = heat_change_percentage < 0;
+
   return (
     <Touchable disabled onPress={onPress}>
       <View style={styles.container}>
@@ -19,9 +22,12 @@ const categoryItem = ({ data, onPress }) => {
           <Text style={styles.subtitle}>
             {heat}
             {'  '}
-            {!R.isEmpty(heat_change_percentage) && (
-              <Text style={styles.heat}>+{heat_change_percentage}%</Text>
-            )}
+            <Text style={[styles.heat, minus && { color: '#F55454' }]}>
+              {minus
+                ? `${heat_change_percentage}`
+                : `+${heat_change_percentage}`}
+              %
+            </Text>
           </Text>
         </View>
       </View>
