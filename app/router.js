@@ -4,7 +4,6 @@ import {
   Alert,
   View,
   Platform,
-  Vibration,
   AppState,
   Linking,
 } from 'react-native';
@@ -437,8 +436,10 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 
 const addListener = createReduxBoundAddListener('root');
 
+import { compose, withState } from 'recompose';
 import UpdateAlert from 'component/update';
 import Modal from 'component/modal';
+import ActionAlert from 'component/action_alert';
 import { hasAppStoreUpdate } from 'utils/utils';
 
 @withNetworkConnectivity({
@@ -450,10 +451,13 @@ import { hasAppStoreUpdate } from 'utils/utils';
   showAlert: R.pathOr(false, ['modal_visible'])(update),
   release_notes: R.pathOr('', ['release_notes'])(update),
 }))
+@compose(
+  withState('showNotificationModal', 'setShowNotificationModal', false),
+  withState('appState', 'setAppState', AppState.currentState),
+)
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
-    appState: '',
   };
 
   async componentWillMount() {
@@ -472,6 +476,9 @@ class Router extends Component {
     this.props.dispatch({
       type: 'app/checkCodePush',
     });
+
+    // check notif permission
+    this.checkPushPermission();
   }
 
   componentDidMount() {
@@ -515,7 +522,7 @@ class Router extends Component {
 
   _handleAppStateChange = nextAppState => {
     if (
-      this.state.appState.match(/inactive|background/) &&
+      this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
       RouterEmitter.emit('resume');
@@ -524,8 +531,20 @@ class Router extends Component {
       this.props.dispatch({
         type: 'app/checkCodePush',
       });
+      // check notification permissions
+      this.checkPushPermission();
     }
-    this.setState({ appState: nextAppState });
+    this.props.setAppState(nextAppState);
+  };
+
+  checkPushPermission = () => {
+    if (this.state.isIOS) {
+      JPush.hasPermission(res => {
+        if (!res) {
+          this.props.setShowNotificationModal(true);
+        }
+      });
+    }
   };
 
   backHandle = () => {
@@ -572,6 +591,14 @@ class Router extends Component {
         >
           <UpdateAlert note={release_notes} />
         </Modal>
+        <ActionAlert
+          visible={this.props.showNotificationModal}
+          title="开启推送通知"
+          content="及时获取项目上所，融资等动态信息"
+          actionTitle="立即开启"
+          action={() => Linking.openURL('app-settings:')}
+          onBackdropPress={() => this.props.setShowNotificationModal(false)}
+        />
       </View>
     );
   }
