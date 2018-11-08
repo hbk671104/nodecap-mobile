@@ -134,6 +134,7 @@ import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/c
 import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
 import CreateMyProjectDetail from 'container/individual/self/my_project/display';
 import HotnodeIndex from 'container/individual/hotnode_index';
+import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -396,6 +397,7 @@ const IndividualStack = createStackNavigator(
     CreateMyInstitutionDone,
     InviteComment,
     Favored,
+    HotnodeCoinIndex,
   },
   {
     headerMode: 'none',

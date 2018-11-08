@@ -19,7 +19,7 @@ const item = ({ title, number, change, percentage_change }) => (
     </View>
     <View style={styles.item.percentage_change.container}>
       <Text style={styles.item.percentage_change.text}>
-        {percentage_change}%
+        +{percentage_change}%
       </Text>
     </View>
   </View>

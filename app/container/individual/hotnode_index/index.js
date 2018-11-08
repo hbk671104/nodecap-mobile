@@ -35,11 +35,19 @@ class HotnodeIndex extends PureComponent {
     });
   };
 
+  handleHeaderPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'HotnodeCoinIndex',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => <CategoryItem data={item} />;
 
   renderHeader = () => (
     <View>
-      <Header {...this.props} />
+      <Header {...this.props} onPress={this.handleHeaderPress} />
       <View style={styles.categoryTitle.container}>
         <Text style={styles.categoryTitle.text}>领域</Text>
       </View>
@@ -53,7 +61,6 @@ class HotnodeIndex extends PureComponent {
         <NavBar gradient title="Hotnode 指数" />
         <List
           numColumns={2}
-          columnWrapperStyle={{}}
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
