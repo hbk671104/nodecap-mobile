@@ -5,7 +5,10 @@ import { paginate } from 'utils/pagination';
 export default {
   namespace: 'hotnode_index',
   state: {
-    global: null,
+    overall: {
+      global: null,
+      list: null,
+    },
     market_sentiment: null,
     category: null,
     coin: null,
@@ -27,12 +30,15 @@ export default {
         console.log(error);
       }
     },
-    *fetchGlobal({ callback }, { call, put }) {
+    *fetchGlobal({ id, callback }, { call, put }) {
       try {
-        const { data } = yield call(Individual.globalIndex);
+        const { data } = yield call(Individual.globalIndex, {
+          ...(R.isNil(id) ? {} : { tag_id: id }),
+        });
 
         yield put({
           type: 'global',
+          id,
           payload: data,
         });
 
@@ -65,13 +71,22 @@ export default {
         console.log(error);
       }
     },
-    *fetchCoin({ payload, callback }, { call, put }) {
+    *fetchCoin({ id, payload, callback }, { call, put }) {
       try {
-        const { data } = yield call(Individual.coinIndex, payload);
+        const { data } = yield call(Individual.coinIndex, {
+          tag_id: id,
+          ...payload,
+        });
 
         yield put({
           type: 'coin',
+          id,
           payload: data,
+        });
+
+        yield put.resolve({
+          type: 'fetchGlobal',
+          id,
         });
 
         if (callback) {
@@ -95,16 +110,49 @@ export default {
         category: paginate(state.category, payload),
       };
     },
-    global(state, { payload }) {
+    global(state, { id, payload }) {
+      if (id) {
+        return {
+          ...state,
+          coin: {
+            ...state.coin,
+            [id]: {
+              ...R.pathOr({}, ['coin', id])(state),
+              global: payload,
+            },
+          },
+        };
+      }
       return {
         ...state,
-        global: payload,
+        overall: {
+          ...state.overall,
+          global: payload,
+        },
       };
     },
-    coin(state, { payload }) {
+    coin(state, { id, payload }) {
+      if (id) {
+        return {
+          ...state,
+          coin: {
+            ...state.coin,
+            [id]: {
+              ...R.pathOr({}, ['coin', id])(state),
+              list: paginate(
+                R.pathOr([], ['coin', id, 'list'])(state),
+                payload,
+              ),
+            },
+          },
+        };
+      }
       return {
         ...state,
-        coin: paginate(state.coin, payload),
+        overall: {
+          ...state.overall,
+          list: paginate(R.pathOr([], ['overall', 'list'])(state), payload),
+        },
       };
     },
   },

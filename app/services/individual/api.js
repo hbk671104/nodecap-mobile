@@ -138,8 +138,10 @@ export function marketSentiment() {
   return request.get('/indexes/market-sentiment');
 }
 
-export function globalIndex() {
-  return request.get('/indexes/global');
+export function globalIndex(params) {
+  return request.get('/indexes/global', {
+    params,
+  });
 }
 
 export function categoryIndex(params) {

@@ -88,12 +88,12 @@ class CoinHeader extends PureComponent {
           </Flex>
           <Text style={styles.top.content}>{count}</Text>
         </View>
-        <View style={styles.chart.container}>
-          <Flex align="center" justify="space-between">
-            <Text style={styles.chart.title}>单位：个</Text>
-            {dateSelector({ range, onSelect: this.handleDateSelect })}
-          </Flex>
-          {R.length(trend) > 1 && (
+        {R.length(trend) > 1 && (
+          <View style={styles.chart.container}>
+            <Flex align="center" justify="space-between">
+              <Text style={styles.chart.title}>单位：个</Text>
+              {dateSelector({ range, onSelect: this.handleDateSelect })}
+            </Flex>
             <VictoryChart
               height={192}
               padding={styles.chart.padding}
@@ -114,11 +114,10 @@ class CoinHeader extends PureComponent {
                 interpolation="basis"
                 style={styles.chart.line}
                 data={trend}
-                // labels={datum => datum.y}
               />
             </VictoryChart>
-          )}
-        </View>
+          </View>
+        )}
       </View>
     );
   }

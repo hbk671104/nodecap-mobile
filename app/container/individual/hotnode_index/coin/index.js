@@ -15,12 +15,27 @@ import styles from './style';
   page: 'Hotnode项目指数',
   name: 'App_HotnodeCoinIndexOperation',
 })
-@connect(({ hotnode_index, loading }) => ({
-  data: R.pathOr([], ['coin', 'data'])(hotnode_index),
-  pagination: R.pathOr(null, ['coin', 'pagination'])(hotnode_index),
-  global: R.pathOr({}, ['global'])(hotnode_index),
-  loading: loading.effects['hotnode_index/fetchCoin'],
-}))
+@connect(({ hotnode_index, loading }, { navigation }) => {
+  const item = navigation.getParam('item');
+  const id = R.path(['id'])(item);
+  const data = R.isNil(id)
+    ? R.pathOr([], ['overall', 'list', 'data'])(hotnode_index)
+    : R.pathOr([], ['coin', id, 'list', 'data'])(hotnode_index);
+  const pagination = R.isNil(id)
+    ? R.path(['overall', 'list', 'pagination'])(hotnode_index)
+    : R.path(['coin', id, 'list', 'pagination'])(hotnode_index);
+  const global = R.isNil(id)
+    ? R.pathOr({}, ['overall', 'global'])(hotnode_index)
+    : R.pathOr({}, ['coin', id, 'global'])(hotnode_index);
+  return {
+    id,
+    title: R.pathOr('区块链一级市场指数', ['name'])(item),
+    data,
+    pagination,
+    global,
+    loading: loading.effects['hotnode_index/fetchCoin'],
+  };
+})
 class HotnodeCoinIndex extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
@@ -29,6 +44,7 @@ class HotnodeCoinIndex extends PureComponent {
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'hotnode_index/fetchCoin',
+      id: this.props.id,
       payload: {
         page,
         'per-page': size,
@@ -71,10 +87,10 @@ class HotnodeCoinIndex extends PureComponent {
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data, pagination, loading } = this.props;
+    const { title, data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar back gradient title="区块链一级市场指数" />
+        <NavBar back gradient title={title} />
         <List
           contentContainerStyle={styles.listContent}
           action={this.requestData}

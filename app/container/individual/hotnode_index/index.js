@@ -17,7 +17,7 @@ import styles from './style';
 @connect(({ hotnode_index, loading }) => ({
   data: R.pathOr([], ['category', 'data'])(hotnode_index),
   pagination: R.pathOr(null, ['category', 'pagination'])(hotnode_index),
-  global: R.pathOr({}, ['global'])(hotnode_index),
+  global: R.pathOr({}, ['overall', 'global'])(hotnode_index),
   loading: loading.effects['hotnode_index/fetchCategory'],
 }))
 class HotnodeIndex extends PureComponent {
@@ -43,7 +43,20 @@ class HotnodeIndex extends PureComponent {
     );
   };
 
-  renderItem = ({ item }) => <CategoryItem data={item} />;
+  handleItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'HotnodeCoinIndex',
+        params: {
+          item,
+        },
+      }),
+    );
+  };
+
+  renderItem = ({ item }) => (
+    <CategoryItem data={item} onPress={this.handleItemPress(item)} />
+  );
 
   renderHeader = () => (
     <View>

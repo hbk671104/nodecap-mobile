@@ -15,7 +15,7 @@ const categoryItem = ({ data, onPress }) => {
   const minus = heat_change_percentage < 0;
 
   return (
-    <Touchable disabled onPress={onPress}>
+    <Touchable onPress={onPress}>
       <View style={styles.container}>
         <View>
           <Text style={styles.title}>{category}</Text>
