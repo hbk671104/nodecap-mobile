@@ -134,9 +134,10 @@ class Self extends Component {
           webpageUrl:
             'http://a.app.qq.com/o/simple.jsp?pkgname=com.nodecap.hotnode',
           title: '推荐「Hotnode」给你',
-          description: '来 Hotnode 找最新最热项目！',
+          description:
+            '找项目，上 Hotnode！Hotnode 是一款为区块链项目方和服务方提供数据服务的综合性平台。',
           thumbImage:
-            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png?x-oss-process=image/resize,p_50',
         };
         switch (index) {
           case 0:
