@@ -137,7 +137,7 @@ class Self extends Component {
           description:
             '找项目，上 Hotnode！Hotnode 是一款为区块链项目方和服务方提供数据服务的综合性平台。',
           thumbImage:
-            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png?x-oss-process=image/resize,p_50',
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/logo_200x200.png',
         };
         switch (index) {
           case 0:

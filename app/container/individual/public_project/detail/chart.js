@@ -99,8 +99,8 @@ class Chart extends PureComponent {
   );
 
   renderChart = trend => {
-    const data = R.pipe(R.path([this.state.period]))(trend);
-    if (R.length(data) <= 1) {
+    const data = R.pathOr([], [this.state.period])(trend);
+    if (R.length(data) <= 1 || typeof data !== 'object') {
       return (
         <View style={styles.empty.container}>
           <Empty title="暂无数据" />

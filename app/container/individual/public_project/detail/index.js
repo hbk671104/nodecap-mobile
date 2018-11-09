@@ -111,6 +111,7 @@ export default class PublicProjectDetail extends Component {
   state = {
     isWXAppSupportApi: false,
   };
+
   componentWillMount() {
     this.loadDetail();
     this.checkWechatAval();
