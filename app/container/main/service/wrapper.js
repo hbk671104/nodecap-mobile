@@ -19,7 +19,7 @@ import styles from './style';
 @connect(({ global }) => ({
   type: R.pipe(
     R.pathOr([], ['constants', 'industry_type']),
-    R.filter(t => t.value !== 3 || t.value !== 7 || t.value !== 8),
+    R.filter(t => t.value !== 3 && t.value !== 7 && t.value !== 8),
   )(global),
 }))
 export default class Service extends Component {
@@ -52,12 +52,7 @@ export default class Service extends Component {
           }}
         >
           {R.map(t => (
-            <ServiceList
-              key={t.value}
-              type={t.value}
-              //   index={t.id}
-              tabLabel={t.name}
-            />
+            <ServiceList key={t.value} type={t.value} tabLabel={t.name} />
           ))(type)}
         </ScrollableTabView>
       </View>

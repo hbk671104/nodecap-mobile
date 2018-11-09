@@ -153,6 +153,16 @@ export default {
         request.defaults.baseURL = Config.API_INDIVIDUAL_URL;
         request.defaults.headers.common['X-Company-ID'] = null;
 
+        // constant
+        yield all([
+          put.resolve({
+            type: 'getConstant',
+          }),
+          put.resolve({
+            type: 'user/fetchCurrent',
+          }),
+        ]);
+
         const companies = yield select(state =>
           R.path(['user', 'currentUser', 'companies'])(state),
         );
@@ -180,16 +190,6 @@ export default {
         JPush.setAlias(`user_${user_id}`, () => null);
         JPush.cleanTags(() => null);
 
-        // constant
-        yield all([
-          put.resolve({
-            type: 'getConstant',
-          }),
-          put.resolve({
-            type: 'user/fetchCurrent',
-          }),
-        ]);
-
         if (callback) {
           yield call(callback);
         }
@@ -201,6 +201,25 @@ export default {
       try {
         // http headers
         request.defaults.baseURL = Config.API_URL;
+
+        yield all([
+          put.resolve({
+            type: 'getConstant',
+          }),
+          put.resolve({
+            type: 'getPermission',
+          }),
+          put.resolve({
+            type: 'fund/fetch',
+          }),
+          put.resolve({
+            type: 'roles',
+          }),
+          put.resolve({
+            type: 'user/fetchCurrent',
+          }),
+        ]);
+
         const companies = yield select(state =>
           R.path(['user', 'currentUser', 'companies'])(state),
         );
@@ -229,24 +248,6 @@ export default {
         // JPush
         JPush.setAlias(`user_${user_id}`, () => null);
         JPush.setTags([`company_${companyID}`], () => null);
-
-        yield all([
-          put.resolve({
-            type: 'getConstant',
-          }),
-          put.resolve({
-            type: 'getPermission',
-          }),
-          put.resolve({
-            type: 'user/fetchCurrent',
-          }),
-          put.resolve({
-            type: 'fund/fetch',
-          }),
-          put.resolve({
-            type: 'roles',
-          }),
-        ]);
 
         if (callback) {
           yield call(callback);
