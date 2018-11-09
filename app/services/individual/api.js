@@ -155,3 +155,7 @@ export function coinIndex(params) {
     params,
   });
 }
+
+export function viewProject(id) {
+  return request.post(`/coins/${id}/views`);
+}

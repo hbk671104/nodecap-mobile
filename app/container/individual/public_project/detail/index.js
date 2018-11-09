@@ -114,6 +114,7 @@ export default class PublicProjectDetail extends Component {
   componentWillMount() {
     this.loadDetail();
     this.checkWechatAval();
+    this.markView();
   }
 
   componentDidMount() {
@@ -126,6 +127,7 @@ export default class PublicProjectDetail extends Component {
       id: this.props.id,
     });
   }
+
   onPressClaimCoin = () => {
     this.props.track('点击认领按钮');
     if (!this.props.logged_in) {
@@ -149,6 +151,13 @@ export default class PublicProjectDetail extends Component {
   checkWechatAval = async () => {
     this.setState({
       isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+    });
+  };
+
+  markView = () => {
+    this.props.dispatch({
+      type: 'public_project/view',
+      id: this.props.id,
     });
   };
 

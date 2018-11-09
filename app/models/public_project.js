@@ -15,6 +15,7 @@ import {
   getCoinROI,
   getCoinTrend,
   selectedProject,
+  viewProject,
 } from '../services/individual/api';
 import moment from 'moment';
 import R from 'ramda';
@@ -524,6 +525,17 @@ export default {
         }
       } catch (e) {
         console.log(e);
+      }
+    },
+    *view({ id, callback }, { call }) {
+      try {
+        const { status } = yield call(viewProject, id);
+
+        if (callback) {
+          yield call(callback, status === 200);
+        }
+      } catch (error) {
+        console.log(error);
       }
     },
   },
