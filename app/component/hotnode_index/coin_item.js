@@ -45,7 +45,7 @@ const coinItem = ({ data, onPress }) => {
           <View style={{ flex: 1 }}>
             <Text style={styles.heat}>{heat}</Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, alignItems: 'center' }}>
             <Text
               style={[styles.heat_percentage, minus && { color: '#F55454' }]}
             >
@@ -55,7 +55,7 @@ const coinItem = ({ data, onPress }) => {
               %
             </Text>
           </View>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, alignItems: 'flex-end' }}>
             {R.length(trend) > 1 && (
               <VictoryChart height={16} width={48} padding={styles.padding}>
                 <VictoryAxis style={styles.axis.cross} crossAxis />

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
+import Format from 'component/format';
 
 const categoryItem = ({ data, onPress }) => {
   const category = R.pathOr('--', ['name'])(data);
@@ -20,7 +21,7 @@ const categoryItem = ({ data, onPress }) => {
         <View>
           <Text style={styles.title}>{category}</Text>
           <Text style={styles.subtitle}>
-            {heat}
+            <Format>{heat}</Format>
             {'  '}
             <Text style={[styles.heat, minus && { color: '#F55454' }]}>
               {minus

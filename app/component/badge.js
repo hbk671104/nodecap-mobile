@@ -13,17 +13,18 @@ const badge = ({ style, size }) => (
   </View>
 );
 
-const NumberBadge = ({ number }) => (number > 0 ? (
-  <View style={[styles.wrapper]}>
-    <View
-      style={[
-        styles.numberContainer,
-      ]}
-    >
-      <Text style={styles.text}>{number}</Text>
-    </View>
-  </View>
-) : null);
+const NumberBadge = ({ number }) => {
+  if (number > 0) {
+    return (
+      <View style={[styles.wrapper]}>
+        <View style={[styles.numberContainer]}>
+          <Text style={styles.text}>{number}</Text>
+        </View>
+      </View>
+    );
+  }
+  return null;
+};
 
 const styles = {
   wrapper: {
@@ -41,9 +42,13 @@ const styles = {
     borderRadius: 12,
     borderWidth: 2,
     borderColor: 'white',
-    lineHeight: 1,
   },
-  text: { fontFamily: 'PingFangSC-Medium', fontSize: 9, color: '#FFFFFF', textAlign: 'left' },
+  text: {
+    fontFamily: 'PingFangSC-Medium',
+    fontSize: 9,
+    color: '#FFFFFF',
+    textAlign: 'left',
+  },
 };
 
 badge.propTypes = {
@@ -55,6 +60,4 @@ badge.defaultProps = {
 };
 
 export default badge;
-export {
-  NumberBadge,
-};
+export { NumberBadge };

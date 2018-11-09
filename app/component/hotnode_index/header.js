@@ -5,8 +5,15 @@ import { Flex } from 'antd-mobile';
 
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
+import Format from 'component/format';
 
-const item = ({ title, number, change, percentage_change }) => {
+const item = ({
+  title,
+  number,
+  change,
+  percentage_change,
+  index_precision = 0,
+}) => {
   const minus_percentage = percentage_change < 0;
   return (
     <View style={styles.item.container}>
@@ -14,9 +21,16 @@ const item = ({ title, number, change, percentage_change }) => {
         <Text style={styles.item.title.text}>{title}</Text>
       </View>
       <View style={styles.item.content.container}>
-        <Text style={styles.item.content.text}>{number}</Text>
+        <Text style={styles.item.content.text}>
+          <Format digit={index_precision}>{number}</Format>
+        </Text>
         <Text style={styles.item.content.change}>
-          <Icon override name="md-arrow-dropup" color="#09AC32" /> {change}
+          <Icon
+            override
+            name={`md-arrow-drop${minus_percentage ? 'down' : 'up'}`}
+            color={minus_percentage ? '#F55454' : '#09AC32'}
+          />{' '}
+          <Format digit={index_precision}>{change}</Format>
         </Text>
       </View>
       <View
@@ -65,6 +79,7 @@ const categoryHeader = ({ global, onPress }) => {
             number: heat,
             change: heat_change,
             percentage_change: heat_change_percentage,
+            index_precision: 1,
           })}
           <View style={styles.divider} />
           {item({
