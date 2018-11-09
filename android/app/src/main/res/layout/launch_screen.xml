@@ -5,12 +5,40 @@
     android:background="#FFFFFF">
 
     <ImageView
-        android:id="@+id/logo"
-        android:layout_marginTop="140dp"
+        android:id="@+id/squirt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/logo" />
+        android:layout_marginTop="78dp"
+        android:src="@drawable/squirt" />
+
+    <ImageView
+        android:id="@+id/logo_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/squirt"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo_box" />
+
+    <ImageView
+        android:id="@+id/logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logo_box"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/logo_text" />
+
+    <ImageView
+        android:id="@+id/logo_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/logo_bottom" />
+
 
 </RelativeLayout>
