@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import R from 'ramda';
@@ -50,10 +50,7 @@ export default class Loader extends Component {
               style={styles.top.box}
               source={require('asset/loader/logo_box.png')}
             />
-            <Image
-              style={styles.top.box}
-              source={require('asset/loader/logo_text.png')}
-            />
+            <Image source={require('asset/loader/logo_text.png')} />
           </View>
           <Loading />
           <Image

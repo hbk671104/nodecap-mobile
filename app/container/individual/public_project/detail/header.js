@@ -49,10 +49,11 @@ const header = ({
               data={data}
               can_calculate={can_calculate}
             />
+            {!can_calculate && <Tag data={data} />}
           </View>
           <AvatarGroup data={data} onExplanationPress={onExplanationPress} />
         </View>
-        <Tag data={data} />
+        {can_calculate && <Tag data={data} />}
       </View>
       <MiscTag
         style={[R.isEmpty(purpose) && { borderBottomWidth: 0 }]}
@@ -77,14 +78,15 @@ const styles = {
   top: {
     container: {
       flexDirection: 'row',
+      alignItems: 'center',
     },
     title: {
       fontWeight: 'bold',
-      fontSize: 25,
+      fontSize: 27,
       color: 'white',
     },
     subtitle: {
-      fontSize: 12,
+      fontSize: 14,
     },
   },
   divider: {

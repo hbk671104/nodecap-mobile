@@ -42,11 +42,15 @@ const emotionIndex = ({
     >
       <View style={styles.content.container}>
         <View style={[styles.content.long.container, { flex: long }]}>
-          <Text style={styles.content.text}>{long}% 看多</Text>
+          <Text style={styles.content.text}>
+            {Number(long).toFixed(1)}% 看多
+          </Text>
         </View>
         <Image source={require('asset/splitter.png')} />
         <View style={[styles.content.short.container, { flex: short }]}>
-          <Text style={styles.content.text}>{short}% 看空</Text>
+          <Text style={styles.content.text}>
+            {Number(short).toFixed(1)}% 看空
+          </Text>
         </View>
       </View>
     </Group>

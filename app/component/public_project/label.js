@@ -36,14 +36,13 @@ const label = ({ data }) => {
           <Text style={[styles.item.text, { color: '#1890FF' }]}>已入驻</Text>
         </View>
       )}
-      {!R.isNil(finance_status) &&
-        finance_status !== '未设定' && (
-          <View style={styles.item.container}>
-            <Text style={[styles.item.text, { color: '#09AC32' }]}>
-              {finance_status}
-            </Text>
-          </View>
-        )}
+      {!R.isNil(finance_status) && finance_status !== '未设定' && (
+        <View style={styles.item.container}>
+          <Text style={[styles.item.text, { color: '#09AC32' }]}>
+            {finance_status}
+          </Text>
+        </View>
+      )}
     </View>
   );
 };

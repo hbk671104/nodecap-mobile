@@ -62,16 +62,16 @@ const categoryHeader = ({ global, onPress }) => {
         <Flex style={styles.item.wrapper}>
           {item({
             title: 'Hotnode 指数',
-            number: count,
-            change: count_change,
-            percentage_change: count_change_percentage,
+            number: heat,
+            change: heat_change,
+            percentage_change: heat_change_percentage,
           })}
           <View style={styles.divider} />
           {item({
             title: '项目数',
-            number: heat,
-            change: heat_change,
-            percentage_change: heat_change_percentage,
+            number: count,
+            change: count_change,
+            percentage_change: count_change_percentage,
           })}
         </Flex>
       </View>

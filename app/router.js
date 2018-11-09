@@ -596,7 +596,10 @@ class Router extends Component {
           title="开启推送通知"
           content="及时获取项目上所，融资等动态信息"
           actionTitle="立即开启"
-          action={() => Linking.openURL('app-settings:')}
+          action={() => {
+            Linking.openURL('app-settings:');
+            this.props.setShowNotificationModal(false);
+          }}
           onBackdropPress={() => this.props.setShowNotificationModal(false)}
         />
       </View>

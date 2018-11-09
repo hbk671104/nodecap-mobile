@@ -44,7 +44,8 @@ const price = ({ can_calculate, data, base_symbol }) => {
 
 const styles = {
   wrapper: {
-    marginVertical: 12,
+    marginTop: 8,
+    marginBottom: 12,
   },
   container: {
     flexDirection: 'row',

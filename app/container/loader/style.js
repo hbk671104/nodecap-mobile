@@ -1,4 +1,4 @@
-import { realBarHeight } from 'component/navBar';
+import { navBarHeight } from 'component/navBar';
 
 export default {
   container: {
@@ -10,7 +10,7 @@ export default {
   },
   top: {
     container: {
-      marginTop: 78 - realBarHeight,
+      marginTop: 78 - navBarHeight,
       alignSelf: 'center',
       alignItems: 'center',
     },
