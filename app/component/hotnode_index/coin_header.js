@@ -97,7 +97,7 @@ class CoinHeader extends PureComponent {
             <VictoryChart
               height={192}
               padding={styles.chart.padding}
-              domainPadding={{ x: [16, 8] }}
+              domainPadding={{ x: [16, 8], y: [0, 8] }}
             >
               <VictoryAxis
                 crossAxis
@@ -181,8 +181,8 @@ const styles = {
       data: {
         stroke: '#1890FF',
         strokeWidth: 4,
-        // strokeLinecap: 'round',
-        // strokeLinejoin: 'round',
+        strokeLinecap: 'round',
+        strokeLinejoin: 'round',
       },
     },
     area: {

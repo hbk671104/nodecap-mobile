@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import R from 'ramda';
 import * as Animatable from 'react-native-animatable';
 
+import SafeArea from 'component/uikit/safeArea';
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
 
 import { connect } from '../../utils/dva';
-import { NavigationActions } from '../../utils';
 import { persist } from '../../../index';
 import styles from './style';
 
@@ -37,20 +37,31 @@ export default class Loader extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeArea style={styles.container}>
         <NavBar barStyle="dark-content" />
         <View style={styles.wrapper}>
           <View style={styles.top.container}>
             <Animatable.Image
               iterationCount="infinite"
               animation="pulse"
-              source={require('asset/big_logo.png')}
+              source={require('asset/loader/squirt.png')}
             />
-            <Text style={styles.top.intro}>找项目 上 Hotnode</Text>
+            <Image
+              style={styles.top.box}
+              source={require('asset/loader/logo_box.png')}
+            />
+            <Image
+              style={styles.top.box}
+              source={require('asset/loader/logo_text.png')}
+            />
           </View>
           <Loading />
+          <Image
+            style={styles.bottom}
+            source={require('asset/loader/logo_bottom.png')}
+          />
         </View>
-      </View>
+      </SafeArea>
     );
   }
 }

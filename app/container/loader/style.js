@@ -10,7 +10,7 @@ export default {
   },
   top: {
     container: {
-      marginTop: 140 - realBarHeight,
+      marginTop: 78 - realBarHeight,
       alignSelf: 'center',
       alignItems: 'center',
     },
@@ -20,5 +20,12 @@ export default {
       color: 'rgba(0, 0, 0, 0.45)',
       marginTop: 13,
     },
+    box: {
+      marginVertical: 8,
+    },
+  },
+  bottom: {
+    marginBottom: 24,
+    alignSelf: 'center',
   },
 };
