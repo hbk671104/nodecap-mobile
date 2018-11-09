@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina5_9" orientation="portrait">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,21 +15,55 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="R5M-YF-SnN">
-                    <rect key="frame" x="155" y="140" width="171" height="84"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_bottom.png" translatesAutoresizingMaskIntoConstraints="NO" id="k2w-wb-L6L">
+                    <rect key="frame" x="196.5" y="441" width="87" height="15"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="15" id="5hs-y5-8Bz"/>
+                        <constraint firstAttribute="width" constant="87" id="D6p-L7-Vzd"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="squirt.png" translatesAutoresizingMaskIntoConstraints="NO" id="rbY-LV-X7o">
+                    <rect key="frame" x="150" y="78" width="180" height="166"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="180" id="Mjc-5I-4Co"/>
+                        <constraint firstAttribute="height" constant="166" id="TRp-me-fQ4"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_box.png" translatesAutoresizingMaskIntoConstraints="NO" id="wo9-n2-IFA">
+                    <rect key="frame" x="185" y="252" width="110" height="97"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="110" id="6fq-38-6eN"/>
+                        <constraint firstAttribute="height" constant="97" id="yTI-l1-ioK"/>
+                    </constraints>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_text.png" translatesAutoresizingMaskIntoConstraints="NO" id="UdG-uk-b8t">
+                    <rect key="frame" x="165" y="357" width="150" height="12"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="j57-H2-aKD"/>
+                        <constraint firstAttribute="height" constant="12" id="zkf-v4-4Z0"/>
+                    </constraints>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="R5M-YF-SnN" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="KcJ-yr-jel"/>
-                <constraint firstItem="R5M-YF-SnN" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="140" id="fgj-gH-Q6N"/>
+                <constraint firstItem="UdG-uk-b8t" firstAttribute="top" secondItem="wo9-n2-IFA" secondAttribute="bottom" constant="8" id="08O-P8-uhu"/>
+                <constraint firstItem="UdG-uk-b8t" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4s5-xQ-IFF"/>
+                <constraint firstAttribute="bottom" secondItem="k2w-wb-L6L" secondAttribute="bottom" constant="24" id="B7l-I1-DVi"/>
+                <constraint firstItem="wo9-n2-IFA" firstAttribute="top" secondItem="rbY-LV-X7o" secondAttribute="bottom" constant="8" id="JKe-tN-1Px"/>
+                <constraint firstItem="rbY-LV-X7o" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="78" id="TFu-Qa-Hl4"/>
+                <constraint firstItem="wo9-n2-IFA" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="cVX-L8-yhn"/>
+                <constraint firstItem="rbY-LV-X7o" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ty5-vb-5Wf"/>
+                <constraint firstItem="k2w-wb-L6L" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="yHl-cG-iOC"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="548" y="455"/>
+            <point key="canvasLocation" x="547.65625" y="454.68749999999994"/>
         </view>
     </objects>
     <resources>
-        <image name="logo.png" width="171" height="84"/>
+        <image name="logo_bottom.png" width="87" height="15"/>
+        <image name="logo_box.png" width="110" height="97"/>
+        <image name="logo_text.png" width="150" height="12"/>
+        <image name="squirt.png" width="180" height="166"/>
     </resources>
 </document>
