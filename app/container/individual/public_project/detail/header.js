@@ -29,6 +29,7 @@ const header = ({
     R.pathOr('--', ['symbol']),
     R.toUpper,
   )(data);
+  const purpose = R.pathOr([], ['purpose'])(data);
 
   return (
     <View>
@@ -53,18 +54,13 @@ const header = ({
         </View>
         <Tag data={data} />
       </View>
-      <MiscTag data={data} />
-      {R.compose(
-        R.not,
-        R.isEmpty,
-        R.pathOr([], ['purpose']),
-      )(data) && (
-        <View>
-          <Purpose portfolio={data} />
-          <View style={styles.divider} />
-        </View>
-      )}
+      <MiscTag
+        style={[R.isEmpty(purpose) && { borderBottomWidth: 0 }]}
+        data={data}
+      />
+      <Purpose data={data} />
       <View>
+        <View style={styles.divider} />
         <HotnodeIndex data={data} onInvitedPress={onInvitedPress} />
         <View style={styles.divider} />
       </View>

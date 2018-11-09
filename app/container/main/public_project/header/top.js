@@ -12,9 +12,10 @@ import {
 } from 'react-native';
 import Swiper from '@nart/react-native-swiper';
 import R from 'ramda';
+import { Flex } from 'antd-mobile';
 import { RouterEmitter } from '../../../../router';
 
-import Badge from 'component/badge';
+import { NumberBadge } from 'component/badge';
 import Touchable from 'component/uikit/touchable';
 
 const deviceWidth = Dimensions.get('window').width;
@@ -28,7 +29,8 @@ const top = ({
   onProjectRepoPress,
   onInstitutionPress,
   onInstitutionReportPress,
-  notification_badge_visible,
+  notification_badge_number,
+  reports_badge_number,
 }) => (
   <View style={styles.container}>
     <View style={{ height: 160 }}>
@@ -83,10 +85,9 @@ const top = ({
         ))(insite_news)}
       </Swiper>
     </View>
-    <ScrollView
-      horizontal
-      showsHorizontalScrollIndicator={false}
+    <Flex
       style={styles.tab.container}
+      wrap="wrap"
     >
       <Touchable style={styles.tab.group.wrapper} onPress={onProjectRepoPress}>
         <View style={styles.tab.group.container}>
@@ -105,6 +106,7 @@ const top = ({
             <Image source={require('asset/public_project/report.png')} />
           </View>
           <Text style={styles.tab.group.title}>研报</Text>
+          {!!reports_badge_number && <NumberBadge number={reports_badge_number} />}
         </View>
       </Touchable>
       <Touchable style={styles.tab.group.wrapper} onPress={onInstitutionPress}>
@@ -115,35 +117,60 @@ const top = ({
           <Text style={styles.tab.group.title}>找机构</Text>
         </View>
       </Touchable>
-      <Touchable style={styles.tab.group.wrapper} onPress={onServicePress}>
-        <View style={styles.tab.group.container}>
-          <View style={styles.tab.group.imageWrapper}>
-            <Image
-              source={require('asset/public_project/pr.png')}
-              style={{ width: 25, height: 25 }}
-            />
-          </View>
-          <Text style={styles.tab.group.title}>找服务</Text>
-        </View>
-      </Touchable>
       <Touchable style={styles.tab.group.wrapper} onPress={onAnnouncementPress}>
         <View style={styles.tab.group.container}>
           <View style={styles.tab.group.imageWrapper}>
             <Image source={require('asset/public_project/announcement.png')} />
           </View>
           <Text style={styles.tab.group.title}>上所公告</Text>
-          {notification_badge_visible && <Badge size={8} />}
+          {!!notification_badge_number && <NumberBadge number={notification_badge_number} />}
         </View>
       </Touchable>
-      <Touchable style={styles.tab.group.wrapper} onPress={onMeetingPress}>
+      <Touchable style={styles.tab.group.wrapper} onPress={onServicePress(8)}>
         <View style={styles.tab.group.container}>
           <View style={styles.tab.group.imageWrapper}>
-            <Image source={require('asset/public_project/meeting.png')} />
+            <Image
+              source={require('asset/public_project/exchange_icon.png')}
+              style={{ width: 27.6, height: 24.5 }}
+            />
           </View>
-          <Text style={styles.tab.group.title}>找会议</Text>
+          <Text style={styles.tab.group.title}>找交易所</Text>
         </View>
       </Touchable>
-    </ScrollView>
+      <Touchable style={styles.tab.group.wrapper} onPress={onServicePress(7)}>
+        <View style={styles.tab.group.container}>
+          <View style={styles.tab.group.imageWrapper}>
+            <Image
+              source={require('asset/public_project/media_icon.png')}
+              style={{ width: 24, height: 24 }}
+            />
+          </View>
+          <Text style={styles.tab.group.title}>找媒体</Text>
+        </View>
+      </Touchable>
+      <Touchable style={styles.tab.group.wrapper} onPress={onServicePress(3)}>
+        <View style={styles.tab.group.container}>
+          <View style={styles.tab.group.imageWrapper}>
+            <Image
+              source={require('asset/public_project/meeting.png')}
+              style={{ width: 27.5, height: 22.5 }}
+            />
+          </View>
+          <Text style={styles.tab.group.title}>找公关</Text>
+        </View>
+      </Touchable>
+      <Touchable style={styles.tab.group.wrapper} onPress={onServicePress('more')}>
+        <View style={styles.tab.group.container}>
+          <View style={styles.tab.group.imageWrapper}>
+            <Image
+              source={require('asset/public_project/more_icon.png')}
+              style={{ width: 28, height: 22.5 }}
+            />
+          </View>
+          <Text style={styles.tab.group.title}>更多</Text>
+        </View>
+      </Touchable>
+    </Flex>
   </View>
 );
 
@@ -179,8 +206,10 @@ const styles = {
   },
   tab: {
     container: {
-      height: 82,
-      flexDirection: 'row',
+      flex: 1,
+      height: 160,
+      justifyContent: 'space-between',
+      paddingHorizontal: 20,
     },
     group: {
       wrapper: {
@@ -191,9 +220,9 @@ const styles = {
         width: 30,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: 19,
       },
       container: {
-        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
       },

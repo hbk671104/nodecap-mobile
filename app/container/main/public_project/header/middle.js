@@ -1,12 +1,15 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import R from 'ramda';
-import { Flex, ActivityIndicator } from 'antd-mobile';
+import { Flex } from 'antd-mobile';
+import Placeholder from 'rn-placeholder';
 
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import FavorItem from 'component/favored/item';
 import Group from './group';
+
+let manualRefresh = false;
 
 const middle = ({
   data,
@@ -45,6 +48,7 @@ const middle = ({
         borderless
         onPress={() => {
           if (!selectedLoading) {
+            manualRefresh = true;
             onRefreshProject();
           }
         }}
@@ -67,9 +71,21 @@ const middle = ({
       {R.pipe(
         R.take(5),
         R.addIndex(R.map)((d, i) => (
-          <View key={d.id}>
+          <View key={`${i}`}>
             {i !== 0 && <View style={styles.separator} />}
-            <FavorItem data={d} />
+            <View
+              style={{ padding: selectedLoading && !manualRefresh ? 12 : 0 }}
+            >
+              <Placeholder.ImageContent
+                size={52}
+                animate="fade"
+                lineNumber={3}
+                lineSpacing={8}
+                onReady={!selectedLoading || manualRefresh}
+              >
+                <FavorItem data={d} />
+              </Placeholder.ImageContent>
+            </View>
           </View>
         )),
       )(data)}

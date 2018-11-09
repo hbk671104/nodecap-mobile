@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
-const miscTags = ({ data }) => {
+const miscTags = ({ style, data }) => {
   const invested_by_renowned_insti = R.pipe(
     R.pathOr([], ['renowned_industry']),
     R.isEmpty,
@@ -34,54 +34,63 @@ const miscTags = ({ data }) => {
   }
 
   return (
-    <View style={styles.container}>
-      {has_whitepapers && (
-        <View style={styles.item.container}>
-          <Text style={styles.item.text}>有白皮书</Text>
-        </View>
-      )}
-      {invested_by_renowned_insti && (
-        <View style={styles.item.container}>
-          <Text style={styles.item.text}>知名机构所投</Text>
-        </View>
-      )}
-      {top_rated && (
-        <View style={styles.item.container}>
-          <Text style={styles.item.text}>有评级</Text>
-        </View>
-      )}
-      {is_reachable && (
-        <View style={styles.item.container}>
-          <Text style={styles.item.text}>可联系</Text>
-        </View>
-      )}
+    <View style={[styles.container, style]}>
+      <View style={styles.title.container}>
+        <Text style={styles.title.text}>优势</Text>
+      </View>
+      <ScrollView
+        showsHorizontalScrollIndicator={false}
+        horizontal
+        style={styles.content.container}
+        contentContainerStyle={{ alignItems: 'center', paddingRight: 16 }}
+      >
+        <Text style={styles.content.text}>
+          {R.join('、')([
+            ...(has_whitepapers ? ['有白皮书'] : []),
+            ...(invested_by_renowned_insti ? ['知名机构所投'] : []),
+            ...(top_rated ? ['有评级'] : []),
+            ...(is_reachable ? ['可联系'] : []),
+          ])}
+        </Text>
+      </ScrollView>
     </View>
   );
 };
 
 const styles = {
   container: {
+    paddingLeft: 12,
+    height: 46.5,
+    backgroundColor: 'white',
     flexDirection: 'row',
-    height: 41,
-    paddingHorizontal: 12,
-    borderTopWidth: 1,
-    borderTopColor: '#168AF3',
-    alignItems: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#E9E9E9',
   },
-  item: {
+  title: {
     container: {
-      height: 17,
-      backgroundColor: '#0F7ADD',
-      borderRadius: 1,
-      paddingHorizontal: 3,
-      marginRight: 4,
-      flexDirection: 'row',
+      height: 22.5,
+      borderRadius: 2,
+      backgroundColor: '#1890FF',
       justifyContent: 'center',
       alignItems: 'center',
+      paddingHorizontal: 4,
+      alignSelf: 'center',
     },
     text: {
-      fontSize: 11,
+      fontSize: 12,
       color: 'white',
+      fontWeight: 'bold',
+    },
+  },
+  content: {
+    container: {
+      flex: 1,
+      marginLeft: 16,
+    },
+    text: {
+      fontSize: 13,
+      color: 'rgba(0, 0, 0, 0.85)',
+      fontWeight: 'bold',
     },
   },
 };

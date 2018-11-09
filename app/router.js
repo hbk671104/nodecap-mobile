@@ -4,7 +4,6 @@ import {
   Alert,
   View,
   Platform,
-  Vibration,
   AppState,
   Linking,
 } from 'react-native';
@@ -94,6 +93,7 @@ import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
 import Service from 'container/main/service/wrapper';
+import SingleService from 'container/main/service/singleWrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
 import WebPage from 'container/webview';
@@ -133,6 +133,8 @@ import CreateMyInstitutionDone from 'container/individual/self/my_institution/do
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
 import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
 import CreateMyProjectDetail from 'container/individual/self/my_project/display';
+import HotnodeIndex from 'container/individual/hotnode_index';
+import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -263,6 +265,7 @@ const MainStack = createStackNavigator(
     WebPage,
     Settings,
     Service,
+    SingleService,
     CommentCoin,
     InviteComment,
   },
@@ -277,6 +280,12 @@ const IndividualTab = createBottomTabNavigator(
       screen: PublicProject,
       navigationOptions: {
         title: '首页',
+      },
+    },
+    HotnodeIndex: {
+      screen: HotnodeIndex,
+      navigationOptions: {
+        title: '指数',
       },
     },
     // Trending: {
@@ -295,12 +304,12 @@ const IndividualTab = createBottomTabNavigator(
         };
       },
     },
-    Favored: {
-      screen: Favored,
-      navigationOptions: {
-        title: '关注',
-      },
-    },
+    // Favored: {
+    //   screen: Favored,
+    //   navigationOptions: {
+    //     title: '关注',
+    //   },
+    // },
     Self: {
       screen: IndividualSelf,
       navigationOptions: {
@@ -361,6 +370,7 @@ const IndividualStack = createStackNavigator(
     WhitePaper,
     WebPage,
     Service,
+    SingleService,
     MyProject,
     CreateMyProject,
     CreateMyProjectDetail,
@@ -388,6 +398,8 @@ const IndividualStack = createStackNavigator(
     ClaimMyInstitution,
     CreateMyInstitutionDone,
     InviteComment,
+    Favored,
+    HotnodeCoinIndex,
   },
   {
     headerMode: 'none',
@@ -424,8 +436,10 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 
 const addListener = createReduxBoundAddListener('root');
 
+import { compose, withState } from 'recompose';
 import UpdateAlert from 'component/update';
 import Modal from 'component/modal';
+import ActionAlert from 'component/action_alert';
 import { hasAppStoreUpdate } from 'utils/utils';
 
 @withNetworkConnectivity({
@@ -437,10 +451,13 @@ import { hasAppStoreUpdate } from 'utils/utils';
   showAlert: R.pathOr(false, ['modal_visible'])(update),
   release_notes: R.pathOr('', ['release_notes'])(update),
 }))
+@compose(
+  withState('showNotificationModal', 'setShowNotificationModal', false),
+  withState('appState', 'setAppState', AppState.currentState),
+)
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
-    appState: '',
   };
 
   async componentWillMount() {
@@ -459,6 +476,9 @@ class Router extends Component {
     this.props.dispatch({
       type: 'app/checkCodePush',
     });
+
+    // check notif permission
+    this.checkPushPermission();
   }
 
   componentDidMount() {
@@ -502,7 +522,7 @@ class Router extends Component {
 
   _handleAppStateChange = nextAppState => {
     if (
-      this.state.appState.match(/inactive|background/) &&
+      this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
       RouterEmitter.emit('resume');
@@ -511,8 +531,20 @@ class Router extends Component {
       this.props.dispatch({
         type: 'app/checkCodePush',
       });
+      // check notification permissions
+      this.checkPushPermission();
     }
-    this.setState({ appState: nextAppState });
+    this.props.setAppState(nextAppState);
+  };
+
+  checkPushPermission = () => {
+    if (this.state.isIOS) {
+      JPush.hasPermission(res => {
+        if (!res) {
+          this.props.setShowNotificationModal(true);
+        }
+      });
+    }
   };
 
   backHandle = () => {
@@ -559,6 +591,14 @@ class Router extends Component {
         >
           <UpdateAlert note={release_notes} />
         </Modal>
+        <ActionAlert
+          visible={this.props.showNotificationModal}
+          title="开启推送通知"
+          content="及时获取项目上所，融资等动态信息"
+          actionTitle="立即开启"
+          action={() => Linking.openURL('app-settings:')}
+          onBackdropPress={() => this.props.setShowNotificationModal(false)}
+        />
       </View>
     );
   }

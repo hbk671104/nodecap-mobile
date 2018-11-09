@@ -13,23 +13,27 @@ export default {
       try {
         yield all([
           // insite news
-          put.resolve({
+          put({
             type: 'notification/fetchInSite',
           }),
-          put.resolve({
+          put({
             type: 'banners/get',
           }),
           // 上所公告
-          put.resolve({
+          put({
             type: 'notification/fetch',
           }),
           // fetch selected public project
-          put.resolve({
+          put({
             type: 'public_project/fetchSelected',
           }),
           // fetch report
-          put.resolve({
+          put({
             type: 'institution/fetchReports',
+          }),
+          // market sentiment
+          put({
+            type: 'hotnode_index/fetchSentiment',
           }),
         ]);
 
