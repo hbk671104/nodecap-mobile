@@ -13,7 +13,7 @@ const badge = ({ style, size }) => (
   </View>
 );
 
-const NumberBadge = ({ number }) => (
+const NumberBadge = ({ number }) => (number > 0 ? (
   <View style={[styles.wrapper]}>
     <View
       style={[
@@ -23,7 +23,7 @@ const NumberBadge = ({ number }) => (
       <Text style={styles.text}>{number}</Text>
     </View>
   </View>
-);
+) : null);
 
 const styles = {
   wrapper: {
