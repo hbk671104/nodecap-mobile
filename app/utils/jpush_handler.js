@@ -32,11 +32,21 @@ const handleOpen = extras => {
       break;
     case 'coin_owner':
       global.track('App_NotificationPushOpen', {
-        trackName: '审核推送点击',
+        trackName: '项目审核推送点击',
       });
       store.dispatch(
         NavigationActions.navigate({
           routeName: 'MyProject',
+        }),
+      );
+      break;
+    case 'industry_owner':
+      global.track('App_NotificationPushOpen', {
+        trackName: '机构审核推送点击',
+      });
+      store.dispatch(
+        NavigationActions.navigate({
+          routeName: 'MyInstitution',
         }),
       );
       break;

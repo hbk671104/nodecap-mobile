@@ -37,7 +37,9 @@ const coinItem = ({ data, onPress }) => {
             innerRatio={1}
             source={{ uri: icon }}
           />
-          <Text style={styles.title}>{name}</Text>
+          <View style={{ flex: 1, paddingRight: 6 }}>
+            <Text style={styles.title}>{name}</Text>
+          </View>
         </Flex>
         <Flex style={{ flex: 4 }}>
           <View style={{ flex: 1 }}>
@@ -91,8 +93,9 @@ const coinItem = ({ data, onPress }) => {
 
 const styles = {
   container: {
-    height: 44,
+    minHeight: 44,
     paddingHorizontal: 12,
+    paddingVertical: 6,
   },
   title: {
     fontSize: 14,
