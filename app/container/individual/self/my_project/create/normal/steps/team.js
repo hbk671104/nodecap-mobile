@@ -162,14 +162,7 @@ class Team extends PureComponent {
             error={getFieldError(`members[${index}].title`)}
           />,
         )}
-        {getFieldDecorator(`members[${index}].mobile`, {
-          rules: [
-            {
-              required: true,
-              message: '请输入成员手机号',
-            },
-          ],
-        })(
+        {getFieldDecorator(`members[${index}].mobile`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -182,14 +175,7 @@ class Team extends PureComponent {
             error={getFieldError(`members[${index}].mobile`)}
           />,
         )}
-        {getFieldDecorator(`members[${index}].wechat`, {
-          rules: [
-            {
-              required: true,
-              message: '请输入成员微信',
-            },
-          ],
-        })(
+        {getFieldDecorator(`members[${index}].wechat`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}

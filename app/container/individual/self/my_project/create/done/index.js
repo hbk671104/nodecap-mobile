@@ -57,7 +57,7 @@ class CreateProjectDone extends Component {
           <Image source={require('asset/project_create/in_review.png')} />
           <Text style={styles.content.title}>审核中</Text>
           <Text style={styles.content.subtitle}>
-            {'将在1小时内审核完成，请耐心等待\n如有问题请垂询'}{' '}
+            {'将在 24 小时内审核完成，请耐心等待\n如有问题请垂询'}{' '}
             <Text
               style={{ color: '#1890FF' }}
               onPress={this.handlePhonePress('18500193244')}
