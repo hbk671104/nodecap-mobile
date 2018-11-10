@@ -99,8 +99,8 @@ class Chart extends PureComponent {
   );
 
   renderChart = trend => {
-    const data = R.pipe(R.path([this.state.period]))(trend);
-    if (R.length(data) <= 1) {
+    const data = R.pathOr([], [this.state.period])(trend);
+    if (R.length(data) <= 1 || typeof data !== 'object') {
       return (
         <View style={styles.empty.container}>
           <Empty title="暂无数据" />
@@ -185,15 +185,16 @@ class Chart extends PureComponent {
 const styles = {
   placeholder: {
     height: barHeight + chartHeight,
-    marginHorizontal: 12,
-    marginTop: 20,
+    paddingHorizontal: 12,
+    paddingTop: 20,
   },
   container: {
     paddingBottom: 12,
-    marginTop: 20,
-    marginHorizontal: 12,
+    paddingTop: 20,
+    paddingHorizontal: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
+    backgroundColor: 'white',
   },
   chart: {
     left: 72,

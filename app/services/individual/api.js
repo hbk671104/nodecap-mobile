@@ -104,6 +104,12 @@ export function submitComment(coin_id, content) {
   });
 }
 
+export function searchInstitution(params) {
+  return request.get('/industry-investments', {
+    params,
+  });
+}
+
 export function createInstitution(payload) {
   return request.post('/industry-investments', payload);
 }
@@ -116,6 +122,40 @@ export function myInstitution(payload) {
   return request.get('/my-industry-investments', payload);
 }
 
+export function claimMyInstitution({ id, payload }) {
+  return request.post(`/industry-investments/${id}/own`, payload);
+}
+
 export function getBanners() {
   return request.get('/banner');
+}
+
+export function selectedProject() {
+  return request.get('/coins/selected');
+}
+
+export function marketSentiment() {
+  return request.get('/indexes/market-sentiment');
+}
+
+export function globalIndex(params) {
+  return request.get('/indexes/global', {
+    params,
+  });
+}
+
+export function categoryIndex(params) {
+  return request.get('/indexes/category', {
+    params,
+  });
+}
+
+export function coinIndex(params) {
+  return request.get('/indexes/coin', {
+    params,
+  });
+}
+
+export function viewProject(id) {
+  return request.post(`/coins/${id}/views`);
 }

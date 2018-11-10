@@ -35,8 +35,10 @@ export default {
       },
     ],
     list: null,
+    search_list: null,
     query: null,
     current: initialCurrent,
+    edited: null,
     owner: null,
   },
   effects: {
@@ -81,6 +83,51 @@ export default {
         console.log(error);
       }
     },
+    *searchInstitution({ payload, callback }, { put, call, select }) {
+      try {
+        const current = yield select(state =>
+          R.path(['institution_create', 'current'])(state),
+        );
+        const { data } = yield call(Individual.searchInstitution, {
+          ...payload,
+          q: current.name,
+          type: current.type,
+        });
+
+        yield put({
+          type: 'searchList',
+          payload: data,
+        });
+
+        if (callback) {
+          yield call(callback, data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *claimInstitution({ callback, id }, { select, call, put }) {
+      try {
+        const owner = yield select(state =>
+          R.path(['institution_create', 'owner'])(state),
+        );
+
+        const { status } = yield call(Individual.claimMyInstitution, {
+          id,
+          payload: owner,
+        });
+
+        yield put({
+          type: 'refresh',
+        });
+
+        if (callback) {
+          yield call(callback, status === 201);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
     *submitInstitution({ callback }, { select, put }) {
       try {
         const owner = yield select(state =>
@@ -90,22 +137,27 @@ export default {
           R.path(['institution_create', 'current'])(state),
         );
 
-        const sanitized_data = convertToInstitutionPayload({
-          ...current,
-          owner,
-        });
-
         if (current.id) {
+          const edited = yield select(state =>
+            R.path(['institution_create', 'edited'])(state),
+          );
+
           yield put.resolve({
             type: 'editInstitution',
             id: current.id,
-            payload: sanitized_data,
+            payload: convertToInstitutionPayload({
+              ...edited,
+              owner,
+            }),
             callback,
           });
         } else {
           yield put.resolve({
             type: 'createInstitution',
-            payload: sanitized_data,
+            payload: convertToInstitutionPayload({
+              ...current,
+              owner,
+            }),
             callback,
           });
         }
@@ -113,13 +165,19 @@ export default {
         console.log(error);
       }
     },
-    *createInstitution({ payload, callback }, { put, call }) {
+    *createInstitution({ payload, callback }, { put, call, all }) {
       try {
         const { status } = yield call(Individual.createInstitution, payload);
 
-        yield put({
-          type: 'refresh',
-        });
+        yield all([
+          put({
+            type: 'refresh',
+          }),
+          put({
+            type: 'resetCurrent',
+          }),
+        ]);
+
         if (callback) {
           callback(status === 200);
         }
@@ -127,16 +185,26 @@ export default {
         console.log(error);
       }
     },
-    *editInstitution({ id, payload, callback }, { put, call }) {
+    *editInstitution({ id, payload, callback }, { put, call, all, select }) {
       try {
         const { status } = yield call(Individual.editInstitution, {
           id,
           payload,
         });
 
-        yield put({
-          type: 'refresh',
-        });
+        const current_instituton_id = yield select(state =>
+          R.path(['institution_create', 'current', 'id'])(state),
+        );
+
+        yield all([
+          put({
+            type: 'refresh',
+          }),
+          put({
+            type: 'get',
+            id: current_instituton_id,
+          }),
+        ]);
 
         if (callback) {
           callback(status === 200);
@@ -154,9 +222,6 @@ export default {
               page: 1,
               'per-page': 20,
             },
-          }),
-          put({
-            type: 'resetCurrent',
           }),
           put({
             type: 'user/fetchCurrent',
@@ -180,11 +245,21 @@ export default {
         query: paginate(state.query, payload),
       };
     },
+    searchList(state, { payload }) {
+      return {
+        ...state,
+        search_list: paginate(state.search_list, payload),
+      };
+    },
     saveCurrent(state, { payload }) {
       return {
         ...state,
         current: {
           ...state.current,
+          ...payload,
+        },
+        edited: {
+          ...state.edited,
           ...payload,
         },
       };
@@ -200,6 +275,7 @@ export default {
       return {
         ...state,
         current: initialCurrent,
+        edited: null,
         query: null,
       };
     },

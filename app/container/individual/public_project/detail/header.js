@@ -1,160 +1,78 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Animated,
-  Image,
-  Text,
-  StyleSheet,
-  ScrollView,
-} from 'react-native';
+import { View, Text } from 'react-native';
 import R from 'ramda';
 
-import Price from 'component/price';
-import Avatar from 'component/uikit/avatar';
-import Percentage from 'component/percentage';
-import Amount from 'component/amount';
-import Shimmer from 'component/shimmer';
-import { symbol } from '../../../../utils/icon';
-import Purpose from './purpose';
+import NavBar from 'component/navBar';
 import MiscTag from 'component/public_project/misc_tag';
+import Tag from 'component/public_project/tag';
+import Label from 'component/public_project/label';
+import Purpose from 'component/public_project/purpose';
+import Price from 'component/public_project/price';
+import HotnodeIndex from 'component/public_project/hotnode_index';
+import AvatarGroup from 'component/public_project/avatar_group';
 
-export const headerHeight = 64;
-export const fullHeaderHeight = 144;
+import Shimmer from 'component/shimmer';
 
 const header = ({
   style,
-  titleStyle,
-  data,
-  portfolio,
   loading,
-  avatarWrapperStyle,
+  titleStyle,
+  portfolio: data,
   base_symbol,
   can_calculate,
+  onInvitedPress,
+  onExplanationPress,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pipe(
     R.pathOr('--', ['symbol']),
     R.toUpper,
   )(data);
-  const logo = R.pathOr('', ['icon'])(data);
-  const category = R.pathOr([], ['tags'])(data);
-  const market = R.pathOr({}, ['market'])(portfolio);
-  const current_price = R.pathOr('--', ['current_price', 'CNY'])(market);
-  const price_change_percentage_24h = R.pathOr('--', [
-    'price_change_percentage_24h',
-  ])(market);
-  const total_volume = R.pathOr('--', ['total_volume', base_symbol])(market);
-  const high_24h = R.pathOr('--', ['high_24h', base_symbol])(market);
-  const tags = R.pipe(
-    R.pathOr([], ['tags']),
-    R.map(i => ({
-      ...i,
-      name: R.trim(i.name),
-    })),
-    R.reduce(
-      (last, current) => `${last ? `${last}/` : last}${current.name}`,
-      '',
-    ),
-  )(data);
-  const is_vip = R.pipe(
-    R.pathOr([], ['vip']),
-    R.isEmpty,
-    R.not,
-  )(data);
+  const purpose = R.pathOr([], ['purpose'])(data);
 
   return (
-    <Animated.View
-      style={[
-        styles.container,
-        style,
-        {
-          height: headerHeight,
-        },
-      ]}
-    >
-      <View style={styles.top.container}>
-        <View style={{ flex: 1 }}>
-          <Shimmer animating={loading}>
-            <Text
-              style={[
-                styles.top.title,
-                R.length(name) > 13 && { fontSize: 18 },
-                titleStyle,
-              ]}
-            >
-              {name}
-            </Text>
-          </Shimmer>
-          <View style={{ marginTop: 4 }}>
-            <View style={styles.tag.wrapper}>
-              <Text style={styles.top.subtitle}>{token}</Text>
-              <ScrollView
-                showsHorizontalScrollIndicator={false}
-                horizontal
-                style={[
-                  {
-                    flex: 1,
-                    marginHorizontal: 8,
-                  },
-                ]}
-              >
-                <Text style={styles.tag.title}>{tags}</Text>
-              </ScrollView>
-            </View>
-          </View>
-        </View>
-        <Animated.View style={[{ borderRadius: 25 }, avatarWrapperStyle]}>
-          <Avatar size={57} source={{ uri: logo }} />
-          {is_vip && (
-            <Image
-              style={styles.vipIcon}
-              source={require('asset/public_project/vip_icon.png')}
-            />
-          )}
-        </Animated.View>
-      </View>
-      <MiscTag data={data} />
-      {can_calculate ? (
-        <View>
-          <View style={styles.divider} />
-          <View style={styles.bottom.container}>
+    <View>
+      <NavBar back disableStatusBar iconStyle={{ color: 'white' }} />
+      <View style={[styles.container, style]}>
+        <View style={styles.top.container}>
+          <View style={{ flex: 1 }}>
             <Shimmer animating={loading}>
-              <Text style={styles.bottom.title}>
-                {symbol('CNY', styles.bottom.title)}
-                <Price symbol="CNY">{current_price}</Price>
+              <Text style={[styles.top.title, titleStyle]}>
+                {name}
+                <Text style={styles.top.subtitle}>（{token}）</Text>
               </Text>
             </Shimmer>
-            <Shimmer style={{ marginLeft: 15 }} animating={loading}>
-              <Text style={styles.bottom.subtitle}>
-                <Percentage colorAware={false}>
-                  {price_change_percentage_24h}
-                </Percentage>
-              </Text>
-            </Shimmer>
+            <Label data={data} />
+            <Price
+              base_symbol={base_symbol}
+              data={data}
+              can_calculate={can_calculate}
+            />
+            {!can_calculate && <Tag data={data} />}
           </View>
-          <Shimmer style={{ marginTop: 6 }} animating={loading}>
-            <Text style={styles.bottom.content}>
-              额(24H) <Amount symbol={base_symbol}>{total_volume}</Amount> |
-              最高(24H) {symbol(base_symbol, styles.bottom.content)}
-              <Price symbol={base_symbol}>{high_24h}</Price>
-            </Text>
-          </Shimmer>
+          <AvatarGroup data={data} onExplanationPress={onExplanationPress} />
         </View>
-      ) : null}
-      {R.compose(
-        R.not,
-        R.isEmpty,
-        R.pathOr([], ['purpose']),
-      )(data) && <Purpose portfolio={data} />}
-    </Animated.View>
+        {can_calculate && <Tag data={data} />}
+      </View>
+      <MiscTag
+        style={[R.isEmpty(purpose) && { borderBottomWidth: 0 }]}
+        data={data}
+      />
+      <Purpose data={data} />
+      <View>
+        <View style={styles.divider} />
+        <HotnodeIndex data={data} onInvitedPress={onInvitedPress} />
+        <View style={styles.divider} />
+      </View>
+    </View>
   );
 };
 
 const styles = {
   container: {
     flex: 1,
-    height: headerHeight,
+    backgroundColor: '#1890FF',
     paddingHorizontal: 12,
   },
   top: {
@@ -164,71 +82,16 @@ const styles = {
     },
     title: {
       fontWeight: 'bold',
-      fontSize: 25,
+      fontSize: 27,
       color: 'white',
     },
     subtitle: {
-      fontWeight: 'bold',
-      fontSize: 12,
-      color: 'white',
+      fontSize: 14,
     },
   },
   divider: {
-    height: 1,
-    width: 58,
-    backgroundColor: 'white',
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  bottom: {
-    container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-    },
-    title: {
-      fontWeight: 'bold',
-      fontSize: 30,
-      color: 'white',
-    },
-    subtitle: {
-      fontWeight: 'bold',
-      fontSize: 14,
-      color: 'white',
-    },
-    content: {
-      fontWeight: '300',
-      fontSize: 10,
-      color: 'white',
-    },
-    description: {
-      fontSize: 12,
-      color: 'white',
-      lineHeight: 17,
-    },
-  },
-  tag: {
-    wrapper: {
-      alignItems: 'center',
-      flexDirection: 'row',
-    },
-    container: {
-      height: 19,
-      paddingHorizontal: 3,
-      borderRadius: 2,
-      marginLeft: 8,
-      justifyContent: 'center',
-      borderColor: 'white',
-      borderWidth: StyleSheet.hairlineWidth,
-    },
-    title: {
-      fontSize: 11,
-      color: 'white',
-    },
-  },
-  vipIcon: {
-    position: 'absolute',
-    right: 0,
-    bottom: 8,
+    backgroundColor: '#F5F5F5',
+    height: 8,
   },
 };
 

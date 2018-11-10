@@ -15,7 +15,7 @@ class Roadmap extends Component {
         <View style={styles.title}>
           <Text style={styles.time}>{date} </Text>
         </View>
-        <View>
+        <View style={{ marginTop: 8 }}>
           <Text style={styles.content}>{content}</Text>
         </View>
       </View>

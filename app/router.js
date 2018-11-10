@@ -4,7 +4,6 @@ import {
   Alert,
   View,
   Platform,
-  Vibration,
   AppState,
   Linking,
 } from 'react-native';
@@ -31,7 +30,6 @@ import { NavigationActions as routerRedux } from './utils';
 
 import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
-import { handleOpen, handleReceive } from './utils/jpush_handler';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
 // Screen
@@ -95,7 +93,9 @@ import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
 import Service from 'container/main/service/wrapper';
+import SingleService from 'container/main/service/singleWrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
+import InviteComment from 'container/main/public_project/inviteComment';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -130,6 +130,11 @@ import CreateMyInstitutionServedProject from 'container/individual/self/my_insti
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
+import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
+import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
+import CreateMyProjectDetail from 'container/individual/self/my_project/display';
+import HotnodeIndex from 'container/individual/hotnode_index';
+import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -260,7 +265,9 @@ const MainStack = createStackNavigator(
     WebPage,
     Settings,
     Service,
+    SingleService,
     CommentCoin,
+    InviteComment,
   },
   {
     headerMode: 'none',
@@ -273,6 +280,12 @@ const IndividualTab = createBottomTabNavigator(
       screen: PublicProject,
       navigationOptions: {
         title: '首页',
+      },
+    },
+    HotnodeIndex: {
+      screen: HotnodeIndex,
+      navigationOptions: {
+        title: '指数',
       },
     },
     // Trending: {
@@ -291,12 +304,12 @@ const IndividualTab = createBottomTabNavigator(
         };
       },
     },
-    Favored: {
-      screen: Favored,
-      navigationOptions: {
-        title: '关注',
-      },
-    },
+    // Favored: {
+    //   screen: Favored,
+    //   navigationOptions: {
+    //     title: '关注',
+    //   },
+    // },
     Self: {
       screen: IndividualSelf,
       navigationOptions: {
@@ -322,32 +335,6 @@ const IndividualTab = createBottomTabNavigator(
       },
       tabBarOnPress,
     }),
-  },
-);
-
-const ProjectCreate = createStackNavigator(
-  {
-    CreateMyProjectBasicInfo,
-    CreateMyProjectDescription,
-    CreateMyProjectTeam,
-    CreateMyProjectSocial,
-    CreateMyProjectRoadMap,
-    CreateMyProjectFunding,
-  },
-  {
-    headerMode: 'none',
-  },
-);
-
-const InstitutionCreate = createStackNavigator(
-  {
-    CreateMyInstitutionBasicInfo,
-    CreateMyInstitutionDescription,
-    CreateMyInstitutionTeam,
-    CreateMyInstitutionServedProject,
-  },
-  {
-    headerMode: 'none',
   },
 );
 
@@ -383,25 +370,36 @@ const IndividualStack = createStackNavigator(
     WhitePaper,
     WebPage,
     Service,
+    SingleService,
     MyProject,
     CreateMyProject,
+    CreateMyProjectDetail,
     CreateMyProjectSearch,
     CreateMyProjectNormal,
-    CreateMyProjectNormalWrapper: {
-      screen: ProjectCreate,
-    },
+    CreateMyProjectBasicInfo,
+    CreateMyProjectDescription,
+    CreateMyProjectTeam,
+    CreateMyProjectSocial,
+    CreateMyProjectRoadMap,
+    CreateMyProjectFunding,
     ClaimMyProject,
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,
     MyInstitution,
     CreateMyInstitution,
+    CreateMyInstitutionDetail,
     CreateMyInstitutionSearch,
-    CreateMyInstitutionWrapper: {
-      screen: InstitutionCreate,
-    },
+    CreateMyInstitutionBasicInfo,
+    CreateMyInstitutionDescription,
+    CreateMyInstitutionTeam,
+    CreateMyInstitutionServedProject,
+    ClaimMyInstitutionSearch,
     ClaimMyInstitution,
     CreateMyInstitutionDone,
+    InviteComment,
+    Favored,
+    HotnodeCoinIndex,
   },
   {
     headerMode: 'none',
@@ -438,8 +436,10 @@ export const routerMiddleware = createReactNavigationReduxMiddleware(
 
 const addListener = createReduxBoundAddListener('root');
 
+import { compose, withState } from 'recompose';
 import UpdateAlert from 'component/update';
 import Modal from 'component/modal';
+import ActionAlert from 'component/action_alert';
 import { hasAppStoreUpdate } from 'utils/utils';
 
 @withNetworkConnectivity({
@@ -451,10 +451,13 @@ import { hasAppStoreUpdate } from 'utils/utils';
   showAlert: R.pathOr(false, ['modal_visible'])(update),
   release_notes: R.pathOr('', ['release_notes'])(update),
 }))
+@compose(
+  withState('showNotificationModal', 'setShowNotificationModal', false),
+  withState('appState', 'setAppState', AppState.currentState),
+)
 class Router extends Component {
   state = {
     isIOS: Platform.OS === 'ios',
-    appState: '',
   };
 
   async componentWillMount() {
@@ -473,17 +476,15 @@ class Router extends Component {
     this.props.dispatch({
       type: 'app/checkCodePush',
     });
+
+    // check notif permission
+    this.checkPushPermission();
   }
 
   componentDidMount() {
     Linking.addEventListener('url', this.handleOpenURL);
     RouterEmitter.addListener('android_url', this.handleOpenURL);
     BackHandler.addEventListener('hardwareBackPress', this.backHandle);
-    JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
-    JPush.addReceiveNotificationListener(this.handleReceiveNotification);
-    if (this.state.isIOS) {
-      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
-    }
     AppState.addEventListener('change', this._handleAppStateChange);
   }
 
@@ -495,8 +496,6 @@ class Router extends Component {
 
   componentWillUnmount() {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
-    JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
-    JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
     AppState.removeEventListener('change', this._handleAppStateChange);
     Linking.removeEventListener('url', this.handleOpenURL);
   }
@@ -523,7 +522,7 @@ class Router extends Component {
 
   _handleAppStateChange = nextAppState => {
     if (
-      this.state.appState.match(/inactive|background/) &&
+      this.props.appState.match(/inactive|background/) &&
       nextAppState === 'active'
     ) {
       RouterEmitter.emit('resume');
@@ -532,8 +531,20 @@ class Router extends Component {
       this.props.dispatch({
         type: 'app/checkCodePush',
       });
+      // check notification permissions
+      this.checkPushPermission();
     }
-    this.setState({ appState: nextAppState });
+    this.props.setAppState(nextAppState);
+  };
+
+  checkPushPermission = () => {
+    if (this.state.isIOS) {
+      JPush.hasPermission(res => {
+        if (!res) {
+          this.props.setShowNotificationModal(true);
+        }
+      });
+    }
   };
 
   backHandle = () => {
@@ -548,33 +559,6 @@ class Router extends Component {
 
     dispatch(NavigationActions.back());
     return true;
-  };
-
-  handleOpenLaunchNotification = result => {
-    if (R.isNil(result)) {
-      return;
-    }
-
-    setTimeout(() => {
-      const { extras } = result;
-      handleOpen(extras);
-    }, 1000);
-  };
-
-  handleOpenNotification = result => {
-    if (R.isNil(result)) {
-      return;
-    }
-
-    const { extras } = result;
-    handleOpen(extras);
-  };
-
-  handleReceiveNotification = ({ appState, extras }) => {
-    if (appState === 'active') {
-      Vibration.vibrate(500);
-    }
-    handleReceive(extras);
   };
 
   toggleAlert = payload => {
@@ -607,6 +591,17 @@ class Router extends Component {
         >
           <UpdateAlert note={release_notes} />
         </Modal>
+        <ActionAlert
+          visible={this.props.showNotificationModal}
+          title="开启推送通知"
+          content="及时获取项目上所，融资等动态信息"
+          actionTitle="立即开启"
+          action={() => {
+            Linking.openURL('app-settings:');
+            this.props.setShowNotificationModal(false);
+          }}
+          onBackdropPress={() => this.props.setShowNotificationModal(false)}
+        />
       </View>
     );
   }

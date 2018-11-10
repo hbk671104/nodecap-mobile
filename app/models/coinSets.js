@@ -23,9 +23,9 @@ export default {
         console.log(e);
       }
     },
-    *fetchCoins({ set_id, callback }, { call, put }) {
+    *fetchCoins({ set_id, params, callback }, { call, put }) {
       try {
-        const { data } = yield call(getCoinsBySetID, set_id);
+        const { data } = yield call(getCoinsBySetID, set_id, params);
         yield put({
           type: 'coins',
           payload: data,

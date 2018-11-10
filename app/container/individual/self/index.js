@@ -8,10 +8,11 @@ import {
   Clipboard,
 } from 'react-native';
 import { Flex, Toast } from 'antd-mobile';
-
+import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import * as WeChat from 'react-native-wechat';
 import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
@@ -28,6 +29,7 @@ import styles from './style';
   isLogin: !!login.token,
   loading: loading.effects['login/switch'],
 }))
+@connectActionSheet
 class Self extends Component {
   handleSettingsPress = () => {
     this.props.track('设置');
@@ -56,22 +58,6 @@ class Self extends Component {
     }
   };
 
-  handleResourcesPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Resources',
-      }),
-    );
-  };
-
-  handleColleaguePress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Colleague',
-      }),
-    );
-  };
-
   handleFeedbackPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -83,7 +69,7 @@ class Self extends Component {
   handleMyProjectPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'MyProject',
+        routeName: this.props.isLogin ? 'MyProject' : 'Login',
       }),
     );
   };
@@ -91,7 +77,15 @@ class Self extends Component {
   handleInstitutionJoinPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'MyInstitution',
+        routeName: this.props.isLogin ? 'MyInstitution' : 'Login',
+      }),
+    );
+  };
+
+  handleFavoredPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: this.props.isLogin ? 'Favored' : 'Login',
       }),
     );
   };
@@ -128,6 +122,37 @@ class Self extends Component {
     ]);
   };
 
+  handleShare = () => {
+    this.props.showActionSheetWithOptions(
+      {
+        options: ['分享至朋友圈', '分享至微信', '取消'],
+        cancelButtonIndex: 2,
+      },
+      index => {
+        const request = {
+          type: 'news',
+          webpageUrl:
+            'http://a.app.qq.com/o/simple.jsp?pkgname=com.nodecap.hotnode',
+          title: '推荐「Hotnode」给你',
+          description:
+            '找项目，上 Hotnode！Hotnode 是一款为区块链项目方和服务方提供数据服务的综合性平台。',
+          thumbImage:
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/logo_200x200.png',
+        };
+        switch (index) {
+          case 0:
+            WeChat.shareToTimeline(request);
+            break;
+          case 1:
+            WeChat.shareToSession(request);
+            break;
+          default:
+            break;
+        }
+      },
+    );
+  };
+
   renderNavBar = () => (
     <NavBar
       gradient
@@ -149,7 +174,7 @@ class Self extends Component {
           }}
           onPress={() => {
             Clipboard.setString('ladh2857');
-            Toast.show('已复制', 2000);
+            Toast.show('已复制', Toast.SHORT, false);
           }}
         >
           <View>
@@ -166,21 +191,22 @@ class Self extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView contentContainerStyle={styles.scroll.content}>
-          {isLogin && (
-            <View>
-              <Item
-                icon={require('asset/mine/my_project.png')}
-                title="我的项目"
-                onPress={this.handleMyProjectPress}
-              />
-              <Item
-                icon={require('asset/mine/institution_join.png')}
-                title="机构入驻通道"
-                onPress={this.handleInstitutionJoinPress}
-              />
-              <View style={styles.scroll.divider} />
-            </View>
-          )}
+          <Item
+            icon={require('asset/mine/my_project.png')}
+            title="我的项目"
+            onPress={this.handleMyProjectPress}
+          />
+          <Item
+            icon={require('asset/mine/institution_join.png')}
+            title="机构入驻通道"
+            onPress={this.handleInstitutionJoinPress}
+          />
+          <Item
+            icon={require('asset/mine/favored.png')}
+            title="我的关注"
+            onPress={this.handleFavoredPress}
+          />
+          <View style={styles.scroll.divider} />
           <Item
             icon={require('asset/mine/feedback.png')}
             title="意见反馈"
@@ -190,6 +216,11 @@ class Self extends Component {
             icon={require('asset/mine/settings.png')}
             title="设置"
             onPress={this.handleSettingsPress}
+          />
+          <Item
+            icon={require('asset/mine/share_hotnode.png')}
+            title="分享 Hotnode"
+            onPress={this.handleShare}
           />
           <StaticItem
             icon={require('asset/mine/wechat.png')}

@@ -1,28 +1,44 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import R from 'ramda';
-import { Flex, ActivityIndicator } from 'antd-mobile';
+import { Flex } from 'antd-mobile';
+import Placeholder from 'rn-placeholder';
 
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import FavorItem from 'component/favored/item';
 import Group from './group';
 
-const middle = ({ data, pagination, onProjectRepoPress, onRefreshProject, selectedLoading }) => (
-  <Group renderTitle={() => (
-    <Touchable borderless onPress={onProjectRepoPress}>
-      <Flex align="center">
-        <Text style={{
-          fontSize: 16,
-          color: 'rgba(0, 0, 0, 0.85)',
-          fontWeight: 'bold',
-        }}
-        >精选项目
-        </Text>
-        <Icon style={{ fontSize: 16, marginLeft: 5 }} name="ios-arrow-forward" override />
-      </Flex>
-    </Touchable>
-  )}
+let manualRefresh = false;
+
+const middle = ({
+  data,
+  pagination,
+  onProjectRepoPress,
+  onRefreshProject,
+  selectedLoading,
+}) => (
+  <Group
+    renderTitle={() => (
+      <Touchable borderless onPress={onProjectRepoPress}>
+        <Flex align="center">
+          <Text
+            style={{
+              fontSize: 16,
+              color: 'rgba(0, 0, 0, 0.85)',
+              fontWeight: 'bold',
+            }}
+          >
+            精选项目
+          </Text>
+          <Icon
+            style={{ fontSize: 16, marginLeft: 5 }}
+            name="ios-arrow-forward"
+            override
+          />
+        </Flex>
+      </Touchable>
+    )}
   >
     <View style={styles.bottom.container}>
       <Text style={styles.bottom.subtitle}>
@@ -31,10 +47,11 @@ const middle = ({ data, pagination, onProjectRepoPress, onRefreshProject, select
       <Touchable
         borderless
         onPress={() => {
-        if (!selectedLoading) {
-          onRefreshProject();
-        }
-      }}
+          if (!selectedLoading) {
+            manualRefresh = true;
+            onRefreshProject();
+          }
+        }}
       >
         <Flex style={{ marginTop: -20 }}>
           <Image
@@ -49,15 +66,26 @@ const middle = ({ data, pagination, onProjectRepoPress, onRefreshProject, select
           </Text>
         </Flex>
       </Touchable>
-
     </View>
     <View>
       {R.pipe(
         R.take(5),
         R.addIndex(R.map)((d, i) => (
-          <View key={d.id}>
+          <View key={`${i}`}>
             {i !== 0 && <View style={styles.separator} />}
-            <FavorItem data={d} />
+            <View
+              style={{ padding: selectedLoading && !manualRefresh ? 12 : 0 }}
+            >
+              <Placeholder.ImageContent
+                size={52}
+                animate="fade"
+                lineNumber={3}
+                lineSpacing={8}
+                onReady={!selectedLoading || manualRefresh}
+              >
+                <FavorItem data={d} />
+              </Placeholder.ImageContent>
+            </View>
           </View>
         )),
       )(data)}
@@ -77,6 +105,7 @@ const styles = {
     subtitle: {
       color: 'rgba(0, 0, 0, 0.45)',
       fontSize: 11,
+      marginTop: 6,
     },
     filter: {
       fontSize: 13,

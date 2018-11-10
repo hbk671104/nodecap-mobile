@@ -22,14 +22,25 @@ const memberItem = ({ data, style }) => {
   const linkedIn_url = R.path(['linkedIn_url'])(data);
   const mobile = R.path(['mobile'])(data);
   const wechat = R.path(['wechat'])(data);
+  const is_vip = R.pathOr(false, ['is_vip'])(data);
+
   return (
     <View style={[styles.container, style]}>
-      <Avatar
-        source={{ uri: profile_pic }}
-        raised={false}
-        size={40}
-        innerRatio={1}
-      />
+      <View>
+        <Avatar
+          resizeMode="cover"
+          source={{ uri: profile_pic }}
+          raised={false}
+          size={40}
+          innerRatio={1}
+        />
+        {is_vip && (
+          <Image
+            style={styles.vip}
+            source={require('asset/public_project/is_vip.png')}
+          />
+        )}
+      </View>
       <Flex justify="between" style={{ flex: 1 }}>
         <View style={[styles.content.container]}>
           <Text style={styles.content.title}>{R.trim(name)}</Text>
@@ -67,7 +78,7 @@ const memberItem = ({ data, style }) => {
                 }}
                 onPress={() => {
                   Clipboard.setString(wechat);
-                  Toast.show('微信号已复制', 2000);
+                  Toast.show('微信号已复制', Toast.SHORT, false);
                 }}
               >
                 <Image
@@ -118,6 +129,11 @@ const styles = {
     paddingVertical: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
+  },
+  vip: {
+    position: 'absolute',
+    right: 0,
+    bottom: 3.5,
   },
   content: {
     container: {

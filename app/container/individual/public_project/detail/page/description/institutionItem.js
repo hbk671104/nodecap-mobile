@@ -6,9 +6,8 @@ import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
 import { SolidAvatar } from 'component/uikit/avatar';
 
-const item = ({ style, data, onPress, disableSubtitle }) => {
+const item = ({ style, data, onPress }) => {
   const title = R.pathOr('--', ['name'])(data);
-  const des = R.pathOr('', ['description'])(data);
   const logo_url = R.pathOr('', ['logo_url'])(data);
   return (
     <Touchable foreground onPress={onPress}>
@@ -31,11 +30,12 @@ item.defaultProps = {
   disableSubtitle: false,
 };
 
-export const itemHeight = 66;
 const styles = {
   container: {
     justifyContent: 'center',
-    marginRight: 23,
+    alignItems: 'center',
+    marginRight: 20,
+    marginBottom: 12,
   },
   content: {
     container: {

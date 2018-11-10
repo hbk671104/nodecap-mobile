@@ -45,6 +45,7 @@ export default {
     list: null,
     query: null,
     current: initialCurrent,
+    edited: null,
     owner: null,
   },
   effects: {
@@ -116,22 +117,27 @@ export default {
           R.path(['project_create', 'current'])(state),
         );
 
-        const sanitized_data = convertToPayloadData({
-          ...current,
-          owner,
-        });
-
         if (current.id) {
+          // const edited = yield select(state =>
+          //   R.path(['project_create', 'edited'])(state),
+          // );
+
           yield put.resolve({
             type: 'editProject',
             id: current.id,
-            payload: sanitized_data,
+            payload: convertToPayloadData({
+              ...current,
+              owner,
+            }),
             callback,
           });
         } else {
           yield put.resolve({
             type: 'createProject',
-            payload: sanitized_data,
+            payload: convertToPayloadData({
+              ...current,
+              owner,
+            }),
             callback,
           });
         }
@@ -139,13 +145,18 @@ export default {
         console.log(error);
       }
     },
-    *createProject({ payload, callback }, { put, call }) {
+    *createProject({ payload, callback }, { put, call, all }) {
       try {
         const { status } = yield call(Individual.createMyProject, payload);
 
-        yield put({
-          type: 'refresh',
-        });
+        yield all([
+          put({
+            type: 'refresh',
+          }),
+          put({
+            type: 'resetCurrent',
+          }),
+        ]);
 
         if (callback) {
           yield callback(status === 200);
@@ -154,16 +165,26 @@ export default {
         console.log(error);
       }
     },
-    *editProject({ id, payload, callback }, { put, call }) {
+    *editProject({ id, payload, callback }, { put, call, all, select }) {
       try {
         const { status } = yield call(Individual.editMyProject, {
           id,
           payload,
         });
 
-        yield put({
-          type: 'refresh',
-        });
+        const current_project_id = yield select(state =>
+          R.path(['project_create', 'current', 'id'])(state),
+        );
+
+        yield all([
+          put({
+            type: 'refresh',
+          }),
+          put({
+            type: 'get',
+            id: current_project_id,
+          }),
+        ]);
 
         if (callback) {
           yield callback(status === 200);
@@ -181,9 +202,6 @@ export default {
               page: 1,
               'per-page': 20,
             },
-          }),
-          put({
-            type: 'resetCurrent',
           }),
           put({
             type: 'user/fetchCurrent',
@@ -214,6 +232,10 @@ export default {
           ...state.current,
           ...payload,
         },
+        edited: {
+          ...state.edited,
+          ...payload,
+        },
       };
     },
     setCurrent(state, { payload, owner }) {
@@ -227,6 +249,7 @@ export default {
       return {
         ...state,
         current: initialCurrent,
+        edited: null,
         query: null,
       };
     },

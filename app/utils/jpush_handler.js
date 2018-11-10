@@ -32,11 +32,34 @@ const handleOpen = extras => {
       break;
     case 'coin_owner':
       global.track('App_NotificationPushOpen', {
-        trackName: '审核推送点击',
+        trackName: '项目审核推送点击',
       });
       store.dispatch(
         NavigationActions.navigate({
           routeName: 'MyProject',
+        }),
+      );
+      break;
+    case 'industry_owner':
+      global.track('App_NotificationPushOpen', {
+        trackName: '机构审核推送点击',
+      });
+      store.dispatch(
+        NavigationActions.navigate({
+          routeName: 'MyInstitution',
+        }),
+      );
+      break;
+    case 'coin_daily_increment':
+      global.track('App_NotificationPushOpen', {
+        trackName: '项目集增量更新推送点击',
+      });
+      store.dispatch(
+        NavigationActions.navigate({
+          routeName: 'ProjectRepo',
+          params: {
+            coinset_id: id,
+          },
         }),
       );
       break;
@@ -68,12 +91,16 @@ const handleReceive = extras => {
       if (getCurrentScreen(router) === 'NotificationCenter') {
         break;
       }
-
-      store.dispatch({
-        type: 'notification/showBadge',
-      });
       break;
     }
+    case 'coin_daily_increment':
+      global.track('App_NotificationPushReceive', {
+        trackName: '项目集增量更新推送接收',
+      });
+      store.dispatch({
+        type: 'coinSets/fetch',
+      });
+      break;
     default:
       break;
   }

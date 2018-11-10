@@ -53,14 +53,15 @@ const fund = props => {
 const styles = {
   placeholder: {
     height: 100,
-    marginHorizontal: 12,
-    marginTop: 12,
+    paddingHorizontal: 12,
+    paddingTop: 12,
   },
   container: {
     paddingBottom: 12,
-    marginHorizontal: 12,
+    paddingHorizontal: 12,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
+    backgroundColor: 'white',
   },
   item: {
     container: {

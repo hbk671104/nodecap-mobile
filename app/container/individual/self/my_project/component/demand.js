@@ -97,6 +97,7 @@ const styles = {
   subtitle: {
     fontSize: 13,
     color: 'rgba(0, 0, 0, 0.45)',
+    marginTop: 6,
   },
   content: {
     container: {

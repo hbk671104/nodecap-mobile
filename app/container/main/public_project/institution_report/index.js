@@ -22,12 +22,14 @@ import styles from './style';
     pagination: R.pathOr(null, ['report', 'pagination'])(institution),
     banner: R.pathOr([], ['banner', 'data'])(institution),
     loading: loading.effects['institution/fetchReports'],
+    hasReadReports: R.pathOr([], ['has_read_reports'])(institution),
   };
 })
 export default class InstitutionReport extends Component {
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'institution/fetchReports',
+      refreshLastCount: true,
       payload: {
         currentPage: page,
         pageSize: size,
@@ -37,6 +39,10 @@ export default class InstitutionReport extends Component {
 
   handleItemPress = item => {
     this.props.track('点击进入详情');
+    this.props.dispatch({
+      type: 'institution/setReportRead',
+      id: item.id,
+    });
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',
@@ -61,9 +67,15 @@ export default class InstitutionReport extends Component {
     );
   };
 
-  renderItem = ({ item }) => (
-    <InstitutionReportItem data={item} onPress={this.handleItemPress} />
-  );
+  renderItem = ({ item }) => {
+     const isRead = R.contains(item.id)(this.props.hasReadReports);
+     return (<InstitutionReportItem
+       isRead={isRead}
+       data={item}
+       onPress={this.handleItemPress}
+     />
+    );
+  };
 
   renderSeparator = () => <View style={styles.separator} />;
 
@@ -113,6 +125,7 @@ export default class InstitutionReport extends Component {
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
           renderHeader={this.renderHeader}
+          extraData={this.props.hasReadReports}
         />
       </View>
     );

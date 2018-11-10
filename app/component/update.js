@@ -27,7 +27,7 @@ const update = ({ note }) => (
       titleStyle={styles.button.title}
       onPress={() =>
         Communications.web(
-          'https://itunes.apple.com/cn/app/hotnode/id1397744640?mt=8',
+          'http://a.app.qq.com/o/simple.jsp?pkgname=com.nodecap.hotnode',
         )
       }
     />
@@ -51,14 +51,13 @@ const styles = {
   },
   content: {
     container: {
-      // flex: 1,
       marginVertical: 16,
+      marginHorizontal: 12,
     },
     text: {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.65)',
       lineHeight: 17,
-      marginVertical: 3,
     },
   },
   button: {

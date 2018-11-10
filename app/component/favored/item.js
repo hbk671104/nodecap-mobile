@@ -70,6 +70,7 @@ class FavorItem extends PureComponent {
       R.isEmpty,
       R.not,
     )(data);
+    const has_owner = R.pathOr(false, ['has_owner'])(data);
     const is_vip = R.pipe(
       R.pathOr({}, ['vip']),
       R.isEmpty,
@@ -82,6 +83,11 @@ class FavorItem extends PureComponent {
     )(data);
     const top_rated = R.pipe(
       R.pathOr([], ['top_rating']),
+      R.isEmpty,
+      R.not,
+    )(data);
+    const is_reachable = R.pipe(
+      R.pathOr([], ['is_reachable']),
       R.isEmpty,
       R.not,
     )(data);
@@ -108,7 +114,7 @@ class FavorItem extends PureComponent {
               {is_vip && (
                 <Image
                   style={{ marginLeft: 8 }}
-                  source={require('asset/public_project/is_vip.png')}
+                  source={require('asset/public_project/vip_latest.png')}
                 />
               )}
             </View>
@@ -127,7 +133,33 @@ class FavorItem extends PureComponent {
                 )),
               )(category)}
             </View>
-            <View style={styles.content.miscTag.container}>
+            <View
+              style={[
+                styles.content.miscTag.container,
+                R.isEmpty(category) && { marginTop: 0 },
+              ]}
+            >
+              {has_owner && (
+                <View
+                  style={[
+                    styles.content.miscTag.item.container,
+                    { backgroundColor: '#1890FF', marginRight: 4 },
+                  ]}
+                >
+                  <Image
+                    style={{ marginRight: 3 }}
+                    source={require('asset/public_project/checkmark.png')}
+                  />
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: 'white' },
+                    ]}
+                  >
+                    已入驻
+                  </Text>
+                </View>
+              )}
               {has_white_paper && (
                 <View
                   style={[
@@ -166,7 +198,7 @@ class FavorItem extends PureComponent {
                 <View
                   style={[
                     styles.content.miscTag.item.container,
-                    { backgroundColor: '#BCF4CA' },
+                    { backgroundColor: '#BCF4CA', marginRight: 4 },
                   ]}
                 >
                   <Text
@@ -179,17 +211,25 @@ class FavorItem extends PureComponent {
                   </Text>
                 </View>
               )}
+              {is_reachable && (
+                <View
+                  style={[
+                    styles.content.miscTag.item.container,
+                    { backgroundColor: '#ECD7FE' },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: '#A663E0' },
+                    ]}
+                  >
+                    可联系
+                  </Text>
+                </View>
+              )}
             </View>
-            <Text
-              style={[
-                styles.content.subtitle,
-                (R.isEmpty(category) ||
-                  (!has_white_paper &&
-                    !invested_by_renowned_insti &&
-                    !top_rated)) && { marginTop: 0 },
-              ]}
-              numberOfLines={1}
-            >
+            <Text style={[styles.content.subtitle]} numberOfLines={1}>
               {description}
             </Text>
           </View>
@@ -239,7 +279,8 @@ const styles = {
   container: {
     flexDirection: 'row',
     // alignItems: 'center',
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 12,
     backgroundColor: 'white',
   },
   avatar: {
@@ -295,7 +336,7 @@ const styles = {
         container: {
           height: 17,
           paddingHorizontal: 3,
-          justifyContent: 'center',
+          flexDirection: 'row',
           alignItems: 'center',
           borderRadius: 1,
         },

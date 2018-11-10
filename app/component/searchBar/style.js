@@ -5,7 +5,7 @@ export default {
     alignItems: 'center',
     paddingLeft: 12,
     borderRadius: 4,
-    backgroundColor: '#1287F1',
+    backgroundColor: '#0F7EE2',
   },
   title: {
     flex: 1,

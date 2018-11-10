@@ -1,76 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { Flex } from 'antd-mobile';
 import R from 'ramda';
 import moment from 'moment';
 
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
-const notificationItem = ({ data, onPress }) => {
+const notificationItem = ({ data, onPress, onPressShare }) => {
   if (R.isEmpty(data) || R.isNil(data)) {
     return null;
   }
-
-  const logo_url = R.pathOr('', ['logo_url'])(data);
   const title = R.pathOr('--', ['title'])(data);
   const project_name = R.pathOr('--', ['project_name'])(data);
-  const type = R.pathOr('--', ['type'])(data);
   const subtitle = R.pathOr('--', ['subtitle'])(data);
   const push_at = R.pathOr(null, ['push_at'])(data);
+  const source = R.pathOr('', ['source'])(data);
+  const logo_url = R.pathOr('', ['logo_url'])(data);
 
   return (
     <Touchable foreground onPress={onPress(data.id)}>
       <View style={styles.container}>
-        <Avatar
-          size={50}
-          source={
-            R.isEmpty(logo_url)
-              ? require('asset/project/project_logo_default.png')
-              : { uri: logo_url }
-          }
-        />
-        <View style={styles.content.container}>
-          <View style={styles.content.top.container}>
-            <View style={styles.content.top.title.container}>
-              <Text style={styles.content.top.title.text} numberOfLines={2}>
-                {title}
-              </Text>
-            </View>
-            <View>
-              <Text style={styles.content.top.date}>
-                {push_at ? moment.unix(push_at).format('MM-DD HH:mm') : '--'}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.content.tag.wrapper}>
-            <View
-              style={[
-                styles.content.tag.container,
-                { backgroundColor: '#E5F3FF' },
-              ]}
-            >
-              <Text style={[styles.content.tag.title, { color: '#1890FF' }]}>
-                {project_name}
-              </Text>
-            </View>
-            <View
-              style={[
-                styles.content.tag.container,
-                { backgroundColor: '#FFE9D6' },
-              ]}
-            >
-              <Text style={[styles.content.tag.title, { color: '#FF7600' }]}>
-                {type}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.content.subtitle.container}>
-            <Text numberOfLines={2} style={styles.content.subtitle.text}>
-              {subtitle}
-            </Text>
-          </View>
+        <Flex justify="between" style={styles.header}>
+          <Flex align="center">
+            <Avatar
+              raised={false}
+              innerRatio={1}
+              size={20}
+              style={styles.avatar}
+              source={{ uri: logo_url }}
+            />
+            <Text style={styles.sourceName}>{source}</Text>
+          </Flex>
+          <Text style={styles.pushAt}>
+            {push_at ? moment.unix(push_at).format('M/D HH:mm') : null}
+          </Text>
+        </Flex>
+        <View style={styles.content}>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
+        <Flex style={styles.footer} justify="between">
+          <View>
+            <View style={styles.coinName}>
+              <Text style={styles.coinNameText}>{project_name}</Text>
+            </View>
+          </View>
+          <Touchable foreground onPress={() => onPressShare(data)}>
+            <Flex align="center">
+              <Image
+                style={{ width: 11, height: 11 }}
+                source={require('asset/project/detail/share.png')}
+              />
+              <Text style={styles.share}>分享</Text>
+            </Flex>
+          </Touchable>
+        </Flex>
       </View>
     </Touchable>
   );
@@ -78,62 +64,70 @@ const notificationItem = ({ data, onPress }) => {
 
 const styles = {
   container: {
-    padding: 12,
-    flexDirection: 'row',
+    backgroundColor: 'white',
+  },
+  avatar: {
+    marginRight: 10,
+  },
+  header: {
+    flex: 1,
+    height: 35,
+    paddingHorizontal: 12,
+    borderBottomColor: '#e9e9e9',
+    borderBottomWidth: 0.5,
+  },
+  sourceName: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.85)',
+    letterSpacing: 0.16,
+    fontFamily: 'PingFangSC-Medium',
+  },
+  pushAt: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.45)',
+    letterSpacing: 0.18,
+    lineHeight: 19,
   },
   content: {
-    container: {
-      marginLeft: 15,
-      flex: 1,
-    },
-    top: {
-      container: {
-        flexDirection: 'row',
-      },
-      title: {
-        container: {
-          flex: 1,
-          marginRight: 8,
-        },
-        text: {
-          color: 'rgba(0, 0, 0, 0.85)',
-          fontWeight: 'bold',
-          fontSize: 14,
-          lineHeight: 19,
-        },
-      },
-      date: {
-        fontSize: 12,
-        color: 'rgba(0, 0, 0, 0.45)',
-      },
-    },
-    tag: {
-      wrapper: {
-        marginTop: 6,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-      },
-      container: {
-        height: 19,
-        paddingHorizontal: 3,
-        borderRadius: 2,
-        marginRight: 8,
-        justifyContent: 'center',
-      },
-      title: {
-        fontSize: 11,
-      },
-    },
-    subtitle: {
-      container: {
-        marginTop: 10,
-      },
-      text: {
-        fontSize: 12,
-        lineHeight: 18,
-        color: 'rgba(0, 0, 0, 0.45)',
-      },
-    },
+    paddingHorizontal: 12,
+    paddingVertical: 15,
+  },
+  title: {
+    fontFamily: 'PingFangSC-Medium',
+    fontSize: 15,
+    color: 'rgba(0,0,0,0.85)',
+    letterSpacing: 0.18,
+    lineHeight: 22,
+  },
+  subtitle: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.65)',
+    letterSpacing: 0.16,
+    lineHeight: 19,
+    marginTop: 5,
+  },
+  footer: {
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  coinName: {
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    backgroundColor: '#eaeaea',
+    borderRadius: 1,
+  },
+  coinNameText: {
+    fontSize: 11,
+    color: 'rgba(0,0,0,0.45)',
+    letterSpacing: 0.13,
+    textAlign: 'justify',
+  },
+  share: {
+    fontSize: 12,
+    color: 'rgba(0,0,0,0.45)',
+    letterSpacing: 0.17,
+    lineHeight: 19,
+    marginLeft: 5,
   },
 };
 

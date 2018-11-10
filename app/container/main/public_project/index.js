@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated, Platform, Vibration } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import JPush from 'jpush-react-native';
 import { RouterEmitter } from '../../../router';
 
 import NavBar, { realBarHeight } from 'component/navBar';
+import Explanation from 'component/explanation';
 import NewsItem from 'component/news';
 import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
 import { handleBadgeAction } from 'utils/badge_handler';
+import { handleOpen, handleReceive } from 'utils/jpush_handler';
 
 import List from './components/list';
-import Refresh from './components/refresh';
 import Header from './header';
 import ShareNews from './shareNews';
 import styles from './style';
@@ -22,10 +24,20 @@ import styles from './style';
   name: 'App_PublicProjectOperation',
 })
 @connect(
-  ({ public_project, news, loading, notification, institution, banners }) => ({
+  ({
+    public_project,
+    news,
+    loading,
+    notification,
+    institution,
+    banners,
+    hotnode_index,
+  }) => ({
     news: R.pathOr([], ['news'])(news),
     lastNewsID: R.pathOr(null, ['payload'])(news),
-    data: R.pathOr([], ['selected', 'index', 'data'])(public_project),
+    data: R.pathOr([{}, {}, {}, {}, {}], ['selected', 'index', 'data'])(
+      public_project,
+    ),
     pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
       public_project,
     ),
@@ -35,15 +47,23 @@ import styles from './style';
     announcement: R.pathOr([], ['list', 'data'])(notification),
     reports: R.pathOr([], ['report', 'data'])(institution),
     updateCount: R.path(['updated_count'])(news),
-    notification_badge_visible: R.pathOr(false, ['badgeVisible'])(notification),
+    notification_badge_number: R.isNil(R.path(['lastRead'])(notification))
+      ? 0
+      : R.pathOr(0, ['list', 'pagination', 'total'])(notification) -
+        R.pathOr(0, ['lastRead'])(notification),
+    reports_badge_number: R.isNil(R.path(['lastReportCount'])(institution))
+      ? 0
+      : R.pathOr(0, ['report', 'pagination', 'total'])(institution) -
+        R.pathOr(0, ['lastReportCount'])(institution),
     banners: R.pathOr([], ['list', 'data'])(banners),
+    market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
   }),
 )
 @compose(
+  withState('showExplanation', 'setShowExplanation', false),
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentShareNews', 'setShareNews', ''),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
-  withState('selectPage', 'setSelectPage', 1),
   withProps(({ animateY }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 192],
@@ -60,17 +80,52 @@ import styles from './style';
 export default class PublicProject extends Component {
   componentWillMount() {
     RouterEmitter.addListener('resume', () => {
-      const nextPage = this.props.selectPage + 1;
       this.props.dispatch({
         type: 'news/index',
-        nextSelectPage: nextPage,
-        payload: null,
-        callback: () => {
-          this.props.setSelectPage(nextPage);
-        },
       });
     });
   }
+
+  componentDidMount() {
+    JPush.addReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.addReceiveNotificationListener(this.handleReceiveNotification);
+    if (Platform.OS === 'ios') {
+      JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
+    }
+  }
+
+  componentWillUnmount() {
+    JPush.removeReceiveOpenNotificationListener(this.handleOpenNotification);
+    JPush.removeReceiveNotificationListener(this.handleReceiveNotification);
+  }
+
+  handleOpenLaunchNotification = result => {
+    if (R.isNil(result)) {
+      return;
+    }
+
+    setTimeout(() => {
+      const { extras } = result;
+      handleOpen(extras);
+    }, 1000);
+  };
+
+  handleOpenNotification = result => {
+    if (R.isNil(result)) {
+      return;
+    }
+
+    const { extras } = result;
+    handleOpen(extras);
+  };
+
+  handleReceiveNotification = ({ appState, extras }) => {
+    if (appState === 'active') {
+      Vibration.vibrate(500);
+    }
+    handleReceive(extras);
+  };
+
   handleDataAlert = (newUpdateCount, oldUpdateCount) => {
     if (newUpdateCount > oldUpdateCount) {
       const count = newUpdateCount - oldUpdateCount;
@@ -87,21 +142,13 @@ export default class PublicProject extends Component {
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
-      nextSelectPage: this.props.selectPage,
       callback,
     });
   };
 
   refreshProject = () => {
-    const nextPage = this.props.selectPage + 1;
     this.props.dispatch({
       type: 'public_project/fetchSelected',
-      params: {
-        currentPage: nextPage,
-      },
-      callback: () => {
-        this.props.setSelectPage(nextPage);
-      },
     });
   };
 
@@ -164,13 +211,24 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleServicePress = () => {
+  handleServicePress = type => () => {
     this.props.track('点击找服务');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Service',
-      }),
-    );
+    if (type === 'more') {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Service',
+        }),
+      );
+    } else {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'SingleService',
+          params: {
+            type,
+          },
+        }),
+      );
+    }
   };
 
   handleReportItemPress = item => {
@@ -203,6 +261,14 @@ export default class PublicProject extends Component {
     this.props.toggleShareModal(true);
   };
 
+  handleMoreIndexPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'HotnodeIndex',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
     <NewsItem
       {...this.props}
@@ -231,6 +297,8 @@ export default class PublicProject extends Component {
       onRefreshProject={() => {
         this.refreshProject();
       }}
+      onMoreIndexPress={this.handleMoreIndexPress}
+      onTitlePress={() => this.props.setShowExplanation(true)}
       newsLoading={this.props.loading && this.shouldAnimate}
     />
   );
@@ -257,7 +325,7 @@ export default class PublicProject extends Component {
   );
 
   render() {
-    const { news, loading, refreshButtonOpacityRange } = this.props;
+    const { news, loading, showExplanation } = this.props;
     return (
       <View style={styles.container}>
         <List
@@ -294,6 +362,12 @@ export default class PublicProject extends Component {
             this.props.toggleShareModal(false);
             this.props.setShareNews('');
           }}
+        />
+        <Explanation
+          visible={showExplanation}
+          onBackdropPress={() => this.props.setShowExplanation(false)}
+          title="市场情绪"
+          content="市场情绪是Hotnode综合全网媒体及自媒体数据，进行大数据建模及分析，科学评估市场情绪看多看空动向。"
         />
       </View>
     );
