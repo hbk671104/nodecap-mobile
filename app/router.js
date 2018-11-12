@@ -18,7 +18,8 @@ import {
   createBottomTabNavigator,
 } from 'react-navigation';
 import {
-  createReduxBoundAddListener,
+  reduxifyNavigator,
+  createNavigationReducer,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
@@ -28,7 +29,6 @@ import { Toast } from 'antd-mobile';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
 
-import Loading from 'component/uikit/loading';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
@@ -418,6 +418,15 @@ const AppRouter = createSwitchNavigator(
   },
 );
 
+export const routerReducer = createNavigationReducer(AppRouter);
+
+export const routerMiddleware = createReactNavigationReduxMiddleware(
+  'root',
+  state => state.router,
+);
+
+const App = reduxifyNavigator(AppRouter, 'root');
+
 export function getCurrentScreen(navigationState) {
   if (!navigationState) {
     return null;
@@ -428,13 +437,6 @@ export function getCurrentScreen(navigationState) {
   }
   return route.routeName;
 }
-
-export const routerMiddleware = createReactNavigationReduxMiddleware(
-  'root',
-  state => state.router,
-);
-
-const addListener = createReduxBoundAddListener('root');
 
 import { compose, withState } from 'recompose';
 import UpdateAlert from 'component/update';
@@ -570,17 +572,10 @@ class Router extends Component {
 
   render() {
     const { dispatch, app, router, showAlert, release_notes } = this.props;
-    if (app.loading) return <Loading />;
-
-    const navigation = {
-      dispatch,
-      state: router,
-      addListener,
-    };
     return (
       <View style={{ flex: 1 }}>
         <ActionSheetProvider>
-          <AppRouter navigation={navigation} />
+          <App dispatch={dispatch} state={router} />
         </ActionSheetProvider>
         <Modal
           style={{ alignSelf: 'center' }}
@@ -605,10 +600,6 @@ class Router extends Component {
       </View>
     );
   }
-}
-
-export function routerReducer(state, action = {}) {
-  return AppRouter.router.getStateForAction(action, state);
 }
 
 export default Router;
