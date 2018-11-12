@@ -55,6 +55,7 @@ import styles from './style';
     const investment = R.pathOr({}, ['roi'])(portfolio);
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
+    const overall_rating = R.pathOr({}, ['overall_rating'])(portfolio);
     return {
       navBarOpacityRange: animateY.interpolate({
         inputRange: [0, 160],
@@ -71,10 +72,14 @@ import styles from './style';
           component: Description,
           name: '详情',
         },
-        {
-          component: OverallRatings,
-          name: '综合评级',
-        },
+        ...(R.isEmpty(overall_rating)
+          ? []
+          : [
+              {
+                component: OverallRatings,
+                name: '综合评级',
+              },
+            ]),
         ...(R.isEmpty(trends)
           ? []
           : [
