@@ -20,7 +20,8 @@ export default {
   },
   scroll: {
     content: {
-      paddingTop: 85,
+      paddingTop: 72,
+      paddingBottom: 12,
     },
     divider: {
       height: StyleSheet.hairlineWidth,

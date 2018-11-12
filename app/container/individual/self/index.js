@@ -201,44 +201,43 @@ class Self extends Component {
             title="机构入驻通道"
             onPress={this.handleInstitutionJoinPress}
           />
+          <View style={styles.scroll.divider} />
           <Item
             icon={require('asset/mine/favored.png')}
             title="我的关注"
             onPress={this.handleFavoredPress}
           />
-          <View style={styles.scroll.divider} />
           <Item
             icon={require('asset/mine/feedback.png')}
             title="意见反馈"
             onPress={this.handleFeedbackPress}
           />
-          <Item
-            icon={require('asset/mine/settings.png')}
-            title="设置"
-            onPress={this.handleSettingsPress}
+          <View style={styles.scroll.divider} />
+          <StaticItem
+            icon={require('asset/mine/wechat.png')}
+            title="加微信群"
+            renderRight={this.renderWechat()}
           />
           <Item
             icon={require('asset/mine/share_hotnode.png')}
             title="分享 Hotnode"
             onPress={this.handleShare}
           />
-          <StaticItem
-            icon={require('asset/mine/wechat.png')}
-            title="加微信群"
-            renderRight={this.renderWechat()}
-          />
+          <View style={styles.scroll.divider} />
           {isLogin && (
-            <View>
-              <View style={styles.scroll.divider} />
-              <Item
-                loading={loading}
-                icon={require('asset/mine/switch_end.png')}
-                title="切换至机构版"
-                subtitle="若您是机构投资人，可管理机构项目及工作流协作"
-                onPress={this.handleSwitchEndPress}
-              />
-            </View>
+            <Item
+              loading={loading}
+              icon={require('asset/mine/switch_end.png')}
+              title="切换至机构版"
+              subtitle="若您是机构投资人，可管理机构项目及工作流协作"
+              onPress={this.handleSwitchEndPress}
+            />
           )}
+          <Item
+            icon={require('asset/mine/settings.png')}
+            title="设置"
+            onPress={this.handleSettingsPress}
+          />
         </ScrollView>
         <Header
           {...this.props}
