@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 import { borderColor } from 'component/uikit/color';
 
 const window = Dimensions.get('window');
@@ -82,13 +82,8 @@ export default {
   },
   tipText: { fontSize: 12, color: 'rgba(0,0,0,0.45)', letterSpacing: 0.15 },
   actionsBar: {
-    ...ifIphoneX(
-      {
-        paddingBottom: 22,
-      },
-      {},
-    ),
-    height: 60,
+    paddingBottom: getBottomSpace(),
+    height: 96,
     backgroundColor: 'white',
     width: DEVICE_WIDTH,
     borderTopWidth: 0.5,
@@ -106,7 +101,7 @@ export default {
     fontSize: 14,
     color: 'rgba(0,0,0,0.65)',
     letterSpacing: 0,
-    marginLeft: 10,
+    marginLeft: 6,
   },
   shareButtonItem: {
     width: 30,

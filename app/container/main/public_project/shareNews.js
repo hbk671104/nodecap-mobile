@@ -6,19 +6,18 @@ import {
   Image,
   Text,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Flex } from 'antd-mobile';
 import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
 import ViewShot from 'react-native-view-shot';
-import Icon from 'react-native-vector-icons/Ionicons';
 import * as WeChat from 'react-native-wechat';
 import moment from 'moment';
 import Modal from 'react-native-modal';
 import styles from './shareNewsStyle';
 
+import Icon from 'component/uikit/icon';
 import Format from 'component/format';
 import PercentageChangeItem from 'component/hotnode_index/percentage_change_item';
 
@@ -80,9 +79,8 @@ class ShareNews extends Component {
         <Touchable borderless onPress={this.props.onClose}>
           <Flex align="center">
             <Icon
-              name={Platform.OS === 'ios' ? 'ios-arrow-back' : 'md-arrow-back'}
-              style={styles.backButton}
-              color="#a1a1a1"
+              name="arrow-back"
+              style={[styles.backText, { fontSize: 20 }]}
             />
             <Text style={styles.backText}>返回</Text>
           </Flex>
