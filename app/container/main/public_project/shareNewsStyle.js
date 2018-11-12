@@ -25,7 +25,12 @@ export default {
     borderBottomWidth: 0.5,
     borderBottomColor: '#e9e9e9',
   },
-  date: { fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.16, marginLeft: 12 },
+  date: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.65)',
+    letterSpacing: 0.16,
+    marginLeft: 12,
+  },
   content: {
     marginHorizontal: 20,
     paddingBottom: 6.5,
@@ -33,8 +38,21 @@ export default {
     borderBottomColor: '#e9e9e9',
     backgroundColor: 'white',
   },
-  title: { fontFamily: 'PingFangSC-Medium', fontSize: 18, color: 'rgba(0,0,0,0.85)', letterSpacing: 0.22, marginTop: 16 },
-  newsContent: { marginTop: 12, fontSize: 14, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.17, textAlign: 'justify', lineHeight: 25 },
+  title: {
+    fontFamily: 'PingFangSC-Medium',
+    fontSize: 18,
+    color: 'rgba(0,0,0,0.85)',
+    letterSpacing: 0.22,
+    marginTop: 16,
+  },
+  newsContent: {
+    marginTop: 12,
+    fontSize: 14,
+    color: 'rgba(0,0,0,0.65)',
+    letterSpacing: 0.17,
+    textAlign: 'justify',
+    lineHeight: 25,
+  },
   tip: {
     marginTop: 102.5,
   },
@@ -43,6 +61,18 @@ export default {
     height: 3,
     backgroundColor: 'rgba(0,0,0,.25)',
     marginRight: 8,
+  },
+  index: {
+    title: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.45)',
+      marginLeft: 4,
+    },
+    text: {
+      fontSize: 18,
+      color: 'rgba(0, 0, 0, 0.85)',
+      fontWeight: 'bold',
+    },
   },
   footer: {
     width: window.width - 24,

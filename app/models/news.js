@@ -35,6 +35,10 @@ export default {
           put({
             type: 'hotnode_index/fetchSentiment',
           }),
+          // hotnode index
+          put({
+            type: 'hotnode_index/fetchGlobal',
+          }),
         ]);
 
         // index

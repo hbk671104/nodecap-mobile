@@ -6,6 +6,7 @@ import { Flex } from 'antd-mobile';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import Format from 'component/format';
+import PercentageChangeItem from './percentage_change_item';
 
 const item = ({
   title,
@@ -33,16 +34,10 @@ const item = ({
           <Format digit={index_precision}>{change}</Format>
         </Text>
       </View>
-      <View
-        style={[
-          styles.item.percentage_change.container,
-          minus_percentage && { backgroundColor: '#F55454' },
-        ]}
-      >
-        <Text style={styles.item.percentage_change.text}>
-          {minus_percentage ? `${percentage_change}` : `+${percentage_change}`}%
-        </Text>
-      </View>
+      <PercentageChangeItem
+        style={{ marginTop: 8, alignSelf: 'flex-start' }}
+        percentage_change={percentage_change}
+      />
     </View>
   );
 };
@@ -162,23 +157,6 @@ const styles = {
         marginLeft: 8,
         fontSize: 12,
         color: '#333333',
-      },
-    },
-    percentage_change: {
-      container: {
-        marginTop: 8,
-        height: 20,
-        backgroundColor: '#09AC32',
-        borderRadius: 10,
-        paddingHorizontal: 6,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'flex-start',
-      },
-      text: {
-        color: 'white',
-        fontSize: 10,
-        fontWeight: 'bold',
       },
     },
   },

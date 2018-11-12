@@ -3,12 +3,12 @@ import {
   Dimensions,
   ScrollView,
   View,
-  ImageBackground,
   Image,
   Text,
   TouchableOpacity,
   Platform,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Flex } from 'antd-mobile';
 import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
@@ -19,15 +19,21 @@ import moment from 'moment';
 import Modal from 'react-native-modal';
 import styles from './shareNewsStyle';
 
+import Format from 'component/format';
+import PercentageChangeItem from 'component/hotnode_index/percentage_change_item';
+
 const window = Dimensions.get('window');
 export const DEVICE_WIDTH = window.width;
 
+@connect(({ hotnode_index }) => ({
+  global: R.pathOr({}, ['overall', 'global'])(hotnode_index),
+}))
 class ShareNews extends Component {
   state = {
     loading: {},
     isWXAppSupportApi: false,
     isWXAppInstalled: false,
-  }
+  };
 
   componentWillMount() {
     this.checkWechatAval();
@@ -97,7 +103,8 @@ class ShareNews extends Component {
   }
 
   render() {
-    const news = this.props.news;
+    const { news, global } = this.props;
+
     if (!news) {
       return null;
     }
@@ -109,6 +116,10 @@ class ShareNews extends Component {
     const title = R.pathOr('', [1])(regex);
     const content = R.pathOr('', [2])(regex);
     const created_at = R.path(['created_at'])(news);
+    const heat = R.pathOr('--', ['heat'])(global);
+    const heat_change_percentage = R.pathOr(0, ['heat_change_percentage'])(
+      global,
+    );
 
     return (
       <Modal
@@ -119,7 +130,13 @@ class ShareNews extends Component {
           margin: 0,
         }}
       >
-        <ScrollView style={{ width: '100%', height: window.height - 60, backgroundColor: 'white' }}>
+        <ScrollView
+          style={{
+            width: '100%',
+            height: window.height - 60,
+            backgroundColor: 'white',
+          }}
+        >
           <ViewShot
             options={{ format: 'jpg', quality: 0.9 }}
             ref={ref => {
@@ -137,13 +154,30 @@ class ShareNews extends Component {
                     source={require('asset/share/clock.png')}
                     style={styles.clock}
                   />
-                  <Text style={styles.date}>{created_at ? moment(created_at * 1000).format('YYYY-MM-DD HH:mm') : ''}</Text>
+                  <Text style={styles.date}>
+                    {created_at
+                      ? moment(created_at * 1000).format('YYYY-MM-DD HH:mm')
+                      : ''}
+                  </Text>
                 </Flex>
                 <Text style={styles.title}>{title}</Text>
                 <Text style={styles.newsContent}>{content}</Text>
-                <Flex style={styles.tip}>
-                  <View style={styles.tipDot} />
-                  <Text style={styles.tipText}>以上信息分享自 Hotnode APP</Text>
+                <Flex style={styles.tip} justify="space-between">
+                  <Flex align="center">
+                    <Image
+                      source={require('asset/public_project/index_icon.png')}
+                    />
+                    <Text style={styles.index.title}>Hotnode 全网项目指数</Text>
+                  </Flex>
+                  <Flex align="center">
+                    <Text style={styles.index.text}>
+                      <Format digit={0}>{heat}</Format>
+                    </Text>
+                    <PercentageChangeItem
+                      style={{ marginLeft: 4 }}
+                      percentage_change={heat_change_percentage}
+                    />
+                  </Flex>
                 </Flex>
               </View>
               <Image
