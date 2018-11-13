@@ -1,6 +1,6 @@
 export default {
   container: {
-    height: 31,
+    height: 30,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 12,

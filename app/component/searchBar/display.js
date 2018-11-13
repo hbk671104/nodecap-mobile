@@ -1,21 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text } from 'react-native';
 
-import NodeCapIcon from '../icon/nodecap';
+import Touchable from 'component/uikit/touchable';
+import Icon from 'component/uikit/icon';
 import styles from './style';
 
 const searchBarDisplay = ({ style, onPress, title, titleStyle, iconColor }) => (
-  <TouchableOpacity
-    activeOpacity={0.75}
-    style={[styles.container, style]}
-    onPress={onPress}
-  >
-    <Text style={[styles.title, titleStyle]}>{title}</Text>
-    <View style={styles.icon.container}>
-      <NodeCapIcon name="sousuo" size={16} color={iconColor} />
+  <Touchable onPress={onPress}>
+    <View style={[styles.container, style]}>
+      <Text style={[styles.title, titleStyle]}>{title}</Text>
+      <View style={styles.icon.container}>
+        <Icon name="search" size={20} color={iconColor} />
+      </View>
     </View>
-  </TouchableOpacity>
+  </Touchable>
 );
 
 searchBarDisplay.defaultProps = {

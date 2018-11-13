@@ -14,6 +14,7 @@ import R from 'ramda';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { RouterEmitter } from '../../../../router';
 
+import SearchBarDisplay from 'component/searchBar/display';
 import { NumberBadge } from 'component/badge';
 import Touchable from 'component/uikit/touchable';
 
@@ -22,6 +23,7 @@ const deviceWidth = Dimensions.get('window').width;
 const top = ({
   insite_news,
   banners,
+  onSearchBarPress,
   onServicePress,
   onAnnouncementPress,
   onProjectRepoPress,
@@ -31,57 +33,14 @@ const top = ({
   reports_badge_number,
 }) => (
   <View style={styles.container}>
-    <View style={{ height: 160 }}>
-      <Swiper
-        width={deviceWidth}
-        height={120}
-        autoplay
-        autoplayTimeout={4}
-        renderPagination={(index, total) => {
-          const dots = R.repeat('', total).map((i, idx) => (
-            <View
-              key={`${idx}`}
-              style={[styles.dot, idx === index ? styles.dotActive : {}]}
-            />
-          ));
-          return <View style={styles.pagination}>{dots}</View>;
-        }}
-      >
-        {R.map(n => (
-          <TouchableWithoutFeedback
-            key={n.id}
-            onPress={() => {
-              if (Platform.OS !== 'ios') {
-                RouterEmitter.emit('android_url', { url: n.banner_url });
-                return;
-              }
-              if (n.banner_url) {
-                Linking.openURL(n.banner_url);
-              }
-            }}
-          >
-            <Image style={styles.banner} source={{ uri: n.banner }} />
-          </TouchableWithoutFeedback>
-        ))(banners)}
-      </Swiper>
-    </View>
-    <View style={styles.verticalBanner.container}>
-      <Image source={require('asset/public_project/announcement_label.png')} />
-      <Swiper
-        style={styles.verticalBanner.bannerWrapper}
-        height={styles.verticalBanner.container.height}
-        horizontal={false}
-        showsPagination={false}
-        autoplay
-      >
-        {R.map(n => (
-          <View key={n.id} style={styles.verticalBanner.group.container}>
-            <Text style={styles.verticalBanner.group.title} numberOfLines={1}>
-              {R.pathOr('--', ['title'])(n)}
-            </Text>
-          </View>
-        ))(insite_news)}
-      </Swiper>
+    <View style={styles.searchBar.wrapper}>
+      <SearchBarDisplay
+        style={styles.searchBar.container}
+        title="搜索项目名称、Token"
+        titleStyle={{ color: '#999999' }}
+        iconColor="#999999"
+        onPress={onSearchBarPress}
+      />
     </View>
     <Grid style={{ paddingBottom: 16, paddingHorizontal: 12 }}>
       <Row>
@@ -145,7 +104,6 @@ const top = ({
               <View style={styles.tab.group.imageWrapper}>
                 <Image
                   source={require('asset/public_project/exchange_icon.png')}
-                  style={{ width: 27.6, height: 24.5 }}
                 />
               </View>
               <Text style={styles.tab.group.title}>找交易所</Text>
@@ -158,7 +116,6 @@ const top = ({
               <View style={styles.tab.group.imageWrapper}>
                 <Image
                   source={require('asset/public_project/media_icon.png')}
-                  style={{ width: 24, height: 24 }}
                 />
               </View>
               <Text style={styles.tab.group.title}>找媒体</Text>
@@ -169,10 +126,7 @@ const top = ({
           <Touchable borderless onPress={onServicePress(3)}>
             <View style={styles.tab.group.container}>
               <View style={styles.tab.group.imageWrapper}>
-                <Image
-                  source={require('asset/public_project/meeting.png')}
-                  style={{ width: 27.5, height: 22.5 }}
-                />
+                <Image source={require('asset/public_project/meeting.png')} />
               </View>
               <Text style={styles.tab.group.title}>找公关</Text>
             </View>
@@ -182,10 +136,7 @@ const top = ({
           <Touchable borderless onPress={onServicePress('more')}>
             <View style={styles.tab.group.container}>
               <View style={styles.tab.group.imageWrapper}>
-                <Image
-                  source={require('asset/public_project/more_icon.png')}
-                  style={{ width: 28, height: 22.5 }}
-                />
+                <Image source={require('asset/public_project/more_icon.png')} />
               </View>
               <Text style={styles.tab.group.title}>更多</Text>
             </View>
@@ -193,14 +144,73 @@ const top = ({
         </Col>
       </Row>
     </Grid>
+    <View style={styles.verticalBanner.container}>
+      <Image source={require('asset/public_project/announcement_label.png')} />
+      <Swiper
+        style={styles.verticalBanner.bannerWrapper}
+        height={styles.verticalBanner.container.height}
+        horizontal={false}
+        showsPagination={false}
+        autoplay
+      >
+        {R.map(n => (
+          <View key={n.id} style={styles.verticalBanner.group.container}>
+            <Text style={styles.verticalBanner.group.title} numberOfLines={1}>
+              {R.pathOr('--', ['title'])(n)}
+            </Text>
+          </View>
+        ))(insite_news)}
+      </Swiper>
+    </View>
+    <View style={styles.bannerWrapper}>
+      <Swiper
+        width={deviceWidth}
+        height={150}
+        autoplay
+        autoplayTimeout={4}
+        renderPagination={(index, total) => {
+          const dots = R.repeat('', total).map((i, idx) => (
+            <View
+              key={`${idx}`}
+              style={[styles.dot, idx === index ? styles.dotActive : {}]}
+            />
+          ));
+          return <View style={styles.pagination}>{dots}</View>;
+        }}
+        removeClippedSubviews={false}
+      >
+        {R.map(n => (
+          <TouchableWithoutFeedback
+            key={n.id}
+            onPress={() => {
+              if (Platform.OS !== 'ios') {
+                RouterEmitter.emit('android_url', { url: n.banner_url });
+                return;
+              }
+              if (n.banner_url) {
+                Linking.openURL(n.banner_url);
+              }
+            }}
+          >
+            <Image style={styles.banner} source={{ uri: n.banner }} />
+          </TouchableWithoutFeedback>
+        ))(banners)}
+      </Swiper>
+    </View>
   </View>
 );
 
 const styles = {
   container: {},
+  bannerWrapper: {
+    paddingTop: 12,
+    paddingBottom: 16,
+  },
   banner: {
-    height: 160,
-    width: deviceWidth,
+    height: 150,
+    // width: deviceWidth - 12 * 2,
+    marginHorizontal: 12,
+    borderRadius: 2,
   },
   verticalBanner: {
     container: {
@@ -227,12 +237,6 @@ const styles = {
     },
   },
   tab: {
-    container: {
-      flex: 1,
-      height: 160,
-      justifyContent: 'space-between',
-      paddingHorizontal: 20,
-    },
     group: {
       wrapper: {
         width: 82,
@@ -275,6 +279,13 @@ const styles = {
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
+  },
+  searchBar: {
+    wrapper: { paddingHorizontal: 12 },
+    container: {
+      backgroundColor: '#F0F0F0',
+      borderRadius: 2,
+    },
   },
 };
 

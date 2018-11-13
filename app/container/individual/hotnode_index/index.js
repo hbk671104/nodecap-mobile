@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
-import { getCurrentScreen } from 'app/router';
-import { setStatusBar } from 'component/uikit/statusBar';
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import CategoryItem from 'component/hotnode_index/category_item';
@@ -16,22 +14,15 @@ import styles from './style';
   page: 'Hotnode指数',
   name: 'App_HotnodeIndexOperation',
 })
-@connect(({ hotnode_index, router, loading }) => ({
+@connect(({ hotnode_index, loading }) => ({
   data: R.pathOr([], ['category', 'data'])(hotnode_index),
   pagination: R.pathOr(null, ['category', 'pagination'])(hotnode_index),
   global: R.pathOr({}, ['overall', 'global'])(hotnode_index),
-  isCurrent: getCurrentScreen(router) === 'HotnodeIndex',
   loading: loading.effects['hotnode_index/fetchCategory'],
 }))
 class HotnodeIndex extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isCurrent) {
-      setStatusBar('light-content');
-    }
   }
 
   requestData = (page, size) => {

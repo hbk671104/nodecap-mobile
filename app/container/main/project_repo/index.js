@@ -11,7 +11,6 @@ import Button from 'react-native-scrollable-tab-view/Button';
 import { RouterEmitter } from '../../../router';
 import DrawerLayout from 'react-native-drawer-layout';
 
-import { getCurrentScreen } from 'app/router';
 import NavBar from 'component/navBar';
 import SearchBarDisplay from 'component/searchBar/display';
 import { setStatusBar } from 'component/uikit/statusBar';
@@ -25,8 +24,7 @@ import styles from './style';
   page: '项目大全',
   name: 'App_ProjectRepoOperation',
 })
-@connect(({ coinSets, router }) => ({
-  isCurrent: getCurrentScreen(router) === 'ProjectRepo',
+@connect(({ coinSets }) => ({
   sets: R.pathOr([], ['sets'])(coinSets),
 }))
 @compose(
@@ -64,9 +62,6 @@ export default class ProjectRepo extends Component {
           this.tabView.goToPage(nextProps.targeted_coinset_index);
         }
       }, 500);
-    }
-    if (nextProps.isCurrent) {
-      setStatusBar('light-content');
     }
   }
 

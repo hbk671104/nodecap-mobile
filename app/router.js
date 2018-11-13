@@ -29,6 +29,7 @@ import { Toast } from 'antd-mobile';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
 
+import { setStatusBar } from 'component/uikit/statusBar';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
@@ -280,20 +281,22 @@ const IndividualTab = createBottomTabNavigator(
       screen: PublicProject,
       navigationOptions: {
         title: '首页',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('dark-content');
+        },
       },
     },
     HotnodeIndex: {
       screen: HotnodeIndex,
       navigationOptions: {
         title: '指数',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('light-content');
+        },
       },
     },
-    // Trending: {
-    //   screen: NotificationCenter,
-    //   navigationOptions: {
-    //     title: '动态',
-    //   },
-    // },
     ProjectRepo: {
       screen: ProjectRepo,
       navigationOptions: ({ navigation }) => {
@@ -301,19 +304,21 @@ const IndividualTab = createBottomTabNavigator(
         return {
           title: '项目大全',
           tabBarVisible,
+          tabBarOnPress: ({ defaultHandler }) => {
+            defaultHandler();
+            setStatusBar('light-content');
+          },
         };
       },
     },
-    // Favored: {
-    //   screen: Favored,
-    //   navigationOptions: {
-    //     title: '关注',
-    //   },
-    // },
     Self: {
       screen: IndividualSelf,
       navigationOptions: {
         title: '我的',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('dark-content');
+        },
       },
     },
   },
