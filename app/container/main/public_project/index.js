@@ -7,6 +7,8 @@ import R from 'ramda';
 import JPush from 'jpush-react-native';
 import { RouterEmitter } from '../../../router';
 
+import { getCurrentScreen } from 'app/router';
+import { setStatusBar } from 'component/uikit/statusBar';
 import NavBar, { realBarHeight } from 'component/navBar';
 import Explanation from 'component/explanation';
 import NewsItem from 'component/news';
@@ -28,6 +30,7 @@ import styles from './style';
     public_project,
     news,
     loading,
+    router,
     notification,
     institution,
     banners,
@@ -41,6 +44,7 @@ import styles from './style';
     pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
       public_project,
     ),
+    isCurrent: getCurrentScreen(router) === 'Onboard',
     loading: loading.effects['news/index'],
     selectedLoading: loading.effects['public_project/fetchSelected'],
     insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
@@ -91,6 +95,12 @@ export default class PublicProject extends Component {
     JPush.addReceiveNotificationListener(this.handleReceiveNotification);
     if (Platform.OS === 'ios') {
       JPush.getLaunchAppNotification(this.handleOpenLaunchNotification);
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isCurrent) {
+      setStatusBar('dark-content');
     }
   }
 

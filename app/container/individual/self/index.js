@@ -8,6 +8,8 @@ import R from 'ramda';
 import * as WeChat from 'react-native-wechat';
 import Communications from 'react-native-communications';
 
+import { getCurrentScreen } from 'app/router';
+import { setStatusBar } from 'component/uikit/statusBar';
 import NavBar from 'component/navBar';
 import Item from 'component/self/item';
 import Header from './header';
@@ -17,13 +19,20 @@ import styles from './style';
   page: '我的模块',
   name: 'App_MineOperation',
 })
-@connect(({ user, login, loading }) => ({
+@connect(({ user, login, loading, router }) => ({
   user: user.currentUser,
   isLogin: !!login.token,
+  isCurrent: getCurrentScreen(router) === 'Self',
   loading: loading.effects['login/switch'],
 }))
 @connectActionSheet
 class Self extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isCurrent) {
+      setStatusBar('dark-content');
+    }
+  }
+
   handleSettingsPress = () => {
     this.props.track('设置');
     this.props.dispatch(
