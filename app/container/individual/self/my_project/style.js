@@ -1,6 +1,7 @@
 export default {
   container: {
     flex: 1,
+    backgroundColor: '#F5F5F5',
   },
   navBar: {
     right: {
@@ -9,7 +10,6 @@ export default {
     },
   },
   separator: {
-    backgroundColor: '#F5F5F5',
     height: 8,
   },
 };

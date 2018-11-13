@@ -109,6 +109,8 @@ import IndividualEditProfile from 'container/individual/self/profile/edit';
 import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
 import MyProject from 'container/individual/self/my_project';
+import MyProjectReportList from 'container/individual/self/my_project/reports/list';
+import CreateWeeklyReport from 'container/individual/self/my_project/reports/create';
 import CreateMyProject from 'container/individual/self/my_project/create';
 import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
 import CreateMyProjectNormal from 'container/individual/self/my_project/create/normal';
@@ -400,6 +402,8 @@ const IndividualStack = createStackNavigator(
     InviteComment,
     Favored,
     HotnodeCoinIndex,
+    MyProjectReportList,
+    CreateWeeklyReport,
   },
   {
     headerMode: 'none',
