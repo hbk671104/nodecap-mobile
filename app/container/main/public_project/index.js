@@ -13,6 +13,7 @@ import NavBar from 'component/navBar';
 import Explanation from 'component/explanation';
 import NewsItem from 'component/news';
 import Touchable from 'component/uikit/touchable';
+import Format from 'component/format';
 import { setStatusBar } from 'component/uikit/statusBar';
 import { handleBadgeAction } from 'utils/badge_handler';
 import { handleOpen, handleReceive } from 'utils/jpush_handler';
@@ -60,6 +61,7 @@ import styles from './style';
         R.pathOr(0, ['lastReportCount'])(institution),
     banners: R.pathOr([], ['list', 'data'])(banners),
     market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
+    global_index: R.pathOr({}, ['overall', 'global'])(hotnode_index),
   }),
 )
 @compose(
@@ -292,26 +294,33 @@ export default class PublicProject extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
-  renderNavBar = () => (
-    <NavBar
-      barStyle="dark-content"
-      renderContent={() => (
-        <Flex
-          style={styles.navBar.container}
-          align="center"
-          justify="space-between"
-        >
-          <Image source={require('asset/public_project/hotnode_banner.png')} />
-          <Touchable borderless onPress={this.handleMoreIndexPress}>
-            <Flex direction="column" align="flex-end">
-              <Text style={styles.navBar.index.title}>全网指数</Text>
-              <Text style={styles.navBar.index.text}>2020</Text>
-            </Flex>
-          </Touchable>
-        </Flex>
-      )}
-    />
-  );
+  renderNavBar = () => {
+    const { global_index } = this.props;
+    return (
+      <NavBar
+        barStyle="dark-content"
+        renderContent={() => (
+          <Flex
+            style={styles.navBar.container}
+            align="center"
+            justify="space-between"
+          >
+            <Image
+              source={require('asset/public_project/hotnode_banner.png')}
+            />
+            <Touchable borderless onPress={this.handleMoreIndexPress}>
+              <Flex direction="column" align="flex-end">
+                <Text style={styles.navBar.index.title}>全网指数</Text>
+                <Text style={styles.navBar.index.text}>
+                  <Format digit={1}>{R.path(['heat'])(global_index)}</Format>
+                </Text>
+              </Flex>
+            </Touchable>
+          </Flex>
+        )}
+      />
+    );
+  };
 
   render() {
     const { news, loading, showExplanation } = this.props;
