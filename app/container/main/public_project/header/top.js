@@ -14,7 +14,7 @@ import R from 'ramda';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { RouterEmitter } from '../../../../router';
 
-import SearchBarDisplay from 'component/searchBar/display';
+import { SearchBarDisplayHomepage } from 'component/searchBar/display';
 import { NumberBadge } from 'component/badge';
 import Touchable from 'component/uikit/touchable';
 
@@ -34,7 +34,7 @@ const top = ({
 }) => (
   <View style={styles.container}>
     <View style={styles.searchBar.wrapper}>
-      <SearchBarDisplay
+      <SearchBarDisplayHomepage
         style={styles.searchBar.container}
         title="搜索项目名称、Token"
         titleStyle={{ color: '#999999' }}
