@@ -5,6 +5,8 @@ import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 import Badge from 'component/uikit/badge';
 
+import { Flex } from 'antd-mobile';
+
 const StaticItem = ({ icon, title, onPress, renderRight }) => (
   <Touchable foreground onPress={onPress}>
     <View style={styles.container}>
@@ -43,11 +45,13 @@ const item = ({
         {renderRight ? (
           renderRight()
         ) : (
-          <View style={styles.badge.container}>
-            {loading ? <ActivityIndicator /> : <Badge value={badge} />}
-          </View>
+          <Flex align="center">
+            <View style={styles.badge.container}>
+              {loading ? <ActivityIndicator /> : <Badge value={badge} />}
+            </View>
+            <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
+          </Flex>
         )}
-        <Icon name="arrow-forward" size={16} color="rgba(0, 0, 0, 0.25)" />
       </View>
       {!!subtitle && (
         <View style={styles.bottom}>

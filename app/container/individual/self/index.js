@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Alert,
-  ScrollView,
-  Text,
-  TouchableWithoutFeedback,
-  Clipboard,
-} from 'react-native';
+import { View, Alert, ScrollView, Text, Clipboard } from 'react-native';
 import { Flex, Toast } from 'antd-mobile';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { connect } from 'react-redux';
@@ -16,7 +9,7 @@ import * as WeChat from 'react-native-wechat';
 import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
-import Item, { StaticItem } from 'component/self/item';
+import Item from 'component/self/item';
 import Header from './header';
 import styles from './style';
 
@@ -153,34 +146,16 @@ class Self extends Component {
     );
   };
 
-  renderNavBar = () => (
-    <NavBar
-      gradient
-      title="我的"
-      renderBottom={() => <View style={styles.navBar.bottom} />}
-    />
-  );
+  handleWechatPress = () => {
+    Clipboard.setString('ladh2857');
+    Toast.show('已复制', Toast.SHORT, false);
+  };
 
   renderWechat() {
     return (
       <Flex>
         <Text style={styles.wechatNumber}>ladh2857</Text>
-        <TouchableWithoutFeedback
-          hitSlop={{
-            top: 20,
-            left: 20,
-            bottom: 20,
-            right: 20,
-          }}
-          onPress={() => {
-            Clipboard.setString('ladh2857');
-            Toast.show('已复制', Toast.SHORT, false);
-          }}
-        >
-          <View>
-            <Text style={styles.wechatCopy}>复制</Text>
-          </View>
-        </TouchableWithoutFeedback>
+        <Text style={styles.wechatCopy}>复制</Text>
       </Flex>
     );
   }
@@ -189,39 +164,55 @@ class Self extends Component {
     const { isLogin, loading } = this.props;
     return (
       <View style={styles.container}>
-        {this.renderNavBar()}
+        <NavBar
+          hidden
+          barStyle="dark-content"
+          renderBottom={() => (
+            <View>
+              <Header {...this.props} onPress={this.handleHeaderPress} />
+              <View style={styles.divider} />
+            </View>
+          )}
+        />
         <ScrollView contentContainerStyle={styles.scroll.content}>
           <Item
             icon={require('asset/mine/my_project.png')}
             title="我的项目"
+            titleStyle={styles.item.title}
             onPress={this.handleMyProjectPress}
           />
           <Item
-            icon={require('asset/mine/institution_join.png')}
-            title="机构入驻通道"
+            icon={require('asset/mine/my_institution.png')}
+            title="我的机构"
+            titleStyle={styles.item.title}
             onPress={this.handleInstitutionJoinPress}
           />
           <View style={styles.scroll.divider} />
           <Item
             icon={require('asset/mine/favored.png')}
             title="我的关注"
+            titleStyle={styles.item.title}
             onPress={this.handleFavoredPress}
           />
           <Item
             icon={require('asset/mine/feedback.png')}
             title="意见反馈"
+            titleStyle={styles.item.title}
             onPress={this.handleFeedbackPress}
           />
           <View style={styles.scroll.divider} />
-          <StaticItem
-            icon={require('asset/mine/wechat.png')}
-            title="加微信群"
-            renderRight={this.renderWechat()}
-          />
           <Item
             icon={require('asset/mine/share_hotnode.png')}
             title="分享 Hotnode"
+            titleStyle={styles.item.title}
             onPress={this.handleShare}
+          />
+          <Item
+            icon={require('asset/mine/wechat.png')}
+            title="加微信群"
+            titleStyle={styles.item.title}
+            renderRight={this.renderWechat}
+            onPress={this.handleWechatPress}
           />
           <View style={styles.scroll.divider} />
           {isLogin && (
@@ -229,21 +220,17 @@ class Self extends Component {
               loading={loading}
               icon={require('asset/mine/switch_end.png')}
               title="切换至机构版"
-              subtitle="若您是机构投资人，可管理机构项目及工作流协作"
+              titleStyle={styles.item.title}
               onPress={this.handleSwitchEndPress}
             />
           )}
           <Item
             icon={require('asset/mine/settings.png')}
             title="设置"
+            titleStyle={styles.item.title}
             onPress={this.handleSettingsPress}
           />
         </ScrollView>
-        <Header
-          {...this.props}
-          style={styles.header}
-          onPress={this.handleHeaderPress}
-        />
       </View>
     );
   }

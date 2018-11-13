@@ -1,6 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { realBarHeight } from 'component/navBar';
-import { headerHeight } from './header';
 
 export default {
   container: {
@@ -12,16 +10,9 @@ export default {
       height: 64,
     },
   },
-  header: {
-    position: 'absolute',
-    left: 12,
-    right: 12,
-    top: realBarHeight + 64 - headerHeight / 2,
-  },
   scroll: {
     content: {
-      paddingTop: 72,
-      paddingBottom: 12,
+      paddingVertical: 20,
     },
     divider: {
       height: StyleSheet.hairlineWidth,
@@ -38,5 +29,16 @@ export default {
   wechatNumber: {
     fontSize: 13,
     color: 'rgba(0, 0, 0, .65)',
+  },
+  item: {
+    title: {
+      fontSize: 14,
+      fontWeight: 'bold',
+      color: 'rgba(0, 0, 0, 0.85)',
+    },
+  },
+  divider: {
+    height: 8,
+    backgroundColor: '#F5F5F5',
   },
 };
