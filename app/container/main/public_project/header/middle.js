@@ -53,7 +53,7 @@ const middle = ({
           }
         }}
       >
-        <Flex style={{ marginTop: -20 }}>
+        <Flex>
           <Image
             style={{
               marginRight: 5,
