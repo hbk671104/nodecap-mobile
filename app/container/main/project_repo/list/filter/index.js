@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-navigation';
 
 import { handleSelection as selection } from 'utils/utils';
 import FilterGroup from './group';
+import MiscGroup from './misc_group';
 import FilterBottom from './bottom';
 import { emitter } from '../index';
 import styles from './style';
@@ -14,10 +15,10 @@ import styles from './style';
   page: '项目大全筛选',
   name: 'App_ProjectRepoFilterOperation',
 })
-@connect(({ filter, public_project, loading }) => ({
+@connect(({ global, filter, public_project, loading }) => ({
   institution: R.pathOr([], ['institution', 'data'])(filter),
   coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
-  pagination: R.pathOr(null, ['list', 'index', 'pagination'])(public_project),
+  regions: R.pathOr([], ['constants', 'regions'])(global),
   count: R.pathOr(0, ['list', 'count'])(public_project),
   params: R.pathOr({}, ['list', 'params'])(public_project),
   loading: loading.effects['public_project/fetch'],
@@ -31,6 +32,17 @@ export default class ProjectListFilter extends Component {
       params: {
         ...params,
         [key]: selection(params, { key, value }),
+      },
+    });
+  };
+
+  handleMiscSelection = ({ value, name, key }) => {
+    this.props.track('筛选项点击', { name });
+    this.props.dispatch({
+      type: 'public_project/fetchCount',
+      params: {
+        ...this.props.params,
+        [key]: value,
       },
     });
   };
@@ -69,16 +81,39 @@ export default class ProjectListFilter extends Component {
     });
   };
 
+  handleMiscAllPress = () => {
+    const { params } = this.props;
+    this.props.dispatch({
+      type: 'public_project/fetchCount',
+      params: {
+        ...params,
+        is_reachable: 0,
+        has_weekly_report: 0,
+        has_rating: 0,
+        has_white_paper: 0,
+        is_renowned_industry: 0,
+      },
+    });
+  };
+
   render() {
-    const { institution, coinTag, params } = this.props;
+    const { institution, coinTag, regions, params } = this.props;
 
     const industry_id = R.pathOr('', ['industry_id'])(params);
     const tag_id = R.pathOr('', ['tag_id'])(params);
+    const region_id = R.pathOr('', ['region_id'])(params);
 
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <Text style={styles.title}>筛选条件</Text>
+          <MiscGroup
+            title="亮点"
+            selection={params}
+            onSelect={this.handleMiscSelection}
+            onAllPress={this.handleMiscAllPress}
+          />
+          <View style={styles.separator} />
           <FilterGroup
             title="知名机构"
             data={institution}
@@ -97,6 +132,16 @@ export default class ProjectListFilter extends Component {
               this.handleSelection({ value, name, key: 'tag_id' })
             }
             onAllPress={this.handleAllPress('tag_id')}
+          />
+          <View style={styles.separator} />
+          <FilterGroup
+            title="国家/地区"
+            data={regions}
+            selection={R.isEmpty(region_id) ? [] : R.split(',')(region_id)}
+            onSelect={({ value, name }) =>
+              this.handleSelection({ value, name, key: 'region_id' })
+            }
+            onAllPress={this.handleAllPress('region_id')}
           />
         </ScrollView>
         <FilterBottom

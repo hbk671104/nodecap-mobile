@@ -25,6 +25,12 @@ const initialParams = {
   progress: '',
   industry_id: '',
   tag_id: '',
+  region_id: '',
+  is_reachable: 0,
+  has_weekly_report: 0,
+  has_rating: 0,
+  has_white_paper: 0,
+  is_renowned_industry: 0,
 };
 
 export default {
