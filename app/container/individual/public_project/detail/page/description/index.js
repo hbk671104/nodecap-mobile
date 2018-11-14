@@ -14,6 +14,7 @@ import R from 'ramda';
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
 import InstitutionItem from './institutionItem';
+import WeeklyReports from './weeklyReports';
 import SocialNetworkItem, { iconMap } from './socialNetworkItem';
 import Roadmap from './roadmap';
 import Rating from './rating';
@@ -134,6 +135,7 @@ export default class Description extends PureComponent {
           </View>
         )}
         <Rating {...this.props} />
+        <WeeklyReports {...this.props} />
         {R.not(R.isEmpty(social_network)) && (
           <View style={styles.fieldGroup}>
             {title('媒体信息')}
