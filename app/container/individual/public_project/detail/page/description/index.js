@@ -1,13 +1,7 @@
 import React, { PureComponent } from 'react';
-import {
-  View,
-  Text,
-  TouchableWithoutFeedback,
-  Image,
-  Linking,
-} from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import { Flex, Modal, Grid } from 'antd-mobile';
+import { Flex, Grid } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
