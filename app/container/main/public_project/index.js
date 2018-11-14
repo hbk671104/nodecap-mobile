@@ -278,7 +278,6 @@ export default class PublicProject extends Component {
       onAnnouncementPress={this.handleAnnouncementPress}
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
-      onInstitutionPress={this.handleInstitutionPress}
       onServicePress={this.handleServicePress}
       onRefreshPress={() => {
         this.requestData(true);

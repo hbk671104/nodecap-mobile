@@ -27,7 +27,6 @@ const top = ({
   onServicePress,
   onAnnouncementPress,
   onProjectRepoPress,
-  onInstitutionPress,
   onInstitutionReportPress,
   notification_badge_number,
   reports_badge_number,
@@ -70,7 +69,7 @@ const top = ({
           </Touchable>
         </Col>
         <Col>
-          <Touchable borderless onPress={onInstitutionPress}>
+          <Touchable borderless onPress={onServicePress(1)}>
             <View style={styles.tab.group.container}>
               <View style={styles.tab.group.imageWrapper}>
                 <Image
