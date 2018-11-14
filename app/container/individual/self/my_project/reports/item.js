@@ -3,10 +3,15 @@ import { View, Text, Image } from 'react-native';
 import { Flex } from 'antd-mobile';
 import PropTypes from 'prop-types';
 import NavBar from 'component/navBar';
+import moment from 'moment';
 import Touchable from 'component/uikit/touchable';
+import { NavigationActions } from 'react-navigation';
+import { connect } from 'react-redux';
 
+@connect()
 class WeeklyReportItem extends Component {
   render() {
+    const { data = {} } = this.props;
     return (
       <View style={styles.container}>
         <Flex justify="between" align="start">
@@ -26,10 +31,10 @@ class WeeklyReportItem extends Component {
             </View>
             <View>
               <Text style={styles.title}>
-                Zilliqa项目周报-十月第一周
+                {data.title}
               </Text>
               <Text style={styles.date}>
-                2018-10-01
+                {moment.unix(data.created_at).format('YYYY-MM-DD')}
               </Text>
             </View>
           </Flex>
@@ -37,7 +42,18 @@ class WeeklyReportItem extends Component {
             marginTop: 5,
           }}
           >
-            <Touchable>
+            <Touchable onPress={() => {
+              this.props.dispatch(
+                NavigationActions.navigate({
+                  routeName: 'WebPage',
+                  params: {
+                    title: data.title,
+                    uri: data.link,
+                  },
+                }),
+              );
+            }}
+            >
               <Image
                 source={require('asset/weekly_report/report_preview.png')}
                 style={{
@@ -49,7 +65,7 @@ class WeeklyReportItem extends Component {
           </View>
         </Flex>
         <Flex style={styles.buttons}>
-          <Touchable style={{ flex: 1 }}>
+          <Touchable style={{ flex: 1 }} onPress={() => this.props.onDelete(data.id)}>
             <Flex justify="center">
               <Text style={styles.buttonText}>删除</Text>
             </Flex>
@@ -62,7 +78,7 @@ class WeeklyReportItem extends Component {
           />
           <Touchable style={{ flex: 1 }}>
             <Flex justify="center">
-              <Text style={styles.buttonText}>编辑</Text>
+              <Text style={styles.buttonText} onPress={() => this.props.onEdit(data)}>编辑</Text>
             </Flex>
           </Touchable>
         </Flex>

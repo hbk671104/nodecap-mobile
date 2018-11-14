@@ -5,9 +5,10 @@ import { createForm, createFormField } from 'rc-form';
 import InputItem from 'component/inputItem';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
-import { createWeeklyReport } from 'services/individual/api';
+import { editWeeklyReport } from 'services/individual/api';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import R from 'ramda';
 
 @connect()
 @createForm()
@@ -21,9 +22,8 @@ class CreateWeeklyReport extends Component {
     });
     this.props.form.validateFields(async (err, value) => {
       if (!err) {
-        await createWeeklyReport({
+        await editWeeklyReport(this.props.navigation.getParam('id'), {
           ...value,
-          coin_id: this.props.navigation.getParam('id'),
         });
         this.props.dispatch({
           type: 'public_project/get',
@@ -57,13 +57,14 @@ class CreateWeeklyReport extends Component {
   }
   render() {
     const { getFieldDecorator, getFieldError } = this.props.form;
+    const data = this.props.navigation.getParam('data');
 
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <NavBar
           back
           gradient
-          title="发布新周报"
+          title="编辑周报"
           renderRight={() => {
             return (
               <Touchable borderless onPress={this.handlePreview}>
@@ -78,6 +79,7 @@ class CreateWeeklyReport extends Component {
         >
           <View>
             {getFieldDecorator('title', {
+              initialValue: data.title,
               rules: [{ required: true, message: '请输入周报标题' }],
             })(
               <InputItem
@@ -90,6 +92,7 @@ class CreateWeeklyReport extends Component {
               />,
             )}
             {getFieldDecorator('link', {
+              initialValue: data.link,
               rules: [{ required: true, message: '请输入周报链接' }],
             })(
               <InputItem
@@ -115,7 +118,7 @@ class CreateWeeklyReport extends Component {
               onClick={this.submit}
               loading={this.state.submitting}
             >
-              <Text style={{ fontSize: 13, color: '#FFFFFF', letterSpacing: 0.15 }}>发  布</Text>
+              <Text style={{ fontSize: 13, color: '#FFFFFF', letterSpacing: 0.15 }}>保  存</Text>
             </Button>
           </View>
         </KeyboardAvoidingView>

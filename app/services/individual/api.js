@@ -159,3 +159,15 @@ export function coinIndex(params) {
 export function viewProject(id) {
   return request.post(`/coins/${id}/views`);
 }
+
+export function createWeeklyReport(value) {
+  return request.post('/weekly', value);
+}
+
+export function deleteWeeklyReport(id) {
+  return request.delete(`/weekly/${id}`);
+}
+
+export function editWeeklyReport(id, value) {
+  return request.put(`/weekly/${id}`, value);
+}

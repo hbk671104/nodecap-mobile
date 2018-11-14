@@ -41,25 +41,14 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
   const score_distribution = R.pathOr('--', ['score_distribution'])(data);
   const owner_status = R.pathOr('', ['owner_status'])(data);
   const status = R.pathOr('', ['status'])(data);
-  let statusElement = null;
-  if (owner_status === '0') {
-    statusElement = (
-      <View style={[styles.statusTip, styles.statusPending]}>
-        <Text style={styles.statusPendingText}>审核中</Text>
-      </View>
-    );
-  } else if (owner_status === '1' && status === 1) {
-    statusElement = (
-      <View style={[styles.statusTip, styles.statusApproved]}>
-        <Text style={styles.statusApprovedText}>审核通过</Text>
-      </View>
-    );
-  } else if (owner_status === '1' && status === 0) {
-    statusElement = (
-      <View style={[styles.statusTip, styles.statusCancel]}>
-        <Text style={styles.statusCancelText}>已下架</Text>
-      </View>
-    );
+  let scoreColor = null;
+
+  if (score < 60) {
+    scoreColor = '#F55454';
+  } else if (score >= 60 && score <= 80) {
+    scoreColor = '#FF7600';
+  } else {
+    scoreColor = '#1890FF';
   }
   return (
     <Touchable
@@ -73,27 +62,17 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
         <Flex align="start">
           <View style={{ flex: 1 }}>
             <View style={[styles.container, style]}>
-              <View style={{
-                position: 'relative',
-                width: 52,
-                height: 52,
-                borderRadius: 2,
-                overflow: 'hidden',
-              }}
-              >
-                <Avatar
-                  style={styles.avatar}
-                  raised={false}
-                  size={52}
-                  innerRatio={0.75}
-                  source={
-                    R.isEmpty(icon)
-                      ? require('asset/project/project_logo_default.png')
-                      : { uri: icon }
-                  }
-                />
-                {statusElement}
-              </View>
+              <Avatar
+                style={styles.avatar}
+                raised={false}
+                size={52}
+                innerRatio={0.75}
+                source={
+                  R.isEmpty(icon)
+                    ? require('asset/project/project_logo_default.png')
+                    : { uri: icon }
+                }
+              />
               <View style={styles.content.container}>
                 <View style={styles.content.top.container}>
                   <View style={styles.content.titleContainer}>
@@ -173,44 +152,49 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
                   </View>
                 )}
                 </View>
-                <View
-                  style={[
-                  styles.content.subtitle.container,
-                  (R.isEmpty(category) ||
-                    (!has_white_paper &&
-                      !invested_by_renowned_insti &&
-                      !top_rated)) && { marginTop: 0 },
-                ]}
-                >
-                  <Text numberOfLines={1} style={styles.content.subtitle.text}>
-                    {description}
-                  </Text>
-                </View>
               </View>
             </View>
           </View>
-          <View style={styles.score}>
-            <Text style={styles.scoreText}>项目得分 <Text style={{ color: '#F55454' }}>{score}</Text></Text>
-            <Text style={styles.scoreText}>超过{score_distribution}%的项目</Text>
-          </View>
+          {owner_status === '1' && (
+            <View style={styles.score}>
+              <Text style={styles.scoreText}>
+                <Text style={{
+                color: scoreColor,
+              }}
+                >
+                  {score}分
+                </Text>
+              </Text>
+              <Text style={styles.scoreTextSmall}>超过{score_distribution}%的项目</Text>
+            </View>
+          )}
+          {owner_status === '0' && (
+            <View style={styles.score}>
+              <Text style={styles.scoreText}><Text style={{ color: '#FF7600' }}>审核中</Text></Text>
+            </View>
+          )}
         </Flex>
         <Flex style={styles.buttons}>
-          <Touchable style={{ flex: 1 }}>
+          <Touchable disabled={owner_status !== '1'} style={{ flex: 1 }}>
             <Flex justify="center">
-              <Text style={styles.buttonText}>完善项目信息</Text>
+              <Text style={[styles.buttonText, owner_status === '0' ? styles.buttonTextDisabled : {}]}>完善项目信息</Text>
             </Flex>
           </Touchable>
-          <View style={{
-            height: 16,
-            borderRightColor: '#E5E5E5',
-            borderRightWidth: 0.5,
-          }}
-          />
-          <Touchable style={{ flex: 1 }} onPress={onPressWeeklyReport}>
-            <Flex justify="center">
-              <Text style={styles.buttonText}>周报管理</Text>
-            </Flex>
-          </Touchable>
+          {owner_status === '1' && (
+            <View style={{
+              height: 16,
+              borderRightColor: '#E5E5E5',
+              borderRightWidth: 0.5,
+            }}
+            />
+          )}
+          {owner_status === '1' && (
+            <Touchable style={{ flex: 1 }} onPress={(e) => onPressWeeklyReport(e, data.id)}>
+              <Flex justify="center">
+                <Text style={styles.buttonText}>周报管理</Text>
+              </Flex>
+            </Touchable>
+          )}
         </Flex>
       </View>
     </Touchable>
@@ -221,7 +205,6 @@ const styles = {
   container: {
     padding: 12,
     flexDirection: 'row',
-    marginBottom: 8,
   },
   score: {
     flexShrink: 0,
@@ -229,7 +212,8 @@ const styles = {
     marginRight: 12,
     marginTop: 12,
   },
-  scoreText: { fontSize: 10, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.12, textAlign: 'right' },
+  scoreText: { fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.12, textAlign: 'right' },
+  scoreTextSmall: { fontSize: 10, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.12, textAlign: 'right' },
   statusTip: {
     position: 'absolute',
     bottom: 0,
@@ -238,13 +222,13 @@ const styles = {
     height: 13,
   },
   statusPending: {
-    backgroundColor: '#09AC32',
+    backgroundColor: '#FFD6B2',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
   },
   statusApproved: {
-    backgroundColor: '#FFD6B2',
+    backgroundColor: '#09AC32',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
@@ -350,6 +334,9 @@ const styles = {
     borderTopColor: '#E9E9E9',
   },
   buttonText: { fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.16, textAlign: 'right' },
+  buttonTextDisabled: {
+    color: 'rgba(0,0,0,0.25)',
+  },
 };
 
 publicProjectItem.propTypes = {

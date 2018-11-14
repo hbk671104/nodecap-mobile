@@ -111,6 +111,7 @@ import ChangeLog from 'container/individual/self/settings/changelog';
 import MyProject from 'container/individual/self/my_project';
 import MyProjectReportList from 'container/individual/self/my_project/reports/list';
 import CreateWeeklyReport from 'container/individual/self/my_project/reports/create';
+import EditWeeklyReport from 'container/individual/self/my_project/reports/edit';
 import CreateMyProject from 'container/individual/self/my_project/create';
 import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
 import CreateMyProjectNormal from 'container/individual/self/my_project/create/normal';
@@ -404,6 +405,7 @@ const IndividualStack = createStackNavigator(
     HotnodeCoinIndex,
     MyProjectReportList,
     CreateWeeklyReport,
+    EditWeeklyReport,
   },
   {
     headerMode: 'none',
