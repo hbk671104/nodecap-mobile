@@ -88,7 +88,7 @@ export default class ProjectListFilter extends Component {
       params: {
         ...params,
         is_reachable: 0,
-        has_weekly_report: 0,
+        has_weekly: 0,
         has_rating: 0,
         has_white_paper: 0,
         is_renowned_industry: 0,

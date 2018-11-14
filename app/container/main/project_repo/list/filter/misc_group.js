@@ -6,14 +6,14 @@ import FilterItem from './item';
 
 const miscGroup = ({ title, selection, onSelect, onAllPress }) => {
   const is_reachable = R.pathOr(0, ['is_reachable'])(selection);
-  const has_weekly_report = R.pathOr(0, ['has_weekly_report'])(selection);
+  const has_weekly = R.pathOr(0, ['has_weekly'])(selection);
   const has_rating = R.pathOr(0, ['has_rating'])(selection);
   const has_white_paper = R.pathOr(0, ['has_white_paper'])(selection);
   const is_renowned_industry = R.pathOr(0, ['is_renowned_industry'])(selection);
 
   const empty_selection =
     is_reachable === 0 &&
-    has_weekly_report === 0 &&
+    has_weekly === 0 &&
     has_rating === 0 &&
     has_white_paper === 0 &&
     is_renowned_industry === 0;
@@ -44,11 +44,11 @@ const miscGroup = ({ title, selection, onSelect, onAllPress }) => {
         />
         <FilterItem
           title="有周报"
-          selected={has_weekly_report === 1}
+          selected={has_weekly === 1}
           onPress={() =>
             onSelect({
-              value: has_weekly_report === 0 ? 1 : 0,
-              key: 'has_weekly_report',
+              value: has_weekly === 0 ? 1 : 0,
+              key: 'has_weekly',
               name: '有周报',
             })
           }
