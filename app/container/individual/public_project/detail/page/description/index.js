@@ -40,6 +40,18 @@ export default class Description extends PureComponent {
     );
   };
 
+  handleGradeUrlPress = item => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'WebPage',
+        params: {
+          // title: R.pathOr('', ['portfolio', 'name'])(this.props),
+          uri: R.pathOr('', ['grade_url'])(item),
+        },
+      }),
+    );
+  };
+
   errorCorrection = (name, coinName) => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -127,7 +139,7 @@ export default class Description extends PureComponent {
             </Text>
           </View>
         )}
-        <Rating {...this.props} />
+        <Rating {...this.props} onMorePress={this.handleGradeUrlPress} />
         {R.not(R.isEmpty(social_network)) && (
           <View style={styles.fieldGroup}>
             {title('媒体信息')}

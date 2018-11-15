@@ -6,23 +6,35 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const rating_item = ({ columns = 4, onMorePress }) => {
-  const data = R.repeat('AA', 7);
-  const rows = Math.ceil(R.length(data) / columns);
-  const remainder = R.length(data) % 4;
-  const residue = columns - remainder;
+const rating_item = ({ data, org, columns = 4, onMorePress }) => {
+  const targeted_id = R.path(['rating_type_id'])(data);
+  const grade_url = R.path(['grade_url'])(data);
+  const name = R.pathOr('--', ['name'])(org);
+  const standard = R.pathOr([], ['rating_types'])(org);
+
+  // rating
+  const rating = R.find(r => r.id === targeted_id)(standard);
+  const rating_id = R.path(['id'])(rating);
+  const rating_name = R.path(['name'])(rating);
+
+  const length = R.length(standard);
+  const rows = Math.ceil(length / columns);
+  const remainder = rows > 1 ? length % 4 : length;
+  const residue = rows > 1 ? columns - remainder : columns - length;
 
   return (
     <View style={styles.container}>
       <Flex align="center" justify="space-between">
-        <Text style={styles.title}>啥啥资本</Text>
-        <Touchable borderless onPress={onMorePress}>
-          <Text style={styles.more}>查看</Text>
-        </Touchable>
+        <Text style={styles.title}>{name}</Text>
+        {!R.isNil(grade_url) && (
+          <Touchable borderless onPress={onMorePress}>
+            <Text style={styles.more}>查看</Text>
+          </Touchable>
+        )}
       </Flex>
       <Flex align="flex-start" style={styles.content.container}>
         <View style={styles.content.overall.container}>
-          <Text style={styles.content.overall.rating}>AA</Text>
+          <Text style={styles.content.overall.rating}>{rating_name}</Text>
           <Text style={styles.content.overall.subtitle}>评级</Text>
         </View>
         <Grid style={styles.content.grid}>
@@ -30,34 +42,53 @@ const rating_item = ({ columns = 4, onMorePress }) => {
             R.times(
               current => (
                 <Row key={`${current}`}>
-                  {R.times(
-                    count => (
+                  {R.times(count => {
+                    const index = count + current;
+                    const rating_item_id = R.path([index, 'id'])(standard);
+                    const rating_item_name = R.pathOr('--', [index, 'id'])(
+                      standard,
+                    );
+                    return (
                       <Col
-                        key={`${current}-${count}`}
-                        style={styles.content.item.container}
+                        key={`${rating_item_id}`}
+                        style={[
+                          styles.content.item.container,
+                          rating_item_id === rating_id &&
+                            styles.content.item.highlight,
+                        ]}
                       >
                         <Text style={styles.content.item.text}>
-                          {R.path([count + current])(data)}
+                          {rating_item_name}
                         </Text>
                       </Col>
-                    ),
-                    columns,
-                  )}
+                    );
+                  }, columns)}
                 </Row>
               ),
               rows - 1,
             )}
           <Row>
-            {R.times(
-              count => (
-                <Col key={`${count}`} style={styles.content.item.container}>
+            {R.times(count => {
+              const index = (rows - 1) * columns + count;
+              const rating_item_id = R.path([index, 'id'])(standard);
+              const rating_item_name = R.pathOr('--', [index, 'name'])(
+                standard,
+              );
+              return (
+                <Col
+                  key={`${count}`}
+                  style={[
+                    styles.content.item.container,
+                    rating_item_id === rating_id &&
+                      styles.content.item.highlight,
+                  ]}
+                >
                   <Text style={styles.content.item.text}>
-                    {R.path([(rows - 1) * columns + count])(data)}
+                    {rating_item_name}
                   </Text>
                 </Col>
-              ),
-              remainder,
-            )}
+              );
+            }, remainder)}
             {R.times(
               count => (
                 <Col key={`${count}`} style={styles.content.item.container} />
@@ -103,7 +134,6 @@ const styles = {
         color: '#1890FF',
       },
       subtitle: {
-        marginTop: 5,
         fontSize: 11,
         color: 'rgba(0, 0, 0, 0.85)',
       },
@@ -119,6 +149,9 @@ const styles = {
         alignItems: 'center',
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: '#E9E9E9',
+      },
+      highlight: {
+        backgroundColor: '#F5F5F5',
       },
       text: {
         fontSize: 14,
