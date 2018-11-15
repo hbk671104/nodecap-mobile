@@ -15,7 +15,7 @@ import Communications from 'react-native-communications';
 
 import Avatar from 'component/uikit/avatar';
 
-const memberItem = ({ data, style }) => {
+const memberItem = ({ data, style, onPress }) => {
   const profile_pic = R.pathOr('', ['profile_pic'])(data);
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
@@ -25,29 +25,30 @@ const memberItem = ({ data, style }) => {
   const is_vip = R.pathOr(false, ['is_vip'])(data);
 
   return (
-    <View style={[styles.container, style]}>
-      <View>
-        <Avatar
-          resizeMode="cover"
-          source={{ uri: profile_pic }}
-          raised={false}
-          size={40}
-          innerRatio={1}
-        />
-        {is_vip && (
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={[styles.container, style]}>
+        <View>
+          <Avatar
+            resizeMode="cover"
+            source={{ uri: profile_pic }}
+            raised={false}
+            size={40}
+            innerRatio={1}
+          />
+          {is_vip && (
           <Image
             style={styles.vip}
             source={require('asset/public_project/is_vip.png')}
           />
         )}
-      </View>
-      <Flex justify="between" style={{ flex: 1 }}>
-        <View style={[styles.content.container]}>
-          <Text style={styles.content.title}>{R.trim(name)}</Text>
-          <Text style={styles.content.subtitle}>{R.trim(title)}</Text>
         </View>
-        <Flex>
-          {!!mobile && (
+        <Flex justify="between" style={{ flex: 1 }}>
+          <View style={[styles.content.container]}>
+            <Text style={styles.content.title}>{R.trim(name)}</Text>
+            <Text style={styles.content.subtitle}>{R.trim(title)}</Text>
+          </View>
+          <Flex>
+            {!!mobile && (
             <View style={{ marginRight: 10 }}>
               <TouchableWithoutFeedback
                 hitSlop={{
@@ -67,7 +68,7 @@ const memberItem = ({ data, style }) => {
               </TouchableWithoutFeedback>
             </View>
           )}
-          {!!wechat && (
+            {!!wechat && (
             <View style={{ marginRight: 10 }}>
               <TouchableWithoutFeedback
                 hitSlop={{
@@ -88,7 +89,7 @@ const memberItem = ({ data, style }) => {
               </TouchableWithoutFeedback>
             </View>
           )}
-          {!!linkedIn_url && (
+            {!!linkedIn_url && (
             <View>
               <TouchableWithoutFeedback
                 hitSlop={{
@@ -116,9 +117,10 @@ const memberItem = ({ data, style }) => {
               </TouchableWithoutFeedback>
             </View>
           )}
+          </Flex>
         </Flex>
-      </Flex>
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 

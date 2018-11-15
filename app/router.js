@@ -96,6 +96,7 @@ import Service from 'container/main/service/wrapper';
 import SingleService from 'container/main/service/singleWrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
+import UserProfile from 'container/main/user/profile';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -271,6 +272,7 @@ const MainStack = createStackNavigator(
     SingleService,
     CommentCoin,
     InviteComment,
+    UserProfile,
   },
   {
     headerMode: 'none',
@@ -406,6 +408,7 @@ const IndividualStack = createStackNavigator(
     MyProjectReportList,
     CreateWeeklyReport,
     EditWeeklyReport,
+    UserProfile,
   },
   {
     headerMode: 'none',

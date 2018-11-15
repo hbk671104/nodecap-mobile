@@ -47,6 +47,18 @@ export default class Description extends PureComponent {
     );
   };
 
+  goToMemberDetail = (data) => {
+    this.props.track('点击进入成员主页');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'UserProfile',
+        params: {
+          data,
+        },
+      }),
+    );
+  }
+
   errorCorrection = (name, coinName) => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -173,7 +185,13 @@ export default class Description extends PureComponent {
           <View style={styles.fieldGroup}>
             {title('团队成员')}
             <View>
-              {R.map(m => <MemberItem key={m.id} data={m} />)(members)}
+              {R.map(m => (
+                <MemberItem
+                  key={m.id}
+                  data={m}
+                  onPress={() => this.goToMemberDetail(m)}
+                />
+              ))(members)}
             </View>
           </View>
         )}
