@@ -8,7 +8,7 @@ import {
   Linking,
 } from 'react-native';
 import { connect } from 'react-redux';
-import RNExitApp from 'react-native-exit-app';
+// import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
 import R from 'ramda';
 import {
@@ -25,7 +25,7 @@ import {
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
 import { withNetworkConnectivity } from 'react-native-offline';
-import { Toast } from 'antd-mobile';
+// import { Toast } from 'antd-mobile';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
 
@@ -199,7 +199,7 @@ const Tab = createBottomTabNavigator(
     },
   },
   {
-    backBehavior: 'none',
+    // backBehavior: 'none',
     tabBarOptions: {
       style: {
         backgroundColor: 'white',
@@ -323,7 +323,7 @@ const IndividualTab = createBottomTabNavigator(
     },
   },
   {
-    backBehavior: 'none',
+    // backBehavior: 'none',
     tabBarOptions: {
       style: {
         backgroundColor: 'white',
@@ -557,9 +557,10 @@ class Router extends Component {
   backHandle = () => {
     const { dispatch, router } = this.props;
     const subRouter = router.routes[router.index];
-    if (subRouter.index === 0) {
+    const secondSubRouter = subRouter.routes[subRouter.index];
+    if (secondSubRouter.index === 0) {
       Alert.alert('提示', '确认退出 Hotnode ？', [
-        { text: '确认', onPress: () => RNExitApp.exitApp() },
+        { text: '确认', onPress: () => BackHandler.exitApp() },
         { text: '取消', style: 'cancel' },
       ]);
     }
