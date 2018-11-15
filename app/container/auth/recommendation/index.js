@@ -13,11 +13,15 @@ import { Storage } from '../../../utils';
 import RecommendationItem from './item';
 import styles from './style';
 
-@connect(({ recommendation, loading }) => ({
-  data: R.pathOr([], ['list'])(recommendation),
-  fetching: loading.effects['recommendation/fetch'],
-  updating: loading.effects['recommendation/update'],
-}))
+@connect(({ recommendation, loading }, { navigation }) => {
+  const fromLogin = navigation.getParam('fromLogin', false);
+  return {
+    fromLogin,
+    data: R.pathOr([], ['list'])(recommendation),
+    fetching: loading.effects['recommendation/fetch'],
+    updating: loading.effects['recommendation/update'],
+  };
+})
 class Recommendation extends Component {
   state = {
     selected: {},
@@ -36,15 +40,16 @@ class Recommendation extends Component {
   };
 
   handleNext = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'Portfolio', // 这里路由到个人版的关注
-        params: {
-          fromRecommendation: true,
-        },
-      }),
-    );
-    Storage.set('project_recommended', true);
+    if (this.props.fromLogin) {
+      this.props.dispatch(NavigationActions.back());
+    } else {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Individual',
+        }),
+      );
+    }
+    Storage.set('cold_started', true);
   };
 
   handleSubmit = () => {

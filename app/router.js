@@ -41,7 +41,7 @@ import Login from 'container/auth/login';
 // import LoginModal from 'container/auth/login/modal';
 // import SetPassword from 'container/auth/setPassword';
 // import ResetPwd from 'container/auth/resetPwd';
-// import Recommendation from 'container/auth/recommendation';
+import Recommendation from 'container/auth/recommendation';
 // import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
@@ -417,6 +417,7 @@ const AppRouter = createSwitchNavigator(
     Individual: IndividualStack,
     CodePush: CodePushPage,
     Landing: Loader,
+    Recommendation,
   },
   {
     initialRouteName: 'Landing',

@@ -10,7 +10,7 @@ import Touchable from 'component/uikit/touchable';
 const item = ({ data, selected, onPress }) => {
   const logo = R.pathOr('', ['icon'])(data);
   const title = R.pathOr('--', ['name'])(data);
-  const disabled = !R.pathOr(false, ['is_focusable'])(data);
+  const disabled = R.pathOr(false, ['is_focused'])(data);
   return (
     <View style={styles.container}>
       <Avatar size={45} source={{ uri: logo }} />

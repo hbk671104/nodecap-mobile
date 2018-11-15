@@ -159,3 +159,7 @@ export function coinIndex(params) {
 export function viewProject(id) {
   return request.post(`/coins/${id}/views`);
 }
+
+export function coinRecommended() {
+  return request.get('/coins/recommended');
+}
