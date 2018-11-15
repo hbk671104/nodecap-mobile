@@ -19,7 +19,7 @@ const styles = {
     marginBottom: 4,
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: 'rgba(0, 0, 0, 0.85)',
   },
