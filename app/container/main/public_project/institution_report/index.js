@@ -9,6 +9,7 @@ import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import Touchable from 'component/uikit/touchable';
 import InstitutionReportItem from 'component/public_project/report_item';
+import PaginationIndicator from 'component/pagination_indicator';
 
 import styles from './style';
 
@@ -68,12 +69,13 @@ export default class InstitutionReport extends Component {
   };
 
   renderItem = ({ item }) => {
-     const isRead = R.contains(item.id)(this.props.hasReadReports);
-     return (<InstitutionReportItem
-       isRead={isRead}
-       data={item}
-       onPress={this.handleItemPress}
-     />
+    const isRead = R.contains(item.id)(this.props.hasReadReports);
+    return (
+      <InstitutionReportItem
+        isRead={isRead}
+        data={item}
+        onPress={this.handleItemPress}
+      />
     );
   };
 
@@ -92,6 +94,9 @@ export default class InstitutionReport extends Component {
           activeDotColor="white"
           autoplay
           height={65}
+          renderPagination={(index, total) => (
+            <PaginationIndicator index={index} total={total} />
+          )}
           removeClippedSubviews={false}
         >
           {R.map(i => (
