@@ -16,56 +16,61 @@ const handleOpen = extras => {
   const { type, payload } = data;
   const { action_id: id } = payload;
 
-  switch (type) {
-    case 'news':
-      global.track('App_NotificationPushOpen', {
-        trackName: '动态推送点击',
-      });
-      store.dispatch(
-        NavigationActions.navigate({
-          routeName: 'NotificationDetail',
-          params: {
-            id,
-          },
-        }),
-      );
-      break;
-    case 'coin_owner':
-      global.track('App_NotificationPushOpen', {
-        trackName: '项目审核推送点击',
-      });
-      store.dispatch(
-        NavigationActions.navigate({
-          routeName: 'MyProject',
-        }),
-      );
-      break;
-    case 'industry_owner':
-      global.track('App_NotificationPushOpen', {
-        trackName: '机构审核推送点击',
-      });
-      store.dispatch(
-        NavigationActions.navigate({
-          routeName: 'MyInstitution',
-        }),
-      );
-      break;
-    case 'coin_daily_increment':
-      global.track('App_NotificationPushOpen', {
-        trackName: '项目集增量更新推送点击',
-      });
-      store.dispatch(
-        NavigationActions.navigate({
-          routeName: 'ProjectRepo',
-          params: {
-            coinset_id: id,
-          },
-        }),
-      );
-      break;
-    default:
-      break;
+  const routeMap = {
+    news: {
+      trackName: '动态推送点击',
+      routeName: 'NotificationDetail',
+      params: {
+        id,
+      },
+    },
+    coin_owner: {
+      trackName: '项目审核推送点击',
+      routeName: 'MyProject',
+    },
+    industry_owner: {
+      trackName: '机构审核推送点击',
+      routeName: 'MyInstitution',
+    },
+    coin_daily_increment: {
+      trackName: '项目集增量更新推送点击',
+      routeName: 'ProjectRepo',
+      params: {
+        coinset_id: id,
+      },
+    },
+    homepage: {
+      trackName: '首页',
+    },
+    research_report_list: {
+      trackName: '研报列表页',
+      routeName: 'InstitutionReport',
+    },
+  };
+
+  const type_obj = R.path([type])(routeMap);
+  if (R.isNil(type_obj)) {
+    return;
   }
+
+  const trackName = R.path(['trackName'])(type_obj);
+  const routeName = R.path(['routeName'])(type_obj);
+  const params = R.path(['params'])(type_obj);
+
+  global.track('App_NotificationPushOpen', {
+    trackName,
+  });
+
+  if (R.isNil(routeName)) {
+    return;
+  }
+
+  store.dispatch(
+    NavigationActions.navigate({
+      routeName,
+      ...(R.isNil(params) ? {} : { params }),
+    }),
+  );
 };
 
 const handleReceive = extras => {
