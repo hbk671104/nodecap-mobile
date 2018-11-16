@@ -32,7 +32,10 @@ import styles from './style';
     const targeted_coinset_id = navigation.getParam('coinset_id');
     return {
       targeted_coinset_index:
-        R.findIndex(s => `${s.id}` === targeted_coinset_id)(sets) + 1,
+        R.findIndex(
+          s =>
+            s.id === targeted_coinset_id || `${s.id}` === targeted_coinset_id,
+        )(sets) + 1,
     };
   }),
 )

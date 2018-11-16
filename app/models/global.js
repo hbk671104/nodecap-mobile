@@ -7,7 +7,7 @@ import Config from '../runtime';
 import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
 import request from '../utils/request';
-// import { Storage } from '../utils';
+import { Storage } from '../utils';
 
 export default {
   namespace: 'global',
@@ -28,6 +28,20 @@ export default {
         yield put.resolve({
           type: 'initial',
         });
+
+        // cold started check
+        const result = yield call(Storage.get, 'cold_started');
+        if (R.isNil(result)) {
+          yield put(
+            NavigationActions.navigate({
+              routeName: 'Recommendation',
+              params: {
+                fromLogin,
+              },
+            }),
+          );
+          return;
+        }
 
         if (fromLogin) {
           yield put(NavigationActions.back());

@@ -188,7 +188,11 @@ class PortfolioInvestmentCreate extends Component {
               title="打币时间"
               placeholder="请选择打币时间"
               renderContent={({ onChange, value }) => (
-                <DatePicker onChange={onChange} value={value} />
+                <DatePicker
+                  style={{ flex: 1 }}
+                  onChange={onChange}
+                  value={value}
+                />
               )}
               error={getFieldError('paid_at')}
             />,

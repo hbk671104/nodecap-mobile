@@ -48,7 +48,7 @@ class HotnodeIndex extends PureComponent {
       NavigationActions.navigate({
         routeName: 'HotnodeCoinIndex',
         params: {
-          item,
+          id: item.id,
         },
       }),
     );

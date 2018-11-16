@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 import SVG, { Path } from 'react-native-svg';
+import { Flex } from 'antd-mobile';
 
 import Avatar from 'component/uikit/avatar';
 import Touchable from 'component/uikit/touchable';
@@ -43,14 +44,23 @@ const avatar_group = ({ data, onExplanationPress }) => {
       <Touchable borderless onPress={onExplanationPress}>
         <View style={styles.title.container}>
           <View style={{ flex: 1, alignItems: 'center' }}>
-            <Text style={styles.title.text}>{score}</Text>
+            <Text style={[styles.title.text, score >= 100 && { fontSize: 20 }]}>
+              {score}
+            </Text>
           </View>
-          <View style={styles.title.right.container}>
-            <Text style={{ fontSize: 11, color: 'white' }}>分</Text>
-            <Image
-              style={{ marginLeft: 3 }}
-              source={require('asset/public_project/explanation.png')}
-            />
+          <View
+            style={[
+              styles.title.right.container,
+              score >= 100 && { marginBottom: 4, right: 0 },
+            ]}
+          >
+            <Flex align="center">
+              <Text style={{ fontSize: 11, color: 'white' }}>分</Text>
+              <Image
+                style={{ marginLeft: 3 }}
+                source={require('asset/public_project/explanation.png')}
+              />
+            </Flex>
           </View>
         </View>
       </Touchable>
@@ -83,10 +93,8 @@ const styles = {
         right: 3,
         top: 0,
         bottom: 0,
-        flexDirection: 'row',
-        alignItems: 'flex-end',
         justifyContent: 'flex-end',
-        marginBottom: 5,
+        marginBottom: 6,
       },
     },
   },

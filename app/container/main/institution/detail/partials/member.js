@@ -1,24 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import R from 'ramda';
 
 import Avatar from 'component/uikit/avatar';
 
-const group = ({ data }) => {
+const group = ({ data, onPress }) => {
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
   const desc = R.pathOr('--', ['description'])(data);
   const avatar_url = R.pathOr('', ['avatar_url'])(data);
   return (
-    <View style={styles.container}>
-      <Avatar source={{ uri: avatar_url }} />
-      <View style={styles.content.container}>
-        <Text style={styles.content.title}>{name}</Text>
-        <Text style={styles.content.subtitle}>{title}</Text>
-        <Text style={styles.content.content}>{desc}</Text>
+    <TouchableWithoutFeedback onPress={onPress}>
+      <View style={styles.container}>
+        <Avatar source={{ uri: avatar_url }} />
+        <View style={styles.content.container}>
+          <Text style={styles.content.title}>{name}</Text>
+          <Text style={styles.content.subtitle}>{title}</Text>
+          <Text style={styles.content.content}>{desc}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

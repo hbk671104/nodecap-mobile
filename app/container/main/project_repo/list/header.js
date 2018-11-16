@@ -8,7 +8,13 @@ const header = ({ count, params, onSelect, selection, onFilterPress }) => {
   const has_filter =
     !R.isEmpty(params.progress) ||
     !R.isEmpty(params.industry_id) ||
-    !R.isEmpty(params.tag_id);
+    !R.isEmpty(params.tag_id) ||
+    !R.isEmpty(params.region_id) ||
+    params.is_reachable !== 0 ||
+    params.has_weekly !== 0 ||
+    params.has_rating !== 0 ||
+    params.has_white_paper !== 0 ||
+    params.is_renowned_industry !== 0;
   return (
     <View style={styles.container}>
       <View style={styles.content.container}>

@@ -26,7 +26,8 @@ const header = ({
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pipe(
-    R.pathOr('--', ['symbol']),
+    R.pathOr('', ['symbol']),
+    R.trim,
     R.toUpper,
   )(data);
   const purpose = R.pathOr([], ['purpose'])(data);
@@ -40,7 +41,9 @@ const header = ({
             <Shimmer animating={loading}>
               <Text style={[styles.top.title, titleStyle]}>
                 {name}
-                <Text style={styles.top.subtitle}>（{token}）</Text>
+                {!!token && (
+                  <Text style={styles.top.subtitle}>（{token}）</Text>
+                )}
               </Text>
             </Shimmer>
             <Label data={data} />

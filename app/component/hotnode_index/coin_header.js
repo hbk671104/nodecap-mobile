@@ -79,16 +79,18 @@ class CoinHeader extends PureComponent {
       })),
     )(global);
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.top.container}>
-          <Flex align="center" justify="space-between">
-            <Text style={styles.top.title}>项目数</Text>
-            <Text style={styles.top.cutoff}>截止至 {date}</Text>
-          </Flex>
-          <Text style={styles.top.content}>{count}</Text>
-        </View>
-        {R.length(trend) > 1 && (
+    const chart = () => {
+      if (R.length(trend) > 1) {
+        const min = R.pipe(
+          R.head,
+          R.pathOr(0, ['y']),
+        )(trend);
+        const max = R.pipe(
+          R.last,
+          R.pathOr(0, ['y']),
+        )(trend);
+
+        return (
           <View style={styles.chart.container}>
             <Flex align="center" justify="space-between">
               <Text style={styles.chart.title}>单位：个</Text>
@@ -97,6 +99,13 @@ class CoinHeader extends PureComponent {
             <VictoryChart
               height={192}
               padding={styles.chart.padding}
+              {...(min !== max
+                ? {
+                    domain: {
+                      y: [min, max],
+                    },
+                  }
+                : {})}
               domainPadding={{ x: [16, 8], y: [0, 8] }}
             >
               <VictoryAxis
@@ -104,7 +113,11 @@ class CoinHeader extends PureComponent {
                 style={styles.chart.axis.cross}
                 tickFormat={x => moment(x).format('MM.DD')}
               />
-              <VictoryAxis dependentAxis style={styles.chart.axis.dependent} />
+              <VictoryAxis
+                dependentAxis
+                style={styles.chart.axis.dependent}
+                tickValues={R.map(t => t.y)(trend)}
+              />
               <VictoryArea
                 interpolation="basis"
                 style={styles.chart.area}
@@ -117,7 +130,21 @@ class CoinHeader extends PureComponent {
               />
             </VictoryChart>
           </View>
-        )}
+        );
+      }
+      return null;
+    };
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.top.container}>
+          <Flex align="center" justify="space-between">
+            <Text style={styles.top.title}>项目数</Text>
+            <Text style={styles.top.cutoff}>截止至 {date}</Text>
+          </Flex>
+          <Text style={styles.top.content}>{count}</Text>
+        </View>
+        {chart()}
       </View>
     );
   }

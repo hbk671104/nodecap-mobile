@@ -42,6 +42,7 @@ export default options => {
         'public_project/fetch',
         'public_project/get',
         'public_project/favor',
+        'public_project/getBase',
         'public_project/addToWorkflow',
         'public_project/fetchSelected',
         'institution/fetch',

@@ -7,7 +7,7 @@ export default {
     paddingHorizontal: 12,
   },
   title: {
-    fontSize: 14,
+    fontSize: 16,
     color: 'rgba(0,0,0,0.85)',
     fontWeight: 'bold',
   },

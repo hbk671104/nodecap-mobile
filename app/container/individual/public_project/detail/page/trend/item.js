@@ -3,126 +3,56 @@ import PropTypes from 'prop-types';
 import { View, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 import moment from 'moment';
+import { Flex } from 'antd-mobile';
 
 import Touchable from 'component/uikit/touchable';
-import Avatar from 'component/uikit/avatar';
 
-const notificationItem = ({ data: trend, onPress }) => {
+const trendItem = ({ data: trend, onPress }) => {
   const title = R.pathOr('--', ['title'])(trend);
-  const project_name = R.pathOr('--', ['project_name'])(trend);
-  const type = R.pathOr('--', ['type'])(trend);
-  const subtitle = R.path(['subtitle'])(trend);
-  const content = R.pathOr('--', ['content'])(trend);
-  const push_at = R.path(['release_at'])(trend);
+  const created_at = R.pathOr('--', ['created_at'])(trend);
 
   return (
     <Touchable foreground onPress={onPress(trend)}>
-      <View style={styles.container}>
-        <View style={styles.content.container}>
-          <View style={styles.content.top.container}>
-            <View style={styles.content.top.title.container}>
-              <Text style={styles.content.top.title.text} numberOfLines={1}>
-                {title}
-              </Text>
-            </View>
-            <Text style={styles.content.top.date}>
-              {push_at ? moment(push_at).format('MM-DD HH:ss') : null}
-            </Text>
-          </View>
-          <View style={styles.content.tag.wrapper}>
-            <View
-              style={[
-                styles.content.tag.container,
-                { backgroundColor: '#FFE9D6' },
-              ]}
-            >
-              <Text style={[styles.content.tag.title, { color: '#FF7600' }]}>
-                {type}
-              </Text>
-            </View>
-          </View>
-          <View style={styles.content.subtitle.container}>
-            <Text numberOfLines={2} style={styles.content.subtitle.text}>
-              {subtitle || content}
-            </Text>
-          </View>
+      <Flex style={styles.container} align="center">
+        <View style={{ flex: 1 }}>
+          <Text style={styles.title}>{title}</Text>
         </View>
-      </View>
+        <Text style={styles.date}>
+          {moment.unix(created_at).format('MM-DD HH:ss')}
+        </Text>
+      </Flex>
     </Touchable>
   );
 };
 
 const styles = {
   container: {
-    paddingVertical: 12,
-    paddingRight: 12,
-    paddingLeft: 0,
+    paddingVertical: 20,
+    paddingRight: 24,
     marginLeft: 22,
-    flexDirection: 'row',
     borderBottomColor: '#E9E9E9',
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
-  content: {
-    container: {
-      flex: 1,
-    },
-    top: {
-      container: {
-        flexDirection: 'row',
-        alignItems: 'center',
-      },
-      title: {
-        container: {
-          flex: 1,
-        },
-        text: {
-          color: 'rgba(0, 0, 0, 0.85)',
-          fontWeight: 'bold',
-          fontSize: 14,
-        },
-      },
-      date: {
-        fontSize: 12,
-        color: 'rgba(0, 0, 0, 0.45)',
-      },
-    },
-    tag: {
-      wrapper: {
-        marginTop: 6,
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-      },
-      container: {
-        height: 19,
-        paddingHorizontal: 3,
-        borderRadius: 2,
-        marginRight: 8,
-        justifyContent: 'center',
-      },
-      title: {
-        fontSize: 11,
-      },
-    },
-    subtitle: {
-      container: {
-        marginTop: 10,
-      },
-      text: {
-        fontSize: 12,
-        lineHeight: 18,
-        color: 'rgba(0, 0, 0, 0.45)',
-      },
-    },
+  title: {
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.85)',
+    fontWeight: 'bold',
+    lineHeight: 20,
+  },
+  date: {
+    fontSize: 12,
+    color: 'rgba(0, 0, 0, 0.45)',
+    marginLeft: 22,
   },
 };
 
-notificationItem.propTypes = {
+trendItem.propTypes = {
   data: PropTypes.object.isRequired,
   onPress: PropTypes.func,
 };
 
-notificationItem.defaultProps = {
+trendItem.defaultProps = {
   onPress: () => null,
 };
 
-export default notificationItem;
+export default trendItem;

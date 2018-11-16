@@ -17,7 +17,7 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
   const subtitle = R.pathOr('--', ['subtitle'])(data);
   const push_at = R.pathOr(null, ['push_at'])(data);
   const source = R.pathOr('', ['source'])(data);
-  const logo_url = R.pathOr('', ['logo_url'])(data);
+  const logo_url = R.pathOr('', ['logo'])(data);
 
   return (
     <Touchable foreground onPress={onPress(data.id)}>

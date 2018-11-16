@@ -5,6 +5,7 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
+import FilterItem from './item';
 
 @compose(
   withState('expanded', 'setExpanded', false),
@@ -52,43 +53,22 @@ export default class FilterGroup extends PureComponent {
           )}
         </View>
         <View style={styles.tag.container}>
-          <Touchable
-            style={[
-              styles.tag.item.container,
-              empty_selection && styles.tag.item.highlight,
-            ]}
+          <FilterItem
+            title="全部"
+            selected={empty_selection}
             onPress={() => onAllPress()}
-          >
-            <Text
-              style={[
-                styles.tag.item.title,
-                empty_selection && styles.tag.item.titleHighlight,
-              ]}
-            >
-              全部
-            </Text>
-          </Touchable>
+          />
           {R.map(d => {
-            const selected = R.contains(`${d.id}`)(selection);
+            const id = R.pathOr(0, ['id'])(d);
+            const name = R.pathOr('', ['name'])(d);
+            const selected = R.contains(`${id}`)(selection);
             return (
-              <Touchable
-                key={d.id}
-                style={[
-                  styles.tag.item.container,
-                  selected && styles.tag.item.highlight,
-                ]}
-                onPress={() => onSelect({ value: d.id, name: d.name })}
-              >
-                <Text
-                  style={[
-                    styles.tag.item.title,
-                    selected && styles.tag.item.titleHighlight,
-                  ]}
-                  numberOfLines={1}
-                >
-                  {d.name}
-                </Text>
-              </Touchable>
+              <FilterItem
+                key={`${id}`}
+                title={name}
+                selected={selected}
+                onPress={() => onSelect({ value: id, name })}
+              />
             );
           })(clipped_data)}
         </View>
@@ -124,29 +104,6 @@ const styles = {
     container: {
       flexDirection: 'row',
       flexWrap: 'wrap',
-    },
-    item: {
-      container: {
-        height: 30,
-        width: 80,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#F5F5F5',
-        borderRadius: 2,
-        marginRight: 9,
-        marginBottom: 10,
-        paddingHorizontal: 2,
-      },
-      highlight: {
-        backgroundColor: '#E5F3FF',
-      },
-      title: {
-        fontSize: 13,
-        color: 'rgba(0, 0, 0, 0.65)',
-      },
-      titleHighlight: {
-        color: '#1890FF',
-      },
     },
   },
 };

@@ -82,6 +82,18 @@ export default class InstitutionDetail extends Component {
     );
   };
 
+  goToMemberDetail = (data) => {
+    this.props.track('点击进入成员主页');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'UserProfile',
+        params: {
+          data,
+        },
+      }),
+    );
+  }
+
   renderNavBar = () => (
     <NavBar
       back
@@ -110,7 +122,13 @@ export default class InstitutionDetail extends Component {
           )}
           {R.not(R.isEmpty(members)) && (
             <Group title="机构成员">
-              {R.map(m => <Member key={m.id} data={m} />)(members)}
+              {R.map(m => (
+                <Member
+                  key={m.id}
+                  data={m}
+                  onPress={() => this.goToMemberDetail(m)}
+                />
+              ))(members)}
             </Group>
           )}
           {R.not(R.isEmpty(coins)) && (

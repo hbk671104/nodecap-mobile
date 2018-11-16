@@ -19,10 +19,14 @@ import * as Wechat from 'react-native-wechat';
   name: 'App_InstitutionReportSetOperation',
 })
 @connect(({ institution, loading }, props) => {
-  const { id, name } = props.navigation.getParam('item');
+  const id = props.navigation.getParam('id');
   return {
     id,
-    title: name,
+    title: R.pipe(
+      R.pathOr([], ['banner', 'data']),
+      R.find(i => Number(i.id) === Number(id)),
+      R.pathOr('', ['name']),
+    )(institution),
     data: R.pathOr([], ['report_set', id, 'data'])(institution),
     pagination: R.pathOr(null, ['report', id, 'pagination'])(institution),
     loading: loading.effects['institution/fetchReportSet'],
@@ -30,6 +34,13 @@ import * as Wechat from 'react-native-wechat';
 })
 @connectActionSheet
 export default class InstitutionReportSet extends Component {
+  componentWillMount() {
+    this.props.dispatch({
+      type: 'institution/fetchReports',
+      refreshLastCount: true,
+    });
+  }
+
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'institution/fetchReportSet',
@@ -47,8 +58,6 @@ export default class InstitutionReportSet extends Component {
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',
         params: {
-          pdf_url: item.pdf_url,
-          title: item.title,
           id: item.id,
         },
       }),
@@ -64,9 +73,7 @@ export default class InstitutionReportSet extends Component {
       buttonIndex => {
         const request = {
           type: 'news',
-          webpageUrl: `${Config.MOBILE_SITE}/report-set?id=${
-            this.props.id
-          }`,
+          webpageUrl: `${Config.MOBILE_SITE}/report-set?id=${this.props.id}`,
           title: `「研报集」${this.props.title}`,
           description: '来 Hotnode, 发现最新最热研报集！',
           thumbImage:

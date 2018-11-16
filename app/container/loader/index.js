@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Image } from 'react-native';
-import { initializeListeners } from 'react-navigation-redux-helpers';
 import SplashScreen from 'react-native-splash-screen';
 import R from 'ramda';
 import * as Animatable from 'react-native-animatable';
@@ -28,7 +27,6 @@ export default class Loader extends Component {
       this.props.dispatch({
         type: this.props.isLogin ? 'global/bootstrap' : 'global/startup',
       });
-      initializeListeners('root', this.props.router);
 
       // hide
       SplashScreen.hide();

@@ -67,7 +67,6 @@ class PortfolioInvestmentCreate extends Component {
       <SafeAreaView style={styles.container}>
         <NavBar gradient back title="添加投资记录" />
         <EnhancedScroll>
-
           {!R.isEmpty(stages) &&
             getFieldDecorator('stage_id', {
               initialValue: R.path([0, 'id'])(stages),
@@ -162,7 +161,11 @@ class PortfolioInvestmentCreate extends Component {
               title="打币时间"
               placeholder="请选择打币时间"
               renderContent={({ onChange, value }) => (
-                <DatePicker onChange={onChange} value={value} />
+                <DatePicker
+                  style={{ flex: 1 }}
+                  onChange={onChange}
+                  value={value}
+                />
               )}
               error={getFieldError('paid_at')}
             />,

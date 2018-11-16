@@ -16,8 +16,7 @@ import styles from './style';
   name: 'App_HotnodeCoinIndexOperation',
 })
 @connect(({ hotnode_index, loading }, { navigation }) => {
-  const item = navigation.getParam('item');
-  const id = R.path(['id'])(item);
+  const id = navigation.getParam('id');
   const data = R.isNil(id)
     ? R.pathOr([], ['overall', 'list', 'data'])(hotnode_index)
     : R.pathOr([], ['coin', id, 'list', 'data'])(hotnode_index);
@@ -27,9 +26,10 @@ import styles from './style';
   const global = R.isNil(id)
     ? R.pathOr({}, ['overall', 'global'])(hotnode_index)
     : R.pathOr({}, ['coin', id, 'global'])(hotnode_index);
+
   return {
     id,
-    title: R.pathOr('区块链一级市场指数', ['name'])(item),
+    title: id ? R.pathOr('', ['tag_name'])(global) : '区块链一级市场指数',
     data,
     pagination,
     global,
@@ -57,7 +57,7 @@ class HotnodeCoinIndex extends PureComponent {
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
         params: {
-          item,
+          id: item.id,
         },
       }),
     );

@@ -20,10 +20,22 @@ export default {
     },
   },
   navBar: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
+    container: {
+      flex: 1,
+      paddingHorizontal: 12,
+    },
+    index: {
+      title: {
+        fontSize: 10,
+        color: 'rgba(0, 0, 0, 0.45)',
+      },
+      text: {
+        fontSize: 13,
+        fontWeight: 'bold',
+        color: '#09AC32',
+        marginTop: 3,
+      },
+    },
   },
   dropdown: {
     position: 'absolute',

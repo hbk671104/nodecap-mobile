@@ -1,4 +1,4 @@
-import { projectRecommendation, updateRecommendation } from '../services/api';
+import { coinRecommended, favorCoin } from '../services/individual/api';
 
 export default {
   namespace: 'recommendation',
@@ -7,7 +7,7 @@ export default {
   },
   effects: {
     *fetch({ callback }, { call, put }) {
-      const { data } = yield call(projectRecommendation);
+      const { data } = yield call(coinRecommended);
 
       yield put({
         type: 'list',
@@ -18,8 +18,12 @@ export default {
         yield call(callback);
       }
     },
-    *update({ callback, payload }, { call }) {
-      const { status } = yield call(updateRecommendation, payload);
+    *update({ callback, payload }, { put, call }) {
+      const { status } = yield call(favorCoin, payload);
+
+      yield put({
+        type: 'public_project/refresh',
+      });
 
       if (callback) {
         yield call(callback, status === 200);

@@ -8,7 +8,7 @@ import {
   Linking,
 } from 'react-native';
 import { connect } from 'react-redux';
-import RNExitApp from 'react-native-exit-app';
+// import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
 import R from 'ramda';
 import {
@@ -18,17 +18,18 @@ import {
   createBottomTabNavigator,
 } from 'react-navigation';
 import {
-  createReduxBoundAddListener,
+  reduxifyNavigator,
+  createNavigationReducer,
   createReactNavigationReduxMiddleware,
 } from 'react-navigation-redux-helpers';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
 import { withNetworkConnectivity } from 'react-native-offline';
-import { Toast } from 'antd-mobile';
+// import { Toast } from 'antd-mobile';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
 
-import Loading from 'component/uikit/loading';
+import { setStatusBar } from 'component/uikit/statusBar';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
@@ -40,7 +41,7 @@ import Login from 'container/auth/login';
 // import LoginModal from 'container/auth/login/modal';
 // import SetPassword from 'container/auth/setPassword';
 // import ResetPwd from 'container/auth/resetPwd';
-// import Recommendation from 'container/auth/recommendation';
+import Recommendation from 'container/auth/recommendation';
 // import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
@@ -96,6 +97,7 @@ import Service from 'container/main/service/wrapper';
 import SingleService from 'container/main/service/singleWrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
+import UserProfile from 'container/main/user/profile';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -109,6 +111,9 @@ import IndividualEditProfile from 'container/individual/self/profile/edit';
 import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
 import MyProject from 'container/individual/self/my_project';
+import MyProjectReportList from 'container/individual/self/my_project/reports/list';
+import CreateWeeklyReport from 'container/individual/self/my_project/reports/create';
+import EditWeeklyReport from 'container/individual/self/my_project/reports/edit';
 import CreateMyProject from 'container/individual/self/my_project/create';
 import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
 import CreateMyProjectNormal from 'container/individual/self/my_project/create/normal';
@@ -198,7 +203,7 @@ const Tab = createBottomTabNavigator(
     },
   },
   {
-    backBehavior: 'none',
+    // backBehavior: 'none',
     tabBarOptions: {
       style: {
         backgroundColor: 'white',
@@ -268,6 +273,7 @@ const MainStack = createStackNavigator(
     SingleService,
     CommentCoin,
     InviteComment,
+    UserProfile,
   },
   {
     headerMode: 'none',
@@ -280,20 +286,22 @@ const IndividualTab = createBottomTabNavigator(
       screen: PublicProject,
       navigationOptions: {
         title: '首页',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('dark-content');
+        },
       },
     },
     HotnodeIndex: {
       screen: HotnodeIndex,
       navigationOptions: {
         title: '指数',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('light-content');
+        },
       },
     },
-    // Trending: {
-    //   screen: NotificationCenter,
-    //   navigationOptions: {
-    //     title: '动态',
-    //   },
-    // },
     ProjectRepo: {
       screen: ProjectRepo,
       navigationOptions: ({ navigation }) => {
@@ -301,24 +309,26 @@ const IndividualTab = createBottomTabNavigator(
         return {
           title: '项目大全',
           tabBarVisible,
+          tabBarOnPress: ({ defaultHandler }) => {
+            defaultHandler();
+            setStatusBar('light-content');
+          },
         };
       },
     },
-    // Favored: {
-    //   screen: Favored,
-    //   navigationOptions: {
-    //     title: '关注',
-    //   },
-    // },
     Self: {
       screen: IndividualSelf,
       navigationOptions: {
         title: '我的',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('dark-content');
+        },
       },
     },
   },
   {
-    backBehavior: 'none',
+    // backBehavior: 'none',
     tabBarOptions: {
       style: {
         backgroundColor: 'white',
@@ -400,6 +410,10 @@ const IndividualStack = createStackNavigator(
     InviteComment,
     Favored,
     HotnodeCoinIndex,
+    MyProjectReportList,
+    CreateWeeklyReport,
+    EditWeeklyReport,
+    UserProfile,
   },
   {
     headerMode: 'none',
@@ -412,11 +426,21 @@ const AppRouter = createSwitchNavigator(
     Individual: IndividualStack,
     CodePush: CodePushPage,
     Landing: Loader,
+    Recommendation,
   },
   {
     initialRouteName: 'Landing',
   },
 );
+
+export const routerReducer = createNavigationReducer(AppRouter);
+
+export const routerMiddleware = createReactNavigationReduxMiddleware(
+  'root',
+  state => state.router,
+);
+
+const App = reduxifyNavigator(AppRouter, 'root');
 
 export function getCurrentScreen(navigationState) {
   if (!navigationState) {
@@ -429,18 +453,12 @@ export function getCurrentScreen(navigationState) {
   return route.routeName;
 }
 
-export const routerMiddleware = createReactNavigationReduxMiddleware(
-  'root',
-  state => state.router,
-);
-
-const addListener = createReduxBoundAddListener('root');
-
 import { compose, withState } from 'recompose';
 import UpdateAlert from 'component/update';
 import Modal from 'component/modal';
 import ActionAlert from 'component/action_alert';
 import { hasAppStoreUpdate } from 'utils/utils';
+import { handleBadgeAction } from 'utils/badge_handler';
 
 @withNetworkConnectivity({
   pingServerUrl: 'https://www.baidu.com/',
@@ -479,6 +497,7 @@ class Router extends Component {
 
     // check notif permission
     this.checkPushPermission();
+    handleBadgeAction();
   }
 
   componentDidMount() {
@@ -533,26 +552,30 @@ class Router extends Component {
       });
       // check notification permissions
       this.checkPushPermission();
+      handleBadgeAction();
     }
     this.props.setAppState(nextAppState);
   };
 
   checkPushPermission = () => {
     if (this.state.isIOS) {
-      JPush.hasPermission(res => {
-        if (!res) {
-          this.props.setShowNotificationModal(true);
-        }
-      });
+      setTimeout(() => {
+        JPush.hasPermission(res => {
+          if (!res) {
+            this.props.setShowNotificationModal(true);
+          }
+        });
+      }, 1000);
     }
   };
 
   backHandle = () => {
     const { dispatch, router } = this.props;
     const subRouter = router.routes[router.index];
-    if (subRouter.index === 0) {
+    const secondSubRouter = subRouter.routes[subRouter.index];
+    if (secondSubRouter.index === 0) {
       Alert.alert('提示', '确认退出 Hotnode ？', [
-        { text: '确认', onPress: () => RNExitApp.exitApp() },
+        { text: '确认', onPress: () => BackHandler.exitApp() },
         { text: '取消', style: 'cancel' },
       ]);
     }
@@ -570,17 +593,10 @@ class Router extends Component {
 
   render() {
     const { dispatch, app, router, showAlert, release_notes } = this.props;
-    if (app.loading) return <Loading />;
-
-    const navigation = {
-      dispatch,
-      state: router,
-      addListener,
-    };
     return (
       <View style={{ flex: 1 }}>
         <ActionSheetProvider>
-          <AppRouter navigation={navigation} />
+          <App dispatch={dispatch} state={router} />
         </ActionSheetProvider>
         <Modal
           style={{ alignSelf: 'center' }}
@@ -605,10 +621,6 @@ class Router extends Component {
       </View>
     );
   }
-}
-
-export function routerReducer(state, action = {}) {
-  return AppRouter.router.getStateForAction(action, state);
 }
 
 export default Router;

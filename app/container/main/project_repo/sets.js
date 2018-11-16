@@ -81,7 +81,7 @@ export default class CoinsInSet extends Component {
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
         params: {
-          item,
+          id: item.id,
         },
       }),
     );

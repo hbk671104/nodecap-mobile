@@ -1,109 +1,40 @@
-import React, { Component } from 'react';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
-import { Flex, Modal } from 'antd-mobile';
+import React from 'react';
+import { View, Text } from 'react-native';
 import R from 'ramda';
+import { connect } from 'react-redux';
+
+import RatingItem from './rating_item';
 import styles from './style';
 
-class rating extends Component {
-  showRatingTip = content => {
-    Modal.alert('评级说明', content);
-  };
+const rating = ({ portfolio, rating_orgs, onMorePress }) => {
+  const data = R.pipe(
+    R.pathOr([], ['rating']),
+    // R.filter(i => i.rating_name && i.grade),
+  )(portfolio);
 
-  render() {
-    const data = R.pipe(
-      R.pathOr([], ['portfolio', 'rating']),
-      R.filter(i => i.rating_name && i.grade),
-    )(this.props);
-    if (!data.length) {
-      return null;
-    }
-    return (
-      <View style={styles.fieldGroup}>
-        <Text style={[styles.title, styles.site]}>评级信息</Text>
-        <Flex
-          justify="between"
-          style={{
-            marginTop: 10,
-            marginBottom: 10,
-            borderBottomWidth: 0.5,
-            borderBottomColor: '#e9e9e9',
-            paddingBottom: 6,
-          }}
-        >
-          <View>
-            <Text
-              style={{
-                fontSize: 13,
-                color: 'rgba(0,0,0,0.85)',
-                letterSpacing: 0.16,
-              }}
-            >
-              机构
-            </Text>
-          </View>
-          <Flex>
-            <Text
-              style={{
-                fontSize: 13,
-                color: 'rgba(0,0,0,0.85)',
-                letterSpacing: 0.16,
-              }}
-            >
-              评级
-            </Text>
-            <View style={styles.tip} />
-          </Flex>
-        </Flex>
-        <View>
-          {R.map(m => (
-            <Flex
-              key={m.rating_name}
-              justify="between"
-              style={{ marginBottom: 10 }}
-            >
-              <View>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: 'rgba(0,0,0,0.85)',
-                    letterSpacing: 0.16,
-                  }}
-                >
-                  {m.rating_name}
-                </Text>
-              </View>
-              <Flex>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: '#1890FF',
-                    letterSpacing: 0.16,
-                  }}
-                >
-                  {m.grade}
-                </Text>
-                {m.grading_result ? (
-                  <TouchableWithoutFeedback
-                    onPress={() => this.showRatingTip(m.grading_result)}
-                  >
-                    <Image
-                      style={styles.tip}
-                      source={require('asset/public_project/tip_icon.png')}
-                    />
-                  </TouchableWithoutFeedback>
-                ) : (
-                  <View style={styles.tip} />
-                )}
-              </Flex>
-            </Flex>
-          ))(data)}
-        </View>
-      </View>
-    );
+  if (R.isEmpty(data)) {
+    return null;
   }
-}
 
-rating.propTypes = {};
-rating.defaultProps = {};
+  return (
+    <View style={styles.fieldGroup}>
+      <Text style={[styles.title, styles.site]}>评级信息</Text>
+      {R.map(r => {
+        const org_id = R.path(['rating_org_id'])(r);
+        const org = R.find(o => o.id === org_id)(rating_orgs);
+        return (
+          <RatingItem
+            key={r.id}
+            data={r}
+            org={org}
+            onMorePress={() => onMorePress(r)}
+          />
+        );
+      })(data)}
+    </View>
+  );
+};
 
-export default rating;
+export default connect(({ global }) => ({
+  rating_orgs: R.pathOr([], ['constants', 'rating_orgs'])(global),
+}))(rating);

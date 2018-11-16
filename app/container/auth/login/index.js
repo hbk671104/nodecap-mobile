@@ -4,6 +4,7 @@ import SMS from './sms';
 import Password from './password';
 import ResetPwd from '../resetPwd';
 import SetPassword from '../setPassword';
+import Recommendation from '../recommendation';
 
 const Base = createSwitchNavigator(
   {
@@ -19,6 +20,7 @@ const Base = createSwitchNavigator(
       screen: SetPassword,
       path: 'login/setPassword',
     },
+    Recommendation,
   },
   // {
   //   headerMode: 'none',

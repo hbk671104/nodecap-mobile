@@ -15,8 +15,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import './app/utils/sensor';
 import dva from './app/utils/dva';
-import Router, { routerMiddleware } from './app/router';
-import routerModel from './app/models/router';
+import Router, { routerMiddleware, routerReducer } from './app/router';
 import loginModel from './app/models/login';
 import appModel from './app/models/app';
 import fundModel from './app/models/fund';
@@ -50,7 +49,6 @@ YellowBox.ignoreWarnings([
 export const app = dva({
   initialState: {},
   models: [
-    routerModel,
     loginModel,
     appModel,
     globalModel,
@@ -76,6 +74,7 @@ export const app = dva({
     bannerModal,
     hotnodeIndexModal,
   ],
+  extraReducers: { router: routerReducer },
   onAction: [routerMiddleware],
   extraEnhancers: [autoRehydrate()],
 });

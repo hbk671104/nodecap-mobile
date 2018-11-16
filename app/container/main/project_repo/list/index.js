@@ -68,7 +68,7 @@ export default class ProjectList extends Component {
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
         params: {
-          item,
+          id: item.id,
         },
       }),
     );

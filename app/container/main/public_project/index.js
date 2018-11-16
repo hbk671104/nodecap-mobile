@@ -1,17 +1,20 @@
 import React, { Component } from 'react';
-import { View, Animated, Platform, Vibration } from 'react-native';
+import { View, Platform, Text, Image, Vibration } from 'react-native';
 import { connect } from 'react-redux';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import JPush from 'jpush-react-native';
+import { Flex } from 'antd-mobile';
+
 import { RouterEmitter } from '../../../router';
 
-import NavBar, { realBarHeight } from 'component/navBar';
+import NavBar from 'component/navBar';
 import Explanation from 'component/explanation';
 import NewsItem from 'component/news';
-import DropdownAlert, { alertHeight } from 'component/dropdown_alert';
-import { handleBadgeAction } from 'utils/badge_handler';
+import Touchable from 'component/uikit/touchable';
+import Format from 'component/format';
+import { setStatusBar } from 'component/uikit/statusBar';
 import { handleOpen, handleReceive } from 'utils/jpush_handler';
 
 import List from './components/list';
@@ -57,25 +60,13 @@ import styles from './style';
         R.pathOr(0, ['lastReportCount'])(institution),
     banners: R.pathOr([], ['list', 'data'])(banners),
     market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
+    global_index: R.pathOr({}, ['overall', 'global'])(hotnode_index),
   }),
 )
 @compose(
   withState('showExplanation', 'setShowExplanation', false),
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentShareNews', 'setShareNews', ''),
-  withState('animateY', 'setAnimatedY', new Animated.Value(0)),
-  withProps(({ animateY }) => ({
-    navBarOpacityRange: animateY.interpolate({
-      inputRange: [0, 192],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    }),
-    refreshButtonOpacityRange: animateY.interpolate({
-      inputRange: [672, 768],
-      outputRange: [0, 1],
-      extrapolate: 'clamp',
-    }),
-  })),
 )
 export default class PublicProject extends Component {
   componentWillMount() {
@@ -126,19 +117,7 @@ export default class PublicProject extends Component {
     handleReceive(extras);
   };
 
-  handleDataAlert = (newUpdateCount, oldUpdateCount) => {
-    if (newUpdateCount > oldUpdateCount) {
-      const count = newUpdateCount - oldUpdateCount;
-      if (this.scroll) {
-        this.alert.show(`新增 ${count} 条更新`);
-      }
-    } else {
-      this.alert.show('暂无新快讯');
-    }
-  };
-
   requestData = (isRefresh, callback) => {
-    this.shouldAnimate = this.shouldAnimate && isRefresh;
     this.props.dispatch({
       type: 'news/index',
       payload: isRefresh ? null : this.props.lastNewsID,
@@ -158,7 +137,7 @@ export default class PublicProject extends Component {
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
         params: {
-          item,
+          id: item.id,
         },
         key: `PublicProjectDetail_${this.props.data.id}`,
       }),
@@ -181,7 +160,6 @@ export default class PublicProject extends Component {
         routeName: 'Announcement',
       }),
     );
-    handleBadgeAction();
   };
 
   handleProjectRepoPress = () => {
@@ -203,7 +181,7 @@ export default class PublicProject extends Component {
   };
 
   handleInstitutionPress = () => {
-    this.props.track('点击找机构');
+    this.props.track('点击找投资');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Institution',
@@ -237,8 +215,7 @@ export default class PublicProject extends Component {
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',
         params: {
-          pdf_url: item.pdf_url,
-          title: item.title,
+          id: item.id,
         },
       }),
     );
@@ -262,9 +239,18 @@ export default class PublicProject extends Component {
   };
 
   handleMoreIndexPress = () => {
+    setStatusBar('light-content');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'HotnodeIndex',
+      }),
+    );
+  };
+
+  handleSearchBarPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'PublicProjectSearch',
       }),
     );
   };
@@ -284,50 +270,59 @@ export default class PublicProject extends Component {
   renderHeader = () => (
     <Header
       {...this.props}
+      onSearchBarPress={this.handleSearchBarPress}
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
-      onInstitutionPress={this.handleInstitutionPress}
       onServicePress={this.handleServicePress}
       onRefreshPress={() => {
-        this.shouldAnimate = true;
-        this.requestData(true, this.handleDataAlert);
+        this.requestData(true);
       }}
       onRefreshProject={() => {
         this.refreshProject();
       }}
       onMoreIndexPress={this.handleMoreIndexPress}
       onTitlePress={() => this.props.setShowExplanation(true)}
-      newsLoading={this.props.loading && this.shouldAnimate}
+      newsLoading={this.props.loading}
     />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
 
-  renderNavBar = () => (
-    <Animated.View
-      style={[styles.navBar, { opacity: this.props.navBarOpacityRange }]}
-    >
-      <DropdownAlert
-        ref={ref => {
-          this.alert = ref;
-        }}
-        style={[
-          styles.dropdown,
-          {
-            top: realBarHeight - alertHeight,
-          },
-        ]}
+  renderNavBar = () => {
+    const { global_index } = this.props;
+    return (
+      <NavBar
+        barStyle="dark-content"
+        renderContent={() => (
+          <Flex
+            style={styles.navBar.container}
+            align="center"
+            justify="space-between"
+          >
+            <Image
+              source={require('asset/public_project/hotnode_banner.png')}
+            />
+            <Touchable borderless onPress={this.handleMoreIndexPress}>
+              <Flex direction="column" align="flex-end">
+                <Text style={styles.navBar.index.title}>全网指数</Text>
+                <Text style={styles.navBar.index.text}>
+                  <Format digit={1}>{R.path(['heat'])(global_index)}</Format>
+                </Text>
+              </Flex>
+            </Touchable>
+          </Flex>
+        )}
       />
-      <NavBar gradient title="首页" />
-    </Animated.View>
-  );
+    );
+  };
 
   render() {
     const { news, loading, showExplanation } = this.props;
     return (
       <View style={styles.container}>
+        {this.renderNavBar()}
         <List
           disableRefresh
           listRef={ref => {
@@ -340,21 +335,7 @@ export default class PublicProject extends Component {
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
           renderSeparator={this.renderSeparator}
-          scrollEventThrottle={1}
-          onScroll={Animated.event(
-            [
-              {
-                nativeEvent: {
-                  contentOffset: { y: this.props.animateY },
-                },
-              },
-            ],
-            {
-              useNativeDriver: true,
-            },
-          )}
         />
-        {this.renderNavBar()}
         <ShareNews
           visible={this.props.showShareModal}
           news={this.props.currentShareNews}

@@ -24,7 +24,7 @@ class FavorItem extends PureComponent {
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
         params: {
-          item: this.props.data,
+          id: R.path(['data', 'id'])(this.props),
         },
         key: `PublicProjectDetail_${this.props.data.id}`,
       }),
@@ -70,7 +70,6 @@ class FavorItem extends PureComponent {
       R.isEmpty,
       R.not,
     )(data);
-    const has_owner = R.pathOr(false, ['has_owner'])(data);
     const is_vip = R.pipe(
       R.pathOr({}, ['vip']),
       R.isEmpty,
@@ -88,6 +87,11 @@ class FavorItem extends PureComponent {
     )(data);
     const is_reachable = R.pipe(
       R.pathOr([], ['is_reachable']),
+      R.isEmpty,
+      R.not,
+    )(data);
+    const has_owner = R.pipe(
+      R.pathOr([], ['owners']),
       R.isEmpty,
       R.not,
     )(data);
@@ -181,13 +185,13 @@ class FavorItem extends PureComponent {
                 <View
                   style={[
                     styles.content.miscTag.item.container,
-                    { backgroundColor: '#FFE9D6', marginRight: 4 },
+                    { backgroundColor: '#E5F3FF', marginRight: 4 },
                   ]}
                 >
                   <Text
                     style={[
                       styles.content.miscTag.item.text,
-                      { color: '#FF7600' },
+                      { color: '#1890FF' },
                     ]}
                   >
                     知名机构所投
@@ -198,13 +202,13 @@ class FavorItem extends PureComponent {
                 <View
                   style={[
                     styles.content.miscTag.item.container,
-                    { backgroundColor: '#BCF4CA', marginRight: 4 },
+                    { backgroundColor: '#E5F3FF', marginRight: 4 },
                   ]}
                 >
                   <Text
                     style={[
                       styles.content.miscTag.item.text,
-                      { color: '#09AC32' },
+                      { color: '#1890FF' },
                     ]}
                   >
                     有评级
@@ -215,13 +219,13 @@ class FavorItem extends PureComponent {
                 <View
                   style={[
                     styles.content.miscTag.item.container,
-                    { backgroundColor: '#ECD7FE' },
+                    { backgroundColor: '#E5F3FF' },
                   ]}
                 >
                   <Text
                     style={[
                       styles.content.miscTag.item.text,
-                      { color: '#A663E0' },
+                      { color: '#1890FF' },
                     ]}
                   >
                     可联系
@@ -235,18 +239,17 @@ class FavorItem extends PureComponent {
           </View>
           <View style={styles.end.container}>
             <View style={{ flex: 1 }}>
-              {!R.isEmpty(status) &&
-                !R.equals(status, '未设定') && (
-                  <Text
-                    style={[
-                      styles.end.status,
-                      status === '进行中' && { color: '#09AC32' },
-                      status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
-                    ]}
-                  >
-                    {status}
-                  </Text>
-                )}
+              {!R.isEmpty(status) && !R.equals(status, '未设定') && (
+                <Text
+                  style={[
+                    styles.end.status,
+                    status === '进行中' && { color: '#09AC32' },
+                    status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
+                  ]}
+                >
+                  {status}
+                </Text>
+              )}
             </View>
             <Touchable foreground onPress={this.handleFavorPress}>
               <View

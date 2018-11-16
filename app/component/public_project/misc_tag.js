@@ -36,7 +36,7 @@ const miscTags = ({ style, data }) => {
   return (
     <View style={[styles.container, style]}>
       <View style={styles.title.container}>
-        <Text style={styles.title.text}>优势</Text>
+        <Text style={styles.title.text}>亮点</Text>
       </View>
       <ScrollView
         showsHorizontalScrollIndicator={false}
