@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
+import Empty from 'component/empty';
 
 import Group from './group';
 import Header from './header';
@@ -41,12 +42,14 @@ export default class InstitutionDetail extends Component {
       <View style={styles.container}>
         {this.renderNavBar()}
         <ScrollView>
-          {!!desc && (
+          {desc ? (
             <Group title="个人简介">
               <View style={styles.desc.container}>
                 <Text style={styles.desc.text}>{desc}</Text>
               </View>
             </Group>
+          ) : (
+            <Empty image={require('asset/none.png')} title="暂无更多详细资料" />
           )}
         </ScrollView>
       </View>
