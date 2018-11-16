@@ -53,8 +53,8 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
   return (
     <Touchable
       style={{
-      marginBottom: 8,
-    }}
+        marginBottom: 8,
+      }}
       foreground
       onPress={onPress}
     >
@@ -76,15 +76,18 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
               <View style={styles.content.container}>
                 <View style={styles.content.top.container}>
                   <View style={styles.content.titleContainer}>
-                    <Text style={styles.content.top.title.text} numberOfLines={2}>
+                    <Text
+                      style={styles.content.top.title.text}
+                      numberOfLines={2}
+                    >
                       {project_name}
                     </Text>
                     {is_vip && (
-                    <Image
-                      style={{ marginLeft: 8 }}
-                      source={require('asset/public_project/is_vip.png')}
-                    />
-                  )}
+                      <Image
+                        style={{ marginLeft: 8 }}
+                        source={require('asset/public_project/is_vip.png')}
+                      />
+                    )}
                   </View>
                 </View>
                 <View style={styles.content.tag.wrapper}>
@@ -92,12 +95,12 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
                     <View key={`${i}`} style={styles.content.tag.container}>
                       <Text style={styles.content.tag.title}>
                         {R.pipe(
-                        R.pathOr('', ['name']),
-                        R.trim,
-                      )(t)}
+                          R.pathOr('', ['name']),
+                          R.trim,
+                        )(t)}
                       </Text>
                     </View>
-                ))(category)}
+                  ))(category)}
                 </View>
                 <View style={styles.content.miscTag.container}>
                   {has_white_paper && (
@@ -118,39 +121,39 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
                     </View>
                   )}
                   {invested_by_renowned_insti && (
-                  <View
-                    style={[
-                      styles.content.miscTag.item.container,
-                      { backgroundColor: '#FFE9D6', marginRight: 4 },
-                    ]}
-                  >
-                    <Text
+                    <View
                       style={[
-                        styles.content.miscTag.item.text,
-                        { color: '#FF7600' },
+                        styles.content.miscTag.item.container,
+                        { backgroundColor: '#FFE9D6', marginRight: 4 },
                       ]}
                     >
-                      知名机构所投
-                    </Text>
-                  </View>
-                )}
+                      <Text
+                        style={[
+                          styles.content.miscTag.item.text,
+                          { color: '#FF7600' },
+                        ]}
+                      >
+                        知名机构所投
+                      </Text>
+                    </View>
+                  )}
                   {top_rated && (
-                  <View
-                    style={[
-                      styles.content.miscTag.item.container,
-                      { backgroundColor: '#BCF4CA' },
-                    ]}
-                  >
-                    <Text
+                    <View
                       style={[
-                        styles.content.miscTag.item.text,
-                        { color: '#09AC32' },
+                        styles.content.miscTag.item.container,
+                        { backgroundColor: '#BCF4CA' },
                       ]}
                     >
-                      有评级
-                    </Text>
-                  </View>
-                )}
+                      <Text
+                        style={[
+                          styles.content.miscTag.item.text,
+                          { color: '#09AC32' },
+                        ]}
+                      >
+                        有评级
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
             </View>
@@ -158,38 +161,54 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
           {owner_status === '1' && (
             <View style={styles.score}>
               <Text style={styles.scoreText}>
-                <Text style={{
-                color: scoreColor,
-              }}
+                <Text
+                  style={{
+                    color: scoreColor,
+                  }}
                 >
                   {score}分
                 </Text>
               </Text>
-              <Text style={styles.scoreTextSmall}>超过{score_distribution}%的项目</Text>
+              <Text style={styles.scoreTextSmall}>
+                超过{score_distribution}%的项目
+              </Text>
             </View>
           )}
           {owner_status === '0' && (
             <View style={styles.score}>
-              <Text style={styles.scoreText}><Text style={{ color: '#FF7600' }}>审核中</Text></Text>
+              <Text style={styles.scoreText}>
+                <Text style={{ color: '#FF7600' }}>审核中</Text>
+              </Text>
             </View>
           )}
         </Flex>
         <Flex style={styles.buttons}>
           <Touchable disabled={owner_status !== '1'} style={{ flex: 1 }}>
             <Flex justify="center">
-              <Text style={[styles.buttonText, owner_status === '0' ? styles.buttonTextDisabled : {}]}>完善项目信息</Text>
+              <Text
+                style={[
+                  styles.buttonText,
+                  owner_status === '0' ? styles.buttonTextDisabled : {},
+                ]}
+              >
+                完善项目信息
+              </Text>
             </Flex>
           </Touchable>
           {owner_status === '1' && (
-            <View style={{
-              height: 16,
-              borderRightColor: '#E5E5E5',
-              borderRightWidth: 0.5,
-            }}
+            <View
+              style={{
+                height: 16,
+                borderRightColor: '#E5E5E5',
+                borderRightWidth: 0.5,
+              }}
             />
           )}
           {owner_status === '1' && (
-            <Touchable style={{ flex: 1 }} onPress={(e) => onPressWeeklyReport(e, data.id)}>
+            <Touchable
+              style={{ flex: 1 }}
+              onPress={e => onPressWeeklyReport(e, data.id)}
+            >
               <Flex justify="center">
                 <Text style={styles.buttonText}>周报管理</Text>
               </Flex>
@@ -212,8 +231,18 @@ const styles = {
     marginRight: 12,
     marginTop: 12,
   },
-  scoreText: { fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.12, textAlign: 'right' },
-  scoreTextSmall: { fontSize: 10, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.12, textAlign: 'right' },
+  scoreText: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.65)',
+    letterSpacing: 0.12,
+    textAlign: 'right',
+  },
+  scoreTextSmall: {
+    fontSize: 10,
+    color: 'rgba(0,0,0,0.65)',
+    letterSpacing: 0.12,
+    textAlign: 'right',
+  },
   statusTip: {
     position: 'absolute',
     bottom: 0,
@@ -239,9 +268,24 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  statusPendingText: { fontSize: 9, color: '#FF7600', letterSpacing: 0.14, textAlign: 'center' },
-  statusApprovedText: { fontSize: 9, color: '#09AC32', letterSpacing: 0.14, textAlign: 'center' },
-  statusCancelText: { fontSize: 9, color: '#FF0000', letterSpacing: 0.14, textAlign: 'center' },
+  statusPendingText: {
+    fontSize: 9,
+    color: '#FF7600',
+    letterSpacing: 0.14,
+    textAlign: 'center',
+  },
+  statusApprovedText: {
+    fontSize: 9,
+    color: '#09AC32',
+    letterSpacing: 0.14,
+    textAlign: 'center',
+  },
+  statusCancelText: {
+    fontSize: 9,
+    color: '#FF0000',
+    letterSpacing: 0.14,
+    textAlign: 'center',
+  },
   avatar: {
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#F0F0F0',
@@ -333,7 +377,12 @@ const styles = {
     borderTopWidth: 0.5,
     borderTopColor: '#E9E9E9',
   },
-  buttonText: { fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.16, textAlign: 'right' },
+  buttonText: {
+    fontSize: 13,
+    color: 'rgba(0,0,0,0.65)',
+    letterSpacing: 0.16,
+    textAlign: 'right',
+  },
   buttonTextDisabled: {
     color: 'rgba(0,0,0,0.25)',
   },
