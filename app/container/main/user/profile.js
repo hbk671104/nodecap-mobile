@@ -36,7 +36,7 @@ export default class InstitutionDetail extends Component {
 
   render() {
     const { data, in_individual } = this.props;
-    const desc = R.pathOr('', ['description'])(data);
+    const desc = R.pathOr('', ['description'])(data) || R.pathOr('', ['introduction'])(data);
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
