@@ -1,5 +1,5 @@
 import store from '../../index';
-import { Platform, Alert } from 'react-native';
+import { Platform } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
@@ -222,9 +222,6 @@ const handleOpen = extras => {
   const { action_id: id } = payload;
 
   const type_obj = R.path([type])(routeMap({ id }));
-
-  Alert.alert('Debug', JSON.stringify(type_obj));
-
   if (!R.isNil(type_obj)) {
     const trackName = R.path(['trackName'])(type_obj);
     const routeName = R.path(['routeName'])(type_obj);

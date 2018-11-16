@@ -42,7 +42,7 @@ const middle = ({
   >
     <View style={styles.bottom.container}>
       <Text style={styles.bottom.subtitle}>
-        为您找到 {R.pathOr(0, ['total'])(pagination)} 个项目
+        Hotnode 为您找到 {R.pathOr(0, ['total'])(pagination)} 个项目
       </Text>
       <Touchable
         borderless

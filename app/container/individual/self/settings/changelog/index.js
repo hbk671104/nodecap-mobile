@@ -12,6 +12,18 @@ class ChangeLog extends Component {
         <NavBar gradient back title="版本更新" />
         <ScrollView>
           <ChangeLogItem
+            version="v6.7.0"
+            date="2018-10-16"
+            changelog={[
+              '新增首页搜索',
+              '新增项目评级可视化',
+              '新增项目亮点可筛选',
+              '新增项目周报填写及展示',
+              '新增新用户登录推荐项目',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
             version="v6.2.0"
             date="2018-10-12"
             changelog={[
