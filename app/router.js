@@ -497,6 +497,7 @@ class Router extends Component {
 
     // check notif permission
     this.checkPushPermission();
+    handleBadgeAction();
   }
 
   componentDidMount() {

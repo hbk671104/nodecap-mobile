@@ -1,5 +1,5 @@
 import store from '../../index';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
@@ -36,6 +36,20 @@ const routeMap = ({ id }) => ({
   research_report_list: {
     trackName: '研报列表页',
     routeName: 'InstitutionReport',
+  },
+  research_report_detail: {
+    trackName: '研报详情页',
+    routeName: 'InstitutionReportDetail',
+    params: {
+      id,
+    },
+  },
+  research_report_set_list: {
+    trackName: '研报集列表页',
+    routeName: 'InstitutionReportSet',
+    params: {
+      id,
+    },
   },
   institution_list: {
     trackName: '投资机构列表页',
@@ -208,6 +222,9 @@ const handleOpen = extras => {
   const { action_id: id } = payload;
 
   const type_obj = R.path([type])(routeMap({ id }));
+
+  Alert.alert('Debug', JSON.stringify(type_obj));
+
   if (!R.isNil(type_obj)) {
     const trackName = R.path(['trackName'])(type_obj);
     const routeName = R.path(['routeName'])(type_obj);

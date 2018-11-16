@@ -215,8 +215,7 @@ export default class PublicProject extends Component {
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',
         params: {
-          pdf_url: item.pdf_url,
-          title: item.title,
+          id: item.id,
         },
       }),
     );

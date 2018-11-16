@@ -25,7 +25,7 @@ import * as Wechat from 'react-native-wechat';
     title: R.pipe(
       R.pathOr([], ['banner', 'data']),
       R.find(i => Number(i.id) === Number(id)),
-      R.pathOr('', ['name'])
+      R.pathOr('', ['name']),
     )(institution),
     data: R.pathOr([], ['report_set', id, 'data'])(institution),
     pagination: R.pathOr(null, ['report', id, 'pagination'])(institution),
@@ -58,8 +58,6 @@ export default class InstitutionReportSet extends Component {
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',
         params: {
-          pdf_url: item.pdf_url,
-          title: item.title,
           id: item.id,
         },
       }),
@@ -75,9 +73,7 @@ export default class InstitutionReportSet extends Component {
       buttonIndex => {
         const request = {
           type: 'news',
-          webpageUrl: `${Config.MOBILE_SITE}/report-set?id=${
-            this.props.id
-          }`,
+          webpageUrl: `${Config.MOBILE_SITE}/report-set?id=${this.props.id}`,
           title: `「研报集」${this.props.title}`,
           description: '来 Hotnode, 发现最新最热研报集！',
           thumbImage:

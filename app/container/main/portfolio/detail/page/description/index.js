@@ -15,8 +15,7 @@ export default class Description extends PureComponent {
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',
         params: {
-          pdf_url: item.attachment,
-          title: item.filename,
+          id: item.id,
         },
       }),
     );
