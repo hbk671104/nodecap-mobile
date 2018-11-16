@@ -24,7 +24,7 @@ class FavorItem extends PureComponent {
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
         params: {
-          item: this.props.data,
+          id: R.path(['data', 'id'])(this.props),
         },
         key: `PublicProjectDetail_${this.props.data.id}`,
       }),

@@ -52,8 +52,7 @@ const calcHeaderHeight = ({ data }) => {
   name: 'App_ProjectDetailOperation',
 })
 @connect(({ public_project, loading, global }, props) => {
-  const item = props.navigation.getParam('item');
-  const id = R.pathOr(0, ['id'])(item);
+  const id = props.navigation.getParam('id');
   return {
     id,
     portfolio: R.pathOr({}, ['current', id])(public_project),
