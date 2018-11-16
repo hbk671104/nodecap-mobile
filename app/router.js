@@ -556,11 +556,13 @@ class Router extends Component {
 
   checkPushPermission = () => {
     if (this.state.isIOS) {
-      JPush.hasPermission(res => {
-        if (!res) {
-          this.props.setShowNotificationModal(true);
-        }
-      });
+      setTimeout(() => {
+        JPush.hasPermission(res => {
+          if (!res) {
+            this.props.setShowNotificationModal(true);
+          }
+        });
+      }, 1000);
     }
   };
 
