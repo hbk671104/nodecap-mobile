@@ -68,6 +68,18 @@ class MyProject extends Component {
     });
   };
 
+  handleWeeklyReport = (e, id) => {
+    e.preventDefault();
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'MyProjectReportList',
+        params: {
+          id,
+        },
+      }),
+    );
+  }
+
   renderNavBar = () => (
     <NavBar
       back
@@ -82,7 +94,11 @@ class MyProject extends Component {
   );
 
   renderItem = ({ item }) => (
-    <SimplifiedItem data={item} onPress={this.handleItemPress(item)} />
+    <SimplifiedItem
+      data={item}
+      onPress={this.handleItemPress(item)}
+      onPressWeeklyReport={this.handleWeeklyReport}
+    />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
@@ -98,7 +114,7 @@ class MyProject extends Component {
           pagination={pagination}
           data={data}
           renderItem={this.renderItem}
-          renderSeparator={this.renderSeparator}
+          style={styles.container}
         />
       </View>
     );

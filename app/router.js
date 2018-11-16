@@ -97,6 +97,7 @@ import Service from 'container/main/service/wrapper';
 import SingleService from 'container/main/service/singleWrapper';
 import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
+import UserProfile from 'container/main/user/profile';
 import WebPage from 'container/webview';
 
 // Individual exclusive
@@ -110,6 +111,9 @@ import IndividualEditProfile from 'container/individual/self/profile/edit';
 import Settings from 'container/individual/self/settings';
 import ChangeLog from 'container/individual/self/settings/changelog';
 import MyProject from 'container/individual/self/my_project';
+import MyProjectReportList from 'container/individual/self/my_project/reports/list';
+import CreateWeeklyReport from 'container/individual/self/my_project/reports/create';
+import EditWeeklyReport from 'container/individual/self/my_project/reports/edit';
 import CreateMyProject from 'container/individual/self/my_project/create';
 import CreateMyProjectSearch from 'container/individual/self/my_project/create/search';
 import CreateMyProjectNormal from 'container/individual/self/my_project/create/normal';
@@ -269,6 +273,7 @@ const MainStack = createStackNavigator(
     SingleService,
     CommentCoin,
     InviteComment,
+    UserProfile,
   },
   {
     headerMode: 'none',
@@ -405,6 +410,10 @@ const IndividualStack = createStackNavigator(
     InviteComment,
     Favored,
     HotnodeCoinIndex,
+    MyProjectReportList,
+    CreateWeeklyReport,
+    EditWeeklyReport,
+    UserProfile,
   },
   {
     headerMode: 'none',

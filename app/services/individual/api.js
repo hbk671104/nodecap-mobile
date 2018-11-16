@@ -163,3 +163,15 @@ export function viewProject(id) {
 export function coinRecommended() {
   return request.get('/coins/recommended');
 }
+
+export function createWeeklyReport(value) {
+  return request.post('/weekly', value);
+}
+
+export function deleteWeeklyReport(id) {
+  return request.delete(`/weekly/${id}`);
+}
+
+export function editWeeklyReport(id, value) {
+  return request.put(`/weekly/${id}`, value);
+}

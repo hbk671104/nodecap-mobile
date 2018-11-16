@@ -1,150 +1,201 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
+import { Flex } from 'antd-mobile';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
-import Icon from 'component/uikit/icon';
 
-const colorMap = [
-  {
-    textColor: '#1890FF',
-    backgroundColor: '#E5F3FF',
-  },
-  {
-    textColor: '#FF7600',
-    backgroundColor: '#FFE9D6',
-  },
-  {
-    textColor: '#A663E0',
-    backgroundColor: '#ECD7FE',
-  },
-  {
-    textColor: '#09AC32',
-    backgroundColor: '#BCF4CA',
-  },
-];
-
-const simplifiedPublicProjectItem = ({ style, data, renderRight, onPress }) => {
+const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
   const icon = R.pathOr('', ['icon'])(data);
   const project_name = R.pathOr('--', ['name'])(data);
   const category = R.pipe(
     R.pathOr([], ['tags']),
-    R.take(2),
+    R.take(4),
   )(data);
   const description = R.pathOr('--', ['description'])(data);
-  const owner_status = R.pathOr('', ['owner_status'])(data);
 
-  // rating related
+  // misc
+  const has_white_paper = R.pipe(
+    R.pathOr([], ['white_papers']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const is_vip = R.pipe(
+    R.pathOr({}, ['vip']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const invested_by_renowned_insti = R.pipe(
+    R.pathOr([], ['renowned_industry']),
+    R.isEmpty,
+    R.not,
+  )(data);
+  const top_rated = R.pipe(
+    R.pathOr([], ['top_rating']),
+    R.isEmpty,
+    R.not,
+  )(data);
   const score = R.pathOr('--', ['score'])(data);
   const score_distribution = R.pathOr('--', ['score_distribution'])(data);
+  const owner_status = R.pathOr('', ['owner_status'])(data);
+  const status = R.pathOr('', ['status'])(data);
+  let scoreColor = null;
 
+  if (score < 60) {
+    scoreColor = '#F55454';
+  } else if (score >= 60 && score <= 80) {
+    scoreColor = '#FF7600';
+  } else {
+    scoreColor = '#1890FF';
+  }
   return (
-    <Touchable foreground onPress={onPress}>
-      <View>
-        <View style={[styles.container, style]}>
-          <Avatar
-            size={45}
-            source={
-              R.isEmpty(icon)
-                ? require('asset/project/project_logo_default.png')
-                : { uri: icon }
-            }
-          />
-          <View style={styles.content.container}>
-            <View style={styles.content.top.container}>
-              <View style={styles.content.top.title.container}>
-                <Text style={styles.content.top.title.text} numberOfLines={2}>
-                  {project_name}
-                </Text>
-              </View>
-              <View style={styles.content.tag.wrapper}>
-                {R.addIndex(R.map)((t, i) => {
-                  const textColor = R.pathOr('#939393', [i, 'textColor'])(
-                    colorMap,
-                  );
-                  const backgroundColor = R.pathOr('#E2E2E2', [
-                    i,
-                    'backgroundColor',
-                  ])(colorMap);
-                  return (
+    <Touchable
+      style={{
+      marginBottom: 8,
+    }}
+      foreground
+      onPress={onPress}
+    >
+      <View style={{ backgroundColor: 'white' }}>
+        <Flex align="start">
+          <View style={{ flex: 1 }}>
+            <View style={[styles.container, style]}>
+              <Avatar
+                style={styles.avatar}
+                raised={false}
+                size={52}
+                innerRatio={0.75}
+                source={
+                  R.isEmpty(icon)
+                    ? require('asset/project/project_logo_default.png')
+                    : { uri: icon }
+                }
+              />
+              <View style={styles.content.container}>
+                <View style={styles.content.top.container}>
+                  <View style={styles.content.titleContainer}>
+                    <Text style={styles.content.top.title.text} numberOfLines={2}>
+                      {project_name}
+                    </Text>
+                    {is_vip && (
+                    <Image
+                      style={{ marginLeft: 8 }}
+                      source={require('asset/public_project/is_vip.png')}
+                    />
+                  )}
+                  </View>
+                </View>
+                <View style={styles.content.tag.wrapper}>
+                  {R.addIndex(R.map)((t, i) => (
+                    <View key={`${i}`} style={styles.content.tag.container}>
+                      <Text style={styles.content.tag.title}>
+                        {R.pipe(
+                        R.pathOr('', ['name']),
+                        R.trim,
+                      )(t)}
+                      </Text>
+                    </View>
+                ))(category)}
+                </View>
+                <View style={styles.content.miscTag.container}>
+                  {has_white_paper && (
                     <View
-                      key={`${i}`}
                       style={[
-                        styles.content.tag.container,
-                        { backgroundColor },
+                        styles.content.miscTag.item.container,
+                        { backgroundColor: '#E5F3FF', marginRight: 4 },
                       ]}
                     >
                       <Text
-                        style={[styles.content.tag.title, { color: textColor }]}
+                        style={[
+                          styles.content.miscTag.item.text,
+                          { color: '#1890FF' },
+                        ]}
                       >
-                        {R.pipe(
-                          R.pathOr('', ['name']),
-                          R.trim,
-                        )(t)}
+                        有白皮书
                       </Text>
                     </View>
-                  );
-                })(category)}
-              </View>
-              <View>
-                {owner_status === '0' && (
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: 'bold',
-                      color: '#F88E40',
-                    }}
+                  )}
+                  {invested_by_renowned_insti && (
+                  <View
+                    style={[
+                      styles.content.miscTag.item.container,
+                      { backgroundColor: '#FFE9D6', marginRight: 4 },
+                    ]}
                   >
-                    待审核
-                  </Text>
+                    <Text
+                      style={[
+                        styles.content.miscTag.item.text,
+                        { color: '#FF7600' },
+                      ]}
+                    >
+                      知名机构所投
+                    </Text>
+                  </View>
                 )}
-                {owner_status === '1' && (
-                  <Text
-                    style={{
-                      fontSize: 12,
-                      fontWeight: 'bold',
-                      color: '#09AC32',
-                    }}
+                  {top_rated && (
+                  <View
+                    style={[
+                      styles.content.miscTag.item.container,
+                      { backgroundColor: '#BCF4CA' },
+                    ]}
                   >
-                    已审核
-                  </Text>
+                    <Text
+                      style={[
+                        styles.content.miscTag.item.text,
+                        { color: '#09AC32' },
+                      ]}
+                    >
+                      有评级
+                    </Text>
+                  </View>
                 )}
-                {owner_status === '2' && (
-                  <Text style={{ fontSize: 12, fontWeight: 'bold' }}>
-                    未通过审核
-                  </Text>
-                )}
+                </View>
               </View>
-            </View>
-            <View style={styles.content.subtitle.container}>
-              <Text numberOfLines={1} style={styles.content.subtitle.text}>
-                {description}
-              </Text>
             </View>
           </View>
-          {renderRight && renderRight()}
-        </View>
-        {owner_status === '1' && (
-          <View style={styles.bottom.container}>
-            <View style={styles.bottom.title.container}>
-              <Text style={styles.bottom.title.text}>
-                项目得分 <Text style={{ color: '#F55454' }}>{score}</Text>
-                ，已超过{' '}
-                <Text style={{ color: '#F55454' }}>
-                  {score_distribution}%
-                </Text>{' '}
-                项目方
+          {owner_status === '1' && (
+            <View style={styles.score}>
+              <Text style={styles.scoreText}>
+                <Text style={{
+                color: scoreColor,
+              }}
+                >
+                  {score}分
+                </Text>
               </Text>
+              <Text style={styles.scoreTextSmall}>超过{score_distribution}%的项目</Text>
             </View>
-            <View style={styles.bottom.label.container}>
-              <Text style={styles.bottom.label.text}>
-                去完善 <Icon name="arrow-forward" />
-              </Text>
+          )}
+          {owner_status === '0' && (
+            <View style={styles.score}>
+              <Text style={styles.scoreText}><Text style={{ color: '#FF7600' }}>审核中</Text></Text>
             </View>
-          </View>
-        )}
+          )}
+        </Flex>
+        <Flex style={styles.buttons}>
+          <Touchable disabled={owner_status !== '1'} style={{ flex: 1 }}>
+            <Flex justify="center">
+              <Text style={[styles.buttonText, owner_status === '0' ? styles.buttonTextDisabled : {}]}>完善项目信息</Text>
+            </Flex>
+          </Touchable>
+          {owner_status === '1' && (
+            <View style={{
+              height: 16,
+              borderRightColor: '#E5E5E5',
+              borderRightWidth: 0.5,
+            }}
+            />
+          )}
+          {owner_status === '1' && (
+            <Touchable style={{ flex: 1 }} onPress={(e) => onPressWeeklyReport(e, data.id)}>
+              <Flex justify="center">
+                <Text style={styles.buttonText}>周报管理</Text>
+              </Flex>
+            </Touchable>
+          )}
+        </Flex>
       </View>
     </Touchable>
   );
@@ -155,10 +206,56 @@ const styles = {
     padding: 12,
     flexDirection: 'row',
   },
+  score: {
+    flexShrink: 0,
+    width: 73,
+    marginRight: 12,
+    marginTop: 12,
+  },
+  scoreText: { fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.12, textAlign: 'right' },
+  scoreTextSmall: { fontSize: 10, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.12, textAlign: 'right' },
+  statusTip: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 13,
+  },
+  statusPending: {
+    backgroundColor: '#FFD6B2',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusApproved: {
+    backgroundColor: '#09AC32',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusCancel: {
+    backgroundColor: '#FFB2B2',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  statusPendingText: { fontSize: 9, color: '#FF7600', letterSpacing: 0.14, textAlign: 'center' },
+  statusApprovedText: { fontSize: 9, color: '#09AC32', letterSpacing: 0.14, textAlign: 'center' },
+  statusCancelText: { fontSize: 9, color: '#FF0000', letterSpacing: 0.14, textAlign: 'center' },
+  avatar: {
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: '#F0F0F0',
+    borderRadius: 2,
+  },
   content: {
     container: {
       marginLeft: 15,
       flex: 1,
+    },
+    titleContainer: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
     },
     top: {
       container: {
@@ -166,7 +263,9 @@ const styles = {
         alignItems: 'center',
       },
       title: {
-        container: {},
+        container: {
+          flex: 1,
+        },
         text: {
           color: 'rgba(0, 0, 0, 0.85)',
           fontWeight: 'bold',
@@ -181,71 +280,73 @@ const styles = {
     },
     tag: {
       wrapper: {
-        flex: 1,
+        marginTop: 8,
         flexDirection: 'row',
-        alignItems: 'center',
-        marginLeft: 10,
       },
       container: {
-        height: 19,
+        height: 17,
         paddingHorizontal: 3,
-        borderRadius: 2,
-        marginRight: 8,
+        borderRadius: 1,
+        marginRight: 4,
         justifyContent: 'center',
+        alignItems: 'center',
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: 'rgba(0, 0, 0, 0.25)',
       },
       title: {
-        fontSize: 11,
+        fontSize: 10,
+        color: 'rgba(0, 0, 0, 0.45)',
+      },
+    },
+    miscTag: {
+      container: {
+        marginTop: 8,
+        flexDirection: 'row',
+      },
+      item: {
+        container: {
+          height: 17,
+          paddingHorizontal: 3,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 1,
+          marginRight: 4,
+        },
+        text: {
+          fontSize: 10,
+        },
       },
     },
     subtitle: {
       container: {
-        marginTop: 9,
+        marginTop: 8,
       },
       text: {
         fontSize: 12,
+        lineHeight: 18,
         color: 'rgba(0, 0, 0, 0.45)',
       },
     },
   },
-  bottom: {
-    container: {
-      height: 32.5,
-      borderTopWidth: StyleSheet.hairlineWidth,
-      borderTopColor: '#E9E9E9',
-      flexDirection: 'row',
-      alignItems: 'center',
-      paddingHorizontal: 12,
-    },
-    title: {
-      container: {
-        flex: 1,
-      },
-      text: {
-        fontSize: 12,
-        color: 'rgba(0, 0, 0, 0.65)',
-      },
-    },
-    label: {
-      container: {
-        marginLeft: 3,
-      },
-      text: {
-        fontSize: 12,
-        color: '#1890FF',
-        fontWeight: 'bold',
-      },
-    },
+  buttons: {
+    height: 38,
+    borderTopWidth: 0.5,
+    borderTopColor: '#E9E9E9',
+  },
+  buttonText: { fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.16, textAlign: 'right' },
+  buttonTextDisabled: {
+    color: 'rgba(0,0,0,0.25)',
   },
 };
 
-simplifiedPublicProjectItem.propTypes = {
+publicProjectItem.propTypes = {
   style: PropTypes.object,
   data: PropTypes.object.isRequired,
   onPress: PropTypes.func,
 };
 
-simplifiedPublicProjectItem.defaultProps = {
+publicProjectItem.defaultProps = {
   onPress: () => null,
 };
 
-export default simplifiedPublicProjectItem;
+export default publicProjectItem;

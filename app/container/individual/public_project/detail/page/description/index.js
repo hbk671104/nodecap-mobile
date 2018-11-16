@@ -8,6 +8,7 @@ import R from 'ramda';
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
 import InstitutionItem from './institutionItem';
+import WeeklyReports from './weeklyReports';
 import SocialNetworkItem, { iconMap } from './socialNetworkItem';
 import Roadmap from './roadmap';
 import Rating from './rating';
@@ -47,6 +48,18 @@ export default class Description extends PureComponent {
         params: {
           // title: R.pathOr('', ['portfolio', 'name'])(this.props),
           uri: R.pathOr('', ['grade_url'])(item),
+        },
+      }),
+    );
+  };
+
+  goToMemberDetail = data => {
+    this.props.track('点击进入成员主页');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'UserProfile',
+        params: {
+          data,
         },
       }),
     );
@@ -140,6 +153,7 @@ export default class Description extends PureComponent {
           </View>
         )}
         <Rating {...this.props} onMorePress={this.handleGradeUrlPress} />
+        <WeeklyReports {...this.props} />
         {R.not(R.isEmpty(social_network)) && (
           <View style={styles.fieldGroup}>
             {title('媒体信息')}
@@ -177,7 +191,13 @@ export default class Description extends PureComponent {
           <View style={styles.fieldGroup}>
             {title('团队成员')}
             <View>
-              {R.map(m => <MemberItem key={m.id} data={m} />)(members)}
+              {R.map(m => (
+                <MemberItem
+                  key={m.id}
+                  data={m}
+                  onPress={() => this.goToMemberDetail(m)}
+                />
+              ))(members)}
             </View>
           </View>
         )}
