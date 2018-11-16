@@ -6,7 +6,7 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const rating_item = ({ data, org, columns = 4, onMorePress }) => {
+const rating_item = ({ data, org, columns = 5, onMorePress }) => {
   const targeted_id = R.path(['rating_type_id'])(data);
   const grade_url = R.path(['grade_url'])(data);
   const name = R.pathOr('--', ['name'])(org);
@@ -19,7 +19,7 @@ const rating_item = ({ data, org, columns = 4, onMorePress }) => {
 
   const length = R.length(standard);
   const rows = Math.ceil(length / columns);
-  const remainder = rows > 1 ? length % 4 : length;
+  const remainder = rows > 1 ? length % columns : length;
   const residue = rows > 1 ? columns - remainder : columns - length;
 
   return (
@@ -65,37 +65,39 @@ const rating_item = ({ data, org, columns = 4, onMorePress }) => {
                   }, columns)}
                 </Row>
               ),
-              rows - 1,
+              remainder === 0 ? rows : rows - 1,
             )}
-          <Row>
-            {R.times(count => {
-              const index = (rows - 1) * columns + count;
-              const rating_item_id = R.path([index, 'id'])(standard);
-              const rating_item_name = R.pathOr('--', [index, 'name'])(
-                standard,
-              );
-              return (
-                <Col
-                  key={`${count}`}
-                  style={[
-                    styles.content.item.container,
-                    rating_item_id === rating_id &&
-                      styles.content.item.highlight,
-                  ]}
-                >
-                  <Text style={styles.content.item.text}>
-                    {rating_item_name}
-                  </Text>
-                </Col>
-              );
-            }, remainder)}
-            {R.times(
-              count => (
-                <Col key={`${count}`} style={styles.content.item.container} />
-              ),
-              residue,
-            )}
-          </Row>
+          {remainder !== 0 && (
+            <Row>
+              {R.times(count => {
+                const index = (rows - 1) * columns + count;
+                const rating_item_id = R.path([index, 'id'])(standard);
+                const rating_item_name = R.pathOr('--', [index, 'name'])(
+                  standard,
+                );
+                return (
+                  <Col
+                    key={`${count}`}
+                    style={[
+                      styles.content.item.container,
+                      rating_item_id === rating_id &&
+                        styles.content.item.highlight,
+                    ]}
+                  >
+                    <Text style={styles.content.item.text}>
+                      {rating_item_name}
+                    </Text>
+                  </Col>
+                );
+              }, remainder)}
+              {R.times(
+                count => (
+                  <Col key={`${count}`} style={styles.content.item.container} />
+                ),
+                residue,
+              )}
+            </Row>
+          )}
         </Grid>
       </Flex>
     </View>
