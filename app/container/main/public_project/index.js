@@ -183,7 +183,7 @@ export default class PublicProject extends Component {
   };
 
   handleInstitutionPress = () => {
-    this.props.track('点击找机构');
+    this.props.track('点击找投资');
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Institution',

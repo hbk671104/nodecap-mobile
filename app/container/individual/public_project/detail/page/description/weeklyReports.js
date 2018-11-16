@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableWithoutFeedback, Image } from 'react-native';
-import { Flex, Modal } from 'antd-mobile';
+import { View, Text, StyleSheet } from 'react-native';
+import { Flex } from 'antd-mobile';
 import R from 'ramda';
 import styles from './style';
 import Touchable from 'component/uikit/touchable';
@@ -8,9 +8,7 @@ import { NavigationActions } from 'react-navigation';
 
 class weeklyReports extends Component {
   render() {
-    const data = R.pipe(
-      R.pathOr([], ['portfolio', 'weekly']),
-    )(this.props);
+    const data = R.pipe(R.pathOr([], ['portfolio', 'weekly']))(this.props);
     if (!data.length) {
       return null;
     }
@@ -24,8 +22,8 @@ class weeklyReports extends Component {
               justify="between"
               style={{
                 height: 44,
-                borderBottomWidth: 0.5,
-                borderBottomColor: '#D8D8D8',
+                borderBottomWidth: StyleSheet.hairlineWidth,
+                borderBottomColor: '#E9E9E9',
               }}
             >
               <View>

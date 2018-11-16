@@ -61,7 +61,6 @@ export default {
         yield put({
           type: 'setCurrent',
           payload: data,
-          owner: R.pathOr({}, ['owners', 0])(data),
         });
 
         if (callback) {
@@ -264,11 +263,10 @@ export default {
         },
       };
     },
-    setCurrent(state, { payload, owner }) {
+    setCurrent(state, { payload }) {
       return {
         ...state,
         current: convertToInstitutionFormData(payload),
-        ...(R.isEmpty(owner) ? {} : { owner }),
       };
     },
     resetCurrent(state) {

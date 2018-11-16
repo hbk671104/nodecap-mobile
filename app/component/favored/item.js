@@ -70,7 +70,6 @@ class FavorItem extends PureComponent {
       R.isEmpty,
       R.not,
     )(data);
-    const has_owner = R.pathOr(false, ['has_owner'])(data);
     const is_vip = R.pipe(
       R.pathOr({}, ['vip']),
       R.isEmpty,
@@ -88,6 +87,11 @@ class FavorItem extends PureComponent {
     )(data);
     const is_reachable = R.pipe(
       R.pathOr([], ['is_reachable']),
+      R.isEmpty,
+      R.not,
+    )(data);
+    const has_owner = R.pipe(
+      R.pathOr([], ['owners']),
       R.isEmpty,
       R.not,
     )(data);

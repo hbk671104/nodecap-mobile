@@ -208,28 +208,24 @@ const handleOpen = extras => {
   };
 
   const type_obj = R.path([type])(routeMap);
-  if (R.isNil(type_obj)) {
-    return;
+  if (!R.isNil(type_obj)) {
+    const trackName = R.path(['trackName'])(type_obj);
+    const routeName = R.path(['routeName'])(type_obj);
+    const params = R.path(['params'])(type_obj);
+
+    global.track('App_NotificationPushOpen', {
+      trackName,
+    });
+
+    if (!R.isNil(routeName)) {
+      store.dispatch(
+        NavigationActions.navigate({
+          routeName,
+          ...(R.isNil(params) ? {} : { params }),
+        }),
+      );
+    }
   }
-
-  const trackName = R.path(['trackName'])(type_obj);
-  const routeName = R.path(['routeName'])(type_obj);
-  const params = R.path(['params'])(type_obj);
-
-  global.track('App_NotificationPushOpen', {
-    trackName,
-  });
-
-  if (R.isNil(routeName)) {
-    return;
-  }
-
-  store.dispatch(
-    NavigationActions.navigate({
-      routeName,
-      ...(R.isNil(params) ? {} : { params }),
-    }),
-  );
 };
 
 const handleReceive = extras => {

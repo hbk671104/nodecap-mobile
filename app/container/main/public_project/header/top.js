@@ -77,7 +77,7 @@ const top = ({
                   source={require('asset/public_project/institution.png')}
                 />
               </View>
-              <Text style={styles.tab.group.title}>找机构</Text>
+              <Text style={styles.tab.group.title}>找投资</Text>
             </View>
           </Touchable>
         </Col>
