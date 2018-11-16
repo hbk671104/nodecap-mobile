@@ -18,12 +18,13 @@ import styles, { translateY } from './style';
 
 @connectActionSheet
 @global.bindTrack({
-  page: '项目公海机构报告详情',
+  page: '研报详情',
   name: 'App_PublicProjectInstitutionReportDetailOperation',
 })
 @compose(
   withState('navBarHidden', 'setNavBarHidden', false),
   withState('coins', 'setCoins', []),
+  withState('reportDetail', 'setReportDetail', null),
   withState('footerCollapsed', 'setFooterCollapsed', true),
   withProps(props => {
     const id = props.navigation.getParam('id');
@@ -54,7 +55,7 @@ export default class InstitutionReportDetail extends Component {
   }
 
   onPressShare = () => {
-    const { navigation } = this.props;
+    const { navigation, reportDetail } = this.props;
     this.props.showActionSheetWithOptions(
       {
         options: ['分享至朋友圈', '分享至微信', '取消'],
@@ -69,7 +70,7 @@ export default class InstitutionReportDetail extends Component {
           const request = {
             type: 'news',
             webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${id}`,
-            title: `「研报」${navigation.getParam('title')}`,
+            title: `「研报」${reportDetail.title}`,
             description: '来 Hotnode, 发现最新最热研报！',
             thumbImage:
               'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
@@ -98,6 +99,7 @@ export default class InstitutionReportDetail extends Component {
     try {
       const { data } = await getInstitutionReportByID(this.props.id);
       this.props.setCoins(R.pathOr([], ['coins'])(data));
+      this.props.setReportDetail(data);
     } catch (e) {
       console.log(e);
     }
@@ -180,13 +182,24 @@ export default class InstitutionReportDetail extends Component {
   };
 
   render() {
-    const { navigation, navBarHidden } = this.props;
-    let pdf_url = navigation.getParam('pdf_url');
+    const { navigation, navBarHidden, reportDetail } = this.props;
+    if (!reportDetail) {
+      return (
+        <View style={styles.container}>
+          <NavBar
+            gradient
+            back
+            title="加载中..."
+            titleContainerStyle={{ paddingHorizontal: 48 }}
+          />
+        </View>
+      );
+    }
+    let pdf_url = reportDetail.pdf_url;
     pdf_url = decodeURI(pdf_url);
     pdf_url = encodeURI(pdf_url);
 
-    const title = navigation.getParam('title');
-
+    const title = reportDetail.title;
     return (
       <View style={styles.container}>
         {R.not(navBarHidden) && (

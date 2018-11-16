@@ -14,56 +14,44 @@ class WeeklyReportItem extends Component {
     const { data = {} } = this.props;
     return (
       <View style={styles.container}>
-        <Flex justify="between" align="start">
-          <Flex align="start">
-            <View style={{
-              marginRight: 8,
-              marginTop: 3,
-            }}
-            >
-              <Image
-                source={require('asset/weekly_report/report_icon.png')}
-                style={{
-                  width: 16,
-                  height: 16,
-                }}
-              />
-            </View>
-            <View>
-              <Text style={styles.title}>
-                {data.title}
-              </Text>
-              <Text style={styles.date}>
-                {moment.unix(data.created_at).format('YYYY-MM-DD')}
-              </Text>
-            </View>
+        <Touchable onPress={() => {
+          this.props.dispatch(
+            NavigationActions.navigate({
+              routeName: 'WebPage',
+              params: {
+                title: data.title,
+                uri: data.link,
+              },
+            }),
+          );
+        }}
+        >
+          <Flex justify="between" align="start">
+            <Flex align="start">
+              <View style={{
+                marginRight: 8,
+                marginTop: 3,
+              }}
+              >
+                <Image
+                  source={require('asset/weekly_report/report_icon.png')}
+                  style={{
+                    width: 16,
+                    height: 16,
+                  }}
+                />
+              </View>
+              <View>
+                <Text style={styles.title}>
+                  {data.title}
+                </Text>
+                <Text style={styles.date}>
+                  {moment.unix(data.created_at).format('YYYY-MM-DD')}
+                </Text>
+              </View>
+            </Flex>
           </Flex>
-          <View style={{
-            marginTop: 5,
-          }}
-          >
-            <Touchable onPress={() => {
-              this.props.dispatch(
-                NavigationActions.navigate({
-                  routeName: 'WebPage',
-                  params: {
-                    title: data.title,
-                    uri: data.link,
-                  },
-                }),
-              );
-            }}
-            >
-              <Image
-                source={require('asset/weekly_report/report_preview.png')}
-                style={{
-                  width: 15,
-                  height: 14,
-                }}
-              />
-            </Touchable>
-          </View>
-        </Flex>
+        </Touchable>
         <Flex style={styles.buttons}>
           <Touchable style={{ flex: 1 }} onPress={() => this.props.onDelete(data.id)}>
             <Flex justify="center">

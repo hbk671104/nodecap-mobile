@@ -62,7 +62,7 @@ export default class InstitutionReport extends Component {
       NavigationActions.navigate({
         routeName: 'InstitutionReportSet',
         params: {
-          item,
+          id: item.id,
         },
       }),
     );
