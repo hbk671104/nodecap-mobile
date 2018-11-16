@@ -15,7 +15,6 @@ import NewsItem from 'component/news';
 import Touchable from 'component/uikit/touchable';
 import Format from 'component/format';
 import { setStatusBar } from 'component/uikit/statusBar';
-import { handleBadgeAction } from 'utils/badge_handler';
 import { handleOpen, handleReceive } from 'utils/jpush_handler';
 
 import List from './components/list';
@@ -161,7 +160,6 @@ export default class PublicProject extends Component {
         routeName: 'Announcement',
       }),
     );
-    handleBadgeAction();
   };
 
   handleProjectRepoPress = () => {

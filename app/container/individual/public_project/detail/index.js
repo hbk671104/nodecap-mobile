@@ -71,14 +71,14 @@ import styles from './style';
           component: Description,
           name: '详情',
         },
-        ...(R.isEmpty(overall_rating)
-          ? []
-          : [
-              {
-                component: OverallRatings,
-                name: '综合评级',
-              },
-            ]),
+        // ...(R.isEmpty(overall_rating)
+        //   ? []
+        //   : [
+        //       {
+        //         component: OverallRatings,
+        //         name: '综合评级',
+        //       },
+        //     ]),
         ...(R.isEmpty(trends)
           ? []
           : [

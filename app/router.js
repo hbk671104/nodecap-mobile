@@ -458,6 +458,7 @@ import UpdateAlert from 'component/update';
 import Modal from 'component/modal';
 import ActionAlert from 'component/action_alert';
 import { hasAppStoreUpdate } from 'utils/utils';
+import { handleBadgeAction } from 'utils/badge_handler';
 
 @withNetworkConnectivity({
   pingServerUrl: 'https://www.baidu.com/',
@@ -550,6 +551,7 @@ class Router extends Component {
       });
       // check notification permissions
       this.checkPushPermission();
+      handleBadgeAction();
     }
     this.props.setAppState(nextAppState);
   };
