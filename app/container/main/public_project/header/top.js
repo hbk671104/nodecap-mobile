@@ -9,7 +9,8 @@ import {
   TouchableWithoutFeedback,
   Platform,
 } from 'react-native';
-import Swiper from '@nart/react-native-swiper';
+import VerticalSwiper from '@nart/react-native-swiper';
+import Swiper from 'react-native-swiper';
 import R from 'ramda';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { RouterEmitter } from '../../../../router';
@@ -146,7 +147,7 @@ const top = ({
     </Grid>
     <View style={styles.verticalBanner.container}>
       <Image source={require('asset/public_project/announcement_label.png')} />
-      <Swiper
+      <VerticalSwiper
         style={styles.verticalBanner.bannerWrapper}
         height={styles.verticalBanner.container.height}
         horizontal={false}
@@ -160,14 +161,14 @@ const top = ({
             </Text>
           </View>
         ))(insite_news)}
-      </Swiper>
+      </VerticalSwiper>
     </View>
     <View style={styles.bannerWrapper}>
       <Swiper
         width={deviceWidth}
         height={150}
         autoplay
-        autoplayTimeout={4}
+        autoplayTimeout={5}
         renderPagination={(index, total) => (
           <PaginationIndicator index={index} total={total} />
         )}

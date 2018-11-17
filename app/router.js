@@ -520,16 +520,26 @@ class Router extends Component {
   }
 
   handleOpenURL = event => {
-    const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
-    if (!reg) {
+    // const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
+    const reg = R.pipe(
+      R.pathOr('', ['url']),
+      R.replace('hotnode://', ''),
+      R.match(/(.*?)\/(.*)/),
+    )(event);
+
+    if (R.isNil(reg) || R.isEmpty(reg)) {
       return;
     }
-    const route = reg[1];
-    const params = reg[2];
+
+    const route = R.pathOr('', [1])(reg);
+    const params = R.pathOr('', [2])(reg);
     const query = queryString.parse(params) || {};
 
-    const { dispatch } = this.props;
-    dispatch(
+    if (R.isEmpty(route)) {
+      return;
+    }
+
+    this.props.dispatch(
       routerRedux.navigate({
         routeName: route,
         params: {
