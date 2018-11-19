@@ -12,6 +12,7 @@ import {
 import VerticalSwiper from '@nart/react-native-swiper';
 import Swiper from 'react-native-swiper';
 import R from 'ramda';
+import { NavigationActions } from 'react-navigation';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { RouterEmitter } from '../../../../router';
 
@@ -32,6 +33,7 @@ const top = ({
   onInstitutionReportPress,
   notification_badge_number,
   reports_badge_number,
+               dispatch,
 }) => (
   <View style={styles.container}>
     <View style={styles.searchBar.wrapper}>
@@ -155,11 +157,25 @@ const top = ({
         autoplay
       >
         {R.map(n => (
-          <View key={n.id} style={styles.verticalBanner.group.container}>
-            <Text style={styles.verticalBanner.group.title} numberOfLines={1}>
-              {R.pathOr('--', ['title'])(n)}
-            </Text>
-          </View>
+          <TouchableWithoutFeedback
+            key={n.id}
+            onPress={() => {
+              dispatch(
+                NavigationActions.navigate({
+                  routeName: 'NotificationDetail',
+                  params: {
+                    id: n.id,
+                  },
+                }),
+              );
+            }}
+          >
+            <View key={n.id} style={styles.verticalBanner.group.container}>
+              <Text style={styles.verticalBanner.group.title} numberOfLines={1}>
+                {R.pathOr('--', ['title'])(n)}
+              </Text>
+            </View>
+          </TouchableWithoutFeedback>
         ))(insite_news)}
       </VerticalSwiper>
     </View>

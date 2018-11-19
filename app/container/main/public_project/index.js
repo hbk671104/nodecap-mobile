@@ -348,7 +348,7 @@ export default class PublicProject extends Component {
           visible={showExplanation}
           onBackdropPress={() => this.props.setShowExplanation(false)}
           title="市场情绪"
-          content="市场情绪是Hotnode综合全网媒体及自媒体数据，进行大数据建模及分析，科学评估市场情绪看多看空动向。"
+          content="市场情绪是 Hotnode 综合最近8小时全网媒体及自媒体数据 ，进行大数据建模及分析，科学评估市场情绪看多看空动向"
         />
       </View>
     );
