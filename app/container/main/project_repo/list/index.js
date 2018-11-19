@@ -62,6 +62,17 @@ export default class ProjectList extends Component {
     });
   }
 
+  handleProgressSelection = ({ value, name }) => {
+    this.props.track('筛选项点击', { name });
+    this.props.dispatch({
+      type: 'public_project/fetch',
+      params: {
+        ...this.props.params,
+        progress: value,
+      },
+    });
+  };
+
   handleItemPress = item => () => {
     this.props.track('点击进入详情');
     this.props.dispatch(
@@ -97,11 +108,9 @@ export default class ProjectList extends Component {
     return (
       <Header
         {...this.props}
-        selection={R.isEmpty(progress) ? [] : R.split(',')(progress)}
+        selection={progress}
         onFilterPress={this.handleFilterPress}
-        onSelect={({ value, name }) =>
-          this.handleSelection({ value, name, key: 'progress' })
-        }
+        onSelect={this.handleProgressSelection}
       />
     );
   };

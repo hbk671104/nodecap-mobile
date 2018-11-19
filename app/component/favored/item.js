@@ -4,6 +4,7 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import R from 'ramda';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { Flex } from 'antd-mobile';
 
 import PublicProjectItem from 'component/public_project/item';
 import Avatar from 'component/uikit/avatar';
@@ -101,25 +102,42 @@ class FavorItem extends PureComponent {
         <View
           style={[styles.container, showTopBorder && styles.topBorder, style]}
         >
-          <Avatar
-            style={styles.avatar}
-            raised={false}
-            size={52}
-            innerRatio={0.75}
-            source={
-              R.isEmpty(icon)
-                ? require('asset/project/project_logo_default.png')
-                : { uri: icon }
-            }
-          />
+          <View>
+            <Avatar
+              style={styles.avatar}
+              raised={false}
+              size={52}
+              innerRatio={0.75}
+              source={
+                R.isEmpty(icon)
+                  ? require('asset/project/project_logo_default.png')
+                  : { uri: icon }
+              }
+            />
+            {is_vip && (
+              <View style={styles.vip_label}>
+                <Image source={require('asset/public_project/vip_label.png')} />
+              </View>
+            )}
+          </View>
           <View style={styles.content.container}>
             <View style={styles.content.titleContainer}>
               <Text style={styles.content.title}>{project_name}</Text>
-              {is_vip && (
-                <Image
-                  style={{ marginLeft: 8 }}
-                  source={require('asset/public_project/vip_latest.png')}
-                />
+              {has_owner && (
+                <Flex style={{ marginLeft: 12 }} align="center">
+                  <Image
+                    style={{ marginRight: 4 }}
+                    source={require('asset/public_project/claimed_icon.png')}
+                  />
+                  <Text
+                    style={[
+                      styles.content.miscTag.item.text,
+                      { color: '#1890FF', fontWeight: 'bold' },
+                    ]}
+                  >
+                    已入驻
+                  </Text>
+                </Flex>
               )}
             </View>
             <View style={styles.content.tag.wrapper}>
@@ -143,27 +161,6 @@ class FavorItem extends PureComponent {
                 R.isEmpty(category) && { marginTop: 0 },
               ]}
             >
-              {has_owner && (
-                <View
-                  style={[
-                    styles.content.miscTag.item.container,
-                    { backgroundColor: '#1890FF', marginRight: 4 },
-                  ]}
-                >
-                  <Image
-                    style={{ marginRight: 3 }}
-                    source={require('asset/public_project/checkmark.png')}
-                  />
-                  <Text
-                    style={[
-                      styles.content.miscTag.item.text,
-                      { color: 'white' },
-                    ]}
-                  >
-                    已入驻
-                  </Text>
-                </View>
-              )}
               {has_white_paper && (
                 <View
                   style={[
@@ -290,6 +287,11 @@ const styles = {
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#F0F0F0',
     borderRadius: 2,
+  },
+  vip_label: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
   },
   content: {
     container: {
