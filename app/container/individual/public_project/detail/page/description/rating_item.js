@@ -43,7 +43,7 @@ const rating_item = ({ data, org, columns = 5, onMorePress }) => {
               current => (
                 <Row key={`${current}`}>
                   {R.times(count => {
-                    const index = count + current;
+                    const index = current * columns + count;
                     const rating_item_id = R.path([index, 'id'])(standard);
                     const rating_item_name = R.pathOr('--', [index, 'name'])(
                       standard,

@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import WebView from 'component/uikit/webview';
 import styles from './style';
 
-export default class InstitutionWebsite extends Component {
+export default class WebPage extends Component {
   render() {
-    const uri = this.props.navigation.getParam('uri', 'https://www.hotnode.cn');
+    let uri = this.props.navigation.getParam('uri', 'https://www.hotnode.cn');
+    // uri handling
+    uri = R.test(/https:|http:/, uri) ? uri : `http://${uri}`;
     const title = this.props.navigation.getParam('title', '');
+
     return (
       <View style={styles.container}>
         <NavBar
@@ -20,7 +24,7 @@ export default class InstitutionWebsite extends Component {
         <WebView
           startInLoadingState
           source={{ uri }}
-          renderError={(e) => {
+          renderError={e => {
             if (e === 'WebKitErrorDomain') {
               return null;
             }
