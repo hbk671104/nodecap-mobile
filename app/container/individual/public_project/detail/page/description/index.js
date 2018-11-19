@@ -4,9 +4,12 @@ import { connect } from 'react-redux';
 import { Flex, Grid } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { compose, withState } from 'recompose';
+import ReadMore from 'react-native-read-more-text';
 
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
+import ActionAlert from 'component/action_alert';
 import InstitutionItem from './institutionItem';
 import WeeklyReports from './weeklyReports';
 import SocialNetworkItem, { iconMap } from './socialNetworkItem';
@@ -15,6 +18,7 @@ import Rating from './rating';
 import styles from './style';
 
 @connect()
+@compose(withState('showModal', 'setShowModal', false))
 export default class Description extends PureComponent {
   handleDocPress = item => {
     this.props.dispatch(
@@ -111,7 +115,9 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(description)) && (
           <View style={styles.fieldGroup}>
             {title('项目简介')}
-            <Text style={styles.desc}>{description}</Text>
+            <ReadMore numberOfLines={10} onReady={this._handleTextReady}>
+              <Text style={styles.desc}>{description}</Text>
+            </ReadMore>
           </View>
         )}
         {R.not(R.isEmpty(white_papers)) && (
@@ -195,6 +201,7 @@ export default class Description extends PureComponent {
                 <MemberItem
                   key={m.id}
                   data={m}
+                  onPrivacyItemPress={() => this.props.setShowModal(true)}
                   onPress={() => this.goToMemberDetail(m)}
                 />
               ))(members)}
@@ -221,6 +228,17 @@ export default class Description extends PureComponent {
             <Roadmap {...this.props} roadmap={roadmap} />
           </View>
         )}
+        <ActionAlert
+          visible={this.props.showModal}
+          title="立即联系"
+          content="Hotnode 小助手会立即与您联系"
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 18 }}
+          actionTitle="我知道了"
+          action={() => {
+            this.props.setShowModal(false);
+          }}
+          onBackdropPress={() => this.props.setShowModal(false)}
+        />
       </View>
     );
   }

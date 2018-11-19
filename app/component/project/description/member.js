@@ -15,7 +15,7 @@ import Communications from 'react-native-communications';
 
 import Avatar from 'component/uikit/avatar';
 
-const memberItem = ({ data, style, onPress }) => {
+const memberItem = ({ data, style, onPress, onPrivacyItemPress }) => {
   const profile_pic = R.pathOr('', ['profile_pic'])(data);
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
@@ -36,11 +36,11 @@ const memberItem = ({ data, style, onPress }) => {
             innerRatio={1}
           />
           {is_vip && (
-          <Image
-            style={styles.vip}
-            source={require('asset/public_project/is_vip.png')}
-          />
-        )}
+            <Image
+              style={styles.vip}
+              source={require('asset/public_project/is_vip.png')}
+            />
+          )}
         </View>
         <Flex justify="between" style={{ flex: 1 }}>
           <View style={[styles.content.container]}>
@@ -49,74 +49,69 @@ const memberItem = ({ data, style, onPress }) => {
           </View>
           <Flex>
             {!!mobile && (
-            <View style={{ marginRight: 10 }}>
-              <TouchableWithoutFeedback
-                hitSlop={{
-                  top: 10,
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
-                }}
-                onPress={() => {
-                  Communications.phonecall(mobile, false);
-                }}
-              >
-                <Image
-                  style={styles.content.linkedin}
-                  source={require('asset/project/detail/mobile.png')}
-                />
-              </TouchableWithoutFeedback>
-            </View>
-          )}
+              <View style={{ marginRight: 10 }}>
+                <TouchableWithoutFeedback
+                  hitSlop={{
+                    top: 10,
+                    bottom: 10,
+                    left: 10,
+                    right: 10,
+                  }}
+                  onPress={onPrivacyItemPress}
+                >
+                  <Image
+                    style={styles.content.linkedin}
+                    source={require('asset/project/detail/mobile.png')}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            )}
             {!!wechat && (
-            <View style={{ marginRight: 10 }}>
-              <TouchableWithoutFeedback
-                hitSlop={{
-                  top: 10,
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
-                }}
-                onPress={() => {
-                  Clipboard.setString(wechat);
-                  Toast.show('微信号已复制', Toast.SHORT, false);
-                }}
-              >
-                <Image
-                  style={styles.content.linkedin}
-                  source={require('asset/project/detail/wechat.png')}
-                />
-              </TouchableWithoutFeedback>
-            </View>
-          )}
+              <View style={{ marginRight: 10 }}>
+                <TouchableWithoutFeedback
+                  hitSlop={{
+                    top: 10,
+                    bottom: 10,
+                    left: 10,
+                    right: 10,
+                  }}
+                  onPress={onPrivacyItemPress}
+                >
+                  <Image
+                    style={styles.content.linkedin}
+                    source={require('asset/project/detail/wechat.png')}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            )}
             {!!linkedIn_url && (
-            <View>
-              <TouchableWithoutFeedback
-                hitSlop={{
-                  top: 10,
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
-                }}
-                onPress={() => {
-                  Linking.canOpenURL(linkedIn_url)
-                    .then(support => {
-                      if (support) {
-                        Linking.openURL(linkedIn_url).catch(err => {
-                          console.log(err);
-                        });
-                      }
-                    })
-                    .catch(err => console.error('An error occurred', err));
-                }}
-              >
-                <Image
-                  style={styles.content.linkedin}
-                  source={require('asset/public_project/linkedin.png')}
-                />
-              </TouchableWithoutFeedback>
-            </View>
-          )}
+              <View>
+                <TouchableWithoutFeedback
+                  hitSlop={{
+                    top: 10,
+                    bottom: 10,
+                    left: 10,
+                    right: 10,
+                  }}
+                  onPress={() => {
+                    Linking.canOpenURL(linkedIn_url)
+                      .then(support => {
+                        if (support) {
+                          Linking.openURL(linkedIn_url).catch(err => {
+                            console.log(err);
+                          });
+                        }
+                      })
+                      .catch(err => console.error('An error occurred', err));
+                  }}
+                >
+                  <Image
+                    style={styles.content.linkedin}
+                    source={require('asset/public_project/linkedin.png')}
+                  />
+                </TouchableWithoutFeedback>
+              </View>
+            )}
           </Flex>
         </Flex>
       </View>
