@@ -10,6 +10,7 @@ import ReadMore from 'react-native-read-more-text';
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
 import ActionAlert from 'component/action_alert';
+import Icon from 'component/uikit/icon';
 import InstitutionItem from './institutionItem';
 import WeeklyReports from './weeklyReports';
 import SocialNetworkItem, { iconMap } from './socialNetworkItem';
@@ -80,6 +81,26 @@ export default class Description extends PureComponent {
     );
   };
 
+  renderTruncatedFooter = handlePress => {
+    return (
+      <View style={styles.readmore.container}>
+        <Text style={styles.readmore.text} onPress={handlePress}>
+          查看更多 <Icon name="arrow-down" />
+        </Text>
+      </View>
+    );
+  };
+
+  renderRevealedFooter = handlePress => {
+    return (
+      <View style={styles.readmore.container}>
+        <Text style={styles.readmore.text} onPress={handlePress}>
+          收起 <Icon name="arrow-up" />
+        </Text>
+      </View>
+    );
+  };
+
   render() {
     const coinName = R.pathOr('', ['portfolio', 'name'])(this.props);
     const description = R.pathOr('', ['portfolio', 'description'])(this.props);
@@ -115,7 +136,11 @@ export default class Description extends PureComponent {
         {R.not(R.isEmpty(description)) && (
           <View style={styles.fieldGroup}>
             {title('项目简介')}
-            <ReadMore numberOfLines={10} onReady={this._handleTextReady}>
+            <ReadMore
+              numberOfLines={10}
+              renderTruncatedFooter={this.renderTruncatedFooter}
+              renderRevealedFooter={this.renderRevealedFooter}
+            >
               <Text style={styles.desc}>{description}</Text>
             </ReadMore>
           </View>
