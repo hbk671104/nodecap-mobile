@@ -36,7 +36,14 @@ class Avatar extends PureComponent {
 
   render() {
     const { source } = this.state;
-    const { style, size, raised, resizeMode, innerRatio } = this.props;
+    const {
+      style,
+      imageStyle,
+      size,
+      raised,
+      resizeMode,
+      innerRatio,
+    } = this.props;
     return (
       <Animated.View
         style={[
@@ -54,11 +61,14 @@ class Avatar extends PureComponent {
           {...this.props}
           resizeMode={resizeMode}
           source={source}
-          style={{
-            height: size * innerRatio,
-            width: size * innerRatio,
-            borderRadius: (size * innerRatio) / 2,
-          }}
+          style={[
+            {
+              height: size * innerRatio,
+              width: size * innerRatio,
+              borderRadius: (size * innerRatio) / 2,
+            },
+            imageStyle,
+          ]}
           onError={this.onError}
         />
       </Animated.View>

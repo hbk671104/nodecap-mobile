@@ -133,7 +133,7 @@ export default class PublicProjectDetail extends Component {
     });
   }
 
-  onPressClaimCoin = () => {
+  onPressClaimCoin = member => {
     this.props.track('点击认领按钮');
     if (!this.props.logged_in) {
       this.props.dispatch(
@@ -305,6 +305,8 @@ export default class PublicProjectDetail extends Component {
     );
   };
 
+  handleInviteJoinPress = () => {};
+
   render() {
     const {
       currentPage: Current,
@@ -374,6 +376,7 @@ export default class PublicProjectDetail extends Component {
             <Current.component
               {...this.props}
               onInstitutionItemPress={this.handleInstitutionItemPress}
+              onClaimPress={this.onPressClaimCoin}
             />
           </View>
         </Animated.ScrollView>
@@ -387,8 +390,8 @@ export default class PublicProjectDetail extends Component {
           {...this.props}
           openShareModal={this.handleShare}
           onFavorPress={this.handleFavorPress}
-          onInvestmentPress={this.handleInvestmentPress}
           onPressComment={this.handleCommentPress}
+          onInviteJoinPress={this.handleInviteJoinPress}
         />
         <Share
           onClose={() => this.props.toggleShareModal(false)}

@@ -10,16 +10,19 @@ import ReadMore from 'react-native-read-more-text';
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
 import ActionAlert from 'component/action_alert';
-import Icon from 'component/uikit/icon';
 import InstitutionItem from './institutionItem';
 import WeeklyReports from './weeklyReports';
 import SocialNetworkItem, { iconMap } from './socialNetworkItem';
+import ReadMoreFooter from './readmore';
 import Roadmap from './roadmap';
 import Rating from './rating';
 import styles from './style';
 
 @connect()
-@compose(withState('showModal', 'setShowModal', false))
+@compose(
+  withState('showModal', 'setShowModal', false),
+  withState('memberCollapsed', 'setMemberCollapsed', true),
+)
 export default class Description extends PureComponent {
   handleDocPress = item => {
     this.props.dispatch(
@@ -81,27 +84,17 @@ export default class Description extends PureComponent {
     );
   };
 
-  renderTruncatedFooter = handlePress => {
-    return (
-      <View style={styles.readmore.container}>
-        <Text style={styles.readmore.text} onPress={handlePress}>
-          查看更多 <Icon name="arrow-down" />
-        </Text>
-      </View>
-    );
-  };
+  renderTruncatedFooter = handlePress => (
+    <ReadMoreFooter collapsed onPress={handlePress} />
+  );
 
-  renderRevealedFooter = handlePress => {
-    return (
-      <View style={styles.readmore.container}>
-        <Text style={styles.readmore.text} onPress={handlePress}>
-          收起 <Icon name="arrow-up" />
-        </Text>
-      </View>
-    );
-  };
+  renderRevealedFooter = handlePress => (
+    <ReadMoreFooter collapsed={false} onPress={handlePress} />
+  );
 
   render() {
+    const { memberCollapsed } = this.props;
+
     const coinName = R.pathOr('', ['portfolio', 'name'])(this.props);
     const description = R.pathOr('', ['portfolio', 'description'])(this.props);
     const siteUrl = R.pathOr('', ['portfolio', 'homepage'])(this.props);
@@ -112,7 +105,9 @@ export default class Description extends PureComponent {
       R.filter(i => !!iconMap[String(i.name).toLowerCase()]),
       R.pathOr([], ['portfolio', 'social_networks']),
     )(this.props);
-    const members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    let members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    members = memberCollapsed ? R.take(5)(members) : members;
+
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     const industry_investments = R.pathOr('', [
       'portfolio',
@@ -131,6 +126,7 @@ export default class Description extends PureComponent {
         </TouchableWithoutFeedback>
       </Flex>
     );
+
     return (
       <View style={styles.container}>
         {R.not(R.isEmpty(description)) && (
@@ -228,9 +224,14 @@ export default class Description extends PureComponent {
                   data={m}
                   onPrivacyItemPress={() => this.props.setShowModal(true)}
                   onPress={() => this.goToMemberDetail(m)}
+                  onClaimPress={() => this.props.onClaimPress(m)}
                 />
               ))(members)}
             </View>
+            <ReadMoreFooter
+              collapsed={memberCollapsed}
+              onPress={() => this.props.setMemberCollapsed(!memberCollapsed)}
+            />
           </View>
         )}
         {R.not(R.isEmpty(industry_investments)) && (
