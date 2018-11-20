@@ -7,6 +7,7 @@ export default {
   state: {
     list: null,
     detail: null,
+    search: null,
   },
   effects: {
     *fetch({ payload }, { call, put }) {
@@ -22,6 +23,19 @@ export default {
         console.log(error);
       }
     },
+    *search({ payload, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getInstitution, payload);
+
+        yield put({
+          type: 'searchList',
+          service_type: String(payload.type),
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   reducers: {
     list(state, { payload, service_type }) {
@@ -33,6 +47,27 @@ export default {
             R.pathOr({}, ['list', service_type])(state),
             payload,
           ),
+        },
+      };
+    },
+    searchList(state, { payload, service_type }) {
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          [service_type]: paginate(
+            R.pathOr({}, ['search', service_type])(state),
+            payload,
+          ),
+        },
+      };
+    },
+    clearSearch(state, { payload }) {
+      return {
+        ...state,
+        search: {
+          ...state.search,
+          [payload.type]: null,
         },
       };
     },

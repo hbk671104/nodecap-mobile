@@ -20,12 +20,12 @@ class Input extends Component {
   render() {
     return (
       <TextInput
+        clearButtonMode="while-editing"
         {...this.props}
         ref={this.props.inputRef}
         style={[styles, this.props.style]}
         underlineColorAndroid="transparent"
         placeholderTextColor={this.props.placeholderTextColor}
-        clearButtonMode="while-editing"
         onChangeText={this.props.onChange}
       />
     );

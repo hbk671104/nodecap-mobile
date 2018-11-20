@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
-import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
-import ScrollableTabView, {
-  ScrollableTabBar,
-} from 'react-native-scrollable-tab-view';
-
-import NavBar from 'component/navBar';
+import searchable from 'component/searchableList';
+import InstitutionItem from 'component/institution/item';
+import { NavigationActions } from 'react-navigation';
 
 import ServiceList from './index';
 import styles from './style';
@@ -16,11 +13,61 @@ import styles from './style';
   page: '找服务',
   name: 'App_ServiceOperation',
 })
-@connect(({ global }, { navigation }) => ({
-  type: R.pipe(
-    R.pathOr([], ['constants', 'industry_type']),
-    R.find(t => t.value === navigation.getParam('type')),
-  )(global),
+@connect(({ global, service, loading }, { navigation }) => {
+  console.log(R.pathOr([], ['search', String(navigation.getParam('type')), 'data'])(service));
+  return ({
+    type: R.pipe(
+      R.pathOr([], ['constants', 'industry_type']),
+      R.find(t => t.value === navigation.getParam('type')),
+    )(global),
+    searchData: R.pathOr([], ['search', String(navigation.getParam('type')), 'data'])(service),
+    searchPagination: R.pathOr(null, ['search', String(navigation.getParam('type')), 'pagination'])(service),
+    searchLoading: loading.effects['service/search'],
+  });
+})
+@searchable((props) => ({
+  name: R.path(['type', 'name'])(props),
+  data: props.searchData,
+  pagination: props.searchPagination,
+  loading: props.searchLoading,
+  action: ({ page, size, searchText }) => {
+    if (!searchText) {
+      props.dispatch({
+        type: 'service/clearSearch',
+        payload: {
+          type: R.path(['type', 'value'])(props),
+        },
+      });
+    } else {
+      props.dispatch({
+        type: 'service/search',
+        payload: {
+          type: R.path(['type', 'value'])(props),
+          q: searchText,
+          page,
+          'per-page': size,
+        },
+      });
+    }
+  },
+  renderItem: ({ item }) => {
+    const handleItemPress = () => {
+      props.track('点击进入详情');
+      props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'InstitutionDetail',
+          params: {
+            id: item.id,
+          },
+          key: `InstitutionDetail_${item.id}`,
+        }),
+      );
+    };
+
+    return (
+      <InstitutionItem key={item.id} data={item} onPress={handleItemPress} />
+    );
+  },
 }))
 export default class ServiceSinglePage extends Component {
   componentDidMount() {
@@ -29,7 +76,6 @@ export default class ServiceSinglePage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <NavBar back gradient title={`找${R.path(['type', 'name'])(this.props)}`} />
         <ServiceList
           type={R.path(['type', 'value'])(this.props)}
         />
