@@ -9,6 +9,7 @@ import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import InstitutionSimplifiedItem from 'component/institution/simplified_item';
 import List from 'component/uikit/list';
+import Empty from 'component/empty';
 import styles from './style';
 
 @global.bindTrack({
@@ -100,6 +101,18 @@ class MyInstitution extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderEmpty = () => (
+    <Empty
+      style={{ marginTop: 70 }}
+      image={require('asset/empty/empty_data.png')}
+      title="暂无机构，快创建属于你自己的机构吧"
+      buttonTitle="立即创建"
+      buttonStyle={{ width: 210, marginHorizontal: 0, alignSelf: 'center' }}
+      buttonTitleStyle={{ fontSize: 13 }}
+      action={this.handleCreatePress}
+    />
+  );
+
   render() {
     const { data, pagination, loading } = this.props;
     return (
@@ -112,6 +125,7 @@ class MyInstitution extends Component {
           data={data}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
+          renderEmpty={this.renderEmpty}
         />
       </View>
     );

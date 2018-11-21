@@ -9,6 +9,7 @@ import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import SimplifiedItem from 'component/public_project/simplified_item';
 import List from 'component/uikit/list';
+import Empty from 'component/empty';
 import styles from './style';
 
 @global.bindTrack({
@@ -78,7 +79,7 @@ class MyProject extends Component {
         },
       }),
     );
-  }
+  };
 
   renderNavBar = () => (
     <NavBar
@@ -103,6 +104,18 @@ class MyProject extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderEmpty = () => (
+    <Empty
+      style={{ marginTop: 70, backgroundColor: 'transparent' }}
+      image={require('asset/empty/empty_data.png')}
+      title="暂无项目，快创建属于你自己的项目吧"
+      buttonTitle="立即创建"
+      buttonStyle={{ width: 210, marginHorizontal: 0, alignSelf: 'center' }}
+      buttonTitleStyle={{ fontSize: 13 }}
+      action={this.handleCreatePress}
+    />
+  );
+
   render() {
     const { data, pagination, loading } = this.props;
     return (
@@ -114,6 +127,7 @@ class MyProject extends Component {
           pagination={pagination}
           data={data}
           renderItem={this.renderItem}
+          renderEmpty={this.renderEmpty}
           style={styles.container}
         />
       </View>
