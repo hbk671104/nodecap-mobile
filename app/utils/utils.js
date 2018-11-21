@@ -290,6 +290,7 @@ export const convertToFormData = data => {
   const roadmap = R.pathOr([{}], ['basic', 'roadmap'])(data);
   const members = R.pathOr([{}], ['members'])(data);
   const social_network = R.pathOr([{}], ['social_networks'])(data);
+
   return {
     ...data,
     homepages: R.path(['homepage'])(data),

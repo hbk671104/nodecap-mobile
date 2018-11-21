@@ -18,10 +18,21 @@ import styles from './style';
   members: R.path(['current', 'members'])(project_create),
 }))
 @createForm({
-  onValuesChange: ({ dispatch }, changed, all) => {
+  onValuesChange: ({ dispatch, members }, changed, all) => {
     dispatch({
       type: 'project_create/saveCurrent',
-      payload: all,
+      payload: {
+        members: R.pipe(
+          R.path(['members']),
+          R.addIndex(R.map)((item, i) => {
+            const id = R.path([i, 'id'])(members);
+            return {
+              ...(id ? { id } : {}),
+              ...item,
+            };
+          }),
+        )(all),
+      },
     });
   },
   mapPropsToFields: ({ members }) => {

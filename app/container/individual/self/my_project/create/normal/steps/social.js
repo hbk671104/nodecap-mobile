@@ -25,10 +25,21 @@ import styles from './style';
   ],
 }))
 @createForm({
-  onValuesChange: ({ dispatch }, changed, all) => {
+  onValuesChange: ({ dispatch, social_network }, changed, all) => {
     dispatch({
       type: 'project_create/saveCurrent',
-      payload: all,
+      payload: {
+        social_network: R.pipe(
+          R.path(['social_network']),
+          R.addIndex(R.map)((item, i) => {
+            const id = R.path([i, 'id'])(social_network);
+            return {
+              ...(id ? { id } : {}),
+              ...item,
+            };
+          }),
+        )(all),
+      },
     });
   },
   mapPropsToFields: ({ social_network }) => {
