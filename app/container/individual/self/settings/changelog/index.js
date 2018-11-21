@@ -13,13 +13,35 @@ class ChangeLog extends Component {
         <ScrollView>
           <ChangeLogItem
             version="v6.7.0"
-            date="2018-10-16"
+            date="2018-11-16"
             changelog={[
               '新增首页搜索',
               '新增项目评级可视化',
               '新增项目亮点可筛选',
               '新增项目周报填写及展示',
               '新增新用户登录推荐项目',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
+            version="v6.6.0"
+            date="2018-11-10"
+            changelog={[
+              'Hotnode 指数及项目评分，通过各项指标量化行业趋势',
+              '更多维度的项目标签，帮您更快定位好项目',
+              '分享项目 web 页到微信，体验更佳',
+              '机构认领，方便维护信息',
+              'Bug 修复',
+            ]}
+          />
+          <ChangeLogItem
+            version="v6.5.0"
+            date="2018-11-04"
+            changelog={[
+              '项目方入驻',
+              '机构入驻，投资机构、公关、媒体、交易所资源全面贯通',
+              '新增研报集及分享，行业热点深度解读',
+              '新增项目集及分享，搜罗全网「稳定币」、「STO」',
               'Bug 修复',
             ]}
           />
