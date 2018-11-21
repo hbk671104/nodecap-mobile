@@ -617,7 +617,7 @@ class Router extends Component {
         >
           <UpdateAlert note={release_notes} />
         </Modal>
-        <ActionAlert
+        {/* <ActionAlert
           visible={this.props.showNotificationModal}
           title="开启推送通知"
           content="及时获取项目上所，融资等动态信息"
@@ -627,7 +627,7 @@ class Router extends Component {
             this.props.setShowNotificationModal(false);
           }}
           onBackdropPress={() => this.props.setShowNotificationModal(false)}
-        />
+        /> */}
       </View>
     );
   }
