@@ -11,6 +11,7 @@ import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import Modal from 'component/modal';
 import Config from 'runtime/index';
+import ActionAlert from 'component/action_alert';
 
 // Partials
 import Description from './page/description';
@@ -45,6 +46,7 @@ import styles from './style';
   };
 })
 @compose(
+  withState('showInviteModal', 'toggleInviteModal', false),
   withState('showShareModal', 'toggleShareModal', false),
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
@@ -316,7 +318,9 @@ export default class PublicProjectDetail extends Component {
     );
   };
 
-  handleInviteJoinPress = () => {};
+  handleInviteJoinPress = () => {
+    this.props.toggleInviteModal(true);
+  };
 
   render() {
     const {
@@ -326,6 +330,7 @@ export default class PublicProjectDetail extends Component {
       currentScrollY,
       navBarOpacityRange,
       backgroundOpacityRange,
+      showInviteModal,
     } = this.props;
 
     return (
@@ -408,6 +413,18 @@ export default class PublicProjectDetail extends Component {
           onClose={() => this.props.toggleShareModal(false)}
           coin={this.props.portfolio}
           visible={this.props.showShareModal}
+        />
+        <ActionAlert
+          visible={showInviteModal}
+          title="邀请入驻"
+          content="邀请口令已复制，快去粘贴吧"
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 18 }}
+          actionTitle="分享至微信"
+          action={() => {
+            this.props.toggleInviteModal(false);
+            // share to wechat
+          }}
+          onBackdropPress={() => this.props.toggleInviteModal(false)}
         />
         <Modal
           useNativeDriver
