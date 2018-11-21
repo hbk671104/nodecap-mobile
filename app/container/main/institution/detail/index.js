@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
+import { Toast } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
+import { compose, withState } from 'recompose';
+import request from 'utils/request';
+import runtimeConfig from 'runtime/index';
 
 import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
 import Touchable from 'component/uikit/touchable';
+import ActionAlert from 'component/action_alert';
 
 import Group from './partials/group';
 import Member from './partials/member';
@@ -17,16 +22,23 @@ import styles from './style';
   page: '机构详情',
   name: 'App_InstitutionDetailOperation',
 })
-@connect(({ institution, login, loading }, props) => {
+@connect(({ user, institution, login, loading }, props) => {
   const id = props.navigation.getParam('id');
   return {
     id,
     data: R.pathOr({}, ['current', id])(institution),
+    user: R.pathOr({}, ['currentUser'])(user),
     logged_in: !!login.token,
     in_individual: login.in_individual,
     loading: loading.effects['institution/get'],
   };
 })
+@compose(
+  withState('showModal', 'setShowModal', false),
+  withState('currentMember', 'setCurrentMember', ({ data }) =>
+    R.pathOr({}, ['members', 0])(data),
+  ),
+)
 export default class InstitutionDetail extends Component {
   componentWillMount() {
     this.loadDetail();
@@ -43,7 +55,7 @@ export default class InstitutionDetail extends Component {
     });
   }
 
-  onPressClaimCoin = () => {
+  onPressClaimCoin = member => {
     this.props.track('点击认领按钮');
     if (!this.props.logged_in) {
       this.props.dispatch(
@@ -52,6 +64,17 @@ export default class InstitutionDetail extends Component {
         }),
       );
       return;
+    }
+    if (member) {
+      this.props.dispatch({
+        type: 'institution_create/resetOwner',
+        payload: {
+          owner_name: R.path(['name'])(member),
+          owner_mobile: R.path(['mobile'])(member),
+          owner_title: R.path(['title'])(member),
+          owner_wechat: R.path(['wechat'])(member),
+        },
+      });
     }
     this.props.dispatch(
       NavigationActions.navigate({
@@ -82,7 +105,7 @@ export default class InstitutionDetail extends Component {
     );
   };
 
-  goToMemberDetail = (data) => {
+  goToMemberDetail = data => {
     this.props.track('点击进入成员主页');
     this.props.dispatch(
       NavigationActions.navigate({
@@ -92,7 +115,7 @@ export default class InstitutionDetail extends Component {
         },
       }),
     );
-  }
+  };
 
   renderNavBar = () => (
     <NavBar
@@ -126,7 +149,12 @@ export default class InstitutionDetail extends Component {
                 <Member
                   key={m.id}
                   data={m}
+                  onPrivacyItemPress={() => {
+                    this.props.setCurrentMember(m);
+                    this.props.setShowModal(true);
+                  }}
                   onPress={() => this.goToMemberDetail(m)}
+                  onClaimPress={() => this.onPressClaimCoin(m)}
                 />
               ))(members)}
             </Group>
@@ -153,6 +181,27 @@ export default class InstitutionDetail extends Component {
             <Image source={require('asset/project/detail/claim.png')} />
           </Touchable>
         )}
+        <ActionAlert
+          visible={this.props.showModal}
+          title="联系Ta"
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 18 }}
+          actionTitle="帮我联系"
+          action={() => {
+            this.props.setShowModal(false);
+            const project_name = R.path(['name'])(this.props.data);
+            const contact_name = R.path(['name'])(this.props.currentMember);
+            const mobile = R.pathOr('未知', ['mobile'])(this.props.user);
+            request
+              .post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
+                content: `想要联系「${project_name} - ${contact_name}」`,
+                mobile,
+              })
+              .then(() => {
+                Toast.success('您的反馈已提交');
+              });
+          }}
+          onBackdropPress={() => this.props.setShowModal(false)}
+        />
       </View>
     );
   }

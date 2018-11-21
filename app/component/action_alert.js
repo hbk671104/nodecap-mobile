@@ -25,7 +25,7 @@ const actionAlert = ({
     <View style={styles.contentWrapper}>
       <View style={[styles.container, contentContainerStyle]}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.content}>{content}</Text>
+        {!!content && <Text style={styles.content}>{content}</Text>}
         {image && <Image style={{ marginTop: 24 }} source={image} />}
       </View>
       <Touchable style={styles.action.container} onPress={action}>

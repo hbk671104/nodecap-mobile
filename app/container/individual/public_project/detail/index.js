@@ -143,6 +143,17 @@ export default class PublicProjectDetail extends Component {
       );
       return;
     }
+    if (member) {
+      this.props.dispatch({
+        type: 'project_create/resetOwner',
+        payload: {
+          owner_name: R.path(['name'])(member),
+          owner_mobile: R.path(['mobile'])(member),
+          owner_title: R.path(['title'])(member),
+          owner_wechat: R.path(['wechat'])(member),
+        },
+      });
+    }
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'ClaimMyProject',

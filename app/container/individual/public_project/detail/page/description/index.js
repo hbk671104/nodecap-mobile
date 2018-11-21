@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import { Flex, Grid } from 'antd-mobile';
+import { Flex, Grid, Toast } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { compose, withState } from 'recompose';
 import ReadMore from 'react-native-read-more-text';
+import request from 'utils/request';
+import runtimeConfig from 'runtime/index';
 
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
@@ -18,10 +20,15 @@ import Roadmap from './roadmap';
 import Rating from './rating';
 import styles from './style';
 
-@connect()
+@connect(({ user }) => ({
+  user: R.pathOr({}, ['currentUser'])(user),
+}))
 @compose(
   withState('showModal', 'setShowModal', false),
   withState('memberCollapsed', 'setMemberCollapsed', true),
+  withState('currentMember', 'setCurrentMember', ({ portfolio }) =>
+    R.pathOr({}, ['members', 0])(portfolio),
+  ),
 )
 export default class Description extends PureComponent {
   handleDocPress = item => {
@@ -222,7 +229,10 @@ export default class Description extends PureComponent {
                 <MemberItem
                   key={m.id}
                   data={m}
-                  onPrivacyItemPress={() => this.props.setShowModal(true)}
+                  onPrivacyItemPress={() => {
+                    this.props.setCurrentMember(m);
+                    this.props.setShowModal(true);
+                  }}
                   onPress={() => this.goToMemberDetail(m)}
                   onClaimPress={() => this.props.onClaimPress(m)}
                 />
@@ -256,12 +266,22 @@ export default class Description extends PureComponent {
         )}
         <ActionAlert
           visible={this.props.showModal}
-          title="立即联系"
-          content="Hotnode 小助手会立即与您联系"
+          title="联系Ta"
           contentContainerStyle={{ paddingTop: 16, paddingBottom: 18 }}
-          actionTitle="我知道了"
+          actionTitle="帮我联系"
           action={() => {
             this.props.setShowModal(false);
+            const project_name = R.path(['name'])(this.props.portfolio);
+            const contact_name = R.path(['name'])(this.props.currentMember);
+            const mobile = R.pathOr('未知', ['mobile'])(this.props.user);
+            request
+              .post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
+                content: `想要联系「${project_name} - ${contact_name}」`,
+                mobile,
+              })
+              .then(() => {
+                Toast.success('您的反馈已提交');
+              });
           }}
           onBackdropPress={() => this.props.setShowModal(false)}
         />

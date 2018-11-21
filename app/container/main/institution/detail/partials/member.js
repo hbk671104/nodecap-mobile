@@ -1,63 +1,149 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image, Linking } from 'react-native';
+import { Flex } from 'antd-mobile';
 import R from 'ramda';
 
+import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
-const group = ({ data, onPress }) => {
+const memberItem = ({
+  data,
+  style,
+  onPress,
+  onPrivacyItemPress,
+  onClaimPress,
+}) => {
+  const profile_pic = R.pathOr('', ['avatar_url'])(data);
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
-  const desc = R.pathOr('--', ['description'])(data);
-  const avatar_url = R.pathOr('', ['avatar_url'])(data);
+  const intro = R.pathOr('--', ['description'])(data);
+  const linkedIn_url = R.path(['linkedin'])(data);
+  const mobile = R.path(['mobile'])(data);
+  const wechat = R.path(['wechat'])(data);
+  const is_vip = R.pathOr(false, ['is_vip'])(data);
+
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={styles.container}>
-        <Avatar source={{ uri: avatar_url }} />
-        <View style={styles.content.container}>
-          <Text style={styles.content.title}>{name}</Text>
-          <Text style={styles.content.subtitle}>{title}</Text>
-          <Text style={styles.content.content}>{desc}</Text>
+    <Touchable foreground onPress={onPress}>
+      <Flex style={[styles.container, style]} align="flex-start">
+        <View>
+          <Avatar
+            size={52}
+            source={{ uri: profile_pic }}
+            style={styles.avatar.container}
+            imageStyle={styles.avatar.image}
+            raised={false}
+            innerRatio={1}
+            resizeMode="cover"
+          />
+          {!is_vip && (
+            <Touchable style={styles.claim.container} onPress={onClaimPress}>
+              <Text style={styles.claim.text}>认领</Text>
+            </Touchable>
+          )}
         </View>
-      </View>
-    </TouchableWithoutFeedback>
+        <View style={styles.content.container}>
+          <Flex align="center">
+            <Text style={styles.content.name}>{name}</Text>
+            {is_vip && (
+              <Image
+                style={{ marginLeft: 8 }}
+                source={require('asset/project/detail/vip_icon.png')}
+              />
+            )}
+          </Flex>
+          <Text style={styles.content.title}>{title}</Text>
+          <Flex style={{ marginTop: 6 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.content.intro}>{intro}</Text>
+            </View>
+            <Flex>
+              {!!mobile && (
+                <Touchable onPress={onPrivacyItemPress}>
+                  <Image source={require('asset/project/detail/mobile.png')} />
+                </Touchable>
+              )}
+              {!!wechat && (
+                <Touchable onPress={onPrivacyItemPress}>
+                  <Image
+                    style={{ marginLeft: 12 }}
+                    source={require('asset/project/detail/wechat.png')}
+                  />
+                </Touchable>
+              )}
+              {!!linkedIn_url && (
+                <Touchable
+                  onPress={() => {
+                    Linking.openURL(linkedIn_url).catch(err =>
+                      console.error('An error occurred', err),
+                    );
+                  }}
+                >
+                  <Image
+                    style={{ marginLeft: 12 }}
+                    source={require('asset/project/detail/linkedin.png')}
+                  />
+                </Touchable>
+              )}
+            </Flex>
+          </Flex>
+        </View>
+      </Flex>
+    </Touchable>
   );
 };
 
 const styles = {
   container: {
-    paddingTop: 12,
-    paddingBottom: 8,
-    flexDirection: 'row',
-    borderBottomColor: '#E9E9E9',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingVertical: 12,
+  },
+  avatar: {
+    container: {
+      borderRadius: 0,
+    },
+    image: {
+      borderRadius: 2,
+    },
+  },
+  claim: {
+    container: {
+      width: 52,
+      backgroundColor: '#1890FF',
+      marginTop: 6,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    text: {
+      fontSize: 10,
+      color: 'white',
+    },
   },
   content: {
     container: {
       flex: 1,
-      marginLeft: 18,
+      marginLeft: 12,
     },
-    title: {
-      fontSize: 14,
+    name: {
+      fontSize: 16,
       fontWeight: 'bold',
       color: 'rgba(0, 0, 0, 0.85)',
     },
-    subtitle: {
-      marginTop: 8,
-      fontSize: 13,
-      color: 'rgba(0, 0, 0, 0.65)',
-    },
-    content: {
-      marginTop: 8,
+    title: {
+      marginTop: 6,
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.65)',
+      fontWeight: 'bold',
+    },
+    intro: {
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.45)',
       lineHeight: 18,
     },
   },
 };
 
-group.propTypes = {
+memberItem.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default group;
+export default memberItem;
