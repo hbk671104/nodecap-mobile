@@ -139,6 +139,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入姓名' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="姓名"
@@ -151,6 +152,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入公司职位' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="职位"
@@ -163,6 +165,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入手机号码' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="手机"
@@ -178,6 +181,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入微信号' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="微信"
@@ -190,6 +194,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请上传名片' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               wrapperStyle={{ alignItems: 'flex-start' }}
               titleStyle={styles.inputItem.title}

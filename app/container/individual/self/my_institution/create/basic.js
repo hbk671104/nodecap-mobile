@@ -90,6 +90,7 @@ class BasicInfo extends PureComponent {
             ],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               contentWrapperStyle={{ alignSelf: 'flex-end' }}
@@ -149,6 +150,7 @@ class BasicInfo extends PureComponent {
             ],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="名称"
@@ -161,6 +163,7 @@ class BasicInfo extends PureComponent {
             rules: [{ required: true, message: '请上传 Logo' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               contentWrapperStyle={{ alignSelf: 'flex-end' }}
