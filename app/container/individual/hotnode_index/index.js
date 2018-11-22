@@ -35,14 +35,6 @@ class HotnodeIndex extends PureComponent {
     });
   };
 
-  handleHeaderPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'HotnodeCoinIndex',
-      }),
-    );
-  };
-
   handleItemPress = item => () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -60,7 +52,8 @@ class HotnodeIndex extends PureComponent {
 
   renderHeader = () => (
     <View>
-      <Header {...this.props} onPress={this.handleHeaderPress} />
+      <Header {...this.props} />
+      <View style={styles.divider} />
       <View style={styles.categoryTitle.container}>
         <Text style={styles.categoryTitle.text}>领域</Text>
       </View>
