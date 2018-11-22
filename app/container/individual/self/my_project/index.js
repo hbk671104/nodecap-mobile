@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
+import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import SimplifiedItem from 'component/public_project/simplified_item';
 import List from 'component/uikit/list';
 import Empty from 'component/empty';
+import Reviewed from 'component/reviewed';
+import { Storage } from 'utils';
 import styles from './style';
 
 @global.bindTrack({
@@ -21,9 +24,32 @@ import styles from './style';
   pagination: R.pathOr(null, ['list', 'pagination'])(project_create),
   loading: loading.effects['project_create/fetch'],
 }))
+@compose(
+  withState('reviewedVisible', 'setReviewedVisible', false),
+  withState('reviewedItem', 'setReviewedItem', null),
+)
 class MyProject extends Component {
   componentDidMount() {
     this.props.track('进入');
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    const data = R.pathOr([], ['data'])(nextProps);
+    if (R.length(data) > 0) {
+      const reviewed_item = R.find(d => R.path(['owner_status'])(d) === '1')(
+        data,
+      );
+      if (reviewed_item && !nextProps.reviewedItem) {
+        this.props.setReviewedItem(reviewed_item);
+        const showed_reviewed_project = await Storage.get(
+          'showed_reviewed_project',
+        );
+        if (showed_reviewed_project) {
+          return;
+        }
+        this.props.setReviewedVisible(true);
+      }
+    }
   }
 
   requestData = (page, size) => {
@@ -81,6 +107,13 @@ class MyProject extends Component {
     );
   };
 
+  handleExitPress = () => {
+    this.props.setReviewedVisible(false);
+    Storage.set('showed_reviewed_project', true);
+  };
+
+  handleSharePress = () => {};
+
   renderNavBar = () => (
     <NavBar
       back
@@ -117,7 +150,7 @@ class MyProject extends Component {
   );
 
   render() {
-    const { data, pagination, loading } = this.props;
+    const { data, pagination, loading, reviewedVisible } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -129,6 +162,11 @@ class MyProject extends Component {
           renderItem={this.renderItem}
           renderEmpty={this.renderEmpty}
           style={styles.container}
+        />
+        <Reviewed
+          visible={reviewedVisible}
+          onExitPress={this.handleExitPress}
+          onSharePress={this.handleSharePress}
         />
       </View>
     );
