@@ -175,3 +175,14 @@ export function deleteWeeklyReport(id) {
 export function editWeeklyReport(id, value) {
   return request.put(`/weekly/${id}`, value);
 }
+
+export function searchUser(payload = {}) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/users', {
+    params: paramsTransform(payload),
+  });
+}

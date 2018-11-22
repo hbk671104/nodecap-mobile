@@ -177,7 +177,7 @@ export default {
           payload: id,
         });
         if (callback) {
-          yield call(callback);
+          yield call(callback, data);
         }
       } catch (error) {
         console.log(error);

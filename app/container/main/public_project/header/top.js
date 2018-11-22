@@ -39,7 +39,7 @@ const top = ({
     <View style={styles.searchBar.wrapper}>
       <SearchBarDisplayHomepage
         style={styles.searchBar.container}
-        title="搜索项目名称、Token"
+        title="搜索项目 / 研报 / 投资机构 / 服务机构 / 用户"
         titleStyle={{ color: '#999999' }}
         iconColor="#999999"
         onPress={onSearchBarPress}

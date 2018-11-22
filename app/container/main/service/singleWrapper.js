@@ -14,7 +14,6 @@ import styles from './style';
   name: 'App_ServiceOperation',
 })
 @connect(({ global, service, loading }, { navigation }) => {
-  console.log(R.pathOr([], ['search', String(navigation.getParam('type')), 'data'])(service));
   return ({
     type: R.pipe(
       R.pathOr([], ['constants', 'industry_type']),

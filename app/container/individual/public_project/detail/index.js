@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, Animated, Text, Image } from 'react-native';
+import { View, Animated, Text, Image, Clipboard, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import { Modal as antModal } from 'antd-mobile';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import * as WeChat from 'react-native-wechat';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
+import Base64 from 'utils/base64';
+import DeviceInfo from 'react-native-device-info';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
@@ -191,27 +194,23 @@ export default class PublicProjectDetail extends Component {
     });
   };
 
-  handleInvestmentPress = () => {
-    this.props.track('点击投资记录按钮');
-
-    if (!this.props.logged_in) {
-      this.props.dispatch(
-        NavigationActions.navigate({
-          routeName: 'Login',
-        }),
-      );
-      return;
-    }
-
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PublicProjectRecord',
-        params: {
-          id: this.props.id,
-        },
-      }),
-    );
-  };
+  handlerInviteEnter = () => {
+    const { id } = this.props;
+    const cryptID = Base64.btoa(`${id}`);
+    const UniqueID = DeviceInfo.getUniqueID().slice(0, 5);
+    Clipboard.setString(`&*${UniqueID}$${cryptID}*&`);
+    antModal.alert('邀请入驻', '邀请口令已复制，快去微信里粘贴吧', [{
+      text: '去微信粘贴',
+      onPress: async () => {
+        try {
+          await Linking.canOpenURL('wechat://');
+          await Linking.openURL('wechat://');
+        } catch (e) {
+          console.log(e);
+        }
+      },
+    }]);
+  }
 
   handleCommentPress = () => {
     this.props.track('点击点评按钮');
@@ -387,7 +386,7 @@ export default class PublicProjectDetail extends Component {
           {...this.props}
           openShareModal={this.handleShare}
           onFavorPress={this.handleFavorPress}
-          onInvestmentPress={this.handleInvestmentPress}
+          onPressInviteEnter={this.handlerInviteEnter}
           onPressComment={this.handleCommentPress}
         />
         <Share

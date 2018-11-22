@@ -250,7 +250,7 @@ export default class PublicProject extends Component {
   handleSearchBarPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PublicProjectSearch',
+        routeName: 'GlobalSearch',
       }),
     );
   };

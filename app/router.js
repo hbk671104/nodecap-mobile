@@ -6,6 +6,8 @@ import {
   Platform,
   AppState,
   Linking,
+  Clipboard,
+  AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
 // import RNExitApp from 'react-native-exit-app';
@@ -25,24 +27,23 @@ import {
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
 import { withNetworkConnectivity } from 'react-native-offline';
-// import { Toast } from 'antd-mobile';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
+import DeviceInfo from 'react-native-device-info';
+import store from '../index';
+import Base64 from 'utils/base64';
 
 import { setStatusBar } from 'component/uikit/statusBar';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
+import { getCoinInfo } from 'services/api';
+
+import InviteItem from 'component/public_project/inviteItem';
 // Screen
 import Loader from 'container/loader';
-// import Landing from 'container/auth/landing';
-// import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
-// import LoginModal from 'container/auth/login/modal';
-// import SetPassword from 'container/auth/setPassword';
-// import ResetPwd from 'container/auth/resetPwd';
 import Recommendation from 'container/auth/recommendation';
-// import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
@@ -56,7 +57,6 @@ import Portfolio from 'container/main/portfolio';
 import NotificationCenter from 'container/main/notification_center';
 import NotificationDetail from 'container/main/notification_center/detail';
 import NotificationDetailRaw from 'container/main/notification_center/raw';
-// import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
@@ -99,6 +99,7 @@ import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
 import UserProfile from 'container/main/user/profile';
 import WebPage from 'container/webview';
+import GlobalSearch from 'container/main/public_project/globalSearch';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -274,6 +275,7 @@ const MainStack = createStackNavigator(
     CommentCoin,
     InviteComment,
     UserProfile,
+    GlobalSearch,
   },
   {
     headerMode: 'none',
@@ -414,6 +416,7 @@ const IndividualStack = createStackNavigator(
     CreateWeeklyReport,
     EditWeeklyReport,
     UserProfile,
+    GlobalSearch,
   },
   {
     headerMode: 'none',
@@ -471,6 +474,8 @@ import { handleBadgeAction } from 'utils/badge_handler';
 }))
 @compose(
   withState('showNotificationModal', 'setShowNotificationModal', false),
+  withState('showInviteEnter', 'setShowInviteEnterModal', false),
+  withState('inviteCoin', 'setInviteCoin', null),
   withState('appState', 'setAppState', AppState.currentState),
 )
 class Router extends Component {
@@ -498,6 +503,8 @@ class Router extends Component {
     // check notif permission
     this.checkPushPermission();
     handleBadgeAction();
+
+    this.parseInviteKey();
   }
 
   componentDidMount() {
@@ -517,6 +524,29 @@ class Router extends Component {
     BackHandler.removeEventListener('hardwareBackPress', this.backHandle);
     AppState.removeEventListener('change', this._handleAppStateChange);
     Linking.removeEventListener('url', this.handleOpenURL);
+  }
+
+  parseInviteKey = async () => {
+    try {
+      const clipString = await Clipboard.getString();
+      const matchResult = clipString.match(/&\*(.*)?\$(.*)?\*&/);
+      const viewedInviteKey = await AsyncStorage.getItem('viewInviteKey');
+      const hasViewed = viewedInviteKey === matchResult[0];
+      if (matchResult) {
+        const uniqueID = DeviceInfo.getUniqueID().slice(0, 5);
+        const device = matchResult[1];
+        const coinID = matchResult[2];
+
+        if (device !== uniqueID && !hasViewed) {
+          const { data } = await getCoinInfo(Base64.atob(coinID));
+          this.props.setInviteCoin(data);
+          this.props.setShowInviteEnterModal(true);
+          AsyncStorage.setItem('viewInviteKey', matchResult[0]);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   handleOpenURL = event => {
@@ -555,7 +585,7 @@ class Router extends Component {
       nextAppState === 'active'
     ) {
       RouterEmitter.emit('resume');
-
+      this.parseInviteKey();
       // check codepush
       this.props.dispatch({
         type: 'app/checkCodePush',
@@ -571,7 +601,7 @@ class Router extends Component {
     if (this.state.isIOS) {
       setTimeout(() => {
         JPush.hasPermission(res => {
-          if (!res) {
+          if (!res && !global.__DEV__) {
             this.props.setShowNotificationModal(true);
           }
         });
@@ -601,6 +631,21 @@ class Router extends Component {
     });
   };
 
+  renderInviteEnter = () => {
+    const { inviteCoin } = this.props;
+    return (
+      <View>
+        <InviteItem
+          data={inviteCoin}
+          onPress={() => {
+            this.props.setShowInviteEnterModal(false);
+            this.props.setInviteCoin({});
+          }}
+        />
+      </View>
+    );
+  }
+
   render() {
     const { dispatch, app, router, showAlert, release_notes } = this.props;
     return (
@@ -627,6 +672,11 @@ class Router extends Component {
             this.props.setShowNotificationModal(false);
           }}
           onBackdropPress={() => this.props.setShowNotificationModal(false)}
+        />
+        <ActionAlert
+          visible={this.props.showInviteEnter}
+          renderContent={this.renderInviteEnter}
+          onBackdropPress={() => this.props.setShowInviteEnterModal(false)}
         />
       </View>
     );

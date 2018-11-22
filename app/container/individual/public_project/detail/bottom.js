@@ -10,10 +10,10 @@ import { bottomTabHeight } from './style';
 
 const bottom = ({
   onFavorPress,
-  onInvestmentPress,
   portfolio,
   openShareModal,
   onPressComment,
+  onPressInviteEnter,
 }) => {
   const favored = R.pathOr(false, ['is_focused'])(portfolio);
   return (
@@ -60,29 +60,33 @@ const bottom = ({
         <Touchable
           style={styles.group.wrapper}
           borderless
-          onPress={onInvestmentPress}
+          onPress={onPressComment}
         >
           <View style={styles.group.container}>
             <Image
               style={{
-                width: 17.5,
-                height: 19,
+                height: 17.5,
+                width: 19,
               }}
-              source={require('asset/project/detail/invest_record.png')}
+              source={require('asset/public_project/comment.png')}
             />
-            <Text style={styles.group.title}>投资记录</Text>
+            <Text style={styles.group.title}>点评</Text>
           </View>
         </Touchable>
         <Touchable
-          style={styles.investment.wrapper}
-          onPress={() => onPressComment()}
+          style={styles.group.wrapper}
+          borderless
+          onPress={onPressInviteEnter}
         >
-          <View style={styles.investment.container}>
+          <View style={styles.group.container}>
             <Image
-              style={{ marginRight: 8 }}
-              source={require('asset/public_project/comment.png')}
+              style={{
+                height: 18.5,
+                width: 20,
+              }}
+              source={require('asset/public_project/enter.png')}
             />
-            <Text style={styles.investment.title}>点评</Text>
+            <Text style={styles.group.title}>邀请入驻</Text>
           </View>
         </Touchable>
       </View>

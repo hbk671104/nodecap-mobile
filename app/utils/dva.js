@@ -64,6 +64,12 @@ export default options => {
         'service/search',
         'hotnode_index/fetchCategory',
         'hotnode_index/fetchCoin',
+        'hotnode_index/fetchCoin',
+        'globalSearch/coins',
+        'globalSearch/reports',
+        'globalSearch/industries',
+        'globalSearch/services',
+        'globalSearch/users',
       ],
     }),
   );
