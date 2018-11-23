@@ -179,47 +179,91 @@ class CategoryHeader extends PureComponent {
             onExplanationPress: () => setShowMarketExplanation(true),
           })}
         </Flex>
-        <Flex style={styles.misc.container} justify="space-between">
-          <Flex>
-            <View
-              style={[styles.misc.circle, { backgroundColor: '#1890FF' }]}
-            />
-            <Text style={styles.misc.title}>
-              昨日新增项目数{' '}
-              <Text style={{ color: '#1890FF', fontWeight: 'bold' }}>
-                <Format digit={0}>{count_change}</Format>
+        {indexType === 'hotnode' ? (
+          <Flex style={styles.misc.container} justify="space-between">
+            <Flex>
+              <View
+                style={[styles.misc.circle, { backgroundColor: '#1890FF' }]}
+              />
+              <Text style={styles.misc.title}>
+                昨日新增项目数{' '}
+                <Text style={{ color: '#1890FF', fontWeight: 'bold' }}>
+                  <Format digit={0}>{count_change}</Format>
+                </Text>
               </Text>
-            </Text>
-          </Flex>
-          <Flex>
-            <View
-              style={[styles.misc.circle, { backgroundColor: '#09AC32' }]}
-            />
-            <Text style={styles.misc.title}>
-              上所指数{' '}
-              <Text
-                style={{
-                  fontSize: 14,
-                  color: 'rgba(0, 0, 0, 0.85)',
-                  fontWeight: 'bold',
-                }}
-              >
-                {market_change}
-              </Text>{' '}
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: market_change_percentage < 0 ? '#F55454' : '#09AC32',
-                }}
-              >
-                {market_change_percentage < 0
-                  ? `${market_change_percentage}`
-                  : `+${market_change_percentage}`}
-                %
+            </Flex>
+            <Flex>
+              <View
+                style={[styles.misc.circle, { backgroundColor: '#09AC32' }]}
+              />
+              <Text style={styles.misc.title}>
+                项目指数{' '}
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: 'rgba(0, 0, 0, 0.85)',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {heat}
+                </Text>{' '}
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: heat_change_percentage < 0 ? '#F55454' : '#09AC32',
+                  }}
+                >
+                  {heat_change_percentage < 0
+                    ? `${heat_change_percentage}`
+                    : `+${heat_change_percentage}`}
+                  %
+                </Text>
               </Text>
-            </Text>
+            </Flex>
           </Flex>
-        </Flex>
+        ) : (
+          <Flex style={styles.misc.container} justify="space-between">
+            <Flex>
+              <View
+                style={[styles.misc.circle, { backgroundColor: '#1890FF' }]}
+              />
+              <Text style={styles.misc.title}>
+                近一周上所公告数{' '}
+                <Text style={{ color: '#1890FF', fontWeight: 'bold' }}>
+                  <Format digit={0}>{market_change}</Format>
+                </Text>
+              </Text>
+            </Flex>
+            <Flex>
+              <View
+                style={[styles.misc.circle, { backgroundColor: '#09AC32' }]}
+              />
+              <Text style={styles.misc.title}>
+                上所指数{' '}
+                <Text
+                  style={{
+                    fontSize: 14,
+                    color: 'rgba(0, 0, 0, 0.85)',
+                    fontWeight: 'bold',
+                  }}
+                >
+                  {market}
+                </Text>{' '}
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: market_change_percentage < 0 ? '#F55454' : '#09AC32',
+                  }}
+                >
+                  {market_change_percentage < 0
+                    ? `${market_change_percentage}`
+                    : `+${market_change_percentage}`}
+                  %
+                </Text>
+              </Text>
+            </Flex>
+          </Flex>
+        )}
         {this.renderChart()}
         <Explanation
           visible={showHotnodeExplanation}
@@ -311,12 +355,13 @@ const styles = {
     container: {
       paddingHorizontal: 12,
       marginTop: 20,
+      marginBottom: 12,
     },
     circle: {
       height: 5,
       width: 5,
       borderRadius: 2.5,
-      marginRight: 3,
+      marginRight: 8,
     },
     title: {
       fontSize: 12,
