@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, Clipboard, Linking } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  Clipboard,
+  Linking,
+} from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
@@ -126,36 +133,52 @@ export default class InstitutionDetail extends Component {
   handleSharePress = () => {
     const { data, navigation } = this.props;
     this.props.openShareModal({
-      types: [{
-        type: 'timeline',
-        webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${data.id}`,
-        title: `推荐给你「${R.path(['name'])(data)}」`,
-        description: '来 Hotnode 找全球区块链服务机构！',
-        thumbImage:
-        R.path(['profile_pic'])(data) || R.path(['avatar_url'])(data) ||
-        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
-      }, {
-        type: 'session',
-        webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${data.id}`,
-        title: `推荐给你「${R.path(['name'])(data)}」`,
-        description: '来 Hotnode 找全球区块链服务机构！',
-        thumbImage:
-        R.path(['profile_pic'])(data) || R.path(['avatar_url'])(data) ||
-        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
-      }, {
-        type: 'link',
-        url: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${data.id}`,
-      }],
+      types: [
+        {
+          type: 'timeline',
+          webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${
+            data.id
+          }`,
+          title: `推荐给你「${R.path(['name'])(data)}」`,
+          description: '来 Hotnode 找全球区块链服务机构！',
+          thumbImage:
+            R.path(['profile_pic'])(data) ||
+            R.path(['avatar_url'])(data) ||
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+        },
+        {
+          type: 'session',
+          webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${
+            data.id
+          }`,
+          title: `推荐给你「${R.path(['name'])(data)}」`,
+          description: '来 Hotnode 找全球区块链服务机构！',
+          thumbImage:
+            R.path(['profile_pic'])(data) ||
+            R.path(['avatar_url'])(data) ||
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+        },
+        {
+          type: 'link',
+          url: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${
+            data.id
+          }`,
+        },
+      ],
     });
-  }
+  };
 
   handleInviteJoinPress = () => {
     const { id } = this.props;
     const cryptID = Base64.btoa(`${id}`);
     const UniqueID = DeviceInfo.getUniqueID().slice(0, 5);
-    Clipboard.setString(`邀请您认领「${R.path(['data', 'name'])(this.props)}」，复制整段文字 ^*${UniqueID}$${cryptID}*^ 到 Hotnode 中打开`);
+    Clipboard.setString(
+      `邀请您认领「${R.path(['data', 'name'])(
+        this.props,
+      )}」，复制整段文字 ^*${UniqueID}$${cryptID}*^ 到 Hotnode 中打开`,
+    );
     this.props.toggleInviteModal(true);
-  }
+  };
 
   renderNavBar = () => (
     <NavBar

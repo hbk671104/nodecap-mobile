@@ -49,7 +49,7 @@ const memberItem = ({
           <Flex justify="space-between">
             <Flex>
               <Text style={styles.content.name}>{name}</Text>
-              {is_vip && (
+              {!!is_vip && (
                 <Image
                   style={{ marginLeft: 8 }}
                   source={require('asset/project/detail/vip_icon.png')}
@@ -84,12 +84,12 @@ const memberItem = ({
               </Text>
             </View>
             <Flex>
-              {mobile && (
+              {!!mobile && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
-              {wechat && (
+              {!!wechat && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}
