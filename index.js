@@ -9,7 +9,7 @@ import {
 import { autoRehydrate, persistStore } from 'redux-persist';
 import { Sentry } from 'react-native-sentry';
 import Orientation from 'react-native-orientation';
-import { setCustomText } from 'react-native-global-props';
+import { setCustomText, setCustomTextInput } from 'react-native-global-props';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -124,6 +124,10 @@ setCustomText({
   style: {
     fontFamily: Platform.OS === 'ios' ? 'PingFangSC-Regular' : 'Roboto',
   },
+  allowFontScaling: false,
+});
+
+setCustomTextInput({
   allowFontScaling: false,
 });
 
