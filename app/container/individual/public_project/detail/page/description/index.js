@@ -1,20 +1,35 @@
 import React, { PureComponent } from 'react';
 import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import { connect } from 'react-redux';
-import { Flex, Grid } from 'antd-mobile';
+import { Flex, Grid, Toast } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import { compose, withState } from 'recompose';
+import ReadMore from 'react-native-read-more-text';
+import request from 'utils/request';
+import runtimeConfig from 'runtime/index';
 
 import Financing from '../financing';
 import MemberItem from 'component/project/description/member';
+import ActionAlert from 'component/action_alert';
 import InstitutionItem from './institutionItem';
 import WeeklyReports from './weeklyReports';
 import SocialNetworkItem, { iconMap } from './socialNetworkItem';
+import ReadMoreFooter from './readmore';
 import Roadmap from './roadmap';
 import Rating from './rating';
 import styles from './style';
 
-@connect()
+@connect(({ user }) => ({
+  user: R.pathOr({}, ['currentUser'])(user),
+}))
+@compose(
+  withState('showModal', 'setShowModal', false),
+  withState('memberCollapsed', 'setMemberCollapsed', true),
+  withState('currentMember', 'setCurrentMember', ({ portfolio }) =>
+    R.pathOr({}, ['members', 0])(portfolio),
+  ),
+)
 export default class Description extends PureComponent {
   handleDocPress = item => {
     this.props.dispatch(
@@ -76,7 +91,17 @@ export default class Description extends PureComponent {
     );
   };
 
+  renderTruncatedFooter = handlePress => (
+    <ReadMoreFooter collapsed onPress={handlePress} />
+  );
+
+  renderRevealedFooter = handlePress => (
+    <ReadMoreFooter collapsed={false} onPress={handlePress} />
+  );
+
   render() {
+    const { memberCollapsed } = this.props;
+
     const coinName = R.pathOr('', ['portfolio', 'name'])(this.props);
     const description = R.pathOr('', ['portfolio', 'description'])(this.props);
     const siteUrl = R.pathOr('', ['portfolio', 'homepage'])(this.props);
@@ -87,7 +112,9 @@ export default class Description extends PureComponent {
       R.filter(i => !!iconMap[String(i.name).toLowerCase()]),
       R.pathOr([], ['portfolio', 'social_networks']),
     )(this.props);
-    const members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    let members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    members = memberCollapsed ? R.take(5)(members) : members;
+
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     const industry_investments = R.pathOr('', [
       'portfolio',
@@ -106,12 +133,19 @@ export default class Description extends PureComponent {
         </TouchableWithoutFeedback>
       </Flex>
     );
+
     return (
       <View style={styles.container}>
         {R.not(R.isEmpty(description)) && (
           <View style={styles.fieldGroup}>
             {title('项目简介')}
-            <Text style={styles.desc}>{description}</Text>
+            <ReadMore
+              numberOfLines={10}
+              renderTruncatedFooter={this.renderTruncatedFooter}
+              renderRevealedFooter={this.renderRevealedFooter}
+            >
+              <Text style={styles.desc}>{description}</Text>
+            </ReadMore>
           </View>
         )}
         {R.not(R.isEmpty(white_papers)) && (
@@ -195,10 +229,19 @@ export default class Description extends PureComponent {
                 <MemberItem
                   key={m.id}
                   data={m}
+                  onPrivacyItemPress={() => {
+                    this.props.setCurrentMember(m);
+                    this.props.setShowModal(true);
+                  }}
                   onPress={() => this.goToMemberDetail(m)}
+                  onClaimPress={() => this.props.onClaimPress(m)}
                 />
               ))(members)}
             </View>
+            <ReadMoreFooter
+              collapsed={memberCollapsed}
+              onPress={() => this.props.setMemberCollapsed(!memberCollapsed)}
+            />
           </View>
         )}
         {R.not(R.isEmpty(industry_investments)) && (
@@ -221,6 +264,27 @@ export default class Description extends PureComponent {
             <Roadmap {...this.props} roadmap={roadmap} />
           </View>
         )}
+        <ActionAlert
+          visible={this.props.showModal}
+          title="联系Ta"
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 18 }}
+          actionTitle="帮我联系"
+          action={() => {
+            this.props.setShowModal(false);
+            const project_name = R.path(['name'])(this.props.portfolio);
+            const contact_name = R.path(['name'])(this.props.currentMember);
+            const mobile = R.pathOr('未知', ['mobile'])(this.props.user);
+            request
+              .post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
+                content: `想要联系「${project_name} - ${contact_name}」`,
+                mobile,
+              })
+              .then(() => {
+                Toast.success('您的反馈已提交');
+              });
+          }}
+          onBackdropPress={() => this.props.setShowModal(false)}
+        />
       </View>
     );
   }

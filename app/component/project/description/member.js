@@ -1,160 +1,143 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableWithoutFeedback,
-  Linking,
-  Clipboard,
-} from 'react-native';
-import { Flex, Toast } from 'antd-mobile';
+import { View, Text, StyleSheet, Image, Linking } from 'react-native';
+import { Flex } from 'antd-mobile';
 import R from 'ramda';
-import Communications from 'react-native-communications';
 
+import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
-const memberItem = ({ data, style, onPress }) => {
+const memberItem = ({
+  data,
+  style,
+  onPress,
+  onPrivacyItemPress,
+  onClaimPress,
+}) => {
   const profile_pic = R.pathOr('', ['profile_pic'])(data);
   const name = R.pathOr('--', ['name'])(data);
   const title = R.pathOr('--', ['title'])(data);
+  const intro = R.pathOr('--', ['introduction'])(data);
   const linkedIn_url = R.path(['linkedIn_url'])(data);
   const mobile = R.path(['mobile'])(data);
   const wechat = R.path(['wechat'])(data);
   const is_vip = R.pathOr(false, ['is_vip'])(data);
 
   return (
-    <TouchableWithoutFeedback onPress={onPress}>
-      <View style={[styles.container, style]}>
+    <Touchable foreground onPress={onPress}>
+      <Flex style={[styles.container, style]} align="flex-start">
         <View>
           <Avatar
-            resizeMode="cover"
+            size={52}
             source={{ uri: profile_pic }}
+            style={styles.avatar.container}
+            imageStyle={styles.avatar.image}
             raised={false}
-            size={40}
             innerRatio={1}
+            resizeMode="cover"
           />
-          {is_vip && (
-          <Image
-            style={styles.vip}
-            source={require('asset/public_project/is_vip.png')}
-          />
-        )}
+          {!is_vip && (
+            <Touchable style={styles.claim.container} onPress={onClaimPress}>
+              <Text style={styles.claim.text}>认领</Text>
+            </Touchable>
+          )}
         </View>
-        <Flex justify="between" style={{ flex: 1 }}>
-          <View style={[styles.content.container]}>
-            <Text style={styles.content.title}>{R.trim(name)}</Text>
-            <Text style={styles.content.subtitle}>{R.trim(title)}</Text>
-          </View>
-          <Flex>
-            {!!mobile && (
-            <View style={{ marginRight: 10 }}>
-              <TouchableWithoutFeedback
-                hitSlop={{
-                  top: 10,
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
-                }}
-                onPress={() => {
-                  Communications.phonecall(mobile, false);
-                }}
-              >
-                <Image
-                  style={styles.content.linkedin}
-                  source={require('asset/project/detail/mobile.png')}
-                />
-              </TouchableWithoutFeedback>
-            </View>
-          )}
-            {!!wechat && (
-            <View style={{ marginRight: 10 }}>
-              <TouchableWithoutFeedback
-                hitSlop={{
-                  top: 10,
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
-                }}
-                onPress={() => {
-                  Clipboard.setString(wechat);
-                  Toast.show('微信号已复制', Toast.SHORT, false);
-                }}
-              >
-                <Image
-                  style={styles.content.linkedin}
-                  source={require('asset/project/detail/wechat.png')}
-                />
-              </TouchableWithoutFeedback>
-            </View>
-          )}
-            {!!linkedIn_url && (
-            <View>
-              <TouchableWithoutFeedback
-                hitSlop={{
-                  top: 10,
-                  bottom: 10,
-                  left: 10,
-                  right: 10,
-                }}
-                onPress={() => {
-                  Linking.canOpenURL(linkedIn_url)
-                    .then(support => {
-                      if (support) {
-                        Linking.openURL(linkedIn_url).catch(err => {
-                          console.log(err);
-                        });
-                      }
-                    })
-                    .catch(err => console.error('An error occurred', err));
-                }}
-              >
-                <Image
-                  style={styles.content.linkedin}
-                  source={require('asset/public_project/linkedin.png')}
-                />
-              </TouchableWithoutFeedback>
-            </View>
-          )}
+        <View style={styles.content.container}>
+          <Flex align="center">
+            <Text style={styles.content.name}>{name}</Text>
+            {is_vip && (
+              <Image
+                style={{ marginLeft: 8 }}
+                source={require('asset/project/detail/vip_icon.png')}
+              />
+            )}
           </Flex>
-        </Flex>
-      </View>
-    </TouchableWithoutFeedback>
+          <Text style={styles.content.title}>{title}</Text>
+          <Flex style={{ marginTop: 6 }}>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.content.intro}>{intro}</Text>
+            </View>
+            <Flex>
+              {!!mobile && (
+                <Touchable onPress={onPrivacyItemPress}>
+                  <Image source={require('asset/project/detail/mobile.png')} />
+                </Touchable>
+              )}
+              {!!wechat && (
+                <Touchable onPress={onPrivacyItemPress}>
+                  <Image
+                    style={{ marginLeft: 12 }}
+                    source={require('asset/project/detail/wechat.png')}
+                  />
+                </Touchable>
+              )}
+              {!!linkedIn_url && (
+                <Touchable
+                  onPress={() => {
+                    Linking.openURL(linkedIn_url).catch(err =>
+                      console.error('An error occurred', err),
+                    );
+                  }}
+                >
+                  <Image
+                    style={{ marginLeft: 12 }}
+                    source={require('asset/project/detail/linkedin.png')}
+                  />
+                </Touchable>
+              )}
+            </Flex>
+          </Flex>
+        </View>
+      </Flex>
+    </Touchable>
   );
 };
 
 const styles = {
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
     paddingVertical: 12,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: '#E9E9E9',
   },
-  vip: {
-    position: 'absolute',
-    right: 0,
-    bottom: 3.5,
+  avatar: {
+    container: {
+      borderRadius: 0,
+    },
+    image: {
+      borderRadius: 2,
+    },
+  },
+  claim: {
+    container: {
+      width: 52,
+      backgroundColor: '#1890FF',
+      marginTop: 6,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    text: {
+      fontSize: 10,
+      color: 'white',
+    },
   },
   content: {
     container: {
       flex: 1,
-      marginLeft: 15,
+      marginLeft: 12,
+    },
+    name: {
+      fontSize: 16,
+      fontWeight: 'bold',
+      color: 'rgba(0, 0, 0, 0.85)',
     },
     title: {
-      color: 'rgba(0, 0, 0, 0.85)',
-      fontSize: 14,
+      marginTop: 6,
+      fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.65)',
       fontWeight: 'bold',
     },
-    linkedin: {
-      width: 25,
-      height: 25,
-    },
-    subtitle: {
-      marginTop: 6,
-      color: 'rgba(0, 0, 0, 0.65)',
+    intro: {
       fontSize: 12,
+      color: 'rgba(0, 0, 0, 0.45)',
+      lineHeight: 18,
     },
   },
 };

@@ -52,20 +52,21 @@ const styles = {
     alignItems: 'center',
   },
   text: {
-    fontSize: 14,
-    color: 'rgba(0, 0, 0, 0.65)',
+    fontSize: 13,
+    fontWeight: 'bold',
+    color: '#A1B6C9',
   },
   textHighlight: {
-    fontWeight: 'bold',
+    fontSize: 14,
     color: 'rgba(0, 0, 0, 0.85)',
   },
   underline: {
     position: 'absolute',
-    bottom: 4,
+    bottom: 6,
     left: 0,
     right: 0,
     height: 3,
-    borderRadius: 1.5,
+    // borderRadius: 1.5,
     backgroundColor: '#1890FF',
   },
 };

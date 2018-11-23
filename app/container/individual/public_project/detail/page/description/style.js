@@ -19,11 +19,19 @@ export default {
   },
   correction: { fontSize: 12, color: '#6C98C0', letterSpacing: 0.29 },
   desc: {
-    fontFamily: 'PingFangSC-Regular',
-    fontSize: 13,
-    color: '#4A4A4A',
-    letterSpacing: 0.31,
-    lineHeight: 18,
+    fontSize: 14,
+    color: 'rgba(0, 0, 0, 0.85)',
+    lineHeight: 22,
+  },
+  readmore: {
+    container: {
+      marginTop: 10,
+      alignItems: 'center',
+    },
+    text: {
+      color: '#1890FF',
+      fontWeight: 'bold',
+    },
   },
   more: {
     color: '#0090FF',

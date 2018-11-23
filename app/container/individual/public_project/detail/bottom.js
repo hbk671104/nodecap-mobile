@@ -10,10 +10,10 @@ import { bottomTabHeight } from './style';
 
 const bottom = ({
   onFavorPress,
+  onInviteJoinPress,
   portfolio,
   openShareModal,
   onPressComment,
-  onPressInviteEnter,
 }) => {
   const favored = R.pathOr(false, ['is_focused'])(portfolio);
   return (
@@ -26,10 +26,8 @@ const bottom = ({
         >
           <View style={styles.group.container}>
             <Image
-              style={{
-                width: 20,
-                height: 20,
-              }}
+              resizeMode="contain"
+              style={styles.group.image}
               source={
                 favored
                   ? require('asset/project/detail/gold_star.png')
@@ -48,10 +46,8 @@ const bottom = ({
         >
           <View style={styles.group.container}>
             <Image
-              style={{
-                width: 18,
-                height: 18,
-              }}
+              resizeMode="contain"
+              style={styles.group.image}
               source={require('asset/project/detail/share.png')}
             />
             <Text style={styles.group.title}>分享</Text>
@@ -60,15 +56,13 @@ const bottom = ({
         <Touchable
           style={styles.group.wrapper}
           borderless
-          onPress={onPressComment}
+          onPress={() => onPressComment()}
         >
           <View style={styles.group.container}>
             <Image
-              style={{
-                height: 17.5,
-                width: 19,
-              }}
-              source={require('asset/public_project/comment.png')}
+              resizeMode="contain"
+              style={styles.group.image}
+              source={require('asset/project/detail/comment.png')}
             />
             <Text style={styles.group.title}>点评</Text>
           </View>
@@ -76,15 +70,13 @@ const bottom = ({
         <Touchable
           style={styles.group.wrapper}
           borderless
-          onPress={onPressInviteEnter}
+          onPress={onInviteJoinPress}
         >
           <View style={styles.group.container}>
             <Image
-              style={{
-                height: 18.5,
-                width: 20,
-              }}
-              source={require('asset/public_project/enter.png')}
+              resizeMode="contain"
+              style={styles.group.image}
+              source={require('asset/project/detail/invite_join.png')}
             />
             <Text style={styles.group.title}>邀请入驻</Text>
           </View>
@@ -118,8 +110,12 @@ const styles = {
       justifyContent: 'center',
       alignItems: 'center',
     },
+    image: {
+      height: 20,
+      width: 20,
+    },
     title: {
-      marginTop: 6,
+      marginTop: 5,
       color: 'rgba(0, 0, 0, 0.65)',
       fontSize: 11,
     },

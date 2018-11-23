@@ -8,6 +8,8 @@ const actionAlert = ({
   visible,
   title,
   content,
+  contentContainerStyle,
+  image,
   actionTitle,
   action,
   onBackdropPress,
@@ -23,19 +25,21 @@ const actionAlert = ({
   >
     {renderContent ? renderContent() : (
       <View style={styles.contentWrapper}>
-        <View style={styles.container}>
+        <View style={[styles.container, contentContainerStyle]}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.content}>{content}</Text>
+          {!!content && <Text style={styles.content}>{content}</Text>}
+          {image && (
           <Image
             style={{ marginTop: 24 }}
-            source={require('asset/allow_notification.png')}
+            source={image}
           />
+)}
         </View>
         <Touchable style={styles.action.container} onPress={action}>
           <Text style={styles.action.text}>{actionTitle}</Text>
         </Touchable>
       </View>
-    )}
+)}
   </Modal>
 );
 

@@ -14,6 +14,7 @@ import Swiper from 'react-native-swiper';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import FadeIn from 'react-native-fade-in-image';
 import { RouterEmitter } from '../../../../router';
 
 import { SearchBarDisplayHomepage } from 'component/searchBar/display';
@@ -203,7 +204,9 @@ const top = ({
               }
             }}
           >
-            <Image style={styles.banner} source={{ uri: n.banner }} />
+            <FadeIn>
+              <Image style={styles.banner} source={{ uri: n.banner }} />
+            </FadeIn>
           </TouchableWithoutFeedback>
         ))(banners)}
       </Swiper>
