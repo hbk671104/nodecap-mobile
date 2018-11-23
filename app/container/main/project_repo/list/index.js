@@ -64,13 +64,23 @@ export default class ProjectList extends Component {
 
   handleProgressSelection = ({ value, name }) => {
     this.props.track('筛选项点击', { name });
-    this.props.dispatch({
-      type: 'public_project/fetch',
-      params: {
-        ...this.props.params,
-        progress: value,
-      },
-    });
+    if (R.path(['params', 'progress'])(this.props) === value) {
+      this.props.dispatch({
+        type: 'public_project/fetch',
+        params: {
+          ...this.props.params,
+          progress: '',
+        },
+      });
+    } else {
+      this.props.dispatch({
+        type: 'public_project/fetch',
+        params: {
+          ...this.props.params,
+          progress: value,
+        },
+      });
+    }
   };
 
   handleItemPress = item => () => {

@@ -85,6 +85,7 @@ export default class GlobalSearch extends Component {
           clearButtonMode="always"
           onChange={this.onSearch}
           onSubmitEditing={this.onSubmit}
+          autoFocus
         />
         {!this.state.searchText &&
         (<Image style={styles.searchIcon} source={require('asset/search_icon.png')} />)
