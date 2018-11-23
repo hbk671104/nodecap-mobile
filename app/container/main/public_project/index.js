@@ -320,6 +320,7 @@ export default class PublicProject extends Component {
 
   render() {
     const { news, loading, showExplanation } = this.props;
+    let lastY = 0;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -327,6 +328,13 @@ export default class PublicProject extends Component {
           disableRefresh
           listRef={ref => {
             this.scroll = ref;
+          }}
+          onScroll={(e) => {
+            const currentY = R.path(['nativeEvent', 'contentOffset', 'y'])(e);
+            if (currentY > lastY && currentY > 0) {
+              this.props.track('列表下滑');
+            }
+            lastY = currentY;
           }}
           contentContainerStyle={styles.listContent}
           action={this.requestData}

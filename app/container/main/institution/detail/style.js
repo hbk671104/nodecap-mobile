@@ -20,4 +20,11 @@ export default {
       bottom: 190,
     },
   },
+  right: {
+    container: {},
+    text: {
+      fontSize: 14,
+      color: 'white',
+    },
+  },
 };

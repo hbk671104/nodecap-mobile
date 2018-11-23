@@ -12,6 +12,7 @@ import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
 import Touchable from 'component/uikit/touchable';
 import ActionAlert from 'component/action_alert';
+import shareModal from 'component/shareModal';
 
 import Group from './partials/group';
 import Member from './partials/member';
@@ -39,6 +40,7 @@ import styles from './style';
     R.pathOr({}, ['members', 0])(data),
   ),
 )
+@shareModal
 export default class InstitutionDetail extends Component {
   componentWillMount() {
     this.loadDetail();
@@ -117,12 +119,44 @@ export default class InstitutionDetail extends Component {
     );
   };
 
+  handleSharePress = () => {
+    const { data, navigation } = this.props;
+    this.props.openShareModal({
+      types: [{
+        type: 'timeline',
+        webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${data.id}`,
+        title: `推荐给你「${R.path(['name'])(data)}」`,
+        description: '来 Hotnode 找全球区块链服务机构！',
+        thumbImage:
+        R.path(['profile_pic'])(data) || R.path(['avatar_url'])(data) ||
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+      }, {
+        type: 'session',
+        webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${data.id}`,
+        title: `推荐给你「${R.path(['name'])(data)}」`,
+        description: '来 Hotnode 找全球区块链服务机构！',
+        thumbImage:
+        R.path(['profile_pic'])(data) || R.path(['avatar_url'])(data) ||
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+      }, {
+        type: 'link',
+        url: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${data.id}`,
+      }],
+    });
+  }
+
+
   renderNavBar = () => (
     <NavBar
       back
       gradient
       renderBottom={() => (
         <Header {...this.props} onLinkPress={this.handleLinkPress} />
+      )}
+      renderRight={() => (
+        <Touchable onPress={this.handleSharePress}>
+          <Text style={styles.right.text}>分享</Text>
+        </Touchable>
       )}
     />
   );
