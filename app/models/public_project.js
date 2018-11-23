@@ -153,6 +153,10 @@ export default {
       try {
         const { data } = yield call(getCoinInfo, id);
 
+        yield put.resolve({
+          type: 'global/getConstant',
+        });
+
         yield put({
           type: 'current',
           payload: data,

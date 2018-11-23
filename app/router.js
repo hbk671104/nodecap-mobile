@@ -663,18 +663,6 @@ class Router extends Component {
           <UpdateAlert note={release_notes} />
         </Modal>
         <ActionAlert
-          visible={this.props.showNotificationModal}
-          title="开启推送通知"
-          content="及时获取项目上所，融资等动态信息"
-          image={require('asset/allow_notification.png')}
-          actionTitle="立即开启"
-          action={() => {
-            Linking.openURL('app-settings:');
-            this.props.setShowNotificationModal(false);
-          }}
-          onBackdropPress={() => this.props.setShowNotificationModal(false)}
-        />
-        <ActionAlert
           visible={this.props.showInviteEnter}
           renderContent={this.renderInviteEnter}
           onBackdropPress={() => this.props.setShowInviteEnterModal(false)}

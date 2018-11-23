@@ -16,10 +16,21 @@ import styles from './style';
   roadmap: R.path(['current', 'roadmap'])(project_create),
 }))
 @createForm({
-  onValuesChange: ({ dispatch }, changed, all) => {
+  onValuesChange: ({ dispatch, roadmap }, changed, all) => {
     dispatch({
       type: 'project_create/saveCurrent',
-      payload: all,
+      payload: {
+        roadmap: R.pipe(
+          R.path(['roadmap']),
+          R.addIndex(R.map)((item, i) => {
+            const id = R.path([i, 'id'])(roadmap);
+            return {
+              ...(id ? { id } : {}),
+              ...item,
+            };
+          }),
+        )(all),
+      },
     });
   },
   mapPropsToFields: ({ roadmap }) => {
