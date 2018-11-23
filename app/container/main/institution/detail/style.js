@@ -1,3 +1,5 @@
+export const bottomTabHeight = 55;
+
 export default {
   container: {
     flex: 1,

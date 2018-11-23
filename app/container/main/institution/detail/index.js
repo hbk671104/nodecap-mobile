@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, Clipboard, Linking } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
@@ -7,6 +7,8 @@ import { NavigationActions } from 'react-navigation';
 import { compose, withState } from 'recompose';
 import request from 'utils/request';
 import runtimeConfig from 'runtime/index';
+import Base64 from 'utils/base64';
+import DeviceInfo from 'react-native-device-info';
 
 import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
@@ -17,6 +19,7 @@ import Member from 'component/institution/member_item';
 
 import Group from './partials/group';
 import Header from './header';
+import Bottom from './bottom';
 import styles from './style';
 
 @global.bindTrack({
@@ -35,6 +38,7 @@ import styles from './style';
   };
 })
 @compose(
+  withState('showInviteModal', 'toggleInviteModal', false),
   withState('showModal', 'setShowModal', false),
   withState('currentMember', 'setCurrentMember', ({ data }) =>
     R.pathOr({}, ['members', 0])(data),
@@ -145,6 +149,13 @@ export default class InstitutionDetail extends Component {
     });
   }
 
+  handleInviteJoinPress = () => {
+    const { id } = this.props;
+    const cryptID = Base64.btoa(`${id}`);
+    const UniqueID = DeviceInfo.getUniqueID().slice(0, 5);
+    Clipboard.setString(`邀请您认领「${R.path(['data', 'name'])(this.props)}」，复制整段文字 ^*${UniqueID}$${cryptID}*^ 到 Hotnode 中打开`);
+    this.props.toggleInviteModal(true);
+  }
 
   renderNavBar = () => (
     <NavBar
@@ -153,16 +164,11 @@ export default class InstitutionDetail extends Component {
       renderBottom={() => (
         <Header {...this.props} onLinkPress={this.handleLinkPress} />
       )}
-      renderRight={() => (
-        <Touchable onPress={this.handleSharePress}>
-          <Text style={styles.right.text}>分享</Text>
-        </Touchable>
-      )}
     />
   );
 
   render() {
-    const { data, in_individual } = this.props;
+    const { data, in_individual, showInviteModal } = this.props;
     const desc = R.pathOr('', ['description'])(data);
     const members = R.pathOr([], ['members'])(data);
     const coins = R.pathOr([], ['coins'])(data);
@@ -207,6 +213,10 @@ export default class InstitutionDetail extends Component {
             </Group>
           )}
         </ScrollView>
+        <Bottom
+          openShareModal={this.handleSharePress}
+          onInviteJoinPress={this.handleInviteJoinPress}
+        />
         {in_individual && (
           <Touchable
             style={styles.claim.container}
@@ -215,6 +225,23 @@ export default class InstitutionDetail extends Component {
             <Image source={require('asset/project/detail/claim.png')} />
           </Touchable>
         )}
+        <ActionAlert
+          visible={showInviteModal}
+          title="邀请入驻"
+          content="邀请口令已复制，快去粘贴吧"
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 18 }}
+          actionTitle="分享至微信"
+          action={async () => {
+            this.props.toggleInviteModal(false);
+            try {
+              await Linking.canOpenURL('wechat://');
+              await Linking.openURL('wechat://');
+            } catch (e) {
+              console.log(e);
+            }
+          }}
+          onBackdropPress={() => this.props.toggleInviteModal(false)}
+        />
         <ActionAlert
           visible={this.props.showModal}
           title="联系Ta"

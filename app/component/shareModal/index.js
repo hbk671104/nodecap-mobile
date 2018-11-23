@@ -94,6 +94,9 @@ export default function ShareModalDecorator(ComponentClass) {
       const { _collapsed } = this.props;
       LayoutAnimation.easeInEaseOut();
       this.props._setCollapsed(!_collapsed, () => {
+        if (!_collapsed && this.onClose) {
+          this.onClose();
+        }
         this.footer.transitionTo(
           {
             transform: [
@@ -123,10 +126,14 @@ export default function ShareModalDecorator(ComponentClass) {
     }
 
     types = []
-
-    openShareModal = ({ types = [] }) => {
+    openShareModal = ({ types = [], onOpen, onClose }) => {
       this.types = R.map(i => R.merge(this.defaultTypes[i.type], i))(types);
       this.toggleCollapsed();
+      if (onOpen) {
+        onOpen();
+      }
+
+      this.onClose = onClose;
     }
 
     renderShareItem = (type) => {
@@ -183,7 +190,7 @@ export default function ShareModalDecorator(ComponentClass) {
       return (
         <Animatable.View
           pointerEvents={_collapsed ? 'none' : 'auto'}
-          onStartShouldSetResponder={this.openShareModal}
+          onStartShouldSetResponder={() => this.toggleCollapsed()}
           ref={ref => {
             this.wrapper = ref;
           }}

@@ -40,6 +40,22 @@ export default class CoinsInSet extends Component {
         type: 'session',
         ...request,
       }],
+      onOpen: () => {
+        this.props.dispatch(
+          NavigationActions.setParams({
+            params: { tabBarVisible: false },
+            key: 'ProjectRepo',
+          }),
+        );
+      },
+      onClose: () => {
+        this.props.dispatch(
+          NavigationActions.setParams({
+            params: { tabBarVisible: true },
+            key: 'ProjectRepo',
+          }),
+        );
+      },
     });
   };
 

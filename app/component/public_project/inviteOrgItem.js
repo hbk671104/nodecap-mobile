@@ -8,7 +8,7 @@ import Avatar from 'component/uikit/avatar.solid';
 import { raised as raisedStyle } from '../../utils/style';
 import store from '../../../index';
 
-class InviteItem extends Component {
+class InviteOrgItem extends Component {
   toCoinDetail = (id) => {
     store.dispatch(
       NavigationActions.navigate({
@@ -32,28 +32,13 @@ class InviteItem extends Component {
       <View style={styles.container}>
         <Flex style={styles.background} justify="center">
           <Avatar
-            source={{ uri: data.icon }}
+            source={{ uri: data.logo_url }}
             style={[styles.logo, raisedStyle]}
             size={80}
           />
         </Flex>
         <View style={styles.content}>
           <Text style={styles.title}>{data.name}</Text>
-          <Text style={styles.symbol}>
-            {!!data.symbol && `(${data.symbol})`}
-          </Text>
-          <Flex style={styles.tags}>
-            {R.addIndex(R.map)((t, i) => (
-              <View key={`${i}`} style={styles.tag.container}>
-                <Text style={styles.tag.title}>
-                  {R.pipe(
-                    R.pathOr('', ['name']),
-                    R.trim,
-                  )(t)}
-                </Text>
-              </View>
-            ))(category)}
-          </Flex>
           <Text numberOfLines={1} style={styles.desc}>{data.description}</Text>
         </View>
       </View>
@@ -75,7 +60,7 @@ const styles = {
   },
   container: {
     width: 270,
-    height: 230,
+    height: 180,
   },
   content: {
     marginTop: 35,
@@ -125,7 +110,7 @@ const styles = {
   buttonText: { fontSize: 15, color: '#1890FF', letterSpacing: 0.24, textAlign: 'center' },
 };
 
-InviteItem.propTypes = {};
-InviteItem.defaultProps = {};
+InviteOrgItem.propTypes = {};
+InviteOrgItem.defaultProps = {};
 
-export default InviteItem;
+export default InviteOrgItem;

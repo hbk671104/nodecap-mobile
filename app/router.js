@@ -37,9 +37,10 @@ import { setStatusBar } from 'component/uikit/statusBar';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
-import { getCoinInfo } from 'services/api';
+import { getCoinInfo, getIndustryDetail } from 'services/api';
 
 import InviteItem from 'component/public_project/inviteItem';
+import InviteOrgItem from 'component/public_project/inviteOrgItem';
 // Screen
 import Loader from 'container/loader';
 import Login from 'container/auth/login';
@@ -479,7 +480,9 @@ import { handleBadgeAction } from 'utils/badge_handler';
 @compose(
   withState('showNotificationModal', 'setShowNotificationModal', false),
   withState('showInviteEnter', 'setShowInviteEnterModal', false),
+  withState('showInviteOrgEnter', 'setShowInviteOrgEnterModal', false),
   withState('inviteCoin', 'setInviteCoin', null),
+  withState('inviteOrg', 'setInviteOrg', null),
   withState('appState', 'setAppState', AppState.currentState),
 )
 class Router extends Component {
@@ -509,6 +512,7 @@ class Router extends Component {
     handleBadgeAction();
 
     this.parseInviteKey();
+    this.parseOrgInviteKey();
   }
 
   componentDidMount() {
@@ -553,6 +557,29 @@ class Router extends Component {
     }
   }
 
+  parseOrgInviteKey = async () => {
+    try {
+      const clipString = await Clipboard.getString();
+      const matchResult = clipString.match(/\^\*(.*)?\$(.*)?\*\^/);
+      const viewedInviteKey = await AsyncStorage.getItem('viewOrgInviteKey');
+      const hasViewed = viewedInviteKey === matchResult[0];
+      if (matchResult) {
+        const uniqueID = DeviceInfo.getUniqueID().slice(0, 5);
+        const device = matchResult[1];
+        const coinID = matchResult[2];
+
+        if (device !== uniqueID && !hasViewed) {
+          const { data } = await getIndustryDetail(Base64.atob(coinID));
+          this.props.setInviteOrg(data);
+          this.props.setShowInviteOrgEnterModal(true);
+          AsyncStorage.setItem('viewOrgInviteKey', matchResult[0]);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
   handleOpenURL = event => {
     // const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
     const reg = R.pipe(
@@ -590,6 +617,7 @@ class Router extends Component {
     ) {
       RouterEmitter.emit('resume');
       this.parseInviteKey();
+      this.parseOrgInviteKey();
       // check codepush
       this.props.dispatch({
         type: 'app/checkCodePush',
@@ -646,8 +674,19 @@ class Router extends Component {
     );
   }
 
+  renderInviteOrgEnter = () => {
+    const { inviteOrg } = this.props;
+    return (
+      <View>
+        <InviteOrgItem
+          data={inviteOrg}
+        />
+      </View>
+    );
+  }
+
   render() {
-    const { dispatch, app, router, showAlert, release_notes, inviteCoin } = this.props;
+    const { dispatch, app, router, showAlert, release_notes, inviteCoin, inviteOrg } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <ActionSheetProvider>
@@ -678,6 +717,25 @@ class Router extends Component {
             );
             this.props.setShowInviteEnterModal(false);
             this.props.setInviteCoin({});
+          }}
+          actionTitle="去认领入驻"
+        />
+        <ActionAlert
+          visible={this.props.showInviteOrgEnter}
+          renderContent={this.renderInviteOrgEnter}
+          onBackdropPress={() => this.props.setShowInviteOrgEnterModal(false)}
+          action={() => {
+            store.dispatch(
+              NavigationActions.navigate({
+                routeName: 'InstitutionDetail',
+                params: {
+                  id: inviteOrg.id,
+                },
+                key: `InstitutionDetail_${inviteOrg.id}`,
+              }),
+            );
+            this.props.setShowInviteOrgEnterModal(false);
+            this.props.setInviteOrg({});
           }}
           actionTitle="去认领入驻"
         />
