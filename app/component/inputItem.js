@@ -41,11 +41,13 @@ class InputItem extends PureComponent {
     inputProps: PropTypes.object,
     onPress: PropTypes.func,
     error: PropTypes.array,
+    required: PropTypes.bool,
   };
 
   static defaultProps = {
     vertical: false,
     showArrow: false,
+    required: false,
     inputProps: {},
     error: [],
   };
@@ -67,6 +69,7 @@ class InputItem extends PureComponent {
       onPress,
       value,
       error,
+      required,
     } = this.props;
     return (
       <Touchable disabled={!onPress} onPress={onPress}>
@@ -74,7 +77,17 @@ class InputItem extends PureComponent {
           <View
             style={[styles.wrapper, vertical && styles.vertical, wrapperStyle]}
           >
-            {!!title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
+            {!!title && (
+              <Flex style={styles.titleContainer}>
+                <Text style={[styles.title, titleStyle]}>{title}</Text>
+                {required && (
+                  <View style={{ position: 'absolute', top: 0, right: 0 }}>
+                    {' '}
+                    <Text style={styles.required}>*</Text>
+                  </View>
+                )}
+              </Flex>
+            )}
             <View
               style={
                 vertical
@@ -137,8 +150,16 @@ const styles = {
     flexDirection: 'column',
     alignItems: undefined,
   },
+  titleContainer: {
+    paddingVertical: 3,
+    paddingRight: 8,
+  },
   title: {
     color: 'rgba(0, 0, 0, 0.45)',
+  },
+  required: {
+    fontSize: 11,
+    color: '#F55454',
   },
   content: {
     horizontal: {

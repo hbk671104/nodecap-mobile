@@ -238,10 +238,12 @@ export default class Description extends PureComponent {
                 />
               ))(members)}
             </View>
-            <ReadMoreFooter
-              collapsed={memberCollapsed}
-              onPress={() => this.props.setMemberCollapsed(!memberCollapsed)}
-            />
+            {(members.length > 5) && (
+              <ReadMoreFooter
+                collapsed={memberCollapsed}
+                onPress={() => this.props.setMemberCollapsed(!memberCollapsed)}
+              />
+            )}
           </View>
         )}
         {R.not(R.isEmpty(industry_investments)) && (

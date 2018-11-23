@@ -115,6 +115,7 @@ class Team extends PureComponent {
           ],
         })(
           <InputItem
+            required
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="姓名"
@@ -154,6 +155,7 @@ class Team extends PureComponent {
           ],
         })(
           <InputItem
+            required
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
             title="职位"

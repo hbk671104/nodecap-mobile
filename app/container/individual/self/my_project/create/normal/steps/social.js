@@ -85,14 +85,7 @@ class Social extends PureComponent {
         <View style={styles.formTitle.container}>
           <Text style={styles.formTitle.text}>社群 {index + 1}</Text>
         </View>
-        {getFieldDecorator(`social_network[${index}].name`, {
-          rules: [
-            {
-              required: true,
-              message: '请选择社区类型',
-            },
-          ],
-        })(
+        {getFieldDecorator(`social_network[${index}].name`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}
@@ -141,14 +134,7 @@ class Social extends PureComponent {
             error={getFieldError(`social_network[${index}].name`)}
           />,
         )}
-        {getFieldDecorator(`social_network[${index}].link_url`, {
-          rules: [
-            {
-              required: true,
-              message: '请输入社群地址',
-            },
-          ],
-        })(
+        {getFieldDecorator(`social_network[${index}].link_url`)(
           <InputItem
             style={styles.inputItem.container}
             titleStyle={styles.inputItem.title}

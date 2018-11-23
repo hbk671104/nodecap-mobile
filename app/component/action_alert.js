@@ -21,25 +21,26 @@ const actionAlert = ({
     isVisible={visible}
     style={styles.wrapper}
     onBackdropPress={onBackdropPress}
-    backdropOpacity={0.65}
+    backdropOpacity={0.4}
   >
-    {renderContent ? renderContent() : (
-      <View style={styles.contentWrapper}>
+    <View style={styles.contentWrapper}>
+      {renderContent ? (
+        renderContent()
+      ) : (
         <View style={[styles.container, contentContainerStyle]}>
           <Text style={styles.title}>{title}</Text>
           {!!content && <Text style={styles.content}>{content}</Text>}
-          {image && (
-          <Image
+          {image && (<Image
             style={{ marginTop: 24 }}
             source={image}
           />
 )}
         </View>
-        <Touchable style={styles.action.container} onPress={action}>
-          <Text style={styles.action.text}>{actionTitle}</Text>
-        </Touchable>
-      </View>
 )}
+      <Touchable style={styles.action.container} onPress={action}>
+        <Text style={styles.action.text}>{actionTitle}</Text>
+      </Touchable>
+    </View>
   </Modal>
 );
 

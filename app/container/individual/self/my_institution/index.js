@@ -4,11 +4,17 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
+import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import InstitutionSimplifiedItem from 'component/institution/simplified_item';
 import List from 'component/uikit/list';
+import Empty from 'component/empty';
+import { institutionReviewed as InstitutionReviewed } from 'component/reviewed';
+import { Storage } from 'utils';
+import shareModal from 'component/shareModal';
+import Config from 'runtime/index';
 import styles from './style';
 
 @global.bindTrack({
@@ -21,6 +27,11 @@ import styles from './style';
   pagination: R.pathOr(null, ['list', 'pagination'])(institution_create),
   loading: loading.effects['institution_create/fetch'],
 }))
+@compose(
+  withState('reviewedVisible', 'setReviewedVisible', false),
+  withState('reviewedItem', 'setReviewedItem', null),
+)
+@shareModal
 class MyInstitution extends Component {
   componentWillMount() {
     const { current } = this.props;
@@ -33,6 +44,25 @@ class MyInstitution extends Component {
 
   componentDidMount() {
     this.props.track('进入');
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    const data = R.pathOr([], ['data'])(nextProps);
+    if (R.length(data) > 0) {
+      const reviewed_item = R.find(d => R.path(['owner_status'])(d) === 1)(
+        data,
+      );
+      if (reviewed_item && !nextProps.reviewedItem) {
+        this.props.setReviewedItem(reviewed_item);
+        const showed_reviewed_institution = await Storage.get(
+          'showed_reviewed_institution',
+        );
+        if (showed_reviewed_institution) {
+          return;
+        }
+        this.props.setReviewedVisible(true);
+      }
+    }
   }
 
   requestData = (page, size) => {
@@ -78,6 +108,38 @@ class MyInstitution extends Component {
     });
   };
 
+  handleExitPress = () => {
+    this.props.setReviewedVisible(false);
+    Storage.set('showed_reviewed_institution', true);
+  };
+
+  handleSharePress = () => {
+    const data = this.props.reviewedItem;
+    this.props.setReviewedVisible(false);
+    this.props.openShareModal({
+      types: [{
+        type: 'timeline',
+        webpageUrl: `${Config.MOBILE_SITE}/industry-investments?id=${data.id}`,
+        title: `推荐给你「${R.path(['name'])(data)}」`,
+        description: '来 Hotnode 找全球区块链服务机构！',
+        thumbImage:
+        R.path(['profile_pic'])(data) || R.path(['avatar_url'])(data) ||
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+      }, {
+        type: 'session',
+        webpageUrl: `${Config.MOBILE_SITE}/industry-investments?id=${data.id}`,
+        title: `推荐给你「${R.path(['name'])(data)}」`,
+        description: '来 Hotnode 找全球区块链服务机构！',
+        thumbImage:
+        R.path(['profile_pic'])(data) || R.path(['avatar_url'])(data) ||
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+      }, {
+        type: 'link',
+        url: `${Config.MOBILE_SITE}/industry-investments?id=${data.id}`,
+      }],
+    });
+  }
+
   renderNavBar = () => (
     <NavBar
       back
@@ -100,8 +162,20 @@ class MyInstitution extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderEmpty = () => (
+    <Empty
+      style={{ marginTop: 70 }}
+      image={require('asset/empty/empty_data.png')}
+      title="暂无机构，快创建属于你自己的机构吧"
+      buttonTitle="立即创建"
+      buttonStyle={{ width: 210, marginHorizontal: 0, alignSelf: 'center' }}
+      buttonTitleStyle={{ fontSize: 13 }}
+      action={this.handleCreatePress}
+    />
+  );
+
   render() {
-    const { data, pagination, loading } = this.props;
+    const { data, pagination, loading, reviewedVisible } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -112,6 +186,12 @@ class MyInstitution extends Component {
           data={data}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
+          renderEmpty={this.renderEmpty}
+        />
+        <InstitutionReviewed
+          visible={reviewedVisible}
+          onExitPress={this.handleExitPress}
+          onSharePress={this.handleSharePress}
         />
       </View>
     );

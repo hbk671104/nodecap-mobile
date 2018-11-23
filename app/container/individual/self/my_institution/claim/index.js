@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
-
+import request from 'utils/request';
+import runtimeConfig from 'runtime/index';
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
@@ -85,14 +86,14 @@ class ClaimInstitution extends Component {
   };
 
   handleSavePress = () => {
-    this.props.form.validateFields(err => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.handleSubmit();
+        this.handleSubmit(values);
       }
     });
   };
 
-  handleSubmit = () => {
+  handleSubmit = (value) => {
     // institution claim saga check
     this.props.dispatch({
       type: this.props.id
@@ -110,6 +111,10 @@ class ClaimInstitution extends Component {
             }),
           );
         }
+        request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
+          content: `${value.owner_name} 认领了 ID 为 ${this.props.id} 的机构，请快去审核`,
+          mobile: `${value.owner_mobile}`,
+        });
       },
     });
   };
@@ -139,6 +144,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入姓名' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="姓名"
@@ -151,6 +157,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入公司职位' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="职位"
@@ -163,6 +170,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入手机号码' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="手机"
@@ -178,6 +186,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入微信号' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="微信"
@@ -190,6 +199,7 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请上传名片' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               wrapperStyle={{ alignItems: 'flex-start' }}
               titleStyle={styles.inputItem.title}
