@@ -22,12 +22,12 @@ const memberItem = ({
   const title = R.pathOr('--', ['title'])(data);
   const intro = R.pathOr('--', ['introduction'])(data);
   const linkedIn_url = R.path(['linkedIn_url'])(data);
-  const mobile = R.path(['mobile'])(data);
-  const wechat = R.path(['wechat'])(data);
+  const mobile = R.pathOr(false, ['has_mobile'])(data);
+  const wechat = R.pathOr(false, ['has_wechat'])(data);
   const is_vip = R.pathOr(false, ['is_vip'])(data);
 
   return (
-    <Touchable foreground onPress={onPress}>
+    <Touchable disabled={editMode} foreground onPress={onPress}>
       <Flex style={[styles.container, style]} align="flex-start">
         <View>
           <Avatar
@@ -84,13 +84,13 @@ const memberItem = ({
               </Text>
             </View>
             <Flex>
-              {!!mobile && (
-                <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
+              {mobile && (
+                <Touchable onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
-              {!!wechat && (
-                <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
+              {wechat && (
+                <Touchable onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}
                     source={require('asset/project/detail/wechat.png')}
@@ -99,7 +99,6 @@ const memberItem = ({
               )}
               {!!linkedIn_url && (
                 <Touchable
-                  disabled={editMode}
                   onPress={() => {
                     Linking.openURL(linkedIn_url).catch(err =>
                       console.error('An error occurred', err),

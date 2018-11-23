@@ -112,8 +112,8 @@ export default class Description extends PureComponent {
       R.filter(i => !!iconMap[String(i.name).toLowerCase()]),
       R.pathOr([], ['portfolio', 'social_networks']),
     )(this.props);
-    let members = R.pathOr([], ['portfolio', 'members'])(this.props);
-    members = memberCollapsed ? R.take(5)(members) : members;
+    const members = R.pathOr([], ['portfolio', 'members'])(this.props);
+    const display_members = memberCollapsed ? R.take(5)(members) : members;
 
     const roadmap = R.pathOr([], ['portfolio', 'basic', 'roadmap'])(this.props);
     const industry_investments = R.pathOr('', [
@@ -221,7 +221,7 @@ export default class Description extends PureComponent {
           </View>
         )}
         <Financing {...this.props} />
-        {R.not(R.isEmpty(members)) && (
+        {R.not(R.isEmpty(display_members)) && (
           <View style={styles.fieldGroup}>
             {title('团队成员')}
             <View>
@@ -236,9 +236,9 @@ export default class Description extends PureComponent {
                   onPress={() => this.goToMemberDetail(m)}
                   onClaimPress={() => this.props.onClaimPress(m)}
                 />
-              ))(members)}
+              ))(display_members)}
             </View>
-            {(members.length > 5) && (
+            {members.length > 5 && (
               <ReadMoreFooter
                 collapsed={memberCollapsed}
                 onPress={() => this.props.setMemberCollapsed(!memberCollapsed)}

@@ -22,8 +22,8 @@ const memberItem = ({
   const title = R.pathOr('--', ['title'])(data);
   const intro = R.pathOr('--', ['description'])(data);
   const linkedIn_url = R.path(['linkedin'])(data);
-  const mobile = R.path(['mobile'])(data);
-  const wechat = R.path(['wechat'])(data);
+  const mobile = R.pathOr(false, ['has_mobile'])(data);
+  const wechat = R.pathOr(false, ['has_wechat'])(data);
   const is_vip = R.pathOr(false, ['is_vip'])(data);
 
   return (
@@ -84,12 +84,12 @@ const memberItem = ({
               </Text>
             </View>
             <Flex>
-              {!!mobile && (
+              {mobile && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
-              {!!wechat && (
+              {wechat && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}
