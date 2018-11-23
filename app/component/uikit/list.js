@@ -153,7 +153,17 @@ class List extends PureComponent {
     }
     return (
       <View style={styles.empty.container}>
-        <Image source={require('asset/none.png')} />
+        <Image style={{ width: 141, height: 154 }} source={require('asset/empty_data.png')} />
+        {!!this.props.emptyTitle && (
+        <Text style={{
+          fontSize: 12,
+          color: 'rgba(0, 0, 0, 0.65)',
+          marginTop: 32,
+          alignSelf: 'center',
+        }}
+        >{this.props.emptyTitle}
+        </Text>
+)}
       </View>
     );
   };

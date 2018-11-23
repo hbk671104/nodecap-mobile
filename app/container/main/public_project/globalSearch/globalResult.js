@@ -11,6 +11,7 @@ import CoinItem from 'component/favored/item';
 import InstitutionReportItem from 'component/public_project/report_item';
 import InstitutionItem from 'component/institution/item';
 import UserItem from 'component/user/item';
+import Empty from 'component/empty';
 
 @connect(({ globalSearch, loading }, { type }) => {
   const data = {};
@@ -35,6 +36,11 @@ import UserItem from 'component/user/item';
   });
   return {
     data,
+    empty: types.every(i =>
+      R.compose(R.isEmpty, R.pathOr([], ['search', i.name, 'data']))(globalSearch) &&
+      !loading.effects[`globalSearch/${i.name}`] &&
+      globalSearch.search !== null
+    ),
   };
 })
 class globalResult extends Component {
@@ -206,6 +212,13 @@ class globalResult extends Component {
     );
   }
   render() {
+    if (this.props.empty && this.props.searchText) {
+      return (
+        <View style={{ flex: 1, marginTop: 100 }}>
+          <Empty imageStyle={{ width: 141, height: 154 }} image={require('asset/empty_data.png')} title="无结果，可尝试更换关键词" />
+        </View>
+      );
+    }
     return (
       <ScrollView style={{
         backgroundColor: '#F5F5F5',

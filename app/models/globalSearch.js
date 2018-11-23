@@ -7,7 +7,8 @@ import { paginate } from '../utils/pagination';
 export default {
   namespace: 'globalSearch',
   state: {
-    result: {},
+    result: null,
+    search: null,
   },
   effects: {
     *search({ payload }, { put }) {
@@ -119,7 +120,7 @@ export default {
     clearSearch(state, { payload }) {
       return {
         ...state,
-        search: {},
+        search: null,
       };
     },
   },

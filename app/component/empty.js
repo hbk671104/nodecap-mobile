@@ -12,9 +12,10 @@ const empty = ({
   buttonTitle,
   buttonStyle,
   buttonTitleStyle,
+                 imageStyle,
 }) => (
   <View style={[styles.container, style]}>
-    <Image source={image} style={styles.image} />
+    <Image source={image} style={[styles.image, imageStyle]} />
     <Text style={styles.title}>{title}</Text>
     {!!action && (
       <View style={[styles.button.container, buttonStyle]}>

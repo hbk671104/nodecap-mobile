@@ -139,6 +139,7 @@ export default function ShareModalDecorator(ComponentClass) {
     renderShareItem = (type) => {
       return (
         <TouchableOpacity
+          key={type.name}
           activeOpacity={0.8}
           onPress={() =>
             type.handler(

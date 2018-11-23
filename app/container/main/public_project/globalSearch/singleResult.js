@@ -57,6 +57,7 @@ export default class SingleResult extends Component {
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
           keyboardDismissMode="on-drag"
+          emptyTitle="无结果，可尝试更换关键词"
         />
       </View>
     );

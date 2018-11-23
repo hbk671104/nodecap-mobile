@@ -43,20 +43,35 @@ export default class GlobalSearch extends Component {
     this.props.track('进入');
   }
 
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'globalSearch/clearSearch',
+    });
+  }
+
+
   @bind
   onSearch(text) {
     this.setState({
       searchText: text,
     });
+
+    if (!text) {
+      this.props.dispatch({
+        type: 'globalSearch/clearSearch',
+      });
+    }
   }
 
   onSubmit = () => {
-    this.props.dispatch({
-      type: 'globalSearch/search',
-      payload: {
-        q: this.state.searchText,
-      },
-    });
+    if (this.state.searchText) {
+      this.props.dispatch({
+        type: 'globalSearch/search',
+        payload: {
+          q: this.state.searchText,
+        },
+      });
+    }
   }
 
   jumpTo = (index) => {
@@ -113,6 +128,7 @@ export default class GlobalSearch extends Component {
           <GlobalResult
             tabLabel="综合"
             jumpTo={this.jumpTo}
+            searchText={this.state.searchText}
           />
           <SingleResult
             type="coins"
