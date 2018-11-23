@@ -175,3 +175,19 @@ export function deleteWeeklyReport(id) {
 export function editWeeklyReport(id, value) {
   return request.put(`/weekly/${id}`, value);
 }
+
+export function editTeamMember({ id, payload }) {
+  return request.put(`/coin-member/${id}`, payload);
+}
+
+export function deleteTeamMember(id) {
+  return request.delete(`/coin-member/${id}`);
+}
+
+export function editInstitutionMember({ id, payload }) {
+  return request.put(`/member-investments/${id}`, payload);
+}
+
+export function deleteInstitutionMember(id) {
+  return request.delete(`/member-investments/${id}`);
+}

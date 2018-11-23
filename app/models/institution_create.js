@@ -212,6 +212,53 @@ export default {
         console.log(error);
       }
     },
+    *editMember({ id, payload, callback }, { call, put }) {
+      try {
+        const { status } = yield call(Individual.editInstitutionMember, {
+          id,
+          payload,
+        });
+
+        yield put({
+          type: 'refreshCurrent',
+        });
+
+        if (callback) {
+          yield callback(status === 200);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *deleteMember({ id, callback }, { call, put }) {
+      try {
+        const { status } = yield call(Individual.deleteInstitutionMember, id);
+
+        yield put({
+          type: 'refreshCurrent',
+        });
+
+        if (callback) {
+          yield callback(status === 200);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *refreshCurrent(_, { put, select }) {
+      try {
+        const current_instituton_id = yield select(state =>
+          R.path(['institution_create', 'current', 'id'])(state),
+        );
+
+        yield put({
+          type: 'get',
+          id: current_instituton_id,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
     *refresh(_, { all, put }) {
       try {
         yield all([

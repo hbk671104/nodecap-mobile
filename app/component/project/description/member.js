@@ -85,12 +85,12 @@ const memberItem = ({
             </View>
             <Flex>
               {!!mobile && (
-                <Touchable onPress={onPrivacyItemPress}>
+                <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
               {!!wechat && (
-                <Touchable onPress={onPrivacyItemPress}>
+                <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}
                     source={require('asset/project/detail/wechat.png')}
@@ -99,6 +99,7 @@ const memberItem = ({
               )}
               {!!linkedIn_url && (
                 <Touchable
+                  disabled={editMode}
                   onPress={() => {
                     Linking.openURL(linkedIn_url).catch(err =>
                       console.error('An error occurred', err),
