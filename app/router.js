@@ -121,6 +121,7 @@ import CreateMyProjectNormal from 'container/individual/self/my_project/create/n
 import CreateMyProjectBasicInfo from 'container/individual/self/my_project/create/normal/steps/basic';
 import CreateMyProjectDescription from 'container/individual/self/my_project/create/normal/steps/description';
 import CreateMyProjectTeam from 'container/individual/self/my_project/create/normal/steps/team';
+import CreateMyProjectSingleMember from 'container/individual/self/my_project/create/normal/steps/single_member';
 import CreateMyProjectSocial from 'container/individual/self/my_project/create/normal/steps/social';
 import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/normal/steps/roadmap';
 import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
@@ -132,6 +133,7 @@ import CreateMyInstitution from 'container/individual/self/my_institution/create
 import CreateMyInstitutionBasicInfo from 'container/individual/self/my_institution/create/basic';
 import CreateMyInstitutionDescription from 'container/individual/self/my_institution/create/description';
 import CreateMyInstitutionTeam from 'container/individual/self/my_institution/create/team';
+import CreateMyInstitutionSingleMember from 'container/individual/self/my_institution/create/single_member';
 import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
@@ -391,6 +393,7 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectBasicInfo,
     CreateMyProjectDescription,
     CreateMyProjectTeam,
+    CreateMyProjectSingleMember,
     CreateMyProjectSocial,
     CreateMyProjectRoadMap,
     CreateMyProjectFunding,
@@ -405,6 +408,7 @@ const IndividualStack = createStackNavigator(
     CreateMyInstitutionBasicInfo,
     CreateMyInstitutionDescription,
     CreateMyInstitutionTeam,
+    CreateMyInstitutionSingleMember,
     CreateMyInstitutionServedProject,
     ClaimMyInstitutionSearch,
     ClaimMyInstitution,

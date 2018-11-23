@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState } from 'recompose';
@@ -67,6 +67,35 @@ export default class MyInstitutionDetail extends Component {
     );
   };
 
+  handleMemberEditPress = index => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyInstitutionSingleMember',
+        params: {
+          index,
+        },
+      }),
+    );
+  };
+
+  handleMemberDeletePress = item => () => {
+    Alert.alert('是否确认删除？', '', [
+      {
+        text: '删除',
+        onPress: () => {
+          this.props.dispatch({
+            type: 'institution_create/deleteMember',
+            id: item.id,
+          });
+        },
+      },
+      {
+        text: '取消',
+        style: 'cancel',
+      },
+    ]);
+  };
+
   handleTeamOnLayout = ({ nativeEvent: { layout } }) => {
     this.props.setTeamMemberY(layout.y);
   };
@@ -107,7 +136,15 @@ export default class MyInstitutionDetail extends Component {
               title="机构成员"
               onEditPress={this.handleEditPress('CreateMyInstitutionTeam')}
             >
-              {R.map(m => <Member editMode key={m.id} data={m} />)(members)}
+              {R.addIndex(R.map)((m, i) => (
+                <Member
+                  editMode
+                  key={m.id}
+                  data={m}
+                  onEditPress={this.handleMemberEditPress(i)}
+                  onDeletePress={this.handleMemberDeletePress(m)}
+                />
+              ))(members)}
             </Group>
           </View>
           <Group
