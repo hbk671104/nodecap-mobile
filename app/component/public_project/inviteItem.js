@@ -56,11 +56,6 @@ class InviteItem extends Component {
           </Flex>
           <Text numberOfLines={1} style={styles.desc}>{data.description}</Text>
         </View>
-        <Touchable onPress={() => this.toCoinDetail(data.id)}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}>去认领入驻</Text>
-          </View>
-        </Touchable>
       </View>
     );
   }
@@ -80,8 +75,7 @@ const styles = {
   },
   container: {
     width: 270,
-    height: 270,
-    backgroundColor: 'white',
+    height: 230,
   },
   content: {
     marginTop: 35,

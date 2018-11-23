@@ -641,17 +641,13 @@ class Router extends Component {
       <View>
         <InviteItem
           data={inviteCoin}
-          onPress={() => {
-            this.props.setShowInviteEnterModal(false);
-            this.props.setInviteCoin({});
-          }}
         />
       </View>
     );
   }
 
   render() {
-    const { dispatch, app, router, showAlert, release_notes } = this.props;
+    const { dispatch, app, router, showAlert, release_notes, inviteCoin } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <ActionSheetProvider>
@@ -670,6 +666,20 @@ class Router extends Component {
           visible={this.props.showInviteEnter}
           renderContent={this.renderInviteEnter}
           onBackdropPress={() => this.props.setShowInviteEnterModal(false)}
+          action={() => {
+            store.dispatch(
+              NavigationActions.navigate({
+                routeName: 'PublicProjectDetail',
+                params: {
+                  id: inviteCoin.id,
+                },
+                key: `PublicProjectDetail_${inviteCoin.id}`,
+              }),
+            );
+            this.props.setShowInviteEnterModal(false);
+            this.props.setInviteCoin({});
+          }}
+          actionTitle="去认领入驻"
         />
       </View>
     );

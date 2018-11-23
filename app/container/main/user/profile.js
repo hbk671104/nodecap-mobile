@@ -77,7 +77,7 @@ export default class InstitutionDetail extends Component {
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        <ScrollView>
+        <ScrollView style={{ flex: 1 }}>
           {desc ? (
             <Group title="个人简介">
               <View style={styles.desc.container}>
@@ -85,7 +85,9 @@ export default class InstitutionDetail extends Component {
               </View>
             </Group>
           ) : (
-            <Empty image={require('asset/none.png')} title="暂无更多详细资料" />
+            <View style={{ marginTop: 100 }}>
+              <Empty image={require('asset/none.png')} title="暂无更多详细资料" />
+            </View>
           )}
         </ScrollView>
       </View>
