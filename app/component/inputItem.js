@@ -82,7 +82,6 @@ class InputItem extends PureComponent {
                 <Text style={[styles.title, titleStyle]}>{title}</Text>
                 {required && (
                   <View style={{ position: 'absolute', top: 0, right: 0 }}>
-                    {' '}
                     <Text style={styles.required}>*</Text>
                   </View>
                 )}

@@ -9,37 +9,23 @@ import { raised as raisedStyle } from '../../utils/style';
 import store from '../../../index';
 
 class InviteOrgItem extends Component {
-  toCoinDetail = (id) => {
-    store.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PublicProjectDetail',
-        params: {
-          id,
-        },
-        key: `PublicProjectDetail_${id}`,
-      }),
-    );
-    this.props.onPress();
-  }
-
   render() {
     const { data } = this.props;
-    const category = R.pipe(
-      R.pathOr([], ['tags']),
-      R.take(4),
-    )(data);
     return (
       <View style={styles.container}>
-        <Flex style={styles.background} justify="center">
+        <View style={styles.background} />
+        <View style={styles.content}>
+          <Text style={styles.title}>{data.name}</Text>
+          <Text numberOfLines={1} style={styles.desc}>
+            {data.description}
+          </Text>
+        </View>
+        <View style={styles.logoWrapper}>
           <Avatar
             source={{ uri: data.logo_url }}
             style={[styles.logo, raisedStyle]}
             size={80}
           />
-        </Flex>
-        <View style={styles.content}>
-          <Text style={styles.title}>{data.name}</Text>
-          <Text numberOfLines={1} style={styles.desc}>{data.description}</Text>
         </View>
       </View>
     );
@@ -47,11 +33,17 @@ class InviteOrgItem extends Component {
 }
 
 const styles = {
+  logoWrapper: {
+    position: 'absolute',
+    top: 42.5,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
   logo: {
     width: 65,
     height: 65,
     borderRadius: 2,
-    marginTop: 60,
     borderColor: 'transparent',
   },
   background: {
@@ -107,7 +99,12 @@ const styles = {
     borderTopColor: '#e9e9e9',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
-  buttonText: { fontSize: 15, color: '#1890FF', letterSpacing: 0.24, textAlign: 'center' },
+  buttonText: {
+    fontSize: 15,
+    color: '#1890FF',
+    letterSpacing: 0.24,
+    textAlign: 'center',
+  },
 };
 
 InviteOrgItem.propTypes = {};
