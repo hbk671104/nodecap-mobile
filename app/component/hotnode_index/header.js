@@ -94,17 +94,17 @@ class CategoryHeader extends PureComponent {
   renderChart = () => {
     const { global, indexType } = this.props;
     const trend = R.pipe(
-      R.pathOr([], ['max_days']),
+      R.pathOr([], ['7_days']),
       R.map(t => ({
         x: t.date,
-        y: indexType === 'hotnode' ? t.heat : t.market,
+        y: indexType === 'hotnode' ? t.count_change : t.market_change,
       })),
     )(global);
 
     if (R.length(trend) > 1) {
       return (
         <View style={styles.chart.container}>
-          {/* <Text style={styles.chart.title}>单位：个</Text> */}
+          <Text style={styles.chart.title}>单位：个</Text>
           <VictoryChart
             height={192}
             padding={styles.chart.padding}
@@ -140,6 +140,11 @@ class CategoryHeader extends PureComponent {
       setShowMarketExplanation,
     } = this.props;
 
+    const count = R.pathOr('--', ['count'])(global);
+    const count_change = R.pathOr(0, ['count_change'])(global);
+    const count_change_percentage = R.pathOr(0, ['count_change_percentage'])(
+      global,
+    );
     const heat = R.pathOr('--', ['heat'])(global);
     const heat_change = R.pathOr(0, ['heat_change'])(global);
     const heat_change_percentage = R.pathOr(0, ['heat_change_percentage'])(
@@ -180,9 +185,9 @@ class CategoryHeader extends PureComponent {
               style={[styles.misc.circle, { backgroundColor: '#1890FF' }]}
             />
             <Text style={styles.misc.title}>
-              近一周上所公告数{' '}
+              昨日新增项目数{' '}
               <Text style={{ color: '#1890FF', fontWeight: 'bold' }}>
-                <Format digit={0}>24</Format>
+                <Format digit={0}>{count_change}</Format>
               </Text>
             </Text>
           </Flex>
