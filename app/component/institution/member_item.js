@@ -8,11 +8,14 @@ import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
 const memberItem = ({
+  editMode = false,
   data,
   style,
   onPress,
   onPrivacyItemPress,
   onClaimPress,
+  onEditPress,
+  onDeletePress,
 }) => {
   const profile_pic = R.pathOr('', ['avatar_url'])(data);
   const name = R.pathOr('--', ['name'])(data);
@@ -36,26 +39,49 @@ const memberItem = ({
             innerRatio={1}
             resizeMode="cover"
           />
-          {!is_vip && (
+          {!is_vip && !editMode && (
             <Touchable style={styles.claim.container} onPress={onClaimPress}>
               <Text style={styles.claim.text}>认领</Text>
             </Touchable>
           )}
         </View>
         <View style={styles.content.container}>
-          <Flex align="center">
-            <Text style={styles.content.name}>{name}</Text>
-            {is_vip && (
-              <Image
-                style={{ marginLeft: 8 }}
-                source={require('asset/project/detail/vip_icon.png')}
-              />
+          <Flex justify="space-between">
+            <Flex>
+              <Text style={styles.content.name}>{name}</Text>
+              {is_vip && (
+                <Image
+                  style={{ marginLeft: 8 }}
+                  source={require('asset/project/detail/vip_icon.png')}
+                />
+              )}
+            </Flex>
+            {editMode && (
+              <Flex>
+                <Touchable onPress={onEditPress}>
+                  <Text style={[styles.action.text, { color: '#1890FF' }]}>
+                    编辑
+                  </Text>
+                </Touchable>
+                <Touchable onPress={onDeletePress}>
+                  <Text
+                    style={[
+                      styles.action.text,
+                      { marginLeft: 16, color: '#F55454' },
+                    ]}
+                  >
+                    删除
+                  </Text>
+                </Touchable>
+              </Flex>
             )}
           </Flex>
           <Text style={styles.content.title}>{title}</Text>
           <Flex style={{ marginTop: 6 }}>
             <View style={{ flex: 1 }}>
-              <Text style={styles.content.intro}>{intro}</Text>
+              <Text style={styles.content.intro} numberOfLines={2}>
+                {intro}
+              </Text>
             </View>
             <Flex>
               {!!mobile && (
@@ -138,6 +164,12 @@ const styles = {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.45)',
       lineHeight: 18,
+    },
+  },
+  action: {
+    text: {
+      fontSize: 13,
+      fontWeight: 'bold',
     },
   },
 };

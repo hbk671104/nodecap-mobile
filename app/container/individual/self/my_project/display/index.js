@@ -205,7 +205,10 @@ export default class MyProjectDetail extends Component {
             setAvatarModalVisible(false);
             Storage.set('showed_project_avatar_modal', true);
           }}
-          onBackdropPress={() => setAvatarModalVisible(false)}
+          onBackdropPress={() => {
+            setAvatarModalVisible(false);
+            Storage.set('showed_project_avatar_modal', true);
+          }}
         />
       </View>
     );

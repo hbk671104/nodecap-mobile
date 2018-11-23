@@ -160,7 +160,7 @@ export default class Description extends PureComponent {
           {title('团队成员', 'CreateMyProjectTeam')}
           <View>
             {R.addIndex(R.map)((m, i) => (
-              <MemberItem key={m.id || `${i}`} data={m} />
+              <MemberItem editMode key={m.id || `${i}`} data={m} />
             ))(members)}
           </View>
         </View>

@@ -12,9 +12,9 @@ import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
 import Touchable from 'component/uikit/touchable';
 import ActionAlert from 'component/action_alert';
+import Member from 'component/institution/member_item';
 
 import Group from './partials/group';
-import Member from './partials/member';
 import Header from './header';
 import styles from './style';
 

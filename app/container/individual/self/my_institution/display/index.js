@@ -8,10 +8,10 @@ import { NavigationActions } from 'react-navigation';
 import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
 import ActionAlert from 'component/action_alert';
+import Member from 'component/institution/member_item';
 import { Storage } from 'utils';
 
 import Group from './partials/group';
-import Member from './partials/member';
 import Header from './header';
 import styles from './style';
 
@@ -107,7 +107,7 @@ export default class MyInstitutionDetail extends Component {
               title="机构成员"
               onEditPress={this.handleEditPress('CreateMyInstitutionTeam')}
             >
-              {R.map(m => <Member key={m.id} data={m} />)(members)}
+              {R.map(m => <Member editMode key={m.id} data={m} />)(members)}
             </Group>
           </View>
           <Group
@@ -149,7 +149,10 @@ export default class MyInstitutionDetail extends Component {
             setAvatarModalVisible(false);
             Storage.set('showed_institution_avatar_modal', true);
           }}
-          onBackdropPress={() => setAvatarModalVisible(false)}
+          onBackdropPress={() => {
+            setAvatarModalVisible(false);
+            Storage.set('showed_institution_avatar_modal', true);
+          }}
         />
       </View>
     );
