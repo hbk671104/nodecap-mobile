@@ -156,7 +156,7 @@ export default class Description extends PureComponent {
           {...this.props}
           onEditPress={this.editField('CreateMyProjectFunding')}
         />
-        <View style={styles.fieldGroup}>
+        <View style={styles.fieldGroup} onLayout={this.props.onTeamLayout}>
           {title('团队成员', 'CreateMyProjectTeam')}
           <View>
             {R.addIndex(R.map)((m, i) => (
