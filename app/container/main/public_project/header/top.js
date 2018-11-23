@@ -161,6 +161,10 @@ const top = ({
           <TouchableWithoutFeedback
             key={n.id}
             onPress={() => {
+              if (n.original_link && n.original_link.indexOf('hotnode://') === 0) {
+                Linking.openURL(n.original_link);
+                return;
+              }
               dispatch(
                 NavigationActions.navigate({
                   routeName: 'NotificationDetail',
