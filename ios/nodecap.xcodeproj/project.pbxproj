@@ -414,6 +414,13 @@
 			remoteGlobalIDString = E72EC1401F7ABB5A0001BC90;
 			remoteInfo = "RNDeviceInfo-tvOS";
 		};
+		4065C97C21A808870033B967 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D029AFE602C144FA8147756F /* ReactNativeConfig.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3DF7F6AC203AA09B00D0EAB7;
+			remoteInfo = "ReactNativeConfig-tvOS";
+		};
 		406A741021477BED0019141B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 406A73D821477BED0019141B /* RNFetchBlob.xcodeproj */;
@@ -1316,6 +1323,7 @@
 			isa = PBXGroup;
 			children = (
 				DDBADDE720BD38A900509EB9 /* libReactNativeConfig.a */,
+				4065C97D21A808870033B967 /* libReactNativeConfig-tvOS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1351,6 +1359,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				012498814B1C4974B7131846 /* Upload Debug Symbols to Sentry */,
+				9477AE040818333C16374452 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1901,6 +1910,13 @@
 			remoteRef = 4063783221198C3200CA7CA3 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		4065C97D21A808870033B967 /* libReactNativeConfig-tvOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libReactNativeConfig-tvOS.a";
+			remoteRef = 4065C97C21A808870033B967 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		406A741121477BED0019141B /* libRNFetchBlob.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2191,6 +2207,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export SENTRY_PROPERTIES=sentry.properties\nexport NODE_BINARY=node\n../node_modules/@sentry/cli/bin/sentry-cli react-native xcode ../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		9477AE040818333C16374452 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-nodecap/Pods-nodecap-resources.sh",
+				"${PODS_ROOT}/SensorsAnalyticsSDK/SensorsAnalyticsSDK/SensorsAnalyticsSDK.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SensorsAnalyticsSDK.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-nodecap/Pods-nodecap-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
