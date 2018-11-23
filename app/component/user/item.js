@@ -15,6 +15,7 @@ const item = ({
   renderBottom,
 }) => {
   const title = R.pathOr('--', ['name'])(data);
+  const orgName = R.pathOr('--', ['org_name'])(data);
   const des = R.pathOr('', ['title'])(data) || R.pathOr('', ['introduction'])(data);
   const logo_url = R.pathOr('', ['profile_pic'])(data) || R.pathOr('', ['avatar_url'])(data);
   return (
@@ -27,7 +28,7 @@ const item = ({
             {!R.isEmpty(des) &&
               !disableSubtitle && (
                 <Text style={styles.content.subtitle} numberOfLines={1}>
-                  {des}
+                  {orgName} {des}
                 </Text>
               )}
           </View>
