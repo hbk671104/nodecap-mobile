@@ -30,7 +30,6 @@ import { withNetworkConnectivity } from 'react-native-offline';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
 import DeviceInfo from 'react-native-device-info';
-import store from '../index';
 import Base64 from 'utils/base64';
 
 import { setStatusBar } from 'component/uikit/statusBar';
@@ -551,7 +550,7 @@ class Router extends Component {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   handleOpenURL = event => {
     // const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
@@ -639,15 +638,19 @@ class Router extends Component {
     const { inviteCoin } = this.props;
     return (
       <View>
-        <InviteItem
-          data={inviteCoin}
-        />
+        <InviteItem data={inviteCoin} />
       </View>
     );
-  }
+  };
 
   render() {
-    const { dispatch, app, router, showAlert, release_notes, inviteCoin } = this.props;
+    const {
+      dispatch,
+      router,
+      showAlert,
+      release_notes,
+      inviteCoin,
+    } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <ActionSheetProvider>
@@ -667,7 +670,7 @@ class Router extends Component {
           renderContent={this.renderInviteEnter}
           onBackdropPress={() => this.props.setShowInviteEnterModal(false)}
           action={() => {
-            store.dispatch(
+            dispatch(
               NavigationActions.navigate({
                 routeName: 'PublicProjectDetail',
                 params: {

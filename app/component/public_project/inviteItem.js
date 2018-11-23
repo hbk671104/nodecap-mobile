@@ -9,7 +9,7 @@ import { raised as raisedStyle } from '../../utils/style';
 import store from '../../../index';
 
 class InviteItem extends Component {
-  toCoinDetail = (id) => {
+  toCoinDetail = id => {
     store.dispatch(
       NavigationActions.navigate({
         routeName: 'PublicProjectDetail',
@@ -20,7 +20,7 @@ class InviteItem extends Component {
       }),
     );
     this.props.onPress();
-  }
+  };
 
   render() {
     const { data } = this.props;
@@ -30,13 +30,7 @@ class InviteItem extends Component {
     )(data);
     return (
       <View style={styles.container}>
-        <Flex style={styles.background} justify="center">
-          <Avatar
-            uri={data.icon}
-            style={[styles.logo, raisedStyle]}
-            size={80}
-          />
-        </Flex>
+        <View style={styles.background} />
         <View style={styles.content}>
           <Text style={styles.title}>{data.name}</Text>
           <Text style={styles.symbol}>
@@ -54,7 +48,16 @@ class InviteItem extends Component {
               </View>
             ))(category)}
           </Flex>
-          <Text numberOfLines={1} style={styles.desc}>{data.description}</Text>
+          <Text numberOfLines={1} style={styles.desc}>
+            {data.description}
+          </Text>
+        </View>
+        <View style={styles.logoWrapper}>
+          <Avatar
+            uri={data.icon}
+            style={[styles.logo, raisedStyle]}
+            size={80}
+          />
         </View>
       </View>
     );
@@ -62,11 +65,17 @@ class InviteItem extends Component {
 }
 
 const styles = {
+  logoWrapper: {
+    position: 'absolute',
+    top: 42.5,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
+  },
   logo: {
     width: 65,
     height: 65,
     borderRadius: 2,
-    marginTop: 60,
     borderColor: 'transparent',
   },
   background: {
@@ -122,7 +131,12 @@ const styles = {
     borderTopColor: '#e9e9e9',
     borderTopWidth: StyleSheet.hairlineWidth,
   },
-  buttonText: { fontSize: 15, color: '#1890FF', letterSpacing: 0.24, textAlign: 'center' },
+  buttonText: {
+    fontSize: 15,
+    color: '#1890FF',
+    letterSpacing: 0.24,
+    textAlign: 'center',
+  },
 };
 
 InviteItem.propTypes = {};
