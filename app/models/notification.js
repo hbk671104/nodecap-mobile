@@ -1,4 +1,4 @@
-import { trendList, trendDetail } from '../services/api';
+import { trendList, trendDetail, getCoinInfo } from '../services/api';
 import { trendList as individualTrendList } from '../services/individual/api';
 import R from 'ramda';
 import { paginate } from '../utils/pagination';
@@ -24,7 +24,9 @@ export default {
           type: 'list',
           payload: data,
         });
-        const lastRead = yield select(({ notification }) => R.path(['lastRead'])(notification));
+        const lastRead = yield select(({ notification }) =>
+          R.path(['lastRead'])(notification),
+        );
         if (refreshLastRead || R.isNil(lastRead)) {
           yield put({
             type: 'lastRead',
@@ -53,8 +55,29 @@ export default {
     *get({ payload }, { call, put }) {
       try {
         const { data } = yield call(trendDetail, payload);
+
+        const coin_id = R.path(['coin_id'])(data);
+        if (coin_id) {
+          yield put({
+            type: 'getCoin',
+            id: coin_id,
+          });
+        }
+
         yield put({
           type: 'detail',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *getCoin({ id }, { call, put }) {
+      try {
+        const { data } = yield call(getCoinInfo, id);
+
+        yield put({
+          type: 'coinDetail',
           payload: data,
         });
       } catch (e) {
@@ -78,7 +101,19 @@ export default {
     detail(state, action) {
       return {
         ...state,
-        current: action.payload,
+        current: {
+          ...state.current,
+          ...action.payload,
+        },
+      };
+    },
+    coinDetail(state, action) {
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          coin_detail: action.payload,
+        },
       };
     },
     clearCurrent(state) {

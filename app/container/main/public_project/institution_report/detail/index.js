@@ -59,16 +59,20 @@ export default class InstitutionReportDetail extends Component {
         'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
     };
     this.props.openShareModal({
-      types: [{
-        type: 'timeline',
-        ...request,
-      }, {
-        type: 'session',
-        ...request,
-      }, {
-        type: 'link',
-        url: `${Config.MOBILE_SITE}/industry-report?id=${this.props.id}`,
-      }],
+      types: [
+        {
+          type: 'timeline',
+          ...request,
+        },
+        {
+          type: 'session',
+          ...request,
+        },
+        {
+          type: 'link',
+          url: `${Config.MOBILE_SITE}/industry-report?id=${this.props.id}`,
+        },
+      ],
     });
   };
 
@@ -125,9 +129,7 @@ export default class InstitutionReportDetail extends Component {
         style={styles.recommended.container}
       >
         <View style={styles.recommended.header.container}>
-          <Text style={styles.recommended.header.title}>
-            为您推荐 {R.length(coins)} 个相关项目
-          </Text>
+          <Text style={styles.recommended.header.title}>相关项目</Text>
           <Touchable borderless onPress={this.toggleCollapsed}>
             <Text style={styles.recommended.header.action}>
               {footerCollapsed ? '点击查看' : '点击收起'}
