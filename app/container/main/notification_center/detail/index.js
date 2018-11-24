@@ -3,6 +3,7 @@ import { View, TouchableWithoutFeedback, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 import HtmlWrapper from '../../../../services/htmlWraper';
 import NavBar from 'component/navBar';
@@ -77,7 +78,7 @@ export default class NotificationDetail extends Component {
           source={{ html: HtmlWrapper(detail.content) }}
         />
         {!!coin_detail && (
-          <View>
+          <View style={{ paddingBottom: getBottomSpace() }}>
             <View style={{ paddingHorizontal: 12, paddingTop: 12 }}>
               <Text
                 style={{
