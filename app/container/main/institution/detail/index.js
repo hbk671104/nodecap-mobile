@@ -141,10 +141,10 @@ export default class InstitutionDetail extends Component {
           }`,
           title: `推荐给你「${R.path(['name'])(data)}」`,
           description: '来 Hotnode 找全球区块链服务机构！',
-          thumbImage:
-            R.path(['profile_pic'])(data) ||
-            R.path(['avatar_url'])(data) ||
+          thumbImage: R.pathOr(
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+            ['logo_url'],
+          )(data),
         },
         {
           type: 'session',
@@ -153,10 +153,10 @@ export default class InstitutionDetail extends Component {
           }`,
           title: `推荐给你「${R.path(['name'])(data)}」`,
           description: '来 Hotnode 找全球区块链服务机构！',
-          thumbImage:
-            R.path(['profile_pic'])(data) ||
-            R.path(['avatar_url'])(data) ||
+          thumbImage: R.pathOr(
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+            ['logo_url'],
+          )(data),
         },
         {
           type: 'link',
