@@ -155,6 +155,9 @@ class CategoryHeader extends PureComponent {
     const market_change_percentage = R.pathOr(0, ['market_change_percentage'])(
       global,
     );
+    const weekly_announce_count = R.pathOr(0, ['weekly_announce_count'])(
+      global,
+    );
 
     return (
       <View>
@@ -230,7 +233,7 @@ class CategoryHeader extends PureComponent {
               <Text style={styles.misc.title}>
                 近一周上所公告数{' '}
                 <Text style={{ color: '#1890FF', fontWeight: 'bold' }}>
-                  <Format digit={0}>{market_change}</Format>
+                  <Format digit={0}>{weekly_announce_count}</Format>
                 </Text>
               </Text>
             </Flex>
