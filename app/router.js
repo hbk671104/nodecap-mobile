@@ -10,7 +10,6 @@ import {
   AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
-// import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
 import R from 'ramda';
 import {
@@ -578,15 +577,27 @@ class Router extends Component {
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   handleOpenURL = event => {
-    // const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
-    const reg = R.pipe(
+    const url = R.pipe(
       R.pathOr('', ['url']),
+      R.trim,
+    )(event);
+
+    if (R.isNil(url) || R.isEmpty(url)) {
+      return;
+    }
+
+    if (!R.test(/hotnode:\/\//, url)) {
+      Linking.openURL(url);
+      return;
+    }
+
+    const reg = R.pipe(
       R.replace('hotnode://', ''),
       R.match(/(.*?)\/(.*)/),
-    )(event);
+    )(url);
 
     if (R.isNil(reg) || R.isEmpty(reg)) {
       return;
@@ -676,12 +687,10 @@ class Router extends Component {
     const { inviteOrg } = this.props;
     return (
       <View>
-        <InviteOrgItem
-          data={inviteOrg}
-        />
+        <InviteOrgItem data={inviteOrg} />
       </View>
     );
-  }
+  };
 
   render() {
     const {

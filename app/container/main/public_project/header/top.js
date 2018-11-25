@@ -34,7 +34,7 @@ const top = ({
   onInstitutionReportPress,
   notification_badge_number,
   reports_badge_number,
-               dispatch,
+  dispatch,
 }) => (
   <View style={styles.container}>
     <View style={styles.searchBar.wrapper}>
@@ -161,7 +161,11 @@ const top = ({
           <TouchableWithoutFeedback
             key={n.id}
             onPress={() => {
-              if (n.original_link && n.original_link.indexOf('hotnode://') === 0) {
+              if (n.original_link) {
+                if (Platform.OS !== 'ios') {
+                  RouterEmitter.emit('android_url', { url: n.original_link });
+                  return;
+                }
                 Linking.openURL(n.original_link);
                 return;
               }
@@ -199,11 +203,11 @@ const top = ({
           <TouchableWithoutFeedback
             key={n.id}
             onPress={() => {
-              if (Platform.OS !== 'ios') {
-                RouterEmitter.emit('android_url', { url: n.banner_url });
-                return;
-              }
               if (n.banner_url) {
+                if (Platform.OS !== 'ios') {
+                  RouterEmitter.emit('android_url', { url: n.banner_url });
+                  return;
+                }
                 Linking.openURL(n.banner_url);
               }
             }}

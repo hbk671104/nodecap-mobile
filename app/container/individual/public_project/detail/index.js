@@ -263,28 +263,33 @@ export default class PublicProjectDetail extends Component {
     const id = this.props.id;
 
     this.props.openShareModal({
-      types: [{
-        type: 'timeline',
-        webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
-        title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
-        description: '来 Hotnode 找最新最热项目！',
-        thumbImage:
-          R.path(['portfolio', 'icon'])(this.props) ||
-          'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
-      }, {
-        type: 'session',
-        webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
-        title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
-        description: '来 Hotnode 找最新最热项目！',
-        thumbImage:
-          R.path(['portfolio', 'icon'])(this.props) ||
-          'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
-      }, {
-        type: 'picture',
-      }, {
-        type: 'link',
-        url: `${Config.MOBILE_SITE}/coin?id=${id}`,
-      }],
+      types: [
+        {
+          type: 'timeline',
+          webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
+          title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
+          description: '来 Hotnode 找最新最热项目！',
+          thumbImage:
+            R.path(['portfolio', 'icon'])(this.props) ||
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+        },
+        {
+          type: 'session',
+          webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
+          title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
+          description: '来 Hotnode 找最新最热项目！',
+          thumbImage:
+            R.path(['portfolio', 'icon'])(this.props) ||
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+        },
+        {
+          type: 'picture',
+        },
+        {
+          type: 'link',
+          url: `${Config.MOBILE_SITE}/coin?id=${id}`,
+        },
+      ],
     });
   };
 
@@ -292,7 +297,11 @@ export default class PublicProjectDetail extends Component {
     const { id } = this.props;
     const cryptID = Base64.btoa(`${id}`);
     const UniqueID = DeviceInfo.getUniqueID().slice(0, 5);
-    Clipboard.setString(`邀请您认领「${R.path(['portfolio', 'name'])(this.props)}」，复制整段文字 &*${UniqueID}$${cryptID}*& 到 Hotnode 中打开`);
+    Clipboard.setString(
+      `邀请您认领「${R.path(['portfolio', 'name'])(
+        this.props,
+      )}」，复制整段文字 &*${UniqueID}$${cryptID}*& 到 Hotnode 中打开`,
+    );
     this.props.toggleInviteModal(true);
   };
 
@@ -398,8 +407,9 @@ export default class PublicProjectDetail extends Component {
           action={async () => {
             this.props.toggleInviteModal(false);
             try {
-              await Linking.canOpenURL('wechat://');
-              await Linking.openURL('wechat://');
+              // await Linking.canOpenURL('wechat://');
+              // await Linking.openURL('wechat://');
+              WeChat.openWXApp();
             } catch (e) {
               console.log(e);
             }

@@ -16,6 +16,7 @@ import request from 'utils/request';
 import runtimeConfig from 'runtime/index';
 import Base64 from 'utils/base64';
 import DeviceInfo from 'react-native-device-info';
+import * as WeChat from 'react-native-wechat';
 
 import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
@@ -257,8 +258,9 @@ export default class InstitutionDetail extends Component {
           action={async () => {
             this.props.toggleInviteModal(false);
             try {
-              await Linking.canOpenURL('wechat://');
-              await Linking.openURL('wechat://');
+              // await Linking.canOpenURL('wechat://');
+              // await Linking.openURL('wechat://');
+              WeChat.openWXApp();
             } catch (e) {
               console.log(e);
             }
