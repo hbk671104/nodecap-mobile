@@ -4,10 +4,8 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
 
-import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
-import CategoryItem from 'component/hotnode_index/category_item';
-import Header from 'component/hotnode_index/header';
+import Item from 'component/message_center/item';
 import styles from './style';
 
 @global.bindTrack({
@@ -16,7 +14,9 @@ import styles from './style';
   subModuleName: '消息列表',
 })
 @connect(({ message_center, loading }, { type }) => ({
-  data: R.pathOr([], [type, 'data'])(message_center),
+  data: R.pathOr([{ id: 1 }, { id: 2 }, { id: 3 }], [type, 'data'])(
+    message_center,
+  ),
   pagination: R.path([type, 'pagination'])(message_center),
 }))
 class MessageList extends PureComponent {
@@ -24,7 +24,7 @@ class MessageList extends PureComponent {
     this.props.track('进入');
   }
 
-  renderItem = ({ item }) => null;
+  renderItem = ({ item }) => <Item data={item} />;
 
   render() {
     const { data, pagination, loading } = this.props;
