@@ -3,16 +3,8 @@ import { View, Text, Image } from 'react-native';
 import R from 'ramda';
 
 const label = ({ data }) => {
-  const is_vip = R.pipe(
-    R.pathOr([], ['vip']),
-    R.isEmpty,
-    R.not,
-  )(data);
-  const owners = R.pipe(
-    R.pathOr([], ['owners']),
-    R.isEmpty,
-    R.not,
-  )(data);
+  const is_vip = R.pathOr(false, ['is_vip'])(data);
+  const owners = R.pathOr(false, ['is_owned'])(data);
   const finance_status = R.path(['finance_status'])(data);
 
   if (!is_vip && !owners && R.isNil(finance_status)) {
