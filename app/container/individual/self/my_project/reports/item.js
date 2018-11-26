@@ -11,16 +11,18 @@ import { connect } from 'react-redux';
 @connect()
 class WeeklyReportItem extends Component {
   render() {
-    const { data = {} } = this.props;
+    const { data = {}, coin } = this.props;
     return (
       <View style={styles.container}>
         <Touchable onPress={() => {
           this.props.dispatch(
             NavigationActions.navigate({
-              routeName: 'WebPage',
+              routeName: 'ReportPage',
               params: {
                 title: data.title,
                 uri: data.link,
+                data,
+                coin,
               },
             }),
           );
@@ -67,6 +69,17 @@ class WeeklyReportItem extends Component {
           <Touchable style={{ flex: 1 }}>
             <Flex justify="center">
               <Text style={styles.buttonText} onPress={() => this.props.onEdit(data)}>编辑</Text>
+            </Flex>
+          </Touchable>
+          <View style={{
+            height: 16,
+            borderRightColor: '#E5E5E5',
+            borderRightWidth: 0.5,
+          }}
+          />
+          <Touchable style={{ flex: 1 }}>
+            <Flex justify="center">
+              <Text style={styles.buttonText} onPress={() => this.props.onShare(data)}>分享</Text>
             </Flex>
           </Touchable>
         </Flex>

@@ -99,13 +99,14 @@ class MyProject extends Component {
     });
   };
 
-  handleWeeklyReport = (e, id) => {
+  handleWeeklyReport = (e, data) => {
     e.preventDefault();
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'MyProjectReportList',
         params: {
-          id,
+          id: data.id,
+          data,
         },
       }),
     );

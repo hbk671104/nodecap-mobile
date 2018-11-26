@@ -99,6 +99,7 @@ import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
 import UserProfile from 'container/main/user/profile';
 import WebPage from 'container/webview';
+import ReportPage from 'container/webview/report';
 import GlobalSearch from 'container/main/public_project/globalSearch';
 
 // Individual exclusive
@@ -278,6 +279,7 @@ const MainStack = createStackNavigator(
     InviteComment,
     UserProfile,
     GlobalSearch,
+    ReportPage,
   },
   {
     headerMode: 'none',
@@ -421,6 +423,7 @@ const IndividualStack = createStackNavigator(
     EditWeeklyReport,
     UserProfile,
     GlobalSearch,
+    ReportPage,
   },
   {
     headerMode: 'none',
