@@ -255,6 +255,18 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleProjectSetPress = () => {
+    this.props.track('点击项目集');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ProjectRepo',
+        params: {
+          coinset_index: 2,
+        },
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
     <NewsItem
       {...this.props}
@@ -270,6 +282,7 @@ export default class PublicProject extends Component {
   renderHeader = () => (
     <Header
       {...this.props}
+      onProjectSetPress={this.handleProjectSetPress}
       onSearchBarPress={this.handleSearchBarPress}
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
@@ -329,7 +342,7 @@ export default class PublicProject extends Component {
           listRef={ref => {
             this.scroll = ref;
           }}
-          onScroll={(e) => {
+          onScroll={e => {
             const currentY = R.path(['nativeEvent', 'contentOffset', 'y'])(e);
             if (currentY > lastY && currentY > 0) {
               this.props.track('列表下滑');
