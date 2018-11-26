@@ -43,6 +43,10 @@ const source = ({ route, focused }) => {
       return focused
         ? require('asset/tabIcon/latest/hotnode_index_selected.png')
         : require('asset/tabIcon/latest/hotnode_index.png');
+    case 'MessageCenter':
+      return focused
+        ? require('asset/tabIcon/latest/message_selected.png')
+        : require('asset/tabIcon/latest/message.png');
     default:
       return null;
   }

@@ -143,6 +143,7 @@ import CreateMyInstitutionDetail from 'container/individual/self/my_institution/
 import CreateMyProjectDetail from 'container/individual/self/my_project/display';
 import HotnodeIndex from 'container/individual/hotnode_index';
 import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
+import MessageCenter from 'container/individual/message/index';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -318,6 +319,16 @@ const IndividualTab = createBottomTabNavigator(
             setStatusBar('light-content');
           },
         };
+      },
+    },
+    MessageCenter: {
+      screen: MessageCenter,
+      navigationOptions: {
+        title: '消息',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('dark-content');
+        },
       },
     },
     Self: {

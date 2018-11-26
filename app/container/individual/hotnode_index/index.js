@@ -64,7 +64,7 @@ class HotnodeIndex extends PureComponent {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient title="Hotnode 指数" />
+        <NavBar barStyle="dark-content" gradient title="Hotnode 指数" />
         <List
           numColumns={2}
           contentContainerStyle={styles.listContent}
