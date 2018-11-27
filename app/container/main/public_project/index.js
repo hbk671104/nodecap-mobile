@@ -255,16 +255,9 @@ export default class PublicProject extends Component {
     );
   };
 
-  handleProjectSetPress = () => {
-    this.props.track('点击项目集');
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'ProjectRepo',
-        params: {
-          coinset_index: 2,
-        },
-      }),
-    );
+  handleChartPress = () => {
+    this.props.track('点击榜单');
+    // navigate
   };
 
   renderItem = ({ item }) => (
@@ -282,7 +275,7 @@ export default class PublicProject extends Component {
   renderHeader = () => (
     <Header
       {...this.props}
-      onProjectSetPress={this.handleProjectSetPress}
+      onChartPress={this.handleChartPress}
       onSearchBarPress={this.handleSearchBarPress}
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}

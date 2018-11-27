@@ -32,7 +32,7 @@ const top = ({
   onAnnouncementPress,
   onProjectRepoPress,
   onInstitutionReportPress,
-  onProjectSetPress,
+  onChartPress,
   notification_badge_number,
   reports_badge_number,
   dispatch,
@@ -62,14 +62,12 @@ const top = ({
           </Touchable>
         </Col>
         <Col>
-          <Touchable borderless onPress={onProjectSetPress}>
+          <Touchable borderless onPress={onChartPress}>
             <View style={styles.tab.group.container}>
               <View style={styles.tab.group.imageWrapper}>
-                <Image
-                  source={require('asset/public_project/project_set.png')}
-                />
+                <Image source={require('asset/public_project/chart.png')} />
               </View>
-              <Text style={styles.tab.group.title}>项目集</Text>
+              <Text style={styles.tab.group.title}>榜单</Text>
             </View>
           </Touchable>
         </Col>
