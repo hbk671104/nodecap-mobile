@@ -56,6 +56,18 @@ export default class Description extends PureComponent {
     );
   };
 
+  handleIndustryPress = item => {
+    console.log('item', item);
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionDetail',
+        params: {
+          id: item.rating_org_id,
+        },
+      }),
+    );
+  }
+
   handleGradeUrlPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -186,7 +198,11 @@ export default class Description extends PureComponent {
             </Text>
           </View>
         )}
-        <Rating {...this.props} onMorePress={this.handleGradeUrlPress} />
+        <Rating
+          {...this.props}
+          onMorePress={this.handleGradeUrlPress}
+          onIndustryPress={this.handleIndustryPress}
+        />
         <WeeklyReports {...this.props} />
         {R.not(R.isEmpty(social_network)) && (
           <View style={styles.fieldGroup}>

@@ -6,7 +6,7 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const rating_item = ({ data, org, columns = 5, onMorePress }) => {
+const rating_item = ({ data, org, columns = 5, onMorePress, onIndustryPress }) => {
   const targeted_id = R.path(['rating_type_id'])(data);
   const grade_url = R.path(['grade_url'])(data);
   const name = R.pathOr('--', ['name'])(org);
@@ -25,7 +25,9 @@ const rating_item = ({ data, org, columns = 5, onMorePress }) => {
   return (
     <View style={styles.container}>
       <Flex align="center" justify="space-between">
-        <Text style={styles.title}>{name}</Text>
+        <Touchable onPress={onIndustryPress}>
+          <Text style={styles.title}>{name}</Text>
+        </Touchable>
         {!R.isNil(grade_url) && (
           <Touchable borderless onPress={onMorePress}>
             <Text style={styles.more}>查看</Text>
