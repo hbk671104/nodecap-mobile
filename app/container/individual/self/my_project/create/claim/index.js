@@ -18,7 +18,7 @@ import { uploadImage } from 'services/upload';
 import styles from './style';
 
 @global.bindTrack({
-  page: '认领我的项目认证',
+  page: '入驻我的项目认证',
   name: 'App_MyProjectClaimOperation',
 })
 @connect(({ project_create, loading }, props) => {
@@ -112,7 +112,7 @@ class ClaimProject extends Component {
           );
         }
         request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
-          content: `${value.owner_name} 认领了 ID 为 ${
+          content: `${value.owner_name} 入驻了 ID 为 ${
             this.props.id
           } 的项目，请快去审核`,
           mobile: `${value.owner_mobile}`,
@@ -129,7 +129,7 @@ class ClaimProject extends Component {
           barStyle={this.state.barStyle}
           back
           gradient
-          title="认领项目"
+          title="入驻项目"
           renderRight={() => {
             if (this.props.submitting) {
               return <ActivityIndicator color="white" />;

@@ -134,7 +134,7 @@ export default class PublicProjectDetail extends Component {
   }
 
   onPressClaimCoin = member => {
-    this.props.track('点击认领按钮');
+    this.props.track('点击入驻按钮');
     if (!this.props.logged_in) {
       this.props.dispatch(
         NavigationActions.navigate({
@@ -298,7 +298,7 @@ export default class PublicProjectDetail extends Component {
     const cryptID = Base64.btoa(`${id}`);
     const UniqueID = DeviceInfo.getUniqueID().slice(0, 5);
     Clipboard.setString(
-      `邀请您认领「${R.path(['portfolio', 'name'])(
+      `邀请您入驻「${R.path(['portfolio', 'name'])(
         this.props,
       )}」，复制整段文字 &*${UniqueID}$${cryptID}*& 到 Hotnode 中打开`,
     );
@@ -429,7 +429,7 @@ export default class PublicProjectDetail extends Component {
             <View style={styles.explanation.content.container}>
               <Text style={styles.explanation.content.title}>项目得分</Text>
               <Text style={styles.explanation.content.text}>
-                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。若您是项目成员，认领后可进行信息完善
+                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。若您是项目成员，入驻后可进行信息完善
               </Text>
             </View>
             <Touchable
@@ -438,7 +438,7 @@ export default class PublicProjectDetail extends Component {
                 this.props.setExplanationVisible(false, this.onPressClaimCoin)
               }
             >
-              <Text style={styles.explanation.bottom.text}>认领并完善</Text>
+              <Text style={styles.explanation.bottom.text}>入驻并完善</Text>
             </Touchable>
           </View>
         </Modal>

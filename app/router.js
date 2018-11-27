@@ -738,7 +738,7 @@ class Router extends Component {
             this.props.setShowInviteEnterModal(false);
             this.props.setInviteCoin({});
           }}
-          actionTitle="去认领入驻"
+          actionTitle="去入驻"
         />
         <ActionAlert
           visible={this.props.showInviteOrgEnter}
@@ -757,7 +757,7 @@ class Router extends Component {
             this.props.setShowInviteOrgEnterModal(false);
             this.props.setInviteOrg({});
           }}
-          actionTitle="去认领入驻"
+          actionTitle="去入驻"
         />
       </View>
     );

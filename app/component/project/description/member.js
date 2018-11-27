@@ -41,7 +41,7 @@ const memberItem = ({
           />
           {!is_vip && !editMode && (
             <Touchable style={styles.claim.container} onPress={onClaimPress}>
-              <Text style={styles.claim.text}>认领</Text>
+              <Text style={styles.claim.text}>入驻</Text>
             </Touchable>
           )}
         </View>

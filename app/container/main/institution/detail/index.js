@@ -70,7 +70,7 @@ export default class InstitutionDetail extends Component {
   }
 
   onPressClaimCoin = member => {
-    this.props.track('点击认领按钮');
+    this.props.track('点击入驻按钮');
     if (!this.props.logged_in) {
       this.props.dispatch(
         NavigationActions.navigate({
@@ -174,7 +174,7 @@ export default class InstitutionDetail extends Component {
     const cryptID = Base64.btoa(`${id}`);
     const UniqueID = DeviceInfo.getUniqueID().slice(0, 5);
     Clipboard.setString(
-      `邀请您认领「${R.path(['data', 'name'])(
+      `邀请您入驻「${R.path(['data', 'name'])(
         this.props,
       )}」，复制整段文字 ^*${UniqueID}$${cryptID}*^ 到 Hotnode 中打开`,
     );

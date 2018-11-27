@@ -112,7 +112,7 @@ class ClaimInstitution extends Component {
           );
         }
         request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
-          content: `${value.owner_name} 认领了 ID 为 ${this.props.id} 的机构，请快去审核`,
+          content: `${value.owner_name} 入驻了 ID 为 ${this.props.id} 的机构，请快去审核`,
           mobile: `${value.owner_mobile}`,
         });
       },

@@ -12,7 +12,7 @@ import InstitutionItem from 'component/institution/item';
 import styles from './style';
 
 @global.bindTrack({
-  page: '认领我的机构',
+  page: '入驻我的机构',
   name: 'App_MyInstitutionClaimSearchOperation',
 })
 @connect(({ institution_create }) => ({
@@ -52,7 +52,7 @@ class ClaimInstitutionSearch extends Component {
           style={styles.claim.container}
           onPress={this.handleClaimPress(item.id)}
         >
-          <Text style={styles.claim.title}>认领机构</Text>
+          <Text style={styles.claim.title}>入驻机构</Text>
         </Touchable>
       )}
     />
@@ -67,7 +67,7 @@ class ClaimInstitutionSearch extends Component {
         <NavBar
           back
           gradient
-          title="机构认领"
+          title="机构入驻"
           renderRight={() => (
             <Touchable borderless onPress={this.handleSkipPress}>
               <Text style={styles.navBar.right}>跳过</Text>
