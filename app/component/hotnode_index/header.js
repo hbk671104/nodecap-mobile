@@ -94,11 +94,15 @@ class CategoryHeader extends PureComponent {
   renderChart = () => {
     const { global, indexType } = this.props;
     const trend = R.pipe(
-      R.pathOr([], ['7_days']),
+      R.pathOr(
+        [],
+        [indexType === 'hotnode' ? '7_days' : 'weekly_announce_trend'],
+      ),
       R.map(t => ({
         x: t.date,
-        y: indexType === 'hotnode' ? t.count_change : t.market_change,
+        y: indexType === 'hotnode' ? t.count_change : t.count,
       })),
+      R.sort((a, b) => moment(a.x).isAfter(moment(b.x))),
     )(global);
 
     if (R.length(trend) > 1) {

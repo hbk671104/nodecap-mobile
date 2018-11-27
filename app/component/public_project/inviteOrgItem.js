@@ -5,6 +5,7 @@ import { Flex } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar.solid';
+import Icon from 'component/uikit/icon';
 import { raised as raisedStyle } from '../../utils/style';
 import store from '../../../index';
 
@@ -14,6 +15,16 @@ class InviteOrgItem extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.background} />
+        <Touchable
+          style={{
+            position: 'absolute',
+            right: 15,
+            top: 5,
+          }}
+          onPress={this.props.onClose}
+        >
+          <Icon name="close" size={40} color="white" />
+        </Touchable>
         <View style={styles.content}>
           <Text style={styles.title}>{data.name}</Text>
           <Text numberOfLines={1} style={styles.desc}>

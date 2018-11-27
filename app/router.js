@@ -681,7 +681,10 @@ class Router extends Component {
     const { inviteCoin } = this.props;
     return (
       <View>
-        <InviteItem data={inviteCoin} />
+        <InviteItem
+          data={inviteCoin}
+          onClose={() => this.props.setShowInviteEnterModal(false)}
+        />
       </View>
     );
   };
@@ -690,7 +693,10 @@ class Router extends Component {
     const { inviteOrg } = this.props;
     return (
       <View>
-        <InviteOrgItem data={inviteOrg} />
+        <InviteOrgItem
+          data={inviteOrg}
+          onClose={() => this.props.setShowInviteOrgEnterModal(false)}
+        />
       </View>
     );
   };
@@ -721,7 +727,7 @@ class Router extends Component {
         <ActionAlert
           visible={this.props.showInviteEnter}
           renderContent={this.renderInviteEnter}
-          onBackdropPress={() => this.props.setShowInviteEnterModal(false)}
+          onBackdropPress={() => ({})}
           action={() => {
             dispatch(
               NavigationActions.navigate({
@@ -740,7 +746,7 @@ class Router extends Component {
         <ActionAlert
           visible={this.props.showInviteOrgEnter}
           renderContent={this.renderInviteOrgEnter}
-          onBackdropPress={() => this.props.setShowInviteOrgEnterModal(false)}
+          onBackdropPress={() => ({})}
           action={() => {
             store.dispatch(
               NavigationActions.navigate({
