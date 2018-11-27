@@ -144,6 +144,7 @@ import CreateMyProjectDetail from 'container/individual/self/my_project/display'
 import HotnodeIndex from 'container/individual/hotnode_index';
 import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
 import MessageCenter from 'container/individual/message/index';
+import IMPage from 'container/individual/message/im';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   RouterEmitter.emit('changeTab', navigation.state);
@@ -432,6 +433,7 @@ const IndividualStack = createStackNavigator(
     EditWeeklyReport,
     UserProfile,
     GlobalSearch,
+    IMPage,
   },
   {
     headerMode: 'none',

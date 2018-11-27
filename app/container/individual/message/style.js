@@ -54,7 +54,6 @@ export default {
     badge: {
       wrapper: {
         position: 'relative',
-        alignSelf: 'flex-end',
         top: 0,
         right: 0,
       },

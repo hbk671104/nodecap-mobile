@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
@@ -25,20 +24,35 @@ class MessageList extends PureComponent {
     this.props.track('进入');
   }
 
-  renderItem = ({ item }) => (
-    <Item
-      data={item}
-      renderBadge={() => {
-        const { type } = this.props;
-        if (type === 'notification') {
-          return <Badge style={styles.item.badge.wrapper} size={8} />;
-        }
-        return (
-          <NumberBadge wrapperStyle={styles.item.badge.wrapper} number={34} />
-        );
-      }}
-    />
-  );
+  handleItemPress = item => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'IMPage',
+        params: {
+          id: 0,
+        },
+      }),
+    );
+  };
+
+  renderItem = ({ item }) => {
+    const { type } = this.props;
+    const in_notification = type === 'notification';
+    return (
+      <Item
+        disabled={in_notification}
+        data={item}
+        onPress={this.handleItemPress(item)}
+        renderBadge={() => {
+          return in_notification ? (
+            <Badge style={styles.item.badge.wrapper} size={8} />
+          ) : (
+            <NumberBadge wrapperStyle={styles.item.badge.wrapper} number={34} />
+          );
+        }}
+      />
+    );
+  };
 
   render() {
     const { data, pagination, loading } = this.props;

@@ -1,8 +1,7 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { NavigationActions } from 'react-navigation';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
 

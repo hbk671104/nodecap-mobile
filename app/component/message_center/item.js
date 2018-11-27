@@ -5,8 +5,8 @@ import { Flex } from 'antd-mobile';
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
-const item = ({ data, renderBadge, onPress }) => (
-  <Touchable foreground onPress={onPress}>
+const item = ({ disabled = false, data, renderBadge, onPress }) => (
+  <Touchable disabled={disabled} foreground onPress={onPress}>
     <Flex style={styles.container}>
       <Avatar
         raised={false}
@@ -16,16 +16,25 @@ const item = ({ data, renderBadge, onPress }) => (
         innerRatio={1}
       />
       <View style={styles.content.container}>
-        <Text style={styles.content.name}>
-          Yemu Xu
-          <Text style={{ color: '#E9E9E9', fontWeight: 'normal' }}> | </Text>
-          <Text style={styles.content.from}>Zilliqa</Text>
-        </Text>
-        <Text style={styles.content.text}>啦啦啦啦啦</Text>
-      </View>
-      <View>
-        <Text style={styles.trail.time}>09:12</Text>
-        {renderBadge && <View style={styles.trail.badge}>{renderBadge()}</View>}
+        <Flex>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.content.name}>
+              Yemu Xu
+              <Text style={{ color: '#E9E9E9', fontWeight: 'normal' }}>
+                {' '}
+                |{' '}
+              </Text>
+              <Text style={styles.content.from}>Zilliqa</Text>
+            </Text>
+          </View>
+          <Text style={styles.content.time}>09:12</Text>
+        </Flex>
+        <Flex style={styles.bottom}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.content.text}>闷声发大财，识得唔识得？</Text>
+          </View>
+          {renderBadge && renderBadge()}
+        </Flex>
       </View>
     </Flex>
   </Touchable>
@@ -57,18 +66,14 @@ const styles = {
     text: {
       fontSize: 12,
       color: 'rgba(0, 0, 0, 0.65)',
-      marginTop: 12,
     },
-  },
-  trail: {
-    container: {},
     time: {
       fontSize: 11,
       color: 'rgba(0, 0, 0, 0.25)',
     },
-    badge: {
-      marginTop: 12,
-    },
+  },
+  bottom: {
+    marginTop: 12,
   },
 };
 
