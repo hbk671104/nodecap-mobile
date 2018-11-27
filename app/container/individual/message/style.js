@@ -43,5 +43,11 @@ export default {
       backgroundColor: '#1890FF',
       left: (tabWidth - 15) / 2,
     },
+    badge: {
+      wrapper: {
+        top: 4,
+        right: 4,
+      },
+    },
   },
 };

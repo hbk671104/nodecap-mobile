@@ -7,6 +7,7 @@ import { TabView, TabBar } from 'react-native-tab-view';
 import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
+import { NumberBadge } from 'component/badge';
 
 import MessageList from './list';
 import styles from './style';
@@ -48,6 +49,12 @@ class MessageWrapper extends PureComponent {
           tabStyle={styles.tabBar.tab}
           indicatorStyle={styles.tabBar.indicator}
           labelStyle={styles.tabBar.label}
+          renderBadge={({ route }) => (
+            <NumberBadge
+              wrapperStyle={styles.tabBar.badge.wrapper}
+              number={24}
+            />
+          )}
         />
       )}
     />

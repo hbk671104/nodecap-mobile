@@ -13,12 +13,14 @@ const badge = ({ style, size }) => (
   </View>
 );
 
-const NumberBadge = ({ number }) => {
+const NumberBadge = ({ wrapperStyle, number }) => {
   if (number > 0) {
     return (
-      <View style={[styles.wrapper]}>
-        <View style={[styles.numberContainer]}>
-          <Text style={styles.text}>{number}</Text>
+      <View style={[styles.wrapper, wrapperStyle]}>
+        <View style={styles.numberWrapper}>
+          <View style={[styles.numberContainer]}>
+            <Text style={styles.text}>{number}</Text>
+          </View>
         </View>
       </View>
     );
@@ -33,21 +35,25 @@ const styles = {
     right: 12,
   },
   container: {
-    backgroundColor: '#F5222D',
+    backgroundColor: '#F55454',
+  },
+  numberWrapper: {
+    padding: 1,
+    backgroundColor: 'white',
+    borderRadius: 7,
   },
   numberContainer: {
-    backgroundColor: '#F5222D',
-    paddingHorizontal: 7,
-    paddingVertical: 3,
-    borderRadius: 12,
-    borderWidth: 2,
-    borderColor: 'white',
+    backgroundColor: '#F55454',
+    paddingHorizontal: 4.5,
+    height: 14,
+    minWidth: 14,
+    alignItems: 'center',
+    borderRadius: 7,
   },
   text: {
-    fontFamily: 'PingFangSC-Medium',
     fontSize: 9,
-    color: '#FFFFFF',
-    textAlign: 'left',
+    color: 'white',
+    fontWeight: 'bold',
   },
 };
 
