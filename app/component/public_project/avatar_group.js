@@ -43,7 +43,7 @@ const avatar_group = ({ data, onExplanationPress }) => {
       </View>
       <Touchable borderless onPress={onExplanationPress}>
         <View style={styles.title.container}>
-          <View style={{ flex: 1, alignItems: 'center' }}>
+          <View style={{ flex: 1, alignItems: 'center', marginRight: 7 }}>
             <Text style={[styles.title.text, score >= 100 && { fontSize: 20 }]}>
               {score}
             </Text>
@@ -57,8 +57,8 @@ const avatar_group = ({ data, onExplanationPress }) => {
             <Flex align="center">
               <Text style={{ fontSize: 11, color: 'white' }}>分</Text>
               <Image
-                style={{ marginLeft: 3 }}
-                source={require('asset/public_project/explanation.png')}
+                style={{ marginLeft: 3, height: 16, width: 16 }}
+                source={require('asset/public_project/explanation_arrow.png')}
               />
             </Flex>
           </View>
