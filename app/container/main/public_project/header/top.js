@@ -191,7 +191,7 @@ const top = ({
     <View style={styles.bannerWrapper}>
       <Swiper
         width={deviceWidth}
-        height={150}
+        height={130}
         autoplay
         autoplayTimeout={5}
         renderPagination={(index, total) => (
@@ -229,7 +229,7 @@ const styles = {
     paddingBottom: 16,
   },
   banner: {
-    height: 150,
+    height: 130,
     // width: deviceWidth - 12 * 2,
     marginHorizontal: 12,
     borderRadius: 2,
