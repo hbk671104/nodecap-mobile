@@ -6,6 +6,7 @@ import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
 import Item from 'component/message_center/item';
+import Badge, { NumberBadge } from 'component/badge';
 import styles from './style';
 
 @global.bindTrack({
@@ -24,7 +25,20 @@ class MessageList extends PureComponent {
     this.props.track('进入');
   }
 
-  renderItem = ({ item }) => <Item data={item} />;
+  renderItem = ({ item }) => (
+    <Item
+      data={item}
+      renderBadge={() => {
+        const { type } = this.props;
+        if (type === 'notification') {
+          return <Badge style={styles.item.badge.wrapper} size={8} />;
+        }
+        return (
+          <NumberBadge wrapperStyle={styles.item.badge.wrapper} number={34} />
+        );
+      }}
+    />
+  );
 
   render() {
     const { data, pagination, loading } = this.props;

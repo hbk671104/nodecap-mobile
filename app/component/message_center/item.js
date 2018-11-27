@@ -5,7 +5,7 @@ import { Flex } from 'antd-mobile';
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
-const item = ({ data, onPress }) => (
+const item = ({ data, renderBadge, onPress }) => (
   <Touchable foreground onPress={onPress}>
     <Flex style={styles.container}>
       <Avatar
@@ -25,6 +25,7 @@ const item = ({ data, onPress }) => (
       </View>
       <View>
         <Text style={styles.trail.time}>09:12</Text>
+        {renderBadge && <View style={styles.trail.badge}>{renderBadge()}</View>}
       </View>
     </Flex>
   </Touchable>
