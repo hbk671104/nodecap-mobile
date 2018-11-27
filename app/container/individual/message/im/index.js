@@ -26,7 +26,7 @@ class IMPage extends PureComponent {
       renderTitle={() => (
         <View style={styles.navBar.title.container}>
           <Text style={styles.navBar.title.text} numberOfLines={1}>
-            Kevin
+            释然
           </Text>
           <Flex>
             <Flex style={{ flex: 1 }} justify="flex-end">
@@ -39,7 +39,7 @@ class IMPage extends PureComponent {
             </Text>
             <Flex style={{ flex: 1 }}>
               <Text style={styles.navBar.title.subtext} numberOfLines={1}>
-                设计总监
+                吉祥物
               </Text>
             </Flex>
           </Flex>
@@ -57,7 +57,17 @@ class IMPage extends PureComponent {
           messages={[
             {
               _id: '1',
-              text: '您好，我是 Hotnode 的凯文老师',
+              text: '他人笑我太释然，我笑他人看不穿',
+              createdAt: new Date(),
+              user: {
+                _id: 2,
+                name: 'React Native',
+                avatar: 'https://placeimg.com/140/140/any',
+              },
+            },
+            {
+              _id: '2',
+              text: '范迪塞尔我偶像，打死也不换头像',
               createdAt: new Date(),
               user: {
                 _id: 2,
