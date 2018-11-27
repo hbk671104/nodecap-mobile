@@ -106,7 +106,7 @@ import GlobalSearch from 'container/main/public_project/globalSearch';
 import Favored from 'container/individual/favored';
 import CoinRecord from 'container/individual/public_project/detail/record';
 import CoinRecordCreate from 'container/individual/public_project/detail/record/create';
-import IndividualPublicProjectDetail from 'container/individual/public_project/detail';
+import IndividualPublicProjectDetail from 'container/individual/public_project/detailFacade';
 import IndividualSelf from 'container/individual/self';
 import IndividualProfile from 'container/individual/self/profile/mine';
 import IndividualEditProfile from 'container/individual/self/profile/edit';
