@@ -8,6 +8,7 @@ import { getConstants, getAllPermissions, getAllRoles } from '../services/api';
 import { initKeychain } from '../utils/keychain';
 import request from '../utils/request';
 import { Storage } from '../utils';
+import { initNIM } from 'utils/nim';
 
 export default {
   namespace: 'global',
@@ -184,11 +185,18 @@ export default {
           R.path(['user', 'currentUser'])(state),
         );
 
-        // sensor input
         const realname = R.path(['realname'])(user);
         const user_id = R.path(['id'])(user);
         const companyName = R.pathOr('void', [0, 'name'])(companies);
         const companyID = R.pathOr(0, [0, 'id'])(companies);
+
+        // NIM
+        initNIM({
+          account: 'zhenkuo',
+          token: '32896d7f0747bc668f0d14dc7abd10c8',
+        });
+
+        // sensor input
         const input = {
           realname,
           companyName,
