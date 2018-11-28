@@ -8,7 +8,7 @@ import Group from './group';
 
 const bottom = props => (
   <Group
-    title="资讯"
+    title="融资快讯"
     renderRight={() => (
       <Touchable borderless onPress={props.onRefreshPress}>
         <View style={styles.rightContainer}>
@@ -30,6 +30,7 @@ const bottom = props => (
         今日新增：快讯26、头条 8、研报 3、交易所公告 14
       </Text>
     </View> */}
+    <View style={{ height: 10 }} />
   </Group>
 );
 

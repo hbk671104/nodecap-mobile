@@ -12,12 +12,13 @@ import { RouterEmitter } from '../../../router';
 import NavBar from 'component/navBar';
 import Explanation from 'component/explanation';
 import NewsItem from 'component/news';
+import InvestNewsItem from 'component/news/investNewsItem';
 import Touchable from 'component/uikit/touchable';
 import Format from 'component/format';
 import { setStatusBar } from 'component/uikit/statusBar';
 import { handleOpen, handleReceive } from 'utils/jpush_handler';
 
-import List from './components/list';
+import List from 'component/uikit/list';
 import Header from './header';
 import ShareNews from './shareNews';
 import styles from './style';
@@ -35,18 +36,19 @@ import styles from './style';
     institution,
     banners,
     hotnode_index,
+    investNews,
   }) => ({
-    news: R.pathOr([], ['news'])(news),
-    lastNewsID: R.pathOr(null, ['payload'])(news),
     data: R.pathOr([{}, {}, {}, {}, {}], ['selected', 'index', 'data'])(
       public_project,
     ),
     pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
       public_project,
     ),
-    loading: loading.effects['news/index'],
     selectedLoading: loading.effects['public_project/fetchSelected'],
     insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
+    investNews: R.pathOr([], ['list', 'data'])(investNews),
+    investNewPagination: R.pathOr(null, ['list', 'pagination'])(investNews),
+    loading: loading.effects['investNews/fetch'],
     announcement: R.pathOr([], ['list', 'data'])(notification),
     reports: R.pathOr([], ['report', 'data'])(institution),
     updateCount: R.path(['updated_count'])(news),
@@ -117,11 +119,13 @@ export default class PublicProject extends Component {
     handleReceive(extras);
   };
 
-  requestData = (isRefresh, callback) => {
+  requestData = (page, size) => {
     this.props.dispatch({
-      type: 'news/index',
-      payload: isRefresh ? null : this.props.lastNewsID,
-      callback,
+      type: 'investNews/fetch',
+      payload: {
+        currentPage: page,
+        pageSize: size,
+      },
     });
   };
 
@@ -256,14 +260,9 @@ export default class PublicProject extends Component {
   };
 
   renderItem = ({ item }) => (
-    <NewsItem
+    <InvestNewsItem
       {...this.props}
       data={item}
-      onInstitutionReportPress={this.handleInstitutionReportPress}
-      onInstitutionItemPress={this.handleReportItemPress}
-      onAnnouncementPress={this.handleAnnouncementPress}
-      onAnnouncementItemPress={this.handleAnnouncementItemPress}
-      onPressShare={this.handleNewsSharePress}
     />
   );
 
@@ -287,8 +286,6 @@ export default class PublicProject extends Component {
       newsLoading={this.props.loading}
     />
   );
-
-  renderSeparator = () => <View style={styles.separator} />;
 
   renderNavBar = () => {
     const { global_index } = this.props;
@@ -319,7 +316,7 @@ export default class PublicProject extends Component {
   };
 
   render() {
-    const { news, loading, showExplanation } = this.props;
+    const { investNews, investNewPagination, loading, showExplanation } = this.props;
     let lastY = 0;
     return (
       <View style={styles.container}>
@@ -339,10 +336,10 @@ export default class PublicProject extends Component {
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
-          data={news}
+          data={investNews}
+          pagination={investNewPagination}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
-          renderSeparator={this.renderSeparator}
         />
         <ShareNews
           visible={this.props.showShareModal}

@@ -1,24 +1,57 @@
 import React from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, Dimensions } from 'react-native';
 import R from 'ramda';
-
+import { Flex } from 'antd-mobile';
 import Touchable from 'component/uikit/touchable';
 import Icon from 'component/uikit/icon';
 import Group from './group';
+import { shadow } from '../../../../utils/style';
+import Gradient from 'component/uikit/gradient';
+
+const window = Dimensions.get('window');
+const expectationList = [{
+ name: '铁头看多',
+  icon: require('asset/public_project/expectation_01.png'),
+}, {
+  name: '一般看多',
+  icon: require('asset/public_project/expectation_02.png'),
+}, {
+  name: '佛系持平',
+  icon: require('asset/public_project/expectation_03.png'),
+}, {
+  name: '一般看空',
+  icon: require('asset/public_project/expectation_04.png'),
+}, {
+  name: '大空头',
+  icon: require('asset/public_project/expectation_05.png'),
+}];
+
+const sentimentList = [{
+  name: '宁静',
+  icon: require('asset/public_project/sentiment_01.png'),
+}, {
+  name: '还行',
+  icon: require('asset/public_project/sentiment_02.png'),
+}, {
+  name: '紧张',
+  icon: require('asset/public_project/sentiment_03.png'),
+}, {
+  name: '恐惧',
+  icon: require('asset/public_project/sentiment_04.png'),
+}, {
+  name: '窒息',
+  icon: require('asset/public_project/sentiment_05.png'),
+}];
 
 const emotionIndex = ({
   market_sentiment: data,
   onTitlePress,
   onMoreIndexPress,
 }) => {
-  let long = R.pathOr(50, ['long'])(data);
-  let short = R.pathOr(50, ['short'])(data);
-  const total = long + short;
-
-  // percentage
-  long = (long / total) * 100;
-  short = (short / total) * 100;
-
+  const expectation = Math.floor(R.pathOr(0, ['expectation'])(data) * 100);
+  const sentiment = Math.floor(R.pathOr(0, ['sentiment'])(data) * 100);
+  const expectationPosition = (window.width - 24) * R.pathOr(0, ['expectation'])(data) - 22;
+  const sentimentPosition = (window.width - 24) * R.pathOr(0, ['sentiment'])(data) - 22;
   return (
     <Group
       renderTitle={() => (
@@ -40,24 +73,59 @@ const emotionIndex = ({
         </Touchable>
       )}
     >
-      <View style={styles.content.container}>
-        <View style={[styles.content.long.container, { flex: long }]}>
-          <Text style={styles.content.text}>
-            {Number(long).toFixed(1)}% 看多
-          </Text>
+      <View style={{ marginHorizontal: 12, marginTop: 20 }}>
+        <View style={[styles.ratingName, { marginLeft: expectationPosition }]}>
+          <Text style={styles.ratingText}>{`${expectation}%`}</Text>
+          <View style={styles.ratingArrow} />
         </View>
-        <Image source={require('asset/splitter.png')} />
-        <View style={[styles.content.short.container, { flex: short }]}>
-          <Text style={styles.content.text}>
-            {Number(short).toFixed(1)}% 看空
-          </Text>
+        <Gradient
+          colors={['#D0DFED', '#7E99B3']}
+          start={{ x: 0, y: 2.5 }}
+          end={{ x: 1.0, y: 2.5 }}
+        >
+          <Flex style={{ height: 5 }}>
+            {R.map(i => <View style={styles.divider} />)(expectationList)}
+          </Flex>
+        </Gradient>
+        <Flex style={{ marginTop: 14 }}>
+          {expectationList.map(i => (
+            <View style={{ flex: 1, alignItems: 'center' }} >
+              <Image source={i.icon} />
+              <Text style={styles.name}>{i.name}</Text>
+            </View>
+          ))}
+        </Flex>
+      </View>
+      <View style={{ marginHorizontal: 12, marginTop: 47.5, marginBottom: 20 }}>
+        <View style={[styles.ratingName, { marginLeft: sentimentPosition, backgroundColor: '#F4AEAE' }]}>
+          <Text style={styles.ratingText}>{`${sentiment}%`}</Text>
+          <View style={[styles.ratingArrow, { backgroundColor: '#F4AEAE' }]} />
         </View>
+        <Gradient
+          colors={['#F4CBCB', '#F55454']}
+          start={{ x: 0, y: 2.5 }}
+          end={{ x: 1.0, y: 2.5 }}
+        >
+          <Flex style={{ height: 5 }}>
+            {R.map(i => <View style={styles.divider} />)(sentimentList)}
+          </Flex>
+        </Gradient>
+        <Flex style={{ marginTop: 14 }}>
+          {sentimentList.map(i => (
+            <View style={{ flex: 1, alignItems: 'center' }} >
+              <Image source={i.icon} />
+              <Text style={styles.name}>{i.name}</Text>
+            </View>
+          ))}
+        </Flex>
       </View>
     </Group>
   );
 };
 
 const styles = {
+  divider: { flex: 1, borderRightColor: 'white', borderRightWidth: 1, height: 5 },
+  name: { marginTop: 5, fontSize: 11, color: 'rgba(0,0,0,0.45)', letterSpacing: 0.13 },
   title: {
     container: {
       flexDirection: 'row',
@@ -113,6 +181,30 @@ const styles = {
       fontWeight: 'bold',
       fontSize: 10,
     },
+  },
+  ratingName: {
+    height: 15,
+    paddingHorizontal: 8,
+    backgroundColor: '#ACC1D4',
+    borderRadius: 2,
+    alignItems: 'center',
+    alignSelf: 'flex-start',
+    marginBottom: 8,
+  },
+  ratingText: {
+    color: 'white',
+    fontSize: 11,
+    zIndex: 10,
+    ...shadow,
+  },
+  ratingArrow: {
+    width: 8,
+    height: 8,
+    backgroundColor: '#ACC1D4',
+    borderRadius: 1,
+    transform: [{ rotateZ: '45deg' }],
+    zIndex: 0,
+    marginTop: -5.5,
   },
 };
 
