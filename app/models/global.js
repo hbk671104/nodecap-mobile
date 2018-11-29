@@ -176,6 +176,9 @@ export default {
           put.resolve({
             type: 'user/fetchCurrent',
           }),
+          put({
+            type: 'message_center/fetchNotification',
+          }),
         ]);
 
         const companies = yield select(state =>

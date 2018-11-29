@@ -206,3 +206,11 @@ export function deleteInstitutionMember(id) {
 export function getUserByNIM(nid) {
   return request.get(`/users/im/${nid}`);
 }
+
+export function getNotification(params) {
+  return request.get('/notify', { params });
+}
+
+export function markNotificationRead() {
+  return request.post('/notify/read');
+}

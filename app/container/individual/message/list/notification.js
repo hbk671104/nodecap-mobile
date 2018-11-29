@@ -15,15 +15,24 @@ import styles from '../style';
   subModuleName: '通知列表',
 })
 @connect(({ message_center, loading }) => ({
-  data: R.pathOr([{ id: 1 }, { id: 2 }, { id: 3 }], ['notification', 'data'])(
-    message_center,
-  ),
+  data: R.pathOr([], ['notification', 'data'])(message_center),
   pagination: R.path(['notification', 'pagination'])(message_center),
+  loading: loading.effects['message_center/fetchNotification'],
 }))
 class NotificationList extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
   }
+
+  requestData = (page, size) => {
+    this.props.dispatch({
+      type: 'message_center/fetchNotification',
+      params: {
+        page,
+        'p-page': size,
+      },
+    });
+  };
 
   renderItem = ({ item }) => <NotificationItem data={item} />;
 
@@ -34,8 +43,8 @@ class NotificationList extends PureComponent {
     return (
       <List
         contentContainerStyle={styles.listContent}
-        // action={this.requestData}
-        // loading={loading}
+        action={this.requestData}
+        loading={loading}
         pagination={pagination}
         data={data}
         renderItem={this.renderItem}

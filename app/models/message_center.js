@@ -1,6 +1,10 @@
 import R from 'ramda';
 import { getUserById } from 'services/api';
-import { getUserByNIM } from 'services/individual/api';
+import {
+  getUserByNIM,
+  getNotification,
+  markNotificationRead,
+} from 'services/individual/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -54,6 +58,18 @@ export default {
         console.log(error);
       }
     },
+    *fetchNotification({ params }, { call, put }) {
+      try {
+        const { data } = yield call(getNotification, params);
+
+        yield put({
+          type: 'saveNotification',
+          payload: data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
     *getUserById({ id, callback }, { select, call, put }) {
       try {
         const user = yield select(state =>
@@ -98,6 +114,12 @@ export default {
           ...state.chat_user,
           [id]: payload,
         },
+      };
+    },
+    saveNotification(state, { payload }) {
+      return {
+        ...state,
+        notification: paginate(state.notification, payload),
       };
     },
   },

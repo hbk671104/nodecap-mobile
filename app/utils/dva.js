@@ -73,6 +73,7 @@ export default options => {
         'globalSearch/services',
         'globalSearch/users',
         'message_center/getUserById',
+        'message_center/fetchNotification',
       ],
     }),
   );
