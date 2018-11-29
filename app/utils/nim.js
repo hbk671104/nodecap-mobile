@@ -2,6 +2,8 @@ import moment from 'moment';
 import R from 'ramda';
 import realm from 'realm';
 import SDK from '../../lib/NIM_Web_SDK_rn_v5.8.0';
+import store from '../../index';
+import { RouterEmitter } from '../router';
 
 SDK.usePlugin({
   db: realm,
@@ -16,6 +18,7 @@ const initNIM = ({ account, token }) => {
     db: true,
     syncRoamingMsgs: true,
     syncSessionUnread: true,
+    autoMarkRead: true,
     onconnect: () => {
       console.log('connect');
     },
@@ -23,10 +26,19 @@ const initNIM = ({ account, token }) => {
       console.log('error', event.message);
     },
     onsessions: sessions => {
-      console.log('收到会话列表', sessions);
+      store.dispatch({
+        type: 'message_center/fetchSession',
+        sessions,
+      });
+    },
+    onupdatesession: sessions => {
+      store.dispatch({
+        type: 'message_center/updateSession',
+        sessions,
+      });
     },
     onmsg: msg => {
-      console.log('onmsg', msg);
+      RouterEmitter.emit('onmsg', msg);
     },
     // onofflinemsgs: msg => {
     //   console.log('onofflinemsgs', msg);

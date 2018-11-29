@@ -202,3 +202,7 @@ export function editInstitutionMember({ id, payload }) {
 export function deleteInstitutionMember(id) {
   return request.delete(`/member-investments/${id}`);
 }
+
+export function getUserByNIM(nid) {
+  return request.get(`/users/im/${nid}`);
+}

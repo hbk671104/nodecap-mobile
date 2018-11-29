@@ -72,6 +72,7 @@ export default options => {
         'globalSearch/industries',
         'globalSearch/services',
         'globalSearch/users',
+        'message_center/getUserById',
       ],
     }),
   );

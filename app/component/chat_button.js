@@ -5,8 +5,17 @@ import { NavigationActions } from 'react-navigation';
 
 import Touchable from 'component/uikit/touchable';
 
-const chatButton = ({ id, dispatch }) => {
+const chatButton = ({ id, dispatch, logged_in }) => {
   const handlePress = () => {
+    if (!logged_in) {
+      dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+
     dispatch(
       NavigationActions.navigate({
         routeName: 'IMPage',
@@ -40,4 +49,6 @@ const styles = {
   },
 };
 
-export default connect()(chatButton);
+export default connect(({ login }) => ({
+  logged_in: !!login.token,
+}))(chatButton);

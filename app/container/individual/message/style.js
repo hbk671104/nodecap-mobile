@@ -16,6 +16,11 @@ export default {
   listContent: {
     paddingVertical: 0,
   },
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    backgroundColor: '#E9E9E9',
+    marginLeft: 12,
+  },
   navBar: {
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderBottomColor: '#E9E9E9',
@@ -47,15 +52,6 @@ export default {
       wrapper: {
         top: 4,
         right: 4,
-      },
-    },
-  },
-  item: {
-    badge: {
-      wrapper: {
-        position: 'relative',
-        top: 0,
-        right: 0,
       },
     },
   },

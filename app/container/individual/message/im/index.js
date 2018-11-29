@@ -8,50 +8,61 @@ import { Flex } from 'antd-mobile';
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
 import { formatMessage } from 'utils/nim';
-import { getUserById } from 'services/api';
+import { RouterEmitter } from '../../../../router';
 import styles from './style';
 
 @global.bindTrack({
   page: '聊天页',
   name: 'App_IMPageOperation',
 })
-@connect(({ user }, { navigation }) => ({
-  id: navigation.getParam('id'),
-  user: R.path(['currentUser'])(user),
-}))
+@connect(({ user, message_center, loading }, { navigation }) => {
+  const id = navigation.getParam('id');
+  return {
+    id,
+    user: R.path(['currentUser'])(user),
+    target: R.path(['chat_user', id])(message_center),
+    loading: loading.effects['message_center/getUserById'],
+  };
+})
 @compose(
   withState('data', 'setData', []),
-  withState('target', 'setTarget', {}),
-  withState('loading', 'setLoading', false),
   withProps(({ user, target }) => ({
     user_im_id: R.path(['im_info', 'im_id'])(user),
     target_im_id: R.path(['im_info', 'im_id'])(target),
   })),
 )
 class IMPage extends PureComponent {
-  async componentWillMount() {
-    await this.loadTargetInfo();
-    this.loadHistory();
+  componentWillMount() {
+    this.loadTargetInfo();
+    this.handleOnMessage();
   }
 
   componentDidMount() {
     this.props.track('进入');
   }
 
-  loadTargetInfo = async () => {
-    this.props.setLoading(true);
-    const { data } = await getUserById(this.props.id);
-    this.props.setLoading(false);
-    if (data) {
-      this.props.setTarget(data);
+  loadTargetInfo = () => {
+    if (this.props.target) {
+      this.loadHistory();
+      return;
     }
+    this.props.dispatch({
+      type: 'message_center/getUserById',
+      id: this.props.id,
+      callback: () => {
+        this.loadHistory();
+      },
+    });
   };
 
   loadHistory = () => {
     const { target_im_id } = this.props;
-    global.nim.getHistoryMsgs({
-      scene: 'p2p',
-      to: target_im_id,
+    global.nim.resetSessionUnread(`p2p-${target_im_id}`);
+    global.nim.getLocalMsgs({
+      // scene: 'p2p',
+      // to: target_im_id,
+      sessionId: `p2p-${target_im_id}`,
+      desc: true,
       done: (error, res) => {
         if (!error) {
           const { user, target } = this.props;
@@ -72,24 +83,40 @@ class IMPage extends PureComponent {
     });
   };
 
+  handleOnMessage = () => {
+    RouterEmitter.addListener('onmsg', msg => {
+      const { data, target } = this.props;
+      this.props.setData(
+        R.concat([
+          formatMessage(msg, {
+            name: R.path(['realname'])(target),
+            avatar: R.path(['avatar_url'])(target),
+          }),
+        ])(data),
+      );
+    });
+  };
+
   handleSend = ([message]) => {
-    const { target_im_id } = this.props;
+    const { data, target_im_id } = this.props;
     const { text } = message;
+    this.props.setData([message].concat(data));
+
     global.nim.sendText({
       scene: 'p2p',
       to: target_im_id,
       text,
       done: (error, res) => {
-        const { data, user } = this.props;
+        // const { data, user } = this.props;
         if (!error) {
-          this.props.setData(
-            R.concat([
-              formatMessage(res, {
-                name: R.path(['realname'])(user),
-                avatar: R.path(['avatar_url'])(user),
-              }),
-            ])(data),
-          );
+          // this.props.setData(
+          //   R.concat([
+          //     formatMessage(res, {
+          //       name: R.path(['realname'])(user),
+          //       avatar: R.path(['avatar_url'])(user),
+          //     }),
+          //   ])(data),
+          // );
         }
       },
     });
@@ -101,7 +128,7 @@ class IMPage extends PureComponent {
       back
       renderTitle={() => {
         if (this.props.loading) {
-          return <ActivityIndicator />;
+          return <ActivityIndicator color="white" />;
         }
 
         const { target } = this.props;

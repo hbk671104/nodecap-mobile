@@ -100,6 +100,7 @@ export const persist = callback => {
         'project_create',
         'institution_create',
         'banners',
+        'message_center',
       ],
     },
     callback,
