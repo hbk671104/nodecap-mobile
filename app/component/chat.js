@@ -5,6 +5,7 @@ import 'moment/locale/zh-cn';
 const chat = props => (
   <GiftedChat
     {...props}
+    showUserAvatar
     locale="zh-cn"
     placeholder="请输入..."
     renderSend={p => <Send {...p} label="发送" />}

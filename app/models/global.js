@@ -187,13 +187,15 @@ export default {
 
         const realname = R.path(['realname'])(user);
         const user_id = R.path(['id'])(user);
+        const im_account = R.path(['im_info', 'im_id'])(user);
+        const im_token = R.path(['im_info', 'token'])(user);
         const companyName = R.pathOr('void', [0, 'name'])(companies);
         const companyID = R.pathOr(0, [0, 'id'])(companies);
 
         // NIM
         initNIM({
-          account: 'zhenkuo',
-          token: '32896d7f0747bc668f0d14dc7abd10c8',
+          account: im_account,
+          token: im_token,
         });
 
         // sensor input

@@ -18,10 +18,11 @@ import styles from './style';
   page: '成员详情',
   name: 'App_UserProfileOperation',
 })
-@connect(({ login, loading }, props) => {
+@connect(({ login }, props) => {
   const data = props.navigation.getParam('data');
   return {
     data,
+    logged_in: !!login.token,
   };
 })
 @shareModal
@@ -66,12 +67,21 @@ export default class InstitutionDetail extends Component {
   };
 
   handleContact = () => {
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+
     const { data } = this.props;
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'IMPage',
         params: {
-          id: data.id,
+          id: R.path(['user_id'])(data),
         },
       }),
     );
@@ -92,14 +102,23 @@ export default class InstitutionDetail extends Component {
     />
   );
 
-  renderBottom = () => (
-    <Touchable style={styles.contact.container} onPress={this.handleContact}>
-      <Text style={styles.contact.text}>立即联系</Text>
-    </Touchable>
-  );
+  renderBottom = () => {
+    const unreachable = R.pipe(
+      R.path(['data', 'user_id']),
+      R.isNil,
+    )(this.props);
+    if (unreachable) {
+      return null;
+    }
+    return (
+      <Touchable style={styles.contact.container} onPress={this.handleContact}>
+        <Text style={styles.contact.text}>立即联系</Text>
+      </Touchable>
+    );
+  };
 
   render() {
-    const { data, in_individual } = this.props;
+    const { data } = this.props;
     const desc =
       R.pathOr('', ['description'])(data) ||
       R.pathOr('', ['introduction'])(data);
