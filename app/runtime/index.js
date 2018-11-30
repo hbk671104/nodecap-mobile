@@ -9,5 +9,4 @@ const envMap = {
   production,
 };
 
-export default staging;
-// export default (Config.ENV ? envMap[Config.ENV] : production);
+export default (Config.ENV ? envMap[Config.ENV] : production);
