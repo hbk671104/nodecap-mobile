@@ -11,7 +11,7 @@ SDK.usePlugin({
 
 const initNIM = ({ account, token }) => {
   global.nim = SDK.NIM.getInstance({
-    debug: false,
+    debug: global.__DEV__,
     appKey: 'f37350b9eb87d7159bb2df496ff02844',
     account,
     token,
@@ -20,12 +20,13 @@ const initNIM = ({ account, token }) => {
     syncSessionUnread: true,
     autoMarkRead: true,
     onconnect: () => {
-      console.log('connect');
+      console.log('onconnect');
     },
     onerror: event => {
       console.log('error', event.message);
     },
     onsessions: sessions => {
+      console.log('onsessions');
       store.dispatch({
         type: 'message_center/fetchSession',
         sessions,
@@ -40,13 +41,16 @@ const initNIM = ({ account, token }) => {
     onmsg: msg => {
       RouterEmitter.emit('onmsg', msg);
     },
-    onofflinemsgs: msg => {
-      console.log('onofflinemsgs', msg);
-    },
+    // onofflinemsgs: msg => {
+    //   console.log('onofflinemsgs', msg);
+    // },
     // onroamingmsgs: msg => {
     //   console.log('onroamingmsgs', msg);
     // },
     onsyncdone: () => {
+      store.dispatch({
+        type: 'message_center/setOnConnect',
+      });
       console.log('sync done');
     },
   });

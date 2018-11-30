@@ -16,6 +16,7 @@ export default {
     },
     notification: null,
     chat_user: null,
+    connected: false,
   },
   effects: {
     *fetchSession({ sessions }, { call, put, all }) {
@@ -169,6 +170,12 @@ export default {
             })),
           )(state),
         },
+      };
+    },
+    setOnConnect(state) {
+      return {
+        ...state,
+        connected: true,
       };
     },
   },

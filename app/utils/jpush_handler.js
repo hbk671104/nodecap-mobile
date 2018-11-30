@@ -215,10 +215,16 @@ const routeMap = ({ id }) => ({
     routeName: 'Rank',
   },
   im_notify: {
-    trackName: 'IM聊天页',
-    routeName: 'IMPage',
-    params: {
-      id,
+    launch: {
+      trackName: 'IM列表页',
+      routeName: 'MessageCenter',
+    },
+    open: {
+      trackName: 'IM聊天页',
+      routeName: 'IMPage',
+      params: {
+        id,
+      },
     },
   },
   user_notify: {
@@ -227,7 +233,7 @@ const routeMap = ({ id }) => ({
   },
 });
 
-const handleOpen = extras => {
+const handleOpen = (extras, openType) => {
   if (R.isNil(extras) || R.isEmpty(extras)) {
     return;
   }
@@ -236,7 +242,11 @@ const handleOpen = extras => {
   const { type, payload } = data;
   const { action_id: id } = payload;
 
-  const type_obj = R.path([type])(routeMap({ id }));
+  const type_obj = R.pathOr(
+    R.path([type])(routeMap({ id })),
+    [type, openType]
+  )(routeMap({ id }));
+
   if (!R.isNil(type_obj)) {
     const trackName = R.path(['trackName'])(type_obj);
     const routeName = R.path(['routeName'])(type_obj);
