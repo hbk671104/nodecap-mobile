@@ -15,10 +15,7 @@ export default {
       if (global.__DEV__) {
         return;
       }
-
-      // disallow
-      codePush.disallowRestart();
-
+      codePush.allowRestart();
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
       const description = R.path(['description'])(result);
@@ -29,7 +26,6 @@ export default {
         });
         if (isMandatory) {
           // reallow
-          codePush.allowRestart();
           yield put(
             routerRedux.navigate({
               routeName: 'CodePush',
@@ -47,9 +43,14 @@ export default {
         },
         codePushDownloadDidProgress: ({ receivedBytes, totalBytes }) => {
           try {
+            // disallow
+            codePush.disallowRestart();
             if (!isMandatory && receivedBytes === totalBytes) {
               // download complete
               codePush.allowRestart();
+              global.track('App_Codepush', {
+                trackName: '非强制更新',
+              });
             } else {
               Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
                 { text: '一秒更新',
@@ -57,6 +58,9 @@ export default {
                     // reallow
                     codePush.allowRestart();
                     codePush.restartApp();
+                    global.track('App_Codepush', {
+                      trackName: '强制更新',
+                    });
                   },
                 },
               ]);
