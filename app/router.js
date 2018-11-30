@@ -659,6 +659,10 @@ class Router extends Component {
       // check notification permissions
       this.checkPushPermission();
       handleBadgeAction();
+      // clear notification unread
+      this.props.dispatch({
+        type: 'message_center/clearItemUnread',
+      });
     }
     this.props.setAppState(nextAppState);
   };
