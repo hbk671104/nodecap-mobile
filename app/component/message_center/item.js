@@ -22,6 +22,7 @@ const item = ({ data, onPress }) => {
     <Touchable foreground onPress={onPress}>
       <Flex style={styles.container} align="flex-start">
         <Avatar
+          resizeMode="cover"
           raised={false}
           source={{ uri: avatar_url }}
           style={styles.avatar}

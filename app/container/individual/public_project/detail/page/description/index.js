@@ -57,7 +57,6 @@ export default class Description extends PureComponent {
   };
 
   handleIndustryPress = item => {
-    console.log('item', item);
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionDetail',
@@ -66,7 +65,7 @@ export default class Description extends PureComponent {
         },
       }),
     );
-  }
+  };
 
   handleGradeUrlPress = item => {
     this.props.dispatch(

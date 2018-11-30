@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState, withProps } from 'recompose';
 import { Flex } from 'antd-mobile';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
+import SafeArea from 'component/uikit/safeArea';
 import { formatMessage } from 'utils/nim';
 import { RouterEmitter } from '../../../../router';
 import styles from './style';
@@ -140,21 +142,23 @@ class IMPage extends PureComponent {
             <Text style={styles.navBar.title.text} numberOfLines={1}>
               {realname}
             </Text>
-            <Flex>
-              <Flex style={{ flex: 1 }} justify="flex-end">
-                <Text style={styles.navBar.title.subtext} numberOfLines={1}>
-                  {company}
+            {(!!company || !!title) && (
+              <Flex justify="center">
+                <Flex style={{ flex: 1 }} justify="flex-end">
+                  <Text style={styles.navBar.title.subtext} numberOfLines={1}>
+                    {company}
+                  </Text>
+                </Flex>
+                <Text style={styles.navBar.title.subtext}>
+                  {'  '}|{'  '}
                 </Text>
+                <Flex style={{ flex: 1 }}>
+                  <Text style={styles.navBar.title.subtext} numberOfLines={1}>
+                    {title}
+                  </Text>
+                </Flex>
               </Flex>
-              <Text style={styles.navBar.title.subtext}>
-                {'  '}|{'  '}
-              </Text>
-              <Flex style={{ flex: 1 }}>
-                <Text style={styles.navBar.title.subtext} numberOfLines={1}>
-                  {title}
-                </Text>
-              </Flex>
-            </Flex>
+            )}
           </View>
         );
       }}
@@ -164,9 +168,10 @@ class IMPage extends PureComponent {
   render() {
     const { data, user, user_im_id } = this.props;
     return (
-      <View style={styles.container}>
+      <SafeArea style={styles.container}>
         {this.renderNavBar()}
         <Chat
+          bottomOffset={getBottomSpace()}
           user={{
             _id: user_im_id,
             name: R.path(['realname'])(user),
@@ -175,7 +180,7 @@ class IMPage extends PureComponent {
           messages={data}
           onSend={this.handleSend}
         />
-      </View>
+      </SafeArea>
     );
   }
 }

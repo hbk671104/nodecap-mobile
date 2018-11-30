@@ -60,7 +60,12 @@ import styles from './style';
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
     const overall_rating = R.pathOr({}, ['overall_rating'])(portfolio);
+    const chat_member = R.pipe(
+      R.pathOr([], ['members']),
+      R.find(m => !R.isNil(m.user_id)),
+    )(portfolio);
     return {
+      chat_member,
       navBarOpacityRange: animateY.interpolate({
         inputRange: [0, 160],
         outputRange: [0, 1],
@@ -305,6 +310,17 @@ export default class PublicProjectDetail extends Component {
     this.props.toggleInviteModal(true);
   };
 
+  handleContactPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'IMPage',
+        params: {
+          id: R.path(['user_id'])(this.props.chat_member),
+        },
+      }),
+    );
+  };
+
   render() {
     const {
       currentPage: Current,
@@ -392,6 +408,7 @@ export default class PublicProjectDetail extends Component {
           onInvestmentPress={this.handleInvestmentPress}
           onPressComment={this.handleCommentPress}
           onInviteJoinPress={this.handleInviteJoinPress}
+          onConnectPress={this.handleContactPress}
         />
         <Share
           onClose={() => this.props.toggleSharePictureModal(false)}

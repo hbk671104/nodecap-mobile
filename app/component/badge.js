@@ -13,8 +13,11 @@ const badge = ({ style, size }) => (
   </View>
 );
 
-const NumberBadge = ({ wrapperStyle, number }) => {
+const NumberBadge = ({ wrapperStyle, dot = false, number }) => {
   if (number > 0) {
+    if (dot) {
+      return badge();
+    }
     return (
       <View style={[styles.wrapper, wrapperStyle]}>
         <View style={styles.numberWrapper}>

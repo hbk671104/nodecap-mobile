@@ -72,7 +72,7 @@ const memberItem = ({
                 </Touchable>
               )}
             </Flex>
-            {!!user_id && <ChatButton id={user_id} />}
+            {!!user_id && !editMode && <ChatButton id={user_id} />}
             {editMode && (
               <Flex>
                 <Touchable onPress={onEditPress}>

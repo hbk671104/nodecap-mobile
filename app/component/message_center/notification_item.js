@@ -20,6 +20,7 @@ const item = ({ data }) => {
   return (
     <Flex style={styles.container} align="flex-start">
       <Avatar
+        resizeMode="cover"
         source={{ uri: avatar_url }}
         raised={false}
         style={styles.avatar}

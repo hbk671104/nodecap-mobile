@@ -40,9 +40,9 @@ const initNIM = ({ account, token }) => {
     onmsg: msg => {
       RouterEmitter.emit('onmsg', msg);
     },
-    // onofflinemsgs: msg => {
-    //   console.log('onofflinemsgs', msg);
-    // },
+    onofflinemsgs: msg => {
+      console.log('onofflinemsgs', msg);
+    },
     // onroamingmsgs: msg => {
     //   console.log('onroamingmsgs', msg);
     // },

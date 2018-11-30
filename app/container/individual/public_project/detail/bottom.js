@@ -11,9 +11,11 @@ import { bottomTabHeight } from './style';
 const bottom = ({
   onFavorPress,
   onInviteJoinPress,
+  onConnectPress,
   portfolio,
   openShareModal,
   onPressComment,
+  chat_member,
 }) => {
   const favored = R.pathOr(false, ['is_focused'])(portfolio);
   return (
@@ -26,8 +28,6 @@ const bottom = ({
         >
           <View style={styles.group.container}>
             <Image
-              resizeMode="contain"
-              style={styles.group.image}
               source={
                 favored
                   ? require('asset/project/detail/gold_star.png')
@@ -45,11 +45,7 @@ const bottom = ({
           onPress={openShareModal}
         >
           <View style={styles.group.container}>
-            <Image
-              resizeMode="contain"
-              style={styles.group.image}
-              source={require('asset/project/detail/share.png')}
-            />
+            <Image source={require('asset/project/detail/share.png')} />
             <Text style={styles.group.title}>分享</Text>
           </View>
         </Touchable>
@@ -59,11 +55,7 @@ const bottom = ({
           onPress={() => onPressComment()}
         >
           <View style={styles.group.container}>
-            <Image
-              resizeMode="contain"
-              style={styles.group.image}
-              source={require('asset/project/detail/comment.png')}
-            />
+            <Image source={require('asset/project/detail/comment.png')} />
             <Text style={styles.group.title}>点评</Text>
           </View>
         </Touchable>
@@ -73,14 +65,22 @@ const bottom = ({
           onPress={onInviteJoinPress}
         >
           <View style={styles.group.container}>
-            <Image
-              resizeMode="contain"
-              style={styles.group.image}
-              source={require('asset/project/detail/invite_join.png')}
-            />
+            <Image source={require('asset/project/detail/invite_join.png')} />
             <Text style={styles.group.title}>邀请入驻</Text>
           </View>
         </Touchable>
+        {!!chat_member && (
+          <Touchable
+            style={styles.group.wrapper}
+            borderless
+            onPress={onConnectPress}
+          >
+            <View style={styles.group.container}>
+              <Image source={require('asset/project/detail/connect.png')} />
+              <Text style={styles.group.title}>联系</Text>
+            </View>
+          </Touchable>
+        )}
       </View>
     </View>
   );
