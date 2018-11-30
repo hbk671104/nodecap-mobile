@@ -1,6 +1,7 @@
 export default {
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   listContent: {
     paddingVertical: 0,
@@ -20,4 +21,11 @@ export default {
     height: 10,
     backgroundColor: '#F5F5F5',
   },
+  tableHead: {
+    marginTop: 8,
+    paddingHorizontal: 12,
+    height: 27,
+    backgroundColor: '#F5F5F5',
+  },
+  tableHeadText: { fontSize: 12, color: '#666666', letterSpacing: 0.14 },
 };

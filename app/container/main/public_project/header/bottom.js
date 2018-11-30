@@ -1,29 +1,10 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import R from 'ramda';
-import * as Animatable from 'react-native-animatable';
-
-import Touchable from 'component/uikit/touchable';
 import Group from './group';
 
 const bottom = props => (
   <Group
     title="融资快讯"
-    renderRight={() => (
-      <Touchable borderless onPress={props.onRefreshPress}>
-        <View style={styles.rightContainer}>
-          <Animatable.View
-            animation={props.loading ? 'rotate' : undefined}
-            easing="linear"
-            iterationCount="infinite"
-            useNativeDriver
-          >
-            <Image source={require('asset/public_project/refreshing.png')} />
-          </Animatable.View>
-          <Text style={styles.rightText}>刷新</Text>
-        </View>
-      </Touchable>
-    )}
   >
     {/* <View style={styles.info.container}>
       <Text style={styles.info.text}>

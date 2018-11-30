@@ -72,9 +72,16 @@ import styles from './style';
 )
 export default class PublicProject extends Component {
   componentWillMount() {
+    this.props.dispatch({
+      type: 'news/index',
+    });
+
     RouterEmitter.addListener('resume', () => {
       this.props.dispatch({
         type: 'news/index',
+      });
+      this.props.dispatch({
+        type: 'investNews/fetch',
       });
     });
   }

@@ -1,58 +1,49 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
 import R from 'ramda';
-
+import { Flex } from 'antd-mobile';
+import { currencyFormat } from '../../utils/utils';
 import Touchable from 'component/uikit/touchable';
 import Format from 'component/format';
 
 const categoryItem = ({ data, onPress }) => {
-  const category = R.pathOr('--', ['name'])(data);
+  const category = R.pathOr('--', ['tag'])(data);
+  const market_cap = R.path(['market_cap_usd'])(data);
   const heat = R.pathOr('--', ['indexes', 'heat'])(data);
   const heat_change_percentage = R.pathOr(0, [
     'indexes',
     'heat_change_percentage',
   ])(data);
-
+  let marketCapText = '';
+  if (market_cap > 10e7) {
+    marketCapText = `${(market_cap / 10e7).toFixed(2)} 亿`;
+  } else {
+    marketCapText = `${(market_cap / 10e3).toFixed(2)} 万`;
+  }
   const minus = heat_change_percentage < 0;
 
   return (
-    <Touchable onPress={onPress}>
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.title}>{category}</Text>
-          <Text style={styles.subtitle}>
-            <Format>{heat}</Format>
-            {'  '}
-            <Text style={[styles.heat, minus && { color: '#F55454' }]}>
-              {minus
-                ? `${heat_change_percentage}`
-                : `+${heat_change_percentage}`}
-              %
-            </Text>
-          </Text>
-        </View>
-      </View>
-    </Touchable>
+    <Flex style={styles.container}>
+      <Text style={styles.title}>{category}</Text>
+      <Text style={styles.marketCap}>{marketCapText}</Text>
+    </Flex>
   );
 };
 
 const styles = {
   container: {
-    height: 100,
-    width: (Dimensions.get('window').width - 12 * 3) / 2,
     marginLeft: 12,
     marginTop: 12,
-    paddingHorizontal: 12,
-    borderRadius: 2,
-    borderColor: '#ECECEC',
-    borderWidth: StyleSheet.hairlineWidth,
-    justifyContent: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#eee',
   },
   title: {
     fontSize: 14,
     color: 'rgba(0, 0, 0, 0.85)',
     fontWeight: 'bold',
+    width: 114,
   },
+  marketCap: { width: 110, fontSize: 13, color: 'rgba(0,0,0,0.65)', letterSpacing: 0.16 },
   subtitle: {
     marginTop: 24,
     fontSize: 22,

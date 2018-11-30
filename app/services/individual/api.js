@@ -145,7 +145,7 @@ export function globalIndex(params) {
 }
 
 export function categoryIndex(params) {
-  return request.get('/indexes/category', {
+  return request.get('/indexes/category-gbi', {
     params,
   });
 }

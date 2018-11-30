@@ -127,6 +127,7 @@ import CreateMyProjectSocial from 'container/individual/self/my_project/create/n
 import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/normal/steps/roadmap';
 import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
+import ClaimMyProjectWrap from 'container/individual/self/my_project/create/claim/wrap';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
 import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
 import MyInstitution from 'container/individual/self/my_institution';
@@ -138,6 +139,7 @@ import CreateMyInstitutionSingleMember from 'container/individual/self/my_instit
 import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
+import ClaimMyInstitutionWrap from 'container/individual/self/my_institution/claim/wrap';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
 import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
@@ -146,8 +148,8 @@ import HotnodeIndex from 'container/individual/hotnode_index';
 import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
-  RouterEmitter.emit('changeTab', navigation.state);
   defaultHandler();
+  RouterEmitter.emit('changeTab', navigation.state);
 };
 
 const Tab = createBottomTabNavigator(
@@ -292,8 +294,8 @@ const IndividualTab = createBottomTabNavigator(
       screen: PublicProject,
       navigationOptions: {
         title: '首页',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          tabBarOnPress({ navigation, defaultHandler });
           setStatusBar('dark-content');
         },
       },
@@ -302,8 +304,8 @@ const IndividualTab = createBottomTabNavigator(
       screen: HotnodeIndex,
       navigationOptions: {
         title: '指数',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          tabBarOnPress({ navigation, defaultHandler });
           setStatusBar('light-content');
         },
       },
@@ -316,7 +318,7 @@ const IndividualTab = createBottomTabNavigator(
           title: '项目大全',
           tabBarVisible,
           tabBarOnPress: ({ defaultHandler }) => {
-            defaultHandler();
+            tabBarOnPress({ navigation, defaultHandler });
             setStatusBar('light-content');
           },
         };
@@ -326,8 +328,8 @@ const IndividualTab = createBottomTabNavigator(
       screen: IndividualSelf,
       navigationOptions: {
         title: '我的',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          tabBarOnPress({ navigation, defaultHandler });
           setStatusBar('dark-content');
         },
       },
@@ -424,6 +426,8 @@ const IndividualStack = createStackNavigator(
     UserProfile,
     GlobalSearch,
     ReportPage,
+    ClaimMyProjectWrap,
+    ClaimMyInstitutionWrap,
   },
   {
     headerMode: 'none',
