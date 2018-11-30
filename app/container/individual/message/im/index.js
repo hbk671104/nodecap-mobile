@@ -149,7 +149,7 @@ class IMPage extends PureComponent {
   handleOnMessage = () => {
     RouterEmitter.addListener('onmsg', msg => {
       const { data, target, target_im_id } = this.props;
-      if (msg.to !== target_im_id) {
+      if (msg.from !== target_im_id) {
         return;
       }
       global.nim.resetSessionUnread(`p2p-${target_im_id}`);
@@ -231,14 +231,17 @@ class IMPage extends PureComponent {
   );
 
   render() {
-    const { data, user, user_im_id } = this.props;
+    const { data, user, user_im_id, inLastPage } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
         <Chat
           loadEarlier
           renderLoadEarlier={p => {
-            if (this.props.inLastPage) {
+            if (inLastPage) {
+              return null;
+            }
+            if (R.length(data) < 50) {
               return null;
             }
             return (

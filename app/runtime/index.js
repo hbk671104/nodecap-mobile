@@ -9,4 +9,4 @@ const envMap = {
   production,
 };
 
-export default (Config.ENV ? envMap[Config.ENV] : production);
+export default production;

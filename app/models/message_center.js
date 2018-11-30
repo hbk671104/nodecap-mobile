@@ -22,7 +22,9 @@ export default {
     *fetchSession({ sessions }, { call, put, all }) {
       try {
         const result = yield all(
-          R.map(d => (d.to ? call(getUserByNIM, d.to) : Promise.resolve()))(sessions),
+          R.map(d => (d.to ? call(getUserByNIM, d.to) : Promise.resolve()))(
+            sessions,
+          ),
         );
 
         yield put({
@@ -141,15 +143,15 @@ export default {
         notification: paginate(state.notification, {
           ...payload,
           data: R.pipe(
-            R.path(['data']),
+            R.pathOr([], ['data']),
             R.addIndex(R.map)((p, i) => {
-              const is_read_item_store = R.path([i, 'is_read_item'])(
+              const is_read_item_store = R.pathOr(false, [i, 'is_read_item'])(
                 store_data,
               );
               return {
                 ...p,
                 is_read_item: updateListUnread
-                  ? R.path(['is_read'])(p)
+                  ? R.pathOr(false, ['is_read'])(p)
                   : is_read_item_store,
               };
             }),
@@ -163,7 +165,7 @@ export default {
         notification: {
           ...state.notification,
           data: R.pipe(
-            R.path(['notification', 'data']),
+            R.pathOr([], ['notification', 'data']),
             R.map(d => ({
               ...d,
               is_read_item: true,

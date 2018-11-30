@@ -47,7 +47,7 @@ import styles from './style';
     ratingTypes: R.compose(
       R.pathOr([], ['rating_types']),
       R.find(i => i.id === id),
-      R.pathOr([], ['constants', 'rating_orgs'])
+      R.pathOr([], ['constants', 'rating_orgs']),
     )(global),
   };
 })
@@ -213,9 +213,7 @@ export default class InstitutionDetail extends Component {
               </View>
             </Group>
           )}
-          {data.type === 6 && (
-            <RatingItems data={ratingTypes} />
-          )}
+          {data.type === 6 && <RatingItems data={ratingTypes} />}
           {R.not(R.isEmpty(members)) && (
             <Group title="机构成员">
               {R.map(m => (
@@ -241,7 +239,7 @@ export default class InstitutionDetail extends Component {
             </Group>
           )}
           {R.not(R.isEmpty(coins)) && (
-            <Group title="服务案例">
+            <Group title={data.type === 1 ? '所投项目' : '服务案例'}>
               {R.addIndex(R.map)((m, index) => (
                 <FavorItem
                   style={{ paddingHorizontal: 0 }}
