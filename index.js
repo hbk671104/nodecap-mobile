@@ -41,6 +41,9 @@ import updateModel from './app/models/update';
 import bannerModel from './app/models/banners';
 import hotnodeIndexModel from './app/models/hotnode_index';
 import globalSearchModel from './app/models/globalSearch';
+import investNewsModel from './app/models/investNews';
+import messageCenterModel from './app/models/message_center';
+import rankModel from './app/models/rank';
 
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated',
@@ -75,6 +78,9 @@ export const app = dva({
     bannerModel,
     hotnodeIndexModel,
     globalSearchModel,
+    investNewsModel,
+    messageCenterModel,
+    rankModel,
   ],
   extraReducers: { router: routerReducer },
   onAction: [routerMiddleware],
@@ -98,6 +104,7 @@ export const persist = callback => {
         'project_create',
         'institution_create',
         'banners',
+        'message_center',
       ],
     },
     callback,

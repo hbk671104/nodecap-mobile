@@ -13,36 +13,6 @@ import InstitutionItem from 'component/institution/item';
 import UserItem from 'component/user/item';
 import Empty from 'component/empty';
 
-@connect(({ globalSearch, loading }, { type }) => {
-  const data = {};
-  const types = [{
-    name: 'coins',
-  }, {
-    name: 'reports',
-  }, {
-    name: 'industries',
-  }, {
-    name: 'services',
-  }, {
-    name: 'users',
-  }];
-  types.map(i => {
-    data[i.name] = {
-      data: R.pathOr([], ['search', i.name, 'data'])(globalSearch),
-      pagination: R.pathOr(null, ['search', i.name, 'pagination'])(globalSearch),
-      loading: loading.effects[`globalSearch/${i.name}`],
-    };
-    return i;
-  });
-  return {
-    data,
-    empty: types.every(i =>
-      R.compose(R.isEmpty, R.pathOr([], ['search', i.name, 'data']))(globalSearch) &&
-      !loading.effects[`globalSearch/${i.name}`] &&
-      globalSearch.search !== null
-    ),
-  };
-})
 class globalResult extends Component {
   types = [{
     name: 'coins',

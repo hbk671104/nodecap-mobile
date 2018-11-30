@@ -145,7 +145,7 @@ export function globalIndex(params) {
 }
 
 export function categoryIndex(params) {
-  return request.get('/indexes/category', {
+  return request.get('/indexes/category-gbi', {
     params,
   });
 }
@@ -201,4 +201,27 @@ export function editInstitutionMember({ id, payload }) {
 
 export function deleteInstitutionMember(id) {
   return request.delete(`/member-investments/${id}`);
+}
+
+export function getUserByNIM(nid) {
+  return request.get(`/users/im/${nid}`);
+}
+
+export function getNotification(params) {
+  return request.get('/notify', { params });
+}
+
+export function markNotificationRead() {
+  return request.post('/notify/read');
+}
+
+export function getRankList(payload) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/coin-quotations', {
+    params: paramsTransform(payload),
+  });
 }

@@ -722,6 +722,17 @@ export function getLiveList(lastId) {
   });
 }
 
+export function getInvestNews(params = {}) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/invest-news/index', {
+    params: paramsTransform(params),
+  });
+}
+
 export function getCoinSymbol(coin_id) {
   return request.get(`/coins/${coin_id}/symbols`);
 }

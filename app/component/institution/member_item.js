@@ -5,6 +5,7 @@ import { Flex } from 'antd-mobile';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
+import ChatButton from 'component/chat_button';
 import Avatar from 'component/uikit/avatar';
 
 const memberItem = ({
@@ -25,6 +26,7 @@ const memberItem = ({
   const mobile = R.pathOr(false, ['has_mobile'])(data);
   const wechat = R.pathOr(false, ['has_wechat'])(data);
   const is_vip = R.pathOr(false, ['is_vip'])(data);
+  const user_id = R.path(['user_id'])(data);
 
   return (
     <Touchable foreground onPress={onPress}>
@@ -55,7 +57,23 @@ const memberItem = ({
                   source={require('asset/project/detail/vip_icon.png')}
                 />
               )}
+              {!!linkedIn_url && (
+                <Touchable
+                  disabled={editMode}
+                  onPress={() => {
+                    Linking.openURL(linkedIn_url).catch(err =>
+                      console.error('An error occurred', err),
+                    );
+                  }}
+                >
+                  <Image
+                    style={{ marginLeft: 8 }}
+                    source={require('asset/project/detail/linkedin.png')}
+                  />
+                </Touchable>
+              )}
             </Flex>
+            {!!user_id && <ChatButton id={user_id} />}
             {editMode && (
               <Flex>
                 <Touchable onPress={onEditPress}>
@@ -94,21 +112,6 @@ const memberItem = ({
                   <Image
                     style={{ marginLeft: 12 }}
                     source={require('asset/project/detail/wechat.png')}
-                  />
-                </Touchable>
-              )}
-              {!!linkedIn_url && (
-                <Touchable
-                  disabled={editMode}
-                  onPress={() => {
-                    Linking.openURL(linkedIn_url).catch(err =>
-                      console.error('An error occurred', err),
-                    );
-                  }}
-                >
-                  <Image
-                    style={{ marginLeft: 12 }}
-                    source={require('asset/project/detail/linkedin.png')}
                   />
                 </Touchable>
               )}

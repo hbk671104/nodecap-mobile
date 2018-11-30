@@ -170,7 +170,6 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入手机号码' }],
           })(
             <InputItem
-              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="手机"
@@ -186,7 +185,6 @@ class ClaimInstitution extends Component {
             rules: [{ required: true, message: '请输入微信号' }],
           })(
             <InputItem
-              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="微信"

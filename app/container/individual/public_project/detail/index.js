@@ -156,7 +156,7 @@ export default class PublicProjectDetail extends Component {
     }
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ClaimMyProject',
+        routeName: 'ClaimMyProjectWrap',
         params: {
           project_id: this.props.id,
         },

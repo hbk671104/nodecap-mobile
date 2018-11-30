@@ -26,6 +26,7 @@ import shareModal from 'component/shareModal';
 import Member from 'component/institution/member_item';
 
 import Group from './partials/group';
+import RatingItems from './partials/ratingItems';
 import Header from './header';
 import Bottom from './bottom';
 import styles from './style';
@@ -34,7 +35,7 @@ import styles from './style';
   page: '机构详情',
   name: 'App_InstitutionDetailOperation',
 })
-@connect(({ user, institution, login, loading }, props) => {
+@connect(({ user, institution, login, loading, global }, props) => {
   const id = props.navigation.getParam('id');
   return {
     id,
@@ -43,6 +44,11 @@ import styles from './style';
     logged_in: !!login.token,
     in_individual: login.in_individual,
     loading: loading.effects['institution/get'],
+    ratingTypes: R.compose(
+      R.pathOr([], ['rating_types']),
+      R.find(i => i.id === id),
+      R.pathOr([], ['constants', 'rating_orgs'])
+    )(global),
   };
 })
 @compose(
@@ -92,7 +98,7 @@ export default class InstitutionDetail extends Component {
     }
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ClaimMyInstitution',
+        routeName: 'ClaimMyInstitutionWrap',
         params: {
           id: this.props.id,
         },
@@ -192,7 +198,7 @@ export default class InstitutionDetail extends Component {
   );
 
   render() {
-    const { data, in_individual, showInviteModal } = this.props;
+    const { data, in_individual, showInviteModal, ratingTypes } = this.props;
     const desc = R.pathOr('', ['description'])(data);
     const members = R.pathOr([], ['members'])(data);
     const coins = R.pathOr([], ['coins'])(data);
@@ -206,6 +212,9 @@ export default class InstitutionDetail extends Component {
                 <Text style={styles.desc.text}>{desc}</Text>
               </View>
             </Group>
+          )}
+          {data.type === 6 && (
+            <RatingItems data={ratingTypes} />
           )}
           {R.not(R.isEmpty(members)) && (
             <Group title="机构成员">
@@ -224,7 +233,7 @@ export default class InstitutionDetail extends Component {
             </Group>
           )}
           {R.not(R.isEmpty(coins)) && (
-            <Group title="已投项目">
+            <Group title="服务案例">
               {R.addIndex(R.map)((m, index) => (
                 <FavorItem
                   style={{ paddingHorizontal: 0 }}

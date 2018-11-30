@@ -21,6 +21,7 @@ const header = ({ style, data, loading, onLinkPress }) => {
             <Text
               style={styles.content.subtitle}
               onPress={() => onLinkPress(site_url)}
+              numberOfLines={1}
             >
               {site_url}
             </Text>

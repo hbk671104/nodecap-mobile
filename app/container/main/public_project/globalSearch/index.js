@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import R from 'ramda';
 import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import bind from 'lodash-decorators/bind';
-import debounce from 'lodash-decorators/debounce';
+import { compose, withHandlers, withState } from 'recompose';
+import R from 'ramda';
 
 import NavBar from 'component/navBar';
 import TextInput from 'component/uikit/textInput';
 
 import SingleResult from './singleResult';
 import GlobalResult from './globalResult';
+import SearchHistory from './searchHistory';
 
 import CoinItem from 'component/favored/item';
 import InstitutionReportItem from 'component/public_project/report_item';
@@ -26,14 +27,70 @@ import styles from './style';
   page: '全局搜索',
   name: 'App_GlobalSearch',
 })
-@connect(({ global }) => ({
-  type: R.pipe(
-    R.pathOr([], ['constants', 'industry_type']),
-    R.filter(
-      t => t.value !== 3 && t.value !== 7 && t.value !== 8 && t.value !== 1,
+@connect(({ global, globalSearch, loading }) => {
+  const data = {};
+  const types = [{
+    name: 'coins',
+  }, {
+    name: 'reports',
+  }, {
+    name: 'industries',
+  }, {
+    name: 'services',
+  }, {
+    name: 'users',
+  }];
+  types.map(i => {
+    data[i.name] = {
+      data: R.pathOr([], ['search', i.name, 'data'])(globalSearch),
+      pagination: R.pathOr(null, ['search', i.name, 'pagination'])(globalSearch),
+      loading: loading.effects[`globalSearch/${i.name}`],
+    };
+    return i;
+  });
+  return ({
+    type: R.pipe(
+      R.pathOr([], ['constants', 'industry_type']),
+      R.filter(
+        t => t.value !== 3 && t.value !== 7 && t.value !== 8 && t.value !== 1,
+      ),
+    )(global),
+    globalData: data,
+    empty: types.every(i =>
+      R.compose(R.isEmpty, R.pathOr([], ['search', i.name, 'data']))(globalSearch) &&
+      !loading.effects[`globalSearch/${i.name}`] &&
+      globalSearch.search !== null
     ),
-  )(global),
-}))
+    clean: types.every(i => !loading.effects[`globalSearch/${i.name}`]) &&
+    globalSearch.search === null,
+  });
+})
+@compose(
+  withState('history', 'setHistory', []),
+  withHandlers({
+    addHistory: (props) => async (item) => {
+      const historyStr = await AsyncStorage.getItem('historySearch');
+      const history = historyStr ? JSON.parse(historyStr) : [];
+      let newHistory = null;
+      if (R.contains(item)) {
+        newHistory = [item].concat(
+          history.filter(i => item !== i)
+        );
+      } else {
+        newHistory = [item].concat(history);
+      }
+      AsyncStorage.setItem('historySearch', JSON.stringify(newHistory));
+    },
+    clearHistory: (props) => async () => {
+      try {
+        await AsyncStorage.removeItem('historySearch');
+        props.setHistory([]);
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  })
+)
 export default class GlobalSearch extends Component {
   state = {
     searchText: '',
@@ -71,6 +128,7 @@ export default class GlobalSearch extends Component {
           q: this.state.searchText,
         },
       });
+      this.props.addHistory(this.state.searchText);
     }
   }
 
@@ -101,6 +159,9 @@ export default class GlobalSearch extends Component {
           onChange={this.onSearch}
           onSubmitEditing={this.onSubmit}
           autoFocus
+          inputRef={(ref) => {
+            this.inputRef = ref;
+          }}
         />
         {!this.state.searchText &&
         (<Image style={styles.searchIcon} source={require('asset/search_icon.png')} />)
@@ -112,6 +173,24 @@ export default class GlobalSearch extends Component {
 
   render() {
     const { type } = this.props;
+    if (this.props.clean && !this.props.searchText) {
+      return (
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          <NavBar back gradient renderTitle={this.renderSearchBar()} />
+          <SearchHistory
+            {...this.props}
+            onPress={(text) => {
+              this.onSearch(text);
+              this.inputRef.setNativeProps({ text });
+              setTimeout(() => {
+                this.onSubmit();
+              });
+            }}
+          />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.container}>
         <NavBar back gradient renderTitle={this.renderSearchBar()} />
@@ -129,6 +208,7 @@ export default class GlobalSearch extends Component {
             tabLabel="综合"
             jumpTo={this.jumpTo}
             searchText={this.state.searchText}
+            data={this.props.globalData}
           />
           <SingleResult
             type="coins"

@@ -210,6 +210,10 @@ const routeMap = ({ id }) => ({
       id,
     },
   },
+  coin_quotation: {
+    trackName: '涨跌榜',
+    routeName: 'Rank',
+  },
 });
 
 const handleOpen = extras => {

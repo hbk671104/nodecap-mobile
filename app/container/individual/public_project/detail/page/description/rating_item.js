@@ -3,10 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Flex } from 'antd-mobile';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import R from 'ramda';
-
+import { shadow } from '../../../../../../utils/style';
 import Touchable from 'component/uikit/touchable';
+import Gradient from 'component/uikit/gradient';
 
-const rating_item = ({ data, org, columns = 5, onMorePress }) => {
+const rating_item = ({ data, org, columns = 5, onMorePress, onIndustryPress }) => {
   const targeted_id = R.path(['rating_type_id'])(data);
   const grade_url = R.path(['grade_url'])(data);
   const name = R.pathOr('--', ['name'])(org);
@@ -24,82 +25,43 @@ const rating_item = ({ data, org, columns = 5, onMorePress }) => {
 
   return (
     <View style={styles.container}>
-      <Flex align="center" justify="space-between">
-        <Text style={styles.title}>{name}</Text>
+      <Flex align="center" justify="space-between" style={{ marginBottom: 8 }}>
+        <Touchable onPress={onIndustryPress}>
+          <Text style={styles.title}>{name}</Text>
+        </Touchable>
         {!R.isNil(grade_url) && (
           <Touchable borderless onPress={onMorePress}>
             <Text style={styles.more}>查看</Text>
           </Touchable>
         )}
       </Flex>
-      <Flex align="flex-start" style={styles.content.container}>
-        <View style={styles.content.overall.container}>
-          <Text style={styles.content.overall.rating}>{rating_name}</Text>
-          <Text style={styles.content.overall.subtitle}>评级</Text>
-        </View>
-        <Grid style={styles.content.grid}>
-          {rows > 1 &&
-            R.times(
-              current => (
-                <Row key={`${current}`}>
-                  {R.times(count => {
-                    const index = current * columns + count;
-                    const rating_item_id = R.path([index, 'id'])(standard);
-                    const rating_item_name = R.pathOr('--', [index, 'name'])(
-                      standard,
-                    );
-                    return (
-                      <Col
-                        key={`${rating_item_id}`}
-                        style={[
-                          styles.content.item.container,
-                          rating_item_id === rating_id &&
-                            styles.content.item.highlight,
-                        ]}
-                      >
-                        <Text style={styles.content.item.text}>
-                          {rating_item_name}
-                        </Text>
-                      </Col>
-                    );
-                  }, columns)}
-                </Row>
-              ),
-              remainder === 0 ? rows : rows - 1,
-            )}
-          {remainder !== 0 && (
-            <Row>
-              {R.times(count => {
-                const index = (rows - 1) * columns + count;
-                const rating_item_id = R.path([index, 'id'])(standard);
-                const rating_item_name = R.pathOr('--', [index, 'name'])(
-                  standard,
-                );
-                return (
-                  <Col
-                    key={`${count}`}
-                    style={[
-                      styles.content.item.container,
-                      rating_item_id === rating_id &&
-                        styles.content.item.highlight,
-                    ]}
-                  >
-                    <Text style={styles.content.item.text}>
-                      {rating_item_name}
-                    </Text>
-                  </Col>
-                );
-              }, remainder)}
-              {R.times(
-                count => (
-                  <Col key={`${count}`} style={styles.content.item.container} />
-                ),
-                residue,
-              )}
-            </Row>
-          )}
-        </Grid>
-      </Flex>
+      <View>
+        <Flex align="flex-start">
+          {standard.map(i => (
+            <View style={{ flex: 1 }}>
+              {i.id === rating_id ? (
+                <View style={[styles.ratingName]}>
+                  <Text style={styles.ratingText}>{rating_name}</Text>
+                  <View style={styles.ratingArrow} />
+                </View>
+              ) : null}
+            </View>
+          ))}
+        </Flex>
+      </View>
+      <View style={styles.ratingProgress}>
+        <Gradient
+          colors={['#D0DFED', '#7E99B3']}
+          start={{ x: 0, y: 2.5 }}
+          end={{ x: 1.0, y: 2.5 }}
+        >
+          <Flex align="flex-start" style={styles.content.container}>
+            {standard.map(i => (
+              <View style={{ flex: 1, borderRightColor: 'white', borderRightWidth: 1, height: 5 }} />
+            ))}
+          </Flex>
+        </Gradient>
+      </View>
     </View>
   );
 };
@@ -118,9 +80,35 @@ const styles = {
     fontWeight: 'bold',
     color: '#1890FF',
   },
+  ratingProgress: {
+    marginTop: 10,
+  },
+  ratingName: {
+    height: 15,
+    paddingHorizontal: 8,
+    backgroundColor: '#C2D3E3',
+    borderRadius: 2,
+    alignItems: 'center',
+    alignSelf: 'center',
+  },
+  ratingText: {
+    color: 'white',
+    fontSize: 11,
+    zIndex: 10,
+    ...shadow,
+  },
+  ratingArrow: {
+    width: 8,
+    height: 8,
+    backgroundColor: '#C2D3E3',
+    borderRadius: 1,
+    transform: [{ rotateZ: '45deg' }],
+    zIndex: 0,
+    marginTop: -5.5,
+  },
   content: {
     container: {
-      marginTop: 10,
+      height: 5,
     },
     overall: {
       container: {

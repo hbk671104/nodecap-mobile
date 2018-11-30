@@ -426,6 +426,11 @@ export default {
     },
     *favor({ payload, institutionId, callback }, { call, put, all }) {
       try {
+        yield put({
+          type: 'setCurrentFavorStatus',
+          payload,
+          status: true,
+        });
         const { status: response_status } = yield call(favorCoin, [payload]);
         yield all([
           put({
@@ -456,6 +461,11 @@ export default {
     },
     *unfavor({ payload, institutionId, callback }, { call, put, all }) {
       try {
+        yield put({
+          type: 'setCurrentFavorStatus',
+          payload,
+          status: false,
+        });
         const { status: response_status } = yield call(unfavorCoin, payload);
         yield all([
           put({
@@ -660,6 +670,20 @@ export default {
           [id]: {
             ...(state.current[id] || {}),
             [action.relatedType]: action.payload,
+          },
+        },
+      };
+    },
+    setCurrentFavorStatus(state, action) {
+      const { payload, status } = action;
+
+      return {
+        ...state,
+        current: {
+          ...(state.current || {}),
+          [payload]: {
+            ...(state.current[payload] || {}),
+            is_focused: status,
           },
         },
       };

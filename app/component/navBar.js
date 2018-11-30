@@ -26,6 +26,7 @@ class NavBar extends PureComponent {
     title: PropTypes.string,
     titleStyle: PropTypes.object,
     titleContainerStyle: PropTypes.object,
+    contentContainerStyle: PropTypes.object,
     iconStyle: PropTypes.object,
     backAction: PropTypes.func,
   };
@@ -67,6 +68,7 @@ class NavBar extends PureComponent {
     const {
       style,
       wrapperStyle,
+      contentContainerStyle,
       barStyle,
       renderContent,
       renderTitle,
@@ -94,7 +96,11 @@ class NavBar extends PureComponent {
           ]}
         >
           <View
-            style={[styles.wrapper.container, hidden && styles.hidden.wrapper]}
+            style={[
+              styles.wrapper.container,
+              contentContainerStyle,
+              hidden && styles.hidden.wrapper,
+            ]}
           >
             {renderContent ? (
               renderContent()

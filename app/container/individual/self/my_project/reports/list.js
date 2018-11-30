@@ -8,7 +8,9 @@ import R from 'ramda';
 import { deleteWeeklyReport } from 'services/individual/api';
 
 import NavBar from 'component/navBar';
+import shareModal from 'component/shareModal';
 import Touchable from 'component/uikit/touchable';
+import Config from 'runtime/index';
 import WeeklyReportItem from './item';
 
 @global.bindTrack({
@@ -19,6 +21,7 @@ import WeeklyReportItem from './item';
   data: R.pathOr([], ['current', navigation.getParam('id'), 'weekly'])(public_project),
   loading: loading.effects['public_project/get'],
 }))
+@shareModal
 class ReportList extends Component {
   componentWillMount() {
     this.props.dispatch({
@@ -66,6 +69,30 @@ class ReportList extends Component {
     ]);
   }
 
+  handleShare = (item) => {
+    const coin = this.props.navigation.getParam('data');
+    const url = `${Config.MOBILE_SITE}/weekly-report?id=${item.id}`;
+    const request = {
+      webpageUrl: url,
+      title: item.title,
+      description: '来 Hotnode, 发现最新最热项目！',
+      thumbImage: coin.icon,
+    };
+
+    this.props.openShareModal({
+      types: [{
+        type: 'timeline',
+        ...request,
+      }, {
+        type: 'session',
+        ...request,
+      }, {
+        type: 'link',
+        url,
+      }],
+    });
+  }
+
   renderNavBar = () => (
     <NavBar
       back
@@ -82,13 +109,15 @@ class ReportList extends Component {
   renderItem = ({ item }) => (
     <WeeklyReportItem
       data={item}
+      coin={this.props.navigation.getParam('data')}
       onDelete={this.handleDeletePress}
       onEdit={this.handleEditPress}
+      onShare={() => this.handleShare(item)}
     />
   );
 
   render() {
-    const { data, pagination, loading } = this.props;
+    const { data, loading } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
