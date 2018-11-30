@@ -663,6 +663,9 @@ class Router extends Component {
       this.props.dispatch({
         type: 'message_center/clearItemUnread',
       });
+      this.props.dispatch({
+        type: 'message_center/fetchNotification',
+      });
     }
     this.props.setAppState(nextAppState);
   };
