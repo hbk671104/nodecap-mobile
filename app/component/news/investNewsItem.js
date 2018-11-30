@@ -15,7 +15,9 @@ class InvestNewsItem extends Component {
             <Text style={styles.title}>{data.name}</Text>
           </View>
           <View>
-            <Text style={styles.date}>{moment.unix(data.invest_time).format('MM-DD')}</Text>
+            <Text style={styles.date}>
+              {data.invest_time === 0 ? '' : moment.unix(data.invest_time).format('MM-DD')}
+            </Text>
           </View>
         </Flex>
         <Flex style={{ marginTop: 8 }}>
