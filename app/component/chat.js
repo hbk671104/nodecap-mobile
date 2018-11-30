@@ -1,11 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Platform } from 'react-native';
-import {
-  GiftedChat,
-  Send,
-  Composer,
-  LoadEarlier,
-} from 'react-native-gifted-chat';
+import { GiftedChat, Send, Composer } from 'react-native-gifted-chat';
 import 'moment/locale/zh-cn';
 
 class Chat extends PureComponent {
@@ -31,6 +26,7 @@ class Chat extends PureComponent {
           this.clearText();
         }}
         listViewProps={{
+          ...this.props.listViewProps,
           keyboardDismissMode: 'on-drag',
           keyboardShouldPersistTaps: 'handled',
         }}
@@ -52,7 +48,6 @@ class Chat extends PureComponent {
           />
         )}
         renderSend={p => <Send {...p} label="发送" />}
-        renderLoadEarlier={p => <LoadEarlier {...p} label="加载更多消息" />}
       />
     );
   }

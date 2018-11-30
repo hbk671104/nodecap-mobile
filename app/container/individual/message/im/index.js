@@ -30,6 +30,7 @@ import styles from './style';
 })
 @compose(
   withState('data', 'setData', []),
+  withState('inLastPage', 'setInLastPage', false),
   withProps(({ user, target }) => ({
     user_im_id: R.path(['im_info', 'im_id'])(user),
     target_im_id: R.path(['im_info', 'im_id'])(target),
@@ -129,11 +130,21 @@ class IMPage extends PureComponent {
                 })(msgs),
               ),
             );
+          } else {
+            this.props.setInLastPage(true);
           }
         }
       },
     });
   };
+
+  isCloseToTop({ layoutMeasurement, contentOffset, contentSize }) {
+    const paddingToTop = 120;
+    return (
+      contentSize.height - layoutMeasurement.height - paddingToTop <=
+      contentOffset.y
+    );
+  }
 
   handleOnMessage = () => {
     RouterEmitter.addListener('onmsg', msg => {
@@ -226,7 +237,16 @@ class IMPage extends PureComponent {
         {this.renderNavBar()}
         <Chat
           loadEarlier
-          onLoadEarlier={this.loadEarlierHistory}
+          renderLoadEarlier={p => {
+            if (this.props.inLastPage) {
+              return null;
+            }
+            return (
+              <View style={{ marginVertical: 12 }}>
+                <ActivityIndicator />
+              </View>
+            );
+          }}
           bottomOffset={getBottomSpace()}
           user={{
             _id: user_im_id,
@@ -236,6 +256,12 @@ class IMPage extends PureComponent {
           messages={data}
           showAvatarForEveryMessage
           onSend={this.handleSend}
+          listViewProps={{
+            scrollEventThrottle: 400,
+            onScroll: ({ nativeEvent }) => {
+              if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
+            },
+          }}
         />
       </SafeArea>
     );
