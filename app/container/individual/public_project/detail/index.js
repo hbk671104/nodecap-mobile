@@ -399,7 +399,7 @@ export default class PublicProjectDetail extends Component {
           style={styles.claim.container}
           onPress={this.onPressClaimCoin}
         >
-          <Image source={require('asset/project/detail/claim.png')} />
+          <Image source={require('asset/project/claim.png')} />
         </Touchable>
         <Bottom
           {...this.props}

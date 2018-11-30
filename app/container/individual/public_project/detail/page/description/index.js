@@ -20,8 +20,9 @@ import Roadmap from './roadmap';
 import Rating from './rating';
 import styles from './style';
 
-@connect(({ user }) => ({
+@connect(({ user, login }) => ({
   user: R.pathOr({}, ['currentUser'])(user),
+  logged_in: !!login.token,
 }))
 @compose(
   withState('showModal', 'setShowModal', false),
@@ -211,8 +212,16 @@ export default class Description extends PureComponent {
                   key={m.id}
                   data={m}
                   onPrivacyItemPress={() => {
-                    this.props.setCurrentMember(m);
-                    this.props.setShowModal(true);
+                    if (this.props.logged_in) {
+                      this.props.setCurrentMember(m);
+                      this.props.setShowModal(true);
+                    } else {
+                      this.props.dispatch(
+                        NavigationActions.navigate({
+                          routeName: 'Login',
+                        }),
+                      );
+                    }
                   }}
                   onPress={() => this.goToMemberDetail(m)}
                   onClaimPress={() => this.props.onClaimPress(m)}

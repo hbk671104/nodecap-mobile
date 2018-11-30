@@ -72,7 +72,7 @@ const memberItem = ({
                 </Touchable>
               )}
             </Flex>
-            {!!user_id && !editMode && <ChatButton id={user_id} />}
+            {!editMode && !!user_id && <ChatButton id={user_id} />}
             {editMode && (
               <Flex>
                 <Touchable onPress={onEditPress}>
@@ -80,16 +80,18 @@ const memberItem = ({
                     编辑
                   </Text>
                 </Touchable>
-                <Touchable onPress={onDeletePress}>
-                  <Text
-                    style={[
-                      styles.action.text,
-                      { marginLeft: 16, color: '#F55454' },
-                    ]}
-                  >
-                    删除
-                  </Text>
-                </Touchable>
+                {!user_id && (
+                  <Touchable onPress={onDeletePress}>
+                    <Text
+                      style={[
+                        styles.action.text,
+                        { marginLeft: 16, color: '#F55454' },
+                      ]}
+                    >
+                      删除
+                    </Text>
+                  </Touchable>
+                )}
               </Flex>
             )}
           </Flex>

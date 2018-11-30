@@ -15,10 +15,8 @@ export default {
       if (global.__DEV__) {
         return;
       }
-
-      // disallow
-      codePush.disallowRestart();
-
+      codePush.allowRestart();
+      codePush.notifyAppReady();
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
       const description = R.path(['description'])(result);
@@ -27,15 +25,6 @@ export default {
           type: 'codePush/saveUpdateInfo',
           payload: result,
         });
-        if (isMandatory) {
-          // reallow
-          codePush.allowRestart();
-          yield put(
-            routerRedux.navigate({
-              routeName: 'CodePush',
-            }),
-          );
-        }
       }
 
       yield spawn(codePushSaga, {
@@ -47,19 +36,28 @@ export default {
         },
         codePushDownloadDidProgress: ({ receivedBytes, totalBytes }) => {
           try {
-            if (!isMandatory && receivedBytes === totalBytes) {
-              // download complete
-              codePush.allowRestart();
-            } else {
-              Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
-                { text: '一秒更新',
-                  onPress: () => {
-                    // reallow
-                    codePush.allowRestart();
-                    codePush.restartApp();
+            if (receivedBytes === totalBytes) {
+              if (!isMandatory) {
+                // download complete
+                codePush.allowRestart();
+                global.track('App_Codepush', {
+                  trackName: '非强制更新',
+                });
+              } else {
+                codePush.disallowRestart();
+                Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
+                  { text: '一秒更新',
+                    onPress: () => {
+                      // reallow
+                      codePush.allowRestart();
+                      codePush.restartApp();
+                      global.track('App_Codepush', {
+                        trackName: '强制更新',
+                      });
+                    },
                   },
-                },
-              ]);
+                ]);
+              }
             }
             // const percent = (receivedBytes / totalBytes).toFixed(2);
             // store.dispatch({
@@ -75,6 +73,7 @@ export default {
           mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
           syncOnResume: true,
           syncOnInterval: 60,
+          minimumBackgroundDuration: 5,
         },
       });
     },

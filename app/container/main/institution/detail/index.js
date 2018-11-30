@@ -223,8 +223,16 @@ export default class InstitutionDetail extends Component {
                   key={m.id}
                   data={m}
                   onPrivacyItemPress={() => {
-                    this.props.setCurrentMember(m);
-                    this.props.setShowModal(true);
+                    if (this.props.logged_in) {
+                      this.props.setCurrentMember(m);
+                      this.props.setShowModal(true);
+                    } else {
+                      this.props.dispatch(
+                        NavigationActions.navigate({
+                          routeName: 'Login',
+                        }),
+                      );
+                    }
                   }}
                   onPress={() => this.goToMemberDetail(m)}
                   onClaimPress={() => this.onPressClaimCoin(m)}
@@ -255,7 +263,7 @@ export default class InstitutionDetail extends Component {
             style={styles.claim.container}
             onPress={this.onPressClaimCoin}
           >
-            <Image source={require('asset/project/detail/claim.png')} />
+            <Image source={require('asset/project/claim.png')} />
           </Touchable>
         )}
         <ActionAlert
