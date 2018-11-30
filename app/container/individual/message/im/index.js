@@ -5,6 +5,7 @@ import R from 'ramda';
 import { compose, withState, withProps } from 'recompose';
 import { Flex } from 'antd-mobile';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
+import moment from 'moment';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
@@ -74,6 +75,7 @@ class IMPage extends PureComponent {
       // to: target_im_id,
       sessionId: `p2p-${target_im_id}`,
       desc: true,
+      limit: 50,
       done: (error, res) => {
         if (!error) {
           const { user, target } = this.props;
@@ -96,9 +98,50 @@ class IMPage extends PureComponent {
     });
   };
 
+  loadEarlierHistory = () => {
+    const { target_im_id, data } = this.props;
+    const last_time = R.pipe(
+      R.last,
+      R.path(['createdAt']),
+    )(data);
+
+    global.nim.getLocalMsgs({
+      // scene: 'p2p',
+      // to: target_im_id,
+      sessionId: `p2p-${target_im_id}`,
+      desc: true,
+      end: moment(last_time).valueOf(),
+      limit: 50,
+      done: (error, res) => {
+        if (!error) {
+          const { user, target } = this.props;
+          const msgs = R.pathOr([], ['msgs'])(res);
+          if (!R.isEmpty(msgs)) {
+            this.props.setData(
+              R.concat(
+                data,
+                R.map(m => {
+                  const is_target = R.path(['from'])(m) === target_im_id;
+                  return formatMessage(m, {
+                    name: R.path(['realname'])(is_target ? target : user),
+                    avatar: R.path(['avatar_url'])(is_target ? target : user),
+                  });
+                })(msgs),
+              ),
+            );
+          }
+        }
+      },
+    });
+  };
+
   handleOnMessage = () => {
     RouterEmitter.addListener('onmsg', msg => {
-      const { data, target } = this.props;
+      const { data, target, target_im_id } = this.props;
+      if (msg.to !== target_im_id) {
+        return;
+      }
+      global.nim.resetSessionUnread(`p2p-${target_im_id}`);
       this.props.setData(
         R.concat([
           formatMessage(msg, {
@@ -182,6 +225,8 @@ class IMPage extends PureComponent {
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
         <Chat
+          loadEarlier
+          onLoadEarlier={this.loadEarlierHistory}
           bottomOffset={getBottomSpace()}
           user={{
             _id: user_im_id,
@@ -189,6 +234,7 @@ class IMPage extends PureComponent {
             avatar: R.path(['avatar_url'])(user),
           }}
           messages={data}
+          showAvatarForEveryMessage
           onSend={this.handleSend}
         />
       </SafeArea>
