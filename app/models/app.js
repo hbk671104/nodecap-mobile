@@ -15,16 +15,29 @@ export default {
       if (global.__DEV__) {
         return;
       }
-      codePush.allowRestart();
+
+      // disallow
       codePush.notifyAppReady();
+      codePush.disallowRestart();
+
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
-      const description = R.path(['description'])(result);
+      const description = R.pathOr(false, ['description'])(result);
+
       if (result) {
         yield put({
           type: 'codePush/saveUpdateInfo',
           payload: result,
         });
+        if (isMandatory) {
+          // reallow
+          codePush.allowRestart();
+          // yield put(
+          //   routerRedux.navigate({
+          //     routeName: 'CodePush',
+          //   }),
+          // );
+        }
       }
 
       yield spawn(codePushSaga, {
@@ -36,29 +49,19 @@ export default {
         },
         codePushDownloadDidProgress: ({ receivedBytes, totalBytes }) => {
           try {
-            codePush.disallowRestart();
-            if (receivedBytes === totalBytes) {
-              if (!isMandatory) {
-                // download complete
-                codePush.allowRestart();
-                global.track('App_Codepush', {
-                  trackName: '非强制更新',
-                });
-              } else {
-                Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
-                  { text: '一秒更新',
-                    onPress: () => {
-                      // reallow
-                      codePush.allowRestart();
-                      codePush.restartApp();
-                      global.track('App_Codepush', {
-                        trackName: '强制更新',
-                      });
-                    },
+            if (!isMandatory && receivedBytes === totalBytes) {
+              // download complete
+              Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
+                { text: '一秒更新',
+                  onPress: () => {
+                    // reallow
+                    codePush.allowRestart();
+                    codePush.restartApp();
                   },
-                ]);
-              }
+                },
+              ]);
             }
+
             // const percent = (receivedBytes / totalBytes).toFixed(2);
             // store.dispatch({
             //   type: 'codePush/changePercent',
@@ -69,11 +72,10 @@ export default {
           }
         },
         syncOptions: {
-          installMode: codePush.InstallMode.ON_NEXT_RESUME,
+          installMode: codePush.InstallMode.IMMEDIATE,
           mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
           syncOnResume: true,
           syncOnInterval: 60,
-          minimumBackgroundDuration: 5,
         },
       });
     },
