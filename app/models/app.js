@@ -16,6 +16,7 @@ export default {
         return;
       }
       codePush.allowRestart();
+      codePush.notifyAppReady();
       const result = yield call(codePush.checkForUpdate);
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
       const description = R.path(['description'])(result);
@@ -24,14 +25,6 @@ export default {
           type: 'codePush/saveUpdateInfo',
           payload: result,
         });
-        if (isMandatory) {
-          // reallow
-          yield put(
-            routerRedux.navigate({
-              routeName: 'CodePush',
-            }),
-          );
-        }
       }
 
       yield spawn(codePushSaga, {
@@ -43,8 +36,6 @@ export default {
         },
         codePushDownloadDidProgress: ({ receivedBytes, totalBytes }) => {
           try {
-            // disallow
-            codePush.disallowRestart();
             if (receivedBytes === totalBytes) {
               if (!isMandatory) {
                 // download complete
@@ -53,6 +44,7 @@ export default {
                   trackName: '非强制更新',
                 });
               } else {
+                codePush.disallowRestart();
                 Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
                   { text: '一秒更新',
                     onPress: () => {
@@ -81,6 +73,7 @@ export default {
           mandatoryInstallMode: codePush.InstallMode.IMMEDIATE,
           syncOnResume: true,
           syncOnInterval: 60,
+          minimumBackgroundDuration: 5,
         },
       });
     },

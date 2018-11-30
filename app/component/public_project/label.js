@@ -18,7 +18,7 @@ const label = ({ data, showInviteModal, setInviteModal, showVipModal, setVipModa
     <View style={styles.container}>
       {is_vip && (
         <Touchable onPress={() => {
-          setInviteModal(true);
+          setVipModal(true);
         }}
         >
           <Image
@@ -29,7 +29,7 @@ const label = ({ data, showInviteModal, setInviteModal, showVipModal, setVipModa
       )}
       {owners && (
         <Touchable onPress={() => {
-          setVipModal(true);
+          setInviteModal(true);
         }}
         >
           <View style={styles.item.container}>

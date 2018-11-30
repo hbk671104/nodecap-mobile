@@ -166,9 +166,7 @@ class ClaimInstitution extends Component {
               error={getFieldError('owner_title')}
             />,
           )}
-          {getFieldDecorator('owner_mobile', {
-            rules: [{ required: true, message: '请输入手机号码' }],
-          })(
+          {getFieldDecorator('owner_mobile')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -181,9 +179,7 @@ class ClaimInstitution extends Component {
               error={getFieldError('owner_mobile')}
             />,
           )}
-          {getFieldDecorator('owner_wechat', {
-            rules: [{ required: true, message: '请输入微信号' }],
-          })(
+          {getFieldDecorator('owner_wechat')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
