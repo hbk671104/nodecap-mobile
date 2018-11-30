@@ -101,6 +101,7 @@ import UserProfile from 'container/main/user/profile';
 import WebPage from 'container/webview';
 import ReportPage from 'container/webview/report';
 import GlobalSearch from 'container/main/public_project/globalSearch';
+import Rank from 'container/main/public_project/rank';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
@@ -146,6 +147,8 @@ import CreateMyInstitutionDetail from 'container/individual/self/my_institution/
 import CreateMyProjectDetail from 'container/individual/self/my_project/display';
 import HotnodeIndex from 'container/individual/hotnode_index';
 import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
+import MessageCenter from 'container/individual/message/index';
+import IMPage from 'container/individual/message/im';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   defaultHandler();
@@ -282,6 +285,7 @@ const MainStack = createStackNavigator(
     UserProfile,
     GlobalSearch,
     ReportPage,
+    Rank,
   },
   {
     headerMode: 'none',
@@ -322,6 +326,16 @@ const IndividualTab = createBottomTabNavigator(
             setStatusBar('light-content');
           },
         };
+      },
+    },
+    MessageCenter: {
+      screen: MessageCenter,
+      navigationOptions: {
+        title: '消息',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('dark-content');
+        },
       },
     },
     Self: {
@@ -428,6 +442,8 @@ const IndividualStack = createStackNavigator(
     ReportPage,
     ClaimMyProjectWrap,
     ClaimMyInstitutionWrap,
+    IMPage,
+    Rank,
   },
   {
     headerMode: 'none',

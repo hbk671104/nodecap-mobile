@@ -32,6 +32,7 @@ const top = ({
   onAnnouncementPress,
   onProjectRepoPress,
   onInstitutionReportPress,
+  onChartPress,
   notification_badge_number,
   reports_badge_number,
   dispatch,
@@ -57,6 +58,16 @@ const top = ({
                 />
               </View>
               <Text style={styles.tab.group.title}>找项目</Text>
+            </View>
+          </Touchable>
+        </Col>
+        <Col>
+          <Touchable borderless onPress={onChartPress}>
+            <View style={styles.tab.group.container}>
+              <View style={styles.tab.group.imageWrapper}>
+                <Image source={require('asset/public_project/chart.png')} />
+              </View>
+              <Text style={styles.tab.group.title}>榜单</Text>
             </View>
           </Touchable>
         </Col>
@@ -133,6 +144,18 @@ const top = ({
                 <Image source={require('asset/public_project/meeting.png')} />
               </View>
               <Text style={styles.tab.group.title}>找公关</Text>
+            </View>
+          </Touchable>
+        </Col>
+        <Col>
+          <Touchable borderless onPress={onServicePress(6)}>
+            <View style={styles.tab.group.container}>
+              <View style={styles.tab.group.imageWrapper}>
+                <Image
+                  source={require('asset/public_project/rating_star.png')}
+                />
+              </View>
+              <Text style={styles.tab.group.title}>找评级</Text>
             </View>
           </Touchable>
         </Col>

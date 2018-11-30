@@ -30,8 +30,10 @@ import styles from './style';
 @compose(
   withProps(({ navigation, sets }) => {
     const targeted_coinset_id = navigation.getParam('coinset_id');
+    const targeted_coinset_index = navigation.getParam('coinset_index');
     return {
       targeted_coinset_index:
+        targeted_coinset_index ||
         R.findIndex(
           s =>
             s.id === targeted_coinset_id || `${s.id}` === targeted_coinset_id,

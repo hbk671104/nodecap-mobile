@@ -203,6 +203,31 @@ export default class Description extends PureComponent {
           onMorePress={this.handleGradeUrlPress}
           onIndustryPress={this.handleIndustryPress}
         />
+        {R.not(R.isEmpty(display_members)) && (
+          <View style={styles.fieldGroup}>
+            {title('团队成员')}
+            <View>
+              {R.map(m => (
+                <MemberItem
+                  key={m.id}
+                  data={m}
+                  onPrivacyItemPress={() => {
+                    this.props.setCurrentMember(m);
+                    this.props.setShowModal(true);
+                  }}
+                  onPress={() => this.goToMemberDetail(m)}
+                  onClaimPress={() => this.props.onClaimPress(m)}
+                />
+              ))(display_members)}
+            </View>
+            {members.length > 5 && (
+              <ReadMoreFooter
+                collapsed={memberCollapsed}
+                onPress={() => this.props.setMemberCollapsed(!memberCollapsed)}
+              />
+            )}
+          </View>
+        )}
         <WeeklyReports {...this.props} />
         {R.not(R.isEmpty(social_network)) && (
           <View style={styles.fieldGroup}>
@@ -237,31 +262,6 @@ export default class Description extends PureComponent {
           </View>
         )}
         <Financing {...this.props} />
-        {R.not(R.isEmpty(display_members)) && (
-          <View style={styles.fieldGroup}>
-            {title('团队成员')}
-            <View>
-              {R.map(m => (
-                <MemberItem
-                  key={m.id}
-                  data={m}
-                  onPrivacyItemPress={() => {
-                    this.props.setCurrentMember(m);
-                    this.props.setShowModal(true);
-                  }}
-                  onPress={() => this.goToMemberDetail(m)}
-                  onClaimPress={() => this.props.onClaimPress(m)}
-                />
-              ))(display_members)}
-            </View>
-            {members.length > 5 && (
-              <ReadMoreFooter
-                collapsed={memberCollapsed}
-                onPress={() => this.props.setMemberCollapsed(!memberCollapsed)}
-              />
-            )}
-          </View>
-        )}
         {R.not(R.isEmpty(industry_investments)) && (
           <View style={[styles.fieldGroup, { marginBottom: 14 }]}>
             {title('投资机构')}

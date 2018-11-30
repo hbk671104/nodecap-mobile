@@ -72,7 +72,11 @@ export default options => {
         'globalSearch/industries',
         'globalSearch/services',
         'globalSearch/users',
+        'message_center/getUserById',
+        'message_center/fetchNotification',
         'investNews/fetch',
+        'rank/upFetch',
+        'rank/downFetch',
       ],
     }),
   );

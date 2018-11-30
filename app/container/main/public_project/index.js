@@ -266,6 +266,16 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleChartPress = () => {
+    this.props.track('点击榜单');
+    // navigate
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Rank',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
     <InvestNewsItem
       {...this.props}
@@ -276,6 +286,7 @@ export default class PublicProject extends Component {
   renderHeader = () => (
     <Header
       {...this.props}
+      onChartPress={this.handleChartPress}
       onSearchBarPress={this.handleSearchBarPress}
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
@@ -333,7 +344,7 @@ export default class PublicProject extends Component {
           listRef={ref => {
             this.scroll = ref;
           }}
-          onScroll={(e) => {
+          onScroll={e => {
             const currentY = R.path(['nativeEvent', 'contentOffset', 'y'])(e);
             if (currentY > lastY && currentY > 0) {
               this.props.track('列表下滑');
