@@ -39,12 +39,14 @@ export default {
             if (receivedBytes === totalBytes) {
               if (!isMandatory) {
                 // download complete
+                alert('is not Mandatory');
                 codePush.allowRestart();
                 global.track('App_Codepush', {
                   trackName: '非强制更新',
                 });
               } else {
                 codePush.disallowRestart();
+                alert('isMandatory');
                 Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
                   { text: '一秒更新',
                     onPress: () => {
