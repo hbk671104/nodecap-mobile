@@ -11,14 +11,14 @@ import NavBar from 'component/navBar';
 import Chat from 'component/chat';
 import SafeArea from 'component/uikit/safeArea';
 import { formatMessage } from 'utils/nim';
-import { RouterEmitter } from '../../../../router';
+import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
 
 @global.bindTrack({
   page: '聊天页',
   name: 'App_IMPageOperation',
 })
-@connect(({ user, message_center, loading }, { navigation }) => {
+@connect(({ user, message_center, router, loading }, { navigation }) => {
   const id = navigation.getParam('id');
   return {
     id,
@@ -26,6 +26,7 @@ import styles from './style';
     target: R.path(['chat_user', id])(message_center),
     loading: loading.effects['message_center/getUserById'],
     connected: message_center.connected,
+    isCurrent: getCurrentScreen(router) === 'IMPage',
   };
 })
 @compose(
@@ -148,11 +149,13 @@ class IMPage extends PureComponent {
 
   handleOnMessage = () => {
     RouterEmitter.addListener('onmsg', msg => {
-      const { data, target, target_im_id } = this.props;
+      const { data, target, target_im_id, isCurrent } = this.props;
       if (msg.from !== target_im_id) {
         return;
       }
-      global.nim.resetSessionUnread(`p2p-${target_im_id}`);
+      if (isCurrent) {
+        global.nim.resetSessionUnread(`p2p-${target_im_id}`);
+      }
       this.props.setData(
         R.concat([
           formatMessage(msg, {
