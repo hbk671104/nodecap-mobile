@@ -3,25 +3,35 @@ import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { TabView, TabBar } from 'react-native-tab-view';
-import { compose, withState } from 'recompose';
+import { compose, withState, withProps } from 'recompose';
 
 import NavBar from 'component/navBar';
 import { NumberBadge } from 'component/badge';
 
 import SessionList from './list/session';
 import NotificationList from './list/notification';
+import { getCurrentScreen } from '../../../router';
 import styles from './style';
 
 @global.bindTrack({
   page: '消息中心',
   name: 'App_MessageCenterOperation',
 })
-@connect(({ message_center }) => ({
+@connect(({ message_center, router }) => ({
   session_unread: R.pipe(
-    R.path(['session', 'data']),
-    R.reduce((accu, d) => accu + d.unread, 0),
+    R.pathOr([], ['session', 'data']),
+    R.reduce((accu, d) => accu + R.pathOr(0, ['unread'])(d), 0),
   )(message_center),
-  notification_unread: 70,
+  notification_unread: R.pipe(
+    R.pathOr([], ['notification', 'data']),
+    R.reduce((accu, d) => {
+      if (!R.pathOr(false, ['is_read'])(d)) {
+        return accu + 1;
+      }
+      return accu;
+    }, 0),
+  )(message_center),
+  is_current: getCurrentScreen(router) === 'MessageCenter',
 }))
 @compose(
   withState('index', 'setIndex', 0),
@@ -29,15 +39,39 @@ import styles from './style';
     { key: 'session', title: '消息' },
     { key: 'notification', title: '通知' },
   ]),
+  withProps(({ is_current, index }) => ({
+    shouldResetNotificationItem: R.or(
+      !is_current,
+      R.and(is_current, index !== 1),
+    ),
+  })),
 )
 class MessageWrapper extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.shouldResetNotificationItem) {
+      this.props.dispatch({
+        type: 'message_center/clearItemUnread',
+      });
+    }
+  }
+
   handleIndexChange = index => {
     this.props.setIndex(index, () => {
       this.props.track('Tab切换', { subModuleName: index });
+
+      // mark notification read
+      if (index === 1) {
+        if (this.props.notification_unread === 0) {
+          return;
+        }
+        this.props.dispatch({
+          type: 'message_center/markNotificationRead',
+        });
+      }
     });
   };
 

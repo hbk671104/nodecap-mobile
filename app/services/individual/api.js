@@ -212,7 +212,7 @@ export function getNotification(params) {
 }
 
 export function markNotificationRead() {
-  return request.post('/notify/read');
+  return request.put('/notify/read');
 }
 
 export function getRankList(payload) {

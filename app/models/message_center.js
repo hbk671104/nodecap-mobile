@@ -58,14 +58,31 @@ export default {
         console.log(error);
       }
     },
-    *fetchNotification({ params }, { call, put }) {
+    *fetchNotification({ updateListUnread = true, params }, { call, put }) {
       try {
         const { data } = yield call(getNotification, params);
 
         yield put({
           type: 'saveNotification',
           payload: data,
+          updateListUnread,
         });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *markNotificationRead({ callback }, { call, put }) {
+      try {
+        const { status } = yield call(markNotificationRead);
+
+        yield put({
+          type: 'fetchNotification',
+          updateListUnread: false,
+        });
+
+        if (callback) {
+          yield call(callback, status === 200);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -116,10 +133,42 @@ export default {
         },
       };
     },
-    saveNotification(state, { payload }) {
+    saveNotification(state, { updateListUnread, payload }) {
+      const store_data = R.path(['notification', 'data'])(state);
       return {
         ...state,
-        notification: paginate(state.notification, payload),
+        notification: paginate(state.notification, {
+          ...payload,
+          data: R.pipe(
+            R.path(['data']),
+            R.addIndex(R.map)((p, i) => {
+              const is_read_item_store = R.path([i, 'is_read_item'])(
+                store_data,
+              );
+              return {
+                ...p,
+                is_read_item: updateListUnread
+                  ? R.path(['is_read'])(p)
+                  : is_read_item_store,
+              };
+            }),
+          )(payload),
+        }),
+      };
+    },
+    clearItemUnread(state) {
+      return {
+        ...state,
+        notification: {
+          ...state.notification,
+          data: R.pipe(
+            R.path(['notification', 'data']),
+            R.map(d => ({
+              ...d,
+              is_read_item: true,
+            })),
+          )(state),
+        },
       };
     },
   },

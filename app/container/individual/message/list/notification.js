@@ -2,10 +2,8 @@ import React, { PureComponent } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { NavigationActions } from 'react-navigation';
 
 import List from 'component/uikit/list';
-import SessionItem from 'component/message_center/item';
 import NotificationItem from 'component/message_center/notification_item';
 import styles from '../style';
 
