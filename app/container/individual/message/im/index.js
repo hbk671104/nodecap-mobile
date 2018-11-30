@@ -25,6 +25,7 @@ import styles from './style';
     user: R.path(['currentUser'])(user),
     target: R.path(['chat_user', id])(message_center),
     loading: loading.effects['message_center/getUserById'],
+    connected: message_center.connected,
   };
 })
 @compose(
@@ -36,12 +37,20 @@ import styles from './style';
 )
 class IMPage extends PureComponent {
   componentWillMount() {
-    this.loadTargetInfo();
     this.handleOnMessage();
+    if (this.props.connected) {
+      this.loadTargetInfo();
+    }
   }
 
   componentDidMount() {
     this.props.track('进入');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.connected && nextProps.connected) {
+      this.loadTargetInfo();
+    }
   }
 
   loadTargetInfo = () => {
@@ -82,6 +91,8 @@ class IMPage extends PureComponent {
               })(msgs),
             );
           }
+        } else {
+          console.log('get history error', error);
         }
       },
     });

@@ -36,6 +36,7 @@ export default {
         },
         codePushDownloadDidProgress: ({ receivedBytes, totalBytes }) => {
           try {
+            codePush.disallowRestart();
             if (receivedBytes === totalBytes) {
               if (!isMandatory) {
                 // download complete
@@ -44,7 +45,6 @@ export default {
                   trackName: '非强制更新',
                 });
               } else {
-                codePush.disallowRestart();
                 Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
                   { text: '一秒更新',
                     onPress: () => {

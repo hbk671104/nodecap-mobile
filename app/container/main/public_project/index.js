@@ -106,7 +106,7 @@ export default class PublicProject extends Component {
 
     setTimeout(() => {
       const { extras } = result;
-      handleOpen(extras);
+      handleOpen(extras, 'launch');
     }, 1000);
   };
 
@@ -116,7 +116,7 @@ export default class PublicProject extends Component {
     }
 
     const { extras } = result;
-    handleOpen(extras);
+    handleOpen(extras, 'open');
   };
 
   handleReceiveNotification = ({ appState, extras }) => {
