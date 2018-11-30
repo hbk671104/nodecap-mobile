@@ -210,6 +210,17 @@ const routeMap = ({ id }) => ({
       id,
     },
   },
+  im_notify: {
+    trackName: 'IM聊天页',
+    routeName: 'IMPage',
+    params: {
+      id,
+    },
+  },
+  user_notify: {
+    trackName: '通知列表页',
+    routeName: 'MessageCenter',
+  },
 });
 
 const handleOpen = extras => {
