@@ -12,6 +12,14 @@ class ChangeLog extends Component {
         <NavBar gradient back title="版本更新" />
         <ScrollView>
           <ChangeLogItem
+            version="v7.0.0"
+            date="2018-12-01"
+            changelog={[
+              '上线 IM 聊天功能，可以直接联系机构、项目方',
+              '其他优化',
+            ]}
+          />
+          <ChangeLogItem
             version="v6.8.0"
             date="2018-11-23"
             changelog={[
