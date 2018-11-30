@@ -45,25 +45,27 @@ export default {
           try {
             // disallow
             codePush.disallowRestart();
-            if (!isMandatory && receivedBytes === totalBytes) {
-              // download complete
-              codePush.allowRestart();
-              global.track('App_Codepush', {
-                trackName: '非强制更新',
-              });
-            } else {
-              Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
-                { text: '一秒更新',
-                  onPress: () => {
-                    // reallow
-                    codePush.allowRestart();
-                    codePush.restartApp();
-                    global.track('App_Codepush', {
-                      trackName: '强制更新',
-                    });
+            if (receivedBytes === totalBytes) {
+              if (!isMandatory) {
+                // download complete
+                codePush.allowRestart();
+                global.track('App_Codepush', {
+                  trackName: '非强制更新',
+                });
+              } else {
+                Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
+                  { text: '一秒更新',
+                    onPress: () => {
+                      // reallow
+                      codePush.allowRestart();
+                      codePush.restartApp();
+                      global.track('App_Codepush', {
+                        trackName: '强制更新',
+                      });
+                    },
                   },
-                },
-              ]);
+                ]);
+              }
             }
             // const percent = (receivedBytes / totalBytes).toFixed(2);
             // store.dispatch({
