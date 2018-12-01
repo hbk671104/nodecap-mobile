@@ -3,32 +3,20 @@ import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import R from 'ramda';
 
 const miscTags = ({ style, data }) => {
-  const invested_by_renowned_insti = R.pipe(
-    R.pathOr([], ['renowned_industry']),
-    R.isEmpty,
-    R.not,
-  )(data);
-  const top_rated = R.pipe(
-    R.pathOr([], ['top_rating']),
-    R.isEmpty,
-    R.not,
-  )(data);
-  const is_reachable = R.pipe(
-    R.pathOr([], ['is_reachable']),
-    R.isEmpty,
-    R.not,
-  )(data);
-  const has_whitepapers = R.pipe(
-    R.pathOr([], ['white_papers']),
-    R.isEmpty,
-    R.not,
-  )(data);
+  const invested_by_renowned_insti = R.pathOr(false, ['is_renowned_industry'])(
+    data,
+  );
+  const top_rated = R.pathOr(false, ['has_rating'])(data);
+  const is_reachable = R.pathOr(false, ['is_reachable'])(data);
+  const has_whitepapers = R.pathOr(false, ['has_white_paper'])(data);
+  const has_weekly = R.pathOr(false, ['has_weekly'])(data);
 
   if (
     !invested_by_renowned_insti &&
     !top_rated &&
     !is_reachable &&
-    !has_whitepapers
+    !has_whitepapers &&
+    !has_weekly
   ) {
     return null;
   }
@@ -50,6 +38,7 @@ const miscTags = ({ style, data }) => {
             ...(invested_by_renowned_insti ? ['知名机构所投'] : []),
             ...(top_rated ? ['有评级'] : []),
             ...(is_reachable ? ['可联系'] : []),
+            ...(has_weekly ? ['有周报'] : []),
           ])}
         </Text>
       </ScrollView>

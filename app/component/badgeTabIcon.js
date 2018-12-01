@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { View, Image } from 'react-native';
 import R from 'ramda';
 
-import Badge from 'component/badge';
+import { NumberBadge } from 'component/badge';
 
 const source = ({ route, focused }) => {
   switch (route) {
@@ -43,15 +43,21 @@ const source = ({ route, focused }) => {
       return focused
         ? require('asset/tabIcon/latest/hotnode_index_selected.png')
         : require('asset/tabIcon/latest/hotnode_index.png');
+    case 'MessageCenter':
+      return focused
+        ? require('asset/tabIcon/latest/message_selected.png')
+        : require('asset/tabIcon/latest/message.png');
     default:
       return null;
   }
 };
 
-const badgeTabIcon = ({ focused, route, badgeVisible }) => (
+const badgeTabIcon = ({ focused, route, badge }) => (
   <View>
     <Image source={source({ focused, route })} />
-    {badgeVisible && <Badge />}
+    {badge > 0 && (
+      <NumberBadge wrapperStyle={{ top: -5, right: -10 }} number={badge} />
+    )}
   </View>
 );
 
@@ -60,17 +66,26 @@ badgeTabIcon.propTypes = {
   route: PropTypes.string.isRequired,
 };
 
-const styles = {
-  container: {},
-};
-
-export default connect(({ notification }, { route }) => {
-  if (route === 'NotificationCenter') {
+export default connect(({ message_center }, { route }) => {
+  if (route === 'MessageCenter') {
     return {
-      badgeVisible: R.pathOr(false, ['badgeVisible'])(notification),
+      badge:
+        R.pipe(
+          R.pathOr([], ['session', 'data']),
+          R.reduce((accu, d) => accu + R.pathOr(0, ['unread'])(d), 0),
+        )(message_center) +
+        R.pipe(
+          R.pathOr([], ['notification', 'data']),
+          R.reduce((accu, d) => {
+            if (!R.pathOr(false, ['is_read'])(d)) {
+              return accu + 1;
+            }
+            return accu;
+          }, 0),
+        )(message_center),
     };
   }
   return {
-    badgeVisible: false,
+    badge: 0,
   };
 })(badgeTabIcon);

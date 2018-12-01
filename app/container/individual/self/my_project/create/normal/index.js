@@ -65,7 +65,7 @@ class OptionalClaimProject extends Component {
         style={styles.claim.container}
         onPress={this.handleClaimPress(item)}
       >
-        <Text style={styles.claim.text}>立即认领</Text>
+        <Text style={styles.claim.text}>立即入驻</Text>
       </Touchable>
     </View>
   );
@@ -88,7 +88,7 @@ class OptionalClaimProject extends Component {
     const { data } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar back gradient title="认领项目" />
+        <NavBar back gradient title="入驻项目" />
         <List
           disableRefresh
           style={styles.list}

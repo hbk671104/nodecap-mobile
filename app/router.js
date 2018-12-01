@@ -6,9 +6,10 @@ import {
   Platform,
   AppState,
   Linking,
+  Clipboard,
+  AsyncStorage,
 } from 'react-native';
 import { connect } from 'react-redux';
-// import RNExitApp from 'react-native-exit-app';
 import * as WeChat from 'react-native-wechat';
 import R from 'ramda';
 import {
@@ -25,24 +26,24 @@ import {
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
 import { withNetworkConnectivity } from 'react-native-offline';
-// import { Toast } from 'antd-mobile';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
+import DeviceInfo from 'react-native-device-info';
+import Base64 from 'utils/base64';
+import store from '../index';
 
 import { setStatusBar } from 'component/uikit/statusBar';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
+import { getCoinInfo, getIndustryDetail } from 'services/api';
+
+import InviteItem from 'component/public_project/inviteItem';
+import InviteOrgItem from 'component/public_project/inviteOrgItem';
 // Screen
 import Loader from 'container/loader';
-// import Landing from 'container/auth/landing';
-// import CreateCompany from 'container/auth/createCompany';
 import Login from 'container/auth/login';
-// import LoginModal from 'container/auth/login/modal';
-// import SetPassword from 'container/auth/setPassword';
-// import ResetPwd from 'container/auth/resetPwd';
 import Recommendation from 'container/auth/recommendation';
-// import Dashboard from 'container/main/dashboard';
 import PublicProject from 'container/main/public_project';
 import PublicProjectSearch from 'container/main/public_project/search';
 import PublicProjectDetail from 'container/main/public_project/detail';
@@ -56,7 +57,6 @@ import Portfolio from 'container/main/portfolio';
 import NotificationCenter from 'container/main/notification_center';
 import NotificationDetail from 'container/main/notification_center/detail';
 import NotificationDetailRaw from 'container/main/notification_center/raw';
-// import Management from 'container/main/management';
 import Self from 'container/main/self';
 import CodePushPage from 'container/codepush';
 import PortfolioDetail from 'container/main/portfolio/detail';
@@ -99,12 +99,15 @@ import WhitePaper from 'container/main/public_project/whitepaper';
 import InviteComment from 'container/main/public_project/inviteComment';
 import UserProfile from 'container/main/user/profile';
 import WebPage from 'container/webview';
+import ReportPage from 'container/webview/report';
+import GlobalSearch from 'container/main/public_project/globalSearch';
+import Rank from 'container/main/public_project/rank';
 
 // Individual exclusive
 import Favored from 'container/individual/favored';
 import CoinRecord from 'container/individual/public_project/detail/record';
 import CoinRecordCreate from 'container/individual/public_project/detail/record/create';
-import IndividualPublicProjectDetail from 'container/individual/public_project/detail';
+import IndividualPublicProjectDetail from 'container/individual/public_project/detailFacade';
 import IndividualSelf from 'container/individual/self';
 import IndividualProfile from 'container/individual/self/profile/mine';
 import IndividualEditProfile from 'container/individual/self/profile/edit';
@@ -120,10 +123,12 @@ import CreateMyProjectNormal from 'container/individual/self/my_project/create/n
 import CreateMyProjectBasicInfo from 'container/individual/self/my_project/create/normal/steps/basic';
 import CreateMyProjectDescription from 'container/individual/self/my_project/create/normal/steps/description';
 import CreateMyProjectTeam from 'container/individual/self/my_project/create/normal/steps/team';
+import CreateMyProjectSingleMember from 'container/individual/self/my_project/create/normal/steps/single_member';
 import CreateMyProjectSocial from 'container/individual/self/my_project/create/normal/steps/social';
 import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/normal/steps/roadmap';
 import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
+import ClaimMyProjectWrap from 'container/individual/self/my_project/create/claim/wrap';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
 import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
 import MyInstitution from 'container/individual/self/my_institution';
@@ -131,19 +136,23 @@ import CreateMyInstitution from 'container/individual/self/my_institution/create
 import CreateMyInstitutionBasicInfo from 'container/individual/self/my_institution/create/basic';
 import CreateMyInstitutionDescription from 'container/individual/self/my_institution/create/description';
 import CreateMyInstitutionTeam from 'container/individual/self/my_institution/create/team';
+import CreateMyInstitutionSingleMember from 'container/individual/self/my_institution/create/single_member';
 import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
+import ClaimMyInstitutionWrap from 'container/individual/self/my_institution/claim/wrap';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
 import CreateMyInstitutionDetail from 'container/individual/self/my_institution/display';
 import CreateMyProjectDetail from 'container/individual/self/my_project/display';
 import HotnodeIndex from 'container/individual/hotnode_index';
 import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
+import MessageCenter from 'container/individual/message/index';
+import IMPage from 'container/individual/message/im';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
-  RouterEmitter.emit('changeTab', navigation.state);
   defaultHandler();
+  RouterEmitter.emit('changeTab', navigation.state);
 };
 
 const Tab = createBottomTabNavigator(
@@ -274,6 +283,9 @@ const MainStack = createStackNavigator(
     CommentCoin,
     InviteComment,
     UserProfile,
+    GlobalSearch,
+    ReportPage,
+    Rank,
   },
   {
     headerMode: 'none',
@@ -286,8 +298,8 @@ const IndividualTab = createBottomTabNavigator(
       screen: PublicProject,
       navigationOptions: {
         title: '首页',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          tabBarOnPress({ navigation, defaultHandler });
           setStatusBar('dark-content');
         },
       },
@@ -296,8 +308,8 @@ const IndividualTab = createBottomTabNavigator(
       screen: HotnodeIndex,
       navigationOptions: {
         title: '指数',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          tabBarOnPress({ navigation, defaultHandler });
           setStatusBar('light-content');
         },
       },
@@ -310,18 +322,28 @@ const IndividualTab = createBottomTabNavigator(
           title: '项目大全',
           tabBarVisible,
           tabBarOnPress: ({ defaultHandler }) => {
-            defaultHandler();
+            tabBarOnPress({ navigation, defaultHandler });
             setStatusBar('light-content');
           },
         };
+      },
+    },
+    MessageCenter: {
+      screen: MessageCenter,
+      navigationOptions: {
+        title: '消息',
+        tabBarOnPress: ({ defaultHandler }) => {
+          defaultHandler();
+          setStatusBar('dark-content');
+        },
       },
     },
     Self: {
       screen: IndividualSelf,
       navigationOptions: {
         title: '我的',
-        tabBarOnPress: ({ defaultHandler }) => {
-          defaultHandler();
+        tabBarOnPress: ({ navigation, defaultHandler }) => {
+          tabBarOnPress({ navigation, defaultHandler });
           setStatusBar('dark-content');
         },
       },
@@ -389,6 +411,7 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectBasicInfo,
     CreateMyProjectDescription,
     CreateMyProjectTeam,
+    CreateMyProjectSingleMember,
     CreateMyProjectSocial,
     CreateMyProjectRoadMap,
     CreateMyProjectFunding,
@@ -403,6 +426,7 @@ const IndividualStack = createStackNavigator(
     CreateMyInstitutionBasicInfo,
     CreateMyInstitutionDescription,
     CreateMyInstitutionTeam,
+    CreateMyInstitutionSingleMember,
     CreateMyInstitutionServedProject,
     ClaimMyInstitutionSearch,
     ClaimMyInstitution,
@@ -414,6 +438,12 @@ const IndividualStack = createStackNavigator(
     CreateWeeklyReport,
     EditWeeklyReport,
     UserProfile,
+    GlobalSearch,
+    ReportPage,
+    ClaimMyProjectWrap,
+    ClaimMyInstitutionWrap,
+    IMPage,
+    Rank,
   },
   {
     headerMode: 'none',
@@ -471,6 +501,10 @@ import { handleBadgeAction } from 'utils/badge_handler';
 }))
 @compose(
   withState('showNotificationModal', 'setShowNotificationModal', false),
+  withState('showInviteEnter', 'setShowInviteEnterModal', false),
+  withState('showInviteOrgEnter', 'setShowInviteOrgEnterModal', false),
+  withState('inviteCoin', 'setInviteCoin', null),
+  withState('inviteOrg', 'setInviteOrg', null),
   withState('appState', 'setAppState', AppState.currentState),
 )
 class Router extends Component {
@@ -498,6 +532,9 @@ class Router extends Component {
     // check notif permission
     this.checkPushPermission();
     handleBadgeAction();
+
+    this.parseInviteKey();
+    this.parseOrgInviteKey();
   }
 
   componentDidMount() {
@@ -519,17 +556,85 @@ class Router extends Component {
     Linking.removeEventListener('url', this.handleOpenURL);
   }
 
+  parseInviteKey = async () => {
+    try {
+      const clipString = await Clipboard.getString();
+      const matchResult = clipString.match(/&\*(.*)?\$(.*)?\*&/);
+      const viewedInviteKey = await AsyncStorage.getItem('viewInviteKey');
+      const hasViewed = viewedInviteKey === matchResult[0];
+      if (matchResult) {
+        const uniqueID = DeviceInfo.getUniqueID().slice(0, 5);
+        const device = matchResult[1];
+        const coinID = matchResult[2];
+
+        if (device !== uniqueID && !hasViewed) {
+          const { data } = await getCoinInfo(Base64.atob(coinID));
+          this.props.setInviteCoin(data);
+          this.props.setShowInviteEnterModal(true);
+          AsyncStorage.setItem('viewInviteKey', matchResult[0]);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  parseOrgInviteKey = async () => {
+    try {
+      const clipString = await Clipboard.getString();
+      const matchResult = clipString.match(/\^\*(.*)?\$(.*)?\*\^/);
+      const viewedInviteKey = await AsyncStorage.getItem('viewOrgInviteKey');
+      const hasViewed = viewedInviteKey === matchResult[0];
+      if (matchResult) {
+        const uniqueID = DeviceInfo.getUniqueID().slice(0, 5);
+        const device = matchResult[1];
+        const coinID = matchResult[2];
+
+        if (device !== uniqueID && !hasViewed) {
+          const { data } = await getIndustryDetail(Base64.atob(coinID));
+          this.props.setInviteOrg(data);
+          this.props.setShowInviteOrgEnterModal(true);
+          AsyncStorage.setItem('viewOrgInviteKey', matchResult[0]);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   handleOpenURL = event => {
-    const reg = event.url.replace('hotnode://', '').match(/(.*?)\/(.*)/);
-    if (!reg) {
+    const url = R.pipe(
+      R.pathOr('', ['url']),
+      R.trim,
+    )(event);
+
+    if (R.isNil(url) || R.isEmpty(url)) {
       return;
     }
-    const route = reg[1];
-    const params = reg[2];
+
+    if (!R.test(/hotnode:\/\//, url)) {
+      Linking.openURL(url);
+      return;
+    }
+
+    const reg = R.pipe(
+      R.replace('hotnode://', ''),
+      R.match(/(.*?)\/(.*)/),
+    )(url);
+
+    if (R.isNil(reg) || R.isEmpty(reg)) {
+      return;
+    }
+
+    const route = R.pathOr('', [1])(reg);
+    const params = R.pathOr('', [2])(reg);
     const query = queryString.parse(params) || {};
 
-    const { dispatch } = this.props;
-    dispatch(
+    if (R.isEmpty(route)) {
+      return;
+    }
+
+    this.props.dispatch(
       routerRedux.navigate({
         routeName: route,
         params: {
@@ -545,7 +650,8 @@ class Router extends Component {
       nextAppState === 'active'
     ) {
       RouterEmitter.emit('resume');
-
+      this.parseInviteKey();
+      this.parseOrgInviteKey();
       // check codepush
       this.props.dispatch({
         type: 'app/checkCodePush',
@@ -553,6 +659,13 @@ class Router extends Component {
       // check notification permissions
       this.checkPushPermission();
       handleBadgeAction();
+      // clear notification unread
+      // this.props.dispatch({
+      //   type: 'message_center/clearItemUnread',
+      // });
+      this.props.dispatch({
+        type: 'message_center/fetchNotification',
+      });
     }
     this.props.setAppState(nextAppState);
   };
@@ -561,7 +674,7 @@ class Router extends Component {
     if (this.state.isIOS) {
       setTimeout(() => {
         JPush.hasPermission(res => {
-          if (!res) {
+          if (!res && !global.__DEV__) {
             this.props.setShowNotificationModal(true);
           }
         });
@@ -591,8 +704,39 @@ class Router extends Component {
     });
   };
 
+  renderInviteEnter = () => {
+    const { inviteCoin } = this.props;
+    return (
+      <View>
+        <InviteItem
+          data={inviteCoin}
+          onClose={() => this.props.setShowInviteEnterModal(false)}
+        />
+      </View>
+    );
+  };
+
+  renderInviteOrgEnter = () => {
+    const { inviteOrg } = this.props;
+    return (
+      <View>
+        <InviteOrgItem
+          data={inviteOrg}
+          onClose={() => this.props.setShowInviteOrgEnterModal(false)}
+        />
+      </View>
+    );
+  };
+
   render() {
-    const { dispatch, app, router, showAlert, release_notes } = this.props;
+    const {
+      dispatch,
+      router,
+      showAlert,
+      release_notes,
+      inviteCoin,
+      inviteOrg,
+    } = this.props;
     return (
       <View style={{ flex: 1 }}>
         <ActionSheetProvider>
@@ -608,15 +752,42 @@ class Router extends Component {
           <UpdateAlert note={release_notes} />
         </Modal>
         <ActionAlert
-          visible={this.props.showNotificationModal}
-          title="开启推送通知"
-          content="及时获取项目上所，融资等动态信息"
-          actionTitle="立即开启"
+          visible={this.props.showInviteEnter}
+          renderContent={this.renderInviteEnter}
+          onBackdropPress={() => ({})}
           action={() => {
-            Linking.openURL('app-settings:');
-            this.props.setShowNotificationModal(false);
+            dispatch(
+              NavigationActions.navigate({
+                routeName: 'PublicProjectDetail',
+                params: {
+                  id: inviteCoin.id,
+                },
+                key: `PublicProjectDetail_${inviteCoin.id}`,
+              }),
+            );
+            this.props.setShowInviteEnterModal(false);
+            this.props.setInviteCoin({});
           }}
-          onBackdropPress={() => this.props.setShowNotificationModal(false)}
+          actionTitle="去入驻"
+        />
+        <ActionAlert
+          visible={this.props.showInviteOrgEnter}
+          renderContent={this.renderInviteOrgEnter}
+          onBackdropPress={() => ({})}
+          action={() => {
+            store.dispatch(
+              NavigationActions.navigate({
+                routeName: 'InstitutionDetail',
+                params: {
+                  id: inviteOrg.id,
+                },
+                key: `InstitutionDetail_${inviteOrg.id}`,
+              }),
+            );
+            this.props.setShowInviteOrgEnterModal(false);
+            this.props.setInviteOrg({});
+          }}
+          actionTitle="去入驻"
         />
       </View>
     );

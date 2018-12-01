@@ -118,8 +118,13 @@ android {
         applicationId "com.nodecap.hotnode"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 181116
-        versionName "6.7.0"
+        versionCode 181201
+        versionName "7.0.0"
+        manifestPlaceholders = [
+                JPUSH_APPKEY: "",
+                APP_CHANNEL : "default"
+        ]
+
         manifestPlaceholders = [
                 JPUSH_APPKEY: "3d43f5402c9364c5b35f0ab0",
                 APP_CHANNEL : "default"
@@ -174,6 +179,8 @@ android {
 }
 
 dependencies {
+    implementation project(':jcore-react-native')
+    implementation project(':jpush-react-native')
     compile project(':react-native-orientation')
     compile project(':react-native-pdf')
     compile project(':rn-fetch-blob')

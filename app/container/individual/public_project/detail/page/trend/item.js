@@ -9,7 +9,7 @@ import Touchable from 'component/uikit/touchable';
 
 const trendItem = ({ data: trend, onPress }) => {
   const title = R.pathOr('--', ['title'])(trend);
-  const created_at = R.pathOr('--', ['created_at'])(trend);
+  const release_at = R.path(['release_at'])(trend);
 
   return (
     <Touchable foreground onPress={onPress(trend)}>
@@ -18,7 +18,7 @@ const trendItem = ({ data: trend, onPress }) => {
           <Text style={styles.title}>{title}</Text>
         </View>
         <Text style={styles.date}>
-          {moment.unix(created_at).format('MM-DD HH:ss')}
+          {release_at ? moment.unix(release_at).format('MM-DD HH:ss') : ''}
         </Text>
       </Flex>
     </Touchable>

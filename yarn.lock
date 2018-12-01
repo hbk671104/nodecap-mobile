@@ -556,7 +556,7 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@expo/react-native-action-sheet@^1.1.2":
+"@expo/react-native-action-sheet@^1.0.1", "@expo/react-native-action-sheet@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@expo/react-native-action-sheet/-/react-native-action-sheet-1.1.2.tgz#4c2f9b8190678799552e83134a975ec370a694d9"
   dependencies:
@@ -1185,7 +1185,7 @@ babel-messages@^6.23.0:
   dependencies:
     babel-runtime "^6.22.0"
 
-babel-plugin-check-es2015-constants@^6.5.0, babel-plugin-check-es2015-constants@^6.8.0:
+babel-plugin-check-es2015-constants@6.22.0, babel-plugin-check-es2015-constants@^6.5.0, babel-plugin-check-es2015-constants@^6.8.0:
   version "6.22.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-check-es2015-constants/-/babel-plugin-check-es2015-constants-6.22.0.tgz#35157b101426fd2ffd3da3f75c7d1e91835bbf8a"
   dependencies:
@@ -2051,6 +2051,7 @@ circular-json@^0.3.1:
 clamp@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/clamp/-/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+  integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -3716,13 +3717,13 @@ hoist-non-react-statics@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
-hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
-
-hoist-non-react-statics@^2.2.2:
+hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.2.2:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
+
+hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
 
 hoist-non-react-statics@^3.1.0:
   version "3.1.0"
@@ -4345,9 +4346,10 @@ istanbul-reports@^1.3.0:
   dependencies:
     handlebars "^4.0.3"
 
-jcore-react-native@^1.2.11:
-  version "1.2.11"
-  resolved "https://registry.yarnpkg.com/jcore-react-native/-/jcore-react-native-1.2.11.tgz#21adca03dd1738e49800e83889537cd9abeb8a94"
+jcore-react-native@^1.2.12:
+  version "1.2.12"
+  resolved "https://registry.yarnpkg.com/jcore-react-native/-/jcore-react-native-1.2.12.tgz#064f0cd7e04e21931e953c5845433b8bb4b12cad"
+  integrity sha512-tBErLctfyKr69ozv4HeaMKUzrlxpsG0fiwBnWgA1kiHgr8ADwcoGmYkfgWEMw41OZKrmn3Ne4sE74Jw66Re+Kw==
 
 jest-changed-files@^22.2.0:
   version "22.4.3"
@@ -4647,9 +4649,10 @@ jest@23.0.0:
     import-local "^1.0.0"
     jest-cli "^23.0.0"
 
-jpush-react-native@^2.2.13:
-  version "2.2.13"
-  resolved "https://registry.yarnpkg.com/jpush-react-native/-/jpush-react-native-2.2.13.tgz#022f1bb8b9c66377e6798a25a5a2f736dfead667"
+jpush-react-native@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/jpush-react-native/-/jpush-react-native-2.3.0.tgz#651af8c49ad901f6ac85635bfc5b720b96fbacf8"
+  integrity sha512-MPUzpr1mHzmLu5eAx7UDWaVUO7gQ6nt+Bw/aST/sk5fawgnkkSUXXOMAA8K9wRkSMgB75262d0Qfe9QD6mRbQg==
   dependencies:
     inquirer "*"
     mpatch "^0.1.0"
@@ -5360,7 +5363,7 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment@^2.22.0, moment@^2.22.2:
+moment@^2.19.0, moment@^2.22.0, moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 
@@ -6320,6 +6323,15 @@ react-is@^16.3.2, react-is@^16.6.0:
 react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+  integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-mixin@^3.0.5:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/react-mixin/-/react-mixin-3.1.1.tgz#68749756bfe32699e561372a4aeecb926db72b7f"
+  integrity sha512-z9fZ0aCRDjlgxLdMeWkJ9TwhmVLhQ09r8RFpin/cEPA2T6jsb7YHNWcIe0Oii+hhJNyMymdy91CSya5mRkuCkg==
+  dependencies:
+    object-assign "^4.0.1"
+    smart-mixin "^2.0.0"
 
 react-native-animatable@^1.2.4, react-native-animatable@^1.3.0:
   version "1.3.0"
@@ -6359,13 +6371,14 @@ react-native-collapsible@^0.9.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-native-communications@^2.2.1:
+react-native-communications@2.2.1, react-native-communications@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
 
-react-native-config@^0.11.5:
-  version "0.11.5"
-  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.5.tgz#516cb7b6ec437c7739236ca075971db3aabdcb95"
+react-native-config@^0.11.6:
+  version "0.11.6"
+  resolved "https://registry.yarnpkg.com/react-native-config/-/react-native-config-0.11.6.tgz#efe9027be534629a41a4561de50f76f40dabb78a"
+  integrity sha512-7GawMkZ3/w7dL9ah2EEhNRyHnMRtsbgAPPIDFX8ODDfhvTM0CzPL23bF5KrKmx13jjNrd6/scW9iyorEEPnYcQ==
 
 react-native-datepicker@^1.7.2:
   version "1.7.2"
@@ -6384,6 +6397,7 @@ react-native-dismiss-keyboard@1.0.0:
 react-native-drawer-layout-polyfill@^1.3.2:
   version "1.3.2"
   resolved "https://registry.yarnpkg.com/react-native-drawer-layout-polyfill/-/react-native-drawer-layout-polyfill-1.3.2.tgz#192c84d7a5a6b8a6d2be2c7daa5e4164518d0cc7"
+  integrity sha512-XzPhfLDJrYHru+e8+dFwhf0FtTeAp7JXPpFYezYV6P1nTeA1Tia/kDpFT+O2DWTrBKBEI8FGhZnThrroZmHIxg==
   dependencies:
     react-native-drawer-layout "1.3.2"
 
@@ -6416,6 +6430,27 @@ react-native-exit-app@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-exit-app/-/react-native-exit-app-1.0.0.tgz#a2fbb121d902e6967cd8a365fe8453e5c4bc3172"
 
+react-native-fade-in-image@^1.4.1:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/react-native-fade-in-image/-/react-native-fade-in-image-1.4.1.tgz#90f6de57e3bc7f41324a921087896afbe491d430"
+  integrity sha512-kGoSdAExRS/rEZ95DIpEEUe+FlLvvtCfGmS6ZeYU8Akm6hYEdlUx7pKyU9CAzIsITFPt90mt+f71Q1v9SQPXNQ==
+  dependencies:
+    react-clone-referenced-element "^1.0.1"
+    react-mixin "^3.0.5"
+    react-timer-mixin "^0.13.3"
+
+react-native-gifted-chat@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-gifted-chat/-/react-native-gifted-chat-0.5.0.tgz#ac56668c57d4bba238ca6dd8bced1f47895a6be1"
+  integrity sha512-b7DHgYsItJHkPebeZMFJx8IPLOZ0g9mnXVSD7GQZAuOG1n5OC8NE/m8WNLk/MJAP1uq97J5mOiOnK4ipTA7oKw==
+  dependencies:
+    "@expo/react-native-action-sheet" "^1.0.1"
+    moment "^2.19.0"
+    react-native-communications "2.2.1"
+    react-native-lightbox "^0.7.0"
+    react-native-parsed-text "^0.0.20"
+    uuid "3.3.0"
+
 react-native-global-props@1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/react-native-global-props/-/react-native-global-props-1.1.3.tgz#4ea66136b03e42ff93a4fed544576e1993be0d70"
@@ -6443,6 +6478,13 @@ react-native-keyboard-aware-scroll-view@^0.7.4:
 react-native-keychain@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-native-keychain/-/react-native-keychain-3.0.0.tgz#29da1dfa43c2581f76bf9420914fd38a1558cf18"
+
+react-native-lightbox@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-lightbox/-/react-native-lightbox-0.7.0.tgz#e52b4d7fcc141f59d7b23f0180de535e35b20ec9"
+  integrity sha512-HS3T4WlCd0Gb3us2d6Jse5m6KjNhngnKm35Wapq30WtQa9s+/VMmtuktbGPGaWtswcDyOj6qByeJBw9W80iPCA==
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-linear-gradient@^2.4.3:
   version "2.4.3"
@@ -6486,6 +6528,14 @@ react-native-parallax-scroll-view@^0.21.3:
   resolved "https://registry.yarnpkg.com/react-native-parallax-scroll-view/-/react-native-parallax-scroll-view-0.21.3.tgz#d956ad224ce3b0a2725b80574bcbf688bbeda14e"
   dependencies:
     prop-types "^15.6.0"
+
+react-native-parsed-text@^0.0.20:
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/react-native-parsed-text/-/react-native-parsed-text-0.0.20.tgz#7bd35fec88c3ca0eb0e8250a98e24092b4ee7fef"
+  integrity sha512-n77hYu64Tr3oclzIXBXXaiLh1WbMKdA2Y0x6bX/yqwxAM4afcObENY5VrNB+EsTBJBEDqrypA9D1p2cLEIHkuQ==
+  dependencies:
+    babel-plugin-check-es2015-constants "6.22.0"
+    prop-types "^15.5.10"
 
 react-native-pdf@^5.0.9:
   version "5.0.9"
@@ -6577,6 +6627,7 @@ react-native-swiper@^1.5.13:
 react-native-tab-view@^0.0.77:
   version "0.0.77"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.77.tgz#11ceb8e7c23100d07e628dc151b57797524d00d4"
+  integrity sha512-9vjD4Ly1Zlum1Y4g23ODpi/F3gYIUIsKWrsZO/Oh5cuX1eiB1DRVn11nY1z+j/hsQfhfyW6nDlmySyDvYQvYCA==
   dependencies:
     prop-types "^15.6.0"
 
@@ -6586,10 +6637,10 @@ react-native-tab-view@^1.0.0:
   dependencies:
     prop-types "^15.6.1"
 
-react-native-tab-view@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.3.0.tgz#822fcf14e9a1d08d3548338c217c716a31637e1c"
-  integrity sha512-KxHODfaxFnUTpp3jZvLnunLyadcO0xBrNuAaiwhVAbpW2RQvxeNiDrvJAzrNeqHTLDrZhuHgcKGyqoTen1sHNQ==
+react-native-tab-view@^1.3.1:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-1.3.1.tgz#f9932d6bd5ba7dad75ef9335a68f13d85ba5bd56"
+  integrity sha512-QNt6VkEW8SP1UJ7yjD5P4bOTWwHQfoIMD5CqnA06pcubdNwHR1NmjiNZsVnIvp5wAEVbW6yTHjLXOh1fzab4xg==
   dependencies:
     prop-types "^15.6.1"
 
@@ -6682,6 +6733,7 @@ react-native@0.55.4:
 react-navigation-deprecated-tab-navigator@1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/react-navigation-deprecated-tab-navigator/-/react-navigation-deprecated-tab-navigator-1.3.0.tgz#015dcae1e977b984ca7e99245261c15439026bb7"
+  integrity sha512-Cm+qYOPFWbvvcuv0YYX0ioYwLGgw7XAqdhAfpo3sIr3trxRW8871ePmfFOPezjQtz4v6ItjZt6LPgtBAVZoroQ==
   dependencies:
     react-native-tab-view "^0.0.77"
 
@@ -7555,6 +7607,11 @@ smart-buffer@^1.0.13:
   version "1.1.15"
   resolved "https://registry.yarnpkg.com/smart-buffer/-/smart-buffer-1.1.15.tgz#7f114b5b65fab3e2a35aa775bb12f0d1c649bf16"
 
+smart-mixin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/smart-mixin/-/smart-mixin-2.0.0.tgz#a34a1055e32a75b30d2b4e3ca323dc99cb53f437"
+  integrity sha1-o0oQVeMqdbMNK048oyPcmctT9Dc=
+
 snapdragon-node@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
@@ -8243,6 +8300,11 @@ utils-merge@1.0.1:
 uuid@3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
+
+uuid@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.3.0.tgz#b237147804881d7b86f40a7ff8f590f15c37de32"
+  integrity sha512-ijO9N2xY/YaOqQ5yz5c4sy2ZjWmA6AR6zASb/gdpeKZ8+948CxwfMW9RrKVk5may6ev8c0/Xguu32e2Llelpqw==
 
 uuid@^3.1.0:
   version "3.2.1"

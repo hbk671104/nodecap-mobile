@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
 import * as WeChat from 'react-native-wechat';
 import Config from 'runtime/index';
+import shareModal from 'component/shareModal';
 
 import List from 'component/uikit/list';
 import FavorItem from 'component/favored/item';
@@ -18,48 +19,43 @@ import styles from './style';
   pagination: R.pathOr(null, ['coins', set_id, 'pagination'])(coinSets),
   loading: loading.effects['coinSets/fetchCoins'],
 }))
+@shareModal
 export default class CoinsInSet extends Component {
-  state = {
-    isWXAppSupportApi: false,
-  };
-
-  componentWillMount() {
-    this.checkWechatAval();
-  }
   onPressShare = () => {
-    this.props.showActionSheetWithOptions(
-      {
-        options: ['通过微信分享给朋友', '分享至微信朋友圈', '取消'],
-        cancelButtonIndex: 2,
-      },
-      index => {
-        if (!this.state.isWXAppSupportApi) {
-          return;
-        }
-        if (index !== 2) {
-          const request = {
-            type: 'news',
-            webpageUrl: `${Config.MOBILE_SITE}/coin-set?id=${
-              this.props.set_id
-            }`,
-            title: `「项目集」${this.props.tabLabel}`,
-            description: '来 Hotnode, 发现最新最热项目！',
-            thumbImage:
-              'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/coin-set-share.jpg',
-          };
-          if (index === 0) {
-            WeChat.shareToSession(request);
-          } else if (index === 1) {
-            WeChat.shareToTimeline(request);
-          }
-        }
-      },
-    );
-  };
+    const request = {
+      webpageUrl: `${Config.MOBILE_SITE}/coin-set?id=${
+        this.props.set_id
+        }`,
+      title: `「项目集」${this.props.tabLabel}`,
+      description: '来 Hotnode, 发现最新最热项目！',
+      thumbImage:
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/coin-set-share.jpg',
+    };
 
-  checkWechatAval = async () => {
-    this.setState({
-      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
+    this.props.openShareModal({
+      types: [{
+        type: 'timeline',
+        ...request,
+      }, {
+        type: 'session',
+        ...request,
+      }],
+      onOpen: () => {
+        this.props.dispatch(
+          NavigationActions.setParams({
+            params: { tabBarVisible: false },
+            key: 'ProjectRepo',
+          }),
+        );
+      },
+      onClose: () => {
+        this.props.dispatch(
+          NavigationActions.setParams({
+            params: { tabBarVisible: true },
+            key: 'ProjectRepo',
+          }),
+        );
+      },
     });
   };
 

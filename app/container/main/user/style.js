@@ -20,4 +20,27 @@ export default {
       bottom: 190,
     },
   },
+  right: {
+    container: {},
+    text: {
+      fontSize: 14,
+      color: 'white',
+    },
+  },
+  contact: {
+    container: {
+      height: 39,
+      marginHorizontal: 12,
+      marginVertical: 15,
+      backgroundColor: '#1890FF',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: 2,
+    },
+    text: {
+      fontSize: 13,
+      color: 'white',
+      fontWeight: 'bold',
+    },
+  },
 };

@@ -207,7 +207,7 @@ const publicProjectItem = ({ style, data, onPress, onPressWeeklyReport }) => {
           {owner_status === '1' && (
             <Touchable
               style={{ flex: 1 }}
-              onPress={e => onPressWeeklyReport(e, data.id)}
+              onPress={e => onPressWeeklyReport(e, data)}
             >
               <Flex justify="center">
                 <Text style={styles.buttonText}>周报管理</Text>

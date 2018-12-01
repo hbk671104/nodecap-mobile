@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import R from 'ramda';
 import moment from 'moment';
+import { Flex } from 'antd-mobile';
 
 import Touchable from 'component/uikit/touchable';
+import Avatar from 'component/uikit/avatar';
 
 const header = ({ data, onLinkPress }) => {
   if (R.or(R.isNil(data), R.isEmpty(data))) {
@@ -15,18 +17,28 @@ const header = ({ data, onLinkPress }) => {
   const source = R.pathOr('--', ['source'])(data);
   const created_at = R.pathOr('--', ['created_at'])(data);
   const link = R.pathOr('', ['original_link'])(data);
+  const logo = R.pathOr('', ['logo'])(data);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <View style={styles.bottom.container}>
-        <Text style={styles.bottom.source}>
-          {source}
-          {'  '}
-          <Text style={styles.bottom.date}>
-            {moment.unix(created_at).format('MM-DD HH:ss')}
+        <Flex>
+          <Avatar
+            raised={false}
+            innerRatio={1}
+            size={20}
+            style={{ marginRight: 10 }}
+            source={{ uri: logo }}
+          />
+          <Text style={styles.bottom.source}>
+            {source}
+            {'  '}
+            <Text style={styles.bottom.date}>
+              {moment.unix(created_at).format('MM-DD HH:ss')}
+            </Text>
           </Text>
-        </Text>
+        </Flex>
         {!R.isEmpty(link) && (
           <Touchable borderless onPress={onLinkPress(link)}>
             <Text style={styles.bottom.origin}>查看原文</Text>

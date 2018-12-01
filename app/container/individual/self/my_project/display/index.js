@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { View, Animated, Text } from 'react-native';
+import { View, Animated, Text, Image } from 'react-native';
 import { connect } from 'react-redux';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
-import NavBar from 'component/navBar';
+import NavBar, { navBarHeight } from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import Modal from 'component/modal';
+import ActionAlert from 'component/action_alert';
+import { Storage } from 'utils';
 
 // Partials
 import Description from './page/description';
@@ -25,8 +27,10 @@ import styles from './style';
 }))
 @compose(
   withState('currentScrollY', 'setCurrentScrollY', 0),
+  withState('teamMemberY', 'setTeamMemberY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('explanationVisible', 'setExplanationVisible', false),
+  withState('avatarModalVisible', 'setAvatarModalVisible', false),
   withProps(({ animateY, portfolio, tags, purpose }) => ({
     navBarOpacityRange: animateY.interpolate({
       inputRange: [0, 160],
@@ -52,6 +56,16 @@ import styles from './style';
   })),
 )
 export default class MyProjectDetail extends Component {
+  async componentWillMount() {
+    const showed_project_avatar_modal = await Storage.get(
+      'showed_project_avatar_modal',
+    );
+    if (showed_project_avatar_modal) {
+      return;
+    }
+    this.props.setAvatarModalVisible(true);
+  }
+
   componentDidMount() {
     this.props.track('进入');
   }
@@ -70,12 +84,22 @@ export default class MyProjectDetail extends Component {
     );
   };
 
+  handleDescriptionOnLayout = ({ nativeEvent: { layout } }) => {
+    this.props.setTeamMemberY(this.props.teamMemberY + layout.y);
+  };
+
+  handleTeamOnLayout = ({ nativeEvent: { layout } }) => {
+    this.props.setTeamMemberY(this.props.teamMemberY + layout.y);
+  };
+
   render() {
     const {
       portfolio,
       currentScrollY,
       navBarOpacityRange,
       backgroundOpacityRange,
+      avatarModalVisible,
+      setAvatarModalVisible,
     } = this.props;
     return (
       <View style={styles.container}>
@@ -123,8 +147,14 @@ export default class MyProjectDetail extends Component {
             onInvitedPress={() => null}
             onExplanationPress={() => this.props.setExplanationVisible(true)}
           />
-          <View style={{ backgroundColor: 'white' }}>
-            <Description {...this.props} />
+          <View
+            style={{ backgroundColor: 'white' }}
+            onLayout={this.handleDescriptionOnLayout}
+          >
+            <Description
+              {...this.props}
+              onTeamLayout={this.handleTeamOnLayout}
+            />
           </View>
         </Animated.ScrollView>
         <Modal
@@ -153,6 +183,33 @@ export default class MyProjectDetail extends Component {
             </Touchable>
           </View>
         </Modal>
+        <ActionAlert
+          visible={avatarModalVisible}
+          renderContent={() => (
+            <View style={styles.avatarUpload.container}>
+              <Image
+                source={require('asset/project_create/upload_avatar.png')}
+              />
+              <Text style={styles.avatarUpload.title}>上传头像</Text>
+              <Text style={styles.avatarUpload.subtitle}>
+                真实的头像会让更多人联系您
+              </Text>
+            </View>
+          )}
+          actionTitle="立即上传"
+          action={() => {
+            this.scroll.getNode().scrollTo({
+              y: this.props.teamMemberY - navBarHeight,
+              animated: true,
+            });
+            setAvatarModalVisible(false);
+            Storage.set('showed_project_avatar_modal', true);
+          }}
+          onBackdropPress={() => {
+            setAvatarModalVisible(false);
+            Storage.set('showed_project_avatar_modal', true);
+          }}
+        />
       </View>
     );
   }

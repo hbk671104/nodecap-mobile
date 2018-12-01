@@ -4,11 +4,18 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
+import { compose, withState } from 'recompose';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import SimplifiedItem from 'component/public_project/simplified_item';
 import List from 'component/uikit/list';
+import Empty from 'component/empty';
+import Reviewed from 'component/reviewed';
+import shareModal from 'component/shareModal';
+import Config from 'runtime/index';
+import { Storage } from 'utils';
+import Share from '../../public_project/detail/share';
 import styles from './style';
 
 @global.bindTrack({
@@ -20,9 +27,33 @@ import styles from './style';
   pagination: R.pathOr(null, ['list', 'pagination'])(project_create),
   loading: loading.effects['project_create/fetch'],
 }))
+@compose(
+  withState('reviewedVisible', 'setReviewedVisible', false),
+  withState('reviewedItem', 'setReviewedItem', null),
+)
+@shareModal
 class MyProject extends Component {
   componentDidMount() {
     this.props.track('进入');
+  }
+
+  async componentWillReceiveProps(nextProps) {
+    const data = R.pathOr([], ['data'])(nextProps);
+    if (R.length(data) > 0) {
+      const reviewed_item = R.find(d => R.path(['owner_status'])(d) === '1')(
+        data,
+      );
+      if (reviewed_item && !nextProps.reviewedItem) {
+        this.props.setReviewedItem(reviewed_item);
+        const showed_reviewed_project = await Storage.get(
+          'showed_reviewed_project',
+        );
+        if (showed_reviewed_project) {
+          return;
+        }
+        this.props.setReviewedVisible(true);
+      }
+    }
   }
 
   requestData = (page, size) => {
@@ -68,17 +99,52 @@ class MyProject extends Component {
     });
   };
 
-  handleWeeklyReport = (e, id) => {
+  handleWeeklyReport = (e, data) => {
     e.preventDefault();
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'MyProjectReportList',
         params: {
-          id,
+          id: data.id,
+          data,
         },
       }),
     );
-  }
+  };
+
+  handleExitPress = () => {
+    this.props.setReviewedVisible(false);
+    Storage.set('showed_reviewed_project', true);
+  };
+
+  handleSharePress = () => {
+    const data = this.props.reviewedItem;
+    this.props.setReviewedVisible(false);
+    this.props.openShareModal({
+      types: [{
+        type: 'timeline',
+        webpageUrl: `${Config.MOBILE_SITE}/coin?id=${data.id}`,
+        title: `推荐给你「${R.path(['name'])(data)}」`,
+        description: '来 Hotnode 找最新最热项目！',
+        thumbImage:
+        R.path(['icon'])(data) ||
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+      }, {
+        type: 'session',
+        webpageUrl: `${Config.MOBILE_SITE}/coin?id=${data.id}`,
+        title: `推荐给你「${R.path(['name'])(data)}」`,
+        description: '来 Hotnode 找最新最热项目！',
+        thumbImage:
+        R.path(['icon'])(data) ||
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+      }, {
+        type: 'picture',
+      }, {
+        type: 'link',
+        url: `${Config.MOBILE_SITE}/coin?id=${data.id}`,
+      }],
+    });
+  };
 
   renderNavBar = () => (
     <NavBar
@@ -103,8 +169,20 @@ class MyProject extends Component {
 
   renderSeparator = () => <View style={styles.separator} />;
 
+  renderEmpty = () => (
+    <Empty
+      style={{ marginTop: 70, backgroundColor: 'transparent' }}
+      image={require('asset/empty/empty_data.png')}
+      title="暂无项目，快创建属于你自己的项目吧"
+      buttonTitle="立即创建"
+      buttonStyle={{ width: 210, marginHorizontal: 0, alignSelf: 'center' }}
+      buttonTitleStyle={{ fontSize: 13 }}
+      action={this.handleCreatePress}
+    />
+  );
+
   render() {
-    const { data, pagination, loading } = this.props;
+    const { data, pagination, loading, reviewedVisible } = this.props;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -114,8 +192,21 @@ class MyProject extends Component {
           pagination={pagination}
           data={data}
           renderItem={this.renderItem}
+          renderEmpty={this.renderEmpty}
           style={styles.container}
         />
+        <Reviewed
+          visible={reviewedVisible}
+          onExitPress={this.handleExitPress}
+          onSharePress={this.handleSharePress}
+        />
+        {!!this.props.reviewedItem && (
+          <Share
+            onClose={() => this.props.toggleSharePictureModal(false)}
+            coin={this.props.reviewedItem}
+            visible={this.props.showSharePictureModal}
+          />
+        )}
       </View>
     );
   }

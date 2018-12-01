@@ -1,3 +1,5 @@
+export const bottomTabHeight = 55;
+
 export default {
   container: {
     flex: 1,
@@ -18,6 +20,13 @@ export default {
       position: 'absolute',
       right: 0,
       bottom: 190,
+    },
+  },
+  right: {
+    container: {},
+    text: {
+      fontSize: 14,
+      color: 'white',
     },
   },
 };

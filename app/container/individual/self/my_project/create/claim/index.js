@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
+import request from 'utils/request';
+import runtimeConfig from 'runtime/index';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
@@ -16,7 +18,7 @@ import { uploadImage } from 'services/upload';
 import styles from './style';
 
 @global.bindTrack({
-  page: '认领我的项目认证',
+  page: '入驻我的项目认证',
   name: 'App_MyProjectClaimOperation',
 })
 @connect(({ project_create, loading }, props) => {
@@ -109,6 +111,12 @@ class ClaimProject extends Component {
             }),
           );
         }
+        request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
+          content: `${value.owner_name} 入驻了 ID 为 ${
+            this.props.id
+          } 的项目，请快去审核`,
+          mobile: `${value.owner_mobile}`,
+        });
       },
     });
   };
@@ -121,7 +129,7 @@ class ClaimProject extends Component {
           barStyle={this.state.barStyle}
           back
           gradient
-          title="认领项目"
+          title="入驻项目"
           renderRight={() => {
             if (this.props.submitting) {
               return <ActivityIndicator color="white" />;
@@ -138,6 +146,7 @@ class ClaimProject extends Component {
             rules: [{ required: true, message: '请输入姓名' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="姓名"
@@ -150,6 +159,7 @@ class ClaimProject extends Component {
             rules: [{ required: true, message: '请输入公司职位' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
               title="职位"
@@ -158,9 +168,7 @@ class ClaimProject extends Component {
               error={getFieldError('owner_title')}
             />,
           )}
-          {getFieldDecorator('owner_mobile', {
-            rules: [{ required: true, message: '请输入手机号码' }],
-          })(
+          {getFieldDecorator('owner_mobile')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -173,9 +181,7 @@ class ClaimProject extends Component {
               error={getFieldError('owner_mobile')}
             />,
           )}
-          {getFieldDecorator('owner_wechat', {
-            rules: [{ required: true, message: '请输入微信号' }],
-          })(
+          {getFieldDecorator('owner_wechat')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -189,6 +195,7 @@ class ClaimProject extends Component {
             rules: [{ required: true, message: '请上传名片' }],
           })(
             <InputItem
+              required
               style={styles.inputItem.container}
               wrapperStyle={{ alignItems: 'flex-start' }}
               titleStyle={styles.inputItem.title}

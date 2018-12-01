@@ -8,6 +8,8 @@ import R from 'ramda';
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import List from 'component/uikit/list';
+import shareModal from 'component/shareModal';
+
 import InstitutionReportItem from 'component/public_project/report_item';
 
 import Config from '../../../../../runtime';
@@ -33,6 +35,7 @@ import * as Wechat from 'react-native-wechat';
   };
 })
 @connectActionSheet
+@shareModal
 export default class InstitutionReportSet extends Component {
   componentWillMount() {
     this.props.dispatch({
@@ -65,33 +68,25 @@ export default class InstitutionReportSet extends Component {
   };
 
   handleSharePress = () => {
-    this.props.showActionSheetWithOptions(
-      {
-        options: ['分享至朋友圈', '分享至微信', '取消'],
-        cancelButtonIndex: 2,
-      },
-      buttonIndex => {
-        const request = {
-          type: 'news',
-          webpageUrl: `${Config.MOBILE_SITE}/report-set?id=${this.props.id}`,
-          title: `「研报集」${this.props.title}`,
-          description: '来 Hotnode, 发现最新最热研报集！',
-          thumbImage:
-            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
-        };
-
-        switch (buttonIndex) {
-          case 0:
-            Wechat.shareToTimeline(request);
-            break;
-          case 1:
-            Wechat.shareToSession(request);
-            break;
-          default:
-            break;
-        }
-      },
-    );
+    const request = {
+      webpageUrl: `${Config.MOBILE_SITE}/report-set?id=${this.props.id}`,
+      title: `「研报集」${this.props.title}`,
+      description: '来 Hotnode, 发现最新最热研报集！',
+      thumbImage:
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
+    };
+    this.props.openShareModal({
+      types: [{
+        type: 'timeline',
+        ...request,
+      }, {
+        type: 'session',
+        ...request,
+      }, {
+        type: 'link',
+        url: `${Config.MOBILE_SITE}/report-set?id=${this.props.id}`,
+      }],
+    });
   };
 
   renderItem = ({ item }) => (

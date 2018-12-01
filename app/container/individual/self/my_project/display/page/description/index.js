@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
-import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { Flex, Grid } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 
 import MemberItem from 'component/project/description/member';
-import InstitutionItem from './institutionItem';
 import Touchable from 'component/uikit/touchable';
 
 import Financing from '../financing';
@@ -42,6 +41,35 @@ export default class Description extends PureComponent {
         },
       }),
     );
+  };
+
+  handleMemberEditPress = index => () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'CreateMyProjectSingleMember',
+        params: {
+          index,
+        },
+      }),
+    );
+  };
+
+  handleMemberDeletePress = item => () => {
+    Alert.alert('是否确认删除？', '', [
+      {
+        text: '删除',
+        onPress: () => {
+          this.props.dispatch({
+            type: 'project_create/deleteMember',
+            id: item.id,
+          });
+        },
+      },
+      {
+        text: '取消',
+        style: 'cancel',
+      },
+    ]);
   };
 
   editField = routeName => () => {
@@ -156,11 +184,17 @@ export default class Description extends PureComponent {
           {...this.props}
           onEditPress={this.editField('CreateMyProjectFunding')}
         />
-        <View style={styles.fieldGroup}>
+        <View style={styles.fieldGroup} onLayout={this.props.onTeamLayout}>
           {title('团队成员', 'CreateMyProjectTeam')}
           <View>
             {R.addIndex(R.map)((m, i) => (
-              <MemberItem key={m.id || `${i}`} data={m} />
+              <MemberItem
+                editMode
+                key={m.id || `${i}`}
+                data={m}
+                onEditPress={this.handleMemberEditPress(i)}
+                onDeletePress={this.handleMemberDeletePress(m)}
+              />
             ))(members)}
           </View>
         </View>

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import RatingItem from './rating_item';
 import styles from './style';
 
-const rating = ({ portfolio, rating_orgs, onMorePress }) => {
+const rating = ({ portfolio, rating_orgs, onMorePress, onIndustryPress }) => {
   const data = R.pipe(
     R.pathOr([], ['rating']),
     // R.filter(i => i.rating_name && i.grade),
@@ -28,6 +28,7 @@ const rating = ({ portfolio, rating_orgs, onMorePress }) => {
             data={r}
             org={org}
             onMorePress={() => onMorePress(r)}
+            onIndustryPress={() => onIndustryPress(r)}
           />
         );
       })(data)}

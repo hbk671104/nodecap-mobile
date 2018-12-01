@@ -3,6 +3,8 @@ import { View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
+import CodePush from 'react-native-code-push';
+import { withState } from 'recompose';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -21,7 +23,13 @@ import styles from './style';
   loading: loading.effects['login/logout'],
   versionLabel: R.pathOr('', ['update', 'label'])(codePush),
 }))
+@withState('pkg', 'setPkg', null)
 class Settings extends Component {
+  async componentWillMount() {
+    const pkg = await CodePush.getUpdateMetadata();
+    this.props.setPkg(pkg);
+  }
+
   logout = () => {
     this.props.track('退出登录');
     this.props.dispatch({
@@ -52,7 +60,8 @@ class Settings extends Component {
   };
 
   render() {
-    const { isLogin, versionLabel } = this.props;
+    const { isLogin } = this.props;
+    const versionLabel = R.path(['pkg', 'label'])(this.props);
     return (
       <View style={styles.container}>
         <NavBar gradient back title="设置" />
@@ -62,7 +71,7 @@ class Settings extends Component {
             disablePress
             title="当前版本"
             content={`v${appInfo.version}${
-              R.isEmpty(versionLabel) ? '' : ` (${versionLabel})`
+              !versionLabel ? '' : ` (${versionLabel})`
             }`}
           />
           <ListItem title="版本更新" onPress={this.handleChangelogPress} />

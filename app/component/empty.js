@@ -4,13 +4,27 @@ import { View, Image, Text } from 'react-native';
 
 import AuthButton from 'component/auth/button';
 
-const empty = ({ image, title, action }) => (
-  <View style={styles.container}>
-    <Image source={image} style={styles.image} />
+const empty = ({
+  style,
+  image,
+  title,
+  action,
+  buttonTitle,
+  buttonStyle,
+  buttonTitleStyle,
+                 imageStyle,
+}) => (
+  <View style={[styles.container, style]}>
+    <Image source={image} style={[styles.image, imageStyle]} />
     <Text style={styles.title}>{title}</Text>
     {!!action && (
-      <View style={styles.button.container}>
-        <AuthButton disabled={false} onPress={action} />
+      <View style={[styles.button.container, buttonStyle]}>
+        <AuthButton
+          title={buttonTitle}
+          titleStyle={buttonTitleStyle}
+          disabled={false}
+          onPress={action}
+        />
       </View>
     )}
   </View>
@@ -23,7 +37,6 @@ const styles = {
     // alignItems: 'center',
   },
   image: {
-    marginTop: 144,
     alignSelf: 'center',
   },
   title: {

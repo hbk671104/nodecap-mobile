@@ -12,12 +12,13 @@ import { RouterEmitter } from '../../../router';
 import NavBar from 'component/navBar';
 import Explanation from 'component/explanation';
 import NewsItem from 'component/news';
+import InvestNewsItem from 'component/news/investNewsItem';
 import Touchable from 'component/uikit/touchable';
 import Format from 'component/format';
 import { setStatusBar } from 'component/uikit/statusBar';
 import { handleOpen, handleReceive } from 'utils/jpush_handler';
 
-import List from './components/list';
+import List from 'component/uikit/list';
 import Header from './header';
 import ShareNews from './shareNews';
 import styles from './style';
@@ -35,18 +36,19 @@ import styles from './style';
     institution,
     banners,
     hotnode_index,
+    investNews,
   }) => ({
-    news: R.pathOr([], ['news'])(news),
-    lastNewsID: R.pathOr(null, ['payload'])(news),
     data: R.pathOr([{}, {}, {}, {}, {}], ['selected', 'index', 'data'])(
       public_project,
     ),
     pagination: R.pathOr(null, ['selected', 'index', 'pagination'])(
       public_project,
     ),
-    loading: loading.effects['news/index'],
     selectedLoading: loading.effects['public_project/fetchSelected'],
     insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
+    investNews: R.pathOr([], ['list', 'data'])(investNews),
+    investNewPagination: R.pathOr(null, ['list', 'pagination'])(investNews),
+    loading: loading.effects['investNews/fetch'],
     announcement: R.pathOr([], ['list', 'data'])(notification),
     reports: R.pathOr([], ['report', 'data'])(institution),
     updateCount: R.path(['updated_count'])(news),
@@ -70,9 +72,16 @@ import styles from './style';
 )
 export default class PublicProject extends Component {
   componentWillMount() {
+    this.props.dispatch({
+      type: 'news/index',
+    });
+
     RouterEmitter.addListener('resume', () => {
       this.props.dispatch({
         type: 'news/index',
+      });
+      this.props.dispatch({
+        type: 'investNews/fetch',
       });
     });
   }
@@ -97,7 +106,7 @@ export default class PublicProject extends Component {
 
     setTimeout(() => {
       const { extras } = result;
-      handleOpen(extras);
+      handleOpen(extras, 'launch');
     }, 1000);
   };
 
@@ -107,7 +116,7 @@ export default class PublicProject extends Component {
     }
 
     const { extras } = result;
-    handleOpen(extras);
+    handleOpen(extras, 'open');
   };
 
   handleReceiveNotification = ({ appState, extras }) => {
@@ -117,11 +126,13 @@ export default class PublicProject extends Component {
     handleReceive(extras);
   };
 
-  requestData = (isRefresh, callback) => {
+  requestData = (page, size) => {
     this.props.dispatch({
-      type: 'news/index',
-      payload: isRefresh ? null : this.props.lastNewsID,
-      callback,
+      type: 'investNews/fetch',
+      payload: {
+        currentPage: page,
+        pageSize: size,
+      },
     });
   };
 
@@ -250,26 +261,32 @@ export default class PublicProject extends Component {
   handleSearchBarPress = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'PublicProjectSearch',
+        routeName: 'GlobalSearch',
+      }),
+    );
+  };
+
+  handleChartPress = () => {
+    this.props.track('点击榜单');
+    // navigate
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Rank',
       }),
     );
   };
 
   renderItem = ({ item }) => (
-    <NewsItem
+    <InvestNewsItem
       {...this.props}
       data={item}
-      onInstitutionReportPress={this.handleInstitutionReportPress}
-      onInstitutionItemPress={this.handleReportItemPress}
-      onAnnouncementPress={this.handleAnnouncementPress}
-      onAnnouncementItemPress={this.handleAnnouncementItemPress}
-      onPressShare={this.handleNewsSharePress}
     />
   );
 
   renderHeader = () => (
     <Header
       {...this.props}
+      onChartPress={this.handleChartPress}
       onSearchBarPress={this.handleSearchBarPress}
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
@@ -287,8 +304,6 @@ export default class PublicProject extends Component {
       newsLoading={this.props.loading}
     />
   );
-
-  renderSeparator = () => <View style={styles.separator} />;
 
   renderNavBar = () => {
     const { global_index } = this.props;
@@ -319,7 +334,8 @@ export default class PublicProject extends Component {
   };
 
   render() {
-    const { news, loading, showExplanation } = this.props;
+    const { investNews, investNewPagination, loading, showExplanation } = this.props;
+    let lastY = 0;
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -328,13 +344,20 @@ export default class PublicProject extends Component {
           listRef={ref => {
             this.scroll = ref;
           }}
+          onScroll={e => {
+            const currentY = R.path(['nativeEvent', 'contentOffset', 'y'])(e);
+            if (currentY > lastY && currentY > 0) {
+              this.props.track('列表下滑');
+            }
+            lastY = currentY;
+          }}
           contentContainerStyle={styles.listContent}
           action={this.requestData}
           loading={loading}
-          data={news}
+          data={investNews}
+          pagination={investNewPagination}
           renderItem={this.renderItem}
           renderHeader={this.renderHeader}
-          renderSeparator={this.renderSeparator}
         />
         <ShareNews
           visible={this.props.showShareModal}
@@ -348,7 +371,7 @@ export default class PublicProject extends Component {
           visible={showExplanation}
           onBackdropPress={() => this.props.setShowExplanation(false)}
           title="市场情绪"
-          content="市场情绪是Hotnode综合全网媒体及自媒体数据，进行大数据建模及分析，科学评估市场情绪看多看空动向。"
+          content="市场情绪是 Hotnode 综合最近8小时全网媒体及自媒体数据 ，进行大数据建模及分析，科学评估市场情绪看多看空动向"
         />
       </View>
     );

@@ -9,7 +9,7 @@ import {
 import { autoRehydrate, persistStore } from 'redux-persist';
 import { Sentry } from 'react-native-sentry';
 import Orientation from 'react-native-orientation';
-import { setCustomText } from 'react-native-global-props';
+import { setCustomText, setCustomTextInput } from 'react-native-global-props';
 
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -38,8 +38,12 @@ import serviceModel from './app/models/service';
 import projectCreateModel from './app/models/project_create';
 import institutionCreateModel from './app/models/institution_create';
 import updateModel from './app/models/update';
-import bannerModal from './app/models/banners';
-import hotnodeIndexModal from './app/models/hotnode_index';
+import bannerModel from './app/models/banners';
+import hotnodeIndexModel from './app/models/hotnode_index';
+import globalSearchModel from './app/models/globalSearch';
+import investNewsModel from './app/models/investNews';
+import messageCenterModel from './app/models/message_center';
+import rankModel from './app/models/rank';
 
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated',
@@ -71,8 +75,12 @@ export const app = dva({
     projectCreateModel,
     institutionCreateModel,
     updateModel,
-    bannerModal,
-    hotnodeIndexModal,
+    bannerModel,
+    hotnodeIndexModel,
+    globalSearchModel,
+    investNewsModel,
+    messageCenterModel,
+    rankModel,
   ],
   extraReducers: { router: routerReducer },
   onAction: [routerMiddleware],
@@ -96,6 +104,7 @@ export const persist = callback => {
         'project_create',
         'institution_create',
         'banners',
+        'message_center',
       ],
     },
     callback,
@@ -122,6 +131,10 @@ setCustomText({
   style: {
     fontFamily: Platform.OS === 'ios' ? 'PingFangSC-Regular' : 'Roboto',
   },
+  allowFontScaling: false,
+});
+
+setCustomTextInput({
   allowFontScaling: false,
 });
 

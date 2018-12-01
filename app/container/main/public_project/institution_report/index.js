@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import Swiper from 'react-native-swiper';
+import searchable from 'component/searchableList';
 
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
@@ -24,8 +25,53 @@ import styles from './style';
     banner: R.pathOr([], ['banner', 'data'])(institution),
     loading: loading.effects['institution/fetchReports'],
     hasReadReports: R.pathOr([], ['has_read_reports'])(institution),
+    searchData: R.pathOr([], ['search', 'data'])(institution),
+    searchPagination: R.pathOr(null, ['search', 'pagination'])(institution),
+    searchLoading: loading.effects['institution/search'],
   };
 })
+@searchable((props) => ({
+  name: '研报',
+  data: props.searchData,
+  pagination: props.searchPagination,
+  loading: props.searchLoading,
+  action: ({ page, size, searchText }) => {
+    if (!searchText) {
+      props.dispatch({
+        type: 'institution/clearSearch',
+        payload: {
+          type: R.path(['type', 'value'])(props),
+        },
+      });
+    } else {
+      props.dispatch({
+        type: 'institution/search',
+        payload: {
+          q: searchText,
+          page,
+          'per-page': size,
+        },
+      });
+    }
+  },
+  renderItem: ({ item }) => {
+    const handleItemPress = () => {
+      props.track('点击进入详情');
+      props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'InstitutionReportDetail',
+          params: {
+            id: item.id,
+          },
+        }),
+      );
+    };
+
+    return (
+      <InstitutionReportItem key={item.id} data={item} onPress={handleItemPress} />
+    );
+  },
+}))
 export default class InstitutionReport extends Component {
   requestData = (page, size) => {
     this.props.dispatch({
@@ -118,7 +164,6 @@ export default class InstitutionReport extends Component {
     const { data, loading, pagination } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient back title="研报" />
         <List
           contentContainerStyle={styles.list.content}
           action={this.requestData}

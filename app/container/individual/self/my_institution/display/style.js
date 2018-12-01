@@ -20,4 +20,21 @@ export default {
       bottom: 190,
     },
   },
+  avatarUpload: {
+    container: {
+      alignItems: 'center',
+      padding: 16,
+    },
+    title: {
+      fontSize: 14,
+      color: 'rgba(0, 0, 0, 0.85)',
+      fontWeight: 'bold',
+      marginTop: 22,
+    },
+    subtitle: {
+      fontSize: 13,
+      color: 'rgba(0, 0, 0, 0.65)',
+      marginTop: 12,
+    },
+  },
 };

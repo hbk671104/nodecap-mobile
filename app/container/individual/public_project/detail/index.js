@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-import { View, Animated, Text, Image } from 'react-native';
+import { View, Animated, Text, Image, Clipboard, Linking } from 'react-native';
 import { connect } from 'react-redux';
+import { Modal as antModal } from 'antd-mobile';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import * as WeChat from 'react-native-wechat';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
+import Base64 from 'utils/base64';
+import DeviceInfo from 'react-native-device-info';
 
 import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import Modal from 'component/modal';
+import shareModal from 'component/shareModal';
 import Config from 'runtime/index';
+import ActionAlert from 'component/action_alert';
 
 // Partials
 import Description from './page/description';
@@ -45,7 +50,7 @@ import styles from './style';
   };
 })
 @compose(
-  withState('showShareModal', 'toggleShareModal', false),
+  withState('showInviteModal', 'toggleInviteModal', false),
   withState('currentScrollY', 'setCurrentScrollY', 0),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('explanationVisible', 'setExplanationVisible', false),
@@ -55,7 +60,12 @@ import styles from './style';
     const symbols = R.pathOr([], ['symbols'])(portfolio);
     const trends = R.pathOr([], ['news', 'data'])(portfolio);
     const overall_rating = R.pathOr({}, ['overall_rating'])(portfolio);
+    const chat_member = R.pipe(
+      R.pathOr([], ['members']),
+      R.find(m => !R.isNil(m.user_id)),
+    )(portfolio);
     return {
+      chat_member,
       navBarOpacityRange: animateY.interpolate({
         inputRange: [0, 160],
         outputRange: [0, 1],
@@ -110,15 +120,10 @@ import styles from './style';
     R.path([0])(selectionList),
   ),
 )
-@connectActionSheet
+@shareModal
 export default class PublicProjectDetail extends Component {
-  state = {
-    isWXAppSupportApi: false,
-  };
-
   componentWillMount() {
     this.loadDetail();
-    this.checkWechatAval();
     this.markView();
   }
 
@@ -133,8 +138,8 @@ export default class PublicProjectDetail extends Component {
     });
   }
 
-  onPressClaimCoin = () => {
-    this.props.track('点击认领按钮');
+  onPressClaimCoin = member => {
+    this.props.track('点击入驻按钮');
     if (!this.props.logged_in) {
       this.props.dispatch(
         NavigationActions.navigate({
@@ -143,20 +148,25 @@ export default class PublicProjectDetail extends Component {
       );
       return;
     }
+    if (member) {
+      this.props.dispatch({
+        type: 'project_create/resetOwner',
+        payload: {
+          owner_name: R.path(['name'])(member),
+          owner_mobile: R.path(['mobile'])(member),
+          owner_title: R.path(['title'])(member),
+          owner_wechat: R.path(['wechat'])(member),
+        },
+      });
+    }
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ClaimMyProject',
+        routeName: 'ClaimMyProjectWrap',
         params: {
           project_id: this.props.id,
         },
       }),
     );
-  };
-
-  checkWechatAval = async () => {
-    this.setState({
-      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
-    });
   };
 
   markView = () => {
@@ -189,28 +199,6 @@ export default class PublicProjectDetail extends Component {
       type: is_focused ? 'public_project/unfavor' : 'public_project/favor',
       payload: this.props.id,
     });
-  };
-
-  handleInvestmentPress = () => {
-    this.props.track('点击投资记录按钮');
-
-    if (!this.props.logged_in) {
-      this.props.dispatch(
-        NavigationActions.navigate({
-          routeName: 'Login',
-        }),
-      );
-      return;
-    }
-
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'PublicProjectRecord',
-        params: {
-          id: this.props.id,
-        },
-      }),
-    );
   };
 
   handleCommentPress = () => {
@@ -277,31 +265,59 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleShare = () => {
-    this.props.showActionSheetWithOptions(
-      {
-        options: ['分享至朋友圈', '分享至微信', '分享图片', '取消'],
-        cancelButtonIndex: 3,
-      },
-      index => {
-        const id = this.props.id;
+    const id = this.props.id;
 
-        const request = {
-          type: 'news',
+    this.props.openShareModal({
+      types: [
+        {
+          type: 'timeline',
           webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
           title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
           description: '来 Hotnode 找最新最热项目！',
           thumbImage:
             R.path(['portfolio', 'icon'])(this.props) ||
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
-        };
-        if (index === 1 && this.state.isWXAppSupportApi) {
-          WeChat.shareToSession(request);
-        } else if (index === 0 && this.state.isWXAppSupportApi) {
-          WeChat.shareToTimeline(request);
-        } else if (index === 2) {
-          this.props.toggleShareModal(true);
-        }
-      },
+        },
+        {
+          type: 'session',
+          webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
+          title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
+          description: '来 Hotnode 找最新最热项目！',
+          thumbImage:
+            R.path(['portfolio', 'icon'])(this.props) ||
+            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
+        },
+        {
+          type: 'picture',
+        },
+        {
+          type: 'link',
+          url: `${Config.MOBILE_SITE}/coin?id=${id}`,
+        },
+      ],
+    });
+  };
+
+  handleInviteJoinPress = () => {
+    const { id } = this.props;
+    const cryptID = Base64.btoa(`${id}`);
+    const UniqueID = DeviceInfo.getUniqueID().slice(0, 5);
+    Clipboard.setString(
+      `邀请您入驻「${R.path(['portfolio', 'name'])(
+        this.props,
+      )}」，复制整段文字 &*${UniqueID}$${cryptID}*& 到 Hotnode 中打开`,
+    );
+    this.props.toggleInviteModal(true);
+  };
+
+  handleContactPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'IMPage',
+        params: {
+          id: R.path(['user_id'])(this.props.chat_member),
+        },
+      }),
     );
   };
 
@@ -313,6 +329,7 @@ export default class PublicProjectDetail extends Component {
       currentScrollY,
       navBarOpacityRange,
       backgroundOpacityRange,
+      showInviteModal,
     } = this.props;
 
     return (
@@ -374,6 +391,7 @@ export default class PublicProjectDetail extends Component {
             <Current.component
               {...this.props}
               onInstitutionItemPress={this.handleInstitutionItemPress}
+              onClaimPress={this.onPressClaimCoin}
             />
           </View>
         </Animated.ScrollView>
@@ -381,7 +399,7 @@ export default class PublicProjectDetail extends Component {
           style={styles.claim.container}
           onPress={this.onPressClaimCoin}
         >
-          <Image source={require('asset/project/detail/claim.png')} />
+          <Image source={require('asset/project/claim.png')} />
         </Touchable>
         <Bottom
           {...this.props}
@@ -389,11 +407,31 @@ export default class PublicProjectDetail extends Component {
           onFavorPress={this.handleFavorPress}
           onInvestmentPress={this.handleInvestmentPress}
           onPressComment={this.handleCommentPress}
+          onInviteJoinPress={this.handleInviteJoinPress}
+          onConnectPress={this.handleContactPress}
         />
         <Share
-          onClose={() => this.props.toggleShareModal(false)}
+          onClose={() => this.props.toggleSharePictureModal(false)}
           coin={this.props.portfolio}
-          visible={this.props.showShareModal}
+          visible={this.props.showSharePictureModal}
+        />
+        <ActionAlert
+          visible={showInviteModal}
+          title="邀请入驻"
+          content="邀请口令已复制，快去粘贴吧"
+          contentContainerStyle={{ paddingTop: 16, paddingBottom: 18 }}
+          actionTitle="分享至微信"
+          action={async () => {
+            this.props.toggleInviteModal(false);
+            try {
+              // await Linking.canOpenURL('wechat://');
+              // await Linking.openURL('wechat://');
+              WeChat.openWXApp();
+            } catch (e) {
+              console.log(e);
+            }
+          }}
+          onBackdropPress={() => this.props.toggleInviteModal(false)}
         />
         <Modal
           useNativeDriver
@@ -408,7 +446,7 @@ export default class PublicProjectDetail extends Component {
             <View style={styles.explanation.content.container}>
               <Text style={styles.explanation.content.title}>项目得分</Text>
               <Text style={styles.explanation.content.text}>
-                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。若您是项目成员，认领后可进行信息完善
+                主要以该项目信息完整度为考量。内容越丰富得分越高，曝光机会越多。若您是项目成员，入驻后可进行信息完善
               </Text>
             </View>
             <Touchable
@@ -417,7 +455,7 @@ export default class PublicProjectDetail extends Component {
                 this.props.setExplanationVisible(false, this.onPressClaimCoin)
               }
             >
-              <Text style={styles.explanation.bottom.text}>认领并完善</Text>
+              <Text style={styles.explanation.bottom.text}>入驻并完善</Text>
             </Touchable>
           </View>
         </Modal>

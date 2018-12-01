@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import { View, Alert, ScrollView, Text, Clipboard } from 'react-native';
 import { Flex, Toast } from 'antd-mobile';
-import { connectActionSheet } from '@expo/react-native-action-sheet';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import * as WeChat from 'react-native-wechat';
 import Communications from 'react-native-communications';
+import Config from 'runtime/index';
+import shareModal from 'component/shareModal';
 
 import NavBar from 'component/navBar';
 import Item from 'component/self/item';
@@ -22,8 +23,46 @@ import styles from './style';
   isLogin: !!login.token,
   loading: loading.effects['login/switch'],
 }))
-@connectActionSheet
+@shareModal
 class Self extends Component {
+  onPressShare = () => {
+    const request = {
+      webpageUrl:
+        'http://a.app.qq.com/o/simple.jsp?pkgname=com.nodecap.hotnode',
+      title: '推荐「Hotnode」给你',
+      description:
+        '找项目，上 Hotnode！Hotnode 是一款为区块链项目方和服务方提供数据服务的综合性平台。',
+      thumbImage:
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/logo_200x200.png',
+    };
+
+    this.props.openShareModal({
+      types: [{
+        type: 'timeline',
+        ...request,
+      }, {
+        type: 'session',
+        ...request,
+      }],
+      onOpen: () => {
+        this.props.navigation.dispatch(
+          NavigationActions.setParams({
+            params: { tabBarVisible: false },
+            key: 'Self',
+          }),
+        );
+      },
+      onClose: () => {
+        this.props.navigation.dispatch(
+          NavigationActions.setParams({
+            params: { tabBarVisible: true },
+            key: 'Self',
+          }),
+        );
+      },
+    });
+  }
+
   handleSettingsPress = () => {
     this.props.track('设置');
     this.props.dispatch(
@@ -115,37 +154,6 @@ class Self extends Component {
     ]);
   };
 
-  handleShare = () => {
-    this.props.showActionSheetWithOptions(
-      {
-        options: ['分享至朋友圈', '分享至微信', '取消'],
-        cancelButtonIndex: 2,
-      },
-      index => {
-        const request = {
-          type: 'news',
-          webpageUrl:
-            'http://a.app.qq.com/o/simple.jsp?pkgname=com.nodecap.hotnode',
-          title: '推荐「Hotnode」给你',
-          description:
-            '找项目，上 Hotnode！Hotnode 是一款为区块链项目方和服务方提供数据服务的综合性平台。',
-          thumbImage:
-            'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/logo_200x200.png',
-        };
-        switch (index) {
-          case 0:
-            WeChat.shareToTimeline(request);
-            break;
-          case 1:
-            WeChat.shareToSession(request);
-            break;
-          default:
-            break;
-        }
-      },
-    );
-  };
-
   handleWechatPress = () => {
     Clipboard.setString('ladh2857');
     Toast.show('已复制', Toast.SHORT, false);
@@ -205,7 +213,7 @@ class Self extends Component {
             icon={require('asset/mine/share_hotnode.png')}
             title="分享 Hotnode"
             titleStyle={styles.item.title}
-            onPress={this.handleShare}
+            onPress={this.onPressShare}
           />
           <Item
             icon={require('asset/mine/wechat.png')}

@@ -64,6 +64,7 @@ export default class ServiceList extends Component {
           pagination={pagination}
           renderItem={this.renderItem}
           renderSeparator={this.renderSeparator}
+          keyboardDismissMode="on-drag"
         />
       </View>
     );

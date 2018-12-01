@@ -5,8 +5,8 @@ function clear() {
 }
 
 function get(key, defaultValue = null) {
-  return AsyncStorage.getItem(key).then(
-    value => (value !== null ? JSON.parse(value) : defaultValue)
+  return AsyncStorage.getItem(key).then(value =>
+    (value !== null ? JSON.parse(value) : defaultValue),
   );
 }
 
@@ -19,7 +19,7 @@ function remove(key) {
 }
 
 function multiGet(...keys) {
-  return AsyncStorage.multiGet([...keys]).then((stores) => {
+  return AsyncStorage.multiGet([...keys]).then(stores => {
     const data = {};
     stores.forEach((result, i, store) => {
       data[store[i][0]] = JSON.parse(store[i][1]);

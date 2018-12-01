@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, TouchableWithoutFeedback, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
+import { getBottomSpace } from 'react-native-iphone-x-helper';
+
 import HtmlWrapper from '../../../../services/htmlWraper';
 import NavBar from 'component/navBar';
 import Loading from 'component/uikit/loading';
 import WebView from 'component/uikit/webview';
+import shareModal from 'component/shareModal';
+import FavorItem from 'component/favored/notification';
+import ShareNews from '../../announcement/shareAnnouncement';
 import Header from './header';
 import styles from './style';
 
@@ -18,6 +23,7 @@ import styles from './style';
   detail: R.pathOr({}, ['current'])(notification),
   loading: loading.effects['notification/get'],
 }))
+@shareModal
 export default class NotificationDetail extends Component {
   componentWillMount() {
     this.loadDetail();
@@ -51,8 +57,19 @@ export default class NotificationDetail extends Component {
     );
   };
 
+  openShareModal = () => {
+    this.props.openShareModal({
+      types: [
+        {
+          type: 'picture',
+        },
+      ],
+    });
+  };
+
   renderContent = () => {
     const { detail } = this.props;
+    const coin_detail = R.path(['coin_detail'])(detail);
     return (
       <View style={{ flex: 1 }}>
         <Header data={detail} onLinkPress={this.handleLinkPress} />
@@ -60,6 +77,22 @@ export default class NotificationDetail extends Component {
           scalesPageToFit={false}
           source={{ html: HtmlWrapper(detail.content) }}
         />
+        {!!coin_detail && (
+          <View style={{ paddingBottom: getBottomSpace() }}>
+            <View style={{ paddingHorizontal: 12, paddingTop: 12 }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: 'bold',
+                  color: 'rgba(0, 0, 0, 0.85)',
+                }}
+              >
+                相关项目
+              </Text>
+            </View>
+            <FavorItem data={R.pathOr({}, ['coin_detail'])(detail)} />
+          </View>
+        )}
       </View>
     );
   };
@@ -70,8 +103,26 @@ export default class NotificationDetail extends Component {
     const type = R.pathOr('', ['type'])(detail);
     return (
       <View style={styles.container}>
-        <NavBar back gradient title={type} />
+        <NavBar
+          back
+          gradient
+          title={type}
+          renderRight={() => (
+            <TouchableWithoutFeedback onPress={this.openShareModal}>
+              <View>
+                <Text style={{ fontSize: 14, color: '#FFFFFF' }}>分享</Text>
+              </View>
+            </TouchableWithoutFeedback>
+          )}
+        />
         {invalid ? <Loading /> : this.renderContent()}
+        <ShareNews
+          visible={this.props.showSharePictureModal}
+          news={this.props.detail}
+          onClose={() => {
+            this.props.toggleSharePictureModal(false);
+          }}
+        />
       </View>
     );
   }

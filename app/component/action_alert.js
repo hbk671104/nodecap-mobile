@@ -8,9 +8,12 @@ const actionAlert = ({
   visible,
   title,
   content,
+  contentContainerStyle,
+  image,
   actionTitle,
   action,
   onBackdropPress,
+  renderContent,
 }) => (
   <Modal
     useNativeDriver
@@ -18,17 +21,18 @@ const actionAlert = ({
     isVisible={visible}
     style={styles.wrapper}
     onBackdropPress={onBackdropPress}
-    backdropOpacity={0.65}
+    backdropOpacity={0.4}
   >
     <View style={styles.contentWrapper}>
-      <View style={styles.container}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.content}>{content}</Text>
-        <Image
-          style={{ marginTop: 24 }}
-          source={require('asset/allow_notification.png')}
-        />
-      </View>
+      {renderContent ? (
+        renderContent()
+      ) : (
+        <View style={[styles.container, contentContainerStyle]}>
+          <Text style={styles.title}>{title}</Text>
+          {!!content && <Text style={styles.content}>{content}</Text>}
+          {image && <Image style={{ marginTop: 24 }} source={image} />}
+        </View>
+      )}
       <Touchable style={styles.action.container} onPress={action}>
         <Text style={styles.action.text}>{actionTitle}</Text>
       </Touchable>

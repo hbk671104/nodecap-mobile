@@ -18,6 +18,7 @@ export default {
     current: null,
     lastReportCount: null,
     has_read_reports: [],
+    search: null,
   },
   effects: {
     *fetch({ payload }, { call, put }) {
@@ -25,6 +26,18 @@ export default {
         const { data } = yield call(getIndustries, payload);
         yield put({
           type: 'list',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *search({ payload, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getReportsByIndustry, payload);
+
+        yield put({
+          type: 'searchList',
           payload: data,
         });
       } catch (e) {
@@ -147,6 +160,21 @@ export default {
       return {
         ...state,
         has_read_reports: R.uniq(state.has_read_reports.concat([action.id])),
+      };
+    },
+    searchList(state, { payload }) {
+      return {
+        ...state,
+        search: paginate(
+          R.pathOr({}, ['search'])(state),
+          payload,
+        ),
+      };
+    },
+    clearSearch(state, { payload }) {
+      return {
+        ...state,
+        search: null,
       };
     },
   },

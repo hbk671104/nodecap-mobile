@@ -290,6 +290,7 @@ export const convertToFormData = data => {
   const roadmap = R.pathOr([{}], ['basic', 'roadmap'])(data);
   const members = R.pathOr([{}], ['members'])(data);
   const social_network = R.pathOr([{}], ['social_networks'])(data);
+
   return {
     ...data,
     homepages: R.path(['homepage'])(data),
@@ -446,4 +447,12 @@ export const convertToInstitutionFormData = data => {
     ...data,
     served_project,
   };
+};
+
+export const hideRealMobile = (name) => {
+  if (name.match(/[0-9]{11}/)) {
+    return `用户 ${name.substr(7, 11)} `;
+  } else {
+    return name;
+  }
 };

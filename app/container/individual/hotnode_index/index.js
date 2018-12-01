@@ -1,13 +1,14 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
+import { Flex } from 'antd-mobile';
 import R from 'ramda';
 import { NavigationActions } from 'react-navigation';
-
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
 import CategoryItem from 'component/hotnode_index/category_item';
 import Header from 'component/hotnode_index/header';
+import OrderIndex from './otherIndex';
 import styles from './style';
 
 @global.bindTrack({
@@ -15,8 +16,7 @@ import styles from './style';
   name: 'App_HotnodeIndexOperation',
 })
 @connect(({ hotnode_index, loading }) => ({
-  data: R.pathOr([], ['category', 'data'])(hotnode_index),
-  pagination: R.pathOr(null, ['category', 'pagination'])(hotnode_index),
+  data: R.pathOr([], ['category'])(hotnode_index),
   global: R.pathOr({}, ['overall', 'global'])(hotnode_index),
   loading: loading.effects['hotnode_index/fetchCategory'],
 }))
@@ -35,35 +35,16 @@ class HotnodeIndex extends PureComponent {
     });
   };
 
-  handleHeaderPress = () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'HotnodeCoinIndex',
-      }),
-    );
-  };
-
-  handleItemPress = item => () => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'HotnodeCoinIndex',
-        params: {
-          id: item.id,
-        },
-      }),
-    );
-  };
-
   renderItem = ({ item }) => (
-    <CategoryItem data={item} onPress={this.handleItemPress(item)} />
+    <CategoryItem data={item} />
   );
 
   renderHeader = () => (
     <View>
-      <Header {...this.props} onPress={this.handleHeaderPress} />
-      <View style={styles.categoryTitle.container}>
-        <Text style={styles.categoryTitle.text}>领域</Text>
-      </View>
+      <Header {...this.props} />
+      <View style={styles.divider} />
+      <OrderIndex {...this.props} />
+      <View style={styles.divider} />
     </View>
   );
 
@@ -71,17 +52,10 @@ class HotnodeIndex extends PureComponent {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar gradient title="Hotnode 指数" />
-        <List
-          numColumns={2}
-          contentContainerStyle={styles.listContent}
-          action={this.requestData}
-          loading={loading}
-          pagination={pagination}
-          data={data}
-          renderItem={this.renderItem}
-          renderHeader={this.renderHeader}
-        />
+        <NavBar barStyle="dark-content" gradient title="Hotnode 指数" />
+        <ScrollView>
+          {this.renderHeader()}
+        </ScrollView>
       </View>
     );
   }

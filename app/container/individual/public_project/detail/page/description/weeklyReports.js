@@ -44,10 +44,12 @@ class weeklyReports extends Component {
                     this.props.track('点击项目周报查看按钮');
                     this.props.dispatch(
                       NavigationActions.navigate({
-                        routeName: 'WebPage',
+                        routeName: 'ReportPage',
                         params: {
                           title: m.title,
                           uri: m.link,
+                          data: m,
+                          coin: R.pathOr({}, ['portfolio'])(this.props),
                         },
                       }),
                     );

@@ -5,11 +5,11 @@ import PDF from 'react-native-pdf';
 import Orientation from 'react-native-orientation';
 import R from 'ramda';
 import { connectActionSheet } from '@expo/react-native-action-sheet';
-import * as WeChat from 'react-native-wechat';
 import * as Animatable from 'react-native-animatable';
 
 import Touchable from 'component/uikit/touchable';
 import FavorItem from 'component/favored/item';
+import shareModal from 'component/shareModal';
 import Config from 'runtime/index';
 import { getInstitutionReportByID } from '../../../../../services/api';
 import NavBar from 'component/navBar';
@@ -33,18 +33,13 @@ import styles, { translateY } from './style';
     };
   }),
 )
+@shareModal
 export default class InstitutionReportDetail extends Component {
-  state = {
-    isWXAppSupportApi: false,
-  };
-
   componentWillMount() {
     this.loadCoins();
   }
 
   componentDidMount() {
-    this.checkWechatAval();
-
     Orientation.unlockAllOrientations();
     Orientation.addOrientationListener(this.orientationDidChange);
   }
@@ -55,44 +50,34 @@ export default class InstitutionReportDetail extends Component {
   }
 
   onPressShare = () => {
-    const { navigation, reportDetail } = this.props;
-    this.props.showActionSheetWithOptions(
-      {
-        options: ['分享至朋友圈', '分享至微信', '取消'],
-        cancelButtonIndex: 2,
-      },
-      index => {
-        const id = navigation.getParam('id');
-        if (!this.state.isWXAppSupportApi) {
-          return;
-        }
-        if (index !== 2) {
-          const request = {
-            type: 'news',
-            webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${id}`,
-            title: `「研报」${reportDetail.title}`,
-            description: '来 Hotnode, 发现最新最热研报！',
-            thumbImage:
-              'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
-          };
-          if (index === 1) {
-            WeChat.shareToSession(request);
-          } else if (index === 0) {
-            WeChat.shareToTimeline(request);
-          }
-        }
-      },
-    );
+    const { reportDetail } = this.props;
+    const request = {
+      webpageUrl: `${Config.MOBILE_SITE}/industry-report?id=${this.props.id}`,
+      title: `「研报」${reportDetail.title}`,
+      description: '来 Hotnode, 发现最新最热研报！',
+      thumbImage:
+        'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/pdf.png',
+    };
+    this.props.openShareModal({
+      types: [
+        {
+          type: 'timeline',
+          ...request,
+        },
+        {
+          type: 'session',
+          ...request,
+        },
+        {
+          type: 'link',
+          url: `${Config.MOBILE_SITE}/industry-report?id=${this.props.id}`,
+        },
+      ],
+    });
   };
 
   orientationDidChange = orientation => {
     this.props.setNavBarHidden(orientation === 'LANDSCAPE');
-  };
-
-  checkWechatAval = async () => {
-    this.setState({
-      isWXAppSupportApi: await WeChat.isWXAppSupportApi(),
-    });
   };
 
   loadCoins = async () => {
@@ -144,9 +129,7 @@ export default class InstitutionReportDetail extends Component {
         style={styles.recommended.container}
       >
         <View style={styles.recommended.header.container}>
-          <Text style={styles.recommended.header.title}>
-            为您推荐 {R.length(coins)} 个相关项目
-          </Text>
+          <Text style={styles.recommended.header.title}>相关项目</Text>
           <Touchable borderless onPress={this.toggleCollapsed}>
             <Text style={styles.recommended.header.action}>
               {footerCollapsed ? '点击查看' : '点击收起'}

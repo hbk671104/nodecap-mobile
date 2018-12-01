@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import R from 'ramda';
-
+import { hideRealMobile } from '../../../utils/utils';
 import Avatar from 'component/uikit/avatar';
 import Shimmer from 'component/shimmer';
 
@@ -14,7 +14,7 @@ const header = ({ style, data, loading, onLinkPress }) => {
     <View style={[styles.container, style]}>
       <View style={styles.content.wrapper}>
         <View style={styles.content.container}>
-          <Text style={styles.content.title}>{name}</Text>
+          <Text style={styles.content.title}>{hideRealMobile(name)}</Text>
           <Text
             style={styles.content.subtitle}
           >
