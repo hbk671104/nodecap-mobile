@@ -53,10 +53,6 @@ import styles from './style';
     )(owner),
 })
 class ClaimProject extends Component {
-  state = {
-    barStyle: 'light-content',
-  };
-
   componentDidMount() {
     this.props.track('进入');
   }
@@ -75,14 +71,10 @@ class ClaimProject extends Component {
   };
 
   handleBusinessCardPress = () => {
-    this.setState({ barStyle: 'dark-content' }, () => {
-      launchImagePicker(response => {
-        this.setState({ barStyle: 'light-content' }, () => {
-          if (!response.didCancel && !response.error) {
-            this.handleUpload(response);
-          }
-        });
-      });
+    launchImagePicker(response => {
+      if (!response.didCancel && !response.error) {
+        this.handleUpload(response);
+      }
     });
   };
 
@@ -126,9 +118,8 @@ class ClaimProject extends Component {
     return (
       <View style={styles.container}>
         <NavBar
-          barStyle={this.state.barStyle}
+          barStyle="dark-content"
           back
-          gradient
           title="入驻项目"
           renderRight={() => {
             if (this.props.submitting) {
@@ -168,7 +159,7 @@ class ClaimProject extends Component {
               error={getFieldError('owner_title')}
             />,
           )}
-          {getFieldDecorator('owner_mobile')(
+          {/* {getFieldDecorator('owner_mobile')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -180,7 +171,7 @@ class ClaimProject extends Component {
               }}
               error={getFieldError('owner_mobile')}
             />,
-          )}
+          )} */}
           {getFieldDecorator('owner_wechat')(
             <InputItem
               style={styles.inputItem.container}

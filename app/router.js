@@ -140,6 +140,7 @@ import CreateMyInstitutionSingleMember from 'container/individual/self/my_instit
 import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
+import ClaimMyInstitutionAvatarUpload from 'container/individual/self/my_institution/claim/avatar_upload';
 import ClaimMyInstitutionWrap from 'container/individual/self/my_institution/claim/wrap';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
@@ -416,6 +417,7 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectRoadMap,
     CreateMyProjectFunding,
     ClaimMyProject,
+    // ClaimMyProjectAvatarUpload,
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,
@@ -430,6 +432,7 @@ const IndividualStack = createStackNavigator(
     CreateMyInstitutionServedProject,
     ClaimMyInstitutionSearch,
     ClaimMyInstitution,
+    ClaimMyInstitutionAvatarUpload,
     CreateMyInstitutionDone,
     InviteComment,
     Favored,

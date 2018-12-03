@@ -5,7 +5,7 @@ export default {
   },
   navBar: {
     right: {
-      color: 'white',
+      color: 'rgba(0, 0, 0, 0.85)',
       fontSize: 14,
     },
   },
@@ -16,7 +16,7 @@ export default {
   },
   inputItem: {
     container: {
-      paddingVertical: 20,
+      paddingVertical: 18,
     },
     title: {
       color: 'rgba(0, 0, 0, 0.65)',
@@ -27,12 +27,13 @@ export default {
   },
   notice: {
     container: {
-      marginTop: 15,
+      marginTop: 60,
       paddingHorizontal: 12,
     },
     text: {
       color: 'rgba(0, 0, 0, 0.65)',
-      fontSize: 12,
+      fontSize: 11,
+      marginLeft: 4,
     },
   },
 };
