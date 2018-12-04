@@ -331,7 +331,6 @@ export default class PublicProjectDetail extends Component {
       backgroundOpacityRange,
       showInviteModal,
     } = this.props;
-
     return (
       <View style={styles.container}>
         <Animated.View
@@ -348,6 +347,13 @@ export default class PublicProjectDetail extends Component {
             barStyle={currentScrollY > 80 ? 'dark-content' : 'light-content'}
             style={styles.navBar.container}
             title={R.path(['name'])(portfolio)}
+            renderRight={
+              () => (
+                <Touchable borderless onPress={this.handleShare}>
+                  <Text style={styles.navBar.right}>分享</Text>
+                </Touchable>
+              )
+            }
           />
         </Animated.View>
         <Animated.ScrollView
@@ -378,6 +384,7 @@ export default class PublicProjectDetail extends Component {
             {...this.props}
             onInvitedPress={() => this.handleInvitedPress(portfolio)}
             onExplanationPress={() => this.props.setExplanationVisible(true)}
+            onSharePress={this.handleShare}
           />
           <Fund {...this.props} />
           <Chart {...this.props} />

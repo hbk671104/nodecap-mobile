@@ -25,42 +25,9 @@ export const institutionReviewed = ({ visible, onExitPress, onSharePress }) => (
         )}
       />
       <View style={{ alignItems: 'center' }}>
-        <Flex style={{ marginTop: 80 - navBarHeight }} direction="column">
-          <Image source={require('asset/reviewed/review_passed.png')} />
-          <Text style={styles.title}>恭喜审核通过</Text>
+        <Flex style={{ marginTop: 46.5 - navBarHeight }} direction="column">
+          <Image style={{ width: 316, height: 448, resizeMode: 'contain' }} source={require('asset/reviewed/org_approved.jpg')} />
         </Flex>
-        <Flex style={{ marginTop: 87 }}>
-          <View style={styles.divider} />
-          <Text style={styles.share.text}>立即分享可有机会获得以下权益</Text>
-          <View style={styles.divider} />
-        </Flex>
-        <View>
-          <Flex style={[styles.item.container, { marginTop: 32.5 }]}>
-            <Image source={require('asset/reviewed/01.png')} />
-            <Text
-              style={[
-                styles.item.text,
-                { fontSize: 16, fontWeight: 'bold', color: '#FF9500' },
-              ]}
-            >
-              稀缺置顶资源位
-            </Text>
-            <Image
-              style={{ marginLeft: 12 }}
-              source={require('asset/reviewed/UP.png')}
-            />
-          </Flex>
-          <Flex style={styles.item.container}>
-            <Image source={require('asset/reviewed/02.png')} />
-            <Text style={styles.item.text}>更多项目方曝光</Text>
-          </Flex>
-          <Flex style={styles.item.container}>
-            <Image source={require('asset/reviewed/04.png')} />
-            <Text style={styles.item.text}>
-              {'与50+交易所，100+投资机构，\n研究机构等合作共赢'}
-            </Text>
-          </Flex>
-        </View>
       </View>
       <Touchable style={styles.button.container} onPress={onSharePress}>
         <Text style={styles.button.title}>分享我的机构</Text>
@@ -88,44 +55,9 @@ const reviewed = ({ visible, onExitPress, onSharePress }) => (
         )}
       />
       <View style={{ alignItems: 'center' }}>
-        <Flex style={{ marginTop: 80 - navBarHeight }} direction="column">
-          <Image source={require('asset/reviewed/review_passed.png')} />
-          <Text style={styles.title}>恭喜审核通过</Text>
+        <Flex style={{ marginTop: 46.5 - navBarHeight }} direction="column">
+          <Image style={{ width: 315, height: 465, resizeMode: 'contain' }} source={require('asset/reviewed/project_approved.jpg')} />
         </Flex>
-        <Flex style={{ marginTop: 87 }}>
-          <View style={styles.divider} />
-          <Text style={styles.share.text}>立即分享可有机会获得以下权益</Text>
-          <View style={styles.divider} />
-        </Flex>
-        <View>
-          <Flex style={[styles.item.container, { marginTop: 32.5 }]}>
-            <Image source={require('asset/reviewed/01.png')} />
-            <Text
-              style={[
-                styles.item.text,
-                { fontSize: 16, fontWeight: 'bold', color: '#FF9500' },
-              ]}
-            >
-              稀缺置顶资源位
-            </Text>
-            <Image
-              style={{ marginLeft: 12 }}
-              source={require('asset/reviewed/UP.png')}
-            />
-          </Flex>
-          <Flex style={styles.item.container}>
-            <Image source={require('asset/reviewed/02.png')} />
-            <Text style={styles.item.text}>更多项目方曝光</Text>
-          </Flex>
-          <Flex style={styles.item.container}>
-            <Image source={require('asset/reviewed/03.png')} />
-            <Text style={styles.item.text}>优质公关、评级、律所服务资源包</Text>
-          </Flex>
-          <Flex style={styles.item.container}>
-            <Image source={require('asset/reviewed/04.png')} />
-            <Text style={styles.item.text}>投资机构、FA对接</Text>
-          </Flex>
-        </View>
       </View>
       <Touchable style={styles.button.container} onPress={onSharePress}>
         <Text style={styles.button.title}>分享我的项目</Text>

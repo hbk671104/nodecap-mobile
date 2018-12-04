@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
+import Touchable from 'component/uikit/touchable';
 import MiscTag from 'component/public_project/misc_tag';
 import Tag from 'component/public_project/tag';
 import Label from 'component/public_project/label';
@@ -23,6 +24,7 @@ const header = ({
   can_calculate,
   onInvitedPress,
   onExplanationPress,
+  onSharePress,
 }) => {
   const name = R.pathOr('--', ['name'])(data);
   const token = R.pipe(
@@ -34,7 +36,18 @@ const header = ({
 
   return (
     <View>
-      <NavBar back disableStatusBar iconStyle={{ color: 'white' }} />
+      <NavBar
+        back
+        disableStatusBar
+        iconStyle={{ color: 'white' }}
+        renderRight={
+          () => (
+            <Touchable borderless onPress={onSharePress}>
+              <Text style={styles.navBar.right}>分享</Text>
+            </Touchable>
+          )
+        }
+      />
       <View style={[styles.container, style]}>
         <View style={styles.top.container}>
           <View style={{ flex: 1 }}>
@@ -95,6 +108,20 @@ const styles = {
   divider: {
     backgroundColor: '#F5F5F5',
     height: 8,
+  },
+  navBar: {
+    container: {
+      backgroundColor: 'transparent',
+    },
+    title: {
+      color: 'white',
+      fontSize: 17,
+      fontWeight: 'bold',
+    },
+    right: {
+      fontSize: 14,
+      color: 'white',
+    },
   },
 };
 
