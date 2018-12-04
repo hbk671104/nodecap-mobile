@@ -105,11 +105,20 @@ export default {
         console.log(error);
       }
     },
-    *claimInstitution({ callback, id }, { select, call, put }) {
+    *claimInstitution({ avatarURL, callback, id }, { select, call, put }) {
       try {
         const owner = yield select(state =>
           R.path(['institution_create', 'owner'])(state),
         );
+
+        if (avatarURL) {
+          yield put({
+            type: 'user/updateCurrentUser',
+            payload: {
+              avatar_url: avatarURL,
+            },
+          });
+        }
 
         const { status } = yield call(Individual.claimMyInstitution, {
           id,
@@ -127,7 +136,7 @@ export default {
         console.log(error);
       }
     },
-    *submitInstitution({ callback }, { select, put }) {
+    *submitInstitution({ avatarURL, callback }, { select, put }) {
       try {
         const owner = yield select(state =>
           R.path(['institution_create', 'owner'])(state),
@@ -157,6 +166,7 @@ export default {
               ...current,
               owner,
             }),
+            avatarURL,
             callback,
           });
         }
@@ -164,8 +174,17 @@ export default {
         console.log(error);
       }
     },
-    *createInstitution({ payload, callback }, { put, call, all }) {
+    *createInstitution({ avatarURL, payload, callback }, { put, call, all }) {
       try {
+        if (avatarURL) {
+          yield put({
+            type: 'user/updateCurrentUser',
+            payload: {
+              avatar_url: avatarURL,
+            },
+          });
+        }
+
         const { status } = yield call(Individual.createInstitution, payload);
 
         yield all([

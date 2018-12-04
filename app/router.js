@@ -128,6 +128,7 @@ import CreateMyProjectSocial from 'container/individual/self/my_project/create/n
 import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/normal/steps/roadmap';
 import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
+import ClaimMyProjectAvatarUpload from 'container/individual/self/my_project/create/claim/avatar_upload';
 import ClaimMyProjectWrap from 'container/individual/self/my_project/create/claim/wrap';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
 import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
@@ -417,7 +418,7 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectRoadMap,
     CreateMyProjectFunding,
     ClaimMyProject,
-    // ClaimMyProjectAvatarUpload,
+    ClaimMyProjectAvatarUpload,
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,

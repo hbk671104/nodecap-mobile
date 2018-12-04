@@ -18,8 +18,8 @@ import { uploadImage } from 'services/upload';
 import styles from './style';
 
 @global.bindTrack({
-  page: '创建我的机构头像上传',
-  name: 'App_MyInstitutionClaimAvatarUploadOperation',
+  page: '创建我的项目头像上传',
+  name: 'App_MyProjectClaimAvatarUploadOperation',
 })
 @connect(({ loading }, props) => {
   const id = props.navigation.getParam('id');
@@ -28,8 +28,8 @@ import styles from './style';
     id,
     values,
     submitting:
-      loading.effects['institution_create/claimInstitution'] ||
-      loading.effects['institution_create/submitInstitution'],
+      loading.effects['project_create/claimProject'] ||
+      loading.effects['project_create/submitProject'],
   };
 })
 @compose(withState('avatarURL', 'setAvatarURL', null))
@@ -59,18 +59,17 @@ class AvatarUpload extends PureComponent {
 
   handleSubmit = () => {
     const { values, avatarURL } = this.props;
-    // institution claim saga check
     this.props.dispatch({
       type: this.props.id
-        ? 'institution_create/claimInstitution'
-        : 'institution_create/submitInstitution',
+        ? 'project_create/claimProject'
+        : 'project_create/submitProject',
       id: this.props.id,
       avatarURL,
       callback: success => {
         if (success) {
           this.props.dispatch(
             NavigationActions.navigate({
-              routeName: 'CreateMyInstitutionDone',
+              routeName: 'CreateMyProjectDone',
               params: {
                 id: this.props.id,
               },
@@ -80,7 +79,7 @@ class AvatarUpload extends PureComponent {
         request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
           content: `${values.owner_name} 入驻了 ID 为 ${
             this.props.id
-          } 的机构，请快去审核`,
+          } 的项目，请快去审核`,
           mobile: `${values.owner_mobile}`,
         });
       },

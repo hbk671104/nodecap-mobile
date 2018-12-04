@@ -89,11 +89,24 @@ export default {
         console.log(error);
       }
     },
-    *claimProject({ id, payload, callback }, { put, call }) {
+    *claimProject({ avatarURL, id, callback }, { select, put, call }) {
       try {
+        const owner = yield select(state =>
+          R.path(['project_create', 'owner'])(state),
+        );
+
+        if (avatarURL) {
+          yield put({
+            type: 'user/updateCurrentUser',
+            payload: {
+              avatar_url: avatarURL,
+            },
+          });
+        }
+
         const { status } = yield call(Individual.claimMyProject, {
           id,
-          payload,
+          payload: owner,
         });
 
         yield put({
@@ -107,7 +120,7 @@ export default {
         console.log(error);
       }
     },
-    *submitProject({ callback }, { select, put }) {
+    *submitProject({ avatarURL, callback }, { select, put }) {
       try {
         const owner = yield select(state =>
           R.path(['project_create', 'owner'])(state),
@@ -137,6 +150,7 @@ export default {
               ...current,
               owner,
             }),
+            avatarURL,
             callback,
           });
         }
@@ -144,8 +158,17 @@ export default {
         console.log(error);
       }
     },
-    *createProject({ payload, callback }, { put, call, all }) {
+    *createProject({ avatarURL, payload, callback }, { put, call, all }) {
       try {
+        if (avatarURL) {
+          yield put({
+            type: 'user/updateCurrentUser',
+            payload: {
+              avatar_url: avatarURL,
+            },
+          });
+        }
+
         const { status } = yield call(Individual.createMyProject, payload);
 
         yield all([

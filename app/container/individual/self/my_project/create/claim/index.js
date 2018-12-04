@@ -4,9 +4,7 @@ import { createForm, createFormField } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
-import { Toast } from 'antd-mobile';
-import request from 'utils/request';
-import runtimeConfig from 'runtime/index';
+import { Toast, Flex } from 'antd-mobile';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
@@ -21,14 +19,11 @@ import styles from './style';
   page: '入驻我的项目认证',
   name: 'App_MyProjectClaimOperation',
 })
-@connect(({ project_create, loading }, props) => {
+@connect(({ project_create }, props) => {
   const id = props.navigation.getParam('project_id');
   return {
     id,
     owner: R.pathOr({}, ['owner'])(project_create),
-    submitting:
-      loading.effects['project_create/claimProject'] ||
-      loading.effects['project_create/submitProject'],
   };
 })
 @createForm({
@@ -79,37 +74,18 @@ class ClaimProject extends Component {
   };
 
   handleSavePress = () => {
-    this.props.form.validateFields((err, value) => {
+    this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.handleSubmit(value);
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'ClaimMyProjectAvatarUpload',
+            params: {
+              id: this.props.id,
+              values,
+            },
+          }),
+        );
       }
-    });
-  };
-
-  handleSubmit = value => {
-    const { id } = this.props;
-    this.props.dispatch({
-      type: id ? 'project_create/claimProject' : 'project_create/submitProject',
-      id,
-      payload: value,
-      callback: success => {
-        if (success) {
-          this.props.dispatch(
-            NavigationActions.navigate({
-              routeName: 'CreateMyProjectDone',
-              params: {
-                id,
-              },
-            }),
-          );
-        }
-        request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
-          content: `${value.owner_name} 入驻了 ID 为 ${
-            this.props.id
-          } 的项目，请快去审核`,
-          mobile: `${value.owner_mobile}`,
-        });
-      },
     });
   };
 
@@ -120,14 +96,15 @@ class ClaimProject extends Component {
         <NavBar
           barStyle="dark-content"
           back
-          title="入驻项目"
+          title="身份认证"
+          wrapperStyle={styles.navBar.wrapper}
           renderRight={() => {
             if (this.props.submitting) {
               return <ActivityIndicator color="white" />;
             }
             return (
               <Touchable borderless onPress={this.handleSavePress}>
-                <Text style={styles.navBar.right}>提交</Text>
+                <Text style={styles.navBar.right}>下一步</Text>
               </Touchable>
             );
           }}
@@ -208,11 +185,12 @@ class ClaimProject extends Component {
               error={getFieldError('owner_card')}
             />,
           )}
-          <View style={styles.notice.container}>
+          <Flex style={styles.notice.container} justify="center">
+            <Image source={require('asset/alert_icon.png')} />
             <Text style={styles.notice.text}>
-              以上信息均用作审核使用，平台保证您的信息安全
+              平台严格保证入驻项目及机构质量，以上信息便于平台帮您把关
             </Text>
-          </View>
+          </Flex>
         </EnhancedScroll>
       </View>
     );

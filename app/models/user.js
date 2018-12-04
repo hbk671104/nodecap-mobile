@@ -140,6 +140,21 @@ export default {
         console.log(e);
       }
     },
+    *updateCurrentUser({ payload, callback }, { call, put }) {
+      try {
+        yield call(updateUserProfile, {
+          ...payload,
+        });
+        yield put({
+          type: 'fetchCurrent',
+        });
+        if (callback) {
+          callback();
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
     /**
      * 修改用户库中的用户信息
      * @param payload

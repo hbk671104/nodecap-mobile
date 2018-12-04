@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast, Flex } from 'antd-mobile';
+
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
@@ -18,14 +19,11 @@ import styles from './style';
   page: '创建我的机构认证',
   name: 'App_MyInstitutionClaimOperation',
 })
-@connect(({ institution_create, loading }, props) => {
+@connect(({ institution_create }, props) => {
   const id = props.navigation.getParam('id');
   return {
     id,
     owner: R.pathOr({}, ['owner'])(institution_create),
-    submitting:
-      loading.effects['institution_create/claimInstitution'] ||
-      loading.effects['institution_create/submitInstitution'],
   };
 })
 @createForm({
@@ -82,6 +80,7 @@ class ClaimInstitution extends Component {
           NavigationActions.navigate({
             routeName: 'ClaimMyInstitutionAvatarUpload',
             params: {
+              id: this.props.id,
               values,
             },
           }),

@@ -1,3 +1,5 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {
     flex: 1,
@@ -7,6 +9,10 @@ export default {
     right: {
       color: 'rgba(0, 0, 0, 0.85)',
       fontSize: 14,
+    },
+    wrapper: {
+      borderBottomWidth: StyleSheet.hairlineWidth,
+      borderBottomColor: '#E9E9E9',
     },
   },
   image: {
