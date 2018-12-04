@@ -37,13 +37,16 @@ class Self extends Component {
     };
 
     this.props.openShareModal({
-      types: [{
-        type: 'timeline',
-        ...request,
-      }, {
-        type: 'session',
-        ...request,
-      }],
+      types: [
+        {
+          type: 'timeline',
+          ...request,
+        },
+        {
+          type: 'session',
+          ...request,
+        },
+      ],
       onOpen: () => {
         this.props.navigation.dispatch(
           NavigationActions.setParams({
@@ -61,7 +64,7 @@ class Self extends Component {
         );
       },
     });
-  }
+  };
 
   handleSettingsPress = () => {
     this.props.track('设置');
@@ -120,38 +123,6 @@ class Self extends Component {
         routeName: this.props.isLogin ? 'Favored' : 'Login',
       }),
     );
-  };
-
-  handleSwitchEndPress = () => {
-    if (
-      R.pipe(
-        R.pathOr({}, ['user', 'companies']),
-        R.isEmpty,
-      )(this.props)
-    ) {
-      Alert.alert('您尚未加入任何机构', '入驻请联系 18500193244', [
-        {
-          text: '拨打',
-          onPress: () => Communications.phonecall('185-0019-3244', false),
-        },
-        {
-          text: '取消',
-          style: 'cancel',
-        },
-      ]);
-      return;
-    }
-
-    Alert.alert('提示', '是否切换至「机构版」？', [
-      {
-        text: '切换',
-        onPress: () => this.props.dispatch({ type: 'login/switch' }),
-      },
-      {
-        text: '取消',
-        style: 'cancel',
-      },
-    ]);
   };
 
   handleWechatPress = () => {
@@ -223,7 +194,7 @@ class Self extends Component {
             onPress={this.handleWechatPress}
           />
           <View style={styles.scroll.divider} />
-          {isLogin && (
+          {/* {isLogin && (
             <Item
               loading={loading}
               icon={require('asset/mine/switch_end.png')}
@@ -231,7 +202,7 @@ class Self extends Component {
               titleStyle={styles.item.title}
               onPress={this.handleSwitchEndPress}
             />
-          )}
+          )} */}
           <Item
             icon={require('asset/mine/settings.png')}
             title="设置"
