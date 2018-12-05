@@ -38,4 +38,5 @@ export default {
     top: 0,
     right: 0,
   },
+  borderRadius: 1,
 };

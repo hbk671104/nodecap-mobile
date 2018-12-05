@@ -68,7 +68,7 @@ export function trendList(payload = {}) {
     page: p.currentPage,
     'per-page': p.pageSize,
   });
-  return request.get('/news', {
+  return request.get('/host-join-announcements', {
     params: paramsTransform(payload),
   });
 }

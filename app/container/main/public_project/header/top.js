@@ -184,20 +184,9 @@ const top = ({
           <TouchableWithoutFeedback
             key={n.id}
             onPress={() => {
-              if (n.original_link) {
-                if (Platform.OS !== 'ios') {
-                  RouterEmitter.emit('android_url', { url: n.original_link });
-                  return;
-                }
-                Linking.openURL(n.original_link);
-                return;
-              }
               dispatch(
                 NavigationActions.navigate({
-                  routeName: 'NotificationDetail',
-                  params: {
-                    id: n.id,
-                  },
+                  routeName: 'HostJoinList',
                 }),
               );
             }}
