@@ -13,7 +13,7 @@ export default {
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#E9E9E9',
-    marginLeft: 12,
+    marginLeft: 82,
   },
   tabBar: {
     container: {

@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import R from 'ramda';
+import { Flex } from 'antd-mobile';
 
 import Avatar from 'component/uikit/avatar';
 import Shimmer from 'component/shimmer';
@@ -9,6 +10,9 @@ const header = ({ style, data, loading, onLinkPress }) => {
   const name = R.pathOr('--', ['name'])(data);
   const site_url = R.pathOr('', ['site_url'])(data);
   const logo = R.pathOr('', ['logo_url'])(data);
+  const is_vip = R.path(['is_vip'])(data);
+  const is_owned = R.path(['is_owned'])(data);
+  const is_reachable = R.path(['is_reachable'])(data);
 
   return (
     <View style={[styles.container, style]}>
@@ -17,6 +21,25 @@ const header = ({ style, data, loading, onLinkPress }) => {
           <Shimmer animating={loading}>
             <Text style={styles.content.title}>{name}</Text>
           </Shimmer>
+          <Flex style={{ marginTop: 8 }}>
+            {!!is_vip && (
+              <Image
+                source={require('asset/institution/institution_vip_detail.png')}
+              />
+            )}
+            {!!is_owned && (
+              <Image
+                style={{ marginLeft: 5 }}
+                source={require('asset/institution/is_owned_detail.png')}
+              />
+            )}
+            {!!is_reachable && (
+              <Image
+                style={{ marginLeft: 4 }}
+                source={require('asset/institution/reachable.png')}
+              />
+            )}
+          </Flex>
           {!R.isEmpty(site_url) && (
             <Text
               style={styles.content.subtitle}
@@ -27,7 +50,13 @@ const header = ({ style, data, loading, onLinkPress }) => {
             </Text>
           )}
         </View>
-        <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
+        <Avatar
+          style={styles.avatar}
+          size={54}
+          source={{ uri: logo }}
+          innerRatio={0.9}
+          raised={false}
+        />
       </View>
     </View>
   );
@@ -35,13 +64,17 @@ const header = ({ style, data, loading, onLinkPress }) => {
 
 const styles = {
   container: {
-    height: 64,
+    // height: 64,
     paddingHorizontal: 12,
+    paddingBottom: 12,
+  },
+  avatar: {
+    borderRadius: 1,
   },
   content: {
     wrapper: {
       flexDirection: 'row',
-      alignItems: 'center',
+      // alignItems: 'center',
     },
     container: {
       flex: 1,
