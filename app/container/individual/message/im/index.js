@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState, withProps } from 'recompose';
@@ -9,6 +9,7 @@ import moment from 'moment';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
+import Touchable from 'component/uikit/touchable';
 import SafeArea from 'component/uikit/safeArea';
 import { formatMessage } from 'utils/nim';
 import { RouterEmitter, getCurrentScreen } from '../../../../router';
@@ -195,8 +196,9 @@ class IMPage extends PureComponent {
 
   renderNavBar = () => (
     <NavBar
-      gradient
+      barStyle="dark-content"
       back
+      wrapperStyle={styles.navBar.wrapper}
       renderTitle={() => {
         if (this.props.loading) {
           return <ActivityIndicator color="white" />;
@@ -231,6 +233,23 @@ class IMPage extends PureComponent {
           </View>
         );
       }}
+      renderBottom={() => (
+        <View style={styles.navBar.bottom.container}>
+          <Touchable style={{ flex: 1, justifyContent: 'center' }}>
+            <Flex style={styles.navBar.bottom.group.container}>
+              <Image source={require('asset/im/mobile_im.png')} />
+              <Text style={styles.navBar.bottom.group.title}>要手机</Text>
+            </Flex>
+          </Touchable>
+          <View style={styles.navBar.bottom.divider} />
+          <Touchable style={{ flex: 1, justifyContent: 'center' }}>
+            <Flex style={styles.navBar.bottom.group.container}>
+              <Image source={require('asset/im/wechat_im.png')} />
+              <Text style={styles.navBar.bottom.group.title}>要微信号</Text>
+            </Flex>
+          </Touchable>
+        </View>
+      )}
     />
   );
 
