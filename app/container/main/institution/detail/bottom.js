@@ -14,6 +14,8 @@ const bottom = ({
   portfolio,
   openShareModal,
   onPressComment,
+  onConnectPress,
+  chat_member,
 }) => {
   const favored = R.pathOr(false, ['is_focused'])(portfolio);
   return (
@@ -47,6 +49,18 @@ const bottom = ({
             <Text style={styles.group.title}>邀请入驻</Text>
           </View>
         </Touchable>
+        {!!chat_member && (
+          <Touchable
+            style={styles.group.wrapper}
+            borderless
+            onPress={onConnectPress}
+          >
+            <View style={styles.group.container}>
+              <Image source={require('asset/project/detail/connect.png')} />
+              <Text style={styles.group.title}>联系</Text>
+            </View>
+          </Touchable>
+        )}
       </View>
     </View>
   );
