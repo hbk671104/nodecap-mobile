@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import R from 'ramda';
 
 import NavBar from 'component/navBar';
@@ -43,7 +43,7 @@ const header = ({
         renderRight={
           () => (
             <Touchable borderless onPress={onSharePress}>
-              <Text style={styles.navBar.right}>分享</Text>
+              <Image style={{ width: 18, height: 18 }} source={require('asset/icon_share.png')} />
             </Touchable>
           )
         }

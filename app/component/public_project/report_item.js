@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View, Image, Text } from 'react-native';
+import { Flex } from 'antd-mobile';
 import moment from 'moment';
 import R from 'ramda';
 
@@ -9,22 +10,26 @@ import Touchable from 'component/uikit/touchable';
 const reportItem = ({ style, data, onPress, isRead }) => {
   const title = R.pathOr('--', ['title'])(data);
   const date = R.pathOr('--', ['published_at'])(data);
+  const views = R.pathOr('0', ['views'])(data);
   const institution = R.pathOr('--', ['industry', 'name'])(data);
   const institution_url = R.pathOr('--', ['industry', 'logo_url'])(data);
   return (
     <Touchable onPress={() => onPress(data)}>
       <View style={[styles.container, style]}>
-        <View style={{ flex: 1 }}>
+        <Flex justify="between" align="start">
           <Text style={[styles.title, isRead ? styles.isReadTitle : {}]}>{title}</Text>
-        </View>
+          <Text style={styles.date}>
+            {moment(date).format('MM-DD')}
+          </Text>
+        </Flex>
         <View style={styles.content.container}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <Image style={styles.icon} source={{ uri: institution_url }} />
             <Text style={styles.content.text}>{institution}</Text>
           </View>
-          <Text style={styles.content.text}>
-            {moment(date).format('MM-DD')}
-          </Text>
+          <View>
+            <Text style={styles.content.text}>{views} 阅读</Text>
+          </View>
         </View>
       </View>
     </Touchable>
@@ -40,9 +45,17 @@ const styles = {
     lineHeight: 20,
     color: 'rgba(0, 0, 0, 0.85)',
     fontWeight: 'bold',
+    flexShrink: 1,
   },
   isReadTitle: {
     color: 'rgba(0, 0, 0, 0.45)',
+  },
+  date: {
+    width: 37,
+    fontSize: 12,
+    color: 'rgba(0, 0, 0, 0.45)',
+    flexShrink: 0,
+    marginLeft: 20,
   },
   content: {
     container: {

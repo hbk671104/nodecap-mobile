@@ -799,6 +799,10 @@ export function getInstitutionReportByID(id) {
   return request.get(`/reports/${id}`);
 }
 
+export function viewReport(id) {
+  return request.put(`/reports/${id}/views`);
+}
+
 export function getBanners() {
   return request.get('/banner');
 }

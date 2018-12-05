@@ -44,6 +44,12 @@ import styles from './style';
     logged_in: !!login.token,
     in_individual: login.in_individual,
     loading: loading.effects['institution/get'],
+    industryType: R.compose(
+      R.path(['name']),
+      R.find(i => i.value === R.path(['current', id, 'type'])(institution)),
+      R.values,
+      R.pathOr([], ['constants', 'industry_type'])
+    )(global),
     ratingTypes: R.compose(
       R.pathOr([], ['rating_types']),
       R.find(i => i.id === id),
@@ -146,8 +152,8 @@ export default class InstitutionDetail extends Component {
           webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${
             data.id
           }`,
-          title: `推荐给你「${R.path(['name'])(data)}」`,
-          description: '来 Hotnode 找全球区块链服务机构！',
+          title: `来 Hotnode联系「${R.path(['name'])(data)}」`,
+          description: `来Hotnode联系全球优质${this.props.industryType}`,
           thumbImage: R.pathOr(
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
             ['logo_url'],
@@ -158,7 +164,7 @@ export default class InstitutionDetail extends Component {
           webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${
             data.id
           }`,
-          title: `推荐给你「${R.path(['name'])(data)}」`,
+          title: `推荐给你一个靠谱${this.props.industryType}「${R.path(['name'])(data)}」`,
           description: '来 Hotnode 找全球区块链服务机构！',
           thumbImage: R.pathOr(
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
@@ -194,6 +200,13 @@ export default class InstitutionDetail extends Component {
       renderBottom={() => (
         <Header {...this.props} onLinkPress={this.handleLinkPress} />
       )}
+      renderRight={
+        () => (
+          <Touchable borderless onPress={this.handleSharePress}>
+            <Image style={{ width: 18, height: 18 }} source={require('asset/icon_share.png')} />
+          </Touchable>
+        )
+      }
     />
   );
 

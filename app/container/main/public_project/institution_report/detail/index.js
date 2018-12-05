@@ -11,7 +11,7 @@ import Touchable from 'component/uikit/touchable';
 import FavorItem from 'component/favored/item';
 import shareModal from 'component/shareModal';
 import Config from 'runtime/index';
-import { getInstitutionReportByID } from '../../../../../services/api';
+import { getInstitutionReportByID, viewReport } from '../../../../../services/api';
 import NavBar from 'component/navBar';
 
 import styles, { translateY } from './style';
@@ -37,6 +37,7 @@ import styles, { translateY } from './style';
 export default class InstitutionReportDetail extends Component {
   componentWillMount() {
     this.loadCoins();
+    viewReport(this.props.id);
   }
 
   componentDidMount() {
