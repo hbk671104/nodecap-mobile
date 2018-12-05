@@ -5,6 +5,29 @@ export default {
     flex: 1,
     backgroundColor: 'white',
   },
+  accessory: {
+    container: {
+      paddingVertical: 8,
+    },
+    group: {
+      container: {
+        marginHorizontal: 12,
+      },
+      image: {
+        height: 50,
+        width: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 1,
+        backgroundColor: '#F5F5F5',
+      },
+      title: {
+        marginTop: 12,
+        fontSize: 12,
+        color: 'rgba(0, 0, 0, 0.85)',
+      },
+    },
+  },
   navBar: {
     wrapper: {
       borderBottomWidth: StyleSheet.hairlineWidth,

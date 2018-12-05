@@ -141,6 +141,28 @@ class IMPage extends PureComponent {
     });
   };
 
+  sendMsg = text => {
+    const { target_im_id } = this.props;
+    global.nim.sendText({
+      scene: 'p2p',
+      to: target_im_id,
+      text,
+      done: (error, res) => {
+        const { data, user } = this.props;
+        if (!error) {
+          this.props.setData(
+            R.concat([
+              formatMessage(res, {
+                name: R.path(['realname'])(user),
+                avatar: R.path(['avatar_url'])(user),
+              }),
+            ])(data),
+          );
+        }
+      },
+    });
+  };
+
   isCloseToTop({ layoutMeasurement, contentOffset, contentSize }) {
     const paddingToTop = 120;
     return (
@@ -170,28 +192,8 @@ class IMPage extends PureComponent {
   };
 
   handleSend = ([message]) => {
-    const { data, target_im_id } = this.props;
     const { text } = message;
-    this.props.setData([message].concat(data));
-
-    global.nim.sendText({
-      scene: 'p2p',
-      to: target_im_id,
-      text,
-      done: (error, res) => {
-        // const { data, user } = this.props;
-        if (!error) {
-          // this.props.setData(
-          //   R.concat([
-          //     formatMessage(res, {
-          //       name: R.path(['realname'])(user),
-          //       avatar: R.path(['avatar_url'])(user),
-          //     }),
-          //   ])(data),
-          // );
-        }
-      },
-    });
+    this.sendMsg(text);
   };
 
   renderNavBar = () => (
@@ -235,14 +237,20 @@ class IMPage extends PureComponent {
       }}
       renderBottom={() => (
         <View style={styles.navBar.bottom.container}>
-          <Touchable style={{ flex: 1, justifyContent: 'center' }}>
+          <Touchable
+            style={{ flex: 1, justifyContent: 'center' }}
+            onPress={() => this.sendMsg('您好，方便留一下手机号吗？')}
+          >
             <Flex style={styles.navBar.bottom.group.container}>
               <Image source={require('asset/im/mobile_im.png')} />
               <Text style={styles.navBar.bottom.group.title}>要手机</Text>
             </Flex>
           </Touchable>
           <View style={styles.navBar.bottom.divider} />
-          <Touchable style={{ flex: 1, justifyContent: 'center' }}>
+          <Touchable
+            style={{ flex: 1, justifyContent: 'center' }}
+            onPress={() => this.sendMsg('您好，方便留一下微信号吗？')}
+          >
             <Flex style={styles.navBar.bottom.group.container}>
               <Image source={require('asset/im/wechat_im.png')} />
               <Text style={styles.navBar.bottom.group.title}>要微信号</Text>
@@ -253,12 +261,53 @@ class IMPage extends PureComponent {
     />
   );
 
+  renderAccessory = () => {
+    const { user } = this.props;
+    const mobile = R.path(['mobile'])(user);
+    const wechat = R.path(['profile', 'wechat'])(user);
+    return (
+      <Flex style={styles.accessory.container}>
+        {!!mobile && (
+          <Touchable
+            onPress={() => {
+              this.sendMsg(`您好，这是我的手机号 ${mobile}`);
+            }}
+          >
+            <View style={styles.accessory.group.container}>
+              <View style={styles.accessory.group.image}>
+                <Image source={require('asset/chat_mobile_big.png')} />
+              </View>
+              <Text style={styles.accessory.group.title}>发送手机</Text>
+            </View>
+          </Touchable>
+        )}
+        {!!wechat && (
+          <Touchable
+            onPress={() => {
+              this.sendMsg(`您好，这是我的微信号 ${wechat}`);
+            }}
+          >
+            <View style={styles.accessory.group.container}>
+              <View style={styles.accessory.group.image}>
+                <Image source={require('asset/chat_wechat_big.png')} />
+              </View>
+              <Text style={styles.accessory.group.title}>发送微信</Text>
+            </View>
+          </Touchable>
+        )}
+      </Flex>
+    );
+  };
+
   render() {
     const { data, user, user_im_id, inLastPage } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
         <Chat
+          chatRef={ref => {
+            this.chatRef = ref;
+          }}
           loadEarlier
           renderLoadEarlier={p => {
             if (inLastPage) {
@@ -288,6 +337,7 @@ class IMPage extends PureComponent {
               if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
             },
           }}
+          renderAccessory={this.renderAccessory}
         />
       </SafeArea>
     );

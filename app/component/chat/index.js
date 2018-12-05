@@ -1,13 +1,16 @@
 import React, { PureComponent } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, Image, StyleSheet } from 'react-native';
 import {
   GiftedChat,
-  Send,
   Composer,
   Bubble,
   Avatar,
+  Day,
 } from 'react-native-gifted-chat';
 import 'moment/locale/zh-cn';
+
+import Touchable from 'component/uikit/touchable';
+import styles from './style';
 
 class Chat extends PureComponent {
   clearText = () => {
@@ -24,9 +27,9 @@ class Chat extends PureComponent {
     return (
       <GiftedChat
         {...this.props}
+        ref={this.props.chatRef}
         showUserAvatar
         locale="zh-cn"
-        placeholder="请输入..."
         onSend={props => {
           this.props.onSend(props);
           this.clearText();
@@ -39,9 +42,12 @@ class Chat extends PureComponent {
           keyboardDismissMode: 'on-drag',
           keyboardShouldPersistTaps: 'handled',
         }}
+        // minInputToolbarHeight={77}
         renderComposer={p => (
           <Composer
             {...p}
+            placeholder=""
+            textInputStyle={{ backgroundColor: '#E5E5E5' }}
             textInputProps={{
               ref: ref => {
                 this._textInput = ref;
@@ -75,8 +81,58 @@ class Chat extends PureComponent {
             }}
           />
         )}
-        renderAvatar={p => <Avatar {...p} />}
-        renderSend={p => <Send {...p} label="发送" />}
+        renderAvatarOnTop
+        renderAvatar={p => (
+          <Avatar
+            {...p}
+            containerStyle={{
+              left: {
+                marginRight: 0,
+              },
+              right: {
+                marginLeft: 0,
+              },
+            }}
+            imageStyle={{
+              left: {
+                height: 44,
+                width: 44,
+                borderRadius: 1,
+              },
+              right: {
+                height: 44,
+                width: 44,
+                borderRadius: 1,
+              },
+            }}
+          />
+        )}
+        renderDay={p => (
+          <Day
+            {...p}
+            containerStyle={{
+              marginTop: 16,
+              marginBottom: 16,
+            }}
+            wrapperStyle={{
+              backgroundColor: '#AAAAAA',
+              paddingHorizontal: 6,
+              paddingVertical: 4,
+            }}
+            textStyle={{
+              color: 'white',
+            }}
+            dateFormat="MM月DD日 HH:mm"
+          />
+        )}
+        renderSend={p => (
+          <Touchable
+            style={{ marginHorizontal: 18, alignSelf: 'center' }}
+            onPress={this.toggleAccessory}
+          >
+            <Image source={require('asset/chat_add.png')} />
+          </Touchable>
+        )}
       />
     );
   }
