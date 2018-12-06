@@ -211,6 +211,11 @@ export default class InstitutionDetail extends Component {
       renderBottom={() => (
         <Header {...this.props} onLinkPress={this.handleLinkPress} />
       )}
+      renderRight={() => (
+        <Touchable borderless onPress={this.handleSharePress}>
+          <Image source={require('asset/institution/share.png')} />
+        </Touchable>
+      )}
     />
   );
 

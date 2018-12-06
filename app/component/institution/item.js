@@ -29,7 +29,7 @@ const item = ({
             <Avatar
               style={styles.avatar}
               size={52}
-              innerRatio={0.95}
+              innerRatio={0.9}
               raised={false}
               source={{ uri: logo_url }}
             />
