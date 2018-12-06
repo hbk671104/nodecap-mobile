@@ -157,8 +157,24 @@ export default {
       };
     },
     setReportRead(state, action) {
+      const idx = R.compose(
+        R.findIndex(i => i.id === action.id),
+        R.pathOr([], ['report', 'data'])
+      )(state);
+      const newList = R.compose(
+        R.clone,
+        R.pathOr([], ['report', 'data'])
+      )(state);
+      newList[idx] = {
+        ...R.pathOr({}, ['report', 'data', idx])(state),
+        views: (R.pathOr(0, ['report', 'data', idx, 'views'])(state)) + 1,
+      };
       return {
         ...state,
+        report: {
+          ...state.report,
+          data: newList,
+        },
         has_read_reports: R.uniq(state.has_read_reports.concat([action.id])),
       };
     },

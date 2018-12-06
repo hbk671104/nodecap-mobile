@@ -89,6 +89,7 @@ import Feedback from 'container/main/self/feedback';
 import MeetingList from 'container/main/activity';
 import MeetingListRaw from 'container/main/activity/raw';
 import Announcement from 'container/main/announcement/index';
+import HostJoinList from 'container/main/announcement/hostJoinList';
 import ProjectRepo from 'container/main/project_repo';
 import Institution from 'container/main/institution';
 import InstitutionDetail from 'container/main/institution/detail';
@@ -287,6 +288,7 @@ const MainStack = createStackNavigator(
     GlobalSearch,
     ReportPage,
     Rank,
+    HostJoinList,
   },
   {
     headerMode: 'none',
@@ -442,6 +444,7 @@ const IndividualStack = createStackNavigator(
     ClaimMyInstitutionWrap,
     IMPage,
     Rank,
+    HostJoinList,
   },
   {
     headerMode: 'none',

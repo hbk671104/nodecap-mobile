@@ -272,8 +272,8 @@ export default class PublicProjectDetail extends Component {
         {
           type: 'timeline',
           webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
-          title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
-          description: '来 Hotnode 找最新最热项目！',
+          title: `来 Hotnode联系「${R.path(['portfolio', 'name'])(this.props)}」`,
+          description: '来 Hotnode 联系全球优质项目!',
           thumbImage:
             R.path(['portfolio', 'icon'])(this.props) ||
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
@@ -281,8 +281,8 @@ export default class PublicProjectDetail extends Component {
         {
           type: 'session',
           webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
-          title: `推荐给你「${R.path(['portfolio', 'name'])(this.props)}」`,
-          description: '来 Hotnode 找最新最热项目！',
+          title: `推荐给你一个靠谱项目「${R.path(['portfolio', 'name'])(this.props)}」`,
+          description: '来 Hotnode 联系全球优质项目!',
           thumbImage:
             R.path(['portfolio', 'icon'])(this.props) ||
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
@@ -331,7 +331,6 @@ export default class PublicProjectDetail extends Component {
       backgroundOpacityRange,
       showInviteModal,
     } = this.props;
-
     return (
       <View style={styles.container}>
         <Animated.View
@@ -348,6 +347,13 @@ export default class PublicProjectDetail extends Component {
             barStyle={currentScrollY > 80 ? 'dark-content' : 'light-content'}
             style={styles.navBar.container}
             title={R.path(['name'])(portfolio)}
+            renderRight={
+              () => (
+                <Touchable borderless onPress={this.handleShare}>
+                  <Image style={{ width: 18, height: 18 }} source={require('asset/icon_share.png')} />
+                </Touchable>
+              )
+            }
           />
         </Animated.View>
         <Animated.ScrollView
@@ -378,6 +384,7 @@ export default class PublicProjectDetail extends Component {
             {...this.props}
             onInvitedPress={() => this.handleInvitedPress(portfolio)}
             onExplanationPress={() => this.props.setExplanationVisible(true)}
+            onSharePress={this.handleShare}
           />
           <Fund {...this.props} />
           <Chart {...this.props} />

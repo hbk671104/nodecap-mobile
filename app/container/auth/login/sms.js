@@ -49,6 +49,7 @@ class SMSLogin extends Component {
     if (R.isNil(mobile) || R.isEmpty(mobile)) {
       return;
     }
+    this.smsRef.focus();
     this.props.dispatch({
       type: 'login/sendLoginSMS',
       payload: mobile,
@@ -124,7 +125,14 @@ class SMSLogin extends Component {
                   style={styles.input}
                   titleStyle={styles.item.title}
                   placeholder="请输入您的验证码"
-                  inputProps={{ keyboardType: 'number-pad' }}
+                  inputProps={{
+                    keyboardType: 'number-pad',
+                    inputRef: ref => {
+                      if (ref) {
+                        this.smsRef = ref;
+                      }
+                    },
+                  }}
                   renderRight={() => {
                     if (sendingSMS) {
                       return <ActivityIndicator />;

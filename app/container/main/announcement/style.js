@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export default {
   container: {
     flex: 1,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: 'white',
   },
   separator: {
     height: 8,
