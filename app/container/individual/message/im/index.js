@@ -1,16 +1,25 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+  Linking,
+  Platform,
+} from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState, withProps } from 'recompose';
 import { Flex } from 'antd-mobile';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import moment from 'moment';
+import JPush from 'jpush-react-native';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
 import Touchable from 'component/uikit/touchable';
 import SafeArea from 'component/uikit/safeArea';
+import ActionAlert from 'component/action_alert';
 import { formatMessage } from 'utils/nim';
 import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
@@ -34,6 +43,7 @@ import { hideRealMobile } from '../../../../utils/utils';
 @compose(
   withState('data', 'setData', []),
   withState('inLastPage', 'setInLastPage', false),
+  withState('showNotificationModal', 'setShowNotificationModal', false),
   withProps(({ user, target }) => ({
     user_im_id: R.path(['im_info', 'im_id'])(user),
     target_im_id: R.path(['im_info', 'im_id'])(target),
@@ -45,6 +55,7 @@ class IMPage extends PureComponent {
     if (this.props.connected) {
       this.loadTargetInfo();
     }
+    this.checkPushPermission();
   }
 
   componentDidMount() {
@@ -196,6 +207,17 @@ class IMPage extends PureComponent {
     this.sendMsg(text);
   };
 
+  checkPushPermission = () => {
+    if (Platform.OS === 'ios') {
+      JPush.hasPermission(res => {
+        if (res) {
+          return;
+        }
+        this.props.setShowNotificationModal(true);
+      });
+    }
+  };
+
   renderNavBar = () => (
     <NavBar
       barStyle="dark-content"
@@ -338,6 +360,18 @@ class IMPage extends PureComponent {
             },
           }}
           renderAccessory={this.renderAccessory}
+        />
+        <ActionAlert
+          visible={this.props.showNotificationModal}
+          title="开启推送通知"
+          content="及时获知对方回复，把握合作机会"
+          actionTitle="立即开启"
+          image={require('asset/notification_check.png')}
+          action={() => {
+            Linking.openURL('app-settings:');
+            this.props.setShowNotificationModal(false);
+          }}
+          onBackdropPress={() => this.props.setShowNotificationModal(false)}
         />
       </SafeArea>
     );
