@@ -14,6 +14,7 @@ import { Flex } from 'antd-mobile';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import moment from 'moment';
 import JPush from 'jpush-react-native';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
@@ -207,6 +208,23 @@ class IMPage extends PureComponent {
     this.sendMsg(text);
   };
 
+  handleSendWechatPress = () => {
+    const wechat = R.path(['profile', 'wechat'])(this.props.user);
+    if (wechat) {
+      this.sendMsg(`您好，这是我的微信号 ${wechat}`);
+      return;
+    }
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'EditProfile',
+        params: {
+          key: 'wechat',
+          title: '微信',
+        },
+      }),
+    );
+  };
+
   checkPushPermission = () => {
     if (Platform.OS === 'ios') {
       JPush.hasPermission(res => {
@@ -286,7 +304,6 @@ class IMPage extends PureComponent {
   renderAccessory = () => {
     const { user } = this.props;
     const mobile = R.path(['mobile'])(user);
-    const wechat = R.path(['profile', 'wechat'])(user);
     return (
       <Flex style={styles.accessory.container}>
         {!!mobile && (
@@ -303,20 +320,14 @@ class IMPage extends PureComponent {
             </View>
           </Touchable>
         )}
-        {!!wechat && (
-          <Touchable
-            onPress={() => {
-              this.sendMsg(`您好，这是我的微信号 ${wechat}`);
-            }}
-          >
-            <View style={styles.accessory.group.container}>
-              <View style={styles.accessory.group.image}>
-                <Image source={require('asset/chat_wechat_big.png')} />
-              </View>
-              <Text style={styles.accessory.group.title}>发送微信</Text>
+        <Touchable onPress={this.handleSendWechatPress}>
+          <View style={styles.accessory.group.container}>
+            <View style={styles.accessory.group.image}>
+              <Image source={require('asset/chat_wechat_big.png')} />
             </View>
-          </Touchable>
-        )}
+            <Text style={styles.accessory.group.title}>发送微信</Text>
+          </View>
+        </Touchable>
       </Flex>
     );
   };

@@ -94,6 +94,17 @@ class MyProfile extends Component {
             })}
           />
           <ListItem
+            title="微信"
+            content={R.path(['profile', 'wechat'])(user)}
+            titleStyle={styles.listItem.title}
+            contentStyle={styles.listItem.content}
+            onPress={this.handleItemPress({
+              key: 'wechat',
+              title: '微信',
+              default: R.path(['profile', 'wechat'])(user),
+            })}
+          />
+          <ListItem
             title="公司"
             content={R.path(['profile', 'company'])(user)}
             titleStyle={styles.listItem.title}
