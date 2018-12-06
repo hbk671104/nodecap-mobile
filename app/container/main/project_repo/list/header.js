@@ -3,8 +3,9 @@ import { View, Text, Image, StyleSheet } from 'react-native';
 import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
+import Badge from 'component/badge';
 
-const header = ({ params, onSelect, onFilterPress }) => {
+const header = ({ showFilterDot, params, onSelect, onFilterPress }) => {
   const is_reachable = R.pathOr(0, ['is_reachable'])(params);
   const has_weekly = R.pathOr(0, ['has_weekly'])(params);
   const has_rating = R.pathOr(0, ['has_rating'])(params);
@@ -30,116 +31,132 @@ const header = ({ params, onSelect, onFilterPress }) => {
           <Text style={{ fontWeight: 'bold', color: '#1890FF' }}>{count}</Text>
         </Text> */}
         <View style={styles.content.tag.container}>
-          <Touchable
-            style={[
-              styles.content.tag.wrapper,
-              is_reachable === 1 && styles.content.tag.highlight,
-            ]}
-            onPress={() =>
-              onSelect({
-                value: is_reachable === 0 ? 1 : 0,
-                key: 'is_reachable',
-                name: '即将开始',
-              })
-            }
-          >
-            <Text
+          <View>
+            <Touchable
               style={[
-                styles.content.tag.title,
-                is_reachable === 1 && styles.content.tag.titleHighlight,
+                styles.content.tag.wrapper,
+                is_reachable === 1 && styles.content.tag.highlight,
               ]}
+              onPress={() =>
+                onSelect({
+                  value: is_reachable === 0 ? 1 : 0,
+                  key: 'is_reachable',
+                  name: '即将开始',
+                })
+              }
             >
-              可联系
-            </Text>
-          </Touchable>
-          <Touchable
-            style={[
-              styles.content.tag.wrapper,
-              has_rating === 1 && styles.content.tag.highlight,
-            ]}
-            onPress={() =>
-              onSelect({
-                value: has_rating === 0 ? 1 : 0,
-                key: 'has_rating',
-                name: '有评级',
-              })
-            }
-          >
-            <Text
+              <Text
+                style={[
+                  styles.content.tag.title,
+                  is_reachable === 1 && styles.content.tag.titleHighlight,
+                ]}
+              >
+                可联系
+              </Text>
+            </Touchable>
+            {showFilterDot && <Badge style={styles.badge} size={6} />}
+          </View>
+          <View>
+            <Touchable
               style={[
-                styles.content.tag.title,
-                has_rating === 1 && styles.content.tag.titleHighlight,
+                styles.content.tag.wrapper,
+                has_rating === 1 && styles.content.tag.highlight,
               ]}
+              onPress={() =>
+                onSelect({
+                  value: has_rating === 0 ? 1 : 0,
+                  key: 'has_rating',
+                  name: '有评级',
+                })
+              }
             >
-              有评级
-            </Text>
-          </Touchable>
-          <Touchable
-            style={[
-              styles.content.tag.wrapper,
-              is_renowned_industry === 1 && styles.content.tag.highlight,
-            ]}
-            onPress={() =>
-              onSelect({
-                value: is_renowned_industry === 0 ? 1 : 0,
-                key: 'is_renowned_industry',
-                name: '知名机构所投',
-              })
-            }
-          >
-            <Text
+              <Text
+                style={[
+                  styles.content.tag.title,
+                  has_rating === 1 && styles.content.tag.titleHighlight,
+                ]}
+              >
+                有评级
+              </Text>
+            </Touchable>
+            {showFilterDot && <Badge style={styles.badge} size={6} />}
+          </View>
+          <View>
+            <Touchable
               style={[
-                styles.content.tag.title,
-                is_renowned_industry === 1 && styles.content.tag.titleHighlight,
+                styles.content.tag.wrapper,
+                is_renowned_industry === 1 && styles.content.tag.highlight,
               ]}
+              onPress={() =>
+                onSelect({
+                  value: is_renowned_industry === 0 ? 1 : 0,
+                  key: 'is_renowned_industry',
+                  name: '知名机构所投',
+                })
+              }
             >
-              知名机构所投
-            </Text>
-          </Touchable>
-          <Touchable
-            style={[
-              styles.content.tag.wrapper,
-              has_weekly === 1 && styles.content.tag.highlight,
-            ]}
-            onPress={() =>
-              onSelect({
-                value: has_weekly === 0 ? 1 : 0,
-                key: 'has_weekly',
-                name: '有周报',
-              })
-            }
-          >
-            <Text
+              <Text
+                style={[
+                  styles.content.tag.title,
+                  is_renowned_industry === 1 &&
+                    styles.content.tag.titleHighlight,
+                ]}
+              >
+                知名机构所投
+              </Text>
+            </Touchable>
+            {showFilterDot && <Badge style={styles.badge} size={6} />}
+          </View>
+          <View>
+            <Touchable
               style={[
-                styles.content.tag.title,
-                has_weekly === 1 && styles.content.tag.titleHighlight,
+                styles.content.tag.wrapper,
+                has_weekly === 1 && styles.content.tag.highlight,
               ]}
+              onPress={() =>
+                onSelect({
+                  value: has_weekly === 0 ? 1 : 0,
+                  key: 'has_weekly',
+                  name: '有周报',
+                })
+              }
             >
-              有周报
-            </Text>
-          </Touchable>
+              <Text
+                style={[
+                  styles.content.tag.title,
+                  has_weekly === 1 && styles.content.tag.titleHighlight,
+                ]}
+              >
+                有周报
+              </Text>
+            </Touchable>
+            {showFilterDot && <Badge style={styles.badge} size={6} />}
+          </View>
         </View>
       </View>
-      <Touchable
-        borderless
-        style={styles.filter.container}
-        onPress={onFilterPress}
-      >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Image
-            source={
-              has_filter
-                ? require('asset/public_project/funnel_highlight.png')
-                : require('asset/public_project/funnel.png')
-            }
-          />
-          <Text
-            style={[styles.filter.title, has_filter && { color: '#1890FF' }]}
-          >
-            筛选
-          </Text>
-        </View>
-      </Touchable>
+      <View>
+        <Touchable
+          borderless
+          style={styles.filter.container}
+          onPress={onFilterPress}
+        >
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <Image
+              source={
+                has_filter
+                  ? require('asset/public_project/funnel_highlight.png')
+                  : require('asset/public_project/funnel.png')
+              }
+            />
+            <Text
+              style={[styles.filter.title, has_filter && { color: '#1890FF' }]}
+            >
+              筛选
+            </Text>
+          </View>
+        </Touchable>
+        {showFilterDot && <Badge style={{ top: -6, right: -4 }} size={6} />}
+      </View>
     </View>
   );
 };
@@ -189,6 +206,11 @@ const styles = {
         fontWeight: 'bold',
       },
     },
+  },
+  badge: {
+    position: 'absolute',
+    top: -2,
+    right: 8,
   },
   filter: {
     container: {

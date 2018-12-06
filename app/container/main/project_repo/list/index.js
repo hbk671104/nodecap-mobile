@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View } from 'react-native';
 import { connect } from 'react-redux';
 import * as R from 'ramda';
+import { compose, withState } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import { EventEmitter } from 'fbemitter';
 import debounce from 'lodash-decorators/debounce';
@@ -11,6 +12,7 @@ import List from 'component/uikit/list';
 import FavorItem from 'component/favored/item';
 
 import { handleSelection as selection } from 'utils/utils';
+import { Storage } from 'utils';
 import Header from './header';
 import styles from '../style';
 
@@ -27,13 +29,20 @@ export const emitter = new EventEmitter();
   params: R.pathOr({}, ['list', 'params'])(public_project),
   loading: loading.effects['public_project/fetch'],
 }))
+@compose(withState('showFilterDot', 'setShowFilterDot', false))
 export default class ProjectList extends Component {
-  componentWillMount() {
+  async componentWillMount() {
     emitter.addListener('shouldScroll', () => {
       if (this.listRef) {
         this.listRef.scrollToOffset({ offset: 0, animated: false });
       }
     });
+
+    const shownFilterDot = await Storage.get('shownFilterDot');
+    if (shownFilterDot) {
+      return;
+    }
+    this.props.setShowFilterDot(true);
   }
 
   requestData = (page, size) => {
@@ -70,6 +79,9 @@ export default class ProjectList extends Component {
         ...this.props.params,
         [key]: value,
       },
+    });
+    this.props.setShowFilterDot(false, () => {
+      Storage.set('shownFilterDot', true);
     });
   };
 
