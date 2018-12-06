@@ -87,7 +87,7 @@ class AvatarUpload extends PureComponent {
   };
 
   render() {
-    const { avatarURL } = this.props;
+    const { avatarURL, submitting } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
@@ -129,6 +129,7 @@ class AvatarUpload extends PureComponent {
         </View>
         <View style={{ marginBottom: 144 }}>
           <AuthButton
+            loading={submitting}
             disabled={R.isNil(avatarURL)}
             style={styles.auth}
             title="提 交"

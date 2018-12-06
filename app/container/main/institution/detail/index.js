@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
-import { compose, withState } from 'recompose';
+import { compose, withState, withProps } from 'recompose';
 import request from 'utils/request';
 import runtimeConfig from 'runtime/index';
 import Base64 from 'utils/base64';
@@ -57,6 +57,12 @@ import styles from './style';
   withState('currentMember', 'setCurrentMember', ({ data }) =>
     R.pathOr({}, ['members', 0])(data),
   ),
+  withProps(({ data }) => ({
+    chat_member: R.pipe(
+      R.pathOr([], ['members']),
+      R.find(m => !R.isNil(m.user_id)),
+    )(data),
+  })),
 )
 @shareModal
 export default class InstitutionDetail extends Component {
@@ -187,12 +193,28 @@ export default class InstitutionDetail extends Component {
     this.props.toggleInviteModal(true);
   };
 
+  handleContactPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'IMPage',
+        params: {
+          id: R.path(['user_id'])(this.props.chat_member),
+        },
+      }),
+    );
+  };
+
   renderNavBar = () => (
     <NavBar
       back
       gradient
       renderBottom={() => (
         <Header {...this.props} onLinkPress={this.handleLinkPress} />
+      )}
+      renderRight={() => (
+        <Touchable borderless onPress={this.handleSharePress}>
+          <Image source={require('asset/institution/share.png')} />
+        </Touchable>
       )}
     />
   );
@@ -253,8 +275,10 @@ export default class InstitutionDetail extends Component {
           )}
         </ScrollView>
         <Bottom
+          {...this.props}
           openShareModal={this.handleSharePress}
           onInviteJoinPress={this.handleInviteJoinPress}
+          onConnectPress={this.handleContactPress}
         />
         {in_individual && (
           <Touchable

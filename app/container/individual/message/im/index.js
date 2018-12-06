@@ -1,16 +1,29 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, ActivityIndicator, Keyboard, KeyboardAvoidingView, LayoutAnimation } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+  Linking,
+  Keyboard,
+  Platform,
+  KeyboardAvoidingView,
+  LayoutAnimation,
+} from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState, withProps, withStateHandlers } from 'recompose';
 import { Flex } from 'antd-mobile';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import moment from 'moment';
+import JPush from 'jpush-react-native';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
 import Touchable from 'component/uikit/touchable';
 import SafeArea from 'component/uikit/safeArea';
+import ActionAlert from 'component/action_alert';
 import { formatMessage } from 'utils/nim';
 import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
@@ -41,14 +54,15 @@ const HEIGHT = 111;
       showContactModal: false,
     }),
     {
-      toggleContactModal: () => (flag) => {
+      toggleContactModal: () => flag => {
         LayoutAnimation.easeInEaseOut();
         return {
           showContactModal: flag,
         };
       },
-    }
+    },
   ),
+  withState('showNotificationModal', 'setShowNotificationModal', false),
   withProps(({ user, target }) => ({
     user_im_id: R.path(['im_info', 'im_id'])(user),
     target_im_id: R.path(['im_info', 'im_id'])(target),
@@ -60,6 +74,7 @@ class IMPage extends PureComponent {
     if (this.props.connected) {
       this.loadTargetInfo();
     }
+    this.checkPushPermission();
   }
 
   componentDidMount() {
@@ -211,6 +226,34 @@ class IMPage extends PureComponent {
     this.sendMsg(text);
   };
 
+  handleSendWechatPress = () => {
+    const wechat = R.path(['profile', 'wechat'])(this.props.user);
+    if (wechat) {
+      this.sendMsg(`您好，这是我的微信号 ${wechat}`);
+      return;
+    }
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'EditProfile',
+        params: {
+          key: 'wechat',
+          title: '微信',
+        },
+      }),
+    );
+  };
+
+  checkPushPermission = () => {
+    if (Platform.OS === 'ios') {
+      JPush.hasPermission(res => {
+        if (res) {
+          return;
+        }
+        this.props.setShowNotificationModal(true);
+      });
+    }
+  };
+
   renderNavBar = () => (
     <NavBar
       barStyle="dark-content"
@@ -279,13 +322,18 @@ class IMPage extends PureComponent {
   renderAccessory = () => {
     const { user } = this.props;
     const mobile = R.path(['mobile'])(user);
-    const wechat = R.path(['profile', 'wechat'])(user);
     return (
-      <View style={[styles.accessory.container, !this.props.showContactModal ? {
-        bottom: -HEIGHT,
-      } : {
-        bottom: 0,
-      }]}
+      <View
+        style={[
+          styles.accessory.container,
+          !this.props.showContactModal
+            ? {
+                bottom: -HEIGHT,
+              }
+            : {
+                bottom: 0,
+              },
+        ]}
       >
         <Flex>
           <Touchable
@@ -300,11 +348,7 @@ class IMPage extends PureComponent {
               <Text style={styles.accessory.group.title}>发送手机</Text>
             </View>
           </Touchable>
-          <Touchable
-            onPress={() => {
-              this.sendMsg(`您好，这是我的微信号 ${wechat}`);
-            }}
-          >
+          <Touchable onPress={this.handleSendWechatPress}>
             <View style={styles.accessory.group.container}>
               <View style={styles.accessory.group.image}>
                 <Image source={require('asset/chat_wechat_big.png')} />
@@ -324,59 +368,69 @@ class IMPage extends PureComponent {
         {this.renderNavBar()}
         <KeyboardAvoidingView
           keyboardVerticalOffset={1}
-          style={{ flex: 1, marginBottom: this.props.showContactModal ? HEIGHT - 10 : 0 }}
+          style={{
+            flex: 1,
+            marginBottom: this.props.showContactModal ? HEIGHT - 10 : 0,
+          }}
           behavior="padding"
           enabled
         >
           <Chat
             chatRef={ref => {
-            this.chatRef = ref;
-          }}
+              this.chatRef = ref;
+            }}
             loadEarlier
             renderLoadEarlier={p => {
-            if (inLastPage) {
-              return null;
-            }
-            if (R.length(data) < 50) {
-              return null;
-            }
-            return (
-              <View style={{ marginVertical: 12 }}>
-                <ActivityIndicator />
-              </View>
-            );
-          }}
+              if (inLastPage) {
+                return null;
+              }
+              if (R.length(data) < 50) {
+                return null;
+              }
+              return (
+                <View style={{ marginVertical: 12 }}>
+                  <ActivityIndicator />
+                </View>
+              );
+            }}
             bottomOffset={getBottomSpace()}
             user={{
-            _id: user_im_id,
-            name: R.path(['realname'])(user),
-            avatar: R.path(['avatar_url'])(user),
-          }}
+              _id: user_im_id,
+              name: R.path(['realname'])(user),
+              avatar: R.path(['avatar_url'])(user),
+            }}
             messages={data}
             showAvatarForEveryMessage
             onSend={this.handleSend}
             listViewProps={{
               scrollEventThrottle: 50,
               onScroll: ({ nativeEvent }) => {
-                  if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
-                  if (this.props.showContactModal) {
-                    this.props.toggleContactModal(false);
-                  }
-                  Keyboard.dismiss();
-                },
+                if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
+                if (this.props.showContactModal) {
+                  this.props.toggleContactModal(false);
+                }
+                Keyboard.dismiss();
+              },
             }}
             toggleAccessory={() => {
               Keyboard.dismiss();
               this.props.toggleContactModal(true);
             }}
-            onFocus={() => {
-              // setTimeout(() => {
-              //   this.props.toggleContactModal(false);
-              // }, 100);
-            }}
           />
         </KeyboardAvoidingView>
         {this.renderAccessory()}
+        <ActionAlert
+          visible={this.props.showNotificationModal}
+          title="开启推送通知"
+          content="及时获知对方回复，把握合作机会"
+          actionTitle="立即开启"
+          image={require('asset/notification_check.png')}
+          action={() => {
+            Linking.openURL('app-settings:');
+            this.props.setShowNotificationModal(false);
+          }}
+          onBackdropPress={() => this.props.setShowNotificationModal(false)}
+        />
       </SafeArea>
     );
   }
