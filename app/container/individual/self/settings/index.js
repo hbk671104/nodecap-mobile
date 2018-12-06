@@ -5,6 +5,7 @@ import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import CodePush from 'react-native-code-push';
 import { withState } from 'recompose';
+import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
 import ListItem from 'component/listItem';
@@ -59,6 +60,38 @@ class Settings extends Component {
     );
   };
 
+  handleSwitchEndPress = () => {
+    if (
+      R.pipe(
+        R.pathOr({}, ['user', 'companies']),
+        R.isEmpty,
+      )(this.props)
+    ) {
+      Alert.alert('您尚未加入任何机构', '入驻请联系 18500193244', [
+        {
+          text: '拨打',
+          onPress: () => Communications.phonecall('185-0019-3244', false),
+        },
+        {
+          text: '取消',
+          style: 'cancel',
+        },
+      ]);
+      return;
+    }
+
+    Alert.alert('提示', '是否切换至「机构版」？', [
+      {
+        text: '切换',
+        onPress: () => this.props.dispatch({ type: 'login/switch' }),
+      },
+      {
+        text: '取消',
+        style: 'cancel',
+      },
+    ]);
+  };
+
   render() {
     const { isLogin } = this.props;
     const versionLabel = R.path(['pkg', 'label'])(this.props);
@@ -66,7 +99,6 @@ class Settings extends Component {
       <View style={styles.container}>
         <NavBar gradient back title="设置" />
         <ScrollView>
-          {/* <ListItem title="清D除缓存" content="10.92M" /> */}
           <ListItem
             disablePress
             title="当前版本"
@@ -75,7 +107,12 @@ class Settings extends Component {
             }`}
           />
           <ListItem title="版本更新" onPress={this.handleChangelogPress} />
-          {/* <ListItem title="评价 Hotnode" /> */}
+          {isLogin && (
+            <ListItem
+              title="切换至机构版"
+              onPress={this.handleSwitchEndPress}
+            />
+          )}
         </ScrollView>
         {isLogin && (
           <AuthButton

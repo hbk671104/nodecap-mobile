@@ -4,9 +4,8 @@ import { createForm, createFormField } from 'rc-form';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
-import { Toast } from 'antd-mobile';
-import request from 'utils/request';
-import runtimeConfig from 'runtime/index';
+import { Toast, Flex } from 'antd-mobile';
+
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
 import InputItem from 'component/inputItem';
@@ -20,14 +19,11 @@ import styles from './style';
   page: '创建我的机构认证',
   name: 'App_MyInstitutionClaimOperation',
 })
-@connect(({ institution_create, loading }, props) => {
+@connect(({ institution_create }, props) => {
   const id = props.navigation.getParam('id');
   return {
     id,
     owner: R.pathOr({}, ['owner'])(institution_create),
-    submitting:
-      loading.effects['institution_create/claimInstitution'] ||
-      loading.effects['institution_create/submitInstitution'],
   };
 })
 @createForm({
@@ -52,10 +48,6 @@ import styles from './style';
     )(owner),
 })
 class ClaimInstitution extends Component {
-  state = {
-    barStyle: 'light-content',
-  };
-
   componentDidMount() {
     this.props.track('进入');
   }
@@ -74,48 +66,26 @@ class ClaimInstitution extends Component {
   };
 
   handleBusinessCardPress = () => {
-    this.setState({ barStyle: 'dark-content' }, () => {
-      launchImagePicker(response => {
-        this.setState({ barStyle: 'light-content' }, () => {
-          if (!response.didCancel && !response.error) {
-            this.handleUpload(response);
-          }
-        });
-      });
+    launchImagePicker(response => {
+      if (!response.didCancel && !response.error) {
+        this.handleUpload(response);
+      }
     });
   };
 
   handleSavePress = () => {
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.handleSubmit(values);
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: 'ClaimMyInstitutionAvatarUpload',
+            params: {
+              id: this.props.id,
+              values,
+            },
+          }),
+        );
       }
-    });
-  };
-
-  handleSubmit = (value) => {
-    // institution claim saga check
-    this.props.dispatch({
-      type: this.props.id
-        ? 'institution_create/claimInstitution'
-        : 'institution_create/submitInstitution',
-      id: this.props.id,
-      callback: success => {
-        if (success) {
-          this.props.dispatch(
-            NavigationActions.navigate({
-              routeName: 'CreateMyInstitutionDone',
-              params: {
-                id: this.props.id,
-              },
-            }),
-          );
-        }
-        request.post(`${runtimeConfig.NODE_SERVICE_URL}/feedback`, {
-          content: `${value.owner_name} 入驻了 ID 为 ${this.props.id} 的机构，请快去审核`,
-          mobile: `${value.owner_mobile}`,
-        });
-      },
     });
   };
 
@@ -124,17 +94,17 @@ class ClaimInstitution extends Component {
     return (
       <View style={styles.container}>
         <NavBar
-          barStyle={this.state.barStyle}
+          barStyle="dark-content"
           back
-          gradient
           title="身份认证"
+          wrapperStyle={styles.navBar.wrapper}
           renderRight={() => {
             if (this.props.submitting) {
               return <ActivityIndicator color="white" />;
             }
             return (
               <Touchable borderless onPress={this.handleSavePress}>
-                <Text style={styles.navBar.right}>提交</Text>
+                <Text style={styles.navBar.right}>下一步</Text>
               </Touchable>
             );
           }}
@@ -166,7 +136,7 @@ class ClaimInstitution extends Component {
               error={getFieldError('owner_title')}
             />,
           )}
-          {getFieldDecorator('owner_mobile')(
+          {/* {getFieldDecorator('owner_mobile')(
             <InputItem
               style={styles.inputItem.container}
               titleStyle={styles.inputItem.title}
@@ -178,7 +148,7 @@ class ClaimInstitution extends Component {
               }}
               error={getFieldError('owner_mobile')}
             />,
-          )}
+          )} */}
           {getFieldDecorator('owner_wechat')(
             <InputItem
               style={styles.inputItem.container}
@@ -215,11 +185,12 @@ class ClaimInstitution extends Component {
               error={getFieldError('owner_card')}
             />,
           )}
-          <View style={styles.notice.container}>
+          <Flex style={styles.notice.container} justify="center">
+            <Image source={require('asset/alert_icon.png')} />
             <Text style={styles.notice.text}>
-              以上信息均用作审核使用，平台保证您的信息安全
+              平台严格保证入驻项目及机构质量，以上信息便于平台帮您把关
             </Text>
-          </View>
+          </Flex>
         </EnhancedScroll>
       </View>
     );

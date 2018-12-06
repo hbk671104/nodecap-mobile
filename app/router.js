@@ -32,7 +32,6 @@ import DeviceInfo from 'react-native-device-info';
 import Base64 from 'utils/base64';
 import store from '../index';
 
-import { setStatusBar } from 'component/uikit/statusBar';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
@@ -128,6 +127,7 @@ import CreateMyProjectSocial from 'container/individual/self/my_project/create/n
 import CreateMyProjectRoadMap from 'container/individual/self/my_project/create/normal/steps/roadmap';
 import CreateMyProjectFunding from 'container/individual/self/my_project/create/normal/steps/funding';
 import ClaimMyProject from 'container/individual/self/my_project/create/claim';
+import ClaimMyProjectAvatarUpload from 'container/individual/self/my_project/create/claim/avatar_upload';
 import ClaimMyProjectWrap from 'container/individual/self/my_project/create/claim/wrap';
 import CreateMyProjectDone from 'container/individual/self/my_project/create/done';
 import CreateMyProjectTagSelect from 'container/individual/self/my_project/create/tag_select';
@@ -140,6 +140,7 @@ import CreateMyInstitutionSingleMember from 'container/individual/self/my_instit
 import CreateMyInstitutionServedProject from 'container/individual/self/my_institution/create/served_project';
 import CreateMyInstitutionSearch from 'container/individual/self/my_institution/search';
 import ClaimMyInstitution from 'container/individual/self/my_institution/claim';
+import ClaimMyInstitutionAvatarUpload from 'container/individual/self/my_institution/claim/avatar_upload';
 import ClaimMyInstitutionWrap from 'container/individual/self/my_institution/claim/wrap';
 import CreateMyInstitutionDone from 'container/individual/self/my_institution/done';
 import ClaimMyInstitutionSearch from 'container/individual/self/my_institution/create/search';
@@ -300,7 +301,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '首页',
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           tabBarOnPress({ navigation, defaultHandler });
-          setStatusBar('dark-content');
         },
       },
     },
@@ -310,7 +310,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '指数',
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           tabBarOnPress({ navigation, defaultHandler });
-          setStatusBar('light-content');
         },
       },
     },
@@ -323,7 +322,6 @@ const IndividualTab = createBottomTabNavigator(
           tabBarVisible,
           tabBarOnPress: ({ defaultHandler }) => {
             tabBarOnPress({ navigation, defaultHandler });
-            setStatusBar('light-content');
           },
         };
       },
@@ -334,7 +332,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '消息',
         tabBarOnPress: ({ defaultHandler }) => {
           defaultHandler();
-          setStatusBar('dark-content');
         },
       },
     },
@@ -344,7 +341,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '我的',
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           tabBarOnPress({ navigation, defaultHandler });
-          setStatusBar('dark-content');
         },
       },
     },
@@ -416,6 +412,7 @@ const IndividualStack = createStackNavigator(
     CreateMyProjectRoadMap,
     CreateMyProjectFunding,
     ClaimMyProject,
+    ClaimMyProjectAvatarUpload,
     CreateMyProjectDone,
     CreateMyProjectTagSelect,
     CommentCoin,
@@ -430,6 +427,7 @@ const IndividualStack = createStackNavigator(
     CreateMyInstitutionServedProject,
     ClaimMyInstitutionSearch,
     ClaimMyInstitution,
+    ClaimMyInstitutionAvatarUpload,
     CreateMyInstitutionDone,
     InviteComment,
     Favored,

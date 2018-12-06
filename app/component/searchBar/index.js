@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 
-import NodeCapIcon from '../icon/nodecap';
+import Icon from 'component/uikit/icon';
 import Input from '../uikit/textInput';
 import styles from './style';
 
@@ -16,8 +16,8 @@ const searchBar = props => (
       returnKeyType={props.returnKeyType}
     />
     {props.showMagnifier && (
-      <View style={styles.icon.container}>
-        <NodeCapIcon name="sousuo" size={16} color={props.iconColor} />
+      <View style={[styles.icon.container, props.iconContainerStyle]}>
+        <Icon name="search" size={20} color={props.iconColor} />
       </View>
     )}
   </View>

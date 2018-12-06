@@ -1,19 +1,35 @@
 import React, { PureComponent } from 'react';
-import { View, Text, ActivityIndicator } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ActivityIndicator,
+  Linking,
+  Keyboard,
+  Platform,
+  KeyboardAvoidingView,
+  LayoutAnimation,
+} from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withState, withProps, withStateHandlers } from 'recompose';
 import { Flex } from 'antd-mobile';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import moment from 'moment';
+import JPush from 'jpush-react-native';
+import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
+import Touchable from 'component/uikit/touchable';
 import SafeArea from 'component/uikit/safeArea';
+import ActionAlert from 'component/action_alert';
 import { formatMessage } from 'utils/nim';
 import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
 import { hideRealMobile } from '../../../../utils/utils';
+
+const HEIGHT = 111;
 
 @global.bindTrack({
   page: '聊天页',
@@ -33,6 +49,20 @@ import { hideRealMobile } from '../../../../utils/utils';
 @compose(
   withState('data', 'setData', []),
   withState('inLastPage', 'setInLastPage', false),
+  withStateHandlers(
+    () => ({
+      showContactModal: false,
+    }),
+    {
+      toggleContactModal: () => flag => {
+        LayoutAnimation.easeInEaseOut();
+        return {
+          showContactModal: flag,
+        };
+      },
+    },
+  ),
+  withState('showNotificationModal', 'setShowNotificationModal', false),
   withProps(({ user, target }) => ({
     user_im_id: R.path(['im_info', 'im_id'])(user),
     target_im_id: R.path(['im_info', 'im_id'])(target),
@@ -44,6 +74,7 @@ class IMPage extends PureComponent {
     if (this.props.connected) {
       this.loadTargetInfo();
     }
+    this.checkPushPermission();
   }
 
   componentDidMount() {
@@ -140,6 +171,28 @@ class IMPage extends PureComponent {
     });
   };
 
+  sendMsg = text => {
+    const { target_im_id } = this.props;
+    global.nim.sendText({
+      scene: 'p2p',
+      to: target_im_id,
+      text,
+      done: (error, res) => {
+        const { data, user } = this.props;
+        if (!error) {
+          this.props.setData(
+            R.concat([
+              formatMessage(res, {
+                name: R.path(['realname'])(user),
+                avatar: R.path(['avatar_url'])(user),
+              }),
+            ])(data),
+          );
+        }
+      },
+    });
+  };
+
   isCloseToTop({ layoutMeasurement, contentOffset, contentSize }) {
     const paddingToTop = 120;
     return (
@@ -169,34 +222,43 @@ class IMPage extends PureComponent {
   };
 
   handleSend = ([message]) => {
-    const { data, target_im_id } = this.props;
     const { text } = message;
-    this.props.setData([message].concat(data));
+    this.sendMsg(text);
+  };
 
-    global.nim.sendText({
-      scene: 'p2p',
-      to: target_im_id,
-      text,
-      done: (error, res) => {
-        // const { data, user } = this.props;
-        if (!error) {
-          // this.props.setData(
-          //   R.concat([
-          //     formatMessage(res, {
-          //       name: R.path(['realname'])(user),
-          //       avatar: R.path(['avatar_url'])(user),
-          //     }),
-          //   ])(data),
-          // );
+  handleSendWechatPress = () => {
+    const wechat = R.path(['profile', 'wechat'])(this.props.user);
+    if (wechat) {
+      this.sendMsg(`您好，这是我的微信号 ${wechat}`);
+      return;
+    }
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'EditProfile',
+        params: {
+          key: 'wechat',
+          title: '微信',
+        },
+      }),
+    );
+  };
+
+  checkPushPermission = () => {
+    if (Platform.OS === 'ios') {
+      JPush.hasPermission(res => {
+        if (res) {
+          return;
         }
-      },
-    });
+        this.props.setShowNotificationModal(true);
+      });
+    }
   };
 
   renderNavBar = () => (
     <NavBar
-      gradient
+      barStyle="dark-content"
       back
+      wrapperStyle={styles.navBar.wrapper}
       renderTitle={() => {
         if (this.props.loading) {
           return <ActivityIndicator color="white" />;
@@ -231,44 +293,143 @@ class IMPage extends PureComponent {
           </View>
         );
       }}
+      renderBottom={() => (
+        <View style={styles.navBar.bottom.container}>
+          <Touchable
+            style={{ flex: 1, justifyContent: 'center' }}
+            onPress={() => this.sendMsg('您好，方便留一下手机号吗？')}
+          >
+            <Flex style={styles.navBar.bottom.group.container}>
+              <Image source={require('asset/im/mobile_im.png')} />
+              <Text style={styles.navBar.bottom.group.title}>要手机</Text>
+            </Flex>
+          </Touchable>
+          <View style={styles.navBar.bottom.divider} />
+          <Touchable
+            style={{ flex: 1, justifyContent: 'center' }}
+            onPress={() => this.sendMsg('您好，方便留一下微信号吗？')}
+          >
+            <Flex style={styles.navBar.bottom.group.container}>
+              <Image source={require('asset/im/wechat_im.png')} />
+              <Text style={styles.navBar.bottom.group.title}>要微信号</Text>
+            </Flex>
+          </Touchable>
+        </View>
+      )}
     />
   );
+
+  renderAccessory = () => {
+    const { user } = this.props;
+    const mobile = R.path(['mobile'])(user);
+    return (
+      <View
+        style={[
+          styles.accessory.container,
+          !this.props.showContactModal
+            ? {
+                bottom: -HEIGHT,
+              }
+            : {
+                bottom: 0,
+              },
+        ]}
+      >
+        <Flex>
+          <Touchable
+            onPress={() => {
+              this.sendMsg(`您好，这是我的手机号 ${mobile}`);
+            }}
+          >
+            <View style={styles.accessory.group.container}>
+              <View style={styles.accessory.group.image}>
+                <Image source={require('asset/chat_mobile_big.png')} />
+              </View>
+              <Text style={styles.accessory.group.title}>发送手机</Text>
+            </View>
+          </Touchable>
+          <Touchable onPress={this.handleSendWechatPress}>
+            <View style={styles.accessory.group.container}>
+              <View style={styles.accessory.group.image}>
+                <Image source={require('asset/chat_wechat_big.png')} />
+              </View>
+              <Text style={styles.accessory.group.title}>发送微信</Text>
+            </View>
+          </Touchable>
+        </Flex>
+      </View>
+    );
+  };
 
   render() {
     const { data, user, user_im_id, inLastPage } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
-        <Chat
-          loadEarlier
-          renderLoadEarlier={p => {
-            if (inLastPage) {
-              return null;
-            }
-            if (R.length(data) < 50) {
-              return null;
-            }
-            return (
-              <View style={{ marginVertical: 12 }}>
-                <ActivityIndicator />
-              </View>
-            );
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={1}
+          style={{
+            flex: 1,
+            marginBottom: this.props.showContactModal ? HEIGHT - 10 : 0,
           }}
-          bottomOffset={getBottomSpace()}
-          user={{
-            _id: user_im_id,
-            name: R.path(['realname'])(user),
-            avatar: R.path(['avatar_url'])(user),
+          behavior="padding"
+          enabled
+        >
+          <Chat
+            chatRef={ref => {
+              this.chatRef = ref;
+            }}
+            loadEarlier
+            renderLoadEarlier={p => {
+              if (inLastPage) {
+                return null;
+              }
+              if (R.length(data) < 50) {
+                return null;
+              }
+              return (
+                <View style={{ marginVertical: 12 }}>
+                  <ActivityIndicator />
+                </View>
+              );
+            }}
+            bottomOffset={getBottomSpace()}
+            user={{
+              _id: user_im_id,
+              name: R.path(['realname'])(user),
+              avatar: R.path(['avatar_url'])(user),
+            }}
+            messages={data}
+            showAvatarForEveryMessage
+            onSend={this.handleSend}
+            listViewProps={{
+              scrollEventThrottle: 50,
+              onScroll: ({ nativeEvent }) => {
+                if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
+                if (this.props.showContactModal) {
+                  this.props.toggleContactModal(false);
+                }
+                Keyboard.dismiss();
+              },
+            }}
+            toggleAccessory={() => {
+              Keyboard.dismiss();
+              this.props.toggleContactModal(true);
+            }}
+          />
+        </KeyboardAvoidingView>
+        {this.renderAccessory()}
+        <ActionAlert
+          visible={this.props.showNotificationModal}
+          title="开启推送通知"
+          content="及时获知对方回复，把握合作机会"
+          actionTitle="立即开启"
+          image={require('asset/notification_check.png')}
+          action={() => {
+            Linking.openURL('app-settings:');
+            this.props.setShowNotificationModal(false);
           }}
-          messages={data}
-          showAvatarForEveryMessage
-          onSend={this.handleSend}
-          listViewProps={{
-            scrollEventThrottle: 400,
-            onScroll: ({ nativeEvent }) => {
-              if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
-            },
-          }}
+          onBackdropPress={() => this.props.setShowNotificationModal(false)}
         />
       </SafeArea>
     );

@@ -26,6 +26,7 @@ const initialParams = {
   industry_id: '',
   tag_id: '',
   region_id: '',
+  purpose_id: '',
   is_reachable: 0,
   has_weekly: 0,
   has_rating: 0,

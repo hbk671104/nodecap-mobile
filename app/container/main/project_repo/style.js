@@ -5,6 +5,10 @@ export default {
     flex: 1,
     backgroundColor: 'white',
   },
+  navBar: {
+    borderBottomColor: '#E9E9E9',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
   tabBar: {
     container: {
       height: 40,
@@ -15,9 +19,10 @@ export default {
     tab: {
       height: 40,
       paddingBottom: 0,
+      justifyContent: 'center',
       alignItems: 'center',
       paddingHorizontal: 20,
-      flexDirection: 'row',
+      // flexDirection: 'row',
       position: 'relative',
     },
     hot: {
@@ -28,22 +33,22 @@ export default {
     },
     text: {
       fontSize: 14,
+      fontWeight: 'bold',
     },
     underline: {
       height: 0,
     },
     under: {
-      height: 3,
+      // height: 3,
       position: 'absolute',
-      bottom: 4,
+      bottom: 0,
       left: 0,
       right: 0,
       alignItems: 'center',
     },
     underInner: {
-      width: 25,
-      height: 3,
-      borderRadius: 3,
+      width: 15,
+      height: 2.5,
       backgroundColor: '#1890FF',
     },
   },

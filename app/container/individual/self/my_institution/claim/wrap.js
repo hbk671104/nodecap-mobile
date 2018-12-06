@@ -15,16 +15,17 @@ class ClaimWrap extends Component {
         },
       }),
     );
-  }
+  };
+
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <NavBar
-          back
-          title="入驻"
-        />
+        <NavBar back barStyle="dark-content" title="入驻" />
         <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
-          <Image style={{ marginTop: 20, width: 291, alignSelf: 'center' }} source={require('asset/institution_create/institution_claim_tip.jpg')} />
+          <Image
+            style={{ marginTop: 20, width: 291, alignSelf: 'center' }}
+            source={require('asset/institution_create/institution_claim_tip.jpg')}
+          />
           <Touchable style={styles.button.container} onPress={this.toClaim}>
             <Text style={styles.button.title}>立即入驻</Text>
           </Touchable>

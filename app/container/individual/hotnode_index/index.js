@@ -35,9 +35,7 @@ class HotnodeIndex extends PureComponent {
     });
   };
 
-  renderItem = ({ item }) => (
-    <CategoryItem data={item} />
-  );
+  renderItem = ({ item }) => <CategoryItem data={item} />;
 
   renderHeader = () => (
     <View>
@@ -52,10 +50,8 @@ class HotnodeIndex extends PureComponent {
     const { data, pagination, loading } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar barStyle="dark-content" gradient title="Hotnode 指数" />
-        <ScrollView>
-          {this.renderHeader()}
-        </ScrollView>
+        <NavBar barStyle="dark-content" title="Hotnode 指数" />
+        <ScrollView>{this.renderHeader()}</ScrollView>
       </View>
     );
   }
