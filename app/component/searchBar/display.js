@@ -28,11 +28,18 @@ export const SearchBarDisplayHomepage = ({
   </Touchable>
 );
 
-const searchBarDisplay = ({ style, onPress, title, titleStyle, iconColor }) => (
+const searchBarDisplay = ({
+  style,
+  onPress,
+  title,
+  titleStyle,
+  iconColor,
+  iconContainerStyle,
+}) => (
   <Touchable onPress={onPress}>
     <View style={[styles.container, style]}>
       <Text style={[styles.title, titleStyle]}>{title}</Text>
-      <View style={styles.icon.container}>
+      <View style={[styles.icon.container, iconContainerStyle]}>
         <Icon name="search" size={20} color={iconColor} />
       </View>
     </View>

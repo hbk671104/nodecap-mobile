@@ -13,7 +13,6 @@ import DrawerLayout from 'react-native-drawer-layout';
 
 import NavBar from 'component/navBar';
 import SearchBarDisplay from 'component/searchBar/display';
-import { setStatusBar } from 'component/uikit/statusBar';
 
 import ProjectList from './list';
 import ProjectSets from './sets';
@@ -79,7 +78,6 @@ export default class ProjectRepo extends Component {
   };
 
   handleOnDrawerClose = () => {
-    setStatusBar('light-content');
     this.props.dispatch(
       NavigationActions.setParams({
         params: { tabBarVisible: true },
@@ -94,7 +92,6 @@ export default class ProjectRepo extends Component {
       return;
     }
 
-    setStatusBar('dark-content');
     this.props.dispatch(
       NavigationActions.setParams({
         params: { tabBarVisible: false },
@@ -108,9 +105,7 @@ export default class ProjectRepo extends Component {
   };
 
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
-    const textColor = isTabActive ? '#1890FF' : 'rgba(0, 0, 0, 0.65)';
-    const fontWeight = isTabActive ? 'bold' : 'normal';
-    const useIcon = name === '项目大全';
+    const textColor = isTabActive ? 'rgba(0, 0, 0, 0.85)' : '#B8CBDD';
     return (
       <Button
         key={`${name}_${page}`}
@@ -121,21 +116,20 @@ export default class ProjectRepo extends Component {
         onLayout={onLayoutHandler}
       >
         <View style={[styles.tabBar.tab]}>
-          {useIcon ? (
-            <Image
-              source={require('asset/tabIcon/latest/project_sel.png')}
-              style={styles.tabBar.hot}
-            />
-          ) : null}
-          <Text style={[{ color: textColor, fontWeight }, styles.tabBar.text]}>
+          <Text
+            style={[
+              styles.tabBar.text,
+              { color: textColor, fontWeight: 'bold' },
+            ]}
+          >
             {name}
           </Text>
-          {isTabActive ? (
-            <View style={styles.tabBar.under}>
-              <View style={styles.tabBar.underInner} />
-            </View>
-          ) : null}
         </View>
+        {isTabActive && (
+          <View style={styles.tabBar.under}>
+            <View style={styles.tabBar.underInner} />
+          </View>
+        )}
       </Button>
     );
   }
@@ -145,8 +139,8 @@ export default class ProjectRepo extends Component {
       style={styles.tabBar.container}
       tabStyle={styles.tabBar.tab}
       textStyle={styles.tabBar.text}
-      activeTextColor="#1890FF"
-      inactiveTextColor="rgba(0, 0, 0, 0.65)"
+      activeTextColor="rgba(0, 0, 0, 0.85)"
+      inactiveTextColor="#B8CBDD"
       underlineStyle={styles.tabBar.underline}
       renderTab={this.renderTab}
     />
@@ -170,12 +164,20 @@ export default class ProjectRepo extends Component {
       >
         <View style={styles.container}>
           <NavBar
-            gradient
+            barStyle="dark-content"
+            wrapperStyle={styles.navBar}
             renderTitle={() => (
               <View style={styles.searchBar.container}>
                 <SearchBarDisplay
+                  style={{
+                    backgroundColor: '#F5F5F5',
+                    flexDirection: 'row-reverse',
+                  }}
+                  iconContainerStyle={{ marginLeft: 12 }}
                   title="搜索项目名、Token"
                   onPress={this.handleSearchPress}
+                  titleStyle={{ color: '#999999' }}
+                  iconColor="#666666"
                 />
               </View>
             )}

@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-navigation';
 import { handleSelection as selection } from 'utils/utils';
 import FilterGroup from './group';
 import MiscGroup from './misc_group';
+import ProgressGroup from './progress_group';
 import FilterBottom from './bottom';
 import { emitter } from '../index';
 import styles from './style';
@@ -19,6 +20,7 @@ import styles from './style';
   institution: R.pathOr([], ['institution', 'data'])(filter),
   coinTag: R.pathOr([], ['coinTag', 'data'])(filter),
   regions: R.pathOr([], ['constants', 'regions'])(global),
+  purpose: R.pathOr([], ['constants', 'purpose'])(global),
   count: R.pathOr(0, ['list', 'count'])(public_project),
   params: R.pathOr({}, ['list', 'params'])(public_project),
   loading: loading.effects['public_project/fetch'],
@@ -96,17 +98,49 @@ export default class ProjectListFilter extends Component {
     });
   };
 
+  handleProgressSelection = ({ value, name }) => {
+    this.props.track('筛选项点击', { name });
+    this.props.dispatch({
+      type: 'public_project/fetchCount',
+      params: {
+        ...this.props.params,
+        progress: value,
+      },
+    });
+  };
+
+  handleProgressAll = () => {
+    this.props.dispatch({
+      type: 'public_project/fetchCount',
+      params: {
+        ...this.props.params,
+        progress: '',
+      },
+    });
+  };
+
   render() {
-    const { institution, coinTag, regions, params } = this.props;
+    const { institution, coinTag, regions, purpose, params } = this.props;
 
     const industry_id = R.pathOr('', ['industry_id'])(params);
     const tag_id = R.pathOr('', ['tag_id'])(params);
     const region_id = R.pathOr('', ['region_id'])(params);
+    const purpose_id = R.pathOr('', ['purpose_id'])(params);
 
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView contentContainerStyle={styles.contentContainer}>
           <Text style={styles.title}>筛选条件</Text>
+          <FilterGroup
+            title="项目需求"
+            data={purpose}
+            selection={R.isEmpty(purpose_id) ? [] : R.split(',')(purpose_id)}
+            onSelect={({ value, name }) =>
+              this.handleSelection({ value, name, key: 'purpose_id' })
+            }
+            onAllPress={this.handleAllPress('purpose_id')}
+          />
+          <View style={styles.separator} />
           <MiscGroup
             title="亮点"
             selection={params}
@@ -142,6 +176,13 @@ export default class ProjectListFilter extends Component {
               this.handleSelection({ value, name, key: 'region_id' })
             }
             onAllPress={this.handleAllPress('region_id')}
+          />
+          <View style={styles.separator} />
+          <ProgressGroup
+            title="募资阶段"
+            selection={params}
+            onSelect={this.handleProgressSelection}
+            onAllPress={this.handleProgressAll}
           />
         </ScrollView>
         <FilterBottom

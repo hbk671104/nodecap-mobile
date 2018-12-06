@@ -4,71 +4,118 @@ import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
 
-const header = ({ count, params, onSelect, selection, onFilterPress }) => {
+const header = ({ params, onSelect, onFilterPress }) => {
+  const is_reachable = R.pathOr(0, ['is_reachable'])(params);
+  const has_weekly = R.pathOr(0, ['has_weekly'])(params);
+  const has_rating = R.pathOr(0, ['has_rating'])(params);
+  const has_white_paper = R.pathOr(0, ['has_white_paper'])(params);
+  const is_renowned_industry = R.pathOr(0, ['is_renowned_industry'])(params);
+
   const has_filter =
     !R.isEmpty(params.progress) ||
     !R.isEmpty(params.industry_id) ||
     !R.isEmpty(params.tag_id) ||
     !R.isEmpty(params.region_id) ||
-    params.is_reachable !== 0 ||
-    params.has_weekly !== 0 ||
-    params.has_rating !== 0 ||
-    params.has_white_paper !== 0 ||
-    params.is_renowned_industry !== 0;
+    !R.isEmpty(params.purpose_id) ||
+    is_reachable !== 0 ||
+    has_weekly !== 0 ||
+    has_rating !== 0 ||
+    has_white_paper !== 0 ||
+    is_renowned_industry !== 0;
   return (
     <View style={styles.container}>
       <View style={styles.content.container}>
-        <Text style={styles.content.title}>
+        {/* <Text style={styles.content.title}>
           当前：
           <Text style={{ fontWeight: 'bold', color: '#1890FF' }}>{count}</Text>
-        </Text>
+        </Text> */}
         <View style={styles.content.tag.container}>
           <Touchable
             style={[
               styles.content.tag.wrapper,
-              selection === '2' && styles.content.tag.highlight,
+              is_reachable === 1 && styles.content.tag.highlight,
             ]}
-            onPress={() => onSelect({ value: '2', name: '即将开始' })}
+            onPress={() =>
+              onSelect({
+                value: is_reachable === 0 ? 1 : 0,
+                key: 'is_reachable',
+                name: '即将开始',
+              })
+            }
           >
             <Text
               style={[
                 styles.content.tag.title,
-                selection === '2' && styles.content.tag.titleHighlight,
+                is_reachable === 1 && styles.content.tag.titleHighlight,
               ]}
             >
-              即将开始
+              可联系
             </Text>
           </Touchable>
           <Touchable
             style={[
               styles.content.tag.wrapper,
-              selection === '3' && styles.content.tag.highlight,
+              has_rating === 1 && styles.content.tag.highlight,
             ]}
-            onPress={() => onSelect({ value: '3', name: '进行中' })}
+            onPress={() =>
+              onSelect({
+                value: has_rating === 0 ? 1 : 0,
+                key: 'has_rating',
+                name: '有评级',
+              })
+            }
           >
             <Text
               style={[
                 styles.content.tag.title,
-                selection === '3' && styles.content.tag.titleHighlight,
+                has_rating === 1 && styles.content.tag.titleHighlight,
               ]}
             >
-              进行中
+              有评级
             </Text>
           </Touchable>
           <Touchable
             style={[
               styles.content.tag.wrapper,
-              selection === '4' && styles.content.tag.highlight,
+              is_renowned_industry === 1 && styles.content.tag.highlight,
             ]}
-            onPress={() => onSelect({ value: '4', name: '已结束' })}
+            onPress={() =>
+              onSelect({
+                value: is_renowned_industry === 0 ? 1 : 0,
+                key: 'is_renowned_industry',
+                name: '知名机构所投',
+              })
+            }
           >
             <Text
               style={[
                 styles.content.tag.title,
-                selection === '4' && styles.content.tag.titleHighlight,
+                is_renowned_industry === 1 && styles.content.tag.titleHighlight,
               ]}
             >
-              已结束
+              知名机构所投
+            </Text>
+          </Touchable>
+          <Touchable
+            style={[
+              styles.content.tag.wrapper,
+              has_weekly === 1 && styles.content.tag.highlight,
+            ]}
+            onPress={() =>
+              onSelect({
+                value: has_weekly === 0 ? 1 : 0,
+                key: 'has_weekly',
+                name: '有周报',
+              })
+            }
+          >
+            <Text
+              style={[
+                styles.content.tag.title,
+                has_weekly === 1 && styles.content.tag.titleHighlight,
+              ]}
+            >
+              有周报
             </Text>
           </Touchable>
         </View>
@@ -120,12 +167,11 @@ const styles = {
     tag: {
       container: {
         flexDirection: 'row',
-        marginLeft: 12,
       },
       wrapper: {
         borderRadius: 2,
         height: 28.5,
-        width: 60,
+        paddingHorizontal: 8,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F5F5F5',

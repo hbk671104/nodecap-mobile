@@ -32,7 +32,6 @@ import DeviceInfo from 'react-native-device-info';
 import Base64 from 'utils/base64';
 import store from '../index';
 
-import { setStatusBar } from 'component/uikit/statusBar';
 import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
@@ -302,7 +301,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '首页',
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           tabBarOnPress({ navigation, defaultHandler });
-          setStatusBar('dark-content');
         },
       },
     },
@@ -312,7 +310,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '指数',
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           tabBarOnPress({ navigation, defaultHandler });
-          setStatusBar('light-content');
         },
       },
     },
@@ -325,7 +322,6 @@ const IndividualTab = createBottomTabNavigator(
           tabBarVisible,
           tabBarOnPress: ({ defaultHandler }) => {
             tabBarOnPress({ navigation, defaultHandler });
-            setStatusBar('light-content');
           },
         };
       },
@@ -336,7 +332,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '消息',
         tabBarOnPress: ({ defaultHandler }) => {
           defaultHandler();
-          setStatusBar('dark-content');
         },
       },
     },
@@ -346,7 +341,6 @@ const IndividualTab = createBottomTabNavigator(
         title: '我的',
         tabBarOnPress: ({ navigation, defaultHandler }) => {
           tabBarOnPress({ navigation, defaultHandler });
-          setStatusBar('dark-content');
         },
       },
     },

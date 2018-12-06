@@ -62,25 +62,15 @@ export default class ProjectList extends Component {
     });
   }
 
-  handleProgressSelection = ({ value, name }) => {
+  handleMiscSelection = ({ value, key, name }) => {
     this.props.track('筛选项点击', { name });
-    if (R.path(['params', 'progress'])(this.props) === value) {
-      this.props.dispatch({
-        type: 'public_project/fetch',
-        params: {
-          ...this.props.params,
-          progress: '',
-        },
-      });
-    } else {
-      this.props.dispatch({
-        type: 'public_project/fetch',
-        params: {
-          ...this.props.params,
-          progress: value,
-        },
-      });
-    }
+    this.props.dispatch({
+      type: 'public_project/fetch',
+      params: {
+        ...this.props.params,
+        [key]: value,
+      },
+    });
   };
 
   handleItemPress = item => () => {
@@ -96,14 +86,6 @@ export default class ProjectList extends Component {
   };
 
   handleFilterPress = () => {
-    // setStatusBar('dark-content');
-    // this.props.dispatch(
-    //   NavigationActions.setParams({
-    //     params: { tabBarVisible: false },
-    //     key: 'ProjectRepo',
-    //   }),
-    // );
-
     this.props.drawerRef.openDrawer();
   };
 
@@ -114,13 +96,12 @@ export default class ProjectList extends Component {
   renderSeparator = () => <View style={styles.separator} />;
 
   renderHeader = () => {
-    const progress = R.pathOr('', ['progress'])(this.props.params);
     return (
       <Header
         {...this.props}
-        selection={progress}
+        selection={this.props.params}
         onFilterPress={this.handleFilterPress}
-        onSelect={this.handleProgressSelection}
+        onSelect={this.handleMiscSelection}
       />
     );
   };
