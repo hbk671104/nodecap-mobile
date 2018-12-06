@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator, Keyboard, KeyboardAvoidingView, LayoutAnimation } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withState, withProps, withStateHandlers } from 'recompose';
 import { Flex } from 'antd-mobile';
 import { getBottomSpace } from 'react-native-iphone-x-helper';
 import moment from 'moment';
@@ -15,6 +15,8 @@ import { formatMessage } from 'utils/nim';
 import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
 import { hideRealMobile } from '../../../../utils/utils';
+
+const HEIGHT = 111;
 
 @global.bindTrack({
   page: '聊天页',
@@ -34,6 +36,19 @@ import { hideRealMobile } from '../../../../utils/utils';
 @compose(
   withState('data', 'setData', []),
   withState('inLastPage', 'setInLastPage', false),
+  withStateHandlers(
+    () => ({
+      showContactModal: false,
+    }),
+    {
+      toggleContactModal: () => (flag) => {
+        LayoutAnimation.easeInEaseOut();
+        return {
+          showContactModal: flag,
+        };
+      },
+    }
+  ),
   withProps(({ user, target }) => ({
     user_im_id: R.path(['im_info', 'im_id'])(user),
     target_im_id: R.path(['im_info', 'im_id'])(target),
@@ -266,8 +281,13 @@ class IMPage extends PureComponent {
     const mobile = R.path(['mobile'])(user);
     const wechat = R.path(['profile', 'wechat'])(user);
     return (
-      <Flex style={styles.accessory.container}>
-        {!!mobile && (
+      <View style={[styles.accessory.container, !this.props.showContactModal ? {
+        bottom: -HEIGHT,
+      } : {
+        bottom: 0,
+      }]}
+      >
+        <Flex>
           <Touchable
             onPress={() => {
               this.sendMsg(`您好，这是我的手机号 ${mobile}`);
@@ -280,8 +300,6 @@ class IMPage extends PureComponent {
               <Text style={styles.accessory.group.title}>发送手机</Text>
             </View>
           </Touchable>
-        )}
-        {!!wechat && (
           <Touchable
             onPress={() => {
               this.sendMsg(`您好，这是我的微信号 ${wechat}`);
@@ -294,8 +312,8 @@ class IMPage extends PureComponent {
               <Text style={styles.accessory.group.title}>发送微信</Text>
             </View>
           </Touchable>
-        )}
-      </Flex>
+        </Flex>
+      </View>
     );
   };
 
@@ -304,12 +322,18 @@ class IMPage extends PureComponent {
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
-        <Chat
-          chatRef={ref => {
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={1}
+          style={{ flex: 1, marginBottom: this.props.showContactModal ? HEIGHT - 10 : 0 }}
+          behavior="padding"
+          enabled
+        >
+          <Chat
+            chatRef={ref => {
             this.chatRef = ref;
           }}
-          loadEarlier
-          renderLoadEarlier={p => {
+            loadEarlier
+            renderLoadEarlier={p => {
             if (inLastPage) {
               return null;
             }
@@ -322,23 +346,37 @@ class IMPage extends PureComponent {
               </View>
             );
           }}
-          bottomOffset={getBottomSpace()}
-          user={{
+            bottomOffset={getBottomSpace()}
+            user={{
             _id: user_im_id,
             name: R.path(['realname'])(user),
             avatar: R.path(['avatar_url'])(user),
           }}
-          messages={data}
-          showAvatarForEveryMessage
-          onSend={this.handleSend}
-          listViewProps={{
-            scrollEventThrottle: 400,
-            onScroll: ({ nativeEvent }) => {
-              if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
-            },
-          }}
-          renderAccessory={this.renderAccessory}
-        />
+            messages={data}
+            showAvatarForEveryMessage
+            onSend={this.handleSend}
+            listViewProps={{
+              scrollEventThrottle: 50,
+              onScroll: ({ nativeEvent }) => {
+                  if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
+                  if (this.props.showContactModal) {
+                    this.props.toggleContactModal(false);
+                  }
+                  Keyboard.dismiss();
+                },
+            }}
+            toggleAccessory={() => {
+              Keyboard.dismiss();
+              this.props.toggleContactModal(true);
+            }}
+            onFocus={() => {
+              // setTimeout(() => {
+              //   this.props.toggleContactModal(false);
+              // }, 100);
+            }}
+          />
+        </KeyboardAvoidingView>
+        {this.renderAccessory()}
       </SafeArea>
     );
   }

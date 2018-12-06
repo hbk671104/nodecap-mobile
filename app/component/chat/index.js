@@ -39,7 +39,6 @@ class Chat extends PureComponent {
           style: {
             backgroundColor: '#f5f5f5',
           },
-          keyboardDismissMode: 'on-drag',
           keyboardShouldPersistTaps: 'handled',
         }}
         // minInputToolbarHeight={77}
@@ -55,6 +54,7 @@ class Chat extends PureComponent {
               multiline: false,
               value: undefined,
               returnKeyType: 'send',
+              onFocus: this.props.onFocus,
               onSubmitEditing: event => {
                 p.onSend(p);
                 this.clearText();
@@ -128,7 +128,7 @@ class Chat extends PureComponent {
         renderSend={p => (
           <Touchable
             style={{ marginHorizontal: 18, alignSelf: 'center' }}
-            onPress={this.toggleAccessory}
+            onPress={this.props.toggleAccessory}
           >
             <Image source={require('asset/chat_add.png')} />
           </Touchable>
