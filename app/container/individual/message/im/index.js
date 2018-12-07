@@ -244,6 +244,7 @@ class IMPage extends PureComponent {
         },
       }),
     );
+    this.props.toggleContactModal(false);
   };
 
   checkPushPermission = () => {
@@ -338,6 +339,7 @@ class IMPage extends PureComponent {
           <Touchable
             onPress={() => {
               this.sendMsg(`您好，这是我的手机号 ${mobile}`);
+              this.props.toggleContactModal(false);
             }}
           >
             <View style={styles.accessory.group.container}>
