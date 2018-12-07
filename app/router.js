@@ -530,8 +530,6 @@ class Router extends Component {
       type: 'app/checkCodePush',
     });
 
-    // check notif permission
-    this.checkPushPermission();
     handleBadgeAction();
 
     this.parseInviteKey();
@@ -657,8 +655,6 @@ class Router extends Component {
       this.props.dispatch({
         type: 'app/checkCodePush',
       });
-      // check notification permissions
-      this.checkPushPermission();
       handleBadgeAction();
       // clear notification unread
       // this.props.dispatch({
@@ -669,18 +665,6 @@ class Router extends Component {
       });
     }
     this.props.setAppState(nextAppState);
-  };
-
-  checkPushPermission = () => {
-    if (this.state.isIOS) {
-      setTimeout(() => {
-        JPush.hasPermission(res => {
-          if (!res && !global.__DEV__) {
-            this.props.setShowNotificationModal(true);
-          }
-        });
-      }, 1000);
-    }
   };
 
   backHandle = () => {

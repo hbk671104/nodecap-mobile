@@ -26,7 +26,6 @@ const initNIM = ({ account, token }) => {
       console.log('error', event.message);
     },
     onsessions: sessions => {
-      console.log('onsessions');
       store.dispatch({
         type: 'message_center/fetchSession',
         sessions,

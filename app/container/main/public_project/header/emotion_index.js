@@ -9,39 +9,51 @@ import { shadow } from '../../../../utils/style';
 import Gradient from 'component/uikit/gradient';
 
 const window = Dimensions.get('window');
-const expectationList = [{
- name: '铁头看多',
-  icon: require('asset/public_project/expectation_01.png'),
-}, {
-  name: '一般看多',
-  icon: require('asset/public_project/expectation_02.png'),
-}, {
-  name: '佛系持平',
-  icon: require('asset/public_project/expectation_03.png'),
-}, {
-  name: '一般看空',
-  icon: require('asset/public_project/expectation_04.png'),
-}, {
-  name: '大空头',
-  icon: require('asset/public_project/expectation_05.png'),
-}];
+const expectationList = [
+  {
+    name: '铁头看多',
+    icon: require('asset/public_project/expectation_01.png'),
+  },
+  {
+    name: '一般看多',
+    icon: require('asset/public_project/expectation_02.png'),
+  },
+  {
+    name: '佛系持平',
+    icon: require('asset/public_project/expectation_03.png'),
+  },
+  {
+    name: '一般看空',
+    icon: require('asset/public_project/expectation_04.png'),
+  },
+  {
+    name: '大空头',
+    icon: require('asset/public_project/expectation_05.png'),
+  },
+];
 
-const sentimentList = [{
-  name: '宁静',
-  icon: require('asset/public_project/sentiment_01.png'),
-}, {
-  name: '还行',
-  icon: require('asset/public_project/sentiment_02.png'),
-}, {
-  name: '紧张',
-  icon: require('asset/public_project/sentiment_03.png'),
-}, {
-  name: '恐惧',
-  icon: require('asset/public_project/sentiment_04.png'),
-}, {
-  name: '窒息',
-  icon: require('asset/public_project/sentiment_05.png'),
-}];
+const sentimentList = [
+  {
+    name: '宁静',
+    icon: require('asset/public_project/sentiment_01.png'),
+  },
+  {
+    name: '还行',
+    icon: require('asset/public_project/sentiment_02.png'),
+  },
+  {
+    name: '紧张',
+    icon: require('asset/public_project/sentiment_03.png'),
+  },
+  {
+    name: '恐惧',
+    icon: require('asset/public_project/sentiment_04.png'),
+  },
+  {
+    name: '窒息',
+    icon: require('asset/public_project/sentiment_05.png'),
+  },
+];
 
 const emotionIndex = ({
   market_sentiment: data,
@@ -50,8 +62,10 @@ const emotionIndex = ({
 }) => {
   const expectation = Math.floor(R.pathOr(0, ['expectation'])(data) * 100);
   const sentiment = Math.floor(R.pathOr(0, ['sentiment'])(data) * 100);
-  const expectationPosition = (window.width - 24) * R.pathOr(0, ['expectation'])(data) - 22;
-  const sentimentPosition = (window.width - 24) * R.pathOr(0, ['sentiment'])(data) - 22;
+  const expectationPosition =
+    (window.width - 24) * R.pathOr(0, ['expectation'])(data) - 22;
+  const sentimentPosition =
+    (window.width - 24) * R.pathOr(0, ['sentiment'])(data) - 22;
   return (
     <Group
       renderTitle={() => (
@@ -84,12 +98,14 @@ const emotionIndex = ({
           end={{ x: 1.0, y: 2.5 }}
         >
           <Flex style={{ height: 5 }}>
-            {R.map(i => <View style={styles.divider} />)(expectationList)}
+            {R.addIndex(R.map)((i, index) => (
+              <View key={`${index}`} style={styles.divider} />
+            ))(expectationList)}
           </Flex>
         </Gradient>
         <Flex style={{ marginTop: 14 }}>
-          {expectationList.map(i => (
-            <View style={{ flex: 1, alignItems: 'center' }} >
+          {expectationList.map((i, index) => (
+            <View key={`${index}`} style={{ flex: 1, alignItems: 'center' }}>
               <Image source={i.icon} />
               <Text style={styles.name}>{i.name}</Text>
             </View>
@@ -97,7 +113,12 @@ const emotionIndex = ({
         </Flex>
       </View>
       <View style={{ marginHorizontal: 12, marginTop: 47.5, marginBottom: 20 }}>
-        <View style={[styles.ratingName, { marginLeft: sentimentPosition, backgroundColor: '#F4AEAE' }]}>
+        <View
+          style={[
+            styles.ratingName,
+            { marginLeft: sentimentPosition, backgroundColor: '#F4AEAE' },
+          ]}
+        >
           <Text style={styles.ratingText}>{`${sentiment}%`}</Text>
           <View style={[styles.ratingArrow, { backgroundColor: '#F4AEAE' }]} />
         </View>
@@ -107,12 +128,14 @@ const emotionIndex = ({
           end={{ x: 1.0, y: 2.5 }}
         >
           <Flex style={{ height: 5 }}>
-            {R.map(i => <View style={styles.divider} />)(sentimentList)}
+            {R.addIndex(R.map)((i, index) => (
+              <View key={`${index}`} style={styles.divider} />
+            ))(sentimentList)}
           </Flex>
         </Gradient>
         <Flex style={{ marginTop: 14 }}>
-          {sentimentList.map(i => (
-            <View style={{ flex: 1, alignItems: 'center' }} >
+          {sentimentList.map((i, index) => (
+            <View key={`${index}`} style={{ flex: 1, alignItems: 'center' }}>
               <Image source={i.icon} />
               <Text style={styles.name}>{i.name}</Text>
             </View>
@@ -124,8 +147,18 @@ const emotionIndex = ({
 };
 
 const styles = {
-  divider: { flex: 1, borderRightColor: 'white', borderRightWidth: 1, height: 5 },
-  name: { marginTop: 5, fontSize: 11, color: 'rgba(0,0,0,0.45)', letterSpacing: 0.13 },
+  divider: {
+    flex: 1,
+    borderRightColor: 'white',
+    borderRightWidth: 1,
+    height: 5,
+  },
+  name: {
+    marginTop: 5,
+    fontSize: 11,
+    color: 'rgba(0,0,0,0.45)',
+    letterSpacing: 0.13,
+  },
   title: {
     container: {
       flexDirection: 'row',

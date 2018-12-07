@@ -75,7 +75,10 @@ class IMPage extends PureComponent {
       this.loadTargetInfo();
     }
     this.checkPushPermission();
-    Keyboard.addListener('keyboardWillShow', (e) => {
+    Keyboard.addListener('keyboardWillShow', e => {
+      this.props.toggleContactModal(false);
+    });
+    Keyboard.addListener('keyboardDidShow', e => {
       this.props.toggleContactModal(false);
     });
   }
@@ -330,11 +333,7 @@ class IMPage extends PureComponent {
     const { user } = this.props;
     const mobile = R.path(['mobile'])(user);
     return (
-      <View
-        style={[
-          styles.accessory.container,
-        ]}
-      >
+      <View style={[styles.accessory.container]}>
         <Flex>
           <Touchable
             onPress={() => {
@@ -395,7 +394,12 @@ class IMPage extends PureComponent {
           showAvatarForEveryMessage
           onSend={this.handleSend}
           listViewProps={{
-            scrollEventThrottle: 50,
+            scrollEventThrottle: 100,
+            onTouchStart: () => {
+              if (showContactModal) {
+                this.props.toggleContactModal(false);
+              }
+            },
             onScrollEndDrag: () => {
               if (showContactModal) {
                 this.props.toggleContactModal(false);
@@ -404,13 +408,21 @@ class IMPage extends PureComponent {
           }}
           toggleAccessory={() => {
             Keyboard.dismiss();
-            this.props.toggleContactModal(true);
+            if (Platform.OS === 'ios') {
+              this.props.toggleContactModal(true);
+            } else {
+              setTimeout(() => {
+                this.props.toggleContactModal(true);
+              }, 100);
+            }
           }}
           accessoryStyle={{
             height: 96,
           }}
           renderAccessory={showContactModal ? this.renderAccessory : null}
-          minInputToolbarHeight={!showContactModal ? 44 : 155}
+          minInputToolbarHeight={
+            !showContactModal ? 44 : Platform.OS === 'ios' ? 155 : 142
+          }
         />
         <ActionAlert
           visible={this.props.showNotificationModal}
