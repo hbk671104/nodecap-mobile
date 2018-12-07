@@ -23,9 +23,7 @@ import styles from './style';
 export default class CoinsInSet extends Component {
   onPressShare = () => {
     const request = {
-      webpageUrl: `${Config.MOBILE_SITE}/coin-set?id=${
-        this.props.set_id
-        }`,
+      webpageUrl: `${Config.MOBILE_SITE}/coin-set?id=${this.props.set_id}`,
       title: `「项目集」${this.props.tabLabel}`,
       description: '来 Hotnode, 发现最新最热项目！',
       thumbImage:
@@ -33,13 +31,16 @@ export default class CoinsInSet extends Component {
     };
 
     this.props.openShareModal({
-      types: [{
-        type: 'timeline',
-        ...request,
-      }, {
-        type: 'session',
-        ...request,
-      }],
+      types: [
+        {
+          type: 'timeline',
+          ...request,
+        },
+        {
+          type: 'session',
+          ...request,
+        },
+      ],
       onOpen: () => {
         this.props.dispatch(
           NavigationActions.setParams({
@@ -102,7 +103,7 @@ export default class CoinsInSet extends Component {
           <Text style={styles.headerHighlight}>
             {R.path(['pagination', 'total'])(this.props)}
           </Text>{' '}
-          个优质项目{' '}
+          个项目{' '}
         </Text>
         <Flex align="center">
           <Image
