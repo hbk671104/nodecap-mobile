@@ -29,8 +29,6 @@ import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
 import { hideRealMobile } from '../../../../utils/utils';
 
-const HEIGHT = 82;
-
 @global.bindTrack({
   page: '聊天页',
   name: 'App_IMPageOperation',
@@ -282,21 +280,10 @@ class IMPage extends PureComponent {
               {hideRealMobile(realname || '')}
             </Text>
             {(!!company || !!title) && (
-              <Flex justify="center">
-                <Flex style={{ flex: 1 }} justify="flex-end">
-                  <Text style={styles.navBar.title.subtext} numberOfLines={1}>
-                    {company}
-                  </Text>
-                </Flex>
-                <Text style={styles.navBar.title.subtext}>
-                  {'  '}|{'  '}
-                </Text>
-                <Flex style={{ flex: 1 }}>
-                  <Text style={styles.navBar.title.subtext} numberOfLines={1}>
-                    {title}
-                  </Text>
-                </Flex>
-              </Flex>
+              <Text style={styles.navBar.title.subtext} numberOfLines={1}>
+                {company || ''} {`${!!company || !!title ? '|' : ''}`}{' '}
+                {title || ''}
+              </Text>
             )}
           </View>
         );
@@ -418,9 +405,7 @@ class IMPage extends PureComponent {
             height: 96,
           }}
           renderAccessory={showContactModal ? this.renderAccessory : null}
-          minInputToolbarHeight={
-            !showContactModal ? 44 : 142
-          }
+          minInputToolbarHeight={!showContactModal ? 44 : 142}
         />
         <ActionAlert
           visible={this.props.showNotificationModal}
