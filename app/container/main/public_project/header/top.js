@@ -171,66 +171,75 @@ const top = ({
         </Col>
       </Row>
     </Grid>
-    <View style={styles.verticalBanner.container}>
-      <Image source={require('asset/public_project/announcement_label.png')} />
-      <VerticalSwiper
-        style={styles.verticalBanner.bannerWrapper}
-        height={styles.verticalBanner.container.height}
-        horizontal={false}
-        showsPagination={false}
-        autoplay
-      >
-        {R.map(n => (
-          <TouchableWithoutFeedback
-            key={n.id}
-            onPress={() => {
-              dispatch(
-                NavigationActions.navigate({
-                  routeName: 'HostJoinList',
-                }),
-              );
-            }}
-          >
-            <View key={n.id} style={styles.verticalBanner.group.container}>
-              <Text style={styles.verticalBanner.group.title} numberOfLines={1}>
-                {R.pathOr('--', ['title'])(n)}
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
-        ))(insite_news)}
-      </VerticalSwiper>
-    </View>
-    <View style={styles.bannerWrapper}>
-      <Swiper
-        width={deviceWidth}
-        height={130}
-        autoplay
-        autoplayTimeout={5}
-        renderPagination={(index, total) => (
-          <PaginationIndicator index={index} total={total} />
-        )}
-        removeClippedSubviews={false}
-      >
-        {R.map(n => (
-          <TouchableWithoutFeedback
-            key={n.id}
-            onPress={() => {
-              if (n.banner_url) {
-                if (Platform.OS !== 'ios') {
-                  RouterEmitter.emit('android_url', { url: n.banner_url });
-                  return;
+    {!R.isEmpty(insite_news) && (
+      <View style={styles.verticalBanner.container}>
+        <Image
+          source={require('asset/public_project/announcement_label.png')}
+        />
+        <VerticalSwiper
+          style={styles.verticalBanner.bannerWrapper}
+          height={styles.verticalBanner.container.height}
+          horizontal={false}
+          showsPagination={false}
+          autoplay
+        >
+          {R.map(n => (
+            <TouchableWithoutFeedback
+              key={n.id}
+              onPress={() => {
+                dispatch(
+                  NavigationActions.navigate({
+                    routeName: 'HostJoinList',
+                  }),
+                );
+              }}
+            >
+              <View key={n.id} style={styles.verticalBanner.group.container}>
+                <Text
+                  style={styles.verticalBanner.group.title}
+                  numberOfLines={1}
+                >
+                  {R.pathOr('--', ['title'])(n)}
+                </Text>
+              </View>
+            </TouchableWithoutFeedback>
+          ))(insite_news)}
+        </VerticalSwiper>
+      </View>
+    )}
+    {!R.isEmpty(banners) && (
+      <View style={styles.bannerWrapper}>
+        <Swiper
+          width={deviceWidth}
+          height={130}
+          autoplay
+          autoplayTimeout={5}
+          renderPagination={(index, total) => (
+            <PaginationIndicator index={index} total={total} />
+          )}
+          removeClippedSubviews={false}
+        >
+          {R.map(n => (
+            <TouchableWithoutFeedback
+              key={n.id}
+              onPress={() => {
+                if (n.banner_url) {
+                  if (Platform.OS !== 'ios') {
+                    RouterEmitter.emit('android_url', { url: n.banner_url });
+                    return;
+                  }
+                  Linking.openURL(n.banner_url);
                 }
-                Linking.openURL(n.banner_url);
-              }
-            }}
-          >
-            <FadeIn>
-              <Image style={styles.banner} source={{ uri: n.banner }} />
-            </FadeIn>
-          </TouchableWithoutFeedback>
-        ))(banners)}
-      </Swiper>
-    </View>
+              }}
+            >
+              <FadeIn>
+                <Image style={styles.banner} source={{ uri: n.banner }} />
+              </FadeIn>
+            </TouchableWithoutFeedback>
+          ))(banners)}
+        </Swiper>
+      </View>
+    )}
   </View>
 );
 
