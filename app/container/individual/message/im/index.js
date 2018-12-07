@@ -49,6 +49,8 @@ const HEIGHT = 111;
 @compose(
   withState('data', 'setData', []),
   withState('inLastPage', 'setInLastPage', false),
+  withState('keyboardIsShow', 'setKeyboardIsShow', false),
+  withState('marginBottomValue', 'setMarginBottomValue', 0),
   withStateHandlers(
     () => ({
       showContactModal: false,
@@ -75,6 +77,15 @@ class IMPage extends PureComponent {
       this.loadTargetInfo();
     }
     this.checkPushPermission();
+    Keyboard.addListener('keyboardDidShow', (e) => {
+      // setTimeout(() => {
+      //   this.props.toggleContactModal(false);
+      // }, 50);
+      this.props.setMarginBottomValue(e.endCoordinates.height);
+    });
+    Keyboard.addListener('keyboardWillHide', () => {
+      this.props.setKeyboardIsShow(false);
+    });
   }
 
   componentDidMount() {
@@ -328,10 +339,10 @@ class IMPage extends PureComponent {
           styles.accessory.container,
           !this.props.showContactModal
             ? {
-                bottom: -HEIGHT,
+                bottom: -HEIGHT + getBottomSpace(),
               }
             : {
-                bottom: 0,
+                bottom: getBottomSpace(),
               },
         ]}
       >
@@ -362,37 +373,36 @@ class IMPage extends PureComponent {
   };
 
   render() {
-    const { data, user, user_im_id, inLastPage } = this.props;
+    const { data, user, user_im_id, inLastPage, marginBottomValue, keyboardIsShow } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
-        <KeyboardAvoidingView
-          keyboardVerticalOffset={1}
+        <View
           style={{
             flex: 1,
-            marginBottom: this.props.showContactModal ? HEIGHT - 10 : 0,
+            marginBottom: (this.props.showContactModal) ?
+              (keyboardIsShow ? marginBottomValue : HEIGHT - 10) :
+              0,
           }}
-          behavior="padding"
-          enabled
         >
           <Chat
             chatRef={ref => {
-              this.chatRef = ref;
-            }}
+            this.chatRef = ref;
+          }}
             loadEarlier
             renderLoadEarlier={p => {
-              if (inLastPage) {
-                return null;
-              }
-              if (R.length(data) < 50) {
-                return null;
-              }
-              return (
-                <View style={{ marginVertical: 12 }}>
-                  <ActivityIndicator />
-                </View>
-              );
-            }}
+            if (inLastPage) {
+              return null;
+            }
+            if (R.length(data) < 50) {
+              return null;
+            }
+            return (
+              <View style={{ marginVertical: 12 }}>
+                <ActivityIndicator />
+              </View>
+            );
+          }}
             bottomOffset={getBottomSpace()}
             user={{
               _id: user_im_id,
@@ -404,20 +414,24 @@ class IMPage extends PureComponent {
             onSend={this.handleSend}
             listViewProps={{
               scrollEventThrottle: 50,
-              onScroll: ({ nativeEvent }) => {
-                if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
+              onScrollEndDrag: () => {
                 if (this.props.showContactModal) {
                   this.props.toggleContactModal(false);
                 }
-                Keyboard.dismiss();
               },
-            }}
+              onScroll: ({ nativeEvent }) => {
+                if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
+                Keyboard.dismiss();
+                this.props.setKeyboardIsShow(false);
+              },
+          }}
             toggleAccessory={() => {
               Keyboard.dismiss();
               this.props.toggleContactModal(true);
             }}
+            onFocus={() => this.props.setKeyboardIsShow(true)}
           />
-        </KeyboardAvoidingView>
+        </View>
         {this.renderAccessory()}
         <ActionAlert
           visible={this.props.showNotificationModal}

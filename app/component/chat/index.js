@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Platform, Image, StyleSheet } from 'react-native';
+import { Platform, Image, StyleSheet, View } from 'react-native';
 import {
   GiftedChat,
   Composer,
