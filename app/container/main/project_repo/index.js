@@ -107,30 +107,32 @@ export default class ProjectRepo extends Component {
   renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
     const textColor = isTabActive ? 'rgba(0, 0, 0, 0.85)' : '#B8CBDD';
     return (
-      <Button
-        key={`${name}_${page}`}
-        accessible
-        accessibilityLabel={name}
-        accessibilityTraits="button"
-        onPress={() => onPressHandler(page)}
-        onLayout={onLayoutHandler}
-      >
-        <View style={[styles.tabBar.tab]}>
-          <Text
-            style={[
-              styles.tabBar.text,
-              { color: textColor, fontWeight: 'bold' },
-            ]}
-          >
-            {name}
-          </Text>
-        </View>
+      <View>
+        <Button
+          key={`${name}_${page}`}
+          accessible
+          accessibilityLabel={name}
+          accessibilityTraits="button"
+          onPress={() => onPressHandler(page)}
+          onLayout={onLayoutHandler}
+        >
+          <View style={[styles.tabBar.tab]}>
+            <Text
+              style={[
+                styles.tabBar.text,
+                { color: textColor, fontWeight: 'bold' },
+              ]}
+            >
+              {name}
+            </Text>
+          </View>
+        </Button>
         {isTabActive && (
           <View style={styles.tabBar.under}>
             <View style={styles.tabBar.underInner} />
           </View>
         )}
-      </Button>
+      </View>
     );
   }
 
