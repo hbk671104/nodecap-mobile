@@ -25,6 +25,7 @@ import ActionAlert from 'component/action_alert';
 import shareModal from 'component/shareModal';
 import Member from 'component/institution/member_item';
 
+import { viewInstitution } from '../../../../services/api';
 import Group from './partials/group';
 import RatingItems from './partials/ratingItems';
 import Header from './header';
@@ -78,6 +79,7 @@ export default class InstitutionDetail extends Component {
 
   componentDidMount() {
     this.props.track('进入');
+    viewInstitution(this.props.id);
   }
 
   componentWillUnmount() {

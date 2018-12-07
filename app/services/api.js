@@ -803,6 +803,10 @@ export function viewReport(id) {
   return request.put(`/reports/${id}/views`);
 }
 
+export function viewInstitution(id) {
+  return request.put(`/industry-investments/${id}/views`);
+}
+
 export function getBanners() {
   return request.get('/banner');
 }
