@@ -19,8 +19,9 @@ export default {
     connected: false,
   },
   effects: {
-    *fetchSession({ sessions }, { call, put, all }) {
+    *fetchSession({ sessions: s }, { call, put, all }) {
       try {
+        const sessions = Array.isArray(s) ? s : [s];
         const result = yield all(
           R.pipe(
             R.filter(d => !!d.to),
