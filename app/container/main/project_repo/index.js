@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
@@ -7,12 +7,12 @@ import ScrollableTabView, {
   ScrollableTabBar,
 } from 'react-native-scrollable-tab-view';
 import { compose, withProps } from 'recompose';
-import Button from 'react-native-scrollable-tab-view/Button';
 import { RouterEmitter } from '../../../router';
 import DrawerLayout from 'react-native-drawer-layout';
 
 import NavBar from 'component/navBar';
 import SearchBarDisplay from 'component/searchBar/display';
+import Touchable from 'component/uikit/touchable';
 
 import ProjectList from './list';
 import ProjectSets from './sets';
@@ -104,18 +104,11 @@ export default class ProjectRepo extends Component {
     this.drawer.closeDrawer();
   };
 
-  renderTab(name, page, isTabActive, onPressHandler, onLayoutHandler) {
+  renderTab = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
     const textColor = isTabActive ? 'rgba(0, 0, 0, 0.85)' : '#B8CBDD';
     return (
-      <View>
-        <Button
-          key={`${name}_${page}`}
-          accessible
-          accessibilityLabel={name}
-          accessibilityTraits="button"
-          onPress={() => onPressHandler(page)}
-          onLayout={onLayoutHandler}
-        >
+      <View onLayout={onLayoutHandler}>
+        <Touchable key={`${name}_${page}`} onPress={() => onPressHandler(page)}>
           <View style={[styles.tabBar.tab]}>
             <Text
               style={[
@@ -126,7 +119,7 @@ export default class ProjectRepo extends Component {
               {name}
             </Text>
           </View>
-        </Button>
+        </Touchable>
         {isTabActive && (
           <View style={styles.tabBar.under}>
             <View style={styles.tabBar.underInner} />
@@ -134,7 +127,7 @@ export default class ProjectRepo extends Component {
         )}
       </View>
     );
-  }
+  };
 
   renderTabBar = () => (
     <ScrollableTabBar
