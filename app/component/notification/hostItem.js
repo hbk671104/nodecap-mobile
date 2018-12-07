@@ -22,32 +22,32 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
   const logo_url = R.pathOr('', ['logo'])(data);
 
   return (
-    <Flex style={styles.container} justify="between">
-      <Flex align="start">
-        <View>
-          <Avatar
-            resizeMode="cover"
-            raised={false}
-            size={52}
-            source={{ uri: data.user_avatar }}
-            innerRatio={1}
-            style={styles.avatar}
-            imageStyle={styles.avatar}
-          />
-        </View>
-        <View>
-          <Text style={styles.name}>{user_name}</Text>
-          <Text style={styles.date}>{moment.unix(data.created_at).fromNow()}入驻</Text>
-          <Text style={styles.title}>{title}</Text>
-        </View>
-      </Flex>
-      <Touchable onPress={() => onPress(user_id)}>
+    <Touchable onPress={() => onPress(user_id)}>
+      <Flex style={styles.container} justify="between">
+        <Flex align="start">
+          <View>
+            <Avatar
+              resizeMode="cover"
+              raised={false}
+              size={52}
+              source={{ uri: data.user_avatar }}
+              innerRatio={1}
+              style={styles.avatar}
+              imageStyle={styles.avatar}
+            />
+          </View>
+          <View>
+            <Text style={styles.name}>{user_name}</Text>
+            <Text style={styles.date}>{moment.unix(data.created_at).fromNow()}入驻</Text>
+            <Text style={styles.title}>{title}</Text>
+          </View>
+        </Flex>
         <Flex align="center">
           <Text style={styles.contact}>联系 Ta</Text>
           <Icon name="arrow-forward" size={16} color="#1890FF" />
         </Flex>
-      </Touchable>
-    </Flex>
+      </Flex>
+    </Touchable>
   );
 };
 
