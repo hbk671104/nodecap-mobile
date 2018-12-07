@@ -19,15 +19,26 @@ export default {
     connected: false,
   },
   effects: {
-    *fetchSession({ sessions: s }, { call, put, all }) {
+    *fetchSession({ sessions: s }, { select, call, put, all }) {
       try {
-        const sessions = Array.isArray(s) ? s : [s];
+        let sessions = s;
+        // merge if necessary
+        const raw_session = yield select(state =>
+          R.path(['message_center', 'session', 'raw'])(state),
+        );
+        if (raw_session) {
+          sessions = global.nim.mergeSessions(raw_session, sessions);
+        }
+        sessions = Array.isArray(sessions) ? sessions : [sessions];
+
+        // iterate
         const result = yield all(
           R.pipe(
             R.filter(d => !!d.to),
             R.map(d => call(getUserByNIM, d.to)),
           )(sessions),
         );
+
         yield put({
           type: 'saveSession',
           raw: sessions,
@@ -44,19 +55,11 @@ export default {
         console.log(error);
       }
     },
-    *updateSession({ sessions }, { select, put }) {
+    *updateSession({ sessions }, { put }) {
       try {
-        let session_data = sessions;
-        const raw_session = yield select(state =>
-          R.path(['message_center', 'session', 'raw'])(state),
-        );
-        if (raw_session) {
-          session_data = global.nim.mergeSessions(raw_session, session_data);
-        }
-
         yield put({
           type: 'fetchSession',
-          sessions: session_data,
+          sessions,
         });
       } catch (error) {
         console.log(error);
