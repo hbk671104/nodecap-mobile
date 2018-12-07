@@ -51,15 +51,21 @@ export default {
           try {
             if (!isMandatory && receivedBytes === totalBytes) {
               // download complete
-              Alert.alert('版本更新', description || '更新内容已准备就绪，即刻享用新版本！', [
-                { text: '一秒更新',
-                  onPress: () => {
-                    // reallow
-                    codePush.allowRestart();
-                    codePush.restartApp();
+              Alert.alert(
+                '版本更新',
+                description || '更新内容已准备就绪，即刻享用新版本！',
+                [
+                  {
+                    text: '一秒更新',
+                    onPress: () => {
+                      // reallow
+                      codePush.allowRestart();
+                      codePush.restartApp();
+                    },
                   },
-                },
-              ]);
+                ],
+                { cancelable: false },
+              );
             }
 
             // const percent = (receivedBytes / totalBytes).toFixed(2);

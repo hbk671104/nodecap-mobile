@@ -50,8 +50,15 @@ class Chat extends PureComponent {
         renderComposer={p => (
           <Composer
             {...p}
-            placeholder=""
-            textInputStyle={{ backgroundColor: '#E5E5E5' }}
+            {...Platform.select({
+              ios: {
+                placeholder: '',
+                textInputStyle: { backgroundColor: '#E5E5E5' },
+              },
+              android: {
+                placeholder: '请输入...',
+              },
+            })}
             textInputProps={{
               ref: ref => {
                 this._textInput = ref;
