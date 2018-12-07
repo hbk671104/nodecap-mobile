@@ -236,6 +236,7 @@ class IMPage extends PureComponent {
     const wechat = R.path(['profile', 'wechat'])(this.props.user);
     if (wechat) {
       this.sendMsg(`您好，这是我的微信号 ${wechat}`);
+      this.props.toggleContactModal(false);
       return;
     }
     this.props.dispatch(
@@ -398,6 +399,7 @@ class IMPage extends PureComponent {
             onTouchStart: () => {
               if (showContactModal) {
                 this.props.toggleContactModal(false);
+                this.forceUpdate();
               }
             },
             onScrollEndDrag: () => {
@@ -408,20 +410,16 @@ class IMPage extends PureComponent {
           }}
           toggleAccessory={() => {
             Keyboard.dismiss();
-            if (Platform.OS === 'ios') {
+            setTimeout(() => {
               this.props.toggleContactModal(true);
-            } else {
-              setTimeout(() => {
-                this.props.toggleContactModal(true);
-              }, 100);
-            }
+            }, 50);
           }}
           accessoryStyle={{
             height: 96,
           }}
           renderAccessory={showContactModal ? this.renderAccessory : null}
           minInputToolbarHeight={
-            !showContactModal ? 44 : Platform.OS === 'ios' ? 155 : 142
+            !showContactModal ? 44 : 142
           }
         />
         <ActionAlert
