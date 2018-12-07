@@ -64,6 +64,7 @@ class Chat extends PureComponent {
                 this._textInput = ref;
               },
               multiline: false,
+              blurOnSubmit: false,
               value: undefined,
               returnKeyType: 'send',
               onSubmitEditing: event => {
