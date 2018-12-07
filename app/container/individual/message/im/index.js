@@ -29,7 +29,7 @@ import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
 import { hideRealMobile } from '../../../../utils/utils';
 
-const HEIGHT = 111;
+const HEIGHT = 82;
 
 @global.bindTrack({
   page: '聊天页',
@@ -49,8 +49,6 @@ const HEIGHT = 111;
 @compose(
   withState('data', 'setData', []),
   withState('inLastPage', 'setInLastPage', false),
-  withState('keyboardIsShow', 'setKeyboardIsShow', false),
-  withState('marginBottomValue', 'setMarginBottomValue', 0),
   withStateHandlers(
     () => ({
       showContactModal: false,
@@ -77,14 +75,8 @@ class IMPage extends PureComponent {
       this.loadTargetInfo();
     }
     this.checkPushPermission();
-    Keyboard.addListener('keyboardDidShow', (e) => {
-      // setTimeout(() => {
-      //   this.props.toggleContactModal(false);
-      // }, 50);
-      this.props.setMarginBottomValue(e.endCoordinates.height);
-    });
-    Keyboard.addListener('keyboardWillHide', () => {
-      this.props.setKeyboardIsShow(false);
+    Keyboard.addListener('keyboardWillShow', (e) => {
+      this.props.toggleContactModal(false);
     });
   }
 
@@ -331,19 +323,15 @@ class IMPage extends PureComponent {
   );
 
   renderAccessory = () => {
+    if (!this.props.showContactModal) {
+      return null;
+    }
     const { user } = this.props;
     const mobile = R.path(['mobile'])(user);
     return (
       <View
         style={[
           styles.accessory.container,
-          !this.props.showContactModal
-            ? {
-                bottom: -HEIGHT + getBottomSpace(),
-              }
-            : {
-                bottom: getBottomSpace(),
-              },
         ]}
       >
         <Flex>
@@ -373,24 +361,16 @@ class IMPage extends PureComponent {
   };
 
   render() {
-    const { data, user, user_im_id, inLastPage, marginBottomValue, keyboardIsShow } = this.props;
+    const { data, user, user_im_id, inLastPage, showContactModal } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
-        <View
-          style={{
-            flex: 1,
-            marginBottom: (this.props.showContactModal) ?
-              (keyboardIsShow ? marginBottomValue : HEIGHT - 10) :
-              0,
-          }}
-        >
-          <Chat
-            chatRef={ref => {
+        <Chat
+          chatRef={ref => {
             this.chatRef = ref;
           }}
-            loadEarlier
-            renderLoadEarlier={p => {
+          loadEarlier
+          renderLoadEarlier={p => {
             if (inLastPage) {
               return null;
             }
@@ -403,36 +383,33 @@ class IMPage extends PureComponent {
               </View>
             );
           }}
-            bottomOffset={getBottomSpace()}
-            user={{
-              _id: user_im_id,
-              name: R.path(['realname'])(user),
-              avatar: R.path(['avatar_url'])(user),
-            }}
-            messages={data}
-            showAvatarForEveryMessage
-            onSend={this.handleSend}
-            listViewProps={{
-              scrollEventThrottle: 50,
-              onScrollEndDrag: () => {
-                if (this.props.showContactModal) {
-                  this.props.toggleContactModal(false);
-                }
-              },
-              onScroll: ({ nativeEvent }) => {
-                if (this.isCloseToTop(nativeEvent)) this.loadEarlierHistory();
-                Keyboard.dismiss();
-                this.props.setKeyboardIsShow(false);
-              },
+          bottomOffset={getBottomSpace()}
+          user={{
+            _id: user_im_id,
+            name: R.path(['realname'])(user),
+            avatar: R.path(['avatar_url'])(user),
           }}
-            toggleAccessory={() => {
-              Keyboard.dismiss();
-              this.props.toggleContactModal(true);
-            }}
-            onFocus={() => this.props.setKeyboardIsShow(true)}
-          />
-        </View>
-        {this.renderAccessory()}
+          messages={data}
+          showAvatarForEveryMessage
+          onSend={this.handleSend}
+          listViewProps={{
+            scrollEventThrottle: 50,
+            onScrollEndDrag: () => {
+              if (showContactModal) {
+                this.props.toggleContactModal(false);
+              }
+            },
+          }}
+          toggleAccessory={() => {
+            Keyboard.dismiss();
+            this.props.toggleContactModal(true);
+          }}
+          accessoryStyle={{
+            height: 96,
+          }}
+          renderAccessory={showContactModal ? this.renderAccessory : null}
+          minInputToolbarHeight={!showContactModal ? 44 : 155}
+        />
         <ActionAlert
           visible={this.props.showNotificationModal}
           title="开启推送通知"

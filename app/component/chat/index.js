@@ -1,16 +1,19 @@
 import React, { PureComponent } from 'react';
-import { Platform, Image, StyleSheet, View } from 'react-native';
+import { Platform, Image, StyleSheet, View, Dimensions } from 'react-native';
 import {
   GiftedChat,
   Composer,
   Bubble,
   Avatar,
   Day,
+  InputToolbar,
 } from 'react-native-gifted-chat';
 import 'moment/locale/zh-cn';
 
 import Touchable from 'component/uikit/touchable';
 import styles from './style';
+
+const window = Dimensions.get('window');
 
 class Chat extends PureComponent {
   clearText = () => {
@@ -30,6 +33,7 @@ class Chat extends PureComponent {
         ref={this.props.chatRef}
         showUserAvatar
         locale="zh-cn"
+        isAnimated
         onSend={props => {
           this.props.onSend(props);
           this.clearText();
@@ -39,6 +43,7 @@ class Chat extends PureComponent {
           style: {
             backgroundColor: '#f5f5f5',
           },
+          keyboardDismissMode: 'on-drag',
           keyboardShouldPersistTaps: 'handled',
         }}
         // minInputToolbarHeight={77}
@@ -54,7 +59,6 @@ class Chat extends PureComponent {
               multiline: false,
               value: undefined,
               returnKeyType: 'send',
-              onFocus: this.props.onFocus,
               onSubmitEditing: event => {
                 p.onSend(p);
                 this.clearText();

@@ -8,10 +8,6 @@ export default {
   accessory: {
     container: {
       paddingVertical: 8,
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      backgroundColor: 'white',
     },
     group: {
       container: {
