@@ -1,5 +1,8 @@
 import { trendList, trendDetail, getCoinInfo } from '../services/api';
-import { trendList as individualTrendList } from '../services/individual/api';
+import {
+  trendList as individualTrendList,
+  joinAnnouncementList,
+} from '../services/individual/api';
 import R from 'ramda';
 import { paginate } from '../utils/pagination';
 
@@ -39,8 +42,7 @@ export default {
     },
     *fetchInSite({ payload }, { call, put }) {
       try {
-        const { data } = yield call(individualTrendList, {
-          type: 4,
+        const { data } = yield call(joinAnnouncementList, {
           ...payload,
         });
 

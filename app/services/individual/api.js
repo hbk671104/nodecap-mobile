@@ -68,6 +68,17 @@ export function trendList(payload = {}) {
     page: p.currentPage,
     'per-page': p.pageSize,
   });
+  return request.get('/news', {
+    params: paramsTransform(payload),
+  });
+}
+
+export function joinAnnouncementList(payload = {}) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
   return request.get('/host-join-announcements', {
     params: paramsTransform(payload),
   });

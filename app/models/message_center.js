@@ -22,11 +22,11 @@ export default {
     *fetchSession({ sessions }, { call, put, all }) {
       try {
         const result = yield all(
-          R.map(d => (d.to ? call(getUserByNIM, d.to) : Promise.resolve()))(
-            sessions,
-          ),
+          R.pipe(
+            R.filter(d => !!d.to),
+            R.map(d => call(getUserByNIM, d.to)),
+          )(sessions),
         );
-
         yield put({
           type: 'saveSession',
           raw: sessions,
