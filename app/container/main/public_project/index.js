@@ -47,6 +47,7 @@ import styles from './style';
     selectedLoading: loading.effects['public_project/fetchSelected'],
     insite_news: R.pathOr([], ['insite_list', 'data'])(notification),
     investNews: R.pathOr([], ['list', 'data'])(investNews),
+    latestNews: R.pathOr([], ['latestNews', 'data'])(notification),
     investNewPagination: R.pathOr(null, ['list', 'pagination'])(investNews),
     loading: loading.effects['investNews/fetch'],
     announcement: R.pathOr([], ['list', 'data'])(notification),

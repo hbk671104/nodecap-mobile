@@ -1,4 +1,4 @@
-import { trendList, trendDetail, getCoinInfo } from '../services/api';
+import { trendList, trendDetail, getCoinInfo, getLatestNews } from '../services/api';
 import {
   trendList as individualTrendList,
   joinAnnouncementList,
@@ -11,6 +11,7 @@ export default {
   state: {
     list: [],
     insite_list: [],
+    latestNews: {},
     current: null,
     badgeVisible: false,
     lastRead: null,
@@ -48,6 +49,20 @@ export default {
 
         yield put({
           type: 'insiteList',
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *fetchLatestNews({ payload }, { call, put }) {
+      try {
+        const { data } = yield call(getLatestNews, {
+          ...payload,
+        });
+
+        yield put({
+          type: 'latestNews',
           payload: data,
         });
       } catch (e) {
@@ -98,6 +113,12 @@ export default {
       return {
         ...state,
         insite_list: paginate(state.insite_list, action.payload),
+      };
+    },
+    latestNews(state, action) {
+      return {
+        ...state,
+        latestNews: paginate(state.latestNews, action.payload),
       };
     },
     detail(state, action) {

@@ -810,3 +810,15 @@ export function viewInstitution(id) {
 export function getBanners() {
   return request.get('/banner');
 }
+
+export function getLatestNews(payload = {}) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+    type: 4,
+  });
+  return request.get('/news', {
+    params: paramsTransform(payload),
+  });
+}

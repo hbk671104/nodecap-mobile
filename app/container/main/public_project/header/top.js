@@ -25,7 +25,7 @@ import PaginationIndicator from 'component/pagination_indicator';
 const deviceWidth = Dimensions.get('window').width;
 
 const top = ({
-  insite_news,
+  latestNews,
   banners,
   onSearchBarPress,
   onServicePress,
@@ -171,7 +171,7 @@ const top = ({
         </Col>
       </Row>
     </Grid>
-    {!R.isEmpty(insite_news) && (
+    {!R.isEmpty(latestNews) && (
       <View style={styles.verticalBanner.container}>
         <Image
           source={require('asset/public_project/announcement_label.png')}
@@ -203,7 +203,7 @@ const top = ({
                 </Text>
               </View>
             </TouchableWithoutFeedback>
-          ))(insite_news)}
+          ))(latestNews)}
         </VerticalSwiper>
       </View>
     )}

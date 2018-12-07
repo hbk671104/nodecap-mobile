@@ -23,6 +23,9 @@ export default {
           put({
             type: 'notification/fetch',
           }),
+          put({
+            type: 'notification/fetchLatestNews',
+          }),
           // fetch selected public project
           put({
             type: 'public_project/fetchSelected',
