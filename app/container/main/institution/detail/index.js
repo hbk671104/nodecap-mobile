@@ -49,7 +49,7 @@ import styles from './style';
       R.path(['name']),
       R.find(i => i.value === R.path(['current', id, 'type'])(institution)),
       R.values,
-      R.pathOr([], ['constants', 'industry_type'])
+      R.pathOr([], ['constants', 'industry_type']),
     )(global),
     ratingTypes: R.compose(
       R.pathOr([], ['rating_types']),
@@ -172,7 +172,9 @@ export default class InstitutionDetail extends Component {
           webpageUrl: `${runtimeConfig.MOBILE_SITE}/industry-investments?id=${
             data.id
           }`,
-          title: `推荐给你一个靠谱${this.props.industryType}「${R.path(['name'])(data)}」`,
+          title: `推荐给你一个靠谱${this.props.industryType}「${R.path([
+            'name',
+          ])(data)}」`,
           description: '来 Hotnode 找全球区块链服务机构！',
           thumbImage: R.pathOr(
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
@@ -219,13 +221,14 @@ export default class InstitutionDetail extends Component {
       renderBottom={() => (
         <Header {...this.props} onLinkPress={this.handleLinkPress} />
       )}
-      renderRight={
-        () => (
-          <Touchable borderless onPress={this.handleSharePress}>
-            <Image style={{ width: 18, height: 18 }} source={require('asset/icon_share.png')} />
-          </Touchable>
-        )
-      }
+      renderRight={() => (
+        <Touchable borderless onPress={this.handleSharePress}>
+          <Image
+            style={{ width: 18, height: 18 }}
+            source={require('asset/icon_share.png')}
+          />
+        </Touchable>
+      )}
     />
   );
 
@@ -250,6 +253,7 @@ export default class InstitutionDetail extends Component {
             <Group title="机构成员">
               {R.map(m => (
                 <Member
+                  institutionOwned={R.pathOr(false, ['is_owned'])(data)}
                   key={m.id}
                   data={m}
                   onPrivacyItemPress={() => {

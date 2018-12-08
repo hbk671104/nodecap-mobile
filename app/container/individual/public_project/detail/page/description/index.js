@@ -209,6 +209,9 @@ export default class Description extends PureComponent {
             <View>
               {R.map(m => (
                 <MemberItem
+                  projectOwned={R.pathOr(false, ['is_owned'])(
+                    this.props.portfolio,
+                  )}
                   key={m.id}
                   data={m}
                   onPrivacyItemPress={() => {

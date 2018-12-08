@@ -11,6 +11,7 @@ import { hideRealMobile } from '../../utils/utils';
 
 const memberItem = ({
   editMode = false,
+  institutionOwned,
   data,
   style,
   onPress,
@@ -105,12 +106,12 @@ const memberItem = ({
               </Text>
             </View>
             <Flex>
-              {!!mobile && (
+              {!!mobile && !institutionOwned && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
-              {!!wechat && (
+              {!!wechat && !institutionOwned && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}

@@ -281,7 +281,7 @@ class IMPage extends PureComponent {
             </Text>
             {(!!company || !!title) && (
               <Text style={styles.navBar.title.subtext} numberOfLines={1}>
-                {company || ''} {`${!!company || !!title ? '|' : ''}`}{' '}
+                {company || ''} {`${!!company && !!title ? '|' : ''}`}{' '}
                 {title || ''}
               </Text>
             )}

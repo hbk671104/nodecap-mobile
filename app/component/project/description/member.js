@@ -18,6 +18,7 @@ const memberItem = ({
   onClaimPress,
   onEditPress,
   onDeletePress,
+  projectOwned,
 }) => {
   const profile_pic = R.pathOr('', ['profile_pic'])(data);
   const name = R.pathOr('--', ['name'])(data);
@@ -104,12 +105,12 @@ const memberItem = ({
               </Text>
             </View>
             <Flex>
-              {mobile && (
+              {mobile && !projectOwned && (
                 <Touchable onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
-              {wechat && (
+              {wechat && !projectOwned && (
                 <Touchable onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}
