@@ -15,7 +15,7 @@ import ActionAlert from 'component/action_alert';
 import InstitutionItem from './institutionItem';
 import WeeklyReports from './weeklyReports';
 import SocialNetworkItem, { iconMap } from './socialNetworkItem';
-import ReadMoreFooter from './readmore';
+import ReadMoreFooter from 'component/readmore';
 import Roadmap from './roadmap';
 import Rating from './rating';
 import styles from './style';

@@ -17,6 +17,7 @@ import runtimeConfig from 'runtime/index';
 import Base64 from 'utils/base64';
 import DeviceInfo from 'react-native-device-info';
 import * as WeChat from 'react-native-wechat';
+import ReadMore from 'react-native-read-more-text';
 
 import NavBar from 'component/navBar';
 import FavorItem from 'component/favored/item';
@@ -24,6 +25,7 @@ import Touchable from 'component/uikit/touchable';
 import ActionAlert from 'component/action_alert';
 import shareModal from 'component/shareModal';
 import Member from 'component/institution/member_item';
+import ReadMoreFooter from 'component/readmore';
 
 import { viewInstitution } from '../../../../services/api';
 import Group from './partials/group';
@@ -232,6 +234,14 @@ export default class InstitutionDetail extends Component {
     />
   );
 
+  renderTruncatedFooter = handlePress => (
+    <ReadMoreFooter collapsed onPress={handlePress} />
+  );
+
+  renderRevealedFooter = handlePress => (
+    <ReadMoreFooter collapsed={false} onPress={handlePress} />
+  );
+
   render() {
     const { data, in_individual, showInviteModal, ratingTypes } = this.props;
     const desc = R.pathOr('', ['description'])(data);
@@ -244,7 +254,13 @@ export default class InstitutionDetail extends Component {
           {R.not(R.isEmpty(desc)) && (
             <Group title="机构简介">
               <View style={styles.desc.container}>
-                <Text style={styles.desc.text}>{desc}</Text>
+                <ReadMore
+                  numberOfLines={10}
+                  renderTruncatedFooter={this.renderTruncatedFooter}
+                  renderRevealedFooter={this.renderRevealedFooter}
+                >
+                  <Text style={styles.desc.text}>{desc}</Text>
+                </ReadMore>
               </View>
             </Group>
           )}
