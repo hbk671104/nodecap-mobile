@@ -8,7 +8,7 @@ import _ from 'lodash';
 import List from 'component/uikit/list';
 import NavBar from 'component/navBar';
 import SearchBar from 'component/searchBar';
-import SimplifiedItem from 'component/public_project/simplified_item';
+import SimplifiedItem from '../create/component/simplified_item';
 
 import styles from './style';
 
