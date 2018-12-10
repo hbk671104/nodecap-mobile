@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, ActivityIndicator } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
@@ -19,10 +19,12 @@ import styles from './style';
   page: '设置',
   name: 'App_SettingsOperation',
 })
-@connect(({ login, loading, codePush }) => ({
+@connect(({ user, login, loading, codePush }) => ({
   isLogin: !!login.token,
   loading: loading.effects['login/logout'],
+  user: R.path(['currentUser'])(user),
   versionLabel: R.pathOr('', ['update', 'label'])(codePush),
+  switching: loading.effects['login/switch'],
 }))
 @withState('pkg', 'setPkg', null)
 class Settings extends Component {
@@ -93,7 +95,7 @@ class Settings extends Component {
   };
 
   render() {
-    const { isLogin } = this.props;
+    const { isLogin, switching } = this.props;
     const versionLabel = R.path(['pkg', 'label'])(this.props);
     return (
       <View style={styles.container}>
@@ -111,6 +113,12 @@ class Settings extends Component {
             <ListItem
               title="切换至机构版"
               onPress={this.handleSwitchEndPress}
+              renderContent={() => {
+                if (switching) {
+                  return <ActivityIndicator />;
+                }
+                return null;
+              }}
             />
           )}
         </ScrollView>
