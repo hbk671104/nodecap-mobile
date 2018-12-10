@@ -11,7 +11,7 @@ SDK.usePlugin({
 
 const initNIM = ({ account, token }) => {
   global.nim = SDK.NIM.getInstance({
-    debug: global.__DEV__,
+    debug: false,
     appKey: 'f37350b9eb87d7159bb2df496ff02844',
     account,
     token,

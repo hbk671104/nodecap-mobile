@@ -91,7 +91,7 @@ class Rank extends Component {
   }
 
   render() {
-    const { index, routes } = this.props;
+      const { index, routes } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <NavBar

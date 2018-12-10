@@ -76,6 +76,14 @@ export default class PublicProject extends Component {
     this.props.dispatch({
       type: 'news/index',
     });
+    this.props.dispatch({
+      type: 'dapp/fetchTypes',
+      callback: () => {
+        this.props.dispatch({
+          type: 'dapp/fetchAllList',
+        });
+      },
+    });
 
     RouterEmitter.addListener('resume', () => {
       this.props.dispatch({
@@ -84,6 +92,9 @@ export default class PublicProject extends Component {
       this.props.dispatch({
         type: 'investNews/fetch',
       });
+      // this.props.dispatch({
+      //   type: 'dapp/fetchTypes',
+      // });
     });
   }
 
@@ -277,6 +288,16 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleDappPress = () => {
+    this.props.track('点击 Dapp');
+    // navigate
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Dapp',
+      }),
+    );
+  };
+
   renderItem = ({ item }) => (
     <InvestNewsItem
       {...this.props}
@@ -294,6 +315,7 @@ export default class PublicProject extends Component {
       onProjectRepoPress={this.handleProjectRepoPress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onServicePress={this.handleServicePress}
+      onDappPress={this.handleDappPress}
       onRefreshPress={() => {
         this.requestData(true);
       }}

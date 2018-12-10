@@ -25,6 +25,7 @@ import PaginationIndicator from 'component/pagination_indicator';
 const deviceWidth = Dimensions.get('window').width;
 
 const top = ({
+               onDappPress,
   latestNews,
   banners,
   onSearchBarPress,
@@ -62,12 +63,12 @@ const top = ({
           </Touchable>
         </Col>
         <Col>
-          <Touchable borderless onPress={onChartPress}>
+          <Touchable borderless onPress={onDappPress}>
             <View style={styles.tab.group.container}>
               <View style={styles.tab.group.imageWrapper}>
-                <Image source={require('asset/public_project/chart.png')} />
+                <Image source={require('asset/public_project/dapp.png')} />
               </View>
-              <Text style={styles.tab.group.title}>榜单</Text>
+              <Text style={styles.tab.group.title}>DAPP</Text>
             </View>
           </Touchable>
         </Col>
@@ -138,16 +139,6 @@ const top = ({
           </Touchable>
         </Col>
         <Col>
-          <Touchable borderless onPress={onServicePress(3)}>
-            <View style={styles.tab.group.container}>
-              <View style={styles.tab.group.imageWrapper}>
-                <Image source={require('asset/public_project/meeting.png')} />
-              </View>
-              <Text style={styles.tab.group.title}>找公关</Text>
-            </View>
-          </Touchable>
-        </Col>
-        <Col>
           <Touchable borderless onPress={onServicePress(6)}>
             <View style={styles.tab.group.container}>
               <View style={styles.tab.group.imageWrapper}>
@@ -156,6 +147,16 @@ const top = ({
                 />
               </View>
               <Text style={styles.tab.group.title}>找评级</Text>
+            </View>
+          </Touchable>
+        </Col>
+        <Col>
+          <Touchable borderless onPress={onChartPress}>
+            <View style={styles.tab.group.container}>
+              <View style={styles.tab.group.imageWrapper}>
+                <Image source={require('asset/public_project/chart.png')} />
+              </View>
+              <Text style={styles.tab.group.title}>榜单</Text>
             </View>
           </Touchable>
         </Col>

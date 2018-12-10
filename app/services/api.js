@@ -822,3 +822,23 @@ export function getLatestNews(payload = {}) {
     params: paramsTransform(payload),
   });
 }
+
+export function getDappTypes() {
+  return request.get('/dapp/topic');
+}
+
+export function getDappDetail(id) {
+  return request.get(`/dapp/${id}`);
+}
+
+export function getDappList(payload = {}) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+    type: 4,
+  });
+  return request.get('/dapp', {
+    params: paramsTransform(payload),
+  });
+}
