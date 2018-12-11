@@ -1,14 +1,22 @@
-import React from 'react';
-import { Text } from 'react-native';
+import React, { PureComponent } from 'react';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
+import { compose, withState } from 'recompose';
+import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
+import NameInputAlert from 'component/name_input_alert';
 
-const chatButton = ({ id, dispatch, logged_in }) => {
-  const handlePress = () => {
-    if (!logged_in) {
-      dispatch(
+@connect(({ login, user }) => ({
+  user: R.path(['currentUser'])(user),
+  logged_in: !!login.token,
+}))
+@compose(withState('nameInputVisible', 'setNameInputVisible', false))
+class ChatButton extends PureComponent {
+  handlePress = () => {
+    if (!this.props.logged_in) {
+      this.props.dispatch(
         NavigationActions.navigate({
           routeName: 'Login',
         }),
@@ -16,21 +24,38 @@ const chatButton = ({ id, dispatch, logged_in }) => {
       return;
     }
 
-    dispatch(
+    const { user, setNameInputVisible } = this.props;
+    if (
+      R.pipe(
+        R.path(['realname']),
+        R.test(/^1[34578]\d{9}$/),
+      )(user)
+    ) {
+      setNameInputVisible(true);
+      return;
+    }
+
+    this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'IMPage',
         params: {
-          id,
+          id: this.props.id,
         },
       }),
     );
   };
-  return (
-    <Touchable style={styles.container} onPress={handlePress}>
-      <Text style={styles.text}>聊 天</Text>
-    </Touchable>
-  );
-};
+
+  render() {
+    return (
+      <View>
+        <Touchable style={styles.container} onPress={this.handlePress}>
+          <Text style={styles.text}>聊 天</Text>
+        </Touchable>
+        <NameInputAlert {...this.props} />
+      </View>
+    );
+  }
+}
 
 const styles = {
   container: {
@@ -49,6 +74,4 @@ const styles = {
   },
 };
 
-export default connect(({ login }) => ({
-  logged_in: !!login.token,
-}))(chatButton);
+export default ChatButton;

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image, StyleSheet, ActivityIndicator } from 'react-native';
 
 import Modal from 'component/modal';
 import Touchable from 'component/uikit/touchable';
@@ -14,10 +14,13 @@ const actionAlert = ({
   action,
   onBackdropPress,
   renderContent,
+  avoidKeyboard = false,
+  loading,
 }) => (
   <Modal
     useNativeDriver
     hideModalContentWhileAnimating
+    avoidKeyboard={avoidKeyboard}
     isVisible={visible}
     style={styles.wrapper}
     onBackdropPress={onBackdropPress}
@@ -34,7 +37,11 @@ const actionAlert = ({
         </View>
       )}
       <Touchable style={styles.action.container} onPress={action}>
-        <Text style={styles.action.text}>{actionTitle}</Text>
+        {loading ? (
+          <ActivityIndicator color="#1890FF" />
+        ) : (
+          <Text style={styles.action.text}>{actionTitle}</Text>
+        )}
       </Touchable>
     </View>
   </Modal>

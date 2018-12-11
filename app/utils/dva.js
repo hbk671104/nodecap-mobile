@@ -77,6 +77,7 @@ export default options => {
         'investNews/fetch',
         'rank/upFetch',
         'rank/downFetch',
+        'user/updateUserProfile',
       ],
     }),
   );

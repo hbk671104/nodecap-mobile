@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  Clipboard,
-  Linking,
-} from 'react-native';
+import { View, Text, Image, ScrollView, Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { Toast } from 'antd-mobile';
