@@ -35,12 +35,12 @@ export default {
         console.log(e);
       }
     },
-    *fetchListData({ topic_id, ...req }, { call, put }) {
+    *fetchListData({ payload }, { call, put }) {
       try {
-        const { data } = yield call(getDappList, { topic_id, ...req });
+        const { data } = yield call(getDappList, payload);
         yield put({
           type: 'list',
-          topic_id,
+          topic_id: payload.topic_id,
           payload: data,
         });
       } catch (e) {
