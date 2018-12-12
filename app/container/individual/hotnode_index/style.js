@@ -1,7 +1,13 @@
+import { StyleSheet } from 'react-native';
+
 export default {
   container: {
     flex: 1,
     backgroundColor: 'white',
+  },
+  navBar: {
+    borderBottomColor: '#E9E9E9',
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   listContent: {
     paddingVertical: 0,
