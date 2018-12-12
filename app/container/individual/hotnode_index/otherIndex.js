@@ -44,7 +44,7 @@ class OtherIndex extends Component {
       <Grid style={styles.wrapper}>
         <Row>
           <Col style={styles.itemWrapper}>
-            <View style={styles.imageWrapper}>
+            <View style={[styles.imageWrapper, { right: 3 }]}>
               <Image source={require('asset/hotnode_index/gbi_icon.png')} />
             </View>
             {this.renderPlaceholder(
@@ -116,7 +116,7 @@ class OtherIndex extends Component {
         </Row>
         <Row>
           <Col style={styles.itemWrapper}>
-            <View style={styles.imageWrapper}>
+            <View style={[styles.imageWrapper, { right: 5 }]}>
               <Image
                 source={require('asset/hotnode_index/hengsheng_icon.png')}
               />
