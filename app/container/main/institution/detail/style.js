@@ -29,4 +29,11 @@ export default {
       color: 'white',
     },
   },
+  allReports: {
+    height: 44,
+  },
+  allReportsText: {
+    fontSize: 12,
+    color: '#1890FF',
+  },
 };

@@ -4,6 +4,7 @@ import {
   getReportsByIndustry,
   getInstitutionBanner,
   getInstitutionReportSet,
+  getReportsByInstitutionID,
 } from '../services/api';
 import { paginate } from '../utils/pagination';
 import R from 'ramda';
@@ -67,6 +68,21 @@ export default {
         console.log(e);
       }
     },
+    *fetchReportsByInstitutionID({ id, payload }, { call, put }) {
+      try {
+        const { data } = yield call(getReportsByInstitutionID, {
+          id,
+          ...payload,
+        });
+        yield put({
+          type: 'insertReportsToInstitution',
+          payload: data,
+          id,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
     *fetchReportBanner(_, { call, put }) {
       try {
         const { data } = yield call(getInstitutionBanner);
@@ -97,6 +113,12 @@ export default {
           type: 'save',
           payload: data,
         });
+        if (data.type === 6) {
+          yield put({
+            type: 'fetchReportsByInstitutionID',
+            id: payload,
+          });
+        }
       } catch (e) {
         console.log(e);
       }
@@ -127,6 +149,18 @@ export default {
         report_set: {
           ...state.report_set,
           [id]: paginate(R.pathOr({}, ['report_set', id])(state), payload),
+        },
+      };
+    },
+    insertReportsToInstitution(state, action) {
+      return {
+        ...state,
+        current: {
+          ...state.current,
+          [action.id]: {
+            ...state.current[action.id],
+            reports: paginate(R.path(['current', action.id, 'reports'])(state), action.payload),
+          },
         },
       };
     },

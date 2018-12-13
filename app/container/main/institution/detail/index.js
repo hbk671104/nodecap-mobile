@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { Toast } from 'antd-mobile';
+import { Flex, Toast } from 'antd-mobile';
 import { NavigationActions } from 'react-navigation';
 import { compose, withState, withProps } from 'recompose';
 import request from 'utils/request';
@@ -28,9 +28,11 @@ import Member from 'component/institution/member_item';
 import { viewInstitution } from '../../../../services/api';
 import Group from './partials/group';
 import RatingItems from './partials/ratingItems';
+import ReportsItems from './partials/reports';
 import Header from './header';
 import Bottom from './bottom';
 import styles from './style';
+import Icon from '../../../../component/uikit/icon';
 
 @global.bindTrack({
   page: '机构详情',
@@ -214,6 +216,28 @@ export default class InstitutionDetail extends Component {
     );
   };
 
+  toReportDetail = (item) => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionReportDetail',
+        params: {
+          id: item.id,
+        },
+      }),
+    );
+  }
+
+  toReportList = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'InstitutionReportsList',
+        params: {
+          id: this.props.id,
+        },
+      }),
+    );
+  }
+
   renderNavBar = () => (
     <NavBar
       back
@@ -237,6 +261,7 @@ export default class InstitutionDetail extends Component {
     const desc = R.pathOr('', ['description'])(data);
     const members = R.pathOr([], ['members'])(data);
     const coins = R.pathOr([], ['coins'])(data);
+    const reports = R.take(5)(R.pathOr([], ['reports', 'data'])(data));
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
@@ -249,6 +274,17 @@ export default class InstitutionDetail extends Component {
             </Group>
           )}
           {data.type === 6 && <RatingItems data={ratingTypes} />}
+          {data.type === 6 && (
+            <View>
+              <ReportsItems data={reports} onPress={this.toReportDetail} />
+              <Touchable onPress={this.toReportList}>
+                <Flex align="center" justify="center" style={styles.allReports}>
+                  <Text style={styles.allReportsText}>查看全部研报</Text>
+                  <Icon name="arrow-forward" size={14} color="#1890FF" style={{ marginLeft: 5, marginTop: 1 }} />
+                </Flex>
+              </Touchable>
+            </View>
+          )}
           {R.not(R.isEmpty(members)) && (
             <Group title="机构成员">
               {R.map(m => (

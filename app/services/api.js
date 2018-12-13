@@ -708,6 +708,17 @@ export function getReportsByIndustry(params = {}) {
   });
 }
 
+export function getReportsByInstitutionID(params) {
+  const paramsTransform = p => ({
+    ...params,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get(`/industries/${params.id}/reports`, {
+    params: paramsTransform(params),
+  });
+}
+
 export function getLiveList(lastId) {
   return request.get('http://api.coindog.com/live/list', {
     params: {

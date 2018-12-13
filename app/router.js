@@ -50,6 +50,7 @@ import CommentCoin from 'container/main/public_project/comment';
 import InstitutionReport from 'container/main/public_project/institution_report';
 import InstitutionReportSet from 'container/main/public_project/institution_report/report_set';
 import InstitutionReportDetail from 'container/main/public_project/institution_report/detail';
+import InstitutionReportsList from 'container/main/institution/reportList';
 import Fund from 'container/main/fund';
 import FundProject from 'container/main/fund/project';
 import Portfolio from 'container/main/portfolio';
@@ -243,6 +244,7 @@ const MainStack = createStackNavigator(
     InstitutionReport,
     InstitutionReportSet,
     InstitutionReportDetail,
+    InstitutionReportsList,
     FundProject,
     PortfolioDetail,
     PortfolioRecord,
@@ -377,6 +379,7 @@ const IndividualStack = createStackNavigator(
     InstitutionReport,
     InstitutionReportSet,
     InstitutionReportDetail,
+    InstitutionReportsList,
     PublicProjectSearch,
     PublicProjectDetail: {
       screen: IndividualPublicProjectDetail,
