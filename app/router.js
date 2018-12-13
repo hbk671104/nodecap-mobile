@@ -103,6 +103,7 @@ import ReportPage from 'container/webview/report';
 import GlobalSearch from 'container/main/public_project/globalSearch';
 import Rank from 'container/main/public_project/rank';
 import Dapp from 'container/main/dapp';
+import DappDetail from 'container/main/dapp/detail';
 // Individual exclusive
 import Favored from 'container/individual/favored';
 import CoinRecord from 'container/individual/public_project/detail/record';
@@ -290,6 +291,7 @@ const MainStack = createStackNavigator(
     Rank,
     HostJoinList,
     Dapp,
+    DappDetail,
   },
   {
     headerMode: 'none',
@@ -447,6 +449,7 @@ const IndividualStack = createStackNavigator(
     Rank,
     HostJoinList,
     Dapp,
+    DappDetail,
   },
   {
     headerMode: 'none',

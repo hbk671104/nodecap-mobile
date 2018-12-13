@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
-import NavBar from '../../../component/navBar';
 import styles from './style';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { withState, compose } from 'recompose';
 import * as R from 'ramda';
 import List from '../../../component/uikit/list';
-import Touchable from '../../../component/uikit/touchable';
 import bind from 'lodash-decorators/bind';
-import { Flex } from 'antd-mobile';
-import { SolidAvatar } from '../../../component/uikit/avatar';
+import { NavigationActions } from 'react-navigation';
+import searchable from '../../../component/searchableList';
+import InstitutionReportItem from '../../../component/public_project/report_item';
+import Item from './item';
 
 @global.bindTrack({
   page: 'DApp',
@@ -19,6 +19,9 @@ import { SolidAvatar } from '../../../component/uikit/avatar';
 @connect(({ dapp, loading }) => ({
   types: R.pathOr([], ['types'])(dapp),
   loading: loading.effects['dapp/fetchListData'],
+  searchData: R.pathOr([], ['search', 'data'])(dapp),
+  searchPagination: R.pathOr(null, ['search', 'pagination'])(dapp),
+  searchLoading: loading.effects['dapp/search'],
   dapp,
 }))
 @compose(
@@ -33,6 +36,48 @@ import { SolidAvatar } from '../../../component/uikit/avatar';
     )(props);
   }),
 )
+@searchable((props) => ({
+  name: 'Dapp',
+  data: props.searchData,
+  pagination: props.searchPagination,
+  loading: props.searchLoading,
+  action: ({ page, size, searchText }) => {
+    if (!searchText) {
+      props.dispatch({
+        type: 'dapp/clearSearch',
+        payload: {
+          type: R.path(['type', 'value'])(props),
+        },
+      });
+    } else {
+      props.dispatch({
+        type: 'dapp/search',
+        payload: {
+          q: searchText,
+          page,
+          'per-page': size,
+        },
+      });
+    }
+  },
+  renderItem: ({ item }) => {
+    const handleItemPress = () => {
+      props.track('点击进入详情');
+      props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'DappDetail',
+          params: {
+            id: item.id,
+          },
+        }),
+      );
+    };
+
+    return (
+      <Item key={item.id} item={item} onPress={handleItemPress} />
+    );
+  },
+}))
 class DappIndex extends Component {
   handleIndexChange = (index) => {
     this.props.setIndex(index, () => {
@@ -51,35 +96,21 @@ class DappIndex extends Component {
     });
   };
 
+  handleDappItemPress = (item) => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'DappDetail',
+        params: {
+          id: item.id,
+        },
+      }),
+    );
+  }
+
   @bind
   renderItem({ item }) {
-    const tags = R.pathOr([], ['tags'])(item);
     return (
-      <Touchable>
-        <Flex align="start" style={styles.itemContainer}>
-          <View style={styles.avatar}>
-            <SolidAvatar
-              raised={false}
-              innerRatio={1}
-              source={{ uri: item.logo }}
-              imageStyle={{
-                 borderRadius: 0,
-               }}
-            />
-          </View>
-          <View style={styles.right}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Flex>
-              {tags.map(i => (
-                <View key={i.name} style={styles.tag}>
-                  <Text style={styles.tagText}>{i.name}</Text>
-                </View>
-              ))}
-            </Flex>
-            <Text style={styles.desc} numberOfLines={1}>{item.description}</Text>
-          </View>
-        </Flex>
-      </Touchable>
+      <Item item={item} onPress={this.handleDappItemPress} />
     );
   }
 
@@ -105,12 +136,6 @@ class DappIndex extends Component {
 
     return (
       <View style={styles.container}>
-        <NavBar
-          back
-          barStyle="dark-content"
-          title="DAPP"
-          wrapperStyle={styles.navBar}
-        />
         <TabView
           initialLayout={styles.initialLayout}
           navigationState={{

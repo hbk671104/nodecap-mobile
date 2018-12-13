@@ -77,6 +77,8 @@ export default options => {
         'investNews/fetch',
         'rank/upFetch',
         'rank/downFetch',
+        'dapp/fetchListData',
+        'dapp/fetchDappDetail',
       ],
     }),
   );

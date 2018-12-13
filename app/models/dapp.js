@@ -1,5 +1,5 @@
 import { paginate } from '../utils/pagination';
-import { getDappTypes, getDappDetail, getDappList } from '../services/api';
+import { getDappTypes, getDappDetail, getDappList, getReportsByIndustry } from '../services/api';
 import * as R from 'ramda';
 
 export default {
@@ -7,7 +7,8 @@ export default {
   state: {
     types: [],
     list: {},
-    current: null,
+    current: {},
+    search: null,
   },
   effects: {
     *fetchTypes({ callback }, { call, put }) {
@@ -24,6 +25,7 @@ export default {
         console.log(e);
       }
     },
+
     *fetchAllList(_, { select, put, all }) {
       try {
         const types = yield select(state => R.path(['dapp', 'types'])(state));
@@ -41,6 +43,18 @@ export default {
         yield put({
           type: 'list',
           topic_id: payload.topic_id,
+          payload: data,
+        });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    *search({ payload, callback }, { call, put }) {
+      try {
+        const { data } = yield call(getDappList, payload);
+
+        yield put({
+          type: 'searchList',
           payload: data,
         });
       } catch (e) {
@@ -84,7 +98,19 @@ export default {
     detail(state, action) {
       return {
         ...state,
-        current: action.payload,
+        current: {
+          ...state.current,
+          [R.path(['payload', 'id'])(action)]: action.payload,
+        },
+      };
+    },
+    searchList(state, { payload }) {
+      return {
+        ...state,
+        search: paginate(
+          R.pathOr({}, ['search'])(state),
+          payload,
+        ),
       };
     },
   },
