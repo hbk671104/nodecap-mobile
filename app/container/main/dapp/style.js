@@ -19,32 +19,45 @@ export default {
   },
   tabBar: {
     container: {
-      backgroundColor: 'transparent',
+      height: 40,
       borderBottomWidth: StyleSheet.hairlineWidth,
-      borderBottomColor: '#E9E9E9',
+      borderBottomColor: '#E7E7E7',
+      backgroundColor: 'white',
     },
     tab: {
-      height: navBarHeight,
-      width: tabWidth,
-      padding: 0,
-      margin: 0,
+      height: 40,
+      paddingBottom: 0,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingHorizontal: 20,
+      // flexDirection: 'row',
+      position: 'relative',
     },
-    label: {
+    hot: {
+      height: 15,
+      marginRight: 5,
+      marginBottom: 2,
+      resizeMode: 'contain',
+    },
+    text: {
       fontSize: 14,
       fontWeight: 'bold',
-      color: 'rgba(0, 0, 0, 0.85)',
     },
-    indicator: {
+    underline: {
+      height: 0,
+    },
+    under: {
+      // height: 3,
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+      alignItems: 'center',
+    },
+    underInner: {
       width: 15,
       height: 2.5,
       backgroundColor: '#1890FF',
-      left: (tabWidth - 15) / 2,
-    },
-    badge: {
-      wrapper: {
-        top: 4,
-        right: 4,
-      },
     },
   },
   avatar: {

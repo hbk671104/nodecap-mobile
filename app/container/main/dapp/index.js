@@ -11,6 +11,8 @@ import { NavigationActions } from 'react-navigation';
 import searchable from '../../../component/searchableList';
 import InstitutionReportItem from '../../../component/public_project/report_item';
 import Item from './item';
+import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import Touchable from '../../../component/uikit/touchable';
 
 @global.bindTrack({
   page: 'DApp',
@@ -119,42 +121,67 @@ class DappIndex extends Component {
     const data = R.pathOr([], ['dapp', 'list', route.key, 'data'])(this.props);
     const pagination = R.pathOr([], ['dapp', 'list', route.key, 'pagination'])(this.props);
     return (
-      <View tabLabel={route.title}>
+      <View style={{ flex: 1 }} tabLabel={route.title}>
         <List
           action={this.requestData(route.key)}
           loading={this.props.loading}
           data={data}
           pagination={pagination}
           renderItem={this.renderItem}
+          style={{ flex: 1 }}
         />
       </View>
     );
   }
+
+  renderTab = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
+    const textColor = isTabActive ? 'rgba(0, 0, 0, 0.85)' : '#B8CBDD';
+    return (
+      <View onLayout={onLayoutHandler}>
+        <Touchable key={`${name}_${page}`} onPress={() => onPressHandler(page)}>
+          <View style={[styles.tabBar.tab]}>
+            <Text
+              style={[
+                styles.tabBar.text,
+                { color: textColor, fontWeight: 'bold' },
+              ]}
+            >
+              {name}
+            </Text>
+          </View>
+        </Touchable>
+        {isTabActive && (
+          <View style={styles.tabBar.under}>
+            <View style={styles.tabBar.underInner} />
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  renderTabBar = () => (
+    <ScrollableTabBar
+      style={styles.tabBar.container}
+      tabStyle={styles.tabBar.tab}
+      textStyle={styles.tabBar.text}
+      activeTextColor="rgba(0, 0, 0, 0.85)"
+      inactiveTextColor="#B8CBDD"
+      underlineStyle={styles.tabBar.underline}
+      renderTab={this.renderTab}
+    />
+  );
 
   render() {
     const { index, routes } = this.props;
 
     return (
       <View style={styles.container}>
-        <TabView
-          initialLayout={styles.initialLayout}
-          navigationState={{
-            index,
-            routes,
-          }}
-          renderTabBar={(props) => (
-            <TabBar
-              {...props}
-              useNativeDriver
-              style={styles.tabBar.container}
-              tabStyle={styles.tabBar.tab}
-              indicatorStyle={styles.tabBar.indicator}
-              labelStyle={styles.tabBar.label}
-            />
-          )}
-          renderScene={this.renderScene}
-          onIndexChange={this.handleIndexChange}
-        />
+        <ScrollableTabView
+          style={{ flex: 1 }}
+          renderTabBar={this.renderTabBar}
+        >
+          {routes.map((route) => this.renderScene({ route }))}
+        </ScrollableTabView>
       </View>
     );
   }
