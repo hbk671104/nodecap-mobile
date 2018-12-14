@@ -15,6 +15,7 @@ const initialState = {
   notification: null,
   chat_user: null,
   connected: false,
+  loading: false,
 };
 
 export default {
@@ -28,17 +29,18 @@ export default {
         const raw_session = yield select(state =>
           R.path(['message_center', 'session', 'raw'])(state),
         );
+
+        sessions = Array.isArray(sessions)
+          ? R.filter(i => !!i.to)(sessions)
+          : [sessions];
+
         if (raw_session) {
           sessions = global.nim.mergeSessions(raw_session, sessions);
         }
-        sessions = Array.isArray(sessions) ? sessions : [sessions];
 
         // iterate
         const result = yield all(
-          R.pipe(
-            R.filter(d => !!d.to),
-            R.map(d => call(getUserByNIM, d.to)),
-          )(sessions),
+          R.map(d => call(getUserByNIM, d.to))(sessions),
         );
 
         yield put({
@@ -188,6 +190,12 @@ export default {
     },
     reset() {
       return initialState;
+    },
+    setLoading(state, { payload }) {
+      return {
+        ...state,
+        loading: payload,
+      };
     },
   },
 };

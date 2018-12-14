@@ -16,6 +16,7 @@ import styles from '../style';
 })
 @connect(({ message_center }) => ({
   data: R.pathOr([], ['session', 'data'])(message_center),
+  loading: message_center.loading,
 }))
 class SessionList extends PureComponent {
   componentDidMount() {
@@ -40,10 +41,11 @@ class SessionList extends PureComponent {
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data } = this.props;
+    const { data, loading } = this.props;
     return (
       <List
-        disableRefresh
+        loading={loading}
+        action={() => null}
         contentContainerStyle={styles.listContent}
         data={data}
         renderItem={this.renderItem}

@@ -96,6 +96,10 @@ class IMPage extends PureComponent {
     }
   }
 
+  componentWillUnmount() {
+    this.subscription.remove();
+  }
+
   checkUserName = () => {
     const { user, setNameInputVisible } = this.props;
     if (
@@ -223,7 +227,7 @@ class IMPage extends PureComponent {
   }
 
   handleOnMessage = () => {
-    RouterEmitter.addListener('onmsg', msg => {
+    this.subscription = RouterEmitter.addListener('onmsg', msg => {
       const { data, target, target_im_id, isCurrent } = this.props;
       if (msg.from !== target_im_id) {
         return;

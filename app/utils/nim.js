@@ -10,6 +10,7 @@ SDK.usePlugin({
 });
 
 const initNIM = ({ account, token }) => {
+  store.dispatch({ type: 'message_center/setLoading', payload: true });
   global.nim = SDK.NIM.getInstance({
     debug: false,
     appKey: 'f37350b9eb87d7159bb2df496ff02844',
@@ -26,12 +27,14 @@ const initNIM = ({ account, token }) => {
       console.log('error', event.message);
     },
     onsessions: sessions => {
+      // console.log('onsessions', sessions);
       store.dispatch({
         type: 'message_center/fetchSession',
         sessions,
       });
     },
     onupdatesession: sessions => {
+      // console.log('onupdatesession', sessions);
       store.dispatch({
         type: 'message_center/updateSession',
         sessions,
@@ -50,7 +53,7 @@ const initNIM = ({ account, token }) => {
       store.dispatch({
         type: 'message_center/setOnConnect',
       });
-      console.log('sync done');
+      store.dispatch({ type: 'message_center/setLoading', payload: false });
     },
   });
 };

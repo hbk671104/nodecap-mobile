@@ -15,9 +15,10 @@ import styles from './style';
   page: '入驻公告',
   name: 'App_HostJoinOperation',
 })
-@connect(({ notification, loading }) => ({
+@connect(({ notification, login, loading }) => ({
   data: R.pathOr([], ['insite_list', 'data'])(notification),
   pagination: R.pathOr(null, ['insite_list', 'pagination'])(notification),
+  is_loggedin: !!login.token,
   loading: loading.effects['notification/fetchInSite'],
 }))
 @compose(
@@ -25,8 +26,17 @@ import styles from './style';
   withState('currentShareNews', 'setShareNews', ''),
 )
 export default class HostJoinList extends Component {
-  handleItemPress = (id) => {
+  handleItemPress = id => {
     this.props.track('点击进入个人详情');
+    if (!this.props.is_loggedin) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
+
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'IMPage',
@@ -48,10 +58,7 @@ export default class HostJoinList extends Component {
   };
 
   renderItem = ({ item }) => (
-    <NotificationItem
-      data={item}
-      onPress={this.handleItemPress}
-    />
+    <NotificationItem data={item} onPress={this.handleItemPress} />
   );
 
   renderSeparator = () => <View style={styles.separator} />;
