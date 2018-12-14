@@ -7,6 +7,7 @@ import R from 'ramda';
 import Touchable from 'component/uikit/touchable';
 import ChatButton from 'component/chat_button';
 import Avatar from 'component/uikit/avatar';
+import Icon from 'component/uikit/icon';
 import { hideRealMobile } from '../../../utils/utils';
 
 const memberItem = ({
@@ -45,7 +46,9 @@ const memberItem = ({
           />
           {!is_vip && !editMode && (
             <Touchable style={styles.claim.container} onPress={onClaimPress}>
-              <Text style={styles.claim.text}>入驻</Text>
+              <Text style={styles.claim.text}>
+                认领 <Icon name="arrow-forward" size={10} />
+              </Text>
             </Touchable>
           )}
         </View>
