@@ -66,7 +66,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.7.4",
     "react-native-keychain": "^3.0.0",
     "react-native-linear-gradient": "^2.4.3",
-    "react-native-modal": "^7.0.0",
+    "react-native-modal": "^7.0.1",
     "react-native-modal-dropdown": "^0.6.2",
     "react-native-offline": "^3.14.0",
     "react-native-orientation": "^3.1.3",

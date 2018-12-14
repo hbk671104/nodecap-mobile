@@ -7,17 +7,19 @@ import {
 } from 'services/individual/api';
 import { paginate } from '../utils/pagination';
 
+const initialState = {
+  session: {
+    raw: null,
+    data: null,
+  },
+  notification: null,
+  chat_user: null,
+  connected: false,
+};
+
 export default {
   namespace: 'message_center',
-  state: {
-    session: {
-      raw: null,
-      data: null,
-    },
-    notification: null,
-    chat_user: null,
-    connected: false,
-  },
+  state: initialState,
   effects: {
     *fetchSession({ sessions: s }, { select, call, put, all }) {
       try {
@@ -183,6 +185,9 @@ export default {
         ...state,
         connected: true,
       };
+    },
+    reset() {
+      return initialState;
     },
   },
 };

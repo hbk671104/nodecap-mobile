@@ -79,6 +79,7 @@ export default options => {
         'rank/downFetch',
         'dapp/fetchListData',
         'dapp/fetchDappDetail',
+        'user/updateUserProfile',
       ],
     }),
   );

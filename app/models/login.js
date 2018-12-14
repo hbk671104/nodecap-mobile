@@ -127,6 +127,11 @@ export default {
           });
         }
 
+        // clean message center
+        yield put({
+          type: 'message_center/reset',
+        });
+
         request.defaults.headers.common.Authorization = null;
         request.defaults.headers.common['X-Company-ID'] = null;
         // clearKeychain();

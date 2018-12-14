@@ -8,6 +8,7 @@ import moment from 'moment';
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 import Icon from 'component/uikit/icon';
+import { hideRealMobile } from '../../utils/utils';
 
 const notificationItem = ({ data, onPress, onPressShare }) => {
   if (R.isEmpty(data) || R.isNil(data)) {
@@ -24,7 +25,7 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
   return (
     <Touchable onPress={() => onPress(user_id)}>
       <Flex style={styles.container} justify="between">
-        <Flex align="start">
+        <Flex align="start" style={{ flex: 1 }}>
           <View>
             <Avatar
               resizeMode="cover"
@@ -36,13 +37,18 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
               imageStyle={styles.avatar}
             />
           </View>
-          <View>
-            <Text style={styles.name}>{user_name}</Text>
-            <Text style={styles.date}>{moment.unix(data.created_at).fromNow()}入驻</Text>
+          <View style={{ flex: 1, minWidth: 0 }}>
+            <Text style={styles.name}>{hideRealMobile(user_name)}</Text>
+            <Text style={styles.date}>
+              {moment.unix(data.created_at).fromNow()}入驻
+            </Text>
             <Text style={styles.title}>{title}</Text>
           </View>
         </Flex>
-        <Flex align="center">
+        <Flex
+          align="center"
+          style={{ width: 60, marginLeft: 10, flexShrink: 0 }}
+        >
           <Text style={styles.contact}>联系 Ta</Text>
           <Icon name="arrow-forward" size={16} color="#1890FF" />
         </Flex>
@@ -53,6 +59,7 @@ const notificationItem = ({ data, onPress, onPressShare }) => {
 
 const styles = {
   container: {
+    flex: 1,
     backgroundColor: 'white',
     padding: 12,
     borderBottomColor: '#eee',

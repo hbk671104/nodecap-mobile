@@ -7,7 +7,7 @@ import R from 'ramda';
 
 import List from 'component/uikit/list';
 import Touchable from 'component/uikit/touchable';
-import SimplifiedItem from 'component/public_project/simplified_item';
+import SimplifiedItem from './component/simplified_item';
 import Wrapper from './index';
 import styles from './style';
 
