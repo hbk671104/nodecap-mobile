@@ -14,6 +14,7 @@ import Chart from './chart';
 import shareModal from '../../../../component/shareModal';
 import runtimeConfig from '../../../../runtime';
 import DappChartTable from './tabel';
+import { NavigationActions } from 'react-navigation';
 
 @global.bindTrack({
   page: 'DApp 详情',
@@ -40,6 +41,20 @@ class DappDetail extends Component {
       id: this.props.id,
     });
   };
+
+  handleLinkPress = uri => {
+    const name = R.pathOr('', ['data', 'title'])(this.props);
+
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'WebPage',
+        params: {
+          title: name,
+          uri,
+        },
+      }),
+    );
+  }
 
   handleSharePress = () => {
     const { data, navigation } = this.props;
