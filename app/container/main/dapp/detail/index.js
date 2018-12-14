@@ -14,6 +14,7 @@ import Chart from './chart';
 import shareModal from '../../../../component/shareModal';
 import runtimeConfig from '../../../../runtime';
 import DappChartTable from './tabel';
+import { NavigationActions } from 'react-navigation';
 
 @global.bindTrack({
   page: 'DApp 详情',
@@ -41,6 +42,20 @@ class DappDetail extends Component {
     });
   };
 
+  handleLinkPress = uri => {
+    const name = R.pathOr('', ['data', 'title'])(this.props);
+
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'WebPage',
+        params: {
+          title: name,
+          uri,
+        },
+      }),
+    );
+  }
+
   handleSharePress = () => {
     const { data, navigation } = this.props;
     this.props.openShareModal({
@@ -50,7 +65,7 @@ class DappDetail extends Component {
           webpageUrl: `${runtimeConfig.MOBILE_SITE}/dapp?id=${
             data.id
             }`,
-          title: `来 Hotnode 联系「${R.path(['name'])(data)}」`,
+          title: `来 Hotnode 联系「${R.path(['title'])(data)}」`,
           description: '来 Hotnode 联系全球优质 Dapp 项目',
           thumbImage: R.pathOr(
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
@@ -63,7 +78,7 @@ class DappDetail extends Component {
             data.id
             }`,
           title: `推荐给你一个靠谱 Dapp 项目「${R.path([
-            'name',
+            'title',
           ])(data)}」`,
           description: '来 Hotnode 找全球 Dapp！',
           thumbImage: R.pathOr(

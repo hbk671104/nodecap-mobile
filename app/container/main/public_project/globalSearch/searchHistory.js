@@ -60,6 +60,7 @@ const styles = {
     paddingVertical: 5.5,
     backgroundColor: '#EEEEEE',
     marginRight: 11.5,
+    marginBottom: 11.5,
   },
   itemText: { fontSize: 13, color: 'rgba(0,0,0,0.65)' },
 };

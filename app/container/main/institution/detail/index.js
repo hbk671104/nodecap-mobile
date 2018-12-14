@@ -286,12 +286,14 @@ export default class InstitutionDetail extends Component {
           {data.type === 6 && (
             <View>
               <ReportsItems data={reports} onPress={this.toReportDetail} />
+              {!!reports.length && (
               <Touchable onPress={this.toReportList}>
                 <Flex align="center" justify="center" style={styles.allReports}>
                   <Text style={styles.allReportsText}>查看全部研报</Text>
                   <Icon name="arrow-forward" size={14} color="#1890FF" style={{ marginLeft: 5, marginTop: 1 }} />
                 </Flex>
               </Touchable>
+)}
             </View>
           )}
           {R.not(R.isEmpty(members)) && (

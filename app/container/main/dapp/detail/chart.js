@@ -16,7 +16,7 @@ import { Flex } from 'antd-mobile';
 class DappChart extends Component {
   render() {
     const chartData = R.reverse(R.pathOr([], ['data', 'week_base_stats'])(this.props));
-    if (!chartData.length) {
+    if (chartData.length < 2) {
       return null;
     }
     return (

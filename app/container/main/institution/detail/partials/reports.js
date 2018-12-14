@@ -12,7 +12,7 @@ const ReportItem = ({ data = [], onPress }) => (data.length ? (
       {data.map((i) => (
         <Touchable onPress={() => onPress(i)}>
           <Flex key={i.name} style={styles.container} align="start" justify="between">
-            <Text>{i.title}</Text>
+            <Text style={styles.title}>{i.title}</Text>
             <Text style={styles.desc}>{moment(i.published_at).format('MM-DD')}</Text>
           </Flex>
         </Touchable>
@@ -39,16 +39,17 @@ const styles = {
     marginLeft: 16,
     fontSize: 13,
     color: 'rgba(0,0,0,0.65)',
+    flexShrink: 0,
     minWidth: 0,
+    width: 40,
   },
   name: { fontSize: 14, color: '#FFFFFF', letterSpacing: 0.17, textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2, textShadowColor: 'rgba(131,158,182,0.50)' },
   titleContainer: {
     // marginBottom: 4,
   },
   title: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'rgba(0, 0, 0, 0.85)',
+    minWidth: 0,
+    flex: 1,
   },
 };
 
