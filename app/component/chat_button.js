@@ -28,7 +28,7 @@ class ChatButton extends PureComponent {
     if (
       R.pipe(
         R.path(['realname']),
-        R.test(/^1[34578]\d{9}$/),
+        R.test(/用户/),
       )(user)
     ) {
       setNameInputVisible(true);
