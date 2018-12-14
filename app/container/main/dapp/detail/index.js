@@ -13,6 +13,7 @@ import TradingInfo from './trade';
 import Chart from './chart';
 import shareModal from '../../../../component/shareModal';
 import runtimeConfig from '../../../../runtime';
+import DappChartTable from './tabel';
 
 @global.bindTrack({
   page: 'DApp 详情',
@@ -120,6 +121,7 @@ class DappDetail extends Component {
             </Group>
           )}
           <Chart {...this.props} />
+          <DappChartTable {...this.props} />
         </ScrollView>
       </View>
     );

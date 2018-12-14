@@ -1,11 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, ImageBackground } from 'react-native';
 import { Flex } from 'antd-mobile';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import R from 'ramda';
 import { shadow } from '../../../../../../utils/style';
 import Touchable from 'component/uikit/touchable';
 import Gradient from 'component/uikit/gradient';
+
+const getColor = (opacity) => `rgba(128, 155, 180, ${opacity})`;
 
 const rating_item = ({ data, org, columns = 5, onMorePress, onIndustryPress }) => {
   const targeted_id = R.path(['rating_type_id'])(data);
@@ -36,11 +38,21 @@ const rating_item = ({ data, org, columns = 5, onMorePress, onIndustryPress }) =
         )}
       </Flex>
       <View>
-        <Flex align="flex-start">
-          {standard.map(i => (
-            <View style={{ flex: 1 }}>
+        <Flex
+          align="flex-start"
+        >
+          {standard.map((i, idx) => (
+            <View style={{
+              flex: 1,
+            }}
+            >
               {i.id === rating_id ? (
-                <View style={[styles.ratingName]}>
+                <View style={[styles.ratingName, {
+                  transform: [{
+                    translateY: (idx + 1) * (10 / standard.length),
+                  }],
+                }]}
+                >
                   <Text style={styles.ratingText}>{rating_name}</Text>
                   <View style={styles.ratingArrow} />
                 </View>
@@ -50,17 +62,22 @@ const rating_item = ({ data, org, columns = 5, onMorePress, onIndustryPress }) =
         </Flex>
       </View>
       <View style={styles.ratingProgress}>
-        <Gradient
-          colors={['#D0DFED', '#7E99B3']}
-          start={{ x: 0, y: 2.5 }}
-          end={{ x: 1.0, y: 2.5 }}
+        <ImageBackground
+          source={require('asset/public_project/rating_background.png')}
+          style={{ width: '100%', height: 15 }}
         >
-          <Flex align="flex-start" style={styles.content.container}>
-            {standard.map(i => (
-              <View style={{ flex: 1, borderRightColor: 'white', borderRightWidth: 1, height: 5 }} />
-            ))}
+          <Flex align="center" style={styles.content.container}>
+            {standard.map((i, idx) => (
+              <View style={{
+              flex: 1,
+              borderRightColor: 'white',
+              borderRightWidth: 1,
+              height: 15,
+            }}
+              />
+          ))}
           </Flex>
-        </Gradient>
+        </ImageBackground>
       </View>
     </View>
   );
@@ -108,7 +125,7 @@ const styles = {
   },
   content: {
     container: {
-      height: 5,
+      height: 15,
     },
     overall: {
       container: {

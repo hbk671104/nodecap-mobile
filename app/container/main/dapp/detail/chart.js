@@ -39,29 +39,6 @@ class DappChart extends Component {
           height={187}
           padding={{ left: 0, right: 0, top: 20, bottom: 50 }}
           domainPadding={{ x: 25 }}
-          containerComponent={
-            <VictoryVoronoiContainer
-              voronoiDimension="x"
-              labels={(d) => `${d.name}: ${d.y}`}
-              labelComponent={
-                <VictoryTooltip
-                  cornerRadius={2}
-                  style={{
-                  textAnchor: 'left',
-                  fill: 'rgba(0,0,0,.65)',
-                  borderWidth: 0,
-                  fontSize: 11,
-                  padding: 10,
-                }}
-                  flyoutStyle={{
-                  fill: 'white',
-                  stroke: '#e9e9e9',
-                  strokeWidth: 0.5,
-                  alignItems: 'flex-start',
-                }}
-                />}
-            />
-        }
         >
           <VictoryAxis
             style={{

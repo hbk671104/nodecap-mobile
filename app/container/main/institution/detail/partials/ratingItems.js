@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Group from './group';
 import { Flex } from 'antd-mobile';
 
@@ -10,13 +10,11 @@ const RatingItem = ({ data = [] }) => (data.length ? (
   <Group title="评级标准">
     <View style={{ marginTop: 20 }}>
       {data.map((i, idx) => (
-        <Flex key={i.name} style={styles.container} align="start">
-          <View style={[styles.icon, {
-          backgroundColor: getColor(0.3 + (idx + 1) * (0.7 / data.length)),
-        }]}
-          >
+        <Flex key={i.name} style={styles.container} align="center">
+          <View style={[styles.icon]}>
             <Text style={styles.name}>{i.name}</Text>
           </View>
+          <View style={styles.divider} />
           <Text style={styles.desc}>{i.description}</Text>
         </Flex>
     ))}
@@ -28,12 +26,17 @@ const styles = {
   container: {
     marginBottom: 12,
     minWidth: 0,
+    borderColor: '#e9e9e9',
+    borderWidth: StyleSheet.hairlineWidth,
+    paddingVertical: 15,
+    paddingRight: 15,
   },
   icon: {
     width: 60,
     height: 35,
     alignItems: 'center',
     justifyContent: 'center',
+
   },
   desc: {
     marginLeft: 16,
@@ -42,7 +45,7 @@ const styles = {
     minWidth: 0,
     flex: 1,
   },
-  name: { fontSize: 14, color: '#FFFFFF', letterSpacing: 0.17, textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2, textShadowColor: 'rgba(131,158,182,0.50)' },
+  name: { fontSize: 17, color: '#1890FF' },
   titleContainer: {
     // marginBottom: 4,
   },
@@ -50,6 +53,12 @@ const styles = {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'rgba(0, 0, 0, 0.85)',
+  },
+  divider: {
+    height: 30,
+    width: 1,
+    borderRightColor: '#e9e9e9',
+    borderRightWidth: StyleSheet.hairlineWidth,
   },
 };
 
