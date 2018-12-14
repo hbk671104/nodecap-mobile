@@ -24,9 +24,11 @@ import Chat from 'component/chat';
 import Touchable from 'component/uikit/touchable';
 import SafeArea from 'component/uikit/safeArea';
 import ActionAlert from 'component/action_alert';
+import NameInputAlert from 'component/name_input_alert';
 import { formatMessage } from 'utils/nim';
 import { RouterEmitter, getCurrentScreen } from '../../../../router';
 import styles from './style';
+
 import { hideRealMobile } from '../../../../utils/utils';
 
 @global.bindTrack({
@@ -47,6 +49,7 @@ import { hideRealMobile } from '../../../../utils/utils';
 @compose(
   withState('data', 'setData', []),
   withState('inLastPage', 'setInLastPage', false),
+  withState('nameInputVisible', 'setNameInputVisible', false),
   withStateHandlers(
     () => ({
       showContactModal: false,
@@ -79,6 +82,8 @@ class IMPage extends PureComponent {
     Keyboard.addListener('keyboardDidShow', e => {
       this.props.toggleContactModal(false);
     });
+
+    this.checkUserName();
   }
 
   componentDidMount() {
@@ -90,6 +95,18 @@ class IMPage extends PureComponent {
       this.loadTargetInfo();
     }
   }
+
+  checkUserName = () => {
+    const { user, setNameInputVisible } = this.props;
+    if (
+      R.pipe(
+        R.path(['realname']),
+        R.test(/用户/),
+      )(user)
+    ) {
+      setNameInputVisible(true);
+    }
+  };
 
   loadTargetInfo = () => {
     if (this.props.target) {
@@ -419,6 +436,7 @@ class IMPage extends PureComponent {
           }}
           onBackdropPress={() => this.props.setShowNotificationModal(false)}
         />
+        <NameInputAlert {...this.props} />
       </SafeArea>
     );
   }

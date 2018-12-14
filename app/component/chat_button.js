@@ -1,18 +1,13 @@
 import React, { PureComponent } from 'react';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
-import { compose, withState } from 'recompose';
-import R from 'ramda';
 
 import Touchable from 'component/uikit/touchable';
-import NameInputAlert from 'component/name_input_alert';
 
-@connect(({ login, user }) => ({
-  user: R.path(['currentUser'])(user),
+@connect(({ login }) => ({
   logged_in: !!login.token,
 }))
-@compose(withState('nameInputVisible', 'setNameInputVisible', false))
 class ChatButton extends PureComponent {
   handlePress = () => {
     if (!this.props.logged_in) {
@@ -21,17 +16,6 @@ class ChatButton extends PureComponent {
           routeName: 'Login',
         }),
       );
-      return;
-    }
-
-    const { user, setNameInputVisible } = this.props;
-    if (
-      R.pipe(
-        R.path(['realname']),
-        R.test(/用户/),
-      )(user)
-    ) {
-      setNameInputVisible(true);
       return;
     }
 
@@ -47,12 +31,9 @@ class ChatButton extends PureComponent {
 
   render() {
     return (
-      <View>
-        <Touchable style={styles.container} onPress={this.handlePress}>
-          <Text style={styles.text}>聊 天</Text>
-        </Touchable>
-        <NameInputAlert {...this.props} />
-      </View>
+      <Touchable style={styles.container} onPress={this.handlePress}>
+        <Text style={styles.text}>聊 天</Text>
+      </Touchable>
     );
   }
 }
