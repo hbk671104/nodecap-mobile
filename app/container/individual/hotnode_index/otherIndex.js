@@ -4,6 +4,10 @@ import { Flex } from 'antd-mobile';
 import { Col, Grid, Row } from 'react-native-easy-grid';
 import R from 'ramda';
 
+import Icon from 'component/uikit/icon';
+import Format from 'component/format';
+import EnhancedText from 'component/text';
+
 class OtherIndex extends Component {
   state = {
     fadeAnim: new Animated.Value(1),
@@ -52,25 +56,35 @@ class OtherIndex extends Component {
                 <Text style={styles.name}>{gbi.name}</Text>
                 <Text style={styles.index}>{gbi.current_index}</Text>
                 <Flex style={{ marginTop: 5 }}>
-                  <Text style={styles.variation}>
-                    {gbi.index_variation > 0
-                      ? `+${gbi.index_variation}`
-                      : gbi.index_variation}
-                  </Text>
+                  <EnhancedText style={styles.variation} colorAware digit={2}>
+                    {gbi.index_variation}
+                  </EnhancedText>
                   <Flex style={{ marginLeft: 8 }} align="start">
-                    <Image
-                      style={[
-                        styles.arrow,
-                        gbi.index_variance_ratio < 0
-                          ? {
-                              transform: [{ rotateZ: '180deg' }],
-                            }
-                          : {},
-                      ]}
-                      source={require('asset/hotnode_index/index_arrow.png')}
+                    <Icon
+                      override
+                      name={`md-arrow-drop${
+                        gbi.index_variance_ratio < 0 ? 'down' : 'up'
+                      }`}
+                      color={
+                        gbi.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
+                      }
                     />
-                    <Text style={styles.variation}>
-                      {Math.abs(gbi.index_variance_ratio)}%
+                    <Text
+                      style={[
+                        styles.variation,
+                        {
+                          color:
+                            gbi.index_variance_ratio < 0
+                              ? '#F55454'
+                              : '#09AC32',
+                        },
+                      ]}
+                    >
+                      {' '}
+                      <Format digit={2}>
+                        {Math.abs(gbi.index_variance_ratio)}
+                      </Format>
+                      %
                     </Text>
                   </Flex>
                 </Flex>
@@ -88,25 +102,35 @@ class OtherIndex extends Component {
                 <Text style={styles.name}>{sic.name}</Text>
                 <Text style={styles.index}>{sic.current_index}</Text>
                 <Flex style={{ marginTop: 5 }}>
-                  <Text style={styles.variation}>
-                    {sic.index_variation > 0
-                      ? `+${sic.index_variation}`
-                      : sic.index_variation}
-                  </Text>
+                  <EnhancedText style={styles.variation} colorAware digit={2}>
+                    {sic.index_variation}
+                  </EnhancedText>
                   <Flex style={{ marginLeft: 8 }} align="start">
-                    <Image
-                      style={[
-                        styles.arrow,
-                        sic.index_variance_ratio < 0
-                          ? {
-                              transform: [{ rotateZ: '180deg' }],
-                            }
-                          : {},
-                      ]}
-                      source={require('asset/hotnode_index/index_arrow.png')}
+                    <Icon
+                      override
+                      name={`md-arrow-drop${
+                        sic.index_variance_ratio < 0 ? 'down' : 'up'
+                      }`}
+                      color={
+                        sic.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
+                      }
                     />
-                    <Text style={styles.variation}>
-                      {Math.abs(sic.index_variance_ratio)}%
+                    <Text
+                      style={[
+                        styles.variation,
+                        {
+                          color:
+                            sic.index_variance_ratio < 0
+                              ? '#F55454'
+                              : '#09AC32',
+                        },
+                      ]}
+                    >
+                      {' '}
+                      <Format digit={2}>
+                        {Math.abs(sic.index_variance_ratio)}
+                      </Format>
+                      %
                     </Text>
                   </Flex>
                 </Flex>
@@ -126,25 +150,35 @@ class OtherIndex extends Component {
                 <Text style={styles.name}>{hsi.name}</Text>
                 <Text style={styles.index}>{hsi.current_index}</Text>
                 <Flex style={{ marginTop: 5 }}>
-                  <Text style={styles.variation}>
-                    {hsi.index_variation > 0
-                      ? `+${hsi.index_variation}`
-                      : hsi.index_variation}
-                  </Text>
+                  <EnhancedText style={styles.variation} colorAware digit={2}>
+                    {hsi.index_variation}
+                  </EnhancedText>
                   <Flex style={{ marginLeft: 8 }} align="start">
-                    <Image
-                      style={[
-                        styles.arrow,
-                        hsi.index_variance_ratio < 0
-                          ? {
-                              transform: [{ rotateZ: '180deg' }],
-                            }
-                          : {},
-                      ]}
-                      source={require('asset/hotnode_index/index_arrow.png')}
+                    <Icon
+                      override
+                      name={`md-arrow-drop${
+                        hsi.index_variance_ratio < 0 ? 'down' : 'up'
+                      }`}
+                      color={
+                        hsi.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
+                      }
                     />
-                    <Text style={styles.variation}>
-                      {Math.abs(hsi.index_variance_ratio)}%
+                    <Text
+                      style={[
+                        styles.variation,
+                        {
+                          color:
+                            hsi.index_variance_ratio < 0
+                              ? '#F55454'
+                              : '#09AC32',
+                        },
+                      ]}
+                    >
+                      {' '}
+                      <Format digit={2}>
+                        {Math.abs(hsi.index_variance_ratio)}
+                      </Format>
+                      %
                     </Text>
                   </Flex>
                 </Flex>
@@ -160,25 +194,35 @@ class OtherIndex extends Component {
                 <Text style={styles.name}>{ixic.name}</Text>
                 <Text style={styles.index}>{ixic.current_index}</Text>
                 <Flex style={{ marginTop: 5 }}>
-                  <Text style={styles.variation}>
-                    {ixic.index_variation > 0
-                      ? `+${ixic.index_variation}`
-                      : ixic.index_variation}
-                  </Text>
+                  <EnhancedText style={styles.variation} colorAware digit={2}>
+                    {ixic.index_variation}
+                  </EnhancedText>
                   <Flex style={{ marginLeft: 8 }} align="start">
-                    <Image
-                      style={[
-                        styles.arrow,
-                        ixic.index_variance_ratio < 0
-                          ? {
-                              transform: [{ rotateZ: '180deg' }],
-                            }
-                          : {},
-                      ]}
-                      source={require('asset/hotnode_index/index_arrow.png')}
+                    <Icon
+                      override
+                      name={`md-arrow-drop${
+                        ixic.index_variance_ratio < 0 ? 'down' : 'up'
+                      }`}
+                      color={
+                        ixic.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
+                      }
                     />
-                    <Text style={styles.variation}>
-                      {Math.abs(ixic.index_variance_ratio)}%
+                    <Text
+                      style={[
+                        styles.variation,
+                        {
+                          color:
+                            ixic.index_variance_ratio < 0
+                              ? '#F55454'
+                              : '#09AC32',
+                        },
+                      ]}
+                    >
+                      {' '}
+                      <Format digit={2}>
+                        {Math.abs(ixic.index_variance_ratio)}
+                      </Format>
+                      %
                     </Text>
                   </Flex>
                 </Flex>

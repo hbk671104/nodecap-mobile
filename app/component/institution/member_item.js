@@ -109,12 +109,12 @@ const memberItem = ({
               </Text>
             </View>
             <Flex>
-              {!!mobile && !institutionOwned && (
+              {!!mobile && !user_id && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
-              {!!wechat && !institutionOwned && (
+              {!!wechat && !user_id && (
                 <Touchable disabled={editMode} onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}
