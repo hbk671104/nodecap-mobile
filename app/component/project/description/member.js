@@ -31,6 +31,32 @@ const memberItem = ({
   const is_vip = R.pathOr(false, ['is_vip'])(data);
   const user_id = R.path(['user_id'])(data);
 
+  const shouldDisplayMobile = (() => {
+    if (mobile) {
+      if (projectOwned) {
+        return false;
+      }
+      if (user_id) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  })();
+
+  const shouldDisplayWechat = (() => {
+    if (wechat) {
+      if (projectOwned) {
+        return false;
+      }
+      if (user_id) {
+        return false;
+      }
+      return true;
+    }
+    return false;
+  })();
+
   return (
     <Touchable disabled={editMode} foreground onPress={onPress}>
       <Flex style={[styles.container, style]} align="flex-start">
@@ -108,12 +134,12 @@ const memberItem = ({
               </Text>
             </View>
             <Flex>
-              {mobile && !projectOwned && (
+              {shouldDisplayMobile && (
                 <Touchable onPress={onPrivacyItemPress}>
                   <Image source={require('asset/project/detail/mobile.png')} />
                 </Touchable>
               )}
-              {wechat && !projectOwned && (
+              {shouldDisplayWechat && (
                 <Touchable onPress={onPrivacyItemPress}>
                   <Image
                     style={{ marginLeft: 12 }}
