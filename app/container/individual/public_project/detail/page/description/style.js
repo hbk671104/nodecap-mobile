@@ -63,4 +63,20 @@ export default {
     height: 12,
     marginLeft: 10,
   },
+  scoreContent: {
+    marginTop: 8.5,
+  },
+  scoreText: { fontFamily: 'DIN Alternate', fontSize: 23, color: '#1890FF', marginRight: 12 },
+  score: {
+    width: 16,
+    height: 16,
+    marginRight: 6,
+  },
+  scoreTipText: { fontSize: 11, color: 'rgba(0,0,0,0.65)' },
+  scoreTipContainer: {
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    backgroundColor: '#F5F5F5',
+    marginTop: 8,
+  },
 };
