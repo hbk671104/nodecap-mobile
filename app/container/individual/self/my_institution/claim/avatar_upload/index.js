@@ -10,6 +10,8 @@ import AvatarWrapper from 'component/avatar_wrapper';
 import NavBar from 'component/navBar';
 import AuthButton from 'component/auth/button';
 import Icon from 'component/uikit/icon';
+import AvatarConfirmAlert from 'component/avatar_confirm_alert';
+
 import request from 'utils/request';
 import runtimeConfig from 'runtime/index';
 import { launchImagePicker } from 'utils/imagepicker';
@@ -32,7 +34,10 @@ import styles from './style';
       loading.effects['institution_create/submitInstitution'],
   };
 })
-@compose(withState('avatarURL', 'setAvatarURL', null))
+@compose(
+  withState('avatarURL', 'setAvatarURL', null),
+  withState('avatarConfirmVisible', 'setAvatarConfirmVisible', false),
+)
 class AvatarUpload extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
@@ -55,6 +60,10 @@ class AvatarUpload extends PureComponent {
         this.handleUpload(response);
       }
     });
+  };
+
+  handleSkipPress = () => {
+    this.props.setAvatarConfirmVisible(true);
   };
 
   handleSubmit = () => {
@@ -137,11 +146,12 @@ class AvatarUpload extends PureComponent {
             onPress={this.handleSubmit}
           />
           <View style={styles.skip.container}>
-            <Text style={styles.skip.text} onPress={this.handleSubmit}>
+            <Text style={styles.skip.text} onPress={this.handleSkipPress}>
               跳过并提交 <Icon name="arrow-forward" />
             </Text>
           </View>
         </View>
+        <AvatarConfirmAlert {...this.props} onSubmit={this.handleSubmit} />
       </View>
     );
   }

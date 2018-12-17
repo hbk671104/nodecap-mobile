@@ -25,10 +25,10 @@ export default {
         name: 'CreateMyInstitutionDescription',
         title: '机构介绍',
       },
-      {
-        name: 'CreateMyInstitutionTeam',
-        title: '团队成员',
-      },
+      // {
+      //   name: 'CreateMyInstitutionTeam',
+      //   title: '团队成员',
+      // },
       {
         name: 'CreateMyInstitutionServedProject',
         title: '服务过的项目',

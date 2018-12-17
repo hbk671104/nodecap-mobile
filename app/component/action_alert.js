@@ -12,6 +12,8 @@ const actionAlert = ({
   image,
   actionTitle,
   action,
+  subActionTitle,
+  subAction,
   onBackdropPress,
   renderContent,
   avoidKeyboard = false,
@@ -36,13 +38,33 @@ const actionAlert = ({
           {image && <Image style={{ marginTop: 24 }} source={image} />}
         </View>
       )}
-      <Touchable style={styles.action.container} onPress={action}>
-        {loading ? (
-          <ActivityIndicator color="#1890FF" />
-        ) : (
-          <Text style={styles.action.text}>{actionTitle}</Text>
+      <View style={styles.action.wrapper}>
+        {!!subActionTitle && !!subAction && (
+          <Touchable
+            style={[
+              styles.action.container,
+              {
+                borderRightColor: '#DDDDDD',
+                borderRightWidth: StyleSheet.hairlineWidth,
+              },
+            ]}
+            onPress={subAction}
+          >
+            <Text
+              style={[styles.action.text, { color: 'rgba(0, 0, 0, 0.65)' }]}
+            >
+              {subActionTitle}
+            </Text>
+          </Touchable>
         )}
-      </Touchable>
+        <Touchable style={styles.action.container} onPress={action}>
+          {loading ? (
+            <ActivityIndicator color="#1890FF" />
+          ) : (
+            <Text style={styles.action.text}>{actionTitle}</Text>
+          )}
+        </Touchable>
+      </View>
     </View>
   </Modal>
 );
@@ -62,12 +84,16 @@ const styles = {
     alignItems: 'center',
   },
   action: {
-    container: {
+    wrapper: {
+      flexDirection: 'row',
       height: 48,
-      justifyContent: 'center',
-      alignItems: 'center',
       borderTopWidth: StyleSheet.hairlineWidth,
       borderTopColor: '#DDDDDD',
+    },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     text: {
       color: '#1890FF',

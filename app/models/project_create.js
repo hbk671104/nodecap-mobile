@@ -25,10 +25,10 @@ export default {
         name: 'CreateMyProjectDescription',
         title: '项目介绍',
       },
-      {
-        name: 'CreateMyProjectTeam',
-        title: '团队成员',
-      },
+      // {
+      //   name: 'CreateMyProjectTeam',
+      //   title: '团队成员',
+      // },
       {
         name: 'CreateMyProjectSocial',
         title: '社群信息',
