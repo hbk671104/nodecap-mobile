@@ -228,6 +228,11 @@ export default {
       try {
         // http headers
         request.defaults.baseURL = Config.API_URL;
+        const company = yield select(state =>
+          R.path(['user', 'currentUser', 'companies', 0])(state),
+        );
+        const companyID = R.pathOr(0, ['id'])(company);
+        request.defaults.headers.common['X-Company-ID'] = companyID;
 
         yield all([
           put.resolve({
@@ -247,12 +252,6 @@ export default {
           }),
         ]);
 
-        const companies = yield select(state =>
-          R.path(['user', 'currentUser', 'companies'])(state),
-        );
-        const companyID = R.pathOr(0, [0, 'id'])(companies);
-        request.defaults.headers.common['X-Company-ID'] = companyID;
-
         const user = yield select(state =>
           R.path(['user', 'currentUser'])(state),
         );
@@ -260,7 +259,7 @@ export default {
         // sensor input
         const realname = R.path(['realname'])(user);
         const user_id = R.path(['id'])(user);
-        const companyName = R.pathOr('void', [0, 'name'])(companies);
+        const companyName = R.pathOr('void', ['name'])(company);
         const input = {
           realname,
           companyName,
