@@ -57,7 +57,7 @@ class CreateProject extends Component {
     const name = R.pathOr('', ['name'])(current);
     return (
       <SafeAreaView style={styles.container}>
-        <NavBar back gradient title="创建项目" />
+        <NavBar back barStyle="dark-content" title="创建项目" />
         <ScrollView>
           <Item
             style={styles.item.container}

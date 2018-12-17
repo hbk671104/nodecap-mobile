@@ -39,10 +39,6 @@ import styles from './style';
   },
 })
 class TeamMember extends PureComponent {
-  state = {
-    barStyle: 'light-content',
-  };
-
   handleUpload = async response => {
     Toast.loading('上传中...', 0);
     const { url } = await uploadImage({
@@ -57,14 +53,10 @@ class TeamMember extends PureComponent {
   };
 
   handleLogoPress = () => {
-    this.setState({ barStyle: 'dark-content' }, () => {
-      launchImagePicker(response => {
-        this.setState({ barStyle: 'light-content' }, () => {
-          if (!response.didCancel && !response.error) {
-            this.handleUpload(response);
-          }
-        });
-      });
+    launchImagePicker(response => {
+      if (!response.didCancel && !response.error) {
+        this.handleUpload(response);
+      }
     });
   };
 
@@ -200,8 +192,7 @@ class TeamMember extends PureComponent {
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <NavBar
           back
-          gradient
-          barStyle={this.state.barStyle}
+          barStyle="dark-content"
           title="编辑成员"
           renderRight={() => {
             if (loading) {

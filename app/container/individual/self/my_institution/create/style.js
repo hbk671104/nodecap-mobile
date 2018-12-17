@@ -7,7 +7,7 @@ export default {
   },
   navBar: {
     right: {
-      color: 'white',
+      color: 'rgba(0, 0, 0, 0.85)',
       fontSize: 14,
     },
   },

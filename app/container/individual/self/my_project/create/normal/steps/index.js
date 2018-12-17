@@ -68,13 +68,12 @@ class CreateProjectNormalWrapper extends Component {
   };
 
   render() {
-    const { children, title, isEditing, loading, barStyle } = this.props;
+    const { children, title, isEditing, loading } = this.props;
     return (
       <View style={styles.container}>
         <NavBar
-          barStyle={barStyle}
+          barStyle="dark-content"
           back
-          gradient
           title={title}
           renderRight={() => {
             if (loading) {

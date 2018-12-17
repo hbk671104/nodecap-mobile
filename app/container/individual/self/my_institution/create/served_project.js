@@ -43,7 +43,9 @@ class ServedProject extends PureComponent {
           style={styles.itemRight.container}
           onPress={this.handleDeletePress(item)}
         >
-          <Image source={require('asset/institution_create/trash_can.png')} />
+          <Text style={{ fontSize: 12, color: '#F55454', fontWeight: 'bold' }}>
+            删除
+          </Text>
         </Touchable>
       )}
     />
