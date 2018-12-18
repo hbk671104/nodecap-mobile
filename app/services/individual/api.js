@@ -35,6 +35,10 @@ export const unfavorCoin = cid => {
   return request.delete(`/user/coins/${cid}`);
 };
 
+
+export const getUserById = cid => {
+  return request.get(`/users/${cid}`);
+};
 /**
  * 项目 Token 投资记录
  */

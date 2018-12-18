@@ -28,6 +28,7 @@ import Header from './header';
 import Bottom from './bottom';
 import styles from './style';
 import Icon from '../../../../component/uikit/icon';
+import ShareModal from './share';
 
 @global.bindTrack({
   page: '机构详情',
@@ -177,6 +178,9 @@ export default class InstitutionDetail extends Component {
             'https://hotnode-production-file.oss-cn-beijing.aliyuncs.com/big_logo%403x.png',
             ['logo_url'],
           )(data),
+        },
+        {
+          type: 'picture',
         },
         {
           type: 'link',
@@ -387,6 +391,13 @@ export default class InstitutionDetail extends Component {
               });
           }}
           onBackdropPress={() => this.props.setShowModal(false)}
+        />
+        <ShareModal
+          onClose={() => this.props.toggleSharePictureModal(false)}
+          data={data}
+          visible={this.props.showSharePictureModal}
+          industryType={this.props.industryType}
+          ratingTypes={this.props.ratingTypes}
         />
       </View>
     );
