@@ -69,13 +69,27 @@ export default {
         console.log(error);
       }
     },
-    *fetchNotification({ updateListUnread = true, params }, { call, put }) {
+    *fetchNotification({ updateListUnread = true, params }, { call, put, all }) {
       try {
         const { data } = yield call(getNotification, params);
-
+        const combineData = yield all(
+          R.pathOr([], ['data'])(data)
+            .map(async i => {
+              const res = await getUserById(R.path(['sender', 'id'])(i));
+              const orgInfo = R.pathOr([], ['data', 'org_info'])(res);
+              const coinInfo = R.pathOr([], ['data', 'coin_info'])(res);
+              return {
+                ...i,
+                orgInfo,
+                coinInfo,
+              };
+            }));
         yield put({
           type: 'saveNotification',
-          payload: data,
+          payload: {
+            data: combineData,
+            pagination: data.pagination,
+          },
           updateListUnread,
         });
       } catch (error) {

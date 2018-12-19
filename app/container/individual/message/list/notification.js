@@ -6,6 +6,8 @@ import R from 'ramda';
 import List from 'component/uikit/list';
 import NotificationItem from 'component/message_center/notification_item';
 import styles from '../style';
+import { NavigationActions } from 'react-navigation';
+import Toast from 'antd-mobile/lib/toast';
 
 @global.bindTrack({
   page: '消息中心',
@@ -22,6 +24,32 @@ class NotificationList extends PureComponent {
     this.props.track('进入');
   }
 
+  onPressItem = (item) => {
+    if (R.compose(R.not, R.isEmpty, R.pathOr([], ['coinInfo']))(item)) {
+      const coin = R.head()(R.pathOr([], ['coinInfo'])(item));
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'PortfolioDetail',
+          params: {
+            id: coin.id,
+          },
+        }),
+      );
+    } else if (R.compose(R.not, R.isEmpty, R.pathOr([], ['orgInfo']))(item)) {
+      const org = R.head()(R.pathOr([], ['orgInfo'])(item));
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'InstitutionDetail',
+          params: {
+            id: org.id,
+          },
+        }),
+      );
+    } else {
+      Toast.show('该用户暂无更多个人信息');
+    }
+  }
+
   requestData = (page, size) => {
     this.props.dispatch({
       type: 'message_center/fetchNotification',
@@ -32,7 +60,7 @@ class NotificationList extends PureComponent {
     });
   };
 
-  renderItem = ({ item }) => <NotificationItem data={item} />;
+  renderItem = ({ item }) => <NotificationItem onPress={this.onPressItem} data={item} />;
 
   renderSeparator = () => <View style={styles.separator} />;
 

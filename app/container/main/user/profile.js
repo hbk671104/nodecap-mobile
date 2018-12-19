@@ -23,7 +23,8 @@ import { hideRealMobile } from '../../../utils/utils';
   return {
     data: {
       ...data,
-      company: profile.company,
+      orgInfo: R.path(['current', 'org_info'])(profile),
+      coinInfo: R.path(['current', 'coin_info'])(profile),
     },
     logged_in: !!login.token,
     loading: loading.effects['profile/getProfileById'],
@@ -32,11 +33,13 @@ import { hideRealMobile } from '../../../utils/utils';
 @shareModal
 export default class ProfileDetail extends Component {
   componentWillMount() {
-    const id = this.props.navigation.getParam('id');
-    this.props.dispatch({
-      type: 'profile/getProfileById',
-      id,
-    });
+    const id = R.path(['data', 'user_id'])(this.props);
+    if (id) {
+      this.props.dispatch({
+        type: 'profile/getProfileById',
+        id,
+      });
+    }
   }
 
   componentDidMount() {

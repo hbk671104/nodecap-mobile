@@ -17,7 +17,7 @@ const rating = ({ portfolio, rating_orgs, onMorePress, onIndustryPress }) => {
     return null;
   }
 
-  const scoreText = '7.5';
+  const scoreText = R.pathOr(0, ['rating_score'])(portfolio);
   const score = (Number(scoreText) * 0.5);
   const fullStarCount = Math.floor(score);
   const halfStarCount = score % 1 > 0 ? 1 : 0;
