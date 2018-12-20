@@ -7,7 +7,9 @@ import Shimmer from 'component/shimmer';
 
 const header = ({ style, data, loading, onLinkPress }) => {
   const name = R.pathOr('--', ['name'])(data);
-  const site_url = R.pathOr('', ['title'])(data);
+  const orgInfo = R.pathOr([], ['orgInfo'])(data);
+  const coinInfo = R.pathOr([], ['coinInfo'])(data);
+
   const logo = R.path(['profile_pic'])(data) || R.path(['avatar_url'])(data);
 
   return (
@@ -18,7 +20,8 @@ const header = ({ style, data, loading, onLinkPress }) => {
           <Text
             style={styles.content.subtitle}
           >
-            {site_url}
+            {orgInfo.map((i, idx) => ((orgInfo.length - 1 === idx) && (!coinInfo.length) ? `${i.name} ${i.title}` : `${i.name} ${i.title} | `))}
+            {coinInfo.map((i, idx) => ((coinInfo.length - 1 === idx) ? `${i.name} ${i.title}` : `${i.name} ${i.title} | `))}
           </Text>
         </View>
         <Avatar size={50} source={{ uri: logo }} innerRatio={0.9} />
@@ -29,8 +32,8 @@ const header = ({ style, data, loading, onLinkPress }) => {
 
 const styles = {
   container: {
-    height: 64,
     paddingHorizontal: 12,
+    paddingBottom: 10,
   },
   content: {
     wrapper: {

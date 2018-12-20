@@ -80,6 +80,7 @@ export default options => {
         'dapp/fetchListData',
         'dapp/fetchDappDetail',
         'user/updateUserProfile',
+        'profile/getProfileById',
       ],
     }),
   );

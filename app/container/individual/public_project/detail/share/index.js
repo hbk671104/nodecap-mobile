@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   Platform,
+  CameraRoll,
 } from 'react-native';
 import { Flex, Toast } from 'antd-mobile';
 import R from 'ramda';
@@ -58,13 +59,20 @@ class ShareCoin extends Component {
         imageUrl: `file://${uri}`,
       };
 
+      if (type === 'save') {
+        CameraRoll.saveToCameraRoll(`file://${uri}`);
+        this.props.onClose();
+        Toast.success('图片保存成功！');
+        return;
+      }
+
       if (!this.state.isWXAppSupportApi || !this.state.isWXAppInstalled) {
         alert('您的设备暂不支持分享至微信');
       }
 
       if (type === 'wechat') {
         WeChat.shareToSession(request);
-      } else {
+      } else if (type === 'moment') {
         WeChat.shareToTimeline(request);
       }
     } catch (e) {
@@ -163,6 +171,9 @@ class ShareCoin extends Component {
           </Flex>
         </Touchable>
         <Flex>
+          <TouchableOpacity onPress={this.shareTo('save')}>
+            <Image style={{ width: 25, height: 25, marginRight: 24 }} source={require('asset/save_picture.png')} />
+          </TouchableOpacity>
           <TouchableOpacity onPress={this.shareTo('wechat')}>
             <Image source={require('asset/wechat_icon.png')} />
           </TouchableOpacity>

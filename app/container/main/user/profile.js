@@ -18,17 +18,38 @@ import { hideRealMobile } from '../../../utils/utils';
   page: '成员详情',
   name: 'App_UserProfileOperation',
 })
-@connect(({ login }, props) => {
+@connect(({ login, profile, loading }, props) => {
   const data = props.navigation.getParam('data');
   return {
-    data,
+    data: {
+      ...data,
+      orgInfo: R.path(['current', 'org_info'])(profile),
+      coinInfo: R.path(['current', 'coin_info'])(profile),
+    },
     logged_in: !!login.token,
+    loading: loading.effects['profile/getProfileById'],
   };
 })
 @shareModal
-export default class InstitutionDetail extends Component {
+export default class ProfileDetail extends Component {
+  componentWillMount() {
+    const id = R.path(['data', 'user_id'])(this.props);
+    if (id) {
+      this.props.dispatch({
+        type: 'profile/getProfileById',
+        id,
+      });
+    }
+  }
+
   componentDidMount() {
     this.props.track('进入');
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch({
+      type: 'profile/clear',
+    });
   }
 
   handleSharePress = () => {
