@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { compose, withState, withProps } from 'recompose';
+import { compose, withState } from 'recompose';
 
 import ShareNews from './shareAnnouncement';
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
+import Touchable from 'component/uikit/touchable';
 import NotificationItem from 'component/notification/hostItem';
 import { NavigationActions } from 'react-navigation';
 import styles from './style';
@@ -57,6 +58,24 @@ export default class HostJoinList extends Component {
     });
   };
 
+  handleOnBoardPress = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ProjectCreateOnboard',
+      }),
+    );
+  };
+
+  renderProjectCreateButton = () => (
+    <View style={styles.button.wrapper}>
+      <Touchable borderless onPress={this.handleOnBoardPress}>
+        <View style={styles.button.container}>
+          <Text style={styles.button.title}>我要入驻</Text>
+        </View>
+      </Touchable>
+    </View>
+  );
+
   renderItem = ({ item }) => (
     <NotificationItem data={item} onPress={this.handleItemPress} />
   );
@@ -67,7 +86,12 @@ export default class HostJoinList extends Component {
     const { loading, data, pagination } = this.props;
     return (
       <View style={styles.container}>
-        <NavBar barStyle="dark-content" back title="最新公告" />
+        <NavBar
+          wrapperStyle={styles.navBar}
+          barStyle="dark-content"
+          back
+          title="最新公告"
+        />
         <List
           action={this.requestData}
           loading={loading}
@@ -83,6 +107,7 @@ export default class HostJoinList extends Component {
             this.props.setShareNews('');
           }}
         />
+        {this.renderProjectCreateButton()}
       </View>
     );
   }
