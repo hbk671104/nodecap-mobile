@@ -4,7 +4,7 @@ import ViewShot from 'react-native-view-shot';
 import Modal from 'react-native-modal';
 import Actions from './actions';
 import * as WeChat from 'react-native-wechat';
-import { Toast } from 'antd-mobile';
+import { Flex, Toast } from 'antd-mobile';
 import Top from './top';
 import Content from './content';
 
@@ -89,6 +89,16 @@ class InstitutionShare extends Component {
               >
                 <Top data={this.props.data} industryType={this.props.industryType} />
                 <Content data={this.props.data} ratingTypes={this.props.ratingTypes} />
+                <Flex align="center">
+                  <Image
+                    style={{
+                      width: 148,
+                      height: 144,
+                      marginTop: 24,
+                    }}
+                    source={require('asset/institution/share/share_bottom.png')}
+                  />
+                </Flex>
               </View>
             </ViewShot>
           </ScrollView>
