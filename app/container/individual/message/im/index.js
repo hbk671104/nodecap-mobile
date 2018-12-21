@@ -287,8 +287,8 @@ class IMPage extends PureComponent {
       back
       wrapperStyle={styles.navBar.wrapper}
       renderTitle={() => {
-        if (this.props.loading) {
-          return <ActivityIndicator color="white" />;
+        if (this.props.loading || !this.props.connected) {
+          return <ActivityIndicator color="rgba(0, 0, 0, 0.85)" />;
         }
 
         const { target } = this.props;
@@ -371,63 +371,72 @@ class IMPage extends PureComponent {
   };
 
   render() {
-    const { data, user, user_im_id, inLastPage, showContactModal } = this.props;
+    const {
+      data,
+      user,
+      user_im_id,
+      inLastPage,
+      showContactModal,
+      connected,
+    } = this.props;
     return (
       <SafeArea style={styles.container}>
         {this.renderNavBar()}
-        <Chat
-          chatRef={ref => {
-            this.chatRef = ref;
-          }}
-          loadEarlier
-          renderLoadEarlier={p => {
-            if (inLastPage) {
-              return null;
-            }
-            if (R.length(data) < 50) {
-              return null;
-            }
-            return (
-              <View style={{ marginVertical: 12 }}>
-                <ActivityIndicator />
-              </View>
-            );
-          }}
-          bottomOffset={getBottomSpace()}
-          user={{
-            _id: user_im_id,
-            name: R.path(['realname'])(user),
-            avatar: R.path(['avatar_url'])(user),
-          }}
-          messages={data}
-          showAvatarForEveryMessage
-          onSend={this.handleSend}
-          listViewProps={{
-            scrollEventThrottle: 100,
-            onTouchStart: () => {
-              if (showContactModal) {
-                this.props.toggleContactModal(false);
-                this.forceUpdate();
+        {connected && (
+          <Chat
+            chatRef={ref => {
+              this.chatRef = ref;
+            }}
+            loadEarlier
+            renderLoadEarlier={p => {
+              if (inLastPage) {
+                return null;
               }
-            },
-            onScrollEndDrag: () => {
-              if (showContactModal) {
-                this.props.toggleContactModal(false);
+              if (R.length(data) < 50) {
+                return null;
               }
-            },
-          }}
-          toggleAccessory={() => {
-            Keyboard.dismiss();
-            setTimeout(() => {
-              this.props.toggleContactModal(true);
-            }, 50);
-          }}
-          accessoryStyle={{
-            height: 96,
-          }}
-          renderAccessory={showContactModal ? this.renderAccessory : null}
-          minInputToolbarHeight={!showContactModal ? 44 : 142}
-        />
+              return (
+                <View style={{ marginVertical: 12 }}>
+                  <ActivityIndicator />
+                </View>
+              );
+            }}
+            bottomOffset={getBottomSpace()}
+            user={{
+              _id: user_im_id,
+              name: R.path(['realname'])(user),
+              avatar: R.path(['avatar_url'])(user),
+            }}
+            messages={data}
+            showAvatarForEveryMessage
+            onSend={this.handleSend}
+            listViewProps={{
+              scrollEventThrottle: 100,
+              onTouchStart: () => {
+                if (showContactModal) {
+                  this.props.toggleContactModal(false);
+                  this.forceUpdate();
+                }
+              },
+              onScrollEndDrag: () => {
+                if (showContactModal) {
+                  this.props.toggleContactModal(false);
+                }
+              },
+            }}
+            toggleAccessory={() => {
+              Keyboard.dismiss();
+              setTimeout(() => {
+                this.props.toggleContactModal(true);
+              }, 50);
+            }}
+            accessoryStyle={{
+              height: 96,
+            }}
+            renderAccessory={showContactModal ? this.renderAccessory : null}
+            minInputToolbarHeight={!showContactModal ? 44 : 142}
+          />
+        )}
         <ActionAlert
           visible={this.props.showNotificationModal}
           title="开启推送通知"

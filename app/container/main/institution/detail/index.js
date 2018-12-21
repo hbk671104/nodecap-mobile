@@ -205,6 +205,14 @@ export default class InstitutionDetail extends Component {
   };
 
   handleContactPress = () => {
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'IMPage',
@@ -215,7 +223,7 @@ export default class InstitutionDetail extends Component {
     );
   };
 
-  toReportDetail = (item) => {
+  toReportDetail = item => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'InstitutionReportDetail',
@@ -224,7 +232,7 @@ export default class InstitutionDetail extends Component {
         },
       }),
     );
-  }
+  };
 
   toReportList = () => {
     this.props.dispatch(
@@ -235,7 +243,7 @@ export default class InstitutionDetail extends Component {
         },
       }),
     );
-  }
+  };
 
   renderNavBar = () => (
     <NavBar
@@ -291,13 +299,22 @@ export default class InstitutionDetail extends Component {
             <View>
               <ReportsItems data={reports} onPress={this.toReportDetail} />
               {!!reports.length && (
-              <Touchable onPress={this.toReportList}>
-                <Flex align="center" justify="center" style={styles.allReports}>
-                  <Text style={styles.allReportsText}>查看全部研报</Text>
-                  <Icon name="arrow-forward" size={14} color="#1890FF" style={{ marginLeft: 5, marginTop: 1 }} />
-                </Flex>
-              </Touchable>
-)}
+                <Touchable onPress={this.toReportList}>
+                  <Flex
+                    align="center"
+                    justify="center"
+                    style={styles.allReports}
+                  >
+                    <Text style={styles.allReportsText}>查看全部研报</Text>
+                    <Icon
+                      name="arrow-forward"
+                      size={14}
+                      color="#1890FF"
+                      style={{ marginLeft: 5, marginTop: 1 }}
+                    />
+                  </Flex>
+                </Touchable>
+              )}
             </View>
           )}
           {R.not(R.isEmpty(members)) && (

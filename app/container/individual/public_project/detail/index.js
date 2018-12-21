@@ -272,7 +272,9 @@ export default class PublicProjectDetail extends Component {
         {
           type: 'timeline',
           webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
-          title: `来 Hotnode联系「${R.path(['portfolio', 'name'])(this.props)}」`,
+          title: `来 Hotnode联系「${R.path(['portfolio', 'name'])(
+            this.props,
+          )}」`,
           description: '来 Hotnode 联系全球优质项目!',
           thumbImage:
             R.path(['portfolio', 'icon'])(this.props) ||
@@ -281,7 +283,9 @@ export default class PublicProjectDetail extends Component {
         {
           type: 'session',
           webpageUrl: `${Config.MOBILE_SITE}/coin?id=${id}`,
-          title: `推荐给你一个靠谱项目「${R.path(['portfolio', 'name'])(this.props)}」`,
+          title: `推荐给你一个靠谱项目「${R.path(['portfolio', 'name'])(
+            this.props,
+          )}」`,
           description: '来 Hotnode 联系全球优质项目!',
           thumbImage:
             R.path(['portfolio', 'icon'])(this.props) ||
@@ -311,6 +315,14 @@ export default class PublicProjectDetail extends Component {
   };
 
   handleContactPress = () => {
+    if (!this.props.logged_in) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: 'Login',
+        }),
+      );
+      return;
+    }
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'IMPage',
@@ -347,13 +359,14 @@ export default class PublicProjectDetail extends Component {
             barStyle={currentScrollY > 80 ? 'dark-content' : 'light-content'}
             style={styles.navBar.container}
             title={R.path(['name'])(portfolio)}
-            renderRight={
-              () => (
-                <Touchable borderless onPress={this.handleShare}>
-                  <Image style={{ width: 18, height: 18 }} source={require('asset/icon_share.png')} />
-                </Touchable>
-              )
-            }
+            renderRight={() => (
+              <Touchable borderless onPress={this.handleShare}>
+                <Image
+                  style={{ width: 18, height: 18 }}
+                  source={require('asset/icon_share.png')}
+                />
+              </Touchable>
+            )}
           />
         </Animated.View>
         <Animated.ScrollView
