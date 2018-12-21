@@ -88,7 +88,12 @@ const emotionIndex = ({
       )}
     >
       <View style={{ marginHorizontal: 12, marginTop: 20 }}>
-        <View style={[styles.ratingName, { marginLeft: expectationPosition }]}>
+        <View
+          style={[
+            styles.ratingName,
+            { marginLeft: expectationPosition, marginHorizontal: -10 },
+          ]}
+        >
           <Text style={styles.ratingText}>{`${expectation}%`}</Text>
           <View style={styles.ratingArrow} />
         </View>
@@ -112,11 +117,21 @@ const emotionIndex = ({
           ))}
         </Flex>
       </View>
-      <View style={{ marginHorizontal: 12, marginTop: 47.5, marginBottom: 20 }}>
+      <View
+        style={{
+          marginHorizontal: 12,
+          marginTop: 47.5,
+          marginBottom: 20,
+        }}
+      >
         <View
           style={[
             styles.ratingName,
-            { marginLeft: sentimentPosition, backgroundColor: '#F4AEAE' },
+            {
+              marginLeft: sentimentPosition,
+              marginHorizontal: -10,
+              backgroundColor: '#F4AEAE',
+            },
           ]}
         >
           <Text style={styles.ratingText}>{`${sentiment}%`}</Text>
