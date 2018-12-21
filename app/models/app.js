@@ -8,7 +8,52 @@ import store from '../../index';
 
 export default {
   namespace: 'app',
-  state: {},
+  state: {
+    project_create_route: [
+      {
+        name: 'CreateMyProjectBasicInfo',
+        title: '基本信息',
+      },
+      {
+        name: 'CreateMyProjectDescription',
+        title: '项目介绍',
+      },
+      // {
+      //   name: 'CreateMyProjectTeam',
+      //   title: '团队成员',
+      // },
+      {
+        name: 'CreateMyProjectSocial',
+        title: '社群信息',
+      },
+      {
+        name: 'CreateMyProjectRoadMap',
+        title: '路线图',
+      },
+      {
+        name: 'CreateMyProjectFunding',
+        title: '募资信息',
+      },
+    ],
+    institution_create_route: [
+      {
+        name: 'CreateMyInstitutionBasicInfo',
+        title: '机构信息',
+      },
+      {
+        name: 'CreateMyInstitutionDescription',
+        title: '机构介绍',
+      },
+      // {
+      //   name: 'CreateMyInstitutionTeam',
+      //   title: '团队成员',
+      // },
+      {
+        name: 'CreateMyInstitutionServedProject',
+        title: '服务过的项目',
+      },
+    ],
+  },
   reducers: {},
   effects: {
     *checkCodePush(_, { spawn, call, put }) {

@@ -15,8 +15,8 @@ import styles from './style';
   page: '创建机构流程外层',
   name: 'App_MyInstitutionCreateWrapperOperation',
 })
-@connect(({ institution_create, router, loading }) => {
-  const route = R.path(['route'])(institution_create);
+@connect(({ app, institution_create, router, loading }) => {
+  const route = R.path(['institution_create_route'])(app);
   const index = R.pipe(
     R.map(r => r.name),
     R.indexOf(getCurrentScreen(router)),

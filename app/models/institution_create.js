@@ -16,24 +16,6 @@ const initialCurrent = {
 export default {
   namespace: 'institution_create',
   state: {
-    route: [
-      {
-        name: 'CreateMyInstitutionBasicInfo',
-        title: '机构信息',
-      },
-      {
-        name: 'CreateMyInstitutionDescription',
-        title: '机构介绍',
-      },
-      // {
-      //   name: 'CreateMyInstitutionTeam',
-      //   title: '团队成员',
-      // },
-      {
-        name: 'CreateMyInstitutionServedProject',
-        title: '服务过的项目',
-      },
-    ],
     list: null,
     search_list: null,
     query: null,
