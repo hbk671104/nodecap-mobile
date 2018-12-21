@@ -29,7 +29,7 @@ class NotificationList extends PureComponent {
       const coin = R.head()(R.pathOr([], ['coinInfo'])(item));
       this.props.dispatch(
         NavigationActions.navigate({
-          routeName: 'PortfolioDetail',
+          routeName: 'PublicProjectDetail',
           params: {
             id: coin.id,
           },
