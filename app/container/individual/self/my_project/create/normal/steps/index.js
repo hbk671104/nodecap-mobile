@@ -15,8 +15,8 @@ import styles from './style';
   page: '正常创建项目流程外层',
   name: 'App_MyProjectCreateNormalWrapperOperation',
 })
-@connect(({ project_create, router, loading }) => {
-  const route = R.path(['route'])(project_create);
+@connect(({ app, project_create, router, loading }) => {
+  const route = R.path(['project_create_route'])(app);
   const index = R.pipe(
     R.map(r => r.name),
     R.indexOf(getCurrentScreen(router)),

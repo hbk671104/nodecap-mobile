@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { compose, withState } from 'recompose';
@@ -7,8 +7,9 @@ import { compose, withState } from 'recompose';
 import ShareNews from './shareAnnouncement';
 import NavBar from 'component/navBar';
 import List from 'component/uikit/list';
-import Touchable from 'component/uikit/touchable';
 import NotificationItem from 'component/notification/hostItem';
+import FloatingBottomButton from 'component/bottom_floating_button';
+
 import { NavigationActions } from 'react-navigation';
 import styles from './style';
 
@@ -66,16 +67,6 @@ export default class HostJoinList extends Component {
     );
   };
 
-  renderProjectCreateButton = () => (
-    <View style={styles.button.wrapper}>
-      <Touchable borderless onPress={this.handleOnBoardPress}>
-        <View style={styles.button.container}>
-          <Text style={styles.button.title}>我要入驻</Text>
-        </View>
-      </Touchable>
-    </View>
-  );
-
   renderItem = ({ item }) => (
     <NotificationItem data={item} onPress={this.handleItemPress} />
   );
@@ -107,7 +98,7 @@ export default class HostJoinList extends Component {
             this.props.setShareNews('');
           }}
         />
-        {this.renderProjectCreateButton()}
+        <FloatingBottomButton onPress={this.handleOnBoardPress} />
       </View>
     );
   }
