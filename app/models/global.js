@@ -31,20 +31,38 @@ export default {
         });
 
         // cold started check
-        const result = yield call(Storage.get, 'cold_started');
-        if (R.isNil(result)) {
-          yield put(
-            NavigationActions.navigate({
-              routeName: 'Recommendation',
-              params: {
-                fromLogin,
-              },
-            }),
-          );
-          return;
-        }
+        // const result = yield call(Storage.get, 'cold_started');
+        // if (R.isNil(result)) {
+        //   yield put(
+        //     NavigationActions.navigate({
+        //       routeName: 'Recommendation',
+        //       params: {
+        //         fromLogin,
+        //       },
+        //     }),
+        //   );
+        //   return;
+        // }
 
         if (fromLogin) {
+          const user = yield select(state =>
+            R.path(['user', 'currentUser'])(state),
+          );
+
+          if (
+            R.pipe(
+              R.path(['realname']),
+              R.test(/用户/),
+            )(user)
+          ) {
+            yield put(
+              NavigationActions.navigate({
+                routeName: 'RealnameInput',
+              }),
+            );
+            return;
+          }
+
           yield put(NavigationActions.back());
         } else {
           const in_individual = yield select(state =>

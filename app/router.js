@@ -25,7 +25,6 @@ import {
 } from 'react-navigation-redux-helpers';
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import JPush from 'jpush-react-native';
-import { withNetworkConnectivity } from 'react-native-offline';
 import queryString from 'query-string';
 import { NavigationActions as routerRedux } from './utils';
 import DeviceInfo from 'react-native-device-info';
@@ -501,9 +500,6 @@ import ActionAlert from 'component/action_alert';
 import { hasAppStoreUpdate } from 'utils/utils';
 import { handleBadgeAction } from 'utils/badge_handler';
 
-@withNetworkConnectivity({
-  pingServerUrl: 'https://www.baidu.com/',
-})
 @connect(({ app, router, update }) => ({
   app,
   router,

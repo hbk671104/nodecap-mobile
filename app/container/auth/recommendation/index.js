@@ -49,7 +49,7 @@ class Recommendation extends Component {
         }),
       );
     }
-    Storage.set('cold_started', true);
+    // Storage.set('cold_started', true);
   };
 
   handleSubmit = () => {

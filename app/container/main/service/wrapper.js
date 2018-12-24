@@ -19,7 +19,7 @@ import styles from './style';
 @connect(({ global }) => ({
   type: R.pipe(
     R.pathOr([], ['constants', 'industry_type']),
-    R.filter(t => !R.contains(t.value)([3, 7, 8, 1, 6, 2])),
+    R.filter(t => !R.contains(t.value)([7, 8, 1, 6, 2])),
   )(global),
 }))
 export default class Service extends Component {

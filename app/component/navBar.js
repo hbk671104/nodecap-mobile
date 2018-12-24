@@ -1,6 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { View, Animated, LayoutAnimation, Text } from 'react-native';
+import {
+  View,
+  Animated,
+  LayoutAnimation,
+  StyleSheet,
+  Text,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import { getStatusBarHeight } from 'react-native-iphone-x-helper';
@@ -13,6 +19,7 @@ import StatusBar from './uikit/statusBar';
 class NavBar extends PureComponent {
   static propTypes = {
     disableStatusBar: PropTypes.bool,
+    showBottomBorder: PropTypes.bool,
     barStyle: PropTypes.string,
     renderContent: PropTypes.func,
     renderLeft: PropTypes.func,
@@ -33,6 +40,7 @@ class NavBar extends PureComponent {
 
   static defaultProps = {
     disableStatusBar: false,
+    showBottomBorder: false,
     barStyle: 'light-content',
     hidden: false,
     bottomHidden: false,
@@ -84,6 +92,7 @@ class NavBar extends PureComponent {
       titleContainerStyle,
       iconStyle,
       disableStatusBar,
+      showBottomBorder,
     } = this.props;
     return (
       <View style={[style, gradient && { backgroundColor: '#1890FF' }]}>
@@ -93,6 +102,10 @@ class NavBar extends PureComponent {
             styles.container,
             wrapperStyle,
             hidden && styles.hidden.container,
+            showBottomBorder && {
+              borderBottomWidth: StyleSheet.hairlineWidth,
+              borderBottomColor: '#E9E9E9',
+            },
           ]}
         >
           <View
