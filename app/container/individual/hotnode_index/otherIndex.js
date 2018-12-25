@@ -44,8 +44,102 @@ class OtherIndex extends Component {
     const sic = R.pathOr({}, ['global', 'other_index', 'sic'])(this.props);
     const hsi = R.pathOr({}, ['global', 'other_index', 'hsi'])(this.props);
     const ixic = R.pathOr({}, ['global', 'other_index', 'ixic'])(this.props);
+    const wechat = R.pathOr({}, ['global', 'other_index', 'wechat'])(this.props);
+    const baidu = R.pathOr({}, ['global', 'other_index', 'baidu'])(this.props);
     return (
       <Grid style={styles.wrapper}>
+        <Row>
+          <Col style={styles.itemWrapper}>
+            <View style={[styles.imageWrapper, { right: 3 }]}>
+              <Image source={require('asset/hotnode_index/baidu.png')} />
+            </View>
+            {this.renderPlaceholder(
+              <View style={styles.item}>
+                <Text style={styles.name}>{baidu.name}</Text>
+                <Text style={styles.index}>{baidu.current_index}</Text>
+                <Flex style={{ marginTop: 5 }}>
+                  <EnhancedText style={styles.variation} colorAware digit={2}>
+                    {baidu.index_variation}
+                  </EnhancedText>
+                  <Flex style={{ marginLeft: 8 }} align="start">
+                    <Icon
+                      override
+                      name={`md-arrow-drop${
+                        baidu.index_variance_ratio < 0 ? 'down' : 'up'
+                        }`}
+                      color={
+                        baidu.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
+                      }
+                    />
+                    <Text
+                      style={[
+                        styles.variation,
+                        {
+                          color:
+                            baidu.index_variance_ratio < 0
+                              ? '#F55454'
+                              : '#09AC32',
+                        },
+                      ]}
+                    >
+                      {' '}
+                      <Format digit={2}>
+                        {Math.abs(baidu.index_variance_ratio)}
+                      </Format>
+                      %
+                    </Text>
+                  </Flex>
+                </Flex>
+              </View>,
+            )}
+          </Col>
+          <Col style={styles.itemWrapper}>
+            <View style={styles.imageWrapper}>
+              <Image
+                source={require('asset/hotnode_index/wechat.png')}
+              />
+            </View>
+            {this.renderPlaceholder(
+              <View style={styles.item}>
+                <Text style={styles.name}>{wechat.name}</Text>
+                <Text style={styles.index}>{wechat.current_index}</Text>
+                <Flex style={{ marginTop: 5 }}>
+                  <EnhancedText style={styles.variation} colorAware digit={2}>
+                    {wechat.index_variation}
+                  </EnhancedText>
+                  <Flex style={{ marginLeft: 8 }} align="start">
+                    <Icon
+                      override
+                      name={`md-arrow-drop${
+                        wechat.index_variance_ratio < 0 ? 'down' : 'up'
+                        }`}
+                      color={
+                        wechat.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
+                      }
+                    />
+                    <Text
+                      style={[
+                        styles.variation,
+                        {
+                          color:
+                            wechat.index_variance_ratio < 0
+                              ? '#F55454'
+                              : '#09AC32',
+                        },
+                      ]}
+                    >
+                      {' '}
+                      <Format digit={2}>
+                        {Math.abs(wechat.index_variance_ratio)}
+                      </Format>
+                      %
+                    </Text>
+                  </Flex>
+                </Flex>
+              </View>,
+            )}
+          </Col>
+        </Row>
         <Row>
           <Col style={styles.itemWrapper}>
             <View style={[styles.imageWrapper, { right: 3 }]}>
