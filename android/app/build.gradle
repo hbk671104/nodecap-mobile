@@ -193,7 +193,6 @@ dependencies {
     compile project(':jcore-react-native')
     compile project(':jpush-react-native')
     compile project(':react-native-sentry')
-    compile project(':react-native-exit-app')
     compile project(':react-native-view-shot')
     compile project(':react-native-linear-gradient')
     compile project(':react-native-splash-screen')

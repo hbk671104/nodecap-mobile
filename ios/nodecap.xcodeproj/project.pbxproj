@@ -498,13 +498,6 @@
 			remoteGlobalIDString = 94DDAC5C1F3D024300EED511;
 			remoteInfo = "RNSVG-tvOS";
 		};
-		40D0EB3020E384FB005A2B46 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 85D4DCB8AEF14FF0B77C4361 /* RNExitApp.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 15209BEF1D250F63000D0F44;
-			remoteInfo = RNExitApp;
-		};
 		40EB811B20EA1E6E001D549D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1ECB02D96C5E49D59C99F1C6 /* RCTJCoreModule.xcodeproj */;
@@ -670,7 +663,6 @@
 		7C08F30F43034D7B8C8648C3 /* UIKit.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8184E117EE16A46D8083034A /* libPods-nodecap-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-nodecap-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		85D4DCB8AEF14FF0B77C4361 /* RNExitApp.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNExitApp.xcodeproj; path = "../node_modules/react-native-exit-app/ios/RNExitApp.xcodeproj"; sourceTree = "<group>"; };
 		86BEA208FF7A4B40A6224B5F /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
 		8752CCB230994EA68E6F210A /* RNCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; };
 		880F074CD26148F8B8B13686 /* CFNetwork.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -1150,14 +1142,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		40D0EB2D20E384FB005A2B46 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				40D0EB3120E384FB005A2B46 /* libRNExitApp.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		40EB811820EA1E6D001D549D /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1234,7 +1218,6 @@
 				86BEA208FF7A4B40A6224B5F /* SplashScreen.xcodeproj */,
 				E17C8AD0A2EF4101AEF57CE5 /* CodePush.xcodeproj */,
 				B70FABEB9CA547A995218053 /* BVLinearGradient.xcodeproj */,
-				85D4DCB8AEF14FF0B77C4361 /* RNExitApp.xcodeproj */,
 				0CA2EA1A317C4E4EB1AE4C89 /* RNViewShot.xcodeproj */,
 				307094547B2548FD95FB1C29 /* RCTWeChat.xcodeproj */,
 				1F0EE23B66664600B9212DFB /* RNSentry.xcodeproj */,
@@ -1563,10 +1546,6 @@
 				{
 					ProductGroup = 406377F921198C3100CA7CA3 /* Products */;
 					ProjectRef = 406377F821198C3100CA7CA3 /* RNDeviceInfo.xcodeproj */;
-				},
-				{
-					ProductGroup = 40D0EB2D20E384FB005A2B46 /* Products */;
-					ProjectRef = 85D4DCB8AEF14FF0B77C4361 /* RNExitApp.xcodeproj */;
 				},
 				{
 					ProductGroup = 406A73D921477BED0019141B /* Products */;
@@ -1992,13 +1971,6 @@
 			fileType = archive.ar;
 			path = "libRNSVG-tvOS.a";
 			remoteRef = 40CC41BC20BD49BA0018F4DB /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		40D0EB3120E384FB005A2B46 /* libRNExitApp.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNExitApp.a;
-			remoteRef = 40D0EB3020E384FB005A2B46 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		40EB811C20EA1E6E001D549D /* libRCTJCoreModule.a */ = {
