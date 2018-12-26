@@ -59,7 +59,7 @@ class FavorItem extends PureComponent {
     }
     const icon = R.pathOr('', ['icon'])(data);
     const project_name = R.pathOr('--', ['name'])(data);
-    const status = R.pathOr('', ['finance_status'])(data);
+    const rating_score = R.pathOr('', ['rating_score'])(data);
     const category = R.pathOr([], ['tags'])(data);
     const description = R.pathOr('--', ['description'])(data);
     const stars = R.pathOr(0, ['stars'])(data);
@@ -232,23 +232,28 @@ class FavorItem extends PureComponent {
           </View>
           <View style={styles.end.container}>
             <View style={{ flex: 1 }}>
-              {!R.isEmpty(status) && !R.equals(status, '未设定') && (
-                <Text
-                  style={[
-                    styles.end.status,
-                    status === '进行中' && { color: '#09AC32' },
-                    status === '已结束' && { color: 'rgba(0, 0, 0, 0.25)' },
+              {!R.isNil(rating_score) && rating_score !== 0 && (
+                <Flex align="center">
+                  <Text style={[
+                    styles.end.scoreText,
                   ]}
-                >
-                  {status}
-                </Text>
+                  >评分
+                  </Text>
+                  <Text
+                    style={[
+                    styles.end.score,
+                  ]}
+                  >
+                    {rating_score}
+                  </Text>
+                </Flex>
               )}
             </View>
             <Touchable foreground onPress={this.handleFavorPress}>
               <View
                 style={[
                   styles.end.favor.container,
-                  R.isEmpty(status) && { marginTop: 0 },
+                  R.isNil(rating_score) && rating_score !== 0 && { marginTop: 0 },
                 ]}
               >
                 <Image
@@ -358,6 +363,8 @@ const styles = {
       fontWeight: 'bold',
       color: '#1890FF',
     },
+    score: { fontFamily: 'DIN Alternate', fontSize: 17, color: '#1890FF' },
+    scoreText: { fontSize: 11, color: 'rgba(0,0,0,0.45)', marginRight: 5 },
     favor: {
       container: {
         // marginTop: 24,
