@@ -51,6 +51,52 @@ class OtherIndex extends Component {
         <Row>
           <Col style={styles.itemWrapper}>
             <View style={[styles.imageWrapper, { right: 3 }]}>
+              <Image source={require('asset/hotnode_index/gbi_icon.png')} />
+            </View>
+            {this.renderPlaceholder(
+              <View style={styles.item}>
+                <Text style={styles.name}>{gbi.name}</Text>
+                <Text style={styles.index}>{gbi.current_index}</Text>
+                <Flex style={{ marginTop: 5 }}>
+                  <EnhancedText style={styles.variation} colorAware digit={2}>
+                    {gbi.index_variation}
+                  </EnhancedText>
+                  <Flex style={{ marginLeft: 8 }} align="start">
+                    <Icon
+                      override
+                      name={`md-arrow-drop${
+                        gbi.index_variance_ratio < 0 ? 'down' : 'up'
+                        }`}
+                      color={
+                        gbi.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
+                      }
+                    />
+                    <Text
+                      style={[
+                        styles.variation,
+                        {
+                          color:
+                            gbi.index_variance_ratio < 0
+                              ? '#F55454'
+                              : '#09AC32',
+                        },
+                      ]}
+                    >
+                      {' '}
+                      <Format digit={2}>
+                        {Math.abs(gbi.index_variance_ratio)}
+                      </Format>
+                      %
+                    </Text>
+                  </Flex>
+                </Flex>
+              </View>,
+            )}
+          </Col>
+        </Row>
+        <Row>
+          <Col style={styles.itemWrapper}>
+            <View style={[styles.imageWrapper, { right: 3 }]}>
               <Image source={require('asset/hotnode_index/baidu.png')} />
             </View>
             {this.renderPlaceholder(
@@ -85,98 +131,6 @@ class OtherIndex extends Component {
                       {' '}
                       <Format digit={2}>
                         {Math.abs(baidu.index_variance_ratio)}
-                      </Format>
-                      %
-                    </Text>
-                  </Flex>
-                </Flex>
-              </View>,
-            )}
-          </Col>
-          <Col style={styles.itemWrapper}>
-            <View style={styles.imageWrapper}>
-              <Image
-                source={require('asset/hotnode_index/wechat.png')}
-              />
-            </View>
-            {this.renderPlaceholder(
-              <View style={styles.item}>
-                <Text style={styles.name}>{wechat.name}</Text>
-                <Text style={styles.index}>{wechat.current_index}</Text>
-                <Flex style={{ marginTop: 5 }}>
-                  <EnhancedText style={styles.variation} colorAware digit={2}>
-                    {wechat.index_variation}
-                  </EnhancedText>
-                  <Flex style={{ marginLeft: 8 }} align="start">
-                    <Icon
-                      override
-                      name={`md-arrow-drop${
-                        wechat.index_variance_ratio < 0 ? 'down' : 'up'
-                        }`}
-                      color={
-                        wechat.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
-                      }
-                    />
-                    <Text
-                      style={[
-                        styles.variation,
-                        {
-                          color:
-                            wechat.index_variance_ratio < 0
-                              ? '#F55454'
-                              : '#09AC32',
-                        },
-                      ]}
-                    >
-                      {' '}
-                      <Format digit={2}>
-                        {Math.abs(wechat.index_variance_ratio)}
-                      </Format>
-                      %
-                    </Text>
-                  </Flex>
-                </Flex>
-              </View>,
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col style={styles.itemWrapper}>
-            <View style={[styles.imageWrapper, { right: 3 }]}>
-              <Image source={require('asset/hotnode_index/gbi_icon.png')} />
-            </View>
-            {this.renderPlaceholder(
-              <View style={styles.item}>
-                <Text style={styles.name}>{gbi.name}</Text>
-                <Text style={styles.index}>{gbi.current_index}</Text>
-                <Flex style={{ marginTop: 5 }}>
-                  <EnhancedText style={styles.variation} colorAware digit={2}>
-                    {gbi.index_variation}
-                  </EnhancedText>
-                  <Flex style={{ marginLeft: 8 }} align="start">
-                    <Icon
-                      override
-                      name={`md-arrow-drop${
-                        gbi.index_variance_ratio < 0 ? 'down' : 'up'
-                      }`}
-                      color={
-                        gbi.index_variance_ratio < 0 ? '#F55454' : '#09AC32'
-                      }
-                    />
-                    <Text
-                      style={[
-                        styles.variation,
-                        {
-                          color:
-                            gbi.index_variance_ratio < 0
-                              ? '#F55454'
-                              : '#09AC32',
-                        },
-                      ]}
-                    >
-                      {' '}
-                      <Format digit={2}>
-                        {Math.abs(gbi.index_variance_ratio)}
                       </Format>
                       %
                     </Text>
