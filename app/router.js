@@ -153,6 +153,7 @@ import HotnodeCoinIndex from 'container/individual/hotnode_index/coin';
 import MessageCenter from 'container/individual/message/index';
 import IMPage from 'container/individual/message/im';
 import ProjectCreateOnboard from 'container/main/announcement/project_create_onboard';
+import YellowPage from 'container/main/public_project/yellowpage';
 
 const tabBarOnPress = ({ navigation, defaultHandler }) => {
   defaultHandler();
@@ -454,6 +455,7 @@ const IndividualStack = createStackNavigator(
     Dapp,
     DappDetail,
     ProjectCreateOnboard,
+    YellowPage,
   },
   {
     headerMode: 'none',

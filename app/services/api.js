@@ -854,3 +854,6 @@ export function getDappList(payload = {}) {
   });
 }
 
+export function getYellowpageList() {
+  return request.get('/website-yellowpage');
+}

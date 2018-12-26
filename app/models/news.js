@@ -42,6 +42,10 @@ export default {
           put({
             type: 'hotnode_index/fetchGlobal',
           }),
+          // YellowPage
+          put({
+            type: 'yellowpage/fetch',
+          }),
         ]);
 
         // index

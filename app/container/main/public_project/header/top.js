@@ -25,13 +25,14 @@ import PaginationIndicator from 'component/pagination_indicator';
 const deviceWidth = Dimensions.get('window').width;
 
 const top = ({
-               onDappPress,
+  onDappPress,
   latestNews,
   banners,
   onSearchBarPress,
   onServicePress,
   onAnnouncementPress,
   onProjectRepoPress,
+  onYellowPagePress,
   onInstitutionReportPress,
   onChartPress,
   notification_badge_number,
@@ -51,14 +52,14 @@ const top = ({
     <Grid style={{ paddingBottom: 16, paddingHorizontal: 12 }}>
       <Row>
         <Col>
-          <Touchable borderless onPress={onProjectRepoPress}>
+          <Touchable borderless onPress={onYellowPagePress}>
             <View style={styles.tab.group.container}>
               <View style={styles.tab.group.imageWrapper}>
                 <Image
-                  source={require('asset/public_project/project_hunt.png')}
+                  source={require('asset/public_project/yellowpage.png')}
                 />
               </View>
-              <Text style={styles.tab.group.title}>找项目</Text>
+              <Text style={styles.tab.group.title}>网址大全</Text>
             </View>
           </Touchable>
         </Col>

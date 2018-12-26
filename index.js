@@ -46,6 +46,7 @@ import messageCenterModel from './app/models/message_center';
 import rankModel from './app/models/rank';
 import DappModel from './app/models/dapp';
 import ProfileModel from './app/models/profile';
+import YellowPageModel from './app/models/yellowpage';
 
 YellowBox.ignoreWarnings([
   'Warning: isMounted(...) is deprecated',
@@ -85,6 +86,7 @@ export const app = dva({
     rankModel,
     DappModel,
     ProfileModel,
+    YellowPageModel,
   ],
   extraReducers: { router: routerReducer },
   onAction: [routerMiddleware],

@@ -194,6 +194,15 @@ export default class PublicProject extends Component {
     );
   };
 
+  handleYellowPagePress = () => {
+    this.props.track('点击网址大全');
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'YellowPage',
+      }),
+    );
+  };
+
   handleInstitutionReportPress = () => {
     this.props.track('点击进入研报列表');
     this.props.dispatch(
@@ -298,12 +307,7 @@ export default class PublicProject extends Component {
     );
   };
 
-  renderItem = ({ item }) => (
-    <InvestNewsItem
-      {...this.props}
-      data={item}
-    />
-  );
+  renderItem = ({ item }) => <InvestNewsItem {...this.props} data={item} />;
 
   renderHeader = () => (
     <Header
@@ -313,6 +317,7 @@ export default class PublicProject extends Component {
       onMeetingPress={this.handleMeetingPress}
       onAnnouncementPress={this.handleAnnouncementPress}
       onProjectRepoPress={this.handleProjectRepoPress}
+      onYellowPagePress={this.handleYellowPagePress}
       onInstitutionReportPress={this.handleInstitutionReportPress}
       onServicePress={this.handleServicePress}
       onDappPress={this.handleDappPress}
@@ -357,7 +362,12 @@ export default class PublicProject extends Component {
   };
 
   render() {
-    const { investNews, investNewPagination, loading, showExplanation } = this.props;
+    const {
+      investNews,
+      investNewPagination,
+      loading,
+      showExplanation,
+    } = this.props;
     let lastY = 0;
     return (
       <View style={styles.container}>
