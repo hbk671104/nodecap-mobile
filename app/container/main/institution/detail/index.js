@@ -19,6 +19,7 @@ import ActionAlert from 'component/action_alert';
 import shareModal from 'component/shareModal';
 import Member from 'component/institution/member_item';
 import ReadMoreFooter from 'component/readmore';
+import BottomFloatingButton from 'component/bottom_floating_button';
 
 import { viewInstitution } from '../../../../services/api';
 import Group from './partials/group';
@@ -26,7 +27,7 @@ import RatingItems from './partials/ratingItems';
 import ReportsItems from './partials/reports';
 import Header from './header';
 import Bottom from './bottom';
-import styles from './style';
+import styles, { bottomTabHeight } from './style';
 import Icon from '../../../../component/uikit/icon';
 import ShareModal from './share';
 
@@ -363,13 +364,18 @@ export default class InstitutionDetail extends Component {
           onConnectPress={this.handleContactPress}
         />
         {in_individual && (
-          <Touchable
-            style={styles.claim.container}
+          // <Touchable
+          //   style={styles.claim.container}
+          //   onPress={this.onPressClaimCoin}
+          // >
+          //   <Image source={require('asset/project/claim.png')} />
+          // </Touchable>
+          <BottomFloatingButton
+            style={{ bottom: bottomTabHeight + 12 }}
             onPress={this.onPressClaimCoin}
-          >
-            <Image source={require('asset/project/claim.png')} />
-          </Touchable>
+          />
         )}
+
         <ActionAlert
           visible={showInviteModal}
           title="邀请入驻"

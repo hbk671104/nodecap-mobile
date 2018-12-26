@@ -5,8 +5,8 @@ import { shadow } from 'utils/style';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const button = ({ onPress }) => (
-  <View style={styles.wrapper}>
+const button = ({ style, onPress }) => (
+  <View style={[styles.wrapper, style]}>
     <Touchable borderless onPress={onPress}>
       <View style={styles.container}>
         <Text style={styles.title}>我要入驻</Text>

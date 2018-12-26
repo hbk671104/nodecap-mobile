@@ -16,6 +16,7 @@ import Modal from 'component/modal';
 import shareModal from 'component/shareModal';
 import Config from 'runtime/index';
 import ActionAlert from 'component/action_alert';
+import BottomFloatingButton from 'component/bottom_floating_button';
 
 // Partials
 import Description from './page/description';
@@ -29,7 +30,7 @@ import Share from './share';
 import Header from './header';
 import Selector from './selector';
 import Bottom from './bottom';
-import styles from './style';
+import styles, { bottomTabHeight } from './style';
 
 @global.bindTrack({
   page: '项目详情',
@@ -415,12 +416,16 @@ export default class PublicProjectDetail extends Component {
             />
           </View>
         </Animated.ScrollView>
-        <Touchable
+        {/* <Touchable
           style={styles.claim.container}
           onPress={this.onPressClaimCoin}
         >
           <Image source={require('asset/project/claim.png')} />
-        </Touchable>
+        </Touchable> */}
+        <BottomFloatingButton
+          style={{ bottom: bottomTabHeight + 12 }}
+          onPress={this.onPressClaimCoin}
+        />
         <Bottom
           {...this.props}
           openShareModal={this.handleShare}
