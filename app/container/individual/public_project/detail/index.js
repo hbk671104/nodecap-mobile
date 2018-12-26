@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { View, Animated, Text, Image, Clipboard, Linking } from 'react-native';
+import { View, Animated, Text, Image, Clipboard } from 'react-native';
 import { connect } from 'react-redux';
-import { Modal as antModal } from 'antd-mobile';
+// import { Modal as antModal } from 'antd-mobile';
 import { compose, withState, withProps } from 'recompose';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import * as WeChat from 'react-native-wechat';
-import { connectActionSheet } from '@expo/react-native-action-sheet';
+// import { connectActionSheet } from '@expo/react-native-action-sheet';
 import Base64 from 'utils/base64';
 import DeviceInfo from 'react-native-device-info';
 
@@ -20,7 +20,7 @@ import BottomFloatingButton from 'component/bottom_floating_button';
 
 // Partials
 import Description from './page/description';
-import OverallRatings from './page/overall_ratings';
+// import OverallRatings from './page/overall_ratings';
 import Trend from './page/trend';
 import Return from './page/return';
 import Pairs from './page/pairs';
@@ -416,12 +416,6 @@ export default class PublicProjectDetail extends Component {
             />
           </View>
         </Animated.ScrollView>
-        {/* <Touchable
-          style={styles.claim.container}
-          onPress={this.onPressClaimCoin}
-        >
-          <Image source={require('asset/project/claim.png')} />
-        </Touchable> */}
         <BottomFloatingButton
           style={{ bottom: bottomTabHeight + 12 }}
           onPress={this.onPressClaimCoin}

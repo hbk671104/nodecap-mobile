@@ -364,18 +364,11 @@ export default class InstitutionDetail extends Component {
           onConnectPress={this.handleContactPress}
         />
         {in_individual && (
-          // <Touchable
-          //   style={styles.claim.container}
-          //   onPress={this.onPressClaimCoin}
-          // >
-          //   <Image source={require('asset/project/claim.png')} />
-          // </Touchable>
           <BottomFloatingButton
             style={{ bottom: bottomTabHeight + 12 }}
             onPress={this.onPressClaimCoin}
           />
         )}
-
         <ActionAlert
           visible={showInviteModal}
           title="邀请入驻"
