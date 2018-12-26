@@ -42,6 +42,7 @@ const styles = {
     fontSize: 14,
     color: 'rgba(0, 0, 0, 0.85)',
     lineHeight: 20,
+    textAlign: 'center',
   },
 };
 

@@ -27,7 +27,9 @@ class Section extends PureComponent {
           raised={false}
           imageStyle={{ borderRadius: 0 }}
         />
-        <Text style={styles.content.item.title}>{item.name}</Text>
+        <Text style={styles.content.item.title} numberOfLines={2}>
+          {item.name}
+        </Text>
       </View>
     </Touchable>
   );
@@ -96,6 +98,8 @@ const styles = {
         fontSize: 14,
         color: 'rgba(0, 0, 0, 0.65)',
         marginTop: 12,
+        textAlign: 'center',
+        paddingHorizontal: 6,
       },
     },
   },

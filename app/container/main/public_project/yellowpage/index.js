@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
-import { NavigationActions } from 'react-navigation';
+import Communications from 'react-native-communications';
 
 import NavBar from 'component/navBar';
 import Section from './section';
@@ -21,14 +21,8 @@ class YellowPage extends PureComponent {
   }
 
   handleItemPress = item => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: 'InstitutionDetail',
-        params: {
-          id: item.id,
-        },
-      }),
-    );
+    this.props.track('网址点击', { website_id: `${item.id}` });
+    Communications.web(item.link);
   };
 
   render() {
