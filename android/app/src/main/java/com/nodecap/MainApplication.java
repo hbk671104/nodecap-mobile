@@ -17,7 +17,6 @@ import com.oblador.keychain.KeychainPackage;
 
 import cn.jpush.reactnativejpush.JPushPackage;
 import io.sentry.RNSentryPackage;
-import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.theweflex.react.WeChatPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
@@ -71,7 +70,6 @@ public class MainApplication extends Application implements ReactApplication {
             new KeychainPackage(),
             new JPushPackage(SHUTDOWN_TOAST, SHUTDOWN_LOG),
             new RNSentryPackage(),
-            new RNExitAppPackage(),
             new RNViewShotPackage(),
             new SplashScreenReactPackage(),
             new LinearGradientPackage(),

@@ -100,7 +100,6 @@
 		DD41DFF720E4B938007696F1 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD41DFF620E4B938007696F1 /* libc++.tbd */; };
 		DD41DFFF20E5118A007696F1 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD41DFFE20E5116C007696F1 /* libRCTCameraRoll.a */; };
 		E26ADC9C95884822B181D9C8 /* libRNSentry.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2919AABC6CE64A3C8503DC74 /* libRNSentry.a */; };
-		E428D934D949492794638C8A /* libRNExitApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BE0FADE63FE4127947428ED /* libRNExitApp.a */; };
 		F3F567A7A4A74E1EB9E60D60 /* libRCTJPushModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0022A7FEF1DF4F149837E6CD /* libRCTJPushModule.a */; };
 		F80C87900157961ACCCA3A01 /* libPods-nodecap.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BCDB3DC87BEA44FE3F35F6A /* libPods-nodecap.a */; };
 /* End PBXBuildFile section */
@@ -654,7 +653,6 @@
 		4E14F06AB1DF476D840A676D /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		5A381B468E364BA59B3FAB34 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		5BDE5EBD1331EB95FE41C9E2 /* libPods-nodecapTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-nodecapTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5BE0FADE63FE4127947428ED /* libRNExitApp.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNExitApp.a; sourceTree = "<group>"; };
 		5D1B9B9901C94012B7A292E6 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
 		73878C7F81EF4510A6434ABC /* libReactNativeConfig.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeConfig.a; sourceTree = "<group>"; };
@@ -749,7 +747,6 @@
 				1443986868E146B1A5ABAE07 /* libSplashScreen.a in Frameworks */,
 				5D1D68B9CFB047638E79718F /* libCodePush.a in Frameworks */,
 				14E9A66F5DD24BBFA91D610C /* libBVLinearGradient.a in Frameworks */,
-				E428D934D949492794638C8A /* libRNExitApp.a in Frameworks */,
 				09B7416C1BBD45779D3A3B7E /* libRNViewShot.a in Frameworks */,
 				B8BB34A79BDB4840917EA23A /* libRCTWeChat.a in Frameworks */,
 				E26ADC9C95884822B181D9C8 /* libRNSentry.a in Frameworks */,
@@ -1080,7 +1077,6 @@
 				96161438DB6A433992357E4B /* libSplashScreen.a */,
 				C72041AC8FEF4D5699D2A0D7 /* libCodePush.a */,
 				9CD0FACBEB0F4B7AB6DAC11E /* libBVLinearGradient.a */,
-				5BE0FADE63FE4127947428ED /* libRNExitApp.a */,
 				9D74D9D78B7B467AB9C7C4C3 /* libRNViewShot.a */,
 				9576EB2B394D4E04BFB8DF61 /* libRCTWeChat.a */,
 				42C8BFCFF87B4957AAAD230F /* RCTWeChatTests.xctest */,
