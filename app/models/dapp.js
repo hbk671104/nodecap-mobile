@@ -1,5 +1,5 @@
 import { paginate } from '../utils/pagination';
-import { getDappTypes, getDappDetail, getDappList, getReportsByIndustry } from '../services/api';
+import { getDappTypes, getDappDetail, getDappList } from '../services/api';
 import * as R from 'ramda';
 
 export default {
@@ -18,6 +18,12 @@ export default {
           type: 'saveType',
           payload: data,
         });
+
+        // fetch all list
+        yield put({
+          type: 'fetchAllList',
+        });
+
         if (callback) {
           callback();
         }
@@ -25,14 +31,19 @@ export default {
         console.log(e);
       }
     },
-
     *fetchAllList(_, { select, put, all }) {
       try {
-        const types = yield select(state => R.path(['dapp', 'types'])(state));
-        yield all(types.map(i => put({
-          type: 'fetchListData',
-          topic_id: i.id,
-        })));
+        const types = yield select(state =>
+          R.pathOr([], ['dapp', 'types'])(state),
+        );
+        yield all(
+          R.map(i =>
+            put({
+              type: 'fetchListData',
+              payload: i.id,
+            }),
+          )(types),
+        );
       } catch (e) {
         console.log(e);
       }
@@ -42,7 +53,7 @@ export default {
         const { data } = yield call(getDappList, payload);
         yield put({
           type: 'list',
-          topic_id: payload.topic_id,
+          topic_id: payload,
           payload: data,
         });
       } catch (e) {
@@ -85,7 +96,10 @@ export default {
         ...state,
         list: {
           ...state.list,
-          [action.topic_id]: paginate(state.list[action.topic_id], action.payload),
+          [action.topic_id]: paginate(
+            state.list[action.topic_id],
+            action.payload,
+          ),
         },
       };
     },
@@ -107,10 +121,7 @@ export default {
     searchList(state, { payload }) {
       return {
         ...state,
-        search: paginate(
-          R.pathOr({}, ['search'])(state),
-          payload,
-        ),
+        search: paginate(R.pathOr({}, ['search'])(state), payload),
       };
     },
   },

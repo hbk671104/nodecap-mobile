@@ -844,7 +844,7 @@ export function getDappDetail(id) {
 
 export function getDappList(payload = {}) {
   const paramsTransform = p => ({
-    ...payload,
+    topic_id: payload,
     page: p.currentPage,
     'per-page': p.pageSize,
     type: 4,

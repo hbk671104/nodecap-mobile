@@ -567,6 +567,9 @@ class Router extends Component {
     try {
       const clipString = await Clipboard.getString();
       const matchResult = clipString.match(/&\*(.*)?\$(.*)?\*&/);
+      if (!matchResult || R.length(matchResult) === 0) {
+        return;
+      }
       const viewedInviteKey = await AsyncStorage.getItem('viewInviteKey');
       const hasViewed = viewedInviteKey === matchResult[0];
       if (matchResult) {
@@ -590,6 +593,9 @@ class Router extends Component {
     try {
       const clipString = await Clipboard.getString();
       const matchResult = clipString.match(/\^\*(.*)?\$(.*)?\*\^/);
+      if (!matchResult || R.length(matchResult) === 0) {
+        return;
+      }
       const viewedInviteKey = await AsyncStorage.getItem('viewOrgInviteKey');
       const hasViewed = viewedInviteKey === matchResult[0];
       if (matchResult) {

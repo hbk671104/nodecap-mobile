@@ -11,7 +11,9 @@ import { NavigationActions } from 'react-navigation';
 import searchable from '../../../component/searchableList';
 import InstitutionReportItem from '../../../component/public_project/report_item';
 import Item from './item';
-import ScrollableTabView, { ScrollableTabBar } from 'react-native-scrollable-tab-view';
+import ScrollableTabView, {
+  ScrollableTabBar,
+} from 'react-native-scrollable-tab-view';
 import Touchable from '../../../component/uikit/touchable';
 
 @global.bindTrack({
@@ -28,17 +30,17 @@ import Touchable from '../../../component/uikit/touchable';
 }))
 @compose(
   withState('index', 'setIndex', 0),
-  withState('routes', 'setRoutes', (props) => {
+  withState('routes', 'setRoutes', props => {
     return R.compose(
       R.map(i => ({
         key: i.id,
         title: String(i.name).toUpperCase(),
       })),
-      R.pathOr([], ['types'])
+      R.pathOr([], ['types']),
     )(props);
   }),
 )
-@searchable((props) => ({
+@searchable(props => ({
   name: 'Dapp',
   data: props.searchData,
   pagination: props.searchPagination,
@@ -75,19 +77,17 @@ import Touchable from '../../../component/uikit/touchable';
       );
     };
 
-    return (
-      <Item key={item.id} item={item} onPress={handleItemPress} />
-    );
+    return <Item key={item.id} item={item} onPress={handleItemPress} />;
   },
 }))
 class DappIndex extends Component {
-  handleIndexChange = (index) => {
+  handleIndexChange = index => {
     this.props.setIndex(index, () => {
       this.props.track('Tab切换', { subModuleName: index });
     });
-  }
+  };
 
-  requestData = (topic_id) => (page, size) => {
+  requestData = topic_id => (page, size) => {
     this.props.dispatch({
       type: 'dapp/fetchListData',
       payload: {
@@ -98,7 +98,7 @@ class DappIndex extends Component {
     });
   };
 
-  handleDappItemPress = (item) => {
+  handleDappItemPress = item => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'DappDetail',
@@ -107,21 +107,21 @@ class DappIndex extends Component {
         },
       }),
     );
-  }
+  };
 
   @bind
   renderItem({ item }) {
-    return (
-      <Item item={item} onPress={this.handleDappItemPress} />
-    );
+    return <Item item={item} onPress={this.handleDappItemPress} />;
   }
 
   @bind
   renderScene({ route }) {
     const data = R.pathOr([], ['dapp', 'list', route.key, 'data'])(this.props);
-    const pagination = R.pathOr([], ['dapp', 'list', route.key, 'pagination'])(this.props);
+    const pagination = R.pathOr([], ['dapp', 'list', route.key, 'pagination'])(
+      this.props,
+    );
     return (
-      <View style={{ flex: 1 }} tabLabel={route.title}>
+      <View key={route.key} style={{ flex: 1 }} tabLabel={route.title}>
         <List
           action={this.requestData(route.key)}
           loading={this.props.loading}
@@ -137,8 +137,8 @@ class DappIndex extends Component {
   renderTab = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
     const textColor = isTabActive ? 'rgba(0, 0, 0, 0.85)' : '#B8CBDD';
     return (
-      <View onLayout={onLayoutHandler}>
-        <Touchable key={`${name}_${page}`} onPress={() => onPressHandler(page)}>
+      <View key={`${name}_${page}`} onLayout={onLayoutHandler}>
+        <Touchable onPress={() => onPressHandler(page)}>
           <View style={[styles.tabBar.tab]}>
             <Text
               style={[
@@ -176,11 +176,8 @@ class DappIndex extends Component {
 
     return (
       <View style={styles.container}>
-        <ScrollableTabView
-          style={{ flex: 1 }}
-          renderTabBar={this.renderTabBar}
-        >
-          {routes.map((route) => this.renderScene({ route }))}
+        <ScrollableTabView style={{ flex: 1 }} renderTabBar={this.renderTabBar}>
+          {routes.map(route => this.renderScene({ route }))}
         </ScrollableTabView>
       </View>
     );

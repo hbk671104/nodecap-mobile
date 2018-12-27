@@ -78,11 +78,6 @@ export default class PublicProject extends Component {
     });
     this.props.dispatch({
       type: 'dapp/fetchTypes',
-      callback: () => {
-        this.props.dispatch({
-          type: 'dapp/fetchAllList',
-        });
-      },
     });
 
     RouterEmitter.addListener('resume', () => {
@@ -92,9 +87,6 @@ export default class PublicProject extends Component {
       this.props.dispatch({
         type: 'investNews/fetch',
       });
-      // this.props.dispatch({
-      //   type: 'dapp/fetchTypes',
-      // });
     });
   }
 
