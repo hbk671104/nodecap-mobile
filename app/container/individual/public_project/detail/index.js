@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Animated, Text, Image, Clipboard } from 'react-native';
+import {
+  View,
+  Animated,
+  Text,
+  Image,
+  Clipboard,
+  LayoutAnimation,
+} from 'react-native';
 import { connect } from 'react-redux';
 // import { Modal as antModal } from 'antd-mobile';
 import { compose, withState, withProps } from 'recompose';
@@ -30,7 +37,7 @@ import Share from './share';
 import Header from './header';
 import Selector from './selector';
 import Bottom from './bottom';
-import styles, { bottomTabHeight } from './style';
+import styles, { buttonPadding } from './style';
 
 @global.bindTrack({
   page: '项目详情',
@@ -53,6 +60,7 @@ import styles, { bottomTabHeight } from './style';
 @compose(
   withState('showInviteModal', 'toggleInviteModal', false),
   withState('currentScrollY', 'setCurrentScrollY', 0),
+  withState('scrolling', 'setScrolling', false),
   withState('animateY', 'setAnimatedY', new Animated.Value(0)),
   withState('explanationVisible', 'setExplanationVisible', false),
   withState('selectorY', 'setSelectorY', 0),
@@ -168,6 +176,11 @@ export default class PublicProjectDetail extends Component {
         },
       }),
     );
+  };
+
+  setScroll = scrolling => {
+    LayoutAnimation.easeInEaseOut();
+    this.props.setScrolling(scrolling);
   };
 
   markView = () => {
@@ -343,6 +356,7 @@ export default class PublicProjectDetail extends Component {
       navBarOpacityRange,
       backgroundOpacityRange,
       showInviteModal,
+      scrolling,
     } = this.props;
     return (
       <View style={styles.container}>
@@ -393,6 +407,8 @@ export default class PublicProjectDetail extends Component {
               },
             },
           )}
+          onMomentumScrollBegin={() => this.setScroll(true)}
+          onMomentumScrollEnd={() => this.setScroll(false)}
         >
           <Header
             {...this.props}
@@ -416,10 +432,12 @@ export default class PublicProjectDetail extends Component {
             />
           </View>
         </Animated.ScrollView>
-        <BottomFloatingButton
-          style={{ bottom: bottomTabHeight + 12 }}
-          onPress={this.onPressClaimCoin}
-        />
+        {!scrolling && (
+          <BottomFloatingButton
+            style={{ bottom: buttonPadding }}
+            onPress={this.onPressClaimCoin}
+          />
+        )}
         <Bottom
           {...this.props}
           openShareModal={this.handleShare}

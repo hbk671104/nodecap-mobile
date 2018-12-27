@@ -7,6 +7,8 @@ export const deviceHeight = window.height;
 export const deviceWidth = window.width;
 export const switchHeight = 50;
 export const bottomTabHeight = 55;
+export const buttonPadding = bottomTabHeight + getBottomSpace() + 12;
+
 export default {
   container: {
     flex: 1,

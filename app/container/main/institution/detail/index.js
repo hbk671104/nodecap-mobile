@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, Text, Image, ScrollView, Clipboard } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  Clipboard,
+  LayoutAnimation,
+} from 'react-native';
 import { connect } from 'react-redux';
 import R from 'ramda';
 import { Flex, Toast } from 'antd-mobile';
@@ -27,7 +34,7 @@ import RatingItems from './partials/ratingItems';
 import ReportsItems from './partials/reports';
 import Header from './header';
 import Bottom from './bottom';
-import styles, { bottomTabHeight } from './style';
+import styles, { buttonPadding } from './style';
 import Icon from '../../../../component/uikit/icon';
 import ShareModal from './share';
 
@@ -60,6 +67,7 @@ import ShareModal from './share';
 @compose(
   withState('showInviteModal', 'toggleInviteModal', false),
   withState('showModal', 'setShowModal', false),
+  withState('scrolling', 'setScrolling', false),
   withState('currentMember', 'setCurrentMember', ({ data }) =>
     R.pathOr({}, ['members', 0])(data),
   ),
@@ -117,6 +125,11 @@ export default class InstitutionDetail extends Component {
         },
       }),
     );
+  };
+
+  setScroll = scrolling => {
+    LayoutAnimation.easeInEaseOut();
+    this.props.setScrolling(scrolling);
   };
 
   loadDetail = () => {
@@ -273,7 +286,13 @@ export default class InstitutionDetail extends Component {
   );
 
   render() {
-    const { data, in_individual, showInviteModal, ratingTypes } = this.props;
+    const {
+      data,
+      in_individual,
+      showInviteModal,
+      ratingTypes,
+      scrolling,
+    } = this.props;
     const desc = R.pathOr('', ['description'])(data);
     const members = R.pathOr([], ['members'])(data);
     const coins = R.pathOr([], ['coins'])(data);
@@ -281,7 +300,10 @@ export default class InstitutionDetail extends Component {
     return (
       <View style={styles.container}>
         {this.renderNavBar()}
-        <ScrollView>
+        <ScrollView
+          onMomentumScrollBegin={() => this.setScroll(true)}
+          onMomentumScrollEnd={() => this.setScroll(false)}
+        >
           {R.not(R.isEmpty(desc)) && (
             <Group title="机构简介">
               <View style={styles.desc.container}>
@@ -363,9 +385,9 @@ export default class InstitutionDetail extends Component {
           onInviteJoinPress={this.handleInviteJoinPress}
           onConnectPress={this.handleContactPress}
         />
-        {in_individual && (
+        {in_individual && !scrolling && (
           <BottomFloatingButton
-            style={{ bottom: bottomTabHeight + 12 }}
+            style={{ bottom: buttonPadding }}
             onPress={this.onPressClaimCoin}
           />
         )}

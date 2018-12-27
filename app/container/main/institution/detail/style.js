@@ -1,4 +1,7 @@
+import { getBottomSpace } from 'react-native-iphone-x-helper';
+
 export const bottomTabHeight = 55;
+export const buttonPadding = bottomTabHeight + getBottomSpace() + 12;
 
 export default {
   container: {
