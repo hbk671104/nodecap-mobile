@@ -107,8 +107,8 @@ export default class ProjectRepo extends Component {
   renderTab = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
     const textColor = isTabActive ? 'rgba(0, 0, 0, 0.85)' : '#B8CBDD';
     return (
-      <View onLayout={onLayoutHandler}>
-        <Touchable key={`${name}_${page}`} onPress={() => onPressHandler(page)}>
+      <View key={`${name}_${page}`} onLayout={onLayoutHandler}>
+        <Touchable onPress={() => onPressHandler(page)}>
           <View style={[styles.tabBar.tab]}>
             <Text
               style={[
