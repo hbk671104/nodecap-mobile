@@ -119,7 +119,7 @@ export default class InstitutionDetail extends Component {
     }
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'ClaimMyInstitutionWrap',
+        routeName: 'ClaimMyInstitution',
         params: {
           id: this.props.id,
         },

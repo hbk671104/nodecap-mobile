@@ -48,7 +48,7 @@ class OptionalClaimProject extends Component {
       NavigationActions.navigate({
         routeName: 'ClaimMyProject',
         params: {
-          project_id: item,
+          project_id: item.id,
         },
       }),
     );
