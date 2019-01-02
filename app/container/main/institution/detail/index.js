@@ -122,6 +122,7 @@ export default class InstitutionDetail extends Component {
         routeName: 'ClaimMyInstitution',
         params: {
           id: this.props.id,
+          showTip: true,
         },
       }),
     );

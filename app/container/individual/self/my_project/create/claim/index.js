@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
 import { Toast, Flex } from 'antd-mobile';
+import { withState, compose } from 'recompose';
 
 import EnhancedScroll from 'component/enhancedScroll';
 import NavBar from 'component/navBar';
@@ -13,6 +14,7 @@ import Touchable from 'component/uikit/touchable';
 import { launchImagePicker } from 'utils/imagepicker';
 import { uploadImage } from 'services/upload';
 
+import Tip from './wrap';
 import styles from './style';
 
 @global.bindTrack({
@@ -47,6 +49,12 @@ import styles from './style';
       ),
     )(owner),
 })
+@compose(
+  withState('tipVisible', 'setTipVisible', ({ navigation }) => {
+    const showTip = navigation.getParam('showTip', false);
+    return showTip;
+  }),
+)
 class ClaimProject extends Component {
   componentDidMount() {
     this.props.track('进入');
@@ -192,6 +200,7 @@ class ClaimProject extends Component {
             </Text>
           </Flex>
         </EnhancedScroll>
+        <Tip {...this.props} />
       </View>
     );
   }

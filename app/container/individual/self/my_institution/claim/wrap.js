@@ -1,39 +1,39 @@
-import React, { Component } from 'react';
-import { View, Image, Text, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Image, Text } from 'react-native';
+
+import Modal from 'component/modal';
 import Touchable from 'component/uikit/touchable';
-import NavBar from 'component/navBar';
-import { NavigationActions } from 'react-navigation';
-import store from '../../../../../../index';
 
-class ClaimWrap extends Component {
-  toClaim = () => {
-    store.dispatch(
-      NavigationActions.navigate({
-        routeName: 'ClaimMyInstitution',
-        params: {
-          id: this.props.navigation.getParam('id'),
-        },
-      }),
-    );
+const ClaimWrap = ({ tipVisible, setTipVisible }) => {
+  const handleDismiss = () => {
+    setTipVisible(false);
   };
-
-  render() {
-    return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <NavBar back barStyle="dark-content" title="入驻" />
-        <ScrollView style={{ flex: 1, backgroundColor: 'white' }}>
-          <Image
-            style={{ marginTop: 20, width: 291, alignSelf: 'center' }}
-            source={require('asset/institution_create/institution_claim_tip.jpg')}
-          />
-          <Touchable style={styles.button.container} onPress={this.toClaim}>
-            <Text style={styles.button.title}>立即入驻</Text>
-          </Touchable>
-        </ScrollView>
+  return (
+    <Modal
+      style={{ alignSelf: 'center' }}
+      isVisible={tipVisible}
+      onBackdropPress={handleDismiss}
+      useNativeDriver
+      hideModalContentWhileAnimating
+    >
+      <View
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 2,
+          paddingHorizontal: 12,
+          paddingVertical: 20,
+        }}
+      >
+        <Image
+          source={require('asset/institution_create/institution_claim_tip.jpg')}
+        />
+        <Touchable style={styles.button.container} onPress={handleDismiss}>
+          <Text style={styles.button.title}>好的，开始</Text>
+        </Touchable>
       </View>
-    );
-  }
-}
+    </Modal>
+  );
+};
 
 const styles = {
   button: {

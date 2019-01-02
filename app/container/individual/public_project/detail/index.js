@@ -173,6 +173,7 @@ export default class PublicProjectDetail extends Component {
         routeName: 'ClaimMyProject',
         params: {
           project_id: this.props.id,
+          showTip: true,
         },
       }),
     );
