@@ -81,6 +81,7 @@ export default options => {
         'dapp/fetchDappDetail',
         'user/updateUserProfile',
         'profile/getProfileById',
+        'app/checkForUpdate',
       ],
     }),
   );

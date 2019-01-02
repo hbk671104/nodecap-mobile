@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Alert, ActivityIndicator } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation';
 import R from 'ramda';
@@ -25,6 +25,7 @@ import styles from './style';
   user: R.path(['currentUser'])(user),
   versionLabel: R.pathOr('', ['update', 'label'])(codePush),
   switching: loading.effects['login/switch'],
+  checking_update: loading.effects['app/checkForUpdate'],
 }))
 @withState('pkg', 'setPkg', null)
 class Settings extends Component {
@@ -94,8 +95,14 @@ class Settings extends Component {
     ]);
   };
 
+  handleUpdateCheckPress = () => {
+    this.props.dispatch({
+      type: 'app/checkForUpdate',
+    });
+  };
+
   render() {
-    const { isLogin, switching } = this.props;
+    const { isLogin, switching, checking_update } = this.props;
     const versionLabel = R.path(['pkg', 'label'])(this.props);
     return (
       <View style={styles.container}>
@@ -108,17 +115,17 @@ class Settings extends Component {
               !versionLabel ? '' : ` (${versionLabel})`
             }`}
           />
+          <ListItem
+            title="检查更新"
+            onPress={this.handleUpdateCheckPress}
+            loading={checking_update}
+          />
           <ListItem title="版本更新" onPress={this.handleChangelogPress} />
           {isLogin && (
             <ListItem
               title="切换至机构版"
               onPress={this.handleSwitchEndPress}
-              renderContent={() => {
-                if (switching) {
-                  return <ActivityIndicator />;
-                }
-                return null;
-              }}
+              loading={switching}
             />
           )}
         </ScrollView>

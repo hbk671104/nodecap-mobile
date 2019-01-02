@@ -4,6 +4,7 @@ import codePushSaga from 'react-native-code-push-saga';
 import { Alert } from 'react-native';
 import R from 'ramda';
 
+import { hasAppStoreUpdate } from 'utils/utils';
 import store from '../../index';
 
 export default {
@@ -56,7 +57,27 @@ export default {
   },
   reducers: {},
   effects: {
-    *checkCodePush(_, { spawn, call, put }) {
+    *checkForUpdate(_, { call, put }) {
+      try {
+        const { hasUpdate, releaseNotes } = yield call(hasAppStoreUpdate);
+        if (hasUpdate) {
+          yield put({
+            type: 'update/toggle',
+            payload: { releaseNotes },
+          });
+          return;
+        }
+        yield put({
+          type: 'checkCodePush',
+          callback: () => {
+            Alert.alert('暂无更新');
+          },
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *checkCodePush({ callback }, { spawn, call, put }) {
       if (global.__DEV__) {
         return;
       }
@@ -69,20 +90,25 @@ export default {
       const isMandatory = R.pathOr(false, ['isMandatory'])(result);
       const description = R.pathOr(false, ['description'])(result);
 
-      if (result) {
-        yield put({
-          type: 'codePush/saveUpdateInfo',
-          payload: result,
-        });
-        if (isMandatory) {
-          // reallow
-          codePush.allowRestart();
-          // yield put(
-          //   routerRedux.navigate({
-          //     routeName: 'CodePush',
-          //   }),
-          // );
+      if (R.isNil(result)) {
+        if (callback) {
+          yield call(callback);
         }
+        return;
+      }
+
+      yield put({
+        type: 'codePush/saveUpdateInfo',
+        payload: result,
+      });
+      if (isMandatory) {
+        // reallow
+        codePush.allowRestart();
+        // yield put(
+        //   routerRedux.navigate({
+        //     routeName: 'CodePush',
+        //   }),
+        // );
       }
 
       yield spawn(codePushSaga, {

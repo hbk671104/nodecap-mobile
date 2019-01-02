@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import Icon from 'component/uikit/icon';
 import Touchable from 'component/uikit/touchable';
 
@@ -15,6 +15,7 @@ const item = ({
   style,
   icon,
   children,
+  loading,
   noBottomBorder,
   disablePress,
   renderContent,
@@ -33,7 +34,9 @@ const item = ({
           )}
         </View>
         <View style={[styles.content.container, contentContainerStyle]}>
-          {renderContent ? (
+          {loading ? (
+            <ActivityIndicator />
+          ) : renderContent ? (
             renderContent()
           ) : (
             <Text style={[styles.content.text, contentStyle]}>{content}</Text>
