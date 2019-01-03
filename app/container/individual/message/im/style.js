@@ -49,10 +49,45 @@ export default {
         color: 'rgba(0, 0, 0, 0.65)',
       },
     },
+    misc: {
+      container: {
+        height: 45,
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#E9E9E9',
+        paddingHorizontal: 12,
+      },
+      title: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: 'rgba(0, 0, 0, 0.85)',
+        marginLeft: 8,
+      },
+      box: {
+        container: {
+          height: 18,
+          width: 30.5,
+          borderRadius: 1,
+          backgroundColor: '#E5F3FF',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginLeft: 4,
+        },
+        text: {
+          fontSize: 11,
+          color: '#1890FF',
+        },
+      },
+      press: {
+        fontSize: 13,
+        color: '#1890FF',
+      },
+    },
     bottom: {
       container: {
         height: 45,
         flexDirection: 'row',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#E9E9E9',
       },
       divider: {
         width: StyleSheet.hairlineWidth,

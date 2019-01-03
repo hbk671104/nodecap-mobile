@@ -7,7 +7,6 @@ import {
   Linking,
   Keyboard,
   Platform,
-  KeyboardAvoidingView,
   LayoutAnimation,
 } from 'react-native';
 import { connect } from 'react-redux';
@@ -21,6 +20,7 @@ import { NavigationActions } from 'react-navigation';
 
 import NavBar from 'component/navBar';
 import Chat from 'component/chat';
+import Avatar from 'component/uikit/avatar';
 import Touchable from 'component/uikit/touchable';
 import SafeArea from 'component/uikit/safeArea';
 import ActionAlert from 'component/action_alert';
@@ -35,17 +35,20 @@ import { hideRealMobile } from '../../../../utils/utils';
   page: '聊天页',
   name: 'App_IMPageOperation',
 })
-@connect(({ user, message_center, router, loading }, { navigation }) => {
-  const id = navigation.getParam('id');
-  return {
-    id,
-    user: R.path(['currentUser'])(user),
-    target: R.path(['chat_user', id])(message_center),
-    loading: loading.effects['message_center/getUserById'],
-    connected: message_center.connected,
-    isCurrent: getCurrentScreen(router) === 'IMPage',
-  };
-})
+@connect(
+  ({ user, global, message_center, router, loading }, { navigation }) => {
+    const id = navigation.getParam('id');
+    return {
+      id,
+      user: R.path(['currentUser'])(user),
+      industry_type: R.path(['constants', 'industry_type'])(global),
+      target: R.path(['chat_user', id])(message_center),
+      loading: loading.effects['message_center/getUserById'],
+      connected: message_center.connected,
+      isCurrent: getCurrentScreen(router) === 'IMPage',
+    };
+  },
+)
 @compose(
   withState('data', 'setData', []),
   withState('inLastPage', 'setInLastPage', false),
@@ -64,10 +67,31 @@ import { hideRealMobile } from '../../../../utils/utils';
     },
   ),
   withState('showNotificationModal', 'setShowNotificationModal', false),
-  withProps(({ user, target }) => ({
-    user_im_id: R.path(['im_info', 'im_id'])(user),
-    target_im_id: R.path(['im_info', 'im_id'])(target),
-  })),
+  withProps(({ user, target, industry_type }) => {
+    const target_misc = R.pathOr(R.path(['org_info', 0])(target), [
+      'coin_info',
+      0,
+    ])(target);
+    const is_org = R.pipe(
+      R.path(['type']),
+      R.isNil,
+      R.not,
+    )(target_misc);
+    return {
+      user_im_id: R.path(['im_info', 'im_id'])(user),
+      target_im_id: R.path(['im_info', 'im_id'])(target),
+      is_org,
+      target_misc: {
+        ...target_misc,
+        type_name: is_org
+          ? R.pipe(
+              R.find(t => t.value === target_misc.type),
+              R.path(['name']),
+            )(industry_type)
+          : '项目',
+      },
+    };
+  }),
 )
 class IMPage extends PureComponent {
   componentWillMount() {
@@ -270,6 +294,18 @@ class IMPage extends PureComponent {
     this.props.toggleContactModal(false);
   };
 
+  handleMiscPress = () => {
+    const { is_org, target_misc } = this.props;
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: is_org ? 'InstitutionDetail' : 'PublicProjectDetail',
+        params: {
+          id: target_misc.id,
+        },
+      }),
+    );
+  };
+
   checkPushPermission = () => {
     if (Platform.OS === 'ios') {
       JPush.hasPermission(res => {
@@ -309,29 +345,60 @@ class IMPage extends PureComponent {
           </View>
         );
       }}
-      renderBottom={() => (
-        <View style={styles.navBar.bottom.container}>
-          <Touchable
-            style={{ flex: 1, justifyContent: 'center' }}
-            onPress={() => this.sendMsg('您好，方便留一下手机号吗？')}
-          >
-            <Flex style={styles.navBar.bottom.group.container}>
-              <Image source={require('asset/im/mobile_im.png')} />
-              <Text style={styles.navBar.bottom.group.title}>要手机</Text>
-            </Flex>
-          </Touchable>
-          <View style={styles.navBar.bottom.divider} />
-          <Touchable
-            style={{ flex: 1, justifyContent: 'center' }}
-            onPress={() => this.sendMsg('您好，方便留一下微信号吗？')}
-          >
-            <Flex style={styles.navBar.bottom.group.container}>
-              <Image source={require('asset/im/wechat_im.png')} />
-              <Text style={styles.navBar.bottom.group.title}>要微信号</Text>
-            </Flex>
-          </Touchable>
-        </View>
-      )}
+      renderBottom={() => {
+        const { target_misc } = this.props;
+        const name = R.pathOr('--', ['name'])(target_misc);
+        const type_name = R.pathOr('--', ['type_name'])(target_misc);
+        const logo_url = R.pathOr('--', ['logo_url'])(target_misc);
+        return (
+          <View>
+            {target_misc && (
+              <Touchable onPress={this.handleMiscPress}>
+                <Flex style={styles.navBar.misc.container}>
+                  <Flex style={{ flex: 1 }}>
+                    <Avatar
+                      raised={false}
+                      size={32}
+                      source={{ uri: logo_url }}
+                      style={{ borderRadius: 0, backgroundColor: '#F5F5F5' }}
+                      imageStyle={{ borderRadius: 0 }}
+                      innerRatio={0.8}
+                    />
+                    <Text style={styles.navBar.misc.title}>{name}</Text>
+                    <View style={styles.navBar.misc.box.container}>
+                      <Text style={styles.navBar.misc.box.text}>
+                        {type_name}
+                      </Text>
+                    </View>
+                  </Flex>
+                  <Text style={styles.navBar.misc.press}>查看</Text>
+                </Flex>
+              </Touchable>
+            )}
+            <View style={styles.navBar.bottom.container}>
+              <Touchable
+                style={{ flex: 1, justifyContent: 'center' }}
+                onPress={() => this.sendMsg('您好，方便留一下手机号吗？')}
+              >
+                <Flex style={styles.navBar.bottom.group.container}>
+                  <Image source={require('asset/im/mobile_im.png')} />
+                  <Text style={styles.navBar.bottom.group.title}>要手机</Text>
+                </Flex>
+              </Touchable>
+              <View style={styles.navBar.bottom.divider} />
+              <Touchable
+                style={{ flex: 1, justifyContent: 'center' }}
+                onPress={() => this.sendMsg('您好，方便留一下微信号吗？')}
+              >
+                <Flex style={styles.navBar.bottom.group.container}>
+                  <Image source={require('asset/im/wechat_im.png')} />
+                  <Text style={styles.navBar.bottom.group.title}>要微信号</Text>
+                </Flex>
+              </Touchable>
+            </View>
+          </View>
+        );
+      }}
     />
   );
 
