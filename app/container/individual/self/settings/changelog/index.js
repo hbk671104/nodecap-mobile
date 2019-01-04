@@ -12,6 +12,17 @@ class ChangeLog extends Component {
         <NavBar gradient back title="版本更新" />
         <ScrollView>
           <ChangeLogItem
+            version="v7.4.1"
+            date="2019-01-04"
+            changelog={[
+              '评级机构榜单，优质机构优先露出',
+              '评级机构所评项目，评级结果更突出',
+              '聊天页面增加用户项目/机构信息，随时可查看其项目/机构信息',
+              '强化机构和项目入驻按钮，入驻摩擦更小',
+              '入驻说明优化，减少使用困惑',
+            ]}
+          />
+          <ChangeLogItem
             version="v7.2.0"
             date="2018-12-14"
             changelog={[
