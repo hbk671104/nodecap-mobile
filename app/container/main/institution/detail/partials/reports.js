@@ -6,20 +6,32 @@ import { Flex } from 'antd-mobile';
 import moment from 'moment';
 import Touchable from 'component/uikit/touchable';
 
-const ReportItem = ({ data = [], onPress }) => (data.length ? (
-  <Group title="评级报告">
-    <View>
-      {data.map((i) => (
-        <Touchable onPress={() => onPress(i)}>
-          <Flex key={i.name} style={styles.container} align="start" justify="between">
-            <Text style={styles.title}>{i.title}</Text>
-            <Text style={styles.desc}>{moment(i.published_at).format('MM-DD')}</Text>
-          </Flex>
-        </Touchable>
-      ))}
-    </View>
-  </Group>
-) : null);
+const ReportItem = ({ data = [], onPress }) => {
+  if (data.length > 0) {
+    return (
+      <Group title="评级报告">
+        <View>
+          {data.map(i => (
+            <Touchable onPress={() => onPress(i)}>
+              <Flex
+                key={i.name}
+                style={styles.container}
+                align="start"
+                justify="between"
+              >
+                <Text style={styles.title}>{i.title}</Text>
+                <Text style={styles.desc}>
+                  {moment(i.published_at).format('MM-DD')}
+                </Text>
+              </Flex>
+            </Touchable>
+          ))}
+        </View>
+      </Group>
+    );
+  }
+  return null;
+};
 
 const styles = {
   container: {
@@ -43,7 +55,14 @@ const styles = {
     minWidth: 0,
     width: 40,
   },
-  name: { fontSize: 14, color: '#FFFFFF', letterSpacing: 0.17, textShadowOffset: { width: 0, height: 1 }, textShadowRadius: 2, textShadowColor: 'rgba(131,158,182,0.50)' },
+  name: {
+    fontSize: 14,
+    color: '#FFFFFF',
+    letterSpacing: 0.17,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+    textShadowColor: 'rgba(131,158,182,0.50)',
+  },
   titleContainer: {
     // marginBottom: 4,
   },
@@ -54,7 +73,7 @@ const styles = {
 };
 
 ReportItem.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default ReportItem;

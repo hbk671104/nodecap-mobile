@@ -4,23 +4,28 @@ import { View, Text, StyleSheet } from 'react-native';
 import Group from './group';
 import { Flex } from 'antd-mobile';
 
-const getColor = (opacity) => `rgba(128, 155, 180, ${opacity})`;
+const getColor = opacity => `rgba(128, 155, 180, ${opacity})`;
 
-const RatingItem = ({ data = [] }) => (data.length ? (
-  <Group title="评级标准">
-    <View style={{ marginTop: 20 }}>
-      {data.map((i, idx) => (
-        <Flex key={i.name} style={styles.container} align="center">
-          <View style={[styles.icon]}>
-            <Text style={styles.name}>{i.name}</Text>
-          </View>
-          <View style={styles.divider} />
-          <Text style={styles.desc}>{i.description}</Text>
-        </Flex>
-    ))}
-    </View>
-  </Group>
-) : null);
+const RatingItem = ({ data = [] }) => {
+  if (data.length > 0) {
+    return (
+      <Group title="评级标准">
+        <View style={{ marginTop: 20 }}>
+          {data.map((i, idx) => (
+            <Flex key={i.name} style={styles.container} align="center">
+              <View style={[styles.icon]}>
+                <Text style={styles.name}>{i.name}</Text>
+              </View>
+              <View style={styles.divider} />
+              <Text style={styles.desc}>{i.description}</Text>
+            </Flex>
+          ))}
+        </View>
+      </Group>
+    );
+  }
+  return null;
+};
 
 const styles = {
   container: {
@@ -36,7 +41,6 @@ const styles = {
     height: 35,
     alignItems: 'center',
     justifyContent: 'center',
-
   },
   desc: {
     marginLeft: 16,
@@ -63,7 +67,7 @@ const styles = {
 };
 
 RatingItem.propTypes = {
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
 };
 
 export default RatingItem;

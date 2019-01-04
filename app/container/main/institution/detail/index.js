@@ -32,6 +32,7 @@ import { viewInstitution } from '../../../../services/api';
 import Group from './partials/group';
 import RatingItems from './partials/ratingItems';
 import ReportsItems from './partials/reports';
+import RatedItem from './partials/ratedItem';
 import Header from './header';
 import Bottom from './bottom';
 import styles, { buttonPadding } from './style';
@@ -368,15 +369,28 @@ export default class InstitutionDetail extends Component {
           )}
           {R.not(R.isEmpty(coins)) && (
             <Group title={data.type === 1 ? '所投项目' : '服务案例'}>
-              {R.addIndex(R.map)((m, index) => (
-                <FavorItem
-                  style={{ paddingHorizontal: 0 }}
-                  institutionId={this.props.id}
-                  key={m.id}
-                  data={m}
-                  showTopBorder={index !== 0}
-                />
-              ))(coins)}
+              {R.addIndex(R.map)((m, index) => {
+                if (data.type === 6) {
+                  return (
+                    <RatedItem
+                      style={{ paddingHorizontal: 0 }}
+                      key={m.id}
+                      data={m}
+                      showTopBorder={index !== 0}
+                    />
+                  );
+                }
+                return (
+                  <FavorItem
+                    style={{ paddingHorizontal: 0 }}
+                    institutionId={this.props.id}
+                    key={m.id}
+                    data={m}
+                    showTopBorder={index !== 0}
+                    disableFavorAction
+                  />
+                );
+              })(coins)}
             </Group>
           )}
         </ScrollView>

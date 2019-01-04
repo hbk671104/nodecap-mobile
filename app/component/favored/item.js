@@ -53,13 +53,19 @@ class FavorItem extends PureComponent {
   };
 
   render() {
-    const { style, data, showTopBorder, in_individual } = this.props;
+    const {
+      style,
+      data,
+      showTopBorder,
+      in_individual,
+      disableFavorAction = false,
+    } = this.props;
     if (!in_individual) {
       return <PublicProjectItem data={data} onPress={this.handlePress} />;
     }
     const icon = R.pathOr('', ['icon'])(data);
     const project_name = R.pathOr('--', ['name'])(data);
-    const rating_score = R.pathOr('', ['rating_score'])(data);
+    const rating_score = R.path(['rating_score'])(data);
     const category = R.pathOr([], ['tags'])(data);
     const description = R.pathOr('--', ['description'])(data);
     const stars = R.pathOr(0, ['stars'])(data);
@@ -234,41 +240,34 @@ class FavorItem extends PureComponent {
             <View style={{ flex: 1 }}>
               {!R.isNil(rating_score) && rating_score !== 0 && (
                 <Flex align="center">
-                  <Text style={[
-                    styles.end.scoreText,
-                  ]}
-                  >评分
-                  </Text>
-                  <Text
-                    style={[
-                    styles.end.score,
-                  ]}
-                  >
-                    {rating_score}
-                  </Text>
+                  <Text style={[styles.end.scoreText]}>评分</Text>
+                  <Text style={[styles.end.score]}>{rating_score}</Text>
                 </Flex>
               )}
             </View>
-            <Touchable foreground onPress={this.handleFavorPress}>
-              <View
-                style={[
-                  styles.end.favor.container,
-                  R.isNil(rating_score) && rating_score !== 0 && { marginTop: 0 },
-                ]}
-              >
-                <Image
-                  source={
-                    favored
-                      ? require('asset/favored/favored_star.png')
-                      : require('asset/favored/unfavored_star.png')
-                  }
-                />
-                <Text style={styles.end.favor.number}>
-                  {'  '}
-                  {stars}
-                </Text>
-              </View>
-            </Touchable>
+            {!disableFavorAction && (
+              <Touchable foreground onPress={this.handleFavorPress}>
+                <View
+                  style={[
+                    styles.end.favor.container,
+                    R.isNil(rating_score) &&
+                      rating_score !== 0 && { marginTop: 0 },
+                  ]}
+                >
+                  <Image
+                    source={
+                      favored
+                        ? require('asset/favored/favored_star.png')
+                        : require('asset/favored/unfavored_star.png')
+                    }
+                  />
+                  <Text style={styles.end.favor.number}>
+                    {'  '}
+                    {stars}
+                  </Text>
+                </View>
+              </Touchable>
+            )}
           </View>
         </View>
       </Touchable>
