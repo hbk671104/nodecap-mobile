@@ -4,13 +4,11 @@ import { View } from 'react-native';
 
 import Middle from './middle';
 import Bottom from './bottom';
-import EmotionIndex from './emotion_index';
 import Top from './top';
 
 const header = props => (
   <View>
     <Top {...props} />
-    <View style={styles.divider} />
     <View style={styles.divider} />
     <Middle {...props} />
     <View style={styles.divider} />
