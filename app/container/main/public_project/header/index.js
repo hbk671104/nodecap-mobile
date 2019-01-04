@@ -11,7 +11,6 @@ const header = props => (
   <View>
     <Top {...props} />
     <View style={styles.divider} />
-    <EmotionIndex {...props} />
     <View style={styles.divider} />
     <Middle {...props} />
     <View style={styles.divider} />

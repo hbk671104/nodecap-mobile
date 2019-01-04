@@ -157,7 +157,7 @@ const top = ({
               <View style={styles.tab.group.imageWrapper}>
                 <Image source={require('asset/public_project/chart.png')} />
               </View>
-              <Text style={styles.tab.group.title}>榜单</Text>
+              <Text style={styles.tab.group.title}>涨跌幅</Text>
             </View>
           </Touchable>
         </Col>

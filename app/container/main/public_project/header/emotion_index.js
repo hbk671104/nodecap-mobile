@@ -79,13 +79,6 @@ const emotionIndex = ({
           </View>
         </Touchable>
       )}
-      renderRight={() => (
-        <Touchable borderless onPress={onMoreIndexPress}>
-          <Text style={styles.moreIndex}>
-            查看更多指数 <Icon name="arrow-forward" />
-          </Text>
-        </Touchable>
-      )}
     >
       <View style={{ marginHorizontal: 12, marginTop: 20 }}>
         <View

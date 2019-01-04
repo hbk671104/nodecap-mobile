@@ -58,7 +58,7 @@ import styles from './style';
       });
     }
   },
-  renderItem: ({ item }) => {
+  renderItem: ({ item, index }) => {
     const handleItemPress = () => {
       props.track('点击进入详情');
       props.dispatch(
