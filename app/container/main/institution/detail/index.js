@@ -68,7 +68,6 @@ import ShareModal from './share';
 @compose(
   withState('showInviteModal', 'toggleInviteModal', false),
   withState('showModal', 'setShowModal', false),
-  withState('scrolling', 'setScrolling', false),
   withState('currentMember', 'setCurrentMember', ({ data }) =>
     R.pathOr({}, ['members', 0])(data),
   ),
@@ -130,8 +129,7 @@ export default class InstitutionDetail extends Component {
   };
 
   setScroll = scrolling => {
-    LayoutAnimation.easeInEaseOut();
-    this.props.setScrolling(scrolling);
+    this.floatingButton.transitionTo({ opacity: scrolling ? 0.2 : 1 });
   };
 
   loadDetail = () => {
@@ -288,13 +286,7 @@ export default class InstitutionDetail extends Component {
   );
 
   render() {
-    const {
-      data,
-      in_individual,
-      showInviteModal,
-      ratingTypes,
-      scrolling,
-    } = this.props;
+    const { data, in_individual, showInviteModal, ratingTypes } = this.props;
     const desc = R.pathOr('', ['description'])(data);
     const members = R.pathOr([], ['members'])(data);
     const coins = R.pathOr([], ['coins'])(data);
@@ -400,8 +392,11 @@ export default class InstitutionDetail extends Component {
           onInviteJoinPress={this.handleInviteJoinPress}
           onConnectPress={this.handleContactPress}
         />
-        {in_individual && !scrolling && (
+        {in_individual && (
           <BottomFloatingButton
+            viewRef={ref => {
+              this.floatingButton = ref;
+            }}
             style={{ bottom: buttonPadding }}
             onPress={this.onPressClaimCoin}
           />

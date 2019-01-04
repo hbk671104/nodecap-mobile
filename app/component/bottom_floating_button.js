@@ -1,18 +1,24 @@
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import * as Animatable from 'react-native-animatable';
+
 import Touchable from 'component/uikit/touchable';
 import { shadow } from 'utils/style';
 
 const deviceWidth = Dimensions.get('window').width;
 
-const button = ({ style, onPress }) => (
-  <View style={[styles.wrapper, style]}>
+const button = ({ viewRef, style, onPress }) => (
+  <Animatable.View
+    ref={viewRef}
+    useNativeDriver
+    style={[styles.wrapper, style]}
+  >
     <Touchable borderless onPress={onPress}>
       <View style={styles.container}>
         <Text style={styles.title}>我要入驻</Text>
       </View>
     </Touchable>
-  </View>
+  </Animatable.View>
 );
 
 const styles = {

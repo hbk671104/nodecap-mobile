@@ -23,10 +23,10 @@ import bind from 'lodash-decorators/bind';
 )
 @connect(({ rank, loading }) => ({
   upList: R.pathOr([], ['list', 'up', 'data'])(rank),
-  upPagination: R.pathOr([], ['list', 'up', 'pagination'])(rank),
+  upPagination: R.path(['list', 'up', 'pagination'])(rank),
   upLoading: loading.effects['rank/upFetch'],
   downList: R.pathOr([], ['list', 'down', 'data'])(rank),
-  downPagination: R.pathOr([], ['list', 'down', 'pagination'])(rank),
+  downPagination: R.path(['list', 'down', 'pagination'])(rank),
   downLoading: loading.effects['rank/downFetch'],
 }))
 class Rank extends Component {
@@ -36,7 +36,7 @@ class Rank extends Component {
     });
   };
 
-  requestData = (quotation) => (page, size) => {
+  requestData = quotation => (page, size) => {
     this.props.dispatch({
       type: `rank/${quotation}Fetch`,
       payload: {
@@ -45,9 +45,9 @@ class Rank extends Component {
         pageSize: 50,
       },
     });
-  }
+  };
 
-  toCoinDetail = (id) => {
+  toCoinDetail = id => {
     this.props.track('点击进入详情');
     this.props.dispatch(
       NavigationActions.navigate({
@@ -58,7 +58,7 @@ class Rank extends Component {
         key: `PublicProjectDetail_${id}`,
       }),
     );
-  }
+  };
 
   @bind
   renderScene({ route }) {
@@ -73,7 +73,7 @@ class Rank extends Component {
             type="up"
             toCoinDetail={this.toCoinDetail}
           />
-);
+        );
       case 'down':
         return (
           <List
@@ -84,14 +84,14 @@ class Rank extends Component {
             type="down"
             toCoinDetail={this.toCoinDetail}
           />
-);
+        );
       default:
         return null;
     }
   }
 
   render() {
-      const { index, routes } = this.props;
+    const { index, routes } = this.props;
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <NavBar
@@ -106,7 +106,7 @@ class Rank extends Component {
             index,
             routes,
           }}
-          renderTabBar={(props) => (
+          renderTabBar={props => (
             <TabBar
               {...props}
               useNativeDriver

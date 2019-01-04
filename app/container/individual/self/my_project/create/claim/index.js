@@ -127,7 +127,7 @@ class ClaimProject extends Component {
               titleStyle={styles.inputItem.title}
               title="姓名"
               placeholder="请输入姓名"
-              inputProps={{ style: styles.inputItem.input, autoFocus: true }}
+              inputProps={{ style: styles.inputItem.input }}
               error={getFieldError('owner_name')}
             />,
           )}
