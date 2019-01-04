@@ -46,9 +46,21 @@ export default class ServiceList extends Component {
     );
   };
 
-  renderItem = ({ item }) => (
-    <InstitutionItem data={item} onPress={this.handleItemPress(item)} />
-  );
+  renderItem = ({ item, index }) => {
+    if (this.props.type === 6) {
+      return (
+        <InstitutionItem
+          data={item}
+          onPress={this.handleItemPress(item)}
+          showRankIcon
+          index={index}
+        />
+);
+    }
+    return (
+      <InstitutionItem data={item} onPress={this.handleItemPress(item)} />
+    );
+  }
 
   renderSeparator = () => <View style={styles.separator} />;
 

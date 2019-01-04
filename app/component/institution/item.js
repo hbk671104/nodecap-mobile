@@ -7,6 +7,12 @@ import { Flex } from 'antd-mobile';
 import Touchable from 'component/uikit/touchable';
 import Avatar from 'component/uikit/avatar';
 
+const rankIcon = [
+  require('asset/services/rank1.png'),
+  require('asset/services/rank2.png'),
+  require('asset/services/rank3.png'),
+];
+
 const item = ({
   style,
   wrapperStyle,
@@ -14,6 +20,8 @@ const item = ({
   onPress,
   disableSubtitle,
   renderBottom,
+  showRankIcon,
+  index,
 }) => {
   const title = R.pathOr('--', ['name'])(data);
   const des = R.pathOr('', ['description'])(data);
@@ -21,6 +29,7 @@ const item = ({
   const is_vip = R.path(['is_vip'])(data);
   const is_owned = R.path(['is_owned'])(data);
   const is_reachable = R.path(['is_reachable'])(data);
+
   return (
     <Touchable foreground onPress={onPress}>
       <View style={wrapperStyle}>
@@ -61,6 +70,9 @@ const item = ({
               </Text>
             )}
           </View>
+          {!!showRankIcon && index < 3 && (
+            <Image style={styles.rankIcon} source={rankIcon[index]} />
+          )}
         </View>
         {renderBottom && renderBottom()}
       </View>
@@ -86,6 +98,13 @@ const styles = {
     borderColor: '#F0F0F0',
     borderRadius: 2,
     borderWidth: StyleSheet.hairlineWidth,
+  },
+  rankIcon: {
+    position: 'absolute',
+    right: 12,
+    top: 0,
+    width: 22,
+    height: 29,
   },
   content: {
     container: {

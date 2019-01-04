@@ -97,7 +97,7 @@ class Rank extends Component {
         <NavBar
           back
           barStyle="dark-content"
-          title="行情榜单"
+          title="涨跌幅"
           wrapperStyle={styles.navBar}
         />
         <TabView

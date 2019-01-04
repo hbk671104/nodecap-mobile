@@ -103,7 +103,7 @@ export default class CoinsInSet extends Component {
           <Text style={styles.headerHighlight}>
             {R.path(['pagination', 'total'])(this.props)}
           </Text>{' '}
-          个项目{' '}
+          个{this.props.tabLabel === '矿机矿池' ? '优质机构' : '项目'}{' '}
         </Text>
         <Flex align="center">
           <Image
