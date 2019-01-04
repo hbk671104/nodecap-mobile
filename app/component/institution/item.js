@@ -103,8 +103,6 @@ const styles = {
     position: 'absolute',
     right: 12,
     top: 0,
-    width: 22,
-    height: 29,
   },
   content: {
     container: {

@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import R from 'ramda';
 import NavBar from 'component/navBar';
 import Header from '../../main/public_project/header/emotion_index';
+import OriginalHeader from 'component/hotnode_index/header';
+
 import OtherIndex from './otherIndex';
 import styles from './style';
 import Explanation from '../../../component/explanation';
@@ -19,9 +21,7 @@ import { compose, withState } from 'recompose';
   loading: loading.effects['hotnode_index/fetchCategory'],
   market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
 }))
-@compose(
-  withState('showExplanation', 'setShowExplanation', false),
-)
+@compose(withState('showExplanation', 'setShowExplanation', false))
 class HotnodeIndex extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
@@ -29,6 +29,8 @@ class HotnodeIndex extends PureComponent {
 
   renderHeader = () => (
     <View>
+      <OriginalHeader {...this.props} />
+      <View style={styles.divider} />
       <Header
         {...this.props}
         onTitlePress={() => this.props.setShowExplanation(true)}
@@ -39,9 +41,7 @@ class HotnodeIndex extends PureComponent {
   );
 
   render() {
-    const {
-      showExplanation,
-    } = this.props;
+    const { showExplanation } = this.props;
     return (
       <View style={styles.container}>
         <NavBar

@@ -304,12 +304,14 @@ const styles = {
       },
     },
   },
-
   searchBar: {
-    wrapper: { paddingHorizontal: 12 },
+    wrapper: { paddingHorizontal: 12, marginTop: 8 },
     container: {
-      backgroundColor: '#F0F0F0',
-      borderRadius: 2,
+      backgroundColor: '#F5F5F5',
+      borderRadius: 4,
+      height: 40,
+      borderColor: '#E9E9E9',
+      borderWidth: StyleSheet.hairlineWidth,
     },
   },
 };
