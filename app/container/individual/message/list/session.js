@@ -7,6 +7,7 @@ import { NavigationActions } from 'react-navigation';
 import List from 'component/uikit/list';
 import SessionItem from 'component/message_center/item';
 import NotificationItem from 'component/message_center/notification_item';
+import LoginPlaceholder from '../component/login';
 import styles from '../style';
 
 @global.bindTrack({
@@ -14,8 +15,9 @@ import styles from '../style';
   name: 'App_MessageCenterOperation',
   subModuleName: '消息列表',
 })
-@connect(({ message_center }) => ({
+@connect(({ message_center, login }) => ({
   data: R.pathOr([], ['session', 'data'])(message_center),
+  logged_in: !!login.token,
   loading: message_center.loading,
 }))
 class SessionList extends PureComponent {
@@ -41,7 +43,16 @@ class SessionList extends PureComponent {
   renderSeparator = () => <View style={styles.separator} />;
 
   render() {
-    const { data, loading } = this.props;
+    const { data, logged_in, loading } = this.props;
+    if (!logged_in) {
+      return (
+        <LoginPlaceholder
+          image={require('asset/message_center/chat_image_1.png')}
+          title="登录即可聊天"
+          content="登录状态下，可联系项目及所有投资、项目方"
+        />
+      );
+    }
     return (
       <List
         loading={loading}
