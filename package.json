@@ -85,7 +85,7 @@
     "react-native-view-shot": "^2.5.0",
     "react-native-wechat": "^1.9.10",
     "react-navigation": "^2.18.2",
-    "react-navigation-redux-helpers": "^2.0.8",
+    "react-navigation-redux-helpers": "^2.0.9",
     "react-redux": "^5.1.1",
     "realm": "^2.19.0",
     "recompose": "^0.30.0",
