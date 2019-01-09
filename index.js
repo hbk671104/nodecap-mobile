@@ -47,11 +47,13 @@ import rankModel from './app/models/rank';
 import DappModel from './app/models/dapp';
 import ProfileModel from './app/models/profile';
 import YellowPageModel from './app/models/yellowpage';
+import guideModel from './app/models/guide';
 
-YellowBox.ignoreWarnings([
-  'Warning: isMounted(...) is deprecated',
-  'Module RCTImageLoader',
-]);
+// YellowBox.ignoreWarnings([
+//   'Warning: isMounted(...) is deprecated',
+//   'Module RCTImageLoader',
+// ]);
+console.disableYellowBox = true;
 
 export const app = dva({
   initialState: {},
@@ -87,6 +89,7 @@ export const app = dva({
     DappModel,
     ProfileModel,
     YellowPageModel,
+    guideModel,
   ],
   extraReducers: { router: routerReducer },
   onAction: [routerMiddleware],
@@ -112,6 +115,7 @@ export const persist = callback => {
         'banners',
         'message_center',
         'dapp',
+        'guide',
       ],
     },
     callback,

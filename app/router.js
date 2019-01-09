@@ -8,6 +8,8 @@ import {
   Linking,
   Clipboard,
   AsyncStorage,
+  Image,
+  Dimensions, TouchableWithoutFeedback,
 } from 'react-native';
 import { connect } from 'react-redux';
 import * as WeChat from 'react-native-wechat';
@@ -35,6 +37,7 @@ import BadgeTabIcon from 'component/badgeTabIcon';
 import { shadow } from './utils/style';
 import { EventEmitter } from 'fbemitter';
 import { getCoinInfo, getIndustryDetail } from 'services/api';
+import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator';
 
 import InviteItem from 'component/public_project/inviteItem';
 import InviteOrgItem from 'component/public_project/inviteOrgItem';
@@ -502,11 +505,22 @@ import ActionAlert from 'component/action_alert';
 import { hasAppStoreUpdate } from 'utils/utils';
 import { handleBadgeAction } from 'utils/badge_handler';
 
-@connect(({ app, router, update }) => ({
+
+const guideMap = {
+  home: require('asset/guide/home.jpg'),
+  announcement: require('asset/guide/announcement.jpg'),
+  index: require('asset/guide/index.jpg'),
+  filter: require('asset/guide/filter.jpg'),
+  chat: require('asset/guide/chat.jpg'),
+};
+
+@connect(({ app, router, update, guide }) => ({
   app,
   router,
   showAlert: R.pathOr(false, ['modal_visible'])(update),
   release_notes: R.pathOr('', ['release_notes'])(update),
+  showGuideModal: R.pathOr(false, ['modal_visible'])(guide),
+  guideImage: R.pathOr('', ['image'])(guide),
 }))
 @compose(
   withState('showNotificationModal', 'setShowNotificationModal', false),
@@ -702,6 +716,21 @@ class Router extends Component {
       payload,
     });
   };
+  toggleGuideModal = name => {
+    if (name === 'home') {
+      setTimeout(() => {
+        this.props.dispatch({
+          type: 'guide/toggle',
+          payload: {
+            image: 'announcement',
+          },
+        });
+      }, 1000);
+    }
+    this.props.dispatch({
+      type: 'guide/toggle',
+    });
+  };
 
   renderInviteEnter = () => {
     const { inviteCoin } = this.props;
@@ -732,9 +761,11 @@ class Router extends Component {
       dispatch,
       router,
       showAlert,
+      showGuideModal,
       release_notes,
       inviteCoin,
       inviteOrg,
+      guideImage,
     } = this.props;
     return (
       <View style={{ flex: 1 }}>
@@ -749,6 +780,37 @@ class Router extends Component {
           onBackdropPress={this.toggleAlert}
         >
           <UpdateAlert note={release_notes} />
+        </Modal>
+        <Modal
+          style={{ alignSelf: 'center' }}
+          isVisible={showGuideModal}
+          useNativeDriver
+          hideModalContentWhileAnimating
+        >
+          <View style={{ alignItems: 'center' }}>
+            <Image
+              style={{
+              width: Dimensions.get('window').width,
+              height: Dimensions.get('window').height,
+            }}
+              source={guideMap[guideImage]}
+            />
+            <TouchableWithoutFeedback
+              onPress={() => this.toggleGuideModal(guideImage)}
+            >
+              <Image
+                style={{
+                  width: 216,
+                  height: 44,
+                  position: 'absolute',
+                  bottom: 133,
+                  alignSelf: 'center',
+                  alignContent: 'center',
+              }}
+                source={require('asset/guide/close.png')}
+              />
+            </TouchableWithoutFeedback>
+          </View>
         </Modal>
         <ActionAlert
           visible={this.props.showInviteEnter}

@@ -17,7 +17,7 @@ import styles from './style';
   page: '消息中心',
   name: 'App_MessageCenterOperation',
 })
-@connect(({ message_center, router }) => ({
+@connect(({ message_center, router, guide }) => ({
   session_unread: R.pipe(
     R.pathOr([], ['session', 'data']),
     R.reduce((accu, d) => accu + R.pathOr(0, ['unread'])(d), 0),
@@ -32,6 +32,7 @@ import styles from './style';
     }, 0),
   )(message_center),
   is_current: getCurrentScreen(router) === 'MessageCenter',
+  hasOpenGuide: R.path(['steps', 'chat'])(guide),
 }))
 @compose(
   withState('index', 'setIndex', 0),
@@ -49,6 +50,14 @@ import styles from './style';
 class MessageWrapper extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
+    if (!this.props.hasOpenGuide) {
+      this.props.dispatch({
+        type: 'guide/toggle',
+        payload: {
+          image: 'chat',
+        },
+      });
+    }
   }
 
   componentWillReceiveProps(nextProps) {
