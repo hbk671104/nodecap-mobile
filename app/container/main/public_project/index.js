@@ -37,6 +37,7 @@ import styles from './style';
     banners,
     hotnode_index,
     investNews,
+    guide,
   }) => ({
     data: R.pathOr([{}, {}, {}, {}, {}], ['selected', 'index', 'data'])(
       public_project,
@@ -64,6 +65,7 @@ import styles from './style';
     banners: R.pathOr([], ['list', 'data'])(banners),
     market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
     global_index: R.pathOr({}, ['overall', 'global'])(hotnode_index),
+    hasOpenGuide: R.path(['steps', 'home'])(guide),
   }),
 )
 @compose(
@@ -73,6 +75,14 @@ import styles from './style';
 )
 export default class PublicProject extends Component {
   componentWillMount() {
+    if (!this.props.hasOpenGuide) {
+      this.props.dispatch({
+        type: 'guide/toggle',
+        payload: {
+          image: 'home',
+        },
+      });
+    }
     this.props.dispatch({
       type: 'news/index',
     });

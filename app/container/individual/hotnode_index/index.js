@@ -15,16 +15,26 @@ import { compose, withState } from 'recompose';
   page: 'Hotnode指数',
   name: 'App_HotnodeIndexOperation',
 })
-@connect(({ hotnode_index, loading }) => ({
+@connect(({ hotnode_index, loading, guide }) => ({
   data: R.pathOr([], ['category'])(hotnode_index),
   global: R.pathOr({}, ['overall', 'global'])(hotnode_index),
   loading: loading.effects['hotnode_index/fetchCategory'],
   market_sentiment: R.pathOr({}, ['market_sentiment'])(hotnode_index),
+  hasOpenGuide: R.path(['steps', 'index'])(guide),
+
 }))
 @compose(withState('showExplanation', 'setShowExplanation', false))
 class HotnodeIndex extends PureComponent {
   componentDidMount() {
     this.props.track('进入');
+    if (!this.props.hasOpenGuide) {
+      this.props.dispatch({
+        type: 'guide/toggle',
+        payload: {
+          image: 'index',
+        },
+      });
+    }
   }
 
   renderHeader = () => (

@@ -23,8 +23,9 @@ import styles from './style';
   page: '项目大全',
   name: 'App_ProjectRepoOperation',
 })
-@connect(({ coinSets }) => ({
+@connect(({ coinSets, guide }) => ({
   sets: R.pathOr([], ['sets'])(coinSets),
+  hasOpenGuide: R.path(['steps', 'filter'])(guide),
 }))
 @compose(
   withProps(({ navigation, sets }) => {
@@ -42,6 +43,14 @@ import styles from './style';
 )
 export default class ProjectRepo extends Component {
   componentWillMount() {
+    if (!this.props.hasOpenGuide) {
+      this.props.dispatch({
+        type: 'guide/toggle',
+        payload: {
+          image: 'filter',
+        },
+      });
+    }
     this.props.dispatch({
       type: 'coinSets/fetch',
     });
