@@ -786,12 +786,14 @@ class Router extends Component {
           isVisible={showGuideModal}
           useNativeDriver
           hideModalContentWhileAnimating
+          backdropOpacity={0.8}
         >
           <View style={{ alignItems: 'center' }}>
             <Image
               style={{
               width: Dimensions.get('window').width,
               height: Dimensions.get('window').height,
+                resizeMode: 'contain',
             }}
               source={guideMap[guideImage]}
             />
