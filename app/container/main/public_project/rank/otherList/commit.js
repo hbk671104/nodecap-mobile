@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { Flex } from 'antd-mobile';
-import R from 'ramda';
 
 import List from 'component/uikit/list';
-import Touchable from 'component/uikit/touchable';
 
+import CommitItem from './component/commit';
 import styles from './style';
 
 class CommitList extends Component {
-  renderItem = ({ item, index }) => {};
+  renderItem = ({ item, index }) => <CommitItem data={item} index={index} />;
 
   render() {
     return (

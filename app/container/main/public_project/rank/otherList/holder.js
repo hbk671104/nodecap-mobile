@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text } from 'react-native';
 import { Flex } from 'antd-mobile';
-import R from 'ramda';
 
 import List from 'component/uikit/list';
-import Touchable from 'component/uikit/touchable';
 
+import HolderItem from './component/holder';
 import styles from './style';
 
-class CommitList extends Component {
-  renderItem = ({ item, index }) => {};
+class HolderList extends Component {
+  renderItem = ({ item, index }) => <HolderItem data={item} index={index} />;
 
   render() {
     return (
@@ -31,4 +30,4 @@ class CommitList extends Component {
   }
 }
 
-export default CommitList;
+export default HolderList;
