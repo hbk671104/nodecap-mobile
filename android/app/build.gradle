@@ -120,10 +120,6 @@ android {
         targetSdkVersion 27
         versionCode 190111
         versionName "7.4.2"
-        manifestPlaceholders = [
-                JPUSH_APPKEY: "",
-                APP_CHANNEL : "default"
-        ]
 
         manifestPlaceholders = [
                 JPUSH_APPKEY: "3d43f5402c9364c5b35f0ab0",

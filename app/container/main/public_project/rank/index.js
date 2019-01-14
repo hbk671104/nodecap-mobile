@@ -1,26 +1,23 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import R from 'ramda';
 import { connect } from 'react-redux';
-import { compose, withState } from 'recompose';
-import { TabView, TabBar } from 'react-native-tab-view';
 import { NavigationActions } from 'react-navigation';
+import ScrollableTabView, {
+  ScrollableTabBar,
+} from 'react-native-scrollable-tab-view';
+
 import NavBar from 'component/navBar';
+import Touchable from 'component/uikit/touchable';
 import styles from './style';
 import List from './list';
-import bind from 'lodash-decorators/bind';
+import CommitList from './otherList/commit';
+import HolderList from './otherList/holder';
 
 @global.bindTrack({
   page: '榜单',
   name: 'App_RankOperation',
 })
-@compose(
-  withState('index', 'setIndex', 0),
-  withState('routes', 'setRoutes', [
-    { key: 'up', title: '涨幅榜' },
-    { key: 'down', title: '跌幅榜' },
-  ]),
-)
 @connect(({ rank, loading }) => ({
   upList: R.pathOr([], ['list', 'up', 'data'])(rank),
   upPagination: R.path(['list', 'up', 'pagination'])(rank),
@@ -30,13 +27,7 @@ import bind from 'lodash-decorators/bind';
   downLoading: loading.effects['rank/downFetch'],
 }))
 class Rank extends Component {
-  handleIndexChange = index => {
-    this.props.setIndex(index, () => {
-      this.props.track('Tab切换', { subModuleName: index });
-    });
-  };
-
-  requestData = quotation => (page, size) => {
+  requestData = quotation => page => {
     this.props.dispatch({
       type: `rank/${quotation}Fetch`,
       payload: {
@@ -60,11 +51,59 @@ class Rank extends Component {
     );
   };
 
-  @bind
-  renderScene({ route }) {
-    switch (route.key) {
-      case 'up':
-        return (
+  renderTab = (name, page, isTabActive, onPressHandler, onLayoutHandler) => {
+    const textColor = isTabActive ? 'rgba(0, 0, 0, 0.85)' : '#B8CBDD';
+    return (
+      <View key={`${name}_${page}`} onLayout={onLayoutHandler}>
+        <Touchable onPress={() => onPressHandler(page)}>
+          <View style={[styles.tabBar.tab]}>
+            <Text
+              style={[
+                styles.tabBar.text,
+                { color: textColor, fontWeight: 'bold' },
+              ]}
+            >
+              {name}
+            </Text>
+          </View>
+        </Touchable>
+        {isTabActive && (
+          <View style={styles.tabBar.under}>
+            <View style={styles.tabBar.underInner} />
+          </View>
+        )}
+      </View>
+    );
+  };
+
+  renderTabBar = () => (
+    <ScrollableTabBar
+      style={styles.tabBar.container}
+      tabStyle={styles.tabBar.tab}
+      textStyle={styles.tabBar.text}
+      activeTextColor="rgba(0, 0, 0, 0.85)"
+      inactiveTextColor="#B8CBDD"
+      underlineStyle={styles.tabBar.underline}
+      renderTab={this.renderTab}
+    />
+  );
+
+  render() {
+    return (
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
+        <NavBar
+          back
+          barStyle="dark-content"
+          title="榜单"
+          wrapperStyle={styles.navBar}
+        />
+        <ScrollableTabView
+          renderTabBar={this.renderTabBar}
+          prerenderingSiblingsNumber={Infinity}
+          onChangeTab={({ i }) => {
+            this.props.track('tab 滑动', { tabIndex: `${i}` });
+          }}
+        >
           <List
             action={this.requestData('up')}
             data={this.props.upList}
@@ -72,10 +111,8 @@ class Rank extends Component {
             pagination={this.props.upPagination}
             type="up"
             toCoinDetail={this.toCoinDetail}
+            tabLabel="涨幅榜"
           />
-        );
-      case 'down':
-        return (
           <List
             action={this.requestData('down')}
             data={this.props.downList}
@@ -83,42 +120,11 @@ class Rank extends Component {
             pagination={this.props.downPagination}
             type="down"
             toCoinDetail={this.toCoinDetail}
+            tabLabel="跌幅榜"
           />
-        );
-      default:
-        return null;
-    }
-  }
-
-  render() {
-    const { index, routes } = this.props;
-    return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <NavBar
-          back
-          barStyle="dark-content"
-          title="涨跌幅"
-          wrapperStyle={styles.navBar}
-        />
-        <TabView
-          initialLayout={styles.initialLayout}
-          navigationState={{
-            index,
-            routes,
-          }}
-          renderTabBar={props => (
-            <TabBar
-              {...props}
-              useNativeDriver
-              style={styles.tabBar.container}
-              tabStyle={styles.tabBar.tab}
-              indicatorStyle={styles.tabBar.indicator}
-              labelStyle={styles.tabBar.label}
-            />
-          )}
-          renderScene={this.renderScene}
-          onIndexChange={this.handleIndexChange}
-        />
+          <CommitList tabLabel="代码更新榜" />
+          <HolderList tabLabel="富豪榜" />
+        </ScrollableTabView>
       </View>
     );
   }
