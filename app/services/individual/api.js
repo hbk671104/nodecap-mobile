@@ -240,3 +240,15 @@ export function getRankList(payload) {
     params: paramsTransform(payload),
   });
 }
+
+
+export function getMarketCapRank(payload) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/coin-quotations/market-cap-chart', {
+    params: paramsTransform(payload),
+  });
+}

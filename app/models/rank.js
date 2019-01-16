@@ -1,4 +1,4 @@
-import { getRankList } from '../services/individual/api';
+import { getRankList, getMarketCapRank } from '../services/individual/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -34,6 +34,19 @@ export default {
         type: 'list',
         payload: data,
         quotation: 'down',
+      });
+
+      if (callback) {
+        yield call(callback);
+      }
+    },
+    *marketCapFetch({ callback, payload }, { call, put }) {
+      const { data } = yield call(getMarketCapRank, payload);
+
+      yield put({
+        type: 'list',
+        payload: data,
+        quotation: 'marketCap',
       });
 
       if (callback) {

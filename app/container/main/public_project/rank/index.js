@@ -11,6 +11,7 @@ import NavBar from 'component/navBar';
 import Touchable from 'component/uikit/touchable';
 import styles from './style';
 import List from './list';
+import MarketCapList from './marketCapList';
 import CommitList from './otherList/commit';
 import HolderList from './otherList/holder';
 
@@ -25,6 +26,8 @@ import HolderList from './otherList/holder';
   downList: R.pathOr([], ['list', 'down', 'data'])(rank),
   downPagination: R.path(['list', 'down', 'pagination'])(rank),
   downLoading: loading.effects['rank/downFetch'],
+  marketCapList: R.pathOr([], ['list', 'marketCap'])(rank),
+  marketCapLoading: loading.effects['rank/marketCapFetch'],
 }))
 class Rank extends Component {
   requestData = quotation => page => {
@@ -121,6 +124,12 @@ class Rank extends Component {
             type="down"
             toCoinDetail={this.toCoinDetail}
             tabLabel="跌幅榜"
+          />
+          <MarketCapList
+            tabLabel="市值榜"
+            data={this.props.marketCapList}
+            loading={this.props.marketCapLoading}
+            action={this.requestData('marketCap')}
           />
           <CommitList tabLabel="代码更新榜" />
           <HolderList tabLabel="富豪榜" />
