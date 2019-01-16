@@ -17,18 +17,11 @@ class MarketCapList extends Component {
           <View style={[styles.rank, { width: 60 }]}>
             <Text style={styles.index}>{item.rank}</Text>
           </View>
-          <View style={[styles.coin, { width: 111 }]}>
+          <View style={[styles.coin, { flex: 1 }]}>
             <Text style={styles.coinText}>{item.token_name}</Text>
           </View>
           <View style={[styles.price, { width: 118 }]}>
             <Text style={styles.flatPrice}>{item.market_value}</Text>
-          </View>
-          <View style={[styles.change_percent, { flex: 1 }]}>
-            <Flex align="start">
-              <Text style={[styles.percent]}>
-                {item.market_proportion}
-              </Text>
-            </Flex>
           </View>
         </Flex>
       </View>
@@ -41,9 +34,8 @@ class MarketCapList extends Component {
       <View style={{ flex: 1 }}>
         <Flex style={styles.tableHead}>
           <Text style={[styles.tableHeadText, { width: 60 }]}>排名</Text>
-          <Text style={[styles.tableHeadText, { width: 111 }]}>币种</Text>
+          <Text style={[styles.tableHeadText, { flex: 1 }]}>币种</Text>
           <Text style={[styles.tableHeadText, { width: 118 }]}>市值</Text>
-          <Text style={[styles.tableHeadText, { flex: 1 }]}>市值占比</Text>
         </Flex>
         <List
           action={this.props.action}
