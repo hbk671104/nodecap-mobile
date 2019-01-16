@@ -25,9 +25,7 @@ class MarketCapList extends Component {
           </View>
           <View style={[styles.change_percent, { flex: 1 }]}>
             <Flex align="start">
-              <Text style={[styles.percent]}>
-                {item.market_proportion}
-              </Text>
+              <Text style={[styles.percent]}>{item.market_proportion}</Text>
             </Flex>
           </View>
         </Flex>
@@ -35,6 +33,8 @@ class MarketCapList extends Component {
     );
     return ele;
   }
+
+  renderSeparator = () => <View style={styles.separator} />;
 
   render() {
     return (
@@ -50,11 +50,11 @@ class MarketCapList extends Component {
           loading={this.props.loading}
           data={this.props.data}
           renderItem={this.renderItem}
+          renderSeparator={this.renderSeparator}
         />
       </View>
     );
   }
 }
-
 
 export default MarketCapList;

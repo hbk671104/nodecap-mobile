@@ -27,15 +27,25 @@ class RankList extends Component {
             <Flex align="start">
               <View>
                 {this.props.type === 'up' && (
-                  <Image style={styles.tip} source={require('asset/rank/up.png')} />
+                  <Image
+                    style={styles.tip}
+                    source={require('asset/rank/up.png')}
+                  />
                 )}
                 {this.props.type === 'down' && (
-                  <Image style={styles.tip} source={require('asset/rank/down.png')} />
+                  <Image
+                    style={styles.tip}
+                    source={require('asset/rank/down.png')}
+                  />
                 )}
               </View>
-              <Text style={[styles.percent, {
-                color: this.props.type === 'up' ? '#09AC32' : '#F55454',
-              }]}
+              <Text
+                style={[
+                  styles.percent,
+                  {
+                    color: this.props.type === 'up' ? '#09AC32' : '#F55454',
+                  },
+                ]}
               >
                 {item.change_percent}%
               </Text>
@@ -46,14 +56,14 @@ class RankList extends Component {
     );
     if (id) {
       return (
-        <Touchable onPress={() => this.props.toCoinDetail(id)}>
-          {ele}
-        </Touchable>
+        <Touchable onPress={() => this.props.toCoinDetail(id)}>{ele}</Touchable>
       );
     } else {
       return ele;
     }
   }
+
+  renderSeparator = () => <View style={styles.separator} />;
 
   render() {
     return (
@@ -70,6 +80,7 @@ class RankList extends Component {
           pagination={this.props.pagination}
           data={this.props.data}
           renderItem={this.renderItem}
+          renderSeparator={this.renderSeparator}
         />
       </View>
     );

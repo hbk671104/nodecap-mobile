@@ -17,7 +17,6 @@ export default {
   separator: {
     height: StyleSheet.hairlineWidth,
     backgroundColor: '#E9E9E9',
-    marginLeft: 12,
   },
   navBar: {
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -75,8 +74,8 @@ export default {
   item: {
     paddingHorizontal: 12,
     height: 44,
-    borderBottomColor: '#eee',
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    // borderBottomColor: '#eee',
+    // borderBottomWidth: StyleSheet.hairlineWidth,
   },
   rank: { paddingLeft: 10 },
   index: { fontSize: 13, color: 'rgba(0,0,0,0.65)' },

@@ -10,13 +10,21 @@ import styles from './style';
 class HolderList extends Component {
   renderItem = ({ item, index }) => <HolderItem data={item} index={index} />;
 
+  renderSeparator = () => <View style={styles.separator} />;
+
   render() {
     return (
       <View style={{ flex: 1 }}>
         <Flex style={styles.tableHead}>
-          <Text style={[styles.tableHeadText, { flex: 1 }]}>排名</Text>
-          <Text style={[styles.tableHeadText, { flex: 2 }]}>持币数量</Text>
-          <Text style={[styles.tableHeadText, { flex: 3 }]}>地址</Text>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.tableHeadText}>排名</Text>
+          </View>
+          <View style={{ flex: 2 }}>
+            <Text style={styles.tableHeadText}>持币数量</Text>
+          </View>
+          <View style={{ flex: 3 }}>
+            <Text style={styles.tableHeadText}>地址</Text>
+          </View>
         </Flex>
         <List
           action={this.props.action}
@@ -24,6 +32,7 @@ class HolderList extends Component {
           pagination={this.props.pagination}
           data={this.props.data}
           renderItem={this.renderItem}
+          renderSeparator={this.renderSeparator}
         />
       </View>
     );

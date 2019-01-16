@@ -15,7 +15,8 @@ import { Flex } from 'antd-mobile';
 
 class DappChart extends Component {
   render() {
-    const chartData = R.reverse(R.pathOr([], ['data', 'week_base_stats'])(this.props));
+    const chartData = R.pathOr([], ['data', 'week_base_stats'])(this.props);
+
     if (chartData.length < 2) {
       return null;
     }
@@ -42,40 +43,69 @@ class DappChart extends Component {
         >
           <VictoryAxis
             style={{
-            grid: { stroke: '#E9E9E9', strokeWidth: StyleSheet.hairlineWidth },
-            axis: { stroke: '#BCBCBC', strokeWidth: StyleSheet.hairlineWidth },
-            tickLabels: { fontFamily: 'DIN Alternate', fontWeight: 'normal', fontSize: 12, color: 'rgba(0,0,0,0.65)' },
-          }}
+              grid: {
+                stroke: '#E9E9E9',
+                strokeWidth: StyleSheet.hairlineWidth,
+              },
+              axis: {
+                stroke: '#BCBCBC',
+                strokeWidth: StyleSheet.hairlineWidth,
+              },
+              tickLabels: {
+                fontFamily: 'DIN Alternate',
+                fontWeight: 'normal',
+                fontSize: 12,
+                color: 'rgba(0,0,0,0.65)',
+              },
+            }}
           />
           <VictoryLine
             interpolation="natural"
             data={chartData.map(i => ({
-            x: moment(i.date).format('MM.DD'),
-            y: Number(i.volume_last_day.replace(',', '')),
-            name: '交易量',
-            idx: 2,
-          }))}
-            style={{ data: { stroke: '#09AC32', strokeWidth: 4, strokeLinecap: 'round' } }}
+              x: moment(i.date).format('MM.DD'),
+              y: Number(i.volume_last_day.replace(',', '')),
+              name: '交易量',
+              idx: 2,
+            }))}
+            style={{
+              data: {
+                stroke: '#09AC32',
+                strokeWidth: 4,
+                strokeLinecap: 'round',
+              },
+            }}
           />
           <VictoryLine
             interpolation="natural"
             data={chartData.map(i => ({
-            x: moment(i.date).format('MM.DD'),
-            y: Number(i.tx_last_day.replace(',', '')),
-            name: '交易笔数',
-            idx: 1,
-          }))}
-            style={{ data: { stroke: '#FF7600', strokeWidth: 4, strokeLinecap: 'round' } }}
+              x: moment(i.date).format('MM.DD'),
+              y: Number(i.tx_last_day.replace(',', '')),
+              name: '交易笔数',
+              idx: 1,
+            }))}
+            style={{
+              data: {
+                stroke: '#FF7600',
+                strokeWidth: 4,
+                strokeLinecap: 'round',
+              },
+            }}
           />
           <VictoryLine
             interpolation="natural"
             data={chartData.map(i => ({
-            x: moment(i.date).format('MM.DD'),
-            y: Number(i.dau_last_day.replace(',', '')),
-            name: '活跃用户',
-            idx: 0,
-          }))}
-            style={{ data: { stroke: '#1890FF', strokeWidth: 4, strokeLinecap: 'round' } }}
+              x: moment(i.date).format('MM.DD'),
+              y: Number(i.dau_last_day.replace(',', '')),
+              name: '活跃用户',
+              idx: 0,
+            }))}
+            style={{
+              data: {
+                stroke: '#1890FF',
+                strokeWidth: 4,
+                strokeLinecap: 'round',
+              },
+            }}
           />
         </VictoryChart>
       </View>

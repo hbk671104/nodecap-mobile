@@ -35,7 +35,6 @@ export const unfavorCoin = cid => {
   return request.delete(`/user/coins/${cid}`);
 };
 
-
 export const getUserById = cid => {
   return request.get(`/users/${cid}`);
 };
@@ -241,7 +240,6 @@ export function getRankList(payload) {
   });
 }
 
-
 export function getMarketCapRank(payload) {
   const paramsTransform = p => ({
     ...payload,
@@ -249,6 +247,28 @@ export function getMarketCapRank(payload) {
     'per-page': p.pageSize,
   });
   return request.get('/coin-quotations/market-cap-chart', {
+    params: paramsTransform(payload),
+  });
+}
+
+export function getCommitRank(payload) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/coin-quotations/commit-chart', {
+    params: paramsTransform(payload),
+  });
+}
+
+export function getHolderRank(payload) {
+  const paramsTransform = p => ({
+    ...payload,
+    page: p.currentPage,
+    'per-page': p.pageSize,
+  });
+  return request.get('/coin-quotations/holder-chart', {
     params: paramsTransform(payload),
   });
 }

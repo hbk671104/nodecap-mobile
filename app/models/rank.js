@@ -1,4 +1,9 @@
-import { getRankList, getMarketCapRank } from '../services/individual/api';
+import {
+  getRankList,
+  getMarketCapRank,
+  getCommitRank,
+  getHolderRank,
+} from '../services/individual/api';
 import { paginate } from '../utils/pagination';
 
 export default {
@@ -53,6 +58,40 @@ export default {
         yield call(callback);
       }
     },
+    *commitFetch({ callback, payload }, { call, put }) {
+      try {
+        const { data } = yield call(getCommitRank, payload);
+
+        yield put({
+          type: 'list',
+          payload: data,
+          quotation: 'commit',
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    *holderFetch({ callback, payload }, { call, put }) {
+      try {
+        const { data } = yield call(getHolderRank, payload);
+
+        yield put({
+          type: 'list',
+          payload: data,
+          quotation: 'holder',
+        });
+
+        if (callback) {
+          yield call(callback);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   reducers: {
     list(state, action) {
@@ -60,7 +99,10 @@ export default {
         ...state,
         list: {
           ...state.list,
-          [action.quotation]: paginate(state.list[action.quotation], action.payload),
+          [action.quotation]: paginate(
+            state.list[action.quotation],
+            action.payload,
+          ),
         },
       };
     },

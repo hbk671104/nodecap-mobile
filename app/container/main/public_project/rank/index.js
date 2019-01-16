@@ -27,7 +27,14 @@ import HolderList from './otherList/holder';
   downPagination: R.path(['list', 'down', 'pagination'])(rank),
   downLoading: loading.effects['rank/downFetch'],
   marketCapList: R.pathOr([], ['list', 'marketCap'])(rank),
+  marketCapPagination: R.path(['list', 'marketCap', 'pagination'])(rank),
   marketCapLoading: loading.effects['rank/marketCapFetch'],
+  commitList: R.pathOr([], ['list', 'commit'])(rank),
+  commitPagination: R.path(['list', 'commit', 'pagination'])(rank),
+  commitLoading: loading.effects['rank/commitFetch'],
+  holderList: R.pathOr([], ['list', 'holder'])(rank),
+  holderPagination: R.path(['list', 'holder', 'pagination'])(rank),
+  holderLoading: loading.effects['rank/holderFetch'],
 }))
 class Rank extends Component {
   requestData = quotation => page => {
@@ -128,11 +135,24 @@ class Rank extends Component {
           <MarketCapList
             tabLabel="市值榜"
             data={this.props.marketCapList}
+            pagination={this.props.marketCapPagination}
             loading={this.props.marketCapLoading}
             action={this.requestData('marketCap')}
           />
-          <CommitList tabLabel="代码更新榜" />
-          <HolderList tabLabel="富豪榜" />
+          <CommitList
+            tabLabel="代码更新榜"
+            data={this.props.commitList}
+            pagination={this.props.commitPagination}
+            loading={this.props.commitLoading}
+            action={this.requestData('commit')}
+          />
+          <HolderList
+            tabLabel="富豪榜"
+            data={this.props.holderList}
+            pagination={this.props.holderPagination}
+            loading={this.props.holderLoading}
+            action={this.requestData('holder')}
+          />
         </ScrollableTabView>
       </View>
     );
