@@ -118,8 +118,8 @@ android {
         applicationId "com.nodecap.hotnode"
         minSdkVersion 23
         targetSdkVersion 27
-        versionCode 190111
-        versionName "7.4.2"
+        versionCode 190116
+        versionName "7.4.3"
 
         manifestPlaceholders = [
                 JPUSH_APPKEY: "3d43f5402c9364c5b35f0ab0",
