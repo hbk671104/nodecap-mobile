@@ -8,6 +8,7 @@ import { NavigationActions } from 'react-navigation';
 import NavBar from 'component/navBar';
 import styles from './style';
 import List from './list';
+import MarketCapList from './marketCapList';
 import bind from 'lodash-decorators/bind';
 
 @global.bindTrack({
@@ -19,6 +20,7 @@ import bind from 'lodash-decorators/bind';
   withState('routes', 'setRoutes', [
     { key: 'up', title: '涨幅榜' },
     { key: 'down', title: '跌幅榜' },
+    { key: 'marketCap', title: '市值榜' },
   ]),
 )
 @connect(({ rank, loading }) => ({
@@ -28,6 +30,8 @@ import bind from 'lodash-decorators/bind';
   downList: R.pathOr([], ['list', 'down', 'data'])(rank),
   downPagination: R.path(['list', 'down', 'pagination'])(rank),
   downLoading: loading.effects['rank/downFetch'],
+  marketCapList: R.pathOr([], ['list', 'marketCap'])(rank),
+  marketCapLoading: loading.effects['rank/marketCapFetch'],
 }))
 class Rank extends Component {
   handleIndexChange = index => {
@@ -83,6 +87,15 @@ class Rank extends Component {
             pagination={this.props.downPagination}
             type="down"
             toCoinDetail={this.toCoinDetail}
+          />
+        );
+      case 'marketCap':
+        return (
+          <MarketCapList
+            action={this.requestData('marketCap')}
+            data={this.props.marketCapList}
+            loading={this.props.marketCapLoading}
+            type="marketCap"
           />
         );
       default:
