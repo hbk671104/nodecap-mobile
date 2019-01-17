@@ -73,7 +73,7 @@ export default {
   tableHeadText: { fontSize: 12, color: '#666666', letterSpacing: 0.14 },
   item: {
     paddingHorizontal: 12,
-    height: 44,
+    height: 40,
     // borderBottomColor: '#eee',
     // borderBottomWidth: StyleSheet.hairlineWidth,
   },
