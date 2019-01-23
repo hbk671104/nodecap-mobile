@@ -257,6 +257,7 @@ export default class PortfolioDetail extends Component {
           iconStyle={styles.navBar.icon}
           style={styles.navBar.container}
           title={R.pathOr('', ['name'])(portfolio)}
+          titleStyle={{ color: 'white' }}
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView

@@ -247,6 +247,7 @@ export default class PublicProjectDetail extends Component {
           iconStyle={styles.navBar.icon}
           style={[styles.navBar.container, { zIndex: 100 }]}
           title={R.pathOr('', ['name'])(portfolio)}
+          titleStyle={{ color: 'white' }}
           titleContainerStyle={{ opacity: titleOpacityRange }}
         />
         <Animated.ScrollView
